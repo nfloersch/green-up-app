@@ -8,8 +8,8 @@ A mobile app for Vermont's Green Up Day.
   - [Install Python 2](#install-python-2)
   - [Install Node](#install-node)
   - [Install and Configure Atom](#install-and-configure-atom)
-  - [Install and Configure Git](#install-and-configure-git)
   - [Install Meld](#install-meld)
+  - [Install and Configure Git](#install-and-configure-git)
   - [Install Java 8 JDK](#install-java-8-jdk)
   - [Install React Native](#install-react-native)
   - [Install and Configure Android Studio](#install-and-configure-android-studio)
@@ -41,7 +41,7 @@ These instructions are for Windows 10 - 64 bit.
 
 ### Install Node
 
-1. Download Node the Node installer here : https://nodejs.org/dist/v7.10.0/node-v7.10.0-x86.msi
+1. Download the Node installer here : https://nodejs.org/dist/v7.10.0/node-v7.10.0-x86.msi
 
 2. Launch the installer.
 
@@ -56,9 +56,57 @@ These instructions are for Windows 10 - 64 bit.
 
 ### Install and Configure Atom
 
-### Install and Configure Git
+1. Download the Atom installer here : https://atom.io/download/windows_x64
+
+2. Launch the installer and acknowledge that you want to run the file.
+
+![Alt](/docs/assets/Capture10.PNG "Atom Installer")
+
+3. Click through the installer accepting all the default settings.
+
+4. Launch Atom by typing "atom" in the search bar.  You may want to add Atom to your task bar by right-clicking the Atom icon and selecting "Pin to taskbar"
+
+![Alt](/docs/assets/Capture69.PNG "Launch Atom")
+
+5. You will need to install the Nuclide package which is an IDE package for React-Native created by Facebook.  On the Atom Welcome Guide Screen, click "Install a Package"
+
+![Alt](/docs/assets/Capture11.PNG "Welcome Screen")
+
+6. In the Settings search box type "nuclide" an click "Packages".  Then click "install" for "nuclide" and "nuclide-format-js"
+
+![Alt](/docs/assets/Capture12.PNG "Install Pacakges")
 
 ### Install Meld
+
+1. Download the Meld installer here : https://download.gnome.org/binaries/win32/meld/3.16/Meld-3.16.2-win32.msi
+
+2. Launch the installer.
+
+3. Click through the installer accepting all the default settings.
+
+4. If you want, pin Meld to your taskbar like you did Atom.
+
+### Install and Configure Git
+
+1. Download the Git installer here : https://git-scm.com/download/win
+
+2. Launch the installer.
+
+![Alt](/docs/assets/Capture70.PNG "GitInstaller")
+
+3. Click through the installer accepting all the default settings.
+
+4. Verify that Node  is installed by opening a terminal and typing `node --version`  you should see "git version 2.14.0.windows.1"
+
+![Alt](/docs/assets/Capture71.PNG "Verify Git")
+
+5. Set your name and email in Git using the following commands in the terminal.  
+```git config --global user.name "YOUR NAME"```
+```git config --global user.email your.email@somecompany.com```
+
+![Alt](/docs/assets/Capture08.PNG "Git Config")
+
+
 
 ### Install Java 8 JDK
 
