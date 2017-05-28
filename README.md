@@ -4,7 +4,7 @@ A mobile app for Vermont's Green Up Day.
 
 ## Table of Contents
 
-- [Setting Up Your Development Environment (Windows)](#setting-up-your-development-environment-(windows))
+- [Setting Up Your Development Environment on Windows](#setting-up-your-development-environment-on-windows)
   - [Install Python 2](#install-python-2)
   - [Install Node](#install-node)
   - [Install and Configure Atom](#install-and-configure-atom)
@@ -14,7 +14,7 @@ A mobile app for Vermont's Green Up Day.
   - [Install React Native](#install-react-native)
   - [Install and Configure Android Studio](#install-and-configure-android-studio)
 
-## Setting Up Your Development Environment (Windows)
+## Setting Up Your Development Environment on Windows
 
 These instructions are for Windows 10 - 64 bit.
 
