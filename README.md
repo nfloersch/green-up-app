@@ -35,11 +35,24 @@ These instructions are for Windows 10 - 64 bit.
 
 5. Continue through the wizard using the default settings
 
-6. Confirm you have Python 2 installed by opening a terminal.  You open a terminal by typing "cmd" in the windows search bar and choosing "command prompt."  in the terminal type `python --version`  you should see "Python 2.7.13"
+6. Verify that Python 2 is installed by opening a terminal.  You open a terminal by typing "cmd" in the windows search bar and choosing "command prompt."  in the terminal type `python --version`  you should see "Python 2.7.13"
 
 ![Alt](/docs/assets/Capture67.PNG "Confirm Python")
 
 ### Install Node
+
+1. Download Node the Node installer here : https://nodejs.org/dist/v7.10.0/node-v7.10.0-x86.msi
+
+2. Launch the installer.
+
+![Alt](/docs/assets/Capture03.PNG "Node Installer")
+
+3. Click through the installer accepting all the default settings.
+
+6. Verify that Node  is installed by opening a terminal and typing `node --version`  you should see "v7.10.0"
+
+![Alt](/docs/assets/Capture68.PNG "Verify Node")
+
 
 ### Install and Configure Atom
 
