@@ -13,6 +13,8 @@ A mobile app for Vermont's Green Up Day.
   - [Install Java 8 JDK](#install-java-8-jdk)
   - [Install React Native](#install-react-native)
   - [Install and Configure Android Studio](#install-and-configure-android-studio)
+  - [Clone the Green Up Vermont repository](#clone-the-green-up-vermont-repository)
+  - [Run the PRoject](#run-the-project)
 
 ## Setting Up Your Development Environment on Windows
 
@@ -133,3 +135,130 @@ git config --global user.email your.email@somecompany.com
 2. Verify that React Native is installed by typing `react-native -version`  You should see "react-native-cli: 2.0.1"
 
 ### Install and Configure Android Studio
+
+1. Go to the download page for Android Studio here : https://developer.android.com/studio/index.html
+
+2. Click the first download button and accept the licensing agreement and click the second download button to begin the download.
+
+3. Launch the installer
+
+![Alt](/docs/assets/Capture19.PNG "Android Studio Install 1")
+
+4. On the "Choose Components" screen, select all components for installation.
+
+![Alt](/docs/assets/Capture20.PNG "Android Studio Install 2")
+
+5. Accept the License Agreement
+
+![Alt](/docs/assets/Capture21.PNG "Android Studio Install 3")
+
+6. On the "Configuration Settings" screen, change the "Android SDK Installation Location" to C:\Android\sdk.  This will avoid a possible problem later.
+
+![Alt](/docs/assets/Capture72.PNG "Android Studio Install 4")
+
+7. Accept the default menu folder.  When the initial installation is finished, start Android Studio.
+
+![Alt](/docs/assets/Capture23.PNG "Android Studio Install 5")
+
+8. Begin configuring Android Studio by clicking "next" on the initial screen
+
+![Alt](/docs/assets/Capture24.PNG "Android Studio Install 6")
+
+9. Choose "Custom" for the type of setup.
+
+![Alt](/docs/assets/Capture25.PNG "Android Studio Install 7")
+
+10. Choose which theme you prefer.
+
+![Alt](/docs/assets/Capture26.PNG "Android Studio Install 8")
+
+11. Choose "Custom" for the type of setup.
+
+![Alt](/docs/assets/Capture26.PNG "Android Studio Install 9")
+
+
+12. Install the AVD and HAXM. Make sure the boxes next to all of the following are checked:
+
+  * Android SDK
+  * Android SDK Platform
+  * Performance (Intel ® HAXM)
+  * Android Virtual Device
+
+Then, click "Next" to install all of these components.
+
+![Alt](/docs/assets/Capture27.PNG "Android Studio Install 10")
+
+13. Set your RAM allocation to 2048 MiB (2Gib)
+
+![Alt](/docs/assets/Capture28.PNG "Android Studio Install 11")
+
+14. Verify your settings and click "Finish"
+
+![Alt](/docs/assets/Capture29.PNG "Android Studio Install 12")
+
+
+15. We will now need to configure an Android emulator. To get to the main screen
+
+![Alt](/docs/assets/Capture31.PNG "Android Studio Install 14")
+
+16.
+
+![Alt](/docs/assets/Capture32.PNG "Android Studio Install 15")
+
+17.
+
+![Alt](/docs/assets/Capture33.PNG "Android Studio Install 16")
+
+18.
+
+![Alt](/docs/assets/Capture34.PNG "Android Studio Install 17")
+
+19.
+
+![Alt](/docs/assets/Capture35.PNG "Android Studio Install 18")
+
+20.
+
+![Alt](/docs/assets/Capture36.PNG "Android Studio Install 19")
+
+21.
+
+![Alt](/docs/assets/Capture37.PNG "Android Studio Install 20")
+
+22.
+
+![Alt](/docs/assets/Capture38.PNG "Android Studio Install 21")
+
+23.
+
+![Alt](/docs/assets/Capture39.PNG "Android Studio Install 22")
+
+24.
+
+![Alt](/docs/assets/Capture40.PNG "Android Studio Install 23")
+
+25.
+
+![Alt](/docs/assets/Capture41.PNG "Android Studio Install 24")
+
+26.
+
+![Alt](/docs/assets/Capture42.PNG "Android Studio Install 25")
+
+### Clone the Green Up Vermont repository
+
+1.  You should already be here, but if you aren't go to the Green Up Vermont GitHub page here : https://github.com/johnneed/GreenUpVermont
+
+2. Click the green "Clone or download" button and then click the small "Copy to clipboard" icon to the right of the repository url.
+
+![Alt](/docs/assets/Capture63.PNG "Clone Repository")
+
+3. Open a terminal window, then type "git clone" and then hit ctrl v to paste the url from the repository
+
+![Alt](/docs/assets/Capture74.PNG "Clone Repository")
+
+4. After the cloning finishes, Install the project dependencies.  First navigate into the project folder by typing "cd GreenUpVermont" and then install the packages by typing "npm install"
+
+![Alt](/docs/assets/Capture75.PNG "Clone Repository")
+
+### Run the Project
