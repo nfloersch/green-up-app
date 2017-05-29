@@ -192,41 +192,33 @@ Then, click "Next" to install all of these components.
 ![Alt](/docs/assets/Capture29.PNG "Android Studio Install 12")
 
 
-14. We will now need to configure an Android emulator. To get to the main screen
+14. We will now need to configure an Android emulator. To get to the main screen, select "start a new Android Stuoio project"
 
 ![Alt](/docs/assets/Capture31.PNG "Android Studio Install 14")
 
-15.
+15. We won't be using this project for anything, so accept the default name. You may need to change the project location if your home folder contains spaces.  If set the project location to "C:\MyAndroidProjects\MyApplication".
 
 ![Alt](/docs/assets/Capture32.PNG "Android Studio Install 15")
 
-16.
+16. Uncheck all except "Phone and Tablet".  The Minimum SDK should be set at "API 15: Android 4.0.3 (IceCream Sandwich)""
 
 ![Alt](/docs/assets/Capture33.PNG "Android Studio Install 16")
 
-17.
+17. Choose "Basic Activity"
 
 ![Alt](/docs/assets/Capture34.PNG "Android Studio Install 17")
 
-18.
+18. Click "Finish"
 
 ![Alt](/docs/assets/Capture35.PNG "Android Studio Install 18")
 
-19.
+19.  If you get a firewall warning click "Allow access"  
 
 ![Alt](/docs/assets/Capture36.PNG "Android Studio Install 19")
 
-20.
+20.  You should now be at the main screen.  We need to install the correct SDK versions.  Select Tools >> Android >> SDK Manager
 
 ![Alt](/docs/assets/Capture37.PNG "Android Studio Install 20")
-
-21.
-
-![Alt](/docs/assets/Capture38.PNG "Android Studio Install 21")
-
-22.
-
-![Alt](/docs/assets/Capture39.PNG "Android Studio Install 22")
 
 23.
 
