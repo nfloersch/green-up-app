@@ -92,7 +92,7 @@ These instructions are for Windows 10 - 64 bit.
 
 2. Launch the installer.
 
-![Alt](/docs/assets/Capture70.PNG "GitInstaller")
+![Alt](/docs/assets/Capture70.PNG "Git Installer")
 
 3. Click through the installer accepting all the default settings.
 
@@ -100,16 +100,33 @@ These instructions are for Windows 10 - 64 bit.
 
 ![Alt](/docs/assets/Capture71.PNG "Verify Git")
 
-5. Set your name and email in Git using the following commands in the terminal.  
+5. Set your name and email in Git using the following commands in the terminal.
 ```git config --global user.name "YOUR NAME"```
 ```git config --global user.email your.email@somecompany.com```
 
 ![Alt](/docs/assets/Capture08.PNG "Git Config")
 
 
-
 ### Install Java 8 JDK
 
+1. Go to the Download page for the Java 8 JDK here : http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+2. Accept the licensing agreement and click the download link for Windows x64.
+
+![Alt](/docs/assets/Capture04.PNG "Java JDK Download")
+
+3. Launch the installer.
+
+![Alt](/docs/assets/Capture05.PNG "Java JDK Installer")
+
+4. Click through the installer accepting all the default settings.
+
+5. Verify that Java is installed by launching a terminal window and typing `java -version`.  You should should see 'java version "1.8.0_131"'
+
 ### Install React Native
+
+1. Open a terminal window and install React Native Command Line Interface using the Node Package Manager by typing `npm install -g react-native-cli`
+
+2. Verify that React Native is installed by typing `react-native -version`  You should see "react-native-cli: 2.0.1"
 
 ### Install and Configure Android Studio
