@@ -13,6 +13,8 @@ A mobile app for Vermont's Green Up Day.
   - [Install Java 8 JDK](#install-java-8-jdk)
   - [Install React Native](#install-react-native)
   - [Install and Configure Android Studio](#install-and-configure-android-studio)
+  - [Set the ANDROID_HOME Environment Variable](#set-the-android_home-environment-variable)
+  - [Create a New Android Virtual Device](#create-a-new-android-virtual-device)
   - [Clone the Green Up Vermont repository](#clone-the-green-up-vermont-repository)
   - [Run the PRoject](#run-the-project)
 
@@ -240,6 +242,64 @@ Then, click "Next" to install all of these components.
 
 ![Alt](/docs/assets/Capture42.PNG "Android Studio Install 25")
 
+
+## Set the ANDROID_HOME Environment Variable
+
+1. We need to set the ANDROID_HOME path variable.  To start this open up the control panel, You can find it by typing "Control Panel" in the search bar. Then click "System and Security"
+
+![Alt](/docs/assets/Capture48.PNG "Set ANDROID_HOME 1")
+
+2. Select "System"
+
+![Alt](/docs/assets/Capture49.PNG "Set ANDROID_HOME 2")
+
+3. Select "Advanced system settings"
+
+![Alt](/docs/assets/Capture50.PNG "Set ANDROID_HOME 3")
+
+4. Choose the "Advanced" tab and click the "Environment Variables..." button
+
+![Alt](/docs/assets/Capture51.PNG "Set ANDROID_HOME 4")
+
+5. Click the "New..." button under "User variables"
+
+![Alt](/docs/assets/Capture52.PNG "Set ANDROID_HOME 5")
+
+6. Set the variable name to "ANDROID_HOME" and the variable value to "C:\Android\sdk".  If this is not where you installed the sdk you will need to point this value to the correct path.
+
+![Alt](/docs/assets/Capture53.PNG "Set ANDROID_HOME 6")
+
+7. Verify that your ANDROID_HOME variable is set correctly.
+
+![Alt](/docs/assets/Capture54.PNG "Set ANDROID_HOME 7")
+
+### Create a New Android Virtual Device
+
+1. Open Android Studio and select Tools >> Android >> AVD Manager
+
+![Alt](/docs/assets/Capture55.PNG "Create a New Android Virtual Device 1")
+
+2. Click the "Create Virtual Device" button
+
+![Alt](/docs/assets/Capture56.PNG "Create a New Android Virtual Device 2")
+
+3. Select the Nexus 5x device under the Phone category, then click "Next"
+
+![Alt](/docs/assets/Capture57.PNG "Create a New Android Virtual Device 3")
+
+4. Under the "x86 Images" tab, choose the "Marshmallow API 23 | ABI | x86_64" Image.  Click "Next"
+
+![Alt](/docs/assets/Capture60.PNG "Create a New Android Virtual Device 4")
+
+
+5. Change the AVD Name to "GreenUpVT" and click "Finish"
+
+![Alt](/docs/assets/Capture61.PNG "Create a New Android Virtual Device 5")
+
+6. Verify that you created a new device.
+
+![Alt](/docs/assets/Capture62.PNG "Create a New Android Virtual Device 6")
+
 ### Clone the Green Up Vermont repository
 
 1.  You should already be here, but if you aren't go to the Green Up Vermont GitHub page here : https://github.com/johnneed/GreenUpVermont
@@ -257,3 +317,5 @@ Then, click "Next" to install all of these components.
 ![Alt](/docs/assets/Capture75.PNG "Clone Repository")
 
 ### Run the Project
+
+1. Start Android Studio.
