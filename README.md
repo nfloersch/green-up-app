@@ -220,15 +220,23 @@ Then, click "Next" to install all of these components.
 
 ![Alt](/docs/assets/Capture37.PNG "Android Studio Install 20")
 
-23.
+23. Select the "SDK Platforms" tab Click the "Show Package Details" checkbox near the bottom right and the select the following under "Android 6.0 (Marshmallow)"
+
+  * Google APIs
+  * Android SDK Platform 23
+  * Sources for Android 23
+  * Intel x86 Atom_64 System Image
+  * Google APIs Intel x86 Atome_64 System Image
 
 ![Alt](/docs/assets/Capture40.PNG "Android Studio Install 23")
 
-24.
+24. Select the "SDK Tools tab Click the "Show Package Details" checkbox near the bottom right.  Select the following
+
+  * 23.0.1
 
 ![Alt](/docs/assets/Capture41.PNG "Android Studio Install 24")
 
-25.
+25. Click "OK" to start the installation.
 
 ![Alt](/docs/assets/Capture42.PNG "Android Studio Install 25")
 
