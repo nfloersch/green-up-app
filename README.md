@@ -172,12 +172,7 @@ git config --global user.email your.email@somecompany.com
 
 ![Alt](/docs/assets/Capture26.PNG "Android Studio Install 8")
 
-11. Choose "Custom" for the type of setup.
-
-![Alt](/docs/assets/Capture26.PNG "Android Studio Install 9")
-
-
-12. Install the AVD and HAXM. Make sure the boxes next to all of the following are checked:
+11. Install the AVD and HAXM. Make sure the boxes next to all of the following are checked:
 
   * Android SDK
   * Android SDK Platform
@@ -188,60 +183,60 @@ Then, click "Next" to install all of these components.
 
 ![Alt](/docs/assets/Capture27.PNG "Android Studio Install 10")
 
-13. Set your RAM allocation to 2048 MiB (2Gib)
+12. Set your RAM allocation to 2048 MiB (2Gib)
 
 ![Alt](/docs/assets/Capture28.PNG "Android Studio Install 11")
 
-14. Verify your settings and click "Finish"
+13. Verify your settings and click "Finish"
 
 ![Alt](/docs/assets/Capture29.PNG "Android Studio Install 12")
 
 
-15. We will now need to configure an Android emulator. To get to the main screen
+14. We will now need to configure an Android emulator. To get to the main screen
 
 ![Alt](/docs/assets/Capture31.PNG "Android Studio Install 14")
 
-16.
+15.
 
 ![Alt](/docs/assets/Capture32.PNG "Android Studio Install 15")
 
-17.
+16.
 
 ![Alt](/docs/assets/Capture33.PNG "Android Studio Install 16")
 
-18.
+17.
 
 ![Alt](/docs/assets/Capture34.PNG "Android Studio Install 17")
 
-19.
+18.
 
 ![Alt](/docs/assets/Capture35.PNG "Android Studio Install 18")
 
-20.
+19.
 
 ![Alt](/docs/assets/Capture36.PNG "Android Studio Install 19")
 
-21.
+20.
 
 ![Alt](/docs/assets/Capture37.PNG "Android Studio Install 20")
 
-22.
+21.
 
 ![Alt](/docs/assets/Capture38.PNG "Android Studio Install 21")
 
-23.
+22.
 
 ![Alt](/docs/assets/Capture39.PNG "Android Studio Install 22")
 
-24.
+23.
 
 ![Alt](/docs/assets/Capture40.PNG "Android Studio Install 23")
 
-25.
+24.
 
 ![Alt](/docs/assets/Capture41.PNG "Android Studio Install 24")
 
-26.
+25.
 
 ![Alt](/docs/assets/Capture42.PNG "Android Studio Install 25")
 
