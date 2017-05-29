@@ -318,4 +318,9 @@ Then, click "Next" to install all of these components.
 
 ### Run the Project
 
-1. Start Android Studio.
+1. Start Android Studio. Then start your GreenUpVT virtual device by selecting Tools >> Android >> AVD Manager, and then clicking the green arrow under actions next to your virtual device.  It may take a couple of minutes for the emulator to launch.
+
+2. Open a terminal and cd into the GreenUpVermont folder.  Run the command `react-native start`
+
+3. Leave the first terminal running and open a second terminal window.  Use the cd command to navigate into the GreenUpVermont folder. Run the command `react-native run-android`
+  the project should build and launch in the Virtual Device.
