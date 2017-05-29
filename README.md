@@ -101,8 +101,11 @@ These instructions are for Windows 10 - 64 bit.
 ![Alt](/docs/assets/Capture71.PNG "Verify Git")
 
 5. Set your name and email in Git using the following commands in the terminal.
-```git config --global user.name "YOUR NAME"```
-```git config --global user.email your.email@somecompany.com```
+
+```
+git config --global user.name "YOUR NAME"
+git config --global user.email your.email@somecompany.com
+```
 
 ![Alt](/docs/assets/Capture08.PNG "Git Config")
 
