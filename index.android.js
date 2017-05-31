@@ -15,10 +15,12 @@ import React, { Component } from 'react';
   Alert,
   AppRegistry,
   Button,
+  Image,
   StyleSheet,
   Text,
   View
 } from 'react-native';
+import logo from "./assets/GreenupVermontlogo.png"
 // Initialize Firebase
 // var config = {
 //   apiKey: "AIzaSyAjwSCpOvLPgYcFr26V3gmfwJlGb-VtWAs",
@@ -36,6 +38,8 @@ export default class GreenUpVermont extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image
+          source={logo} />
         <Text style={styles.welcome}>
           Welcome to the Green Up Vermont App!
         </Text>
@@ -48,8 +52,8 @@ export default class GreenUpVermont extends Component {
         </Text>
         <Button
         onPress={onButtonPress}
-        title="Press Me"
-        accessibilityLabel="See an informative alert"
+        title="Login with Google"
+        accessibilityLabel="Login With Google"
       />
       </View>
     );
