@@ -1,31 +1,55 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * GreenUpVermont React Native App
+ * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
 
 import React, { Component } from 'react';
-import {
+// import * as firebase from 'firebase';
+// import 'firebase/auth';
+// import 'firebase/database';
+// import 'firebase/storage';
+// import 'firebase-messaging';
+ // import FireAuth from 'react-native-firebase-auth';
+ import {
   AppRegistry,
+  Button,
   StyleSheet,
   Text,
   View
 } from 'react-native';
-
+// Initialize Firebase
+// var config = {
+//   apiKey: "AIzaSyAjwSCpOvLPgYcFr26V3gmfwJlGb-VtWAs",
+//   authDomain: "greenupvermont-de02b.firebaseapp.com",
+//   databaseURL: "https://greenupvermont-de02b.firebaseio.com",
+//   projectId: "greenupvermont-de02b",
+//   storageBucket: "greenupvermont-de02b.appspot.com",
+//   messagingSenderId: "439621369113"
+// };
+const onButtonPress = () => {
+  Alert.alert('Button has been pressed!');
+};
+// var app = firebase.initializeApp(config);
 export default class GreenUpVermont extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to the Green Up Vermont App!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.android.js
+         Congratulations you got this app running!
         </Text>
         <Text style={styles.instructions}>
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
+        <Button
+        onPress={onButtonPress}
+        title="Press Me For an awesome error message"
+        accessibilityLabel="See an informative alert"
+      />
       </View>
     );
   }
