@@ -12,6 +12,7 @@ import React, { Component } from 'react';
 // import 'firebase-messaging';
  // import FireAuth from 'react-native-firebase-auth';
  import {
+  Alert,
   AppRegistry,
   Button,
   StyleSheet,
@@ -47,7 +48,7 @@ export default class GreenUpVermont extends Component {
         </Text>
         <Button
         onPress={onButtonPress}
-        title="Press Me For an awesome error message"
+        title="Press Me"
         accessibilityLabel="See an informative alert"
       />
       </View>
