@@ -35,7 +35,7 @@ These instructions are for Windows 10 - 64 bit.
 
 4. On the "Customize Python" screen, select "Add python.exe to Path."  and then select "Will be installed on local hard drive"
 
-![Alt](/docs/assets/add-python-to-path.png "Python Installer 3")
+![Alt](/docs/assets/add-python-to-path-1.png "Python Installer 3")
 
 5. Continue through the wizard using the default settings
 
