@@ -16,7 +16,23 @@ A mobile app for Vermont's Green Up Day.
   - [Set the ANDROID_HOME Environment Variable](#set-the-android_home-environment-variable)
   - [Create a New Android Virtual Device](#create-a-new-android-virtual-device)
   - [Clone the Green Up Vermont repository](#clone-the-green-up-vermont-repository)
-  - [Run the PRoject](#run-the-project)
+  - [Run the Project](#run-the-project)
+
+- [Setting Up Your Development Environment on Mac](#setting-up-your-development-environment-on-mac)
+  - [Install Python 2 on Mac](#install-python-2-on-mac)
+  - [Install Node on Mac](#install-node-on-mac)
+  - [Install and Configure Atom on Mac](#install-and-configure-atom-on-mac)
+  - [Install Meld on Mac](#install-meld-on-mac)
+  - [Install and Configure Git on Mac](#install-and-configure-git-on-mac)
+  - [Install Java 8 JDK on Mac](#install-java-8-jdk-on-mac)
+  - [Install React Native on Mac](#install-react-native-on-mac)
+  - [Install XCode on Mac](#install-xcode-on-mac)
+  - [Install and Configure Android Studio on Mac](#install-and-configure-android-studio-on-mac)
+  - [Set the ANDROID_HOME Environment Variable on Mac](#set-the-android_home-environment-variable-on-mac)
+  - [Create a New Android Virtual Device on Mac](#create-a-new-android-virtual-device-on-mac)
+  - [Clone the Green Up Vermont repository on Mac](#clone-the-green-up-vermont-repository-on-mac)
+  - [Run the Project on Mac](#run-the-project-on-mac)
+
 
 ## Setting Up Your Development Environment on Windows
 
@@ -324,3 +340,19 @@ Then, click "Next" to install all of these components.
 
 3. Leave the first terminal running and open a second terminal window.  Use the cd command to navigate into the GreenUpVermont folder. Run the command `react-native run-android`
   the project should build and launch in the Virtual Device.
+  
+  
+## Setting Up Your Development Environment on Mac
+### Install Python 2 on Mac
+### Install Node on Mac
+### Install and Configure Atom on Mac
+### Install Meld on Mac
+### Install and Configure Git on Mac
+### Install Java 8 JDK on Mac
+### Install React Native on Mac
+### Install XCode on Mac
+### Install and Configure Android Studio on Mac
+### Set the ANDROID_HOME Environment Variable on Mac
+### Create a New Android Virtual Device on Mac
+### Clone the Green Up Vermont repository on Mac
+### Run the Project on Mac
