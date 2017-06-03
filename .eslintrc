@@ -41,7 +41,7 @@
   ],
   "rules": {
     /* Possible Errors */
-    "comma-dangle": [2, "never"], //d isallow or enforce trailing commas (recommended)
+    "comma-dangle": [1, "never"], // disallow or enforce trailing commas (recommended)
     "no-cond-assign": [2, "always"], // disallow assignment in conditional expressions (recommended)
     "no-console": 1, // disallow use of console in the node environment (recommended)
     "no-constant-condition": 2, // disallow use of constant expressions in conditions (recommended)
@@ -162,7 +162,7 @@
     "id-length": 0, //this option enforces minimum and space-after-keywordsimum identifier lengths (variable names, property names etc.)
     "id-match": 1, //require identifiers to match the provided regular expression
     "indent": [2,4,{"SwitchCase": 1, "VariableDeclarator": {"var": 0, "let": 0, "const": 0}}], //specify tab or space width for your code (fixable)
-    "jsx-quotes": [2,"prefer-double"], //specify whether double or single quotes should be used in JSX attributes
+    "jsx-quotes": [2,"prefer-single"], //specify whether double or single quotes should be used in JSX attributes
     "key-spacing": [1, { "beforeColon": false, "afterColon": true }], //enforce spacing between keys and values in object literal properties
     "linebreak-style": [0, "unix"], //disallow mixed 'LF' and 'CRLF' as linebreaks
     "lines-around-comment": 1, //enforce empty lines around comments
@@ -191,7 +191,7 @@
     "operator-linebreak": 1, //enforce operators to be placed before or after line breaks
     "padded-blocks":  [0, "never"], //enforce padding within blocks
     "quote-props": [1, "as-needed"], //require quotes around object literal property names
-    "quotes": [2,"double"], //specify whether backticks, double or single quotes should be used (fixable)
+    "quotes": [2,"single"], //specify whether backticks, double or single quotes should be used (fixable)
     "require-jsdoc": 1, //Require JSDoc comment
     "semi-spacing": [2, { "before": false, "after": true }], //enforce spacing before and after semicolons
     "semi": 2, //require or disallow use of semicolons instead of ASI (fixable)
@@ -255,7 +255,7 @@
       "allowArrowFunctions": false,
       "allowBind": true}], // Prevent usage of .bind() and arrow functions in JSX props
     "react/jsx-no-duplicate-props": 2, // Prevent duplicate props in JSX
-    "react/jsx-no-literals": 2, // Prevent usage of unwrapped JSX strings
+    "react/jsx-no-literals": 0, // Prevent usage of unwrapped JSX strings
     "react/jsx-no-undef": 2, // Disallow undeclared variables in JSX
     "react/sort-prop-types": 2, // Enforce propTypes declarations alphabetical sorting
     "react/jsx-sort-props": 2, // Enforce props alphabetical sorting
