@@ -251,8 +251,11 @@ Then, click "Next" to install all of these components.
 24. Select the "SDK Tools tab Click the "Show Package Details" checkbox near the bottom right.  Select the following
 
   * 23.0.1
+  * 23.0.3
+  * 25.0.0
+  * 25.0.3
 
-![Alt](/docs/assets/Capture41.PNG "Android Studio Install 24")
+![Alt](/docs/assets/SDK tools.PNG "SDK Tools")
 
 25. Click "OK" to start the installation.
 
