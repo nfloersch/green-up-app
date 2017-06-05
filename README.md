@@ -255,7 +255,7 @@ Then, click "Next" to install all of these components.
   * 25.0.0
   * 25.0.3
 
-![Alt](/docs/assets/SDK tools.PNG "SDK Tools")
+![Alt](/docs/assets/SDKtools.PNG "SDK Tools")
 
 25. Click "OK" to start the installation.
 
