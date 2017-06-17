@@ -174,7 +174,7 @@
     "semi": 2, //require or disallow use of semicolons instead of ASI (fixable)
     "sort-vars": 1, //sort variables within the same declaration block
     "space-before-blocks":  [2, "always"], //require or disallow a space before blocks (fixable)
-    "space-before-function-paren": [2,  {"anonymous": "always", "named": "never"}], //require or disallow a space before function opening parenthesis (fixable)
+    "space-before-function-paren": [2,  {"anonymous": "never", "named": "never"}], //require or disallow a space before function opening parenthesis (fixable)
     "keyword-spacing": 2, //require a space before certain keywords (fixable)
     "space-in-parens": [0, "never"], //require or disallow spaces inside parentheses
     "space-infix-ops": 2, //require spaces around operators (fixable)
@@ -204,7 +204,7 @@
 
     /* Legacy */
     "max-depth": [0, 3], //specify the maximum depth that blocks can be nested
-    "max-len": [0, { "code": 180 }], //specify the maximum length of a line in your program
+    "max-len": [0, 120, 4], //specify the maximum length of a line in your program
     "max-params":  [2, 5], // limits the number of parameters that can be used in the function declaration.
     "max-statements": [1, 200], //specify the maximum number of statement allowed in a function
     "no-bitwise": 1, //disallow use of bitwise operators
@@ -233,8 +233,8 @@
     "react/jsx-no-duplicate-props": 2, // Prevent duplicate props in JSX
     "react/jsx-no-literals": 0, // Prevent usage of unwrapped JSX strings
     "react/jsx-no-undef": 2, // Disallow undeclared variables in JSX
-    "react/sort-prop-types": 2, // Enforce propTypes declarations alphabetical sorting
-    "react/jsx-sort-props": 2, // Enforce props alphabetical sorting
+    "react/sort-prop-types": 0, // Enforce propTypes declarations alphabetical sorting
+    "react/jsx-sort-props": 0, // Enforce props alphabetical sorting
     "react/jsx-uses-react": 2, // Prevent React to be incorrectly marked as unused
     "react/jsx-uses-vars": 2, // Prevent variables used in JSX to be incorrectly marked as unused
     "react/no-danger": 2, // Prevent usage of dangerous JSX properties
