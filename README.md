@@ -3,6 +3,7 @@ Summer of Civic Hacking
 A mobile app for Vermont's Green Up Day.
 
 ## Table of Contents
+- [Running This App] (#running-this-app)
 
 - [Setting Up Your Development Environment on Windows](#setting-up-your-development-environment-on-windows)
   - [Install Python 2](#install-python-2)
@@ -33,6 +34,17 @@ A mobile app for Vermont's Green Up Day.
   - [Clone the Green Up Vermont repository on Mac](#clone-the-green-up-vermont-repository-on-mac)
   - [Run the Project on Mac](#run-the-project-on-mac)
 
+
+## Running This App
+
+
+A simple usage example. If you're using redux, take a look at [example-redux](../example-redux).
+
+
+* In the `GreenUpVermont/` folder, run `npm install`
+* In the `GreenUpVermont/` folder, run `react-native start`
+* To run in iOS (Mac only), open a new terminal windows and in the `GreenUpVermont/` run `react-native run-ios`
+* To run in Android, start an emulator from Android Studio, then open a new terminal windows and in the `GreenUpVermont/` run `react-native run-android`
 
 ## Setting Up Your Development Environment on Windows
 
