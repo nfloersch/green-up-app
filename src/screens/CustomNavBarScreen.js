@@ -11,7 +11,7 @@ import {
 export default class CustomNavBarScreen extends Component {
   static navigatorStyle = {
     drawUnderTabBar: true,
-    navBarCustomView: 'example.CustomNavBar',
+    navBarCustomView: 'GreenUpVermont.CustomNavBar',
     navBarCustomViewInitialProps: {name: 'Hi Custom'}
   };
 

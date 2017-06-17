@@ -1,9 +1,7 @@
-import { Navigation } from 'react-native-navigation';
-
+import {Navigation} from 'react-native-navigation';
 import Types from './Types';
 import Actions from './Actions';
 import Transitions from './Transitions';
-
 import Push from './types/Push';
 import Drawer from './types/Drawer';
 import LightBox from './types/LightBox';
@@ -12,35 +10,29 @@ import Modal from './types/Modal';
 import TopTabs from './types/TopTabs';
 import TabOne from './types/tabs/TabOne';
 import TabTwo from './types/tabs/TabTwo';
-
 import CollapsingHeader from './transitions/CollapsingHeader';
 import SharedElementTransitions from './transitions/SharedElementTransitions';
-
 import Cards from './transitions/sharedElementTransitions/Cards/Cards';
 import CardsInfo from './transitions/sharedElementTransitions/Cards/Info';
-
 import Masonry from './transitions/sharedElementTransitions/Masonry/Masonry';
 import MasonryItem from './transitions/sharedElementTransitions/Masonry/Item';
-
-export default function () {
-    Navigation.registerComponent('example.Types', () => Types);
-    Navigation.registerComponent('example.Actions', () => Actions);
-    Navigation.registerComponent('example.Transitions', () => Transitions);
-
-    Navigation.registerComponent('example.Types.Push', () => Push);
-    Navigation.registerComponent('example.Types.Drawer', () => Drawer);
-    Navigation.registerComponent('example.Types.Screen', () => Drawer);
-    Navigation.registerComponent('example.Types.Modal', () => Modal);
-    Navigation.registerComponent('example.Types.LightBox', () => LightBox);
-    Navigation.registerComponent('example.Types.Notification', () => Notification);
-    Navigation.registerComponent('example.Types.TopTabs', () => TopTabs);
-    Navigation.registerComponent('example.Types.TopTabs.TabOne', () => TabOne);
-    Navigation.registerComponent('example.Types.TopTabs.TabTwo', () => TabTwo);
-
-    Navigation.registerComponent('example.Transitions.CollapsingHeader', () => CollapsingHeader);
-    Navigation.registerComponent('example.Transitions.SharedElementTransitions', () => SharedElementTransitions);
-    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards', () => Cards);
-    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Cards.Info', () => CardsInfo);
-    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry', () => Masonry);
-    Navigation.registerComponent('example.Transitions.SharedElementTransitions.Masonry.Item', () => MasonryItem);
+export default function() {
+    Navigation.registerComponent('GreenUpVermont.Types', () => Types);
+    Navigation.registerComponent('GreenUpVermont.Actions', () => Actions);
+    Navigation.registerComponent('GreenUpVermont.Transitions', () => Transitions);
+    Navigation.registerComponent('GreenUpVermont.Types.Push', () => Push);
+    Navigation.registerComponent('GreenUpVermont.Types.Drawer', () => Drawer);
+    Navigation.registerComponent('GreenUpVermont.Types.Screen', () => Drawer);
+    Navigation.registerComponent('GreenUpVermont.Types.Modal', () => Modal);
+    Navigation.registerComponent('GreenUpVermont.Types.LightBox', () => LightBox);
+    Navigation.registerComponent('GreenUpVermont.Types.Notification', () => Notification);
+    Navigation.registerComponent('GreenUpVermont.Types.TopTabs', () => TopTabs);
+    Navigation.registerComponent('GreenUpVermont.Types.TopTabs.TabOne', () => TabOne);
+    Navigation.registerComponent('GreenUpVermont.Types.TopTabs.TabTwo', () => TabTwo);
+    Navigation.registerComponent('GreenUpVermont.Transitions.CollapsingHeader', () => CollapsingHeader);
+    Navigation.registerComponent('GreenUpVermont.Transitions.SharedElementTransitions', () => SharedElementTransitions);
+    Navigation.registerComponent('GreenUpVermont.Transitions.SharedElementTransitions.Cards', () => Cards);
+    Navigation.registerComponent('GreenUpVermont.Transitions.SharedElementTransitions.Cards.Info', () => CardsInfo);
+    Navigation.registerComponent('GreenUpVermont.Transitions.SharedElementTransitions.Masonry', () => Masonry);
+    Navigation.registerComponent('GreenUpVermont.Transitions.SharedElementTransitions.Masonry.Item', () => MasonryItem);
 }

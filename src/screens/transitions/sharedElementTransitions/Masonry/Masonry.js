@@ -11,7 +11,7 @@ class Masonry extends React.Component {
 
     onAssetPress = (image, key) => {
         this.props.navigator.push({
-            screen: 'example.Transitions.SharedElementTransitions.Masonry.Item',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Masonry.Item',
             sharedElements: [key],
             passProps: {
                 image,

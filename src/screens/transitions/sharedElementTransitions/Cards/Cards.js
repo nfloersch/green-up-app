@@ -8,7 +8,7 @@ class CardScreen extends React.Component {
 
     goToCard = (index) => {
         this.props.navigator.push({
-            screen: 'example.Transitions.SharedElementTransitions.Cards.Info',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Cards.Info',
             sharedElements: [`image${index}`],
             animated: false,
             overrideBackPress: true,

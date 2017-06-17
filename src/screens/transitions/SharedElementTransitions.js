@@ -7,21 +7,21 @@ class Transitions extends React.Component {
     showCardsExample = () => {
         this.props.navigator.showModal({
             title: 'Cards',
-            screen: 'example.Transitions.SharedElementTransitions.Cards',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Cards',
         });
     };
 
     showProfileExample = () => {
         this.props.navigator.showModal({
             title: 'Profiles',
-            screen: 'example.Transitions.SharedElementTransitions.Profiles',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Profiles',
         });
     };
 
     showMasonryExample = () => {
         this.props.navigator.showModal({
             title: 'Masonry',
-            screen: 'example.Transitions.SharedElementTransitions.Masonry',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Masonry',
         });
     };
 

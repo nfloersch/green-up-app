@@ -13,20 +13,20 @@ class Types extends React.Component {
 
     pushScreen = () => {
         this.props.navigator.push({
-            screen: 'example.Types.Push',
+            screen: 'GreenUpVermont.Types.Push',
             title: 'New Screen',
         });
     };
 
     pushTopTabsScreen = () => {
         this.props.navigator.push({
-            screen: 'example.Types.TopTabs',
+            screen: 'GreenUpVermont.Types.TopTabs',
             title: 'Top Tabs',
             topTabs: [{
-                screenId: 'example.Types.TopTabs.TabOne',
+                screenId: 'GreenUpVermont.Types.TopTabs.TabOne',
                 title: 'Tab One',
             }, {
-                screenId: 'example.Types.TopTabs.TabTwo',
+                screenId: 'GreenUpVermont.Types.TopTabs.TabTwo',
                 title: 'Tab Two',
             }],
         });
@@ -34,14 +34,14 @@ class Types extends React.Component {
 
     showModal = () => {
         this.props.navigator.showModal({
-            screen: 'example.Types.Modal',
+            screen: 'GreenUpVermont.Types.Modal',
             title: 'Modal',
         });
     };
 
     showLightBox = () => {
         this.props.navigator.showLightBox({
-            screen: "example.Types.LightBox",
+            screen: "GreenUpVermont.Types.LightBox",
             passProps: {
                 title: 'LightBox',
                 content: 'Hey there, I\'m a light box screen :D',
@@ -60,7 +60,7 @@ class Types extends React.Component {
 
     showInAppNotification = () => {
         this.props.navigator.showInAppNotification({
-            screen: 'example.Types.Notification',
+            screen: 'GreenUpVermont.Types.Notification',
         });
     };
 

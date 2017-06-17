@@ -7,14 +7,14 @@ class Transitions extends React.Component {
     showCollapsingHeader = () => {
       this.props.navigator.showModal({
           title: 'Collapsing Header',
-          screen: 'example.Transitions.CollapsingHeader',
+          screen: 'GreenUpVermont.Transitions.CollapsingHeader',
       });
     };
 
     showSharedElementTransitions = () => {
         this.props.navigator.showModal({
             title: 'Shared Element Transition Examples',
-            screen: 'example.Transitions.SharedElementTransitions',
+            screen: 'GreenUpVermont.Transitions.SharedElementTransitions',
         });
     };
 

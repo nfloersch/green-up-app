@@ -7,12 +7,12 @@ registerScreens();
 
 const tabs = [{
     label: 'Navigation',
-    screen: 'example.Types',
+    screen: 'GreenUpVermont.Types',
     icon: require('../img/list.png'),
     title: 'Navigation Types',
 }, {
     label: 'Actions',
-    screen: 'example.Actions',
+    screen: 'GreenUpVermont.Actions',
     icon: require('../img/swap.png'),
     title: 'Navigation Actions',
 }];
@@ -20,7 +20,7 @@ const tabs = [{
 if (Platform.OS === 'android') {
     tabs.push({
         label: 'Transitions',
-        screen: 'example.Transitions',
+        screen: 'GreenUpVermont.Transitions',
         icon: require('../img/transform.png'),
         title: 'Navigation Transitions',
     });
@@ -53,7 +53,7 @@ Navigation.startTabBasedApp({
     },
     drawer: {
         left: {
-            screen: 'example.Types.Drawer'
+            screen: 'GreenUpVermont.Types.Drawer'
         }
     }
 });

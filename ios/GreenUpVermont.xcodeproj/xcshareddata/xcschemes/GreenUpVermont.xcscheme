@@ -30,8 +30,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "example.app"
-               BlueprintName = "example"
-               ReferencedContainer = "container:example.xcodeproj">
+               BlueprintName = "GreenUpVermont"
+               ReferencedContainer = "container:GreenUpVermont.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,36 +43,46 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "exampleTests.xctest"
-               BlueprintName = "exampleTests"
-               ReferencedContainer = "container:example.xcodeproj">
+               BuildableName = "GreenUpVermontTests.xctest"
+               BlueprintName = "GreenUpVermontTests"
+               ReferencedContainer = "container:GreenUpVermont.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "GreenUpVermontTests.xctest"
+               BlueprintName = "GreenUpVermontTests"
+               ReferencedContainer = "container:GreenUpVermont.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "example.app"
-            BlueprintName = "example"
-            ReferencedContainer = "container:example.xcodeproj">
+            BlueprintName = "GreenUpVermont"
+            ReferencedContainer = "container:GreenUpVermont.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -85,8 +95,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "example.app"
-            BlueprintName = "example"
-            ReferencedContainer = "container:example.xcodeproj">
+            BlueprintName = "GreenUpVermont"
+            ReferencedContainer = "container:GreenUpVermont.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -104,13 +114,13 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "example.app"
-            BlueprintName = "example"
-            ReferencedContainer = "container:example.xcodeproj">
+            BlueprintName = "GreenUpVermont"
+            ReferencedContainer = "container:GreenUpVermont.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
