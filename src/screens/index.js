@@ -23,6 +23,7 @@ import Donate from './Donate';
 import MyTeams from './MyTeams';
 import TrashTracker from './TrashTracker';
 import AllAboutGreenUpDay from './AllAboutGreenUpDay';
+import CustomNavBar from "./CustomNavBar";
 export default function() {
     Navigation.registerComponent('GreenUpVermont.Screens.Types', () => Types);
     Navigation.registerComponent('GreenUpVermont.Screens.Actions', () => Actions);

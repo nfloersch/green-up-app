@@ -8,12 +8,14 @@ export const navMenuLinks = {
     LOG_OUT: 'LOG_OUT'
 };
 export const navButtons = {
+    leftButtons: [],
     rightButtons: [
         {
             icon: require('../../img/navicon_menu@2x.png'), // for icon button, provide the local image asset name
             id: 'menu' // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
         }
-    ]
+    ],
+    animated: true
 };
 export function onNavigatorEvent(navigator) {
     return function(event) {

@@ -43,6 +43,9 @@ export default class MyTeams extends Component {
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
         this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
     }
+    componentDidMount() {
+        this.props.navigator.setButtons(navButtons);
+    }
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
     }

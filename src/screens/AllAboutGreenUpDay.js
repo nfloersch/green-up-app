@@ -38,6 +38,9 @@ export default class AllAboutGreenUpDay extends Component {
     static propTypes = {
         navigator: PropTypes.object
     };
+    componentDidMount() {
+        this.props.navigator.setButtons(navButtons);
+    }
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);

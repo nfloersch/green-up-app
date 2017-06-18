@@ -34,11 +34,6 @@ const styles = StyleSheet.create({
 });
 export default class Messages extends Component {
     static navigatorButtons = navButtons;
-    static navigatorStyle = {
-        navBarRightButtonFontSize: 17, // Change font size of right nav bar button
-        navBarRightButtonColor: 'blue', // Change color of right nav bar button
-        navBarRightButtonFontWeight: '600', // Change font weight of right nav bar button
-    };
     static propTypes = {
         navigator: PropTypes.object
     };
@@ -46,6 +41,9 @@ export default class Messages extends Component {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
+    }
+    componentDidMount() {
+        this.props.navigator.setButtons(navButtons);
     }
     toMessageDetail() {}
     render() {
