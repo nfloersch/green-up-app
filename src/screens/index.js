@@ -4,6 +4,7 @@ import Actions from './Actions';
 import Transitions from './Transitions';
 import Push from './types/Push';
 import Drawer from './types/Drawer';
+import NavMenu from '../components/NavMenu';
 import LightBox from './types/LightBox';
 import Notification from './types/Notification';
 import Modal from './types/Modal';
@@ -25,7 +26,7 @@ export default function() {
     Navigation.registerComponent('GreenUpVermont.Messages', () => Messages);
     Navigation.registerComponent('GreenUpVermont.Transitions', () => Transitions);
     Navigation.registerComponent('GreenUpVermont.Types.Push', () => Push);
-    Navigation.registerComponent('GreenUpVermont.Types.Drawer', () => Drawer);
+    Navigation.registerComponent('GreenUpVermont.NavMenu', () => NavMenu);
     Navigation.registerComponent('GreenUpVermont.Types.Screen', () => Drawer);
     Navigation.registerComponent('GreenUpVermont.Types.Modal', () => Modal);
     Navigation.registerComponent('GreenUpVermont.Types.LightBox', () => LightBox);
