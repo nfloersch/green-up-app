@@ -4,6 +4,8 @@
  * @flow
  */
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {onNavigatorEvent} from '../libs/navigation-switch';
 import {
     Alert,
     Button,
@@ -32,9 +34,13 @@ const styles = StyleSheet.create({
     }
 });
 export default class AllAboutGreenUpDay extends Component {
+    static propTypes = {
+        navigator: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
     }
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');

@@ -5,10 +5,10 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {onNavigatorEvent} from '../libs/navigation-switch';
 import {
     Alert,
-    Button,
-    Image,
+    Dimensions,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -18,6 +18,7 @@ import {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF'
@@ -25,7 +26,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         textAlign: 'center',
-        margin: 10
+        margin: 10,
+        zIndex: 0
     },
     instructions: {
         textAlign: 'center',
@@ -34,17 +36,41 @@ const styles = StyleSheet.create({
     }
 });
 export default class Donate extends Component {
-    static propTypes = {};
+    static propTypes = {
+        navigator: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this._onLoadEnd = this._onLoadEnd.bind(this);
+        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
+        this.state = {
+            webviewLoaded: false
+        };
     }
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
     }
+    _onLoadEnd() {
+        this.setState({webviewLoaded: true})
+    }
     render() {
-        return (<WebView source={{
-            uri: 'https://www.razoo.com/story/Greenupvermont'
-        }} style={styles.container}/>);
+        return (
+            <View style={styles.container}>
+                {(this.state.webviewLoaded)
+                    ? null
+                    : (
+                        <Text style={styles.text}>
+                            Loading ...
+                        </Text>
+                    )}
+                <WebView onLoadEnd={this._onLoadEnd} source={{
+                    uri: 'https://www.razoo.com/story/Greenupvermont?referral_code=MOBILE_APP'
+                }} style={{
+                    width: Dimensions.get('window').width,
+                    zIndex: 100
+                }}/>
+            </View>
+        );
     }
 }

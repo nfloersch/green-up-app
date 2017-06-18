@@ -4,6 +4,7 @@
  * @flow
  */
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
     Alert,
     Button,
@@ -12,6 +13,7 @@ import {
     Text,
     View
 } from 'react-native';
+import {onNavigatorEvent} from "../libs/navigation-switch";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -31,9 +33,13 @@ const styles = StyleSheet.create({
     }
 });
 export default class Messages extends Component {
+    static propTypes = {
+        navigator: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
+        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
     }
     toMessageDetail() {}
     render() {
