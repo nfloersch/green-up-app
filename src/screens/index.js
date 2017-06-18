@@ -17,10 +17,12 @@ import CardsInfo from './transitions/sharedElementTransitions/Cards/Info';
 import Masonry from './transitions/sharedElementTransitions/Masonry/Masonry';
 import MasonryItem from './transitions/sharedElementTransitions/Masonry/Item';
 import Welcome from './Welcome';
+import Messages from './Messages';
 export default function() {
     Navigation.registerComponent('GreenUpVermont.Types', () => Types);
     Navigation.registerComponent('GreenUpVermont.Actions', () => Actions);
     Navigation.registerComponent('GreenUpVermont.Welcome', () => Welcome);
+    Navigation.registerComponent('GreenUpVermont.Messages', () => Messages);
     Navigation.registerComponent('GreenUpVermont.Transitions', () => Transitions);
     Navigation.registerComponent('GreenUpVermont.Types.Push', () => Push);
     Navigation.registerComponent('GreenUpVermont.Types.Drawer', () => Drawer);
