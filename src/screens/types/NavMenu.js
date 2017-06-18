@@ -33,7 +33,7 @@ class NavMenu extends React.Component {
             navigator.toggleDrawer({
                 side: 'right', // the side of the drawer since you can have two, 'left' / 'right'
                 animated: true, // does the toggle have transition animation or does it happen immediately (optional)
-                to: 'closed' // optional, 'open' = ope the drawer, 'closed' = close it, missing = the opposite of current state
+                to: 'closed' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
             });
             switch (action) {
                 case 'donate':
@@ -95,7 +95,7 @@ class NavMenu extends React.Component {
                 case 'all-about-green-up-day':
                     navigator.resetTo({
                         screen: 'GreenUpVermont.Screens.AllAboutGreenUpDay', // unique ID registered with Navigation.registerScreen
-                        title: 'About Green Up Day', // navigation bar title of the pushed screen (optional)
+                        title: 'All About Green Up Day', // navigation bar title of the pushed screen (optional)
                         // titleImage: undefined, // navigation bar title image instead of the title text of the pushed screen (optional)
                         passProps: {}, // Object that will be passed as props to the pushed screen (optional)
                         animated: true, // does the push have transition animation or does it happen immediately (optional)

@@ -42,7 +42,7 @@ export default class Welcome extends Component {
     }
     onButtonPress() {
         this.props.navigator.resetTo({
-            screen: 'GreenUpVermont.Messages', // unique ID registered with Navigation.registerScreen
+            screen: 'GreenUpVermont.Screens.Messages', // unique ID registered with Navigation.registerScreen
             title: 'Messages', // navigation bar title of the pushed screen (optional)
             // titleImage: undefined, // navigation bar title image instead of the title text of the pushed screen (optional)
             passProps: {}, // Object that will be passed as props to the pushed screen (optional)
