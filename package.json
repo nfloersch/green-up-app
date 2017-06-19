@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "postinstall": "node ./scripts/postinstall.js",
     "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "xcode": "open ios/example.xcodeproj",
-    "android": "cd android && ./gradlew installDebug"
+    "android": "cd android && ./gradlew installDebug",
+    "e2e": "detox test --configuration ios.sim.debug",
+    "e2e-release": "detox test --configuration ios.sim.release"
   },
   "dependencies": {
     "anymatch": "^1.3.0",
@@ -13,7 +16,6 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.2",
     "react-native-animatable": "^1.1.0",
-    "react-native-code-push": "^2.1.0-beta",
     "react-native-navigation": "latest",
     "react-redux": "^5.0.5",
     "redux": "^3.7.0",
@@ -22,10 +24,26 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "detox": "^5.0.0",
     "eslint": "^4.0.0",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-react": "^7.1.0",
     "mocha": "^3.4.2"
+  },
+  "detox": {
+    "specs": "test/e2e",
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/DerivedData/example/Build/Products/Debug-iphonesimulator/example.app",
+        "type": "ios.simulator",
+        "name": "iPhone 6s"
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/DerivedData/example/Build/Products/Release-iphonesimulator/example.app",
+        "type": "ios.simulator",
+        "name": "iPhone 6s"
+      }
+    }
   }
 }
