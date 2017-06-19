@@ -13,7 +13,7 @@ import {
     Text,
     View
 } from 'react-native';
-import {onNavigatorEvent} from "../libs/navigation-switch";
+import {onNavigatorEvent, navButtons} from '../libs/navigation-switch';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     }
 });
 export default class Messages extends Component {
+    static navigatorButtons = navButtons;
     static propTypes = {
         navigator: PropTypes.object
     };

@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {onNavigatorEvent} from '../libs/navigation-switch';
+import {onNavigatorEvent, navButtons} from '../libs/navigation-switch';
 import {
     Alert,
     Dimensions,
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     }
 });
 export default class Donate extends Component {
+    static navigatorButtons = navButtons;
     static propTypes = {
         navigator: PropTypes.object
     };

@@ -5,7 +5,8 @@ import Row from '../../components/Row';
 import {navMenuLinks} from "../../libs/navigation-switch";
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#FFFFFF'
     },
     row: {
         height: 48,
@@ -27,6 +28,8 @@ class NavMenu extends React.Component {
     constructor(props) {
         super(props);
         this._onPressButton = this._onPressButton.bind(this);
+        this.myNavigator = this.props.navigator;
+        this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
     }
     _onPressButton(action) {
         return () => {
@@ -37,6 +40,14 @@ class NavMenu extends React.Component {
             });
             this.props.navigator.handleDeepLink({link: action});
         };
+    }
+    _onNavigatorEvent(event) {
+        if (event.type === 'DeepLink' && event.link === 'toggle-menu') {
+            this.myNavigator.toggleDrawer({
+                side: 'right', // the side of the drawer since you can have two, 'left' / 'right'
+                animated: true // does the toggle have transition animation or does it happen immediately (optional)
+            });
+        }
     }
     render() {
         return (

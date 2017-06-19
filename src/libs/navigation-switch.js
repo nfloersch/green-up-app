@@ -1,13 +1,25 @@
+import {Alert} from 'react-native';
 export const navMenuLinks = {
     ALL_ABOUT_GREEN_UP_DAY: 'ALL_ABOUT_GREEN_UP_DAY',
     TRASH_TRACKER: 'TRASH_TRACKER',
     MY_TEAMS: 'MY_TEAMS',
     MESSAGES: 'MESSAGES',
     DONATE: 'DONATE',
-    LOGOUT: 'LOGOUT'
+    LOG_OUT: 'LOG_OUT'
+};
+export const navButtons = {
+    rightButtons: [
+        {
+            icon: require('../../img/navicon_menu@2x.png'), // for icon button, provide the local image asset name
+            id: 'menu' // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        }
+    ]
 };
 export function onNavigatorEvent(navigator) {
     return function(event) {
+        if (event.type === 'NavBarButtonPress') { // this is the event type for button presses
+            navigator.handleDeepLink({link: 'toggle-menu'});
+        }
         if (event.type === 'DeepLink') {
             switch (event.link) {
                 case navMenuLinks.DONATE:
