@@ -1,5 +1,5 @@
 {
-  "name": "Green Up Vermont",
+  "name": "GreenUpVermont",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -16,7 +16,11 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.2",
     "react-native-animatable": "^1.1.0",
-    "react-native-navigation": "latest"
+    "react-native-navigation": "latest",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
