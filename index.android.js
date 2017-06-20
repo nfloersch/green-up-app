@@ -1,2 +1,2 @@
-__STRESS_TEST__ = false;
+/* eslint-disable no-unused-vars */
 import App from './src/app';
