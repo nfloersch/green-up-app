@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, ScrollView, Text, Alert} from 'react-native';
 import Row from '../../components/Row';
-import {navMenuLinks} from "../../libs/navigation-switch";
+import {navMenuLinks} from '../../libs/navigation-switch';
 const styles = StyleSheet.create({
     container: {
         flex: 1,

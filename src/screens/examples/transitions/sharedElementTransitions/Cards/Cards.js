@@ -1,11 +1,17 @@
 import React from 'react';
-import { ScrollView, TouchableHighlight, StyleSheet, Image, Text, View, ScrolView } from 'react-native';
-import { SharedElementTransition } from 'react-native-navigation';
-
+import {
+    ScrollView,
+    TouchableHighlight,
+    StyleSheet,
+    Image,
+    Text,
+    View,
+    ScrolView
+} from 'react-native';
+import {SharedElementTransition} from 'react-native-navigation';
+import beachImage from '../../../../../../img/beach.jpg';
 const IMAGE_HEIGHT = 190;
-
 class CardScreen extends React.Component {
-
     goToCard = (index) => {
         this.props.navigator.push({
             screen: 'GreenUpVermont.Transitions.SharedElementTransitions.Cards.Info',
@@ -17,14 +23,10 @@ class CardScreen extends React.Component {
             }
         })
     };
-
     _renderCard(index) {
         return (
             <View style={styles.cardContainer}>
-                <TouchableHighlight
-                    underlayColor={'rgba(0, 0, 0, 0.054)'}
-                    onPress={() => this.goToCard(index)}
-                >
+                <TouchableHighlight underlayColor={'rgba(0, 0, 0, 0.054)'} onPress={() => this.goToCard(index)}>
                     <View>
                         {this._renderImage(index)}
                         {this._renderCardContent()}
@@ -33,21 +35,13 @@ class CardScreen extends React.Component {
             </View>
         );
     }
-
     _renderImage(index) {
         return (
-            <SharedElementTransition
-                style={styles.imageContainer}
-                sharedElementId={`image${index}`}
-            >
-                <Image
-                    style={styles.image}
-                    source={require('../../../../../img/beach.jpg')}
-                />
+            <SharedElementTransition style={styles.imageContainer} sharedElementId={`image${index}`}>
+                <Image style={styles.image} source={beachImage}/>
             </SharedElementTransition>
         );
     }
-
     _renderCardContent() {
         return (
             <View style={styles.cardContentContainer}>
@@ -56,13 +50,9 @@ class CardScreen extends React.Component {
             </View>
         );
     }
-
     render() {
         return (
-            <ScrollView
-                style={styles.container}
-                contentContainerStyle={styles.content}
-            >
+            <ScrollView style={styles.container} contentContainerStyle={styles.content}>
                 {this._renderCard(0)}
                 {this._renderCard(1)}
                 {this._renderCard(2)}
@@ -70,14 +60,13 @@ class CardScreen extends React.Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#ffffff'
     },
     content: {
-        marginHorizontal: 8,
+        marginHorizontal: 8
     },
     cardContainer: {
         marginVertical: 8,
@@ -100,7 +89,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         paddingBottom: 8,
         fontSize: 17
-    },
+    }
 });
-
 export default CardScreen;

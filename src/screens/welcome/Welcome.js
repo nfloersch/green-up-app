@@ -13,7 +13,7 @@ import {
     Text,
     View
 } from 'react-native';
-import logo from '../../assets/GreenupVermontlogo.png';
+import logo from '../../../assets/GreenupVermontlogo.png';
 const styles = StyleSheet.create({
     container: {
         flex: 1,

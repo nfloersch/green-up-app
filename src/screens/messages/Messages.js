@@ -13,7 +13,7 @@ import {
     Text,
     View
 } from 'react-native';
-import {onNavigatorEvent, navButtons} from '../libs/navigation-switch';
+import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 const styles = StyleSheet.create({
     container: {
         flex: 1,

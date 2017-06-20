@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Text} from 'react-native';
-import Row from '../components/Row';
+import Row from '../../components/Row';
 class Transitions extends React.Component {
     showCollapsingHeader = () => {
         this.props.navigator.showModal({title: 'Collapsing Header', screen: 'GreenUpVermont.Transitions.CollapsingHeader'});

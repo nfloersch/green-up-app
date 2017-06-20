@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     ScrollView,
     TouchableOpacity,
@@ -9,14 +9,11 @@ import {
     Platform,
     ScrolView
 } from 'react-native';
-import { SharedElementTransition } from 'react-native-navigation';
+import {SharedElementTransition} from 'react-native-navigation';
 import * as Animatable from 'react-native-animatable';
-
 const SHOW_DURATION = 400;
 const HIDE_DURATION = 300;
-
 class InfoScreen extends Component {
-
     constructor(props) {
         super(props);
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -25,17 +22,12 @@ class InfoScreen extends Component {
             animationDuration: SHOW_DURATION
         }
     }
-
     onNavigatorEvent(event) {
         if (event.id === 'backPress') {
-            this.setState({
-                animationType: 'fadeOutRight',
-                animationDuration: HIDE_DURATION
-            });
+            this.setState({animationType: 'fadeOutRight', animationDuration: HIDE_DURATION});
             this.props.navigator.pop();
         }
     }
-
     render() {
         return (
             <View style={styles.container}>
@@ -44,44 +36,22 @@ class InfoScreen extends Component {
             </View>
         );
     }
-
     _renderImage() {
         return (
-            <SharedElementTransition
-                style={styles.imageContainer}
-                sharedElementId={this.props.sharedImageId}
-                showDuration={SHOW_DURATION}
-                hideDuration={HIDE_DURATION}
-                animateClipBounds={true}
-                showInterpolation={
-                    {
-                        type: 'linear',
-                        easing: 'FastOutSlowIn'
-                    }
-                }
-                hideInterpolation={
-                    {
-                        type: 'linear',
-                        easing: 'FastOutSlowIn'
-                    }
-                }
-            >
-                <Image
-                    style={styles.image}
-                    source={require('../../../../../img/beach.jpg')}
-                />
+            <SharedElementTransition style={styles.imageContainer} sharedElementId={this.props.sharedImageId} showDuration={SHOW_DURATION} hideDuration={HIDE_DURATION} animateClipBounds={true} showInterpolation={{
+                type: 'linear',
+                easing: 'FastOutSlowIn'
+            }} hideInterpolation={{
+                type: 'linear',
+                easing: 'FastOutSlowIn'
+            }}>
+                <Image style={styles.image} source={require('../../../../../../img/beach.jpg')}/>
             </SharedElementTransition>
         );
     }
-
     _renderContent() {
         return (
-            <Animatable.View
-                style={styles.content}
-                duration={this.state.animationDuration}
-                animation={this.state.animationType}
-                useNativeDriver={true}
-            >
+            <Animatable.View style={styles.content} duration={this.state.animationDuration} animation={this.state.animationType} useNativeDriver={true}>
                 <Text style={styles.text}>Line 1</Text>
                 <Text style={styles.text}>Line 2</Text>
                 <Text style={styles.text}>Line 3</Text>
@@ -94,7 +64,6 @@ class InfoScreen extends Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -108,7 +77,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        right: 0,
+        right: 0
     },
     image: {
         height: 190
@@ -119,5 +88,4 @@ const styles = StyleSheet.create({
         paddingLeft: 8
     }
 });
-
 export default InfoScreen;

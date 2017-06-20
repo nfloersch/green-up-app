@@ -1,17 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
-
+import {StyleSheet, View, Text, ScrollView} from 'react-native';
 class CollapsingHeader extends React.Component {
-
     static navigatorStyle = {
         drawUnderTabBar: true,
         navBarButtonColor: '#ffffff',
         navBarTextColor: '#ffffff',
-        collapsingToolBarImage: require('../../../img/gyro_header.jpg'),
+        collapsingToolBarImage: require('../../../../img/gyro_header.jpg'),
         collapsingToolBarCollapsedColor: '#0f2362',
         navBarBackgroundColor: '#eeeeee'
     };
-
     render() {
         return (
             <ScrollView style={styles.container}>
@@ -24,12 +21,10 @@ class CollapsingHeader extends React.Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-    },
+        backgroundColor: '#fff'
+    }
 });
-
 export default CollapsingHeader;

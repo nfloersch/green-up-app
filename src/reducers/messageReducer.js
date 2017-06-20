@@ -5,7 +5,7 @@ export function messageReducer(state = initialState, action) {
         case types.NEW_MESSAGE:
             return {
                 ...state,
-                messages: [].concat(state.messages).concat(action.message)
+                messages: [].concat(state.messages).concat(action.data.message)
             };
         default:
             return state;

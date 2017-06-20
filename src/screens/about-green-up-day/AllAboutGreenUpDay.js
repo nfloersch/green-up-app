@@ -1,12 +1,11 @@
 /**
-/**
  * GreenUpVermont React Native App
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {onNavigatorEvent, navButtons} from '../libs/navigation-switch';
+import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 import {
     Alert,
     Button,
@@ -34,18 +33,18 @@ const styles = StyleSheet.create({
         marginBottom: 5
     }
 });
-export default class TrashTracker extends Component {
+export default class AllAboutGreenUpDay extends Component {
     static navigatorButtons = navButtons;
     static propTypes = {
         navigator: PropTypes.object
     };
+    componentDidMount() {
+        this.props.navigator.setButtons(navButtons);
+    }
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
         this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
-    }
-    componentDidMount() {
-        this.props.navigator.setButtons(navButtons);
     }
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
@@ -55,7 +54,7 @@ export default class TrashTracker extends Component {
             <View style={styles.container}>
                 <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <Text style={styles.text}>
-                        Trash Tracker
+                        All About Green Up Day
                     </Text>
                 </TouchableHighlight>
             </View>

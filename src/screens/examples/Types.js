@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView, TouchableHighlight} from 'react-native';
-import Row from '../components/Row';
+import Row from '../../components/Row';
 class Types extends React.Component {
     toggleDrawer = () => {
         this.props.navigator.toggleDrawer({side: 'left', animated: true});
