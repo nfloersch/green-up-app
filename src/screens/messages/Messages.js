@@ -18,7 +18,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 import * as messageActions from './messageActions';
-
+let myID = 1235; // FOR TESTING ONLY DELETE ME
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -54,7 +54,8 @@ class Messages extends Component {
     toMessageDetail() {}
 
     _addMessage() {
-        this.props.actions.addMessage("foo bar");
+        var id = myID += 1;
+        this.props.actions.addMessage({message: "foo bar", _id: id});
     }
     render() {
         var myMessages = (this.props.messages || []).map(message => (

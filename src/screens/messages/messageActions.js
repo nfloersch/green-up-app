@@ -5,16 +5,7 @@ export function addMessageSuccess(data) {
 }
 
 export function addMessage(message) {
-    return function (dispatch) {
-        return Promise
-            .resolve(message)
-            .then(res => {
-                dispatch(addMessage(res));
-            })
-            .catch(error => {
-                console.log(error); //eslint-disable-line
-            });
-    };
+    return {type: types.NEW_MESSAGE, message};
 }
 
 export function readMessageSuccess(data) {
@@ -23,13 +14,10 @@ export function readMessageSuccess(data) {
 
 export function readMessage(messageId) {
     return function (dispatch) {
-        return Promise
-            .resolve(messageId)
-            .then(res => {
-                dispatch(readMessage(res));
-            })
-            .catch(error => {
-                console.log(error); //eslint-disable-line
-            });
+        return Promise.resolve(messageId).then(res => {
+            dispatch(readMessage(res));
+        }).catch(error => {
+            console.log(error); //eslint-disable-line
+        });
     };
 }
