@@ -1,3 +1,3 @@
 /* eslint-disable no-unused-vars */
-import App from './src/app';
+import {App} from './src/app';
 const app = new App();
