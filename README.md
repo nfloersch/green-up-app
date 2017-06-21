@@ -128,7 +128,7 @@ These instructions are for Windows 10 - 64 bit.
 
 3. Click through the installer accepting all the default settings.
 
-4. Verify that Node  is installed by opening a terminal and typing `node --version`  you should see "git version 2.14.0.windows.1"
+4. Verify that Node  is installed by opening a terminal and typing `git --version`  you should see "git version 2.14.0.windows.1"
 
 ![Alt](/docs/assets/Capture71.PNG "Verify Git")
 
