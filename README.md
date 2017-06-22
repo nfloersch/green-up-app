@@ -359,6 +359,21 @@ Then, click "Next" to install all of these components.
   
 ## Setting Up Your Development Environment on Mac
 ### Install Python 2 on Mac
+
+1. Download the Python2 installer here : https://www.python.org/ftp/python/2.7.13/python-2.7.13-macosx10.6.pkg
+
+2. Launch Installer and click through standard installation.
+
+![Alt](/docs/assets/python1.png "Python Installer 1")
+
+3. Install Python
+
+![Alt](/docs/assets/python2.png "Python Installer 1")
+
+4. Check version of python with `python --version` in terminal
+
+![Alt](/docs/assets/python3.png "Python Installer 1")
+
 ### Install Node on Mac
 ### Install and Configure Atom on Mac
 ### Install Meld on Mac
