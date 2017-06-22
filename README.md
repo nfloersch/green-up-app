@@ -418,7 +418,7 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 1. Download the Git installer here : https://sourceforge.net/projects/git-osx-installer/files/git-2.13.1-intel-universal-mavericks.dmg/download?use_mirror=autoselect
 
-2. Launch the installer. You will get a warning that the software is from an unidentified developer. To download anyways, go into preferencers -> Security -> At the bottom click the "Open" Button
+2. Launch the installer. You will get a warning that the software is from an unidentified developer. To download anyways, go into preferencers -> Security -> At the bottom click the "Open Anyway" Button
 
 ![Alt](/docs/assets/Git1.png "Git 2")
 
