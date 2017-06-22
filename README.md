@@ -364,15 +364,15 @@ Then, click "Next" to install all of these components.
 
 2. Launch Installer and click through standard installation.
 
-![Alt](/docs/assets/python1.png "Python Installer 1")
+![Alt](/docs/assets/Python1.png "Python Installer 1")
 
 3. Install Python
 
-![Alt](/docs/assets/python2.png "Python Installer 1")
+![Alt](/docs/assets/Python2.png "Python Installer 2")
 
 4. Check version of python with `python --version` in terminal
 
-![Alt](/docs/assets/python3.png "Python Installer 1")
+![Alt](/docs/assets/Python3.png "Python Installer 3")
 
 ### Install Node on Mac
 ### Install and Configure Atom on Mac
