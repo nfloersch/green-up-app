@@ -66,3 +66,6 @@ dependencies {
     compile 'com.facebook.react:react-native:+'
     compile project(':react-native-navigation')
 }
+
+apply plugin: 'com.google.gms.google-services'
+
