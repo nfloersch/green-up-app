@@ -456,10 +456,60 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 1. Open a terminal window and install React Native Command Line Interface using the Node Package Manager by typing `npm install -g react-native-cli`
 
 2. Verify that React Native is installed by typing `react-native -version` You should see "react-native-cli: 2.0.1"
-
-### Install XCode on Mac
-### Install and Configure Android Studio on Mac
-### Set the ANDROID_HOME Environment Variable on Mac
-### Create a New Android Virtual Device on Mac
 ### Clone the Green Up Vermont repository on Mac
+### Install XCode on Mac
+### Install Genymotion
+
+1. Genymotion.com
+
+2. Go to download genymotion free edition
+
+![Alt](/docs/assets/And1.png "And1")
+
+3. Create account
+
+4. Download for Mac
+
+5. Activate account from email
+
+6. Drag genymotion shell and genymotion icon to application folder
+
+
+![Alt](/docs/assets/And2.png "And2")
+
+### Create a New Android Virtual Device on Mac
+
+7. Load genymotion
+
+8. Click for personal use
+
+![Alt](/docs/assets/And3.png "And3")
+
+9. Create new virtual device
+
+10. Sign in
+
+![Alt](/docs/assets/And4.png "And4")
+
+11. Select android device and name it GNVT Android
+
+![Alt](/docs/assets/And5.png "And5")
+
+12. After it downloads the simulator run the simulator
+
+13. In terminal enter `cd GreenUpVermont` then `react-native run-android`
+
+![Alt](/docs/assets/And6.png "And6")
+
+14. Click on button with six dots on bottom of home screen
+
+![Alt](/docs/assets/And7.png "And7")
+
+15. Click on the Green Up Vermont App
+
+![Alt](/docs/assets/And9.png "And9")
+
+![Alt](/docs/assets/And8.png "And8")
+
+### Set the ANDROID_HOME Environment Variable on Mac
 ### Run the Project on Mac
