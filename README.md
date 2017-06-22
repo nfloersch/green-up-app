@@ -418,7 +418,7 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 1. Download the Git installer here : https://sourceforge.net/projects/git-osx-installer/files/git-2.13.1-intel-universal-mavericks.dmg/download?use_mirror=autoselect
 
-2. Launch the installer.
+2. Launch the installer. You will get a warning that the software is from an unidentified developer. To download anyways, go into preferencers -> Security -> At the bottom click the "Open" Button
 
 ![Alt](/docs/assets/Git1.png "Git 2")
 
@@ -453,9 +453,9 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 ### Install React Native on Mac
 
-1. Open a terminal window and install React Native Command Line Interface using the Node Package Manager by typing npm install -g react-native-cli
+1. Open a terminal window and install React Native Command Line Interface using the Node Package Manager by typing `npm install -g react-native-cli`
 
-2. Verify that React Native is installed by typing react-native -version You should see "react-native-cli: 2.0.1"
+2. Verify that React Native is installed by typing `react-native -version` You should see "react-native-cli: 2.0.1"
 
 ### Install XCode on Mac
 ### Install and Configure Android Studio on Mac
