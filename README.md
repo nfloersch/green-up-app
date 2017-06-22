@@ -370,16 +370,93 @@ Then, click "Next" to install all of these components.
 
 ![Alt](/docs/assets/Python2.png "Python Installer 2")
 
-4. Check version of python with `python --version` in terminal
+4. Check version of python with `python --version` in terminal. It should be version 2.7.13.
 
 ![Alt](/docs/assets/Python3.png "Python Installer 3")
 
 ### Install Node on Mac
+
+1. Download the Node installer here : https://nodejs.org/dist/v7.10.0/node-v7.10.0.pkg
+
+2. Launch the installer.
+
+![Alt](/docs/assets/Node1.png "Node Installer 1")
+
+3. Click through the installer accepting all the default settings.
+
+4. Verify that Node is installed by opening a terminal and typing node --version you should see "v7.10.0"
+
+![Alt](/docs/assets/Node2.png "Node 2")
+
 ### Install and Configure Atom on Mac
+
+1. Download the Atom installer here : https://atom.io/download/mac
+
+2. Launch the installer and click through with normal installation.
+
+3. In atom go to Atom -> Preferences -> Packages and then search for nuclide and install the first result by facebook.
+
+![Alt](/docs/assets/Atom1.png "Atom 1")
+
+4. When atom opens it should look like this you can pin this to your taskbar if you like.
+
+![Alt](/docs/assets/Atom2.png "Atom 2")
+
 ### Install Meld on Mac
+
+Meld is not directly supported for Mac so you will need to use a Mac build for meld.
+
+1. Download the dmg for meld here: https://github.com/yousseb/meld/releases/download/osx-9/meldmerge.dmg
+
+2. Launch the installer.
+
+3. Click through the installer accepting all the default settings.
+
+4. If you want, pin Meld to your taskbar like you did Atom.
+
 ### Install and Configure Git on Mac
+
+1. Download the Git installer here : https://sourceforge.net/projects/git-osx-installer/files/git-2.13.1-intel-universal-mavericks.dmg/download?use_mirror=autoselect
+
+2. Launch the installer.
+
+![Alt](/docs/assets/Git1.png "Git 2")
+
+3. Click throught the installation
+
+4. Install
+
+![Alt](/docs/assets/Git2.png "Git 2")
+
+5. Check the version of Git with `git --verion`, it should be 2.13.1.
+
+![Alt](/docs/assets/Git3.png "Git 3")
+
+6. Set your name and email in Git using the following commands in the terminal: 
+`git config --global user.name "YOUR NAME"`
+`git config --global user.email your.email@somecompany.com`
+
+![Alt](/docs/assets/Git4.png "Git 4")
+
 ### Install Java 8 JDK on Mac
+
+1. Go to the Download page for the Java 8 JDK here : http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+2. Accept the licensing agreement and click the download link for Mac OS X.
+
+![Alt](/docs/assets/Java1.png "Java1")
+
+3. Launch installer and click through the installer accepting all the default settings.
+
+4. Verify that Java is installed by launching a terminal window and typing java -version. You should should see 'java version "1.8.0_131"'
+
+
 ### Install React Native on Mac
+
+1. Open a terminal window and install React Native Command Line Interface using the Node Package Manager by typing npm install -g react-native-cli
+
+2. Verify that React Native is installed by typing react-native -version You should see "react-native-cli: 2.0.1"
+
 ### Install XCode on Mac
 ### Install and Configure Android Studio on Mac
 ### Set the ANDROID_HOME Environment Variable on Mac
