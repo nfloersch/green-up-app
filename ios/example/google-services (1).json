@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "439621369113",
+    "firebase_url": "https://greenupvermont-de02b.firebaseio.com",
+    "project_id": "greenupvermont-de02b",
+    "storage_bucket": "greenupvermont-de02b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439621369113:android:b0b87d74072063f5",
+        "android_client_info": {
+          "package_name": "com.greenupvermont"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439621369113-nokuhqe4c5fn4ftjrseg3q59cb97s04d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ9a4l0RC8hR0p_MBVucEj7AXlIX0oN9o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439621369113:android:435086edb3a4c4d7",
+        "android_client_info": {
+          "package_name": "com.greenupvermont.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439621369113-oe6f0lm8a5qds59019dfpjf5dnl364g0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.greenupvermont.android",
+            "certificate_hash": "18ad65a12647276ddcf19914e7d46bd84367ce6e"
+          }
+        },
+        {
+          "client_id": "439621369113-nokuhqe4c5fn4ftjrseg3q59cb97s04d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ9a4l0RC8hR0p_MBVucEj7AXlIX0oN9o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439621369113-nokuhqe4c5fn4ftjrseg3q59cb97s04d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
