@@ -1,4 +1,4 @@
-package com.example;
+package com.greenupvermont;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 

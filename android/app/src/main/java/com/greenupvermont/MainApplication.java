@@ -1,4 +1,4 @@
-package com.example;
+package com.greenupvermont;
 
 import android.support.annotation.Nullable;
 
@@ -6,6 +6,7 @@ import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
 
 import java.util.List;
+import java.util.Arrays;
 // Required package
 import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
 // Optional packages - add as appropriate
@@ -18,13 +19,23 @@ import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Rea
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // Firebase Cloud Messaging
 import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Messaging
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
+import com.facebook.react.shell.MainReactPackage;
+
 public class MainApplication extends NavigationApplication {
     @Override
     public boolean isDebug() {
         return BuildConfig.DEBUG;
     }
 
+
+    @Nullable
     @Override
+    public List<ReactPackage> createAdditionalReactPackages() {
+        return null;
+    }
+
+
+    // @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
@@ -41,12 +52,5 @@ public class MainApplication extends NavigationApplication {
                 new RNFirebaseStoragePackage()
         );
     }
-};
 
-
-    @Nullable
-    @Override
-    public List<ReactPackage> createAdditionalReactPackages() {
-        return null;
-    }
 }
