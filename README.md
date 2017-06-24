@@ -457,7 +457,30 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 2. Verify that React Native is installed by typing `react-native -version` You should see "react-native-cli: 2.0.1"
 ### Clone the Green Up Vermont repository on Mac
+
+(These were instructions for windows but the process is the same for mac)
+
+1.  You should already be here, but if you aren't go to the Green Up Vermont GitHub page here : https://github.com/johnneed/GreenUpVermont
+
+2. Click the green "Clone or download" button and then click the small "Copy to clipboard" icon to the right of the repository url.
+
+![Alt](/docs/assets/Capture63.PNG "Clone Repository")
+
+3. Open a terminal window, then type "git clone" and then hit ctrl v to paste the url from the repository
+
+![Alt](/docs/assets/Capture74.PNG "Clone Repository")
+
+4. After the cloning finishes, Install the project dependencies.  First navigate into the project folder by typing "cd GreenUpVermont" and then install the packages by typing "npm install"
+
+![Alt](/docs/assets/Capture75.PNG "Clone Repository")
+
+
 ### Install XCode on Mac
+
+1. Go to the App Store and look up Xcode on the search.
+
+2. Download the first result by apple this will take several minutes as it is a large application.
+
 ### Install Genymotion
 
 1. Genymotion.com
@@ -476,6 +499,14 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 
 ![Alt](/docs/assets/And2.png "And2")
+
+### Set the ANDROID_HOME Environment Variable on Mac
+
+1. First install homebrew with this command in terminal `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+2. Next past command `brew cask install android-sdk` in terminal. 
+
+3. Now we need to set the Android Home Env. Var. To do with we need to find the path to the Android-SDK. Since we've installed it with brew it will be in `/usr/local/Cellar/android-sdk/`. Next run the command `export ANDROID_HOME={/usr/local/Cellar/android-sdk/}`. Then enter `export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools` in terminal and lastly, resource .bash_profile with `source ~/.bash_profile`.
 
 ### Create a New Android Virtual Device on Mac
 
@@ -511,5 +542,4 @@ Meld is not directly supported for Mac so you will need to use a Mac build for m
 
 ![Alt](/docs/assets/And8.png "And8")
 
-### Set the ANDROID_HOME Environment Variable on Mac
-### Run the Project on Mac
+
