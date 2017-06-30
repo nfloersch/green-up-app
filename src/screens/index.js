@@ -24,9 +24,15 @@ import Donate from './donate/Donate';
 import MyTeams from './my-teams/MyTeams';
 import TrashTracker from './trash-tracker/TrashTracker';
 import AllAboutGreenUpDay from './about-green-up-day/AllAboutGreenUpDay';
+import InviteForm from './my-teams/InviteForm';
+import  MessageDetails from './messages/MessageDetails';
+import TeamSearch from './my-teams/TeamSearch';
+
 export default function (store, Provider) {
     // Navigation.registerComponent('GreenUpVermont.Screens.Types', () => Types);
-    Navigation.registerComponent('GreenUpVermont.Screens.Actions', () => Actions, store, Provider);
+    Navigation.registerComponent('GreenUpVermont.Screens.InviteForm', () => InviteForm, store, Provider);
+    Navigation.registerComponent('GreenUpVermont.Screens.MessageDetails', () => MessageDetails, store, Provider);
+    Navigation.registerComponent('GreenUpVermont.Screens.TeamSearch', () => TeamSearch, store, Provider);
     Navigation.registerComponent('GreenUpVermont.Screens.MyTeams', () => MyTeams, store, Provider);
     Navigation.registerComponent('GreenUpVermont.Screens.TrashTracker', () => TrashTracker, store, Provider);
     Navigation.registerComponent('GreenUpVermont.Screens.AllAboutGreenUpDay', () => AllAboutGreenUpDay, store, Provider);
