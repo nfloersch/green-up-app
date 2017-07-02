@@ -10,28 +10,28 @@ import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 import {
     Alert,
     Button,
-    Image,
     StyleSheet,
     Text,
     TouchableHighlight,
-    View
+    View,
+    TextInput
 } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        alignContent: 'space-around',
+        backgroundColor: 'white',
+        borderColor: 'white',
+        borderTopWidth: 50,
+        borderLeftWidth: 20
     },
     text: {
-        fontSize: 20,
-        textAlign: 'center',
+        fontSize: 30,
+        textAlign: 'left',
+        fontWeight: 'bold',
         margin: 10
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
     }
 });
 export default class TrashTracker extends Component {
@@ -41,23 +41,18 @@ export default class TrashTracker extends Component {
     };
     constructor(props) {
         super(props);
-        this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        //  this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
         this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
-    }
-    componentDidMount() {
-        this.props.navigator.setButtons(navButtons);
-    }
-    _myAwesomeMethod() {
-        Alert.alert('Huzzah!');
     }
     render() {
         return (
             <View style={styles.container}>
-                <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
-                    <Text style={styles.text}>
-                        Trash Tracker
-                    </Text>
-                </TouchableHighlight>
+                <Text style={styles.text}>No. Bags:</Text>
+                <TextInput keyboardType='numeric'
+                    placeholder='1'
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(text) => this.setState({text})}
+                />
             </View>
         );
     }
