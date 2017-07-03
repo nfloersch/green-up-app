@@ -7,15 +7,28 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
+import RadioForm, {
+    RadioButton,
+    RadioButtonInput,
+    RadioButtonLabel
+} from 'react-native-simple-radio-button';
 import {
     Alert,
     Button,
     StyleSheet,
     Text,
-    TouchableHighlight,
     View,
+    ScrollView,
     TextInput
 } from 'react-native';
+
+var radio_props = [
+    {label: 'None', value: 0},
+    {label: 'Mattress', value: 1},
+    {label: 'Hazardous Waste', value: 2},
+    {label: 'Tires', value: 3},
+    {label: 'Large Objects', value: 4}
+];
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -28,20 +41,15 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 30,
-        textAlign: 'left',
+        justifyContent: 'flex-start',
         fontWeight: 'bold',
         margin: 10
     },
     options: {
         justifyContent: 'flex-start',
-        fontSize: 15,
-        textAlign: 'left',
-        margin: 20
-    },
-    button: {
-        justifyContent: 'center',
-        fontSize: 30,
-        alignContent: 'center'
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 10
     }
 });
 export default class TrashTracker extends Component {
@@ -58,22 +66,27 @@ export default class TrashTracker extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>No. Bags:</Text>
-                <TextInput keyboardType='numeric'
-                    placeholder=' 1'
-                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(text) => this.setState({text})}
-                />
-                <Text style={styles.text}>Other Items</Text>
-                <Text style={styles.options}>Mattress</Text>
-                <Text style={styles.options}>Hazardous Waste</Text>
-                <Text style={styles.options}>Tires</Text>
-                <Text style={styles.options}>Large Objects</Text>
-                <Button style={styles.button}
-                    onPress={() => { Alert.alert('This will mark the location!')}}
-                    title='Mark the Spot'
-                    color='green'
-                    accessibilityLabel='This will place a marker on the map!'
-                />
+                <ScrollView keyboardShouldPersistTaps='never'>
+                    <TextInput keyboardType='numeric'
+                        placeholder=' 1'
+                        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                        onChangeText={(text) => this.setState({text})}
+                    />
+                    <Text style={styles.text}>Other Items</Text>
+                    <View>
+                        <RadioForm
+                            radio_props={radio_props}
+                            initial={0}
+                            buttonColor={'green'}
+                            onPress={(value) => { this.setState({value:value})}}
+                        />
+                    </View>
+                    <Button
+                        onPress={() => { Alert.alert('This will mark the location!')}}
+                        title='Mark the Spot'
+                        color='green'
+                    />
+                </ScrollView>
             </View>
         );
     }
