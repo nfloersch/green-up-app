@@ -66,7 +66,7 @@ export default class TrashTracker extends Component {
                         label='None'
                     />
                     <CheckBox
-                        label='Matress(s)'
+                        label='Mattress(s)'
                     />
                     <CheckBox
                         label='Tires'
