@@ -7,11 +7,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
-import RadioForm, {
-    RadioButton,
-    RadioButtonInput,
-    RadioButtonLabel
-} from 'react-native-simple-radio-button';
+import CheckBox from 'react-native-checkbox';
 import {
     Alert,
     Button,
@@ -22,13 +18,6 @@ import {
     TextInput
 } from 'react-native';
 
-var radio_props = [
-    {label: 'None', value: 0},
-    {label: 'Mattress', value: 1},
-    {label: 'Hazardous Waste', value: 2},
-    {label: 'Tires', value: 3},
-    {label: 'Large Objects', value: 4}
-];
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -73,14 +62,21 @@ export default class TrashTracker extends Component {
                         onChangeText={(text) => this.setState({text})}
                     />
                     <Text style={styles.text}>Other Items</Text>
-                    <View>
-                        <RadioForm
-                            radio_props={radio_props}
-                            initial={0}
-                            buttonColor={'green'}
-                            onPress={(value) => { this.setState({value:value})}}
-                        />
-                    </View>
+                    <CheckBox
+                        label='None'
+                    />
+                    <CheckBox
+                        label='Matress(s)'
+                    />
+                    <CheckBox
+                        label='Tires'
+                    />
+                    <CheckBox
+                        label='Hazardous Waste'
+                    />
+                    <CheckBox
+                        label='Large Object(s)'
+                    />
                     <Button
                         onPress={() => { Alert.alert('This will mark the location!')}}
                         title='Mark the Spot'
