@@ -1,8 +1,8 @@
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "packagerPort": null,
-  "packagerPid": null
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://yp-rwa.johnneed.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.yp-rwa.johnneed.greenupvermont.exp.direct",
+  "ngrokPid": 1475,
+  "packagerPort": 19001,
+  "packagerPid": 1453
 }
