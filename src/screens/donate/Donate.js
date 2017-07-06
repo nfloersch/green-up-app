@@ -20,21 +20,10 @@ import NavHeader from '../../components/NavHeader';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        zIndex: 0
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
+        backgroundColor: '#F5FCFF',
+        width: '100%'
     }
 });
 export default class Donate extends Component {
@@ -66,7 +55,7 @@ export default class Donate extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation}/>
+                <NavHeader navigation={this.props.navigation} screenTitle="Suport Green Up Vermont" showBack={false}/>
 
                 {(this.state.webviewLoaded)
                     ? null

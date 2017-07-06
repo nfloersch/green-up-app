@@ -20,19 +20,10 @@ import {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
+        backgroundColor: '#F5FCFF',
+        width: '100%'
     }
 });
 export default class MyTeams extends Component {
@@ -57,7 +48,7 @@ export default class MyTeams extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation}/>
+                <NavHeader navigation={this.props.navigation} screenTitle="My Teams" showBack={false}/>
 
                 <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <Text style={styles.text}>

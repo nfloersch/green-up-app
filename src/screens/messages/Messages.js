@@ -29,15 +29,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         width: '100%'
     },
-    welcome: {
+    messages: {
         fontSize: 20,
         textAlign: 'center',
         margin: 10
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
     }
 });
 class Messages extends Component {
@@ -73,13 +68,13 @@ class Messages extends Component {
         var myMessages = (this.props.messages || []).map(message => (
             <TouchableHighlight key={message._id}>
                 <View onPress={this.toMessageDetail}>
-                    <Text style={styles.welcome}>{message.message}</Text>
+                    <Text style={styles.messages}>{message.message}</Text>
                 </View>
             </TouchableHighlight>
         ));
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation}/>
+                <NavHeader navigation={this.props.navigation} screenTitle="Messages" showBack={false}/>
                 <Button
                     onPress={(() => {
                         this.props.navigation.navigate('DrawerOpen');
