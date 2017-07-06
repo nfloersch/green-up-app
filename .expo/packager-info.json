@@ -2,7 +2,7 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://yp-rwa.johnneed.greenupvermont.exp.direct",
   "packagerNgrokUrl": "https://packager.yp-rwa.johnneed.greenupvermont.exp.direct",
-  "ngrokPid": 1475,
-  "packagerPort": 19001,
-  "packagerPid": 1453
+  "ngrokPid": 2373,
+  "packagerPort": 19002,
+  "packagerPid": 2353
 }
