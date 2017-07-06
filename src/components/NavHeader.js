@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Text, Alert, View, TouchableHighlight} from 'react-native';
 import Row from './Row';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialIcons} from '@expo/vector-icons';
 
 
 const styles = StyleSheet.create({
@@ -75,7 +75,7 @@ class NavHeader extends React.Component {
             <View style={styles.header}>
                 <TouchableHighlight style={styles.header_button} onPress={this._onNavigatorEvent} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <View style={styles.back_button}>
-                        <MaterialCommunityIcons name="keyboard-arrow-left" size={24} color="blue"/>
+                        <MaterialIcons name="keyboard-arrow-left" size={24} color="blue"/>
                         <Text style={[styles.back_button_label]}>{this.props.previousScreenName || "back"}</Text>
                     </View>
                 </TouchableHighlight>
@@ -84,7 +84,7 @@ class NavHeader extends React.Component {
                 </View>
                 <TouchableHighlight style={styles.header_button} onPress={this._onPressButton}
                                     underlayColor={'rgba(0, 0, 0, 0.054)'}>
-                    <MaterialCommunityIcons name="menu" size={32} color="black"/>
+                    <MaterialIcons name="menu" size={32} color="black"/>
                 </TouchableHighlight>
             </View>
         );
