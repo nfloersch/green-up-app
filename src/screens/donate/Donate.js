@@ -5,8 +5,10 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
-import {
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import NavHeader from '../../components/NavHeader';
+
+ import {
     Alert,
     Dimensions,
     StyleSheet,
@@ -18,37 +20,29 @@ import {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        zIndex: 0
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
+        backgroundColor: '#F5FCFF',
+        width: '100%'
     }
 });
 export default class Donate extends Component {
-    static navigatorButtons = navButtons;
-    static propTypes = {
-        navigator: PropTypes.object
+    static navigationOptions = {
+        drawerLabel: 'Support Green Up Vermont',
+        drawerIcon: ({tintColor}) => (
+            <MaterialCommunityIcons name='leaf' size={24} color='green' />
+        )
     };
+     static propTypes = {
+    };
+
     componentDidMount() {
-        this.props.navigator.setButtons(navButtons);
-    }
+     }
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
         this._onLoadEnd = this._onLoadEnd.bind(this);
-        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
-        this.state = {
+         this.state = {
             webviewLoaded: false
         };
     }
@@ -61,6 +55,8 @@ export default class Donate extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <NavHeader navigation={this.props.navigation} screenTitle="Suport Green Up Vermont" showBack={false}/>
+
                 {(this.state.webviewLoaded)
                     ? null
                     : (
