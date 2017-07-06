@@ -14,17 +14,20 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import NavHeader from '../../components/NavHeader';
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 import * as messageActions from './messageActions';
 let myID = 1235; // FOR TESTING ONLY DELETE ME
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
+        width: '100%'
     },
     welcome: {
         fontSize: 20,
@@ -38,25 +41,34 @@ const styles = StyleSheet.create({
     }
 });
 class Messages extends Component {
-    static navigatorButtons = navButtons;
     static propTypes = {
-        navigator: PropTypes.object
+        navigation: PropTypes.object
     };
+
+    static navigationOptions = {
+        drawerLabel: 'Messages',
+        drawerIcon: ({tintColor}) => (
+            <MaterialCommunityIcons name="message-alert" size={24} color="blue" />
+        )
+    };
+
     constructor(props) {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this._addMessage = this._addMessage.bind(this);
-        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
     }
+
     componentDidMount() {
-        this.props.navigator.setButtons(navButtons);
     }
-    toMessageDetail() {}
+
+    toMessageDetail() {
+    }
 
     _addMessage() {
         var id = myID += 1;
         this.props.actions.addMessage({message: "foo bar", _id: id});
     }
+
     render() {
         var myMessages = (this.props.messages || []).map(message => (
             <TouchableHighlight key={message._id}>
@@ -67,6 +79,13 @@ class Messages extends Component {
         ));
         return (
             <View style={styles.container}>
+                <NavHeader navigation={this.props.navigation}/>
+                <Button
+                    onPress={(() => {
+                        this.props.navigation.navigate('DrawerOpen');
+                    })}
+                    title="open drawer"
+                />
                 <Button onPress={this._addMessage} title='Add Message'/>{myMessages}
             </View>
         );

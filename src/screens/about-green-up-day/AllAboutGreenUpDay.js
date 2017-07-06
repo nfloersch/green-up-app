@@ -5,7 +5,9 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import NavHeader from '../../components/NavHeader';
+
 import {
     Alert,
     Button,
@@ -34,24 +36,31 @@ const styles = StyleSheet.create({
     }
 });
 export default class AllAboutGreenUpDay extends Component {
-    static navigatorButtons = navButtons;
-    static propTypes = {
-        navigator: PropTypes.object
+    static propTypes = {};
+    static navigationOptions = {
+        drawerLabel: 'About Green Up Day',
+        drawerIcon: ({tintColor}) => (
+            <MaterialCommunityIcons name="information" size={24} color="blue" />
+        )
     };
+
     componentDidMount() {
-        this.props.navigator.setButtons(navButtons);
     }
+
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
-        this.props.navigator.setOnNavigatorEvent(onNavigatorEvent(this.props.navigator).bind(this));
     }
+
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
     }
+
     render() {
         return (
             <View style={styles.container}>
+                <NavHeader navigation={this.props.navigation}/>
+
                 <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <Text style={styles.text}>
                         All About Green Up Day
