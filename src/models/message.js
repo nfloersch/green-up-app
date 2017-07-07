@@ -3,7 +3,7 @@
 import {messageTypes} from '../constants/message-types';
 
 export class Message {
-
+    _id : string;
     text: string;
     userId: string;
     teamId: string;
@@ -13,6 +13,7 @@ export class Message {
     type: string;
 
     constructor(args = {}) {
+        this._id = typeof args._id === 'string' ? args._id : null;
         this.text = typeof args.text === 'string' ? args.text : null;
         this.userId = typeof args.userId === 'string' ? args.userId : null;
         this.teamId = typeof args.teamId === 'string' ? args.teamId : null;
