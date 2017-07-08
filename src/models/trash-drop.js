@@ -1,6 +1,7 @@
 // @flow
 
 import {Coordinate} from './coordinate';
+import {isDate} from '../libs/isDate';
 
 export class TrashDrop {
     _id: string;
@@ -9,6 +10,7 @@ export class TrashDrop {
     active: boolean;
     tags: [string];
     coordinate: Coordinate;
+    created: Date;
 
     constructor(args = {}) {
         this._id = typeof args._id === 'string' ? args._id : null;
@@ -17,6 +19,7 @@ export class TrashDrop {
         this.status = typeof args.status === 'string' ? args.status : null;
         this.active = typeof args.active === 'boolean' ? args.active : true;
         this.coordinate = typeof coordinate === 'object' ?  Coordinate.create(coordinate): null;
+        this.created = isDate(args.created) ? new Date(args.created) : null;
     }
 
     static create(args) {

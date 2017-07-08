@@ -16,6 +16,8 @@ export class Team {
     members: [user];
     zones: [Zone];
     isPublic: boolean;
+    created: Date;
+
     constructor(args = {}) {
         this._id = typeof args._id === 'string' ? args._id : null;
         this.name = typeof args.name === 'string' ? args.name : null;
@@ -28,6 +30,7 @@ export class Team {
         this.members = Array.isArray(args.members) ? args.members.map((member) => User.create(member)) : [];
         this.zones = Array.isArray(args.zones) ? args.zones.map((zone) => Zone.create(zone)) : [];
         this.isPublic = typeof args.isPublic === 'boolean' ? args.isPublic : true;
+        this.created = isDate(args.created) ? new Date(args.created) : null;
     }
 
     static create(args) {

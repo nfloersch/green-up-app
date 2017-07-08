@@ -2,6 +2,7 @@
 
 import {Team} from './team';
 import {Coordinate} from './coordinate';
+import {isDate} from '../libs/isDate';
 
 export class Zone {
     _id: string;
@@ -11,7 +12,7 @@ export class Zone {
     active: boolean;
     team: Team;
     coordinates: [Coordinate];
-
+created: Date;
     constructor(args = {}) {
         this._id = typeof args._id === 'string' ? args._id : null;
         this.name = typeof args.name === 'string' ? args.name : null;
@@ -20,6 +21,8 @@ export class Zone {
         this.active = typeof args.active === 'boolean' ? args.active : true;
         this.team = typeof args.team === 'object' ? Team.create(args.team) : null;
         this.coordinates = Array.isArray(args.coordinates) ? args.coordinates.map(coordinate => Coordinate.create(coordinate)) : [];
+        this.created = isDate(args.created) ? new Date(args.created) : null;
+
     }
 
     static create(args) {
