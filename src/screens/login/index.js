@@ -6,17 +6,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import NavHeader from '../../components/NavHeader';
-
-import {
-    Alert,
-    Button,
-    Image,
-    StyleSheet,
-    Text,
-    View
-} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import logo from '../../../assets/GreenupVermontlogo.png';
+import LoginForm from '../../components/login-form';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -36,20 +28,14 @@ const styles = StyleSheet.create({
     }
 });
 export default class Welcome extends Component {
-    static navigationOptions = {
-        drawerLabel: 'Wel.com',
-        drawerIcon: ({ tintColor }) => (
-            <Text>X</Text>
-        ),
-    };
+
+    static propTypes = {};
 
     constructor(props) {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
     }
-    onButtonPress() {
-         this.props.navigation.navigate('Messages');
-    }
+    onButtonPress() {}
     render() {
         return (
             <View style={styles.container}>
@@ -57,14 +43,19 @@ export default class Welcome extends Component {
                 <Text style={styles.welcome}>
                     Welcome to the Green Up Vermont App!
                 </Text>
-                <Text style={styles.instructions}>
-                    Congratulations you got this app running!
-                </Text>
-                <Text style={styles.instructions}>
-                    Double tap R on your keyboard to reload,{'\n'}
-                    Shake or press menu button for dev menu
-                </Text>
-                <Button onPress={this.onButtonPress} title="Login with Google" accessibilityLabel="Login With Google"/>
+                <LoginForm/>
+                <TouchableHighlight onPress={this.onButtonPress}>
+                    <View>
+                        <MaterialCommunityIcons name='google' size={24} color='blue'/>
+                        <Text>Login with Google</Text>
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={this.onButtonPress}>
+                    <View>
+                        <MaterialCommunityIcons name='facebook' size={24} color='blue'/>
+                        <Text>Login with Facebook</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }

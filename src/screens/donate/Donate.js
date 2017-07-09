@@ -8,12 +8,11 @@ import PropTypes from 'prop-types';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import NavHeader from '../../components/NavHeader';
 
- import {
+import {
     Alert,
     Dimensions,
     StyleSheet,
     Text,
-    TouchableHighlight,
     WebView,
     View
 } from 'react-native';
@@ -28,36 +27,34 @@ const styles = StyleSheet.create({
 });
 export default class Donate extends Component {
     static navigationOptions = {
-        drawerLabel: 'Support Green Up Vermont',
-        drawerIcon: ({tintColor}) => (
-            <MaterialCommunityIcons name='leaf' size={24} color='green' />
-        )
-    };
-     static propTypes = {
+        drawerLabel: 'Support Green Up Day',
+        drawerIcon: () => (<MaterialCommunityIcons name='leaf' size={24} color='green'/>)
     };
 
-    componentDidMount() {
-     }
+    static propTypes = {
+        navigation: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
         this._onLoadEnd = this._onLoadEnd.bind(this);
-         this.state = {
+        this.state = {
             webviewLoaded: false
         };
     }
+    componentDidMount() {}
+
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
     }
     _onLoadEnd() {
-        this.setState({webviewLoaded: true})
+        this.setState({webviewLoaded: true});
     }
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle="Suport Green Up Vermont" showBack={false}/>
-
-                {(this.state.webviewLoaded)
+                <NavHeader navigation={this.props.navigation} screenTitle='Suport Green Up Vermont' showBack={false}/> {(this.state.webviewLoaded)
                     ? null
                     : (
                         <Text style={styles.text}>
