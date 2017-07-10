@@ -98,7 +98,6 @@ export default class TrashTracker extends Component {
                     />
                 </ScrollView>
                 <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
-                <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
             </View>
         );
     }
