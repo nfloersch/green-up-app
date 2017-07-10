@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://cu-k3g.adawson99.greenupvermont.exp.direct",
-  "packagerNgrokUrl": "https://packager.cu-k3g.adawson99.greenupvermont.exp.direct",
-  "ngrokPid": 2102,
-  "packagerPort": 19001,
-  "packagerPid": 2084
+  "expoServerNgrokUrl": "https://yp-rwa.johnneed.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.yp-rwa.johnneed.greenupvermont.exp.direct",
+  "ngrokPid": 2373,
+  "packagerPort": 19002,
+  "packagerPid": 2353
 }

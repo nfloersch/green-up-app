@@ -7,10 +7,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
+import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import NavHeader from '../../components/NavHeader';
-
-import CheckBox from 'react-native-checkbox';
 import {
     Alert,
     Button,
@@ -98,6 +97,7 @@ export default class TrashTracker extends Component {
                         color='green'
                     />
                 </ScrollView>
+                <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
                 <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
             </View>
         );
