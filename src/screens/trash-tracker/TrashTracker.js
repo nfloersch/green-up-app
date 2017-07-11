@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
         alignContent: 'space-around',
         backgroundColor: 'white',
         borderColor: 'white',
-        borderTopWidth: 50,
         borderLeftWidth: 20,
-        borderRightWidth: 20
+        borderRightWidth: 20,
+        justifyContent: 'flex-start'
     },
     text: {
         fontSize: 30,
@@ -68,6 +68,7 @@ export default class TrashTracker extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
                 <Text style={styles.text}>No. Bags:</Text>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     <TextInput keyboardType='numeric'
@@ -97,7 +98,6 @@ export default class TrashTracker extends Component {
                         color='green'
                     />
                 </ScrollView>
-                <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
             </View>
         );
     }
