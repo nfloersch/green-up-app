@@ -57,6 +57,9 @@ export default class LoginForm extends Component {
     }
 
     onButtonPress() {}
+    static navigationOptions = {
+   title: 'Green Up Vermont'
+ };
     render() {
         return (
             <View style={{

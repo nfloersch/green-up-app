@@ -66,9 +66,7 @@ export default class Welcome extends Component {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onForgotPassword = this.onForgotPassword.bind(this);
-
         this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
-
     }
     onForgotPassword() {
         this.props.navigation.navigate('ForgotPassword');
