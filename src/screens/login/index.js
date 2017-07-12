@@ -9,8 +9,11 @@ import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import logo from '../../../assets/GreenupVermontlogo.png';
 import facebookLogo from '../../../assets/facebook-logo.png';
 import googleLogo from '../../../assets/google-logo.png';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import LoginForm from '../../components/login-form';
+import * as loginActions from './login-actions';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -53,9 +56,10 @@ const styles = StyleSheet.create({
         height: 40
     }
 });
-export default class Welcome extends Component {
+class Welcome extends Component {
 
     static propTypes = {
+        actions: PropTypes.object,
         navigation: PropTypes.object
     };
 
@@ -83,7 +87,7 @@ export default class Welcome extends Component {
                     height: 120,
                     width: 120
                 }}/>
-                <LoginForm/>
+                <LoginForm login={this.props.actions.login}/>
                 <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
                     <Text style={styles.linkText}>I forgot my password</Text>
                 </TouchableHighlight>
@@ -106,3 +110,14 @@ export default class Welcome extends Component {
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {session: state.loginReducer.session};
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(loginActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome);

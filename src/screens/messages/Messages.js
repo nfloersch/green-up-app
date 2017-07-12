@@ -5,22 +5,14 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Alert,
-    Button,
-    Image,
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View
-} from 'react-native';
+import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import NavHeader from '../../components/NavHeader';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as messageActions from './messageActions';
-let myID = 1235; // FOR TESTING ONLY DELETE ME
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -37,31 +29,38 @@ const styles = StyleSheet.create({
 });
 class Messages extends Component {
     static propTypes = {
+        actions: PropTypes.object,
+        messages: PropTypes.array,
         navigation: PropTypes.object
     };
 
     static navigationOptions = {
         drawerLabel: 'Messages',
-        drawerIcon: ({tintColor}) => (
-            <MaterialCommunityIcons name="message-alert" size={24} color="blue" />
-        )
+        drawerIcon: () => (<MaterialCommunityIcons name='message-alert' size={24} color='blue'/>)
     };
 
     constructor(props) {
         super(props);
-        this.toMessageDetail = this.toMessageDetail.bind(this);
-        this._addMessage = this._addMessage.bind(this);
+        this.toMessageDetail = this
+            .toMessageDetail
+            .bind(this);
+        this._addMessage = this
+            ._addMessage
+            .bind(this);
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() {}
 
-    toMessageDetail() {
-    }
+    toMessageDetail() {}
 
     _addMessage() {
-        var id = myID += 1;
-        this.props.actions.addMessage({message: "foo bar", _id: id});
+        this
+            .props
+            .actions
+            .addMessage({
+                message: 'foo bar',
+                _id: (new Date()).toISOString()
+            });
     }
 
     render() {
@@ -74,13 +73,10 @@ class Messages extends Component {
         ));
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle="Messages" showBack={false}/>
-                <Button
-                    onPress={(() => {
-                        this.props.navigation.navigate('DrawerOpen');
-                    })}
-                    title="open drawer"
-                />
+                <NavHeader
+                    navigation={this.props.navigation}
+                    screenTitle='Messages'
+                    showBack={false}/>
                 <Button onPress={this._addMessage} title='Add Message'/>{myMessages}
             </View>
         );

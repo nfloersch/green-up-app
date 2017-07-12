@@ -144,7 +144,7 @@
     "linebreak-style": [0, "unix"], //disallow mixed 'LF' and 'CRLF' as linebreaks
     "lines-around-comment": 1, //enforce empty lines around comments
     "max-nested-callbacks": [1, 3], //specify the maximum depth callbacks can be nested
-    "new-cap": [1, { "capIsNewExceptions" : ["Map", "List"] }], //require a capital letter for constructors (except when calling the MAP function)
+    "new-cap": [1, { "capIsNewExceptions" : ["Map", "List", "StackNavigator", "DrawerNavigator", "TabNavigator"] }], //require a capital letter for constructors (except when calling the MAP function)
     "new-parens": 1, //disallow the omission of parentheses when invoking a constructor with no arguments
     "newline-after-var": 0, //require or disallow an empty newline after variable declarations
     "no-array-constructor": 1, //disallow use of the Array constructor

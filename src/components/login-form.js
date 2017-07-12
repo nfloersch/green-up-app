@@ -35,13 +35,21 @@ const styles = StyleSheet.create({
     }
 });
 export default class LoginForm extends Component {
-
-    static propTypes = {};
+    static navigationOptions = {
+        title: 'Green Up Vermont'
+    };
+    static propTypes = {
+        login: PropTypes.function
+    };
 
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
-        this.onChangeState = this.onChangeState.bind(this);
+        this.onButtonPress = this
+            .onButtonPress
+            .bind(this);
+        this.onChangeState = this
+            .onChangeState
+            .bind(this);
         this.state = {
             email: '',
             password: ''
@@ -56,23 +64,33 @@ export default class LoginForm extends Component {
         };
     }
 
-    onButtonPress() {}
-    static navigationOptions = {
-   title: 'Green Up Vermont'
- };
+    onButtonPress() {
+        this
+            .props
+            .login(this.state.email, this.state.password);
+    }
+
     render() {
         return (
-            <View style={{
-                width: '100%',
-                padding: 5
-            }}>
+            <View style={{width: '100%', padding: 5}}>
                 <View style={styles.container}>
                     <Text style={styles.label}>Email</Text>
-                    <TextInput autoCorrect={false} placeholder='you@domain.com' value={this.state.email} onChangeText={this.onChangeState('email')} style={styles.inputStyle}/>
+                    <TextInput
+                        autoCorrect={false}
+                        placeholder='you@domain.com'
+                        value={this.state.email}
+                        onChangeText={this.onChangeState('email')}
+                        style={styles.inputStyle}/>
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.label}>Password</Text>
-                    <TextInput autoCorrect={false} placeholder={'*****'} secureTextEntry={true} value={this.state.password} onChangeText={this.onChangeState('password')} style={styles.inputStyle}/>
+                    <TextInput
+                        autoCorrect={false}
+                        placeholder={'*****'}
+                        secureTextEntry={true}
+                        value={this.state.password}
+                        onChangeText={this.onChangeState('password')}
+                        style={styles.inputStyle}/>
                     <Button onPress={this.onButtonPress} title='Login'/>
                 </View>
             </View>

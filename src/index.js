@@ -1,7 +1,11 @@
 // @flow
 
 import React, {Component} from 'react';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as loginActions from './screens/login/login-actions';
+import PropTypes from 'prop-types';
+import {StyleSheet, View} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';
@@ -43,13 +47,31 @@ const AppNav = DrawerNavigator({
 });
 
 class Nav extends Component {
+    static propTypes = {
+        session: PropTypes.object
+    }
     constructor(props) {
         super(props);
     }
 
     render() {
-        return (<LoginNav/>);
+        var whichNav = this.props.session && this.props.session.user && this.props.session.user._id
+            ? (<AppNav/>)
+            : (<LoginNav/>);
+        return (
+            <View style={{flex:1}}>{whichNav}</View>
+        );
     }
 }
 
-export default Nav;
+function mapStateToProps(state, ownProps) {
+    return {session: state.loginReducer.session};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(loginActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
