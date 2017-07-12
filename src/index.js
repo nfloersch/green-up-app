@@ -10,7 +10,7 @@ import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';
 import CreateNewAccount from './screens/login/create-new-account';
-import Messages from './screens/messages/Messages';
+import Messages from './screens/messages/';
 import Donate from './screens/donate/Donate';
 import MyTeams from './screens/my-teams/MyTeams';
 import TrashTracker from './screens/trash-tracker/TrashTracker';
