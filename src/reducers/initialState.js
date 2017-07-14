@@ -1,6 +1,14 @@
 export default {
-    session:{
+    session : {
         user: null
     },
-    messages : []
+    messages : [
+        {
+            id: '123',
+            message: 'Hello Nurse'
+        }, {
+            id: '345',
+            message: 'I love your shoes'
+        }
+    ]
 };

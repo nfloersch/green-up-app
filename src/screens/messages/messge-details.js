@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as messageActions from './messageActions';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -29,12 +30,14 @@ export default class Messages extends Component {
         messages: PropTypes.array
     };
 
+    static navigationOptions = {
+        title: 'Message Details'
+    };
     constructor(props) {
         super(props);
     }
 
     render() {
-
         return (
             <View style={styles.container}>
                 <Text>Message Summaries Screen</Text>
