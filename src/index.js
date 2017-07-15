@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as loginActions from './screens/login/login-actions';
 import PropTypes from 'prop-types';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';
@@ -13,7 +13,7 @@ import CreateNewAccount from './screens/login/create-new-account';
 import Messages from './screens/messages/';
 import Donate from './screens/donate/Donate';
 import MyTeams from './screens/my-teams/MyTeams';
-import TrashTracker from './screens/trash-tracker/TrashTracker';
+import TrashTracker from './screens/trash-tracker/';
 import AllAboutGreenUpDay from './screens/about-green-up-day/AllAboutGreenUpDay';
 
 const LoginNav = StackNavigator({

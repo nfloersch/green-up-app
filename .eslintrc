@@ -227,7 +227,7 @@
     "react/jsx-max-props-per-line": [1, { "maximum": 5 }], // Limit maximum of props on a single line in JSX
     "react/jsx-no-bind": [2,{
       "ignoreRefs": false,
-      "allowArrowFunctions": false,
+      "allowArrowFunctions": true,
       "allowBind": true}], // Prevent usage of .bind() and arrow functions in JSX props
     "react/jsx-no-duplicate-props": 2, // Prevent duplicate props in JSX
     "react/jsx-no-literals": 0, // Prevent usage of unwrapped JSX strings

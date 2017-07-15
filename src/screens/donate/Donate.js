@@ -54,7 +54,7 @@ export default class Donate extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle='Suport Green Up Vermont' showBack={false}/> {(this.state.webviewLoaded)
+                <NavHeader navigation={this.props.navigation} screenTitle='Suport Green Up Vermont' showBack={false}/>{(this.state.webviewLoaded)
                     ? null
                     : (
                         <Text style={styles.text}>

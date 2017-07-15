@@ -25,29 +25,15 @@ export default class Messages extends Component {
 
     constructor(props) {
         super(props);
-        this._addMessage = this
-            ._addMessage
-            .bind(this);
         this.state = {
-            isDetailView: false,
-            currentMessageId: null,
-            newMessage: ''
+            currentMessageId: null
         };
 
     }
 
     componentDidMount() {}
 
-    _addMessage() {
-        this
-            .props
-            .actions
-            .addMessage({
-                message: this.state.newMessage,
-                _id: (new Date()).toISOString()
-            });
-        this.setState({newMessage: ''});
-    }
+  
 
     render() {
         var MessagesNav = StackNavigator({
@@ -60,6 +46,6 @@ export default class Messages extends Component {
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });
-        return (<MessagesNav screenProps={{addMessage: this._addMessage}}/>);
+        return (<MessagesNav/>);
     }
 }

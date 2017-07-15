@@ -6,17 +6,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CheckBox from 'react-native-checkbox';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {
-    Alert,
-    Button,
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    TextInput
-} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -42,26 +32,38 @@ const styles = StyleSheet.create({
     }
 });
 export default class TrashMap extends Component {
-   
+
     static propTypes = {
         navigation: PropTypes.object
     };
-
+    static navigationOptions = {
+        title: 'Trash Tracker'
+    };
     constructor(props) {
         super(props);
-        this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this._goToTrashDrop = this
+            ._goToTrashDrop
+            .bind(this);
     }
 
     componentDidMount() {}
 
-    _myAwesomeMethod() {
-        Alert.alert('Huzzah!');
+    _goToTrashDrop() {
+        this
+            .props
+            .navigation
+            .navigate('TrashDrop');
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
+                <TouchableHighlight onPress={this._goToTrashDrop}>
+                    <View>
+                        <Text style={styles.text}>Drop Trash</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }
