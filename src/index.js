@@ -12,7 +12,7 @@ import ForgotPassword from './screens/login/forgot-password';
 import CreateNewAccount from './screens/login/create-new-account';
 import Messages from './screens/messages/';
 import Donate from './screens/donate/Donate';
-import MyTeams from './screens/my-teams/MyTeams';
+import Teams from './screens/my-teams/';
 import TrashTracker from './screens/trash-tracker/';
 import AllAboutGreenUpDay from './screens/about-green-up-day/AllAboutGreenUpDay';
 
@@ -36,7 +36,7 @@ const AppNav = DrawerNavigator({
         screen: Donate
     },
     MyTeams: {
-        screen: MyTeams
+        screen: Teams
     },
     TrashTracker: {
         screen: TrashTracker

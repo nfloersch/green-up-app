@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StackNavigator} from 'react-navigation';
 import MessageSummaries from './message-summaries';
-import MessageDetails from './messge-details';
+import MessageDetails from './message-details';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DrawerToggle from '../../components/drawer-toggle';
 
@@ -32,8 +32,6 @@ export default class Messages extends Component {
     }
 
     componentDidMount() {}
-
-  
 
     render() {
         var MessagesNav = StackNavigator({

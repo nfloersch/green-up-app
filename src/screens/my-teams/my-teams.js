@@ -6,7 +6,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {FontAwesome} from '@expo/vector-icons';
-import NavHeader from '../../components/NavHeader';
 
 import {
     Alert,
@@ -28,10 +27,7 @@ const styles = StyleSheet.create({
 });
 export default class MyTeams extends Component {
     static navigationOptions = {
-        drawerLabel: 'My Teams',
-        drawerIcon: ({tintColor}) => (
-            <FontAwesome name="users" size={24} color="green" />
-        )
+            title: 'My Teams'
     };
 
     static propTypes = {
@@ -48,8 +44,6 @@ export default class MyTeams extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle="My Teams" showBack={false}/>
-
                 <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <Text style={styles.text}>
                         My Teams
