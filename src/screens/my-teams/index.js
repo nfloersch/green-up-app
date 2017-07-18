@@ -10,6 +10,7 @@ import MyTeams from './my-teams';
 import TeamDetails from './team-details';
 import TeamEditor from './team-editor';
 import TeamInvitationDetails from './team-invitation-details';
+import TeamSearch from "./team-search";
 import DrawerToggle from '../../components/drawer-toggle';
 import {FontAwesome} from '@expo/vector-icons';
 
@@ -32,7 +33,8 @@ export default class Teams extends Component {
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     render() {
         var TeamsNav = StackNavigator({
@@ -50,6 +52,10 @@ export default class Teams extends Component {
             },
             TeamEditor: {
                 screen: TeamEditor,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            TeamSearch: {
+                screen: TeamSearch,
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });

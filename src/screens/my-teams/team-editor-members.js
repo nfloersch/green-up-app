@@ -35,7 +35,7 @@ export default class TeamEditorMembers extends Component {
         title: 'Team Members',
         tabBarLabel: 'Members',
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({tintColor}) => (<FontAwesome name='users' size={24} color='green'/>)
+        tabBarIcon: ({tintColor}) => (<FontAwesome name='users' size={24} color='blue'/>)
     };
     constructor(props) {
         super(props);

@@ -56,9 +56,14 @@ class TeamSummaries extends Component {
     constructor(props) {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
+        this.toTeamSearch = this.toTeamSearch.bind(this);
     }
 
-    toTeamDetail(team : Object) {
+    toTeamSearch() {
+        this.props.navigation.navigate('TeamSearch');
+    }
+
+    toTeamDetail(team: Object) {
         let nextScreen = 'TeamDetails';
         switch (true) {
             case team.invitationPending:
@@ -75,6 +80,7 @@ class TeamSummaries extends Component {
             this.props.navigation.navigate(nextScreen);
         };
     }
+
     render() {
 
         var myTeams = (this.props.teams || []).map(team => (
@@ -88,6 +94,7 @@ class TeamSummaries extends Component {
             <View style={styles.container}>
                 <Text>Team Summaries Screen</Text>
                 {myTeams}
+                <Button onPress={this.toTeamSearch} title="Search Teams"/>
             </View>
         );
     }
