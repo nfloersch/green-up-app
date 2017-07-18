@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
-
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -56,25 +55,30 @@ class TeamSummaries extends Component {
 
     constructor(props) {
         super(props);
-        this.toTeamDetail = this
-            .toTeamDetail
-            .bind(this);
+        this.toTeamDetail = this.toTeamDetail.bind(this);
     }
 
-    toTeamDetail(teamId: string) {
+    toTeamDetail(team : Object) {
+        let nextScreen = 'TeamDetails';
+        switch (true) {
+            case team.invitationPending:
+                nextScreen = 'TeamInvitationDetails';
+                break;
+            case team.userIsOwner:
+                nextScreen = 'TeamEditor';
+                break;
+            default:
+                nextScreen = 'TeamDetails';
+                break;
+        }
         return () => {
-            this
-                .props
-                .navigation
-                .navigate('TeamDetails');
+            this.props.navigation.navigate(nextScreen);
         };
     }
     render() {
 
         var myTeams = (this.props.teams || []).map(team => (
-            <TouchableHighlight
-                key={team._id}
-                onPress={this.toTeamDetail(team._id)}>
+            <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
                 <View>
                     <Text style={styles.teams}>{team.name}</Text>
                 </View>
@@ -90,7 +94,7 @@ class TeamSummaries extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducer.teams};
+    return {teams: state.teamReducers.session.user.teams};
 }
 
 function mapDispatchToProps(dispatch) {

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamDetails extends Component {
+export default class TeamInvitationDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array
@@ -40,7 +40,7 @@ export default class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Team Details Screen</Text>
+                <Text>Team Invitation Details Screen</Text>
             </View>
         );
     }

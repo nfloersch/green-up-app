@@ -49,8 +49,7 @@ class MessageSummaries extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array,
-        navigation: PropTypes.object,
-        toMessageDetails: PropTypes.function
+        navigation: PropTypes.object
     };
 
     static navigationOptions = {
@@ -59,25 +58,17 @@ class MessageSummaries extends Component {
 
     constructor(props) {
         super(props);
-        this.toMessageDetail = this
-            .toMessageDetail
-            .bind(this);
+        this.toMessageDetail = this.toMessageDetail.bind(this);
     }
 
     toMessageDetail(messageId) {
         return () => {
-            this
-                .props
-                .navigation
-                .navigate('MessageDetails');
+            this.props.navigation.navigate('MessageDetails');
         };
     }
     render() {
-
         var myMessages = (this.props.messages || []).map(message => (
-            <TouchableHighlight
-                key={message._id}
-                onPress={this.toMessageDetail(message._id)}>
+            <TouchableHighlight key={message._id} onPress={this.toMessageDetail(message._id)}>
                 <View>
                     <Text style={styles.messages}>{message.message}</Text>
                 </View>
@@ -93,7 +84,7 @@ class MessageSummaries extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {messages: state.messageReducer.messages};
+    return {messages: state.messageReducer.session.user.messages};
 }
 
 function mapDispatchToProps(dispatch) {

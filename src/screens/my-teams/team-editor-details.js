@@ -24,14 +24,17 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamDetails extends Component {
+export default class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array
     };
 
     static navigationOptions = {
-        title: 'Team Details'
+        title: 'Team Details',
+        tabBarLabel: 'Details',
+        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+        tabBarIcon: () => (<MaterialCommunityIcons name='information' size={24} color='blue'/>)
     };
     constructor(props) {
         super(props);
@@ -40,7 +43,7 @@ export default class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Team Details Screen</Text>
+                <Text>Team Editor Details Screen</Text>
             </View>
         );
     }

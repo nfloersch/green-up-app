@@ -15,7 +15,7 @@ export default class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array,
-        navigation: PropTypes.obßject
+        navigation: PropTypes.object
     };
 
     static navigationOptions = {

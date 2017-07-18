@@ -48,12 +48,8 @@ class NavHeader extends React.Component {
 
     constructor(props) {
         super(props);
-        this._onPressButton = this
-            ._onPressButton
-            .bind(this);
-        this._onNavigatorEvent = this
-            ._onNavigatorEvent
-            .bind(this);
+        this._onPressButton = this._onPressButton.bind(this);
+        this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
         this.state = {
             drawerState: 'close'
         };
@@ -63,15 +59,9 @@ class NavHeader extends React.Component {
         function openClose(drawerAction) {
             return function () {
                 if (drawerAction === 'close') {
-                    this
-                        .props
-                        .navigation
-                        .navigate('DrawerClose');
+                    this.props.navigation.navigate('DrawerClose');
                 } else {
-                    this
-                        .props
-                        .navigation
-                        .navigate('DrawerOpen');
+                    this.props.navigation.navigate('DrawerOpen');
                 }
             };
         }
@@ -92,20 +82,14 @@ class NavHeader extends React.Component {
     }
 
     _onNavigatorEvent() {
-        this
-            .props
-            .navigation
-            .pop();
+        this.props.navigation.pop();
     }
 
     render() {
         var defaultBackButton = (
-            <TouchableHighlight
-                style={styles.headerButton}
-                onPress={this._onNavigatorEvent}
-                underlayColor={'rgba(0, 0, 0, 0.054)'}>
+            <TouchableHighlight style={styles.headerButton} onPress={this._onNavigatorEvent} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                 <View style={styles.back_button}>
-                    <MaterialIcons name='keyboardArrowLeft' size={24} color='blue'/>
+                    <MaterialIcons name='arrow-back' size={24} color='blue'/>
                     <Text style={[styles.backButtonLabel]}>{this.props.previousScreenName || 'back'}</Text>
                 </View>
             </TouchableHighlight>
@@ -121,10 +105,7 @@ class NavHeader extends React.Component {
                 <View style={styles.headerText}>
                     <Text style={styles.headerTextLabel}>{this.props.screenTitle || ' '}</Text>
                 </View>
-                <TouchableHighlight
-                    style={styles.headerButton}
-                    onPress={this._onPressButton('open')}
-                    underlayColor={'rgba(0, 0, 0, 0.054)'}>
+                <TouchableHighlight style={styles.headerButton} onPress={this._onPressButton('open')} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <MaterialIcons name='menu' size={32} color='black'/>
                 </TouchableHighlight>
             </View>

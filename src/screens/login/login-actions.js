@@ -2,7 +2,8 @@ import * as types from '../../constants/actionTypes';
 var dummyUser = {
     _id: '123456',
     firstName: 'Andy',
-    lastName: 'Pants'
+    lastName: 'Pants',
+    email: 'andy.pants@example.com'
 };
 
 export function login(username, password) {

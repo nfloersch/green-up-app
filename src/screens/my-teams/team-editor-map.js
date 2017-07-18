@@ -24,14 +24,17 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamDetails extends Component {
+export default class TeamEditorMap extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array
     };
 
     static navigationOptions = {
-        title: 'Team Details'
+        title: 'Team Map',
+        tabBarLabel: 'Map',
+        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+        tabBarIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='blue'/>)
     };
     constructor(props) {
         super(props);
@@ -40,7 +43,7 @@ export default class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Team Details Screen</Text>
+                <Text>Team Editor Map Screen</Text>
             </View>
         );
     }

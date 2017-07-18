@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import {StackNavigator} from 'react-navigation';
 import MyTeams from './my-teams';
 import TeamDetails from './team-details';
+import TeamEditor from './team-editor';
+import TeamInvitationDetails from './team-invitation-details';
 import DrawerToggle from '../../components/drawer-toggle';
 import {FontAwesome} from '@expo/vector-icons';
 
@@ -20,9 +22,7 @@ export default class Teams extends Component {
 
     static navigationOptions = {
         drawerLabel: 'My Teams',
-        drawerIcon: ({tintColor}) => (
-            <FontAwesome name='users' size={24} color='green' />
-        )
+        drawerIcon: ({tintColor}) => (<FontAwesome name='users' size={24} color='green'/>)
     };
 
     constructor(props) {
@@ -42,6 +42,14 @@ export default class Teams extends Component {
             },
             TeamDetails: {
                 screen: TeamDetails,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            TeamInvitationDetails: {
+                screen: TeamInvitationDetails,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            TeamEditor: {
+                screen: TeamEditor,
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });
