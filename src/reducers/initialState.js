@@ -1,5 +1,6 @@
 export default {
     session : {
+        hasToken: false,
         user: {
             _id: null,
             firstName: 'Zoey',
@@ -282,5 +283,8 @@ export default {
                 }
             ]
         }
-    }
+    },
+    about : 'Green Up Vermont is a nonprofit organization with 501(c) (3) status. Green Up’s mission is to promote the' +
+        ' stewardship of our state’s natural landscape and waterways and the livability of our communities by involving' +
+    ' people in Green Up Day and raising public awareness about the benefits of a litter-free environment.'
 };
