@@ -50,7 +50,7 @@ class TeamSummaries extends Component {
     };
 
     static navigationOptions = {
-        title: 'Teams'
+        title: 'My Teams'
     };
 
     constructor(props) {
