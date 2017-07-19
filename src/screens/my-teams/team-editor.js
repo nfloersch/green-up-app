@@ -1,4 +1,4 @@
- // @flow
+// @flow
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
@@ -41,6 +41,8 @@ export default class TeamEditor extends Component {
                 screen: TeamEditorMap
             }
         });
-        return (<TeamEditorNav/>);
+        return (<TeamEditorNav screenProps={{
+            stacknav: this.props.navigation
+        }}/>);
     }
 }

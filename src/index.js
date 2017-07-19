@@ -44,7 +44,7 @@ const AppNav = DrawerNavigator({
     AllAboutGreenUpDay: {
         screen: AllAboutGreenUpDay
     }
-});
+}, {drawerPosition: 'right'});
 
 class Nav extends Component {
     static propTypes = {
@@ -59,7 +59,9 @@ class Nav extends Component {
             ? (<AppNav/>)
             : (<LoginNav/>);
         return (
-            <View style={{flex:1}}>{whichNav}</View>
+            <View style={{
+                flex: 1
+            }}>{whichNav}</View>
         );
     }
 }

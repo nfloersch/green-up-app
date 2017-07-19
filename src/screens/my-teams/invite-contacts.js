@@ -24,14 +24,14 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class InviteForm extends Component {
+export default class InviteContacts extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array
     };
 
     static navigationOptions = {
-        title: 'Invite Team Members'
+        title: 'Invite Contacts'
     };
     constructor(props) {
         super(props);
@@ -40,7 +40,7 @@ export default class InviteForm extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Invite Form Screen</Text>
+                <Text>Invite Contacts Screen</Text>
             </View>
         );
     }

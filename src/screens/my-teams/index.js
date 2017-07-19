@@ -11,6 +11,9 @@ import TeamDetails from './team-details';
 import TeamEditor from './team-editor';
 import TeamInvitationDetails from './team-invitation-details';
 import TeamSearch from "./team-search";
+import InviteForm from './invite-form';
+import InviteContacts from './invite-contacts';
+import MessageTeam from './message-team';
 import DrawerToggle from '../../components/drawer-toggle';
 import {FontAwesome} from '@expo/vector-icons';
 
@@ -28,13 +31,10 @@ export default class Teams extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            currentMessageId: null
-        };
+        this.state = {};
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() {}
 
     render() {
         var TeamsNav = StackNavigator({
@@ -56,6 +56,18 @@ export default class Teams extends Component {
             },
             TeamSearch: {
                 screen: TeamSearch,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            MessageTeam: {
+                screen: MessageTeam,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            InviteForm: {
+                screen: InviteForm,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            InviteContacts: {
+                screen: InviteContacts,
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });

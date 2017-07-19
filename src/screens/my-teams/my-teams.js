@@ -46,7 +46,7 @@ class TeamSummaries extends Component {
         actions: PropTypes.object,
         teams: PropTypes.array,
         navigation: PropTypes.object,
-        toTeamDetails: PropTypes.function
+        toTeamDetails: PropTypes.func
     };
 
     static navigationOptions = {

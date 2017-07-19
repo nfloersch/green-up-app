@@ -39,7 +39,7 @@ export default class LoginForm extends Component {
         title: 'Green Up Vermont'
     };
     static propTypes = {
-        login: PropTypes.function
+        login: PropTypes.func
     };
 
     constructor(props) {

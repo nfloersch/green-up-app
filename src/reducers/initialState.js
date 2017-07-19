@@ -7,10 +7,10 @@ export default {
             email: 'z@z.com',
             messages: [
                 {
-                    id: '123',
+                    _id: '123',
                     message: 'Hello Nurse'
                 }, {
-                    id: '345',
+                    _id: '345',
                     message: 'I love your shoes'
                 }
             ],

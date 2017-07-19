@@ -25,10 +25,11 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamEditorMembers extends Component {
+class TeamEditorMembers extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        teams: PropTypes.array,
+        stackNav: PropTypes.object
     };
 
     static navigationOptions = {
@@ -39,13 +40,36 @@ export default class TeamEditorMembers extends Component {
     };
     constructor(props) {
         super(props);
+        this.inviteContacts = this.inviteContacts.bind(this);
+        this.inviteForm = this.inviteForm.bind(this);
     }
 
+    inviteContacts() {
+        this.props.screenProps.stacknav.navigate('InviteContacts');
+    }
+
+    inviteForm() {
+        this.props.screenProps.stacknav.navigate('InviteForm');
+    }
     render() {
         return (
             <View style={styles.container}>
                 <Text>Team Editor Members Screen</Text>
+                <Button onPress={this.inviteContacts} title='Invite Contacts'/>
+                <Button onPress={this.inviteForm} title='Invite to Team'/>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {teams: state.teamReducers.session.user.teams};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);
