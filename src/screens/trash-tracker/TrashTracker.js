@@ -6,6 +6,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {onNavigatorEvent, navButtons} from '../../libs/navigation-switch';
 import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import NavHeader from '../../components/NavHeader';
@@ -45,18 +46,20 @@ const styles = StyleSheet.create({
 export default class TrashTracker extends Component {
     static navigationOptions = {
         drawerLabel: 'Trash Tracker',
-        drawerIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='green'/>)
+        drawerIcon: ({tintColor}) => (
+            <MaterialCommunityIcons name="map-marker" size={24} color="green" />
+        )
     };
     static propTypes = {
-        navigation: PropTypes.object
-    };
+     };
 
     constructor(props) {
         super(props);
         this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
