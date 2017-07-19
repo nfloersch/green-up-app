@@ -42,18 +42,20 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TrashTracker extends Component {
+export default class TrashDrop extends Component {
     static navigationOptions = {
-        drawerLabel: 'Trash Tracker',
-        drawerIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='green'/>)
+        title: 'Dropping Trash'
     };
+    
     static propTypes = {
         navigation: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-        this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this._myAwesomeMethod = this
+            ._myAwesomeMethod
+            .bind(this);
     }
 
     componentDidMount() {}
@@ -65,35 +67,29 @@ export default class TrashTracker extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle="Trash Tracker" showBack={false}/>
                 <Text style={styles.text}>No. Bags:</Text>
                 <ScrollView keyboardShouldPersistTaps='never'>
-                    <TextInput keyboardType='numeric'
+                    <TextInput
+                        keyboardType='numeric'
                         placeholder=' 1'
-                        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                        onChangeText={(text) => this.setState({text})}
-                    />
+                        style={{
+                        height: 40,
+                        borderColor: 'gray',
+                        borderWidth: 1
+                    }}
+                        onChangeText={(text) => this.setState({text})}/>
                     <Text style={styles.text}>Other Items</Text>
-                    <CheckBox
-                        label='None'
-                    />
-                    <CheckBox
-                        label='Mattress(s)'
-                    />
-                    <CheckBox
-                        label='Tires'
-                    />
-                    <CheckBox
-                        label='Hazardous Waste'
-                    />
-                    <CheckBox
-                        label='Large Object(s)'
-                    />
+                    <CheckBox label='None'/>
+                    <CheckBox label='Mattress(s)'/>
+                    <CheckBox label='Tires'/>
+                    <CheckBox label='Hazardous Waste'/>
+                    <CheckBox label='Large Object(s)'/>
                     <Button
-                        onPress={() => { Alert.alert('This will mark the location!')}}
+                        onPress={() => {
+                        Alert.alert('This will mark the location!');
+                    }}
                         title='Mark the Spot'
-                        color='green'
-                    />
+                        color='green'/>
                 </ScrollView>
             </View>
         );
