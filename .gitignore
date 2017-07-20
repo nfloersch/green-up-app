@@ -53,3 +53,5 @@ fastlane/Preview.html
 fastlane/screenshots
 assets/icons/
 src/screens/my-awesome-feature/
+
+.expo
