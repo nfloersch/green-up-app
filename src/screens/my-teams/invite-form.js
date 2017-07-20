@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, TouchableHighlight, View, Alert} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
@@ -68,7 +68,9 @@ export default class InviteForm extends Component {
                 <TextInput style={styles.textinput}
                     placeholder='Type phone here'
                 />
-                <Button title = 'Invite to Group'/>
+                <Button
+                    onPress={() => { Alert.alert('This will invite someone'); }}
+                    title = 'Invite to Group'/>
             </View>
         );
     }
