@@ -18,6 +18,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         width: '100%'
     },
+    text: {
+        fontSize: 20,
+        textAlign: 'left',
+        margin: 10
+    },
+    textinput: {
+        fontSize: 20,
+        textAlign: 'left',
+        width: 200
+    },
     teams: {
         fontSize: 20,
         textAlign: 'center',
