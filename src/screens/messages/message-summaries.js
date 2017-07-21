@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as messageActions from './messageActions';
-
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -67,7 +66,7 @@ class MessageSummaries extends Component {
         };
     }
     render() {
-        var myMessages = (this.props.messages || []).map(message => (
+        const myMessages = (this.props.messages || []).map(message => (
             <TouchableHighlight key={message._id} onPress={this.toMessageDetail(message._id)}>
                 <View>
                     <Text style={styles.messages}>{message.message}</Text>
