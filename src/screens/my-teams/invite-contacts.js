@@ -5,7 +5,8 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, TouchableHighlight, View, ScrollView, Alert} from 'react-native';
+import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
@@ -40,7 +41,25 @@ export default class InviteContacts extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Invite Contacts Screen</Text>
+                <ScrollView keyboardShouldPersistTaps='never'>
+                    <CheckBox
+                        label='Contact 1'
+                    />
+                    <CheckBox
+                        label='Contact 2'
+                    />
+                    <CheckBox
+                        label='Contact 3'
+                    />
+                    <CheckBox
+                        label='Contact 4'
+                    />
+                    <Button
+                        onPress={() => { Alert.alert('This will invite your contacts to your group'); }}
+                        title='Invite to Group'
+                        color='green'
+                    />
+                </ScrollView>
             </View>
         );
     }

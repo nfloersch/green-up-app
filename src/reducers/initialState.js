@@ -8,7 +8,7 @@ export default {
             messages: [
                 {
                     _id: '123',
-                    message: 'Hello Nurse'
+                    message: 'Hello'
                 }, {
                     _id: '345',
                     message: 'I love your shoes'
