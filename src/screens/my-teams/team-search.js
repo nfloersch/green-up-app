@@ -10,13 +10,15 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-        width: '100%'
+        width: '100%',
+        marginBottom: 5
     },
     teams: {
         fontSize: 20,
@@ -29,12 +31,17 @@ const styles = StyleSheet.create({
         borderColor: '#678',
         padding: 3,
         width: '100%'
+    },
+    scrollview: {
+        width: '100%',
+        marginTop: 5
     }
 });
-export default class TeamSearch extends Component {
+class TeamSearch extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        teams: PropTypes.array,
+        navigation: PropTypes.object
     };
 
     static navigationOptions = {
@@ -42,28 +49,47 @@ export default class TeamSearch extends Component {
     };
     constructor(props) {
         super(props);
+        this.toTeamDetail = this.toTeamDetail.bind(this);
+    }
+
+    toTeamDetail() {
+        this.props.navigation.navigate('TeamDetails');
     }
 
     render() {
-        var myResults = (this.props.teams || []).map(team => (
-            <TouchableHighlight style={styles.column} >
-                <Text style={styles.teams}>{'Team 1'}</Text>
-            </TouchableHighlight>
-        ));
-
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
                     <TextInput keyBoardType={'default'}
                         placeholder={'search teams'}
-                        style={{width: '83%'}}
+                        style={{width: '80%'}}
                     />
                     <Button title={'search'} />
                 </View>
-                <ScrollView style={{width: '100%'}}>
-                    {myResults}
+                <ScrollView style={styles.scrollview}>
+                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
+                        <Text style={styles.teams}>{'Team 1'}</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
+                        <Text style={styles.teams}>{'Team 2'}</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
+                        <Text style={styles.teams}>{'Team 3'}</Text>
+                    </TouchableHighlight>
                 </ScrollView>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {teams: state.teamReducers.session.user.teams};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamSearch);
