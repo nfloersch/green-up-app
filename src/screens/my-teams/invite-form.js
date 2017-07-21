@@ -21,12 +21,20 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         textAlign: 'left',
-        margin: 10
+        margin: 10,
+        alignSelf:'center',
+        width: '96%'
     },
     textinput: {
-        fontSize: 20,
+        fontSize: 18,
         textAlign: 'left',
-        width: 200
+        height: 28,
+        borderWidth: 1,
+        borderColor: 'grey',
+        width: '96%',
+        alignSelf:'center',
+        padding: 2,
+
     },
     teams: {
         fontSize: 20,
