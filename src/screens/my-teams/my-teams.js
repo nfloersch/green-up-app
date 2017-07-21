@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
