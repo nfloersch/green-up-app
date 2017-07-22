@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as loginActions from './screens/login/login-actions';
 import PropTypes from 'prop-types';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';

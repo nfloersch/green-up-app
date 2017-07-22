@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class Messages extends Component {
+class MessageDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array
@@ -45,3 +45,15 @@ export default class Messages extends Component {
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {messages: state.messageReducer.session.user.messages};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(messageActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageDetails);
