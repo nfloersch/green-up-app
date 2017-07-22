@@ -11,6 +11,8 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import { Contacts } from 'expo';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -25,6 +27,11 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
+
+
+
+
+
 export default class InviteContacts extends Component {
     static propTypes = {
         actions: PropTypes.object,
@@ -37,6 +44,8 @@ export default class InviteContacts extends Component {
     constructor(props) {
         super(props);
     }
+
+
 
     render() {
         return (
