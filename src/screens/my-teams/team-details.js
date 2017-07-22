@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamDetails extends Component {
+class TeamDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array
@@ -40,8 +40,21 @@ export default class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Team Details Screen</Text>
+                <Text style={styles.teams}>{'Team Title'}</Text>
+                <Text>{'Where: somewhere out there'}</Text>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {teams: state.teamReducers.session.user.teams};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamDetails);

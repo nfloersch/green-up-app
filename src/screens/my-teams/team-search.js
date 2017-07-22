@@ -68,13 +68,19 @@ class TeamSearch extends Component {
                 </View>
                 <ScrollView style={styles.scrollview}>
                     <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <Text style={styles.teams}>{'Team 1'}</Text>
+                        <View>
+                            <Text style={styles.teams}>{'Team 1'}</Text>
+                        </View>
                     </TouchableHighlight>
                     <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <Text style={styles.teams}>{'Team 2'}</Text>
+                        <View>
+                            <Text style={styles.teams}>{'Team 2'}</Text>
+                        </View>
                     </TouchableHighlight>
                     <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <Text style={styles.teams}>{'Team 3'}</Text>
+                        <View>
+                            <Text style={styles.teams}>{'Team 3'}</Text>
+                        </View>
                     </TouchableHighlight>
                 </ScrollView>
             </View>
