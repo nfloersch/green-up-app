@@ -1,7 +1,7 @@
 import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
 import Expo from 'expo';
-export function retrieveContacts(_pageSize = 2) {
+export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
         // Ask for permission to query contacts.
         const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
