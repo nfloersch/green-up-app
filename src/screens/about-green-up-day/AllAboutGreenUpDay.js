@@ -7,7 +7,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import NavHeader from '../../components/NavHeader';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as allAboutGreenUpDayActions from './allAboutGreenUpDayActions';
 import {
     Alert,
     Button,
@@ -17,6 +19,7 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -26,8 +29,9 @@ const styles = StyleSheet.create({
         width: '100%'
     }
 });
-export default class AllAboutGreenUpDay extends Component {
-    static propTypes = {};
+
+class AllAboutGreenUpDay extends Component {
+    static propTypes = {aboutContent: PropTypes.string};
     static navigationOptions = {
         drawerLabel: 'About Green Up Day',
         drawerIcon: ({tintColor}) => (
@@ -51,13 +55,27 @@ export default class AllAboutGreenUpDay extends Component {
         return (
             <View style={styles.container}>
                 <NavHeader navigation={this.props.navigation} screenTitle="About Green Up Day" showBack={false}/>
-
                 <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
                     <Text style={styles.text}>
                         All About Green Up Day
                     </Text>
                 </TouchableHighlight>
+                <Text>{this.props.aboutContent}</Text>
             </View>
         );
     }
 }
+
+
+function mapStateToProps(state, ownProps) {
+    return {aboutContent: state.allAboutGreenUpDayReducers.aboutPageContent};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(allAboutGreenUpDayActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllAboutGreenUpDay);
+
