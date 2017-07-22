@@ -175,7 +175,7 @@
     "sort-vars": 1, //sort variables within the same declaration block
     "space-before-blocks":  [2, "always"], //require or disallow a space before blocks (fixable)
     "space-before-function-paren": [0,  {"anonymous": "never", "named": "never"}], //require or disallow a space before function opening parenthesis (fixable)
-    "keyword-spacing": 2, //require a space before certain keywords (fixable)
+    "keyword-spacing": 0, //require a space before certain keywords (fixable)
     "space-in-parens": [0, "never"], //require or disallow spaces inside parentheses
     "space-infix-ops": 2, //require spaces around operators (fixable)
     "space-unary-ops": 2, //require or disallow spaces before/after unary operators (fixable)
