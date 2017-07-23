@@ -16,12 +16,29 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
-        width: '100%'
+        width: '100%',
+        padding: 10
     },
     teams: {
-        fontSize: 20,
-        textAlign: 'center',
+        fontSize: 40,
+        fontWeight: '40',
+        textAlign: 'center'
+    },
+    info: {
+        flexDirection: 'row',
+        width: '100%',
+        marginLeft: '15%',
+        marginRight: '15%',
+        justifyContent: 'space-between',
         margin: 10
+    },
+    textInfo: {
+        fontSize: 20,
+        marginRight: 20
+    },
+    boldInfo: {
+        fontSize: 20,
+        fontWeight: '30'
     }
 });
 class TeamDetails extends Component {
@@ -41,7 +58,18 @@ class TeamDetails extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.teams}>{'Team Title'}</Text>
-                <Text>{'Where: somewhere out there'}</Text>
+                <View style={styles.info}>
+                    <Text style={styles.textInfo}>{'Where:'}</Text>
+                    <Text style={styles.boldInfo}>{'Some place in Vermont'}</Text>
+                </View>
+                <View style={styles.info}>
+                    <Text style={styles.textInfo}>{'Start:'}</Text>
+                    <Text style={styles.boldInfo}>{'May 4 12:00 am'}</Text>
+                </View>
+                <View style={styles.info}>
+                    <Text style={styles.textInfo}>{'Ends:'}</Text>
+                    <Text style={styles.boldInfo}>{'May 5 3:00 pm'}</Text>
+                </View>
             </View>
         );
     }
