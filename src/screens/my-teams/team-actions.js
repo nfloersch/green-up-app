@@ -1,6 +1,12 @@
 import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
 import Expo from 'expo';
+import Team from '../../models/team';
+
+const _teams = [...Array(43)].map((t, i) => {
+    return Team.create({_id: i, name: `Team ${i}`})
+});
+
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
         // Ask for permission to query contacts.
@@ -24,5 +30,13 @@ export function retrieveContacts(_pageSize = 40) {
                 : contacts;
         }
         getContactsAsync(_pageSize);
-    }
+    };
+}
+export function searchForTeams(searchString) {
+    return function (dispatch) {
+        return Promise.resolve().then(() => {
+            const teams = _teams.filter(team => (team.name.toLowercase().indexOf(searchString.toLowercase()) >= 0));
+            dispatch({type: types.SEARCH_TEAMS_SUCCESS, teams});
+        });
+    };
 }

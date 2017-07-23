@@ -4,7 +4,7 @@ import {isDate} from '../libs/isDate';
 import {Zone} from './zone';
 import {UserSummary} from './user-summary';
 
-export class Team {
+export default class Team {
     _id : string;
     name : string;
     description : string;

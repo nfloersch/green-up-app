@@ -22,6 +22,11 @@ export function teamReducers(state = initialState, action) {
                 ...state,
                 contacts: []
             };
+        case types.SEARCH_TEAMS_SUCCESS:
+            return {
+                ...state,
+                teamSearchResults: action.teams
+            };
         default:
             return state;
     }
