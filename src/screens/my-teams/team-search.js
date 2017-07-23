@@ -5,7 +5,15 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
+import {
+    Button,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableHighlight,
+    View
+} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
@@ -41,7 +49,8 @@ class TeamSearch extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.array,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        searchResults: PropTypes.array
     };
 
     static navigationOptions = {
@@ -50,38 +59,46 @@ class TeamSearch extends Component {
     constructor(props) {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
+        this.onSearchTermChange = this.onSearchTermChange.bind(this);
+        this.onSearchButtonPress = this.onSearchButtonPress.bind(this);
+        this.state = {
+            searchTerm: ''
+        };
+
     }
 
-    toTeamDetail() {
-        this.props.navigation.navigate('TeamDetails');
+    onSearchTermChange(text) {
+        this.setState({searchTerm: text});
+    }
+
+    onSearchButtonPress() {
+        this.props.actions.searchForTeams(this.state.searchTerm);
+    }
+
+    toTeamDetail(team) {
+        return () => {
+            this.props.navigation.navigate('TeamDetails');
+        };
     }
 
     render() {
+        var teams = this.props.searchResults.map(team => (
+            <TouchableHighlight key={team._id} style={styles.column} onPress={this.toTeamDetail(team)}>
+                <View>
+                    <Text style={styles.teams}>{team.name}</Text>
+                </View>
+            </TouchableHighlight>
+        ));
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
-                    <TextInput keyBoardType={'default'}
-                        placeholder={'search teams'}
-                        style={{width: '80%'}}
-                    />
-                    <Button title={'search'} />
+                    <TextInput keyBoardType={'default'} onChangeText={this.onSearchTermChange} placeholder={'search teams'} style={{
+                        width: '80%'
+                    }} value={this.state.searchTerm}/>
+                    <Button onPress={this.onSearchButtonPress} title={'search'}/>
                 </View>
                 <ScrollView style={styles.scrollview}>
-                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <View>
-                            <Text style={styles.teams}>{'Team 1'}</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <View>
-                            <Text style={styles.teams}>{'Team 2'}</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.column} onPress={this.toTeamDetail}>
-                        <View>
-                            <Text style={styles.teams}>{'Team 3'}</Text>
-                        </View>
-                    </TouchableHighlight>
+                    {teams}
                 </ScrollView>
             </View>
         );
@@ -89,7 +106,7 @@ class TeamSearch extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams};
+    return {searchResults: state.teamReducers.teamSearchResults};
 }
 
 function mapDispatchToProps(dispatch) {
