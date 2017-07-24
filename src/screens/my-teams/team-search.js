@@ -77,6 +77,7 @@ class TeamSearch extends Component {
 
     toTeamDetail(team) {
         return () => {
+            this.props.actions.selectTeam(team);
             this.props.navigation.navigate('TeamDetails');
         };
     }
