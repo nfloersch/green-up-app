@@ -1,4 +1,7 @@
 import {combineReducers} from 'redux';
 import {messageReducer} from '../screens/messages/messageReducer';
-const rootReducer = combineReducers({messageReducer});
+import {loginReducer} from '../screens/login/login-reducer';
+import {teamReducers} from '../screens/my-teams/team-reducers';
+import {allAboutGreenUpDayReducers} from "../screens/about-green-up-day/allAboutGreenUpDayReducers"
+const rootReducer = combineReducers({messageReducer, loginReducer, teamReducers, allAboutGreenUpDayReducers});
 export default rootReducer;

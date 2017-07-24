@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TeamDetails extends Component {
+class TeamDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        selectedTeam: PropTypes.object
     };
 
     static navigationOptions = {
@@ -40,8 +40,21 @@ export default class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Team Details Screen</Text>
+                <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
+                <Text>{'Where: somewhere out there'}</Text>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {selectedTeam: state.teamReducers.selectedTeam};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamDetails);
