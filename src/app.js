@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 import {Navigation} from 'react-native-navigation';
 import registerScreens from './screens';
 import configureStore from './store/configureStore';
+import Welcome from './screens/login/';
 const store = configureStore();
 // screen related book keeping
 registerScreens(store, Provider);
