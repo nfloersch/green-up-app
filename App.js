@@ -7,7 +7,7 @@ import {DrawerNavigator} from 'react-navigation';
 import Welcome from './src/screens/welcome/Welcome';
 import Messages from './src/screens/messages/Messages';
 import Donate from './src/screens/donate/Donate';
-import MyTeams from './src/screens/my-teams/MyTeams';
+import MyTeams from './src/screens/my-teams/my-teams';
 import TrashTracker from './src/screens/trash-tracker/TrashTracker';
 import AllAboutGreenUpDay from './src/screens/about-green-up-day/AllAboutGreenUpDay';
 
