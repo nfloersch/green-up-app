@@ -1,14 +1,8 @@
 {
-  "expoServerPort": 19000,
+  "expoServerPort": 19001,
+  "packagerPort": 19004,
+  "packagerPid": 2691,
   "expoServerNgrokUrl": "https://yp-rwa.adawson99.greenupvermont.exp.direct",
   "packagerNgrokUrl": "https://packager.yp-rwa.adawson99.greenupvermont.exp.direct",
-  "ngrokPid": 2323,
-  "packagerPort": 19002,
-  "packagerPid": 2301
-  "expoServerNgrokUrl": "https://mz-x9h.johnneed.greenupvermont.exp.direct",
-  "packagerNgrokUrl": "https://packager.mz-x9h.johnneed.greenupvermont.exp.direct",
-  "ngrokPid": 99466,
-  "expoServerPort": 19008,
-  "packagerPort": 19009,
-  "packagerPid": 99437
+  "ngrokPid": 2705
 }
