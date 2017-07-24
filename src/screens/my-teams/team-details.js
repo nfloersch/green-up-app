@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 class TeamDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        selectedTeam: PropTypes.object
     };
 
     static navigationOptions = {
@@ -57,7 +57,8 @@ class TeamDetails extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.teams}>{'Team Title'}</Text>
+                <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
+                <Text>{'Where: somewhere out there'}</Text>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Where:'}</Text>
                     <Text style={styles.boldInfo}>{'Some place in Vermont'}</Text>
@@ -76,7 +77,7 @@ class TeamDetails extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams};
+    return {selectedTeam: state.teamReducers.selectedTeam};
 }
 
 function mapDispatchToProps(dispatch) {
