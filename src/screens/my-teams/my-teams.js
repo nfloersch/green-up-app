@@ -2,18 +2,12 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Button,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View
-} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -76,7 +70,7 @@ class TeamSummaries extends Component {
         this.props.navigation.navigate('MessageTeam');
     }
 
-    toTeamDetail(team : Object) {
+    toTeamDetail(team: Object) {
         let nextScreen = 'TeamDetails';
         switch (true) {
             case team.invitationPending:
@@ -90,11 +84,12 @@ class TeamSummaries extends Component {
                 break;
         }
         return () => {
-            this.props.navigation.navigate(nextScreen);
+            this.props.actions.selectTeam(team);
+            this.props.navigation.navigate('TeamDetails');
         };
     }
 
-    toTeamIcon(team : Object) {
+    toTeamIcon(team: Object) {
         switch (true) {
             case team.invitationPending:
                 return 'contact-mail';
@@ -111,10 +106,14 @@ class TeamSummaries extends Component {
             <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
                 <View>
                     <TouchableHighlight onPress={this.toMessageTeam}>
-                        <MaterialCommunityIcons name='message-text-outline' size='25'/>
+                        <MaterialCommunityIcons name = 'message-text-outline'
+                            size = '25'
+                        />
                     </TouchableHighlight>
                     <Text style={styles.teams}>{team.name}</Text>
-                    <MaterialCommunityIcons name={this.toTeamIcon(team)} size='25'/>
+                    <MaterialCommunityIcons name = {this.toTeamIcon(team)}
+                        size = '25'
+                    />
                 </View>
             </TouchableHighlight>
         ));
