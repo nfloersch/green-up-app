@@ -39,6 +39,11 @@ const styles = StyleSheet.create({
     boldInfo: {
         fontSize: 20,
         fontWeight: '30'
+    },
+    details: {
+        borderWidth: 2,
+        borderColor: '#678',
+        padding: 5
     }
 });
 class TeamDetails extends Component {
@@ -58,18 +63,20 @@ class TeamDetails extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
-                <Text>{'Where: somewhere out there'}</Text>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Where:'}</Text>
-                    <Text style={styles.boldInfo}>{'Some place in Vermont'}</Text>
+                    <Text style={styles.boldInfo}>{this.props.selectedTeam.location}</Text>
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Start:'}</Text>
-                    <Text style={styles.boldInfo}>{'May 4 12:00 am'}</Text>
+                    <Text style={styles.boldInfo}>{this.props.selectedTeam.startTime}</Text>
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Ends:'}</Text>
-                    <Text style={styles.boldInfo}>{'May 5 3:00 pm'}</Text>
+                    <Text style={styles.boldInfo}>{this.props.selectedTeam.endTime}</Text>
+                </View>
+                <View style={styles.details}>
+                    <Text style={{fontSize: 10}}>{'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus facilisis urna, eget ornare odio blandit id. Praesent orci orci, porttitor non viverra sed, iaculis quis ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. '}</Text>
                 </View>
             </View>
         );

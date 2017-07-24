@@ -284,7 +284,10 @@ export default {
         }
     },
     selectedTeam : {
-        name: 'Intial Team'
+        name: 'Intial Team',
+        location: 'Some place in Vermont',
+        startTime: 'May 4 12:00 am',
+        endTime: 'May 5 3:00 pm'
     },
     aboutPageContent : "Green Up Vermont is a nonprofit organization with 501(c) (3) status. Green Up’s mission is to promote the stewardship of our state’s natural landscape and waterways and the livability of our communities by involving people in Green Up Day and raising public awareness about the benefits of a litter-free environment.",
     teamSearchResults : []
