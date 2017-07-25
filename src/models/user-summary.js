@@ -1,6 +1,5 @@
 // @flow
 
-export class UserSummary {
     _id : string;
     userId : string;
     firstName : string;
