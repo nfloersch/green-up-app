@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         margin: 2
     },
     inputStyle: {
-        paddingRight: 5,
         paddingLeft: 5,
         paddingBottom: 2,
         color: '#262626',
@@ -42,9 +41,11 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     buttons: {
-      width: '50%',
+      width: '100%',
       flexDirection: 'row',
-      justifyContent: 'center'
+      paddingTop: 15,
+      paddingLeft: 5,
+      margin: 5
     }
 });
 
@@ -112,12 +113,12 @@ class TeamSummaries extends Component {
                 <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
                         <MaterialCommunityIcons name = 'message-text-outline'
-                            size = '25'
+                            size = '50'
                         />
                     </TouchableHighlight>
                     <Text style={styles.teams}>{team.name}</Text>
                     <MaterialCommunityIcons name = {this.toTeamIcon(team)}
-                        size = '25'
+                        size = '50'
                     />
                 </View>
             </TouchableHighlight>
