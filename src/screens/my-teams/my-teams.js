@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         fontSize: 20,
-        margin: 5
+        margin: 2
     },
     inputStyle: {
         paddingRight: 5,
@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
+    },
+    buttons: {
+      width: '50%',
+      flexDirection: 'row',
+      justifyContent: 'center'
     }
 });
 
@@ -104,7 +109,7 @@ class TeamSummaries extends Component {
 
         var myTeams = (this.props.teams || []).map(team => (
             <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
-                <View>
+                <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
                         <MaterialCommunityIcons name = 'message-text-outline'
                             size = '25'
