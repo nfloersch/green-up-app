@@ -18,17 +18,13 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     headerButton: {
-        // flex: 1,
         width: 32
     },
     teams: {
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        fontSize: 20,
-        margin: 5
+        fontSize: 18,
+        margin: 2
     },
     inputStyle: {
-        paddingRight: 5,
         paddingLeft: 5,
         paddingBottom: 2,
         color: '#262626',
@@ -40,6 +36,12 @@ const styles = StyleSheet.create({
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
+    },
+    buttons: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
     }
 });
 
@@ -104,15 +106,15 @@ class TeamSummaries extends Component {
 
         var myTeams = (this.props.teams || []).map(team => (
             <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
-                <View>
+                <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
                         <MaterialCommunityIcons name = 'message-text-outline'
-                            size = '25'
+                            size = '50'
                         />
                     </TouchableHighlight>
                     <Text style={styles.teams}>{team.name}</Text>
                     <MaterialCommunityIcons name = {this.toTeamIcon(team)}
-                        size = '25'
+                        size = '50'
                     />
                 </View>
             </TouchableHighlight>
