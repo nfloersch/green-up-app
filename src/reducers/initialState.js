@@ -1,5 +1,6 @@
 export default {
     session : {
+        hasToken: false,
         user: {
             _id: null,
             firstName: 'Zoey',
