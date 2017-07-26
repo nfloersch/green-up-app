@@ -1,6 +1,6 @@
 // @flow
 
-export default class UserSummary {
+export class UserSummary {
     _id : string;
     userId : string;
     firstName : string;
