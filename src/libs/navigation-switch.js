@@ -1,5 +1,8 @@
 import {Alert} from 'react-native';
 export const navMenuLinks = {
+    MESSAGE_DETAILS : 'MESSAGE_DETAILS',
+    TEAM_SEARCH : 'TEAM_SEARCH',
+    INVITE_FORM : 'INVITE_FORM',
     ALL_ABOUT_GREEN_UP_DAY: 'ALL_ABOUT_GREEN_UP_DAY',
     TRASH_TRACKER: 'TRASH_TRACKER',
     MY_TEAMS: 'MY_TEAMS',
@@ -24,6 +27,48 @@ export function onNavigatorEvent(navigator) {
         }
         if (event.type === 'DeepLink') {
             switch (event.link) {
+              case navMenuLinks.TEAM_SEARCH:
+                  navigator.resetTo({
+                      screen: 'GreenUpVermont.Screens.TeamSearch', // unique ID registered with Navigation.registerScreen
+                      title: 'Team Search', // navigation bar title of the pushed screen (optional)
+                      // titleImage: undefined, // navigation bar title image instead of the title text of the pushed screen (optional)
+                      passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                      animated: true, // does the push have transition animation or does it happen immediately (optional)
+                      animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
+                      // backButtonTitle: undefined, // override the back button title (optional)
+                      backButtonHidden: false, // hide the back button altogether (optional)
+                      navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                      navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                  });
+                  break;
+              case navMenuLinks.MESSAGE_DETAILS:
+                  navigator.resetTo({
+                      screen: 'GreenUpVermont.Screens.MessageDetails', // unique ID registered with Navigation.registerScreen
+                      title: 'Message Details', // navigation bar title of the pushed screen (optional)
+                      // titleImage: undefined, // navigation bar title image instead of the title text of the pushed screen (optional)
+                      passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                      animated: true, // does the push have transition animation or does it happen immediately (optional)
+                      animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
+                      // backButtonTitle: undefined, // override the back button title (optional)
+                      backButtonHidden: false, // hide the back button altogether (optional)
+                      navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                      navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                  });
+                  break;
+                  case navMenuLinks.INVITE_FORM:
+                      navigator.resetTo({
+                          screen: 'GreenUpVermont.Screens.InviteForm', // unique ID registered with Navigation.registerScreen
+                          title: 'Invite Form', // navigation bar title of the pushed screen (optional)
+                          // titleImage: undefined, // navigation bar title image instead of the title text of the pushed screen (optional)
+                          passProps: {}, // Object that will be passed as props to the pushed screen (optional)
+                          animated: true, // does the push have transition animation or does it happen immediately (optional)
+                          animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the push have different transition animation (optional)
+                          // backButtonTitle: undefined, // override the back button title (optional)
+                          backButtonHidden: false, // hide the back button altogether (optional)
+                          navigatorStyle: {}, // override the navigator style for the pushed screen (optional)
+                          navigatorButtons: {} // override the nav buttons for the pushed screen (optional)
+                      });
+                      break;
                 case navMenuLinks.DONATE:
                     navigator.resetTo({
                         screen: 'GreenUpVermont.Screens.Donate', // unique ID registered with Navigation.registerScreen
