@@ -9,6 +9,7 @@ import {
     Button,
     StyleSheet,
     Text,
+    TextInput,
     TouchableHighlight,
     View,
     FlatList
@@ -27,16 +28,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         width: '100%'
     },
-    teams: {
+    label: {
         fontSize: 20,
         textAlign: 'center',
         margin: 10
+    },
+    column: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: '#678',
+        padding: 3,
+        width: '100%'
     }
 });
-export default class TeamEditorDetails extends Component {
+
+class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        selectedTeam: PropTypes.object
     };
 
     static navigationOptions = {
@@ -45,7 +54,6 @@ export default class TeamEditorDetails extends Component {
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
         tabBarIcon: () => (<MaterialCommunityIcons name='information' size={24} color='blue'/>)
     };
-
     constructor(props) {
         super(props);
         this.options = [
@@ -57,23 +65,56 @@ export default class TeamEditorDetails extends Component {
                 value: 'private'
             }
         ];
+        this.setTeamValue = this.setTeamValue.bind(this);
         this.setSelectedOption = this.setSelectedOption.bind(this);
         this.state = {
-            selectedOption: this.options[0]
+            selectedOption: this.options[0],
+            selectedTeam: {}
         };
     }
 
+    componentWillMount() {
+        this.setState({selectedTeam: this.props.selectedTeam});
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({selectedTeam: nextProps.selectedTeam});
+    }
     setSelectedOption(option) {
         console.log(option);
         this.setState({selectedOption: option});
     }
 
-    render() {
+    setTeamValue(key) {
+        let newState = {};
+        return (value) => {
+            newState[key] = value;
+            this.setState({selectedTeam: Object.assign({}, this.state.selectedTeam, newState)});
+        };
+    }
 
+    render() {
         return (
             <View style={styles.container}>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Team Name:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('name')} placeholder={'Team Name'} style={{
+                        width: '80%'
+                    }} value={this.state.selectedTeam.name}/>
+                </View>
                 <SegmentedControls options={this.options} onSelection={this.setSelectedOption} selectedOption={this.state.selectedOption} selectedTint={'#EFEFEF'} tint={'#666666'} extractText={(option) => option.label}/>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {selectedTeam: state.teamReducers.selectedTeam};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);
