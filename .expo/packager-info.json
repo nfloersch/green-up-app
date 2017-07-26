@@ -1,8 +1,17 @@
 {
+<<<<<<< HEAD
   "expoServerPort": 19004,
   "packagerPort": 19005,
   "packagerPid": 36135,
   "expoServerNgrokUrl": "https://2m-4q5.cameronmarcus.greenupvermont.exp.direct",
   "packagerNgrokUrl": "https://packager.2m-4q5.cameronmarcus.greenupvermont.exp.direct",
   "ngrokPid": 35732
+=======
+  "expoServerPort": 19000,
+  "packagerPort": 19005,
+  "packagerPid": 7552,
+  "expoServerNgrokUrl": "https://jf-ymc.adawson99.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.jf-ymc.adawson99.greenupvermont.exp.direct",
+  "ngrokPid": 7575
+>>>>>>> master
 }

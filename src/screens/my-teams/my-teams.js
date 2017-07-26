@@ -2,11 +2,12 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -17,16 +18,13 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     headerButton: {
-        // flex: 1,
         width: 32
     },
     teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
+        fontSize: 18,
+        margin: 2
     },
     inputStyle: {
-        paddingRight: 5,
         paddingLeft: 5,
         paddingBottom: 2,
         color: '#262626',
@@ -38,6 +36,12 @@ const styles = StyleSheet.create({
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
+    },
+    buttons: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
     }
 });
 
@@ -57,10 +61,15 @@ class TeamSummaries extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
+        this.toMessageTeam = this.toMessageTeam.bind(this);
     }
 
     toTeamSearch() {
         this.props.navigation.navigate('TeamSearch');
+    }
+
+    toMessageTeam() {
+        this.props.navigation.navigate('MessageTeam');
     }
 
     toTeamDetail(team: Object) {
@@ -77,16 +86,36 @@ class TeamSummaries extends Component {
                 break;
         }
         return () => {
-            this.props.navigation.navigate(nextScreen);
+            this.props.actions.selectTeam(team);
+            this.props.navigation.navigate('TeamDetails');
         };
+    }
+
+    toTeamIcon(team: Object) {
+        switch (true) {
+            case team.invitationPending:
+                return 'contact-mail';
+            case team.userIsOwner:
+                return 'pencil-box';
+            default:
+                return 'arrow-right-thick';
+        }
     }
 
     render() {
 
         var myTeams = (this.props.teams || []).map(team => (
             <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
-                <View>
+                <View style={styles.buttons}>
+                    <TouchableHighlight onPress={this.toMessageTeam}>
+                        <MaterialCommunityIcons name = 'message-text-outline'
+                            size = '50'
+                        />
+                    </TouchableHighlight>
                     <Text style={styles.teams}>{team.name}</Text>
+                    <MaterialCommunityIcons name = {this.toTeamIcon(team)}
+                        size = '50'
+                    />
                 </View>
             </TouchableHighlight>
         ));

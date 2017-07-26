@@ -5,5 +5,9 @@
   "strict": false,
   "minify": false,
   "urlType": "exp",
+<<<<<<< HEAD
   "urlRandomness": "2m-4q5"
+=======
+  "urlRandomness": "jf-ymc"
+>>>>>>> master
 }
