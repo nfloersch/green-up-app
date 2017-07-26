@@ -2,12 +2,12 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Team from '../../models/team';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -30,16 +30,19 @@ const styles = StyleSheet.create({
         color: '#262626',
         fontSize: 18,
         fontWeight: '200',
-        height: 20,
+        height: 40,
         width: '100%',
         textAlign: 'left',
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
     },
-    row: {flex: 1, justifyContent: 'flex-start', flexDirection:'row'},
-    column1:{width: 32},
-    column2:{}
+    buttons: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
+    }
 });
 
 class TeamSummaries extends Component {
@@ -59,7 +62,6 @@ class TeamSummaries extends Component {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         this.toMessageTeam = this.toMessageTeam.bind(this);
-        this.toNewTeam = this.toNewTeam.bind(this);
     }
 
     toTeamSearch() {
@@ -85,15 +87,8 @@ class TeamSummaries extends Component {
         }
         return () => {
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen);
+            this.props.navigation.navigate('TeamDetails');
         };
-    }
-
-    toNewTeam() {
-
-        this.props.actions.selectTeam(Team.create());
-        this.props.navigation.navigate('TeamEditor');
-
     }
 
     toTeamIcon(team: Object) {
@@ -110,29 +105,25 @@ class TeamSummaries extends Component {
     render() {
 
         var myTeams = (this.props.teams || []).map(team => (
-                <View style={styles.row} key={team._id}>
-                    <TouchableHighlight  style={styles.column1}onPress={this.toMessageTeam}>
-                        <MaterialCommunityIcons name='bullhorn' size={25}/>
+            <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
+                <View style={styles.buttons}>
+                    <TouchableHighlight onPress={this.toMessageTeam}>
+                        <MaterialCommunityIcons name = 'message-text-outline'
+                            size = '50'
+                        />
                     </TouchableHighlight>
-                    <TouchableHighlight  style={styles.column2} key={team._id} onPress={this.toTeamDetail(team)}>
-                        <View style={styles.row}>
-                            <Text style={styles.teams}>{team.name}</Text>
-                            <MaterialCommunityIcons
-                                name={this.toTeamIcon(team)}
-                                size={25}
-                                style={styles.column1}
-                            />
-                        </View>
-                    </TouchableHighlight>
+                    <Text style={styles.teams}>{team.name}</Text>
+                    <MaterialCommunityIcons name = {this.toTeamIcon(team)}
+                        size = '50'
+                    />
                 </View>
-            ))
-        ;
+            </TouchableHighlight>
+        ));
         return (
             <View style={styles.container}>
                 <Text>Team Summaries Screen</Text>
                 {myTeams}
                 <Button onPress={this.toTeamSearch} title="Search Teams"/>
-                <Button onPress={this.toNewTeam} title="New Team"/>
             </View>
         );
     }
