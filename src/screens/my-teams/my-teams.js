@@ -96,7 +96,7 @@ class TeamSummaries extends Component {
         }
         return () => {
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate('TeamDetails');
+            this.props.navigation.navigate(nextScreen);
         };
     }
 
