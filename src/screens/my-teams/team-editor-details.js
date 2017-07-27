@@ -67,6 +67,7 @@ class TeamEditorDetails extends Component {
         ];
         this.setTeamValue = this.setTeamValue.bind(this);
         this.setSelectedOption = this.setSelectedOption.bind(this);
+        this.saveTeam = this.saveTeam.bind(this);
         this.state = {
             selectedOption: this.options[0],
             selectedTeam: {}
