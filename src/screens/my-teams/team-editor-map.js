@@ -10,6 +10,8 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {MapView} from 'expo';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -41,10 +43,13 @@ export default class TeamEditorMap extends Component {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Text>Team Editor Map Screen</Text>
-            </View>
-        );
+        return (<MapView style={{
+            flex: 1
+        }} initialRegion={{
+            latitude: 44.4785386,
+            longitude: -73.2126569,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+        }}/>);
     }
 }

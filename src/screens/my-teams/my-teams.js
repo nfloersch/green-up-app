@@ -2,12 +2,19 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {
+    Button,
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    View
+} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import Team from '../../models/team';
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +57,7 @@ class TeamSummaries extends Component {
         actions: PropTypes.object,
         teams: PropTypes.array,
         navigation: PropTypes.object,
+        owner: PropTypes.object,
         toTeamDetails: PropTypes.func
     };
 
@@ -62,6 +70,7 @@ class TeamSummaries extends Component {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         this.toMessageTeam = this.toMessageTeam.bind(this);
+        this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
     }
 
     toTeamSearch() {
@@ -72,7 +81,7 @@ class TeamSummaries extends Component {
         this.props.navigation.navigate('MessageTeam');
     }
 
-    toTeamDetail(team: Object) {
+    toTeamDetail(team : Object) {
         let nextScreen = 'TeamDetails';
         switch (true) {
             case team.invitationPending:
@@ -91,7 +100,13 @@ class TeamSummaries extends Component {
         };
     }
 
-    toTeamIcon(team: Object) {
+    toNewTeamEditor() {
+        const team = Team.create({owner: this.props.owner});
+        this.props.actions.selectTeam(team);
+        this.props.navigation.navigate('TeamEditor');
+    }
+
+    toTeamIcon(team : Object) {
         switch (true) {
             case team.invitationPending:
                 return 'contact-mail';
@@ -108,14 +123,10 @@ class TeamSummaries extends Component {
             <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
                 <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
-                        <MaterialCommunityIcons name = 'message-text-outline'
-                            size = '50'
-                        />
+                        <MaterialCommunityIcons name='message-text-outline' size={50}/>
                     </TouchableHighlight>
                     <Text style={styles.teams}>{team.name}</Text>
-                    <MaterialCommunityIcons name = {this.toTeamIcon(team)}
-                        size = '50'
-                    />
+                    <MaterialCommunityIcons name={this.toTeamIcon(team)} size={50}/>
                 </View>
             </TouchableHighlight>
         ));
@@ -123,14 +134,17 @@ class TeamSummaries extends Component {
             <View style={styles.container}>
                 <Text>Team Summaries Screen</Text>
                 {myTeams}
-                <Button onPress={this.toTeamSearch} title="Search Teams"/>
+                <View style={styles.row}>
+                    <Button onPress={this.toTeamSearch} title="Search Teams"/>
+                    <Button onPress={this.toNewTeamEditor} title="New Team"/>
+                </View>
             </View>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams};
+    return {teams: state.teamReducers.session.user.teams, owner: state.teamReducers.session.user};
 }
 
 function mapDispatchToProps(dispatch) {
