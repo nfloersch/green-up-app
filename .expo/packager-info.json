@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19005,
-  "packagerPid": 7552,
+  "packagerPort": 19002,
+  "packagerPid": 1559,
   "expoServerNgrokUrl": "https://jf-ymc.adawson99.greenupvermont.exp.direct",
   "packagerNgrokUrl": "https://packager.jf-ymc.adawson99.greenupvermont.exp.direct",
-  "ngrokPid": 7575
+  "ngrokPid": 1581
 }
