@@ -43,3 +43,5 @@ export function searchForTeams(searchString) {
 export function selectTeam(team) {
     return {type: types.SELECT_TEAM, team};
 }
+
+export function saveTeam(team) {}

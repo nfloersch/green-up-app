@@ -84,6 +84,10 @@ class TeamEditorDetails extends Component {
         this.setState({selectedOption: option});
     }
 
+    saveTeam() {
+        this.props.actions.saveTeam(this.state.selectedTeam);
+    }
+
     setTeamValue(key) {
         let newState = {};
         return (value) => {
@@ -102,6 +106,20 @@ class TeamEditorDetails extends Component {
                     }} value={this.state.selectedTeam.name}/>
                 </View>
                 <SegmentedControls options={this.options} onSelection={this.setSelectedOption} selectedOption={this.state.selectedOption} selectedTint={'#EFEFEF'} tint={'#666666'} extractText={(option) => option.label}/>
+
+                <View style={styles.column}>
+                    <Text style={styles.label}>Town:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('town')} placeholder={'Town'} style={{
+                        width: '80%'
+                    }} value={this.state.selectedTeam.location}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Town:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('town')} placeholder={'Town'} style={{
+                        width: '80%'
+                    }} value={this.state.selectedTeam.location}/>
+                </View>
+                <Button title='Save' onPress={this.saveTeam}/>
             </View>
         );
     }
