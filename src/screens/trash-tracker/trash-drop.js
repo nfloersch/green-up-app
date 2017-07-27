@@ -46,22 +46,25 @@ export default class TrashDrop extends Component {
     static navigationOptions = {
         title: 'Dropping Trash'
     };
-    
+
     static propTypes = {
         navigation: PropTypes.object
     };
 
     constructor(props) {
         super(props);
-        this._myAwesomeMethod = this
-            ._myAwesomeMethod
-            .bind(this);
+        this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this.toTrashMap = this.toTrashMap.bind(this);
     }
 
     componentDidMount() {}
 
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
+    }
+
+    toTrashMap() {
+        this.props.navigation.navigate('TrashMap');
     }
 
     render() {
@@ -73,22 +76,19 @@ export default class TrashDrop extends Component {
                         keyboardType='numeric'
                         placeholder=' 1'
                         style={{
-                        height: 40,
-                        borderColor: 'gray',
-                        borderWidth: 1
-                    }}
-                        onChangeText={(text) => this.setState({text})}/>
+                            height: 40,
+                            borderColor: 'gray',
+                            borderWidth: 1
+                        }}
+                        onChangeText={(text) => this.setState({text})}
+                    />
                     <Text style={styles.text}>Other Items</Text>
                     <CheckBox label='None'/>
                     <CheckBox label='Mattress(s)'/>
                     <CheckBox label='Tires'/>
                     <CheckBox label='Hazardous Waste'/>
                     <CheckBox label='Large Object(s)'/>
-                    <Button
-                        onPress={() => {
-                        Alert.alert('This will mark the location!');
-                    }}
-                        title='Mark the Spot'
+                    <Button onPress={this.toTrashMap} title="Mark the Spot"
                         color='green'/>
                 </ScrollView>
             </View>
