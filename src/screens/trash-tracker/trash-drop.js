@@ -8,6 +8,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {connect} from 'react-redux';
+import {TrashTrackerReducers} from './TrashTrackerReducers';
 import NavHeader from '../../components/NavHeader';
 import {
     Alert,
@@ -42,7 +44,16 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TrashDrop extends Component {
+class TrashDrop extends Component {
+
+  static propTypes = {
+      actions: PropTypes.object,
+      teams: PropTypes.array,
+      navigation: PropTypes.object,
+      owner: PropTypes.object,
+      toTrashMap: PropTypes.func
+  };
+
     static navigationOptions = {
         title: 'Dropping Trash'
     };
@@ -63,7 +74,8 @@ export default class TrashDrop extends Component {
         Alert.alert('Huzzah!');
     }
 
-    toTrashMap() {
+    toTrashMap(data) {
+        const marker = TrashDrop.create({bagCount: this.bagCount, tags: this.tags});
         this.props.navigation.navigate('TrashMap');
     }
 
@@ -83,7 +95,7 @@ export default class TrashDrop extends Component {
                         onChangeText={(text) => this.setState({text})}
                     />
                     <Text style={styles.text}>Other Items</Text>
-                    <CheckBox label='None'/>
+                    <CheckBox label='None' onPress={() => {this.toTrashMap(data); }}/>
                     <CheckBox label='Mattress(s)'/>
                     <CheckBox label='Tires'/>
                     <CheckBox label='Hazardous Waste'/>
@@ -95,3 +107,14 @@ export default class TrashDrop extends Component {
         );
     }
 }
+function mapStateToProps(state, ownProps) {
+    return {markers: state.TrashTrackerReducers.session.user.markers};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(TrashTrackerActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrashDrop);
