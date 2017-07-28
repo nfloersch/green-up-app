@@ -96,10 +96,10 @@ class TeamSummaries extends Component {
         }
         return () => {
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate('TeamDetails');
+            this.props.navigation.navigate(nextScreen);
         };
     }
-
+    
     toNewTeamEditor() {
         const team = Team.create({owner: this.props.owner});
         this.props.actions.selectTeam(team);
