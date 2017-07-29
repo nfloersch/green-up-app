@@ -10,7 +10,7 @@ import MyTeams from './my-teams';
 import TeamDetails from './team-details';
 import TeamEditor from './team-editor';
 import TeamInvitationDetails from './team-invitation-details';
-import TeamSearch from "./team-search";
+import TeamSearch from './team-search';
 import InviteForm from './invite-form';
 import InviteContacts from './invite-contacts';
 import MessageTeam from './message-team';
