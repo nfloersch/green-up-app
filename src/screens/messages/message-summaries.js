@@ -58,6 +58,13 @@ class MessageSummaries extends Component {
     constructor(props) {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
+        this.toSendMessage = this.toSendMessage.bind(this);
+    }
+
+    toSendMessage() {
+        return () => {
+            this.props.navigation.navigate('SendMessage');
+        };
     }
 
     toMessageDetail(messageId) {
@@ -77,6 +84,7 @@ class MessageSummaries extends Component {
             <View style={styles.container}>
                 <Text>Message Summaries Screen</Text>
                 {myMessages}
+                <Button onPress={this.toSendMessage()} title={'create message'} />
             </View>
         );
     }
