@@ -88,14 +88,12 @@ class SendMessage extends Component {
     }
 
     sendMessage() {
-            this.props.actions.sendMessage({title: this.state.title, text: this.state.text});
-            this.props.navigation.navigate('MessageSummaries');
+        this.props.actions.sendMessage({title: this.state.title, text: this.state.text});
+        this.props.navigation.navigate('MessageSummaries');
     }
 
     cancelMessage() {
-
-            this.props.navigation.navigate('MessageSummaries');
-
+        this.props.navigation.navigate('MessageSummaries');
     }
 
     render() {
