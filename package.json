@@ -1,6 +1,6 @@
 {
   "name": "GreenUpVermont",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "main.js",
   "version": "0.0.1",
   "description": "Hello Expo!",
   "author": "Audrey, Sam, Gabe, Cameron",
