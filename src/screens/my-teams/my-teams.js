@@ -99,7 +99,7 @@ class TeamSummaries extends Component {
             this.props.navigation.navigate(nextScreen);
         };
     }
-
+    
     toNewTeamEditor() {
         const team = Team.create({owner: this.props.owner});
         this.props.actions.selectTeam(team);

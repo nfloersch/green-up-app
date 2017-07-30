@@ -3,7 +3,7 @@
 import {Coordinate} from './coordinate';
 import {isDate} from '../libs/isDate';
 
-export class TrashDrop {
+export class TrashDropLocation {
     _id: string;
     bagCount: number;
     status: string;
@@ -23,6 +23,6 @@ export class TrashDrop {
     }
 
     static create(args) {
-        return new TrashDrop(args);
+        return new TrashDropLocation(args);
     }
 }

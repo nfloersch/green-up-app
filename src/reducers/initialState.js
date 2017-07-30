@@ -265,7 +265,8 @@ export default {
                         }
                     ],
                     zones: [
-                        {}
+                        {
+                        }
                     ],
                     isPublic: true,
                     created: new Date(),
@@ -280,6 +281,15 @@ export default {
                     acceptancePending: true,
                     userIsOwner: false
                 }
+            ],
+            markers: [
+                {_id: '12345',
+                    bagCount: '20',
+                    status: 'Awaiting PickUp',
+                    active: true,
+                    tags: 'string',
+                    coordinate: 'Coordinate',
+                    created: Date}
             ]
         }
     },
