@@ -10,6 +10,7 @@ import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import {TrashTrackerReducers} from './TrashTrackerReducers';
+import {TrashTrackerActions} from './TrashTrackerActions';
 import NavHeader from '../../components/NavHeader';
 import {
     Alert,
