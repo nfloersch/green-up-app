@@ -5,7 +5,17 @@ export function loginReducer(state = initialState, action) {
         case types.LOGIN_SUCCESSFUL:
             return {
                 ...state,
-                session: {user: action.user}
+                session: action.session
+            };
+        case types.LOGIN_FAIL:
+            return {
+                ...state,
+                session: action.session
+            };
+        case types.LOGOUT_SUCCESSFUL:
+            return {
+                ...state,
+                session: action.session
             };
         default:
             return state;

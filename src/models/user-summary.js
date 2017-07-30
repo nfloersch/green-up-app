@@ -8,8 +8,8 @@ export class UserSummary {
     email : string;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this._id = typeof args._id === 'string' || typeof args.id === 'string'
+            ? args._id || args.id
             : null;
         this.userId = typeof args._id === 'string'
             ? args._id
