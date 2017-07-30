@@ -9,25 +9,22 @@ export class User {
     firstName : string;
     lastName : string;
     email : string;
-    teams : [TeamSummary];
+    teams : [Team];
     messages : [Message];
     created : Date;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this._id = typeof args._id === 'string' || typeof args.id === 'string'
+            ? args._id || args.id
             : null;
-        this.firstName = typeof args.firstName === 'string'
-            ? args.firstName
-            : null;
-        this.lastName = typeof args.lastName === 'string'
-            ? args.lastName
+        this.name = typeof args.name === 'string'
+            ? args.name
             : null;
         this.email = typeof args.email === 'string'
             ? args.email
             : null;
-        this.teams = Array.isArray(teams)
-            ? args.teams.map((team) => TeamSummary.create(team))
+        this.teams = Array.isArray(args.teams)
+            ? args.teams.map((team) => Team.create(team))
             : [];
         this.messages = Array.isArray(args.messages)
             ? args.messages.map((message) => Message.create(message))

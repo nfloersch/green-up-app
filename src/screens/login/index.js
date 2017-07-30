@@ -71,6 +71,7 @@ class Welcome extends Component {
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onForgotPassword = this.onForgotPassword.bind(this);
         this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
+        this.loginWithFacebook = this.loginWithFacebook.bind(this);
     }
     onForgotPassword() {
         this.props.navigation.navigate('ForgotPassword');
@@ -79,7 +80,9 @@ class Welcome extends Component {
         this.props.navigation.navigate('CreateNewAccount');
     }
     onButtonPress() {}
-
+    loginWithFacebook() {
+        this.props.actions.facebookLogin();
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -100,7 +103,7 @@ class Welcome extends Component {
                         <Text style={styles.socialLoginText}>Login with Google</Text>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
+                <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithFacebook}>
                     <View style={styles.socialLogin}>
                         <Image source={facebookLogo} style={styles.logos}/>
                         <Text style={styles.socialLoginText}>Login with Facebook</Text>
