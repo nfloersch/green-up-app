@@ -8,7 +8,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as trashTrackerActions from './TrashTrackerActions';
 import NavHeader from '../../components/NavHeader';
+import {TrashDropLocation}from '../../models/trash-drop';
+
 import {
     Alert,
     Button,
@@ -42,13 +47,20 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TrashDrop extends Component {
-    static navigationOptions = {
-        title: 'Dropping Trash'
-    };
+
+
+class TrashDrop extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object
+        actions: PropTypes.object,
+        teams: PropTypes.array,
+        navigation: PropTypes.object,
+        owner: PropTypes.object,
+        toTrashMap: PropTypes.func
+    };
+
+    static navigationOptions = {
+        title: 'Dropping Trash'
     };
 
     constructor(props) {
@@ -57,13 +69,15 @@ export default class TrashDrop extends Component {
         this.toTrashMap = this.toTrashMap.bind(this);
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     _myAwesomeMethod() {
         Alert.alert('Huzzah!');
     }
 
-    toTrashMap() {
+    toTrashMap(data) {
+        const marker = TrashDropLocation.create({bagCount: this.bagCount, tags: this.tags});
         this.props.navigation.navigate('TrashMap');
     }
 
@@ -83,15 +97,38 @@ export default class TrashDrop extends Component {
                         onChangeText={(text) => this.setState({text})}
                     />
                     <Text style={styles.text}>Other Items</Text>
-                    <CheckBox label='None'/>
-                    <CheckBox label='Mattress(s)'/>
-                    <CheckBox label='Tires'/>
-                    <CheckBox label='Hazardous Waste'/>
-                    <CheckBox label='Large Object(s)'/>
-                    <Button onPress={this.toTrashMap} title="Mark the Spot"
-                        color='green'/>
+                    <CheckBox label='None' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Mattress(s)' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Tires' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Hazardous Waste' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Large Object(s)'onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <Button onPress={this.toTrashMap}
+                            title='Mark the Spot'
+                            color='green'/>
                 </ScrollView>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {markers: state.TrashTrackerReducers.session.user.markers};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(trashTrackerActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrashDrop);
