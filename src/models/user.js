@@ -14,14 +14,11 @@ export class User {
     created : Date;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this._id = typeof args._id === 'string' || typeof args.id === 'string'
+            ? args._id || args.id
             : null;
-        this.firstName = typeof args.firstName === 'string'
-            ? args.firstName
-            : null;
-        this.lastName = typeof args.lastName === 'string'
-            ? args.lastName
+        this.name = typeof args.name === 'string'
+            ? args.name
             : null;
         this.email = typeof args.email === 'string'
             ? args.email
