@@ -100,10 +100,18 @@ class TrashDrop extends Component {
                     <CheckBox label='None' onPress={() => {
                         this.toTrashMap(data);
                     }}/>
-                    <CheckBox label='Mattress(s)'/>
-                    <CheckBox label='Tires'/>
-                    <CheckBox label='Hazardous Waste'/>
-                    <CheckBox label='Large Object(s)'/>
+                    <CheckBox label='Mattress(s)' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Tires' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Hazardous Waste' onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
+                    <CheckBox label='Large Object(s)'onPress={() => {
+                        this.toTrashMap(data);
+                    }}/>
                     <Button onPress={this.toTrashMap}
                             title='Mark the Spot'
                             color='green'/>
