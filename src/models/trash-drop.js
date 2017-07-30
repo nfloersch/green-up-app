@@ -18,7 +18,7 @@ export class TrashDrop {
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;
         this.active = typeof args.active === 'boolean' ? args.active : true;
-        this.coordinate = typeof coordinate === 'object' ?  Coordinate.create(coordinate): null;
+        this.coordinate = typeof coordinate === 'object' ? Coordinate.create(args.coordinate) : null;
         this.created = isDate(args.created) ? new Date(args.created) : null;
     }
 

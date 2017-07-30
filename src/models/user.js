@@ -9,7 +9,7 @@ export class User {
     firstName : string;
     lastName : string;
     email : string;
-    teams : [TeamSummary];
+    teams : [Team];
     messages : [Message];
     created : Date;
 
@@ -23,8 +23,8 @@ export class User {
         this.email = typeof args.email === 'string'
             ? args.email
             : null;
-        this.teams = Array.isArray(teams)
-            ? args.teams.map((team) => TeamSummary.create(team))
+        this.teams = Array.isArray(args.teams)
+            ? args.teams.map((team) => Team.create(team))
             : [];
         this.messages = Array.isArray(args.messages)
             ? args.messages.map((message) => Message.create(message))

@@ -22,7 +22,7 @@ export function login(username, password) {
 export function facebookLogin() {
     return async function logIn(dispatch) {
         const facebook = await Expo.Facebook.logInWithReadPermissionsAsync('1345826968841458', {
-            permissions: ['public_profile', 'email']
+            behavior: 'web', permissions: ['public_profile', 'email']
         });
         const {type, token} = facebook;
         console.log(type);
@@ -31,7 +31,7 @@ export function facebookLogin() {
             const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
             const userInfo = await response.json();
             const user = User.create(userInfo);
-            // Alert.alert('Logged in!', `Hi ${ (await response.json()).name}!`,);
+            console.log('facebook login successful for ' + user.name);
             dispatch({
                 type: types.LOGIN_SUCCESSFUL,
                 session: {
@@ -40,5 +40,5 @@ export function facebookLogin() {
                 }
             });
         }
-    }
+    };
 }
