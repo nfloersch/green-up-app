@@ -76,7 +76,7 @@ class MessageSummaries extends Component {
         const myMessages = (this.props.messages || []).map(message => (
             <TouchableHighlight key={message._id} onPress={this.toMessageDetail(message._id)}>
                 <View>
-                    <Text style={styles.messages}>{message.message}</Text>
+                    <Text style={styles.title}>{message.title}</Text>
                 </View>
             </TouchableHighlight>
         ));

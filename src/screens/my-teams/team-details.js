@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     teams: {
         fontSize: 40,
-        fontWeight: '40',
+        fontWeight: 'bold',
         textAlign: 'center'
     },
     info: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     boldInfo: {
         fontSize: 20,
-        fontWeight: '30'
+        fontWeight: 'normal'
     },
     details: {
         borderWidth: 2,

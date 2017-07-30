@@ -8,10 +8,12 @@ export default {
             messages: [
                 {
                     _id: '123',
-                    message: 'Hello'
+                    title: 'Hello World',
+                    text: 'Bonjour tout le monde'
                 }, {
                     _id: '345',
-                    message: 'I love your shoes'
+                    title: 'I love your shoes',
+                    text: 'Can I borrow them?'
                 }
             ],
             teams: [

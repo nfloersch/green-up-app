@@ -70,13 +70,12 @@ class SendMessage extends Component {
     constructor(props) {
         super(props);
         this.changeTitle = this.changeTitle.bind(this);
-        this.addMessage = this.addMessage.bind(this);
+        this.changeText = this.changeText.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            id: 346,
             title: '',
-            message: ''
+            text: ''
         };
     }
 
@@ -84,23 +83,19 @@ class SendMessage extends Component {
         this.setState({title: title});
     }
 
-    addMessage(text) {
-        this.setState({message: text});
+    changeText(text) {
+        this.setState({text: text});
     }
 
     sendMessage() {
-        let change = this.state.id;
-        return () => {
-            this.props.messages.push({_id: change.toString(), message: this.state.title});
-            this.setState({id: change += 1});
+            this.props.actions.sendMessage({title: this.state.title, text: this.state.text});
             this.props.navigation.navigate('MessageSummaries');
-        };
     }
 
     cancelMessage() {
-        return () => {
+
             this.props.navigation.navigate('MessageSummaries');
-        };
+
     }
 
     render() {
@@ -113,6 +108,7 @@ class SendMessage extends Component {
                         placeholder={'title'}
                         onChangeText={this.changeTitle}
                         style={{width: '65%'}}
+                        value={this.state.title}
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
@@ -121,16 +117,17 @@ class SendMessage extends Component {
                         keyBoardType={'default'}
                         multiline={true}
                         numberOfLines={5}
-                        onChangeText={this.addMessage}
+                        onChangeText={this.changeText}
                         placeholder={'message details'}
+                        value={this.state.text}
                         style={{width: '100%'}}
                     />
                 </View>
                 <View style={styles.buttonRow}>
-                    <TouchableHighlight style={styles.addButton} onPress={this.sendMessage()}>
+                    <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
                         <Text style={styles.text}>Add Message</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={styles.cancelButton} onPress={this.cancelMessage()}>
+                    <TouchableHighlight style={styles.cancelButton} onPress={this.cancelMessage}>
                         <Text style={styles.text}>Cancel</Text>
                     </TouchableHighlight>
                 </View>
