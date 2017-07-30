@@ -19,6 +19,22 @@ export function login(username, password) {
     };
 }
 
+
+export function logout() {
+    return  (dispatch) => {
+        console.log('logout successful');
+        dispatch({
+            type: types.LOGOUT_SUCCESSFUL,
+            session: {
+                google: null,
+                facebook: null,
+                user: null
+            }
+        });
+    };
+}
+
+
 export function facebookLogin() {
     return async function logIn(dispatch) {
         const facebook = await Expo.Facebook.logInWithReadPermissionsAsync('1345826968841458', {
@@ -37,6 +53,15 @@ export function facebookLogin() {
                 session: {
                     facebook,
                     user
+                }
+            });
+        } else {
+            console.log('facebook login failed');
+            dispatch({
+                type: types.LOGIN_FAIL,
+                session: {
+                    facebook : null,
+                    user :  null
                 }
             });
         }
