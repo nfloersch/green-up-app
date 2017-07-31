@@ -26,9 +26,9 @@ export function logout() {
         dispatch({
             type: types.LOGOUT_SUCCESSFUL,
             session: {
-                google: null,
-                facebook: null,
-                user: null
+                google: {},
+                facebook: {},
+                user: {}
             }
         });
     };
