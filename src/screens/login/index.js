@@ -66,49 +66,73 @@ class Welcome extends Component {
     static navigationOptions = {
         title: 'Login'
     };
+
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
         this.onForgotPassword = this.onForgotPassword.bind(this);
         this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
         this.loginWithFacebook = this.loginWithFacebook.bind(this);
+        this.state = {checkingLogin: true};
     }
+
+    componentDidMount() {
+        var me = this;
+        async function checkLogin() {
+            me.setState({checkingLogin: await me.props.actions.isLoggedIn()});
+        }
+
+        checkLogin();
+    }
+
     onForgotPassword() {
         this.props.navigation.navigate('ForgotPassword');
     }
+
     onCreateNewAccount() {
         this.props.navigation.navigate('CreateNewAccount');
     }
-    onButtonPress() {}
+
     loginWithFacebook() {
-        this.props.actions.facebookLogin();
+        this.setState({isCheckingLogin: true}, () => {
+            this.props.actions.facebookLogin();
+        })
     }
+
     render() {
+        const content = this.state.checkingLogin
+            ? ( <View><Text>Thinking deep thoughts ...</Text></View>)
+            : (
+                <View style={{width: '100%'}}>
+                    <LoginForm login={this.props.actions.login}/>
+                    <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
+                        <Text style={styles.linkText}>I forgot my password</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
+                        <Text style={styles.linkText}>Create a new account</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
+                        <View style={styles.socialLogin}>
+                            <Image source={googleLogo} style={styles.logos}/>
+                            <Text style={styles.socialLoginText}>Login with Google</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithFacebook}>
+                        <View style={styles.socialLogin}>
+                            <Image source={facebookLogo} style={styles.logos}/>
+                            <Text style={styles.socialLoginText}>Login with Facebook</Text>
+                        </View>
+                    </TouchableHighlight>
+                </View>
+            );
+
+
         return (
             <View style={styles.container}>
                 <Image source={logo} style={{
                     height: 120,
                     width: 120
                 }}/>
-                <LoginForm login={this.props.actions.login}/>
-                <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
-                    <Text style={styles.linkText}>I forgot my password</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
-                    <Text style={styles.linkText}>Create a new account</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
-                    <View style={styles.socialLogin}>
-                        <Image source={googleLogo} style={styles.logos}/>
-                        <Text style={styles.socialLoginText}>Login with Google</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithFacebook}>
-                    <View style={styles.socialLogin}>
-                        <Image source={facebookLogo} style={styles.logos}/>
-                        <Text style={styles.socialLoginText}>Login with Facebook</Text>
-                    </View>
-                </TouchableHighlight>
+                {content}
             </View>
         );
     }
