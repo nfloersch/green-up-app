@@ -8,7 +8,8 @@
   "scripts": {
     "start": "watchman watch-del-all && (adb reverse tcp:8081 tcp:8081 || true) && node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "xcode": "open ios/example.xcodeproj",
-    "android": "cd android && ./gradlew installDebug"
+    "android": "cd android && ./gradlew installDebug",
+    "flow": "flow"
   },
   "dependencies": {
     "@expo/vector-icons": "^5.0.0",
@@ -31,13 +32,16 @@
     "wordwrap": "^1.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
+    "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.24.1",
     "eslint": "^4.1.1",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "flow-bin": "^0.51.1",
     "redux-immutable-state-invariant": "^2.0.0",
     "redux-logger": "^3.0.6",
     "webpack": "^3.0.0"
