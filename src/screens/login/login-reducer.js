@@ -17,6 +17,11 @@ export function loginReducer(state = initialState, action) {
                 ...state,
                 session: action.session
             };
+        case types.SESSION_STARTED:
+            return {
+                ...state,
+                session: action.session
+            };
         default:
             return state;
     }

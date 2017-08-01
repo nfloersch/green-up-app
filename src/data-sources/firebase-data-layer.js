@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import * as dataLayerActions from './data-layer-actions';
+import {User} from '../models/user';
 //
 // // Initialize Firebase
 const firebaseConfig = {
@@ -10,6 +12,31 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+// Authentication
+
+// Listen for authentication state to change.
+firebase.auth().onAuthStateChanged((user) => {
+    if (!!user) {
+        console.log("We are authenticated now!");
+        console.log(user);
+        dataLayerActions.userAuthenticated(User.create(user));
+    } else {
+        console.log("We failed auth");
+        dataLayerActions.userFailedAuthentication();
+    }
+});
+
+async function facebookAuth(token) {
+
+        // Build Firebase credential with the Facebook access token.
+        const credential = firebase.auth.FacebookAuthProvider.credential(token);
+
+        // Sign in with credential from the Facebook user.
+        return firebase.auth().signInWithCredential(credential);
+
+}
+
+// Messaging
 function sendUserMessage(userId, message) {
     firebase.database().ref('users/' + userId).set({messages: message});
 }
@@ -27,8 +54,10 @@ function sendGroupMessage(group, message) {
     });
 }
 
+
+// Teams
 function saveTeam(team) {
     firebase.database().ref('teams').push(team);
 }
 
-export const firebaseDataLayer = {saveTeam, setupUserListener, sendUserMessage, sendGroupMessage};
+export const firebaseDataLayer = {saveTeam, setupUserListener, sendUserMessage, sendGroupMessage, facebookAuth};

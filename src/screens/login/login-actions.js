@@ -2,13 +2,7 @@ import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 import {User} from '../../models/user';
 import {AsyncStorage} from 'react-native';
-
-var dummyUser = {
-    _id: '123456',
-    firstName: 'Andy',
-    lastName: 'Pants',
-    email: 'andy.pants@example.com'
-};
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer'
 
 export function isLoggedIn() {
     return async function logIn(dispatch) {
@@ -18,17 +12,23 @@ export function isLoggedIn() {
             const creds = JSON.parse(_creds);
             switch (true) {
                 case creds && !!creds.facebook :
-                    facebook = creds.facebook;
-                    const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${facebook.token}`);
-                    const userInfo = await response.json();
-                    const user = User.create(userInfo);
+                    token = creds.facebook.token;
                     dispatch({
-                        type: types.LOGIN_SUCCESSFUL,
+                        type: types.SESSION_STARTED,
                         session: {
-                            facebook,
-                            user
+                            facebook
                         }
                     });
+                    firebaseDataLayer.facebookAuth(token).catch(() => {
+                        dispatch({
+                            type: types.LOGIN_FAIL,
+                            session: {
+                                facebook: null,
+                                user: null
+                            }
+                        });
+                    });
+
                     break;
                 case creds && !!creds.google :
                     token = creds.google.token;
@@ -62,7 +62,7 @@ export function logout() {
     return async (dispatch) => {
         try {
             const results = await
-            AsyncStorage.removeItem('@GreenUpVermont:loginCredentials');
+                AsyncStorage.removeItem('@GreenUpVermont:loginCredentials');
             console.log('logout successful');
             dispatch({
                 type: types.LOGOUT_SUCCESSFUL,
@@ -106,11 +106,19 @@ export function facebookLogin() {
                 console.log('error saving facebook creds' + error.toString());
             }
             dispatch({
-                type: types.LOGIN_SUCCESSFUL,
+                type: types.SESSION_STARTED,
                 session: {
-                    facebook,
-                    user
+                    facebook
                 }
+            });
+            firebaseDataLayer.facebookAuth(token).catch(() => {
+                dispatch({
+                    type: types.LOGIN_FAIL,
+                    session: {
+                        facebook: null,
+                        user: null
+                    }
+                });
             });
         } else {
             console.log('facebook login failed');

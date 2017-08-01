@@ -72,17 +72,14 @@ class Welcome extends Component {
         this.onForgotPassword = this.onForgotPassword.bind(this);
         this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
         this.loginWithFacebook = this.loginWithFacebook.bind(this);
-        this.state = {checkingLogin: true};
+        this.loginWithGoogle = this.loginWithGoogle.bind(this);
+        this.state = {checkingLogin: false};
     }
 
     componentDidMount() {
-        var me = this;
-        async function checkLogin() {
-            me.setState({checkingLogin: await me.props.actions.isLoggedIn()});
-        }
-
-        checkLogin();
+       this.props.actions.isLoggedIn();
     }
+
 
     onForgotPassword() {
         this.props.navigation.navigate('ForgotPassword');
@@ -92,6 +89,10 @@ class Welcome extends Component {
         this.props.navigation.navigate('CreateNewAccount');
     }
 
+    loginWithGoogle() {
+        return void 0;
+    }
+
     loginWithFacebook() {
         this.setState({isCheckingLogin: true}, () => {
             this.props.actions.facebookLogin();
@@ -99,7 +100,8 @@ class Welcome extends Component {
     }
 
     render() {
-        const content = this.state.checkingLogin
+
+        let content = this.state.checkingLogin
             ? ( <View><Text>Thinking deep thoughts ...</Text></View>)
             : (
                 <View style={{width: '100%'}}>
@@ -110,7 +112,8 @@ class Welcome extends Component {
                     <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
                         <Text style={styles.linkText}>Create a new account</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
+
+                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithGoogle}>
                         <View style={styles.socialLogin}>
                             <Image source={googleLogo} style={styles.logos}/>
                             <Text style={styles.socialLoginText}>Login with Google</Text>
