@@ -24,10 +24,14 @@ export class User {
             ? args.email
             : null;
         this.teams = Array.isArray(args.teams)
-            ? args.teams.map((team) => Team.create(team))
+            ? args
+                .teams
+                .map((team) => Team.create(team))
             : [];
         this.messages = Array.isArray(args.messages)
-            ? args.messages.map((message) => Message.create(message))
+            ? args
+                .messages
+                .map((message) => Message.create(message))
             : [];
         this.created = isDate(args.created)
             ? new Date(args.created)
