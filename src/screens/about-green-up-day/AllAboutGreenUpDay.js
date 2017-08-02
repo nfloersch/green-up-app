@@ -10,6 +10,7 @@ import NavHeader from '../../components/NavHeader';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as allAboutGreenUpDayActions from './allAboutGreenUpDayActions';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {
     Alert,
     Button,
@@ -27,11 +28,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
         width: '100%'
+    },
+    text: {
+        justifyContent: 'center',
+        width: '100%',
+        fontSize: 15
     }
 });
 
 class AllAboutGreenUpDay extends Component {
-    static propTypes = {aboutContent: PropTypes.string};
+    static propTypes = {
+        aboutContent: PropTypes.object
+    };
     static navigationOptions = {
         drawerLabel: 'About Green Up Day',
         drawerIcon: ({tintColor}) => (
@@ -39,28 +47,45 @@ class AllAboutGreenUpDay extends Component {
         )
     };
 
-    componentDidMount() {
-    }
-
     constructor(props) {
         super(props);
-        this._myAwesomeMethod = this._myAwesomeMethod.bind(this);
+        this.state = {
+            text: this.props.aboutContent.aboutGreenUp,
+            gestureName: 'none',
+            backgroundColor: '#fff'
+        };
     }
 
-    _myAwesomeMethod() {
-        Alert.alert('Huzzah!');
+    onSwipe(gestureName, gestureState) {
+        const {SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+        this.setState({gestureName: gestureName});
+        switch (gestureName) {
+            case SWIPE_LEFT:
+                this.setState({text: this.props.aboutContent.aboutContacts});
+                break;
+            case SWIPE_RIGHT:
+                this.setState({text: this.props.aboutContent.aboutGreenUp});
+                break;
+        }
     }
 
     render() {
+        const config = {
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 80
+        };
         return (
             <View style={styles.container}>
                 <NavHeader navigation={this.props.navigation} screenTitle="About Green Up Day" showBack={false}/>
-                <TouchableHighlight onPress={this._myAwesomeMethod} underlayColor={'rgba(0, 0, 0, 0.054)'}>
-                    <Text style={styles.text}>
-                        All About Green Up Day
-                    </Text>
-                </TouchableHighlight>
-                <Text>{this.props.aboutContent}</Text>
+                <GestureRecognizer
+                    onSwipe={(direction, state) => this.onSwipe(direction, state)}
+                    config = {config}
+                    style={{width: '100%'}}
+                >
+                    <View style={styles.text}>
+                        <Text>{this.state.text}</Text>
+                    </View>
+                </GestureRecognizer>
             </View>
         );
     }
@@ -78,4 +103,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllAboutGreenUpDay);
-
