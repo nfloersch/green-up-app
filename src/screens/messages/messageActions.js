@@ -1,10 +1,13 @@
 import * as types from '../../constants/actionTypes';
+import {Message} from '../../models/message';
 
 export function addMessageSuccess(data) {
     return {type: types.NEW_MESSAGE, data};
 }
 
-export function addMessage(message) {
+export function sendMessage(_message) {
+    const newId = new Date().toISOString(); // use date to create unique id's for now.
+    const message = Message.create({_id: newId, ..._message});
     return {type: types.NEW_MESSAGE, message};
 }
 

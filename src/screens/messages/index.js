@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {StackNavigator} from 'react-navigation';
 import MessageSummaries from './message-summaries';
 import MessageDetails from './message-details';
+import SendMessage from './send-message';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DrawerToggle from '../../components/drawer-toggle';
 
@@ -41,6 +42,10 @@ export default class Messages extends Component {
             },
             MessageDetails: {
                 screen: MessageDetails,
+                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
+            },
+            SendMessage: {
+                screen: SendMessage,
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });
