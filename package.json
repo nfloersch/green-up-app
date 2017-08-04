@@ -22,6 +22,7 @@
     "react-native-checkbox": "^1.1.0",
     "react-native-firebase": "^2.0.0",
     "react-native-radio-buttons": "^1.0.0",
+    "react-native-swipe-gestures": "^1.0.2",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",
     "redux": "^3.7.1",
