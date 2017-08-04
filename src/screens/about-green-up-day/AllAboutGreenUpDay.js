@@ -16,6 +16,7 @@ import {
     Button,
     Image,
     StyleSheet,
+    ScrollView,
     Text,
     TouchableHighlight,
     View
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     text: {
-        justifyContent: 'center',
+        paddingTop: 10,
+        justifyContent: 'flex-start',
         width: '100%',
         fontSize: 15
     }
@@ -51,6 +53,7 @@ class AllAboutGreenUpDay extends Component {
         super(props);
         this.state = {
             text: this.props.aboutContent.aboutGreenUp,
+            screen: 'aboutGreenUp',
             gestureName: 'none',
             backgroundColor: '#fff'
         };
@@ -59,19 +62,48 @@ class AllAboutGreenUpDay extends Component {
     onSwipe(gestureName, gestureState) {
         const {SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
         this.setState({gestureName: gestureName});
-        switch (gestureName) {
-            case SWIPE_LEFT:
-                this.setState({text: this.props.aboutContent.aboutContacts});
-                break;
-            case SWIPE_RIGHT:
-                this.setState({text: this.props.aboutContent.aboutGreenUp});
-                break;
+        if(this.state.screen === 'aboutGreenUp') {
+            switch (gestureName) {
+                case SWIPE_LEFT:
+                    this.setState({text: this.props.aboutContent.aboutContacts, screen: 'aboutContacts'});
+                    break;
+                case SWIPE_RIGHT:
+                    this.setState({text: this.props.aboutContent.aboutTP, screen: 'aboutTP'});
+                    break;
+            }
+        } else if (this.state.screen === 'aboutContacts') {
+            switch (gestureName) {
+                case SWIPE_LEFT:
+                    this.setState({text: this.props.aboutContent.aboutFAQ, screen: 'aboutFAQ'});
+                    break;
+                case SWIPE_RIGHT:
+                    this.setState({text: this.props.aboutContent.aboutGreenUp, screen: 'aboutGreenUp'});
+                    break;
+            }
+        } else if (this.state.screen === 'aboutFAQ') {
+            switch (gestureName) {
+                case SWIPE_LEFT:
+                    this.setState({text: this.props.aboutContent.aboutTP, screen: 'aboutTP'});
+                    break;
+                case SWIPE_RIGHT:
+                    this.setState({text: this.props.aboutContent.aboutContacts, screen: 'aboutContacts'});
+                    break;
+            }
+        } else if (this.state.screen === 'aboutTP') {
+            switch (gestureName) {
+                case SWIPE_LEFT:
+                    this.setState({text: this.props.aboutContent.aboutGreenUp, screen: 'aboutGreenUp'});
+                    break;
+                case SWIPE_RIGHT:
+                    this.setState({text: this.props.aboutContent.aboutFAQ, screen: 'aboutFAQ'});
+                    break;
+            }
         }
     }
 
     render() {
         const config = {
-            velocityThreshold: 0.3,
+            velocityThreshold: 0.2,
             directionalOffsetThreshold: 80
         };
         return (
@@ -82,9 +114,10 @@ class AllAboutGreenUpDay extends Component {
                     config = {config}
                     style={{width: '100%'}}
                 >
-                    <View style={styles.text}>
+                    <ScrollView style={styles.text}>
                         <Text>{this.state.text}</Text>
-                    </View>
+                        <Text style={{margin: 10}}>{this.state.screen}</Text>
+                    </ScrollView>
                 </GestureRecognizer>
             </View>
         );
