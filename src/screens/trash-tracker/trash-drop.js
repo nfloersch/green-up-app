@@ -113,8 +113,8 @@ class TrashDrop extends Component {
                         this.toTrashMap(data);
                     }}/>
                     <Button onPress={this.toTrashMap}
-                            title='Mark the Spot'
-                            color='green'/>
+                        title='Mark the Spot'
+                        color='green'/>
                 </ScrollView>
             </View>
         );

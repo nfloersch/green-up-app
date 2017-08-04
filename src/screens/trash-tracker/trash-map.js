@@ -6,7 +6,9 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet, Text, View, Platform} from 'react-native';
+import {Constants, Location, MapView, Permissions } from 'expo';
+import TrashDrop from './trash-drop';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,6 +43,17 @@ export default class TrashMap extends Component {
     };
     constructor(props) {
         super(props);
+        this._handleMapRegionChange = this._handleMapRegionChange.bind(this);
+        this._handleMapClick = this._handleMapClick.bind(this);
+        this.state = {
+            location: Location.getCurrentPositionAsync({}),
+            errorMessage: null,
+            mapRegion: null,
+            mapMarker: {
+                latlng:{}
+            },
+            markers: []
+        };
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
@@ -55,10 +68,55 @@ export default class TrashMap extends Component {
             .navigate('TrashDrop');
     }
 
+    _getLocationAsyn = async () => {
+        const {status} = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({
+                errorMessage: 'Permission to edit this markers was denied'
+            });
+        }
+
+        const location = await Location.getCurrentPositionAsync({});
+        const newLat = Number(location.coords.latitude);
+        const newLong = Number(location.coords.longitude);
+        this.setState({location,
+            mapMarker: {title: TrashDrop.marker, description: TrashDrop.marker.bagCount, latlng: {
+                longitude: newLong, latutude: newLat}},
+            mapRegion: {
+                latitude: newLat,
+                longitude: newLong,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+            }});
+    };
+
+    _handleMapRegionChange(mapRegion) {
+        this.setState({mapRegion});
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
+                <MapView
+                    zoomEnabled={true}
+                    style={{alignSelf: 'stretch', height: 200}}
+                    region={this.state.mapRegion}
+                    initialRegion={{
+                        latitude: 44.4615298,
+                        longitude: -73.218605,
+                        latitudeDelta: 0.0002,
+                        longitudeDelta: 0.0001
+                    }}
+                    onRegionChange={this._handleMapRegionChange}
+                >
+                    <MapView.Marker
+                        coordinate={this.state.mapMarker.latlng}
+                        title={this.state.mapMarker.title}
+                        description={this.state.mapMarker.description}
+                    />
+                </MapView>
+
                 <TouchableHighlight onPress={this._goToTrashDrop}>
                     <View>
                         <Text style={styles.text}>Drop Trash</Text>
