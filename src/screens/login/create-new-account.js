@@ -3,6 +3,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import LoginForm from '../../components/login-form';
+import * as loginActions from './login-actions';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -22,7 +26,7 @@ const styles = StyleSheet.create({
     },
     link: {}
 });
-export default class CreateNewAccount extends Component {
+class CreateNewAccount extends Component {
 
     static propTypes = {
         navigation: PropTypes.object
@@ -41,7 +45,19 @@ export default class CreateNewAccount extends Component {
         return (
             <View style={styles.container}>
                 <Text>Create New Account</Text>
+                <LoginForm login={this.props.actions.createUser}/>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {session: state.loginReducer.session};
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(loginActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAccount );

@@ -1,13 +1,51 @@
 import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 import {User} from '../../models/user';
+import {AsyncStorage} from 'react-native';
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
-var dummyUser = {
-    _id: '123456',
-    firstName: 'Andy',
-    lastName: 'Pants',
-    email: 'andy.pants@example.com'
-};
+export function isLoggedIn() {
+    return async function logIn(dispatch) {
+        let token = null;
+        try {
+            const _creds = await AsyncStorage.getItem('@GreenUpVermont:loginCredentials');
+            const creds = JSON.parse(_creds);
+            switch (true) {
+                case creds && !!creds.facebook :
+                    token = creds.facebook.token;
+                    dispatch({
+                        type: types.SESSION_STARTED,
+                        session: {
+                            facebook
+                        }
+                    });
+                    firebaseDataLayer.facebookAuth(token).catch(() => {
+                        dispatch({
+                            type: types.LOGIN_FAIL,
+                            session: {
+                                facebook: null,
+                                user: null
+                            }
+                        });
+                    });
+
+                    break;
+                case creds && !!creds.google :
+                    token = creds.google.token;
+                    break;
+                case creds && !!creds.firebase:
+                    token = creds.firebase.token;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+
+        } catch (error) {
+            return false;
+        }
+    }
+}
 
 export function login(username, password) {
     console.log('user logged in with ' + username + ' - ' + password);
@@ -21,19 +59,38 @@ export function login(username, password) {
 
 
 export function logout() {
-    return  (dispatch) => {
-        console.log('logout successful');
-        dispatch({
-            type: types.LOGOUT_SUCCESSFUL,
-            session: {
-                google: {},
-                facebook: {},
-                user: {}
-            }
-        });
+    return async (dispatch) => {
+        try {
+            const results = await
+                AsyncStorage.removeItem('@GreenUpVermont:loginCredentials');
+            console.log('logout successful');
+            dispatch({
+                type: types.LOGOUT_SUCCESSFUL,
+                session: {
+                    google: {},
+                    facebook: {},
+                    user: {}
+                }
+            });
+        } catch (err) {
+            dispatch({
+                type: types.LOGOUT_SUCCESSFUL,
+                session: {
+                    google: {},
+                    facebook: {},
+                    user: {}
+                }
+            });
+        }
     };
 }
 
+
+export function createUser(email, password){
+    return () => {
+        firebaseDataLayer.createUser(email, password);
+    }
+}
 
 export function facebookLogin() {
     return async function logIn(dispatch) {
@@ -48,20 +105,34 @@ export function facebookLogin() {
             const userInfo = await response.json();
             const user = User.create(userInfo);
             console.log('facebook login successful for ' + user.name);
+            try {
+                await AsyncStorage.setItem('@GreenUpVermont:loginCredentials', JSON.stringify({facebook}));
+            } catch (error) {
+                // Error saving data -- looks like we'll have to log in next time too, bummer.
+                console.log('error saving facebook creds' + error.toString());
+            }
             dispatch({
-                type: types.LOGIN_SUCCESSFUL,
+                type: types.SESSION_STARTED,
                 session: {
-                    facebook,
-                    user
+                    facebook
                 }
+            });
+            firebaseDataLayer.facebookAuth(token).catch(() => {
+                dispatch({
+                    type: types.LOGIN_FAIL,
+                    session: {
+                        facebook: null,
+                        user: null
+                    }
+                });
             });
         } else {
             console.log('facebook login failed');
             dispatch({
                 type: types.LOGIN_FAIL,
                 session: {
-                    facebook : null,
-                    user :  null
+                    facebook: null,
+                    user: null
                 }
             });
         }
