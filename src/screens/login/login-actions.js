@@ -2,7 +2,7 @@ import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 import {User} from '../../models/user';
 import {AsyncStorage} from 'react-native';
-import {firebaseDataLayer} from '../../data-sources/firebase-data-layer'
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
 export function isLoggedIn() {
     return async function logIn(dispatch) {
@@ -82,9 +82,15 @@ export function logout() {
                 }
             });
         }
-    }
+    };
 }
 
+
+export function createUser(email, password){
+    return () => {
+        firebaseDataLayer.createUser(email, password);
+    }
+}
 
 export function facebookLogin() {
     return async function logIn(dispatch) {
