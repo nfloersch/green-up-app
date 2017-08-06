@@ -96,12 +96,12 @@ export default class TeamEditorMap extends Component {
     }
 
     _handleMapRegionChange(mapRegion) {
-        this.setState(mapRegion);
+        this.setState({mapRegion});
     }
 
     render() {
         var markers = this.state.markers.map(marker => (
-            <MapView.marker
+            <MapView.Marker
                 coordinate={marker.latlng}
                 title={'you clicked here'}
                 description={'this is pretty comfy'}
@@ -130,15 +130,16 @@ export default class TeamEditorMap extends Component {
                     <MapView.Marker
                         coordinate={this.state.mapMarker.latlng}
                         title={this.state.mapMarker.title}
-                        description={this.state.mapMarker.description}/>
+                        description={this.state.mapMarker.description}
+                    />
                     {markers}
                 </MapView>
-                <Text style={styles.paragraph}>
+                {/* <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
                 </Text>
                 <Text style={styles.paragraph}>
                     Markers: {JSON.stringify(this.state.markers)}
-                </Text>
+                </Text> */}
             </View>);
     }
 }

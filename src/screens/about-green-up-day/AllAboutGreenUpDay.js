@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     text: {
         paddingTop: 10,
         justifyContent: 'flex-start',
+        alignItems: 'center',
         width: '100%',
         fontSize: 15
     }
@@ -110,13 +111,13 @@ class AllAboutGreenUpDay extends Component {
             <View style={styles.container}>
                 <ScrollView style={styles.text}>
                     <NavHeader navigation={this.props.navigation} screenTitle="About Green Up Day" showBack={false}/>
+                    <Text style={{margin: 10, textAlign: 'center'}}>{this.state.screen}</Text>
                     <GestureRecognizer
                         onSwipe={(direction, state) => this.onSwipe(direction, state)}
                         config = {config}
                         style={{width: '100%'}}
                     >
                         <Text>{this.state.text}</Text>
-                        <Text style={{margin: 10}}>{this.state.screen}</Text>
                     </GestureRecognizer>
                 </ScrollView>
             </View>
