@@ -4,66 +4,19 @@ import {User} from '../../models/user';
 import {AsyncStorage} from 'react-native';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
-export function isLoggedIn() {
-    return async function logIn(dispatch) {
-        let token = null;
-        try {
-            const _creds = await AsyncStorage.getItem('@GreenUpVermont:loginCredentials');
-            const creds = JSON.parse(_creds);
-            switch (true) {
-                case creds && !!creds.facebook :
-                    token = creds.facebook.token;
-                    dispatch({
-                        type: types.SESSION_STARTED,
-                        session: {
-                            facebook
-                        }
-                    });
-                    firebaseDataLayer.facebookAuth(token).catch(() => {
-                        dispatch({
-                            type: types.LOGIN_FAIL,
-                            session: {
-                                facebook: null,
-                                user: null
-                            }
-                        });
-                    });
-
-                    break;
-                case creds && !!creds.google :
-                    token = creds.google.token;
-                    break;
-                case creds && !!creds.firebase:
-                    token = creds.firebase.token;
-                    break;
-                default:
-                    return false;
-                    break;
-            }
-
-        } catch (error) {
-            return false;
-        }
-    }
-}
-
-export function login(username, password) {
-    console.log('user logged in with ' + username + ' - ' + password);
-    return {
-        type: types.LOGIN_SUCCESSFUL,
-        session: {
-            user: dummyUser
-        }
+export function getCurrentUser() {
+     return (dispatch) => {
+        firebaseDataLayer.initialize(dispatch);
     };
 }
-
 
 export function logout() {
     return async (dispatch) => {
         try {
             const results = await
                 AsyncStorage.removeItem('@GreenUpVermont:loginCredentials');
-            console.log('logout successful');
+                firebaseAuth.signOut();
+    // Auth.GoogleSignInApi.signOut(apiClient);
             dispatch({
                 type: types.LOGOUT_SUCCESSFUL,
                 session: {
@@ -87,7 +40,7 @@ export function logout() {
 
 
 export function createUser(email, password){
-    return () => {
+    return (dispactch) => {
         firebaseDataLayer.createUser(email, password);
     }
 }

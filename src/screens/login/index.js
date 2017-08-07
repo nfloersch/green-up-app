@@ -60,7 +60,9 @@ class Welcome extends Component {
 
     static propTypes = {
         actions: PropTypes.object,
-        navigation: PropTypes.object
+        initialAuthChecked: PropTypes.bool,
+        navigation: PropTypes.object,
+        user: PropTypes.object
     };
 
     static navigationOptions = {
@@ -69,24 +71,33 @@ class Welcome extends Component {
 
     constructor(props) {
         super(props);
-        this.onForgotPassword = this.onForgotPassword.bind(this);
-        this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
-        this.loginWithFacebook = this.loginWithFacebook.bind(this);
-        this.loginWithGoogle = this.loginWithGoogle.bind(this);
-        this.state = {checkingLogin: false};
+        this.onForgotPassword = this
+            .onForgotPassword
+            .bind(this);
+        this.onCreateNewAccount = this
+            .onCreateNewAccount
+            .bind(this);
+        this.loginWithFacebook = this
+            .loginWithFacebook
+            .bind(this);
+        this.loginWithGoogle = this
+            .loginWithGoogle
+            .bind(this);
+        this.state = {};
     }
-
-    componentDidMount() {
-       this.props.actions.isLoggedIn();
-    }
-
 
     onForgotPassword() {
-        this.props.navigation.navigate('ForgotPassword');
+        this
+            .props
+            .navigation
+            .navigate('ForgotPassword');
     }
 
     onCreateNewAccount() {
-        this.props.navigation.navigate('CreateNewAccount');
+        this
+            .props
+            .navigation
+            .navigate('CreateNewAccount');
     }
 
     loginWithGoogle() {
@@ -94,17 +105,24 @@ class Welcome extends Component {
     }
 
     loginWithFacebook() {
-        this.setState({isCheckingLogin: true}, () => {
-            this.props.actions.facebookLogin();
-        })
+        this
+            .props
+            .actions
+            .facebookLogin();
     }
 
     render() {
 
-        let content = this.state.checkingLogin
-            ? ( <View><Text>Thinking deep thoughts ...</Text></View>)
+        let content = !this.props.initialAuthChecked
+            ? (
+                <View>
+                    <Text>Thinking deep thoughts ...</Text>
+                </View>
+            )
             : (
-                <View style={{width: '100%'}}>
+                <View style={{
+                    width: '100%'
+                }}>
                     <LoginForm login={this.props.actions.login}/>
                     <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
                         <Text style={styles.linkText}>I forgot my password</Text>
@@ -113,13 +131,17 @@ class Welcome extends Component {
                         <Text style={styles.linkText}>Create a new account</Text>
                     </TouchableHighlight>
 
-                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithGoogle}>
+                    <TouchableHighlight
+                        style={styles.socialLoginButton}
+                        onPress={this.loginWithGoogle}>
                         <View style={styles.socialLogin}>
                             <Image source={googleLogo} style={styles.logos}/>
                             <Text style={styles.socialLoginText}>Login with Google</Text>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight style={styles.socialLoginButton} onPress={this.loginWithFacebook}>
+                    <TouchableHighlight
+                        style={styles.socialLoginButton}
+                        onPress={this.loginWithFacebook}>
                         <View style={styles.socialLogin}>
                             <Image source={facebookLogo} style={styles.logos}/>
                             <Text style={styles.socialLoginText}>Login with Facebook</Text>
@@ -128,21 +150,21 @@ class Welcome extends Component {
                 </View>
             );
 
-
         return (
             <View style={styles.container}>
-                <Image source={logo} style={{
+                <Image
+                    source={logo}
+                    style={{
                     height: 120,
                     width: 120
-                }}/>
-                {content}
+                }}/>{content}
             </View>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+    return {user: state.loginReducer.user, initialAuthChecked: state.loginReducer.initialAuthChecked};
 }
 function mapDispatchToProps(dispatch) {
     return {

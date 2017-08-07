@@ -63,7 +63,7 @@ class TeamEditorMembers extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams};
+    return {teams: state.teamReducers.teams};
 }
 
 function mapDispatchToProps(dispatch) {

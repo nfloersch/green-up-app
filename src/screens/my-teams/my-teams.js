@@ -144,7 +144,7 @@ class TeamSummaries extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams, owner: state.teamReducers.session.user};
+    return {teams: state.teamReducers.teams, owner: state.teamReducers.user};
 }
 
 function mapDispatchToProps(dispatch) {
