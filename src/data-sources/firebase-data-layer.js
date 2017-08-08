@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
-import {User} from '../models/user';
+import { User } from '../models/user';
+import { firebaseConfig } from "./firebase-config.js";
 //
 // // Initialize Firebase
 const firebaseConfig = {
@@ -56,7 +57,7 @@ function sendUserMessage(userId, message) {
     firebase
         .database()
         .ref('users/' + userId)
-        .set({messages: message});
+        .set({ messages: message });
 }
 
 function setupUserListener(userId) {
@@ -89,7 +90,7 @@ function createUser(email, password) {
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .catch(function (error) {
+        .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -98,11 +99,11 @@ function createUser(email, password) {
 }
 
 
-function loginWithEmailPassword(email,password){
+function loginWithEmailPassword(email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
 }
 
-function logout(){
+function logout() {
     return firebase.auth().signOut();
 }
 
