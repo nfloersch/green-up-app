@@ -3,13 +3,7 @@ import * as dataLayerActions from './data-layer-actions';
 import { User } from '../models/user';
 import { firebaseConfig } from "./firebase-config.js";
 //
-// // Initialize Firebase
-const firebaseConfig = {
-    apiKey: 'AIzaSyAjwSCpOvLPgYcFr26V3gmfwJlGb-VtWAs',
-    authDomain: 'greenupvermont-de02b.firebaseapp.com',
-    databaseURL: 'https://greenupvermont-de02b.firebaseio.com',
-    storageBucket: 'greenupvermont-de02b.appspot.com'
-};
+//   Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
 
