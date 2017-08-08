@@ -4,7 +4,7 @@ import Expo from 'expo';
 import Team from '../../models/team';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 const _teams = [...Array(43)].map((t, i) => {
-    return Team.create({_id: i.toString(), name: `Team ${i}`});
+    return Team.create({uid: i.toString(), name: `Team ${i}`});
 });
 
 export function retrieveContacts(_pageSize = 40) {

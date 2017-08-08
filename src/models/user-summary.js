@@ -1,20 +1,20 @@
 // @flow
 
 export class UserSummary {
-    _id : string;
+    uid : string;
     userId : string;
     firstName : string;
     lastName : string;
     email : string;
 
-    constructor(args = {}) {
-        this._id = typeof args._id === 'string' || typeof args.id === 'string'
-            ? args._id || args.id
+    constructor(args:Object) {
+        this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
+            ? args.uid || args.id
             : null;
-        this.userId = typeof args._id === 'string'
-            ? args._id
+        this.userId = typeof args.uid === 'string'
+            ? args.uid
             : null;
-        this.firstName = typeof args.firrtName === 'string'
+        this.firstName = typeof args.firstName === 'string'
             ? args.name
             : null;
         this.lastName = typeof args.lastName === 'string'
@@ -24,7 +24,7 @@ export class UserSummary {
             ? args.name
             : null;
     }
-    static create(args) {
-        return new UserSummary(args);
+    static create(args:any) {
+        return new UserSummary(args || {});
     }
 }

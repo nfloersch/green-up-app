@@ -30,7 +30,7 @@ function getPhoneNumber(phoneNumbers) {
 }
 
 export default class Contact {
-    _id : string;
+    uid : string;
     firstName : string;
     lastName : string;
     phoneNumber : string;
@@ -38,8 +38,8 @@ export default class Contact {
     isSelected : boolean;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this.uid = typeof args.uid === 'string'
+            ? args.uid
             : null;
         this.firstName = typeof args.lastName === 'string'
             ? args.firstName

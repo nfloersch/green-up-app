@@ -1,5 +1,6 @@
 export default {
     initialAuthChecked: false,
+    creatingUser: false,
     user : null,
     messages : [],
     teams : [],

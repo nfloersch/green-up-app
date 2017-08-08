@@ -45,7 +45,7 @@ class CreateNewAccount extends Component {
         return (
             <View style={styles.container}>
                 <Text>Create New Account</Text>
-                <LoginForm login={this.props.actions.createUser}/>
+                <LoginForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
             </View>
         );
     }

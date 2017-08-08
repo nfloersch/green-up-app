@@ -12,19 +12,23 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Authentication Listen for authentication state to change.
-firebase
-    .auth()
-    .onAuthStateChanged((user) => {
-        if (!!user) {
-            console.log('We are authenticated now!');
-            console.log(user);
-            dataLayerActions.userAuthenticated(User.create(user));
-        } else {
-            console.log('We failed auth');
-            dataLayerActions.userFailedAuthentication();
-        }
-    });
+function initialize(dispatch) {
+    /** Setup Listeners **/
+    firebase
+        .auth()
+        .onAuthStateChanged((user) => {
+            if (!!user) {
+                console.log('We are authenticated now!');
+                console.log(user);
+                dispatch(dataLayerActions.userAuthenticated(User.create(user)));
+            } else {
+                console.log('We failed auth');
+                dispatch(dataLayerActions.userFailedAuthentication());
+            }
+        });
+    /** end Listeners **/
+
+}
 
 async function facebookAuth(token) {
 
@@ -39,6 +43,12 @@ async function facebookAuth(token) {
         .auth()
         .signInWithCredential(credential);
 
+}
+
+async function googleAuth(token) {
+    // Build Firebase credential with the Google access token.
+    const credential = firebase.auth.GoogleAuthProvider.credential(token);
+    return firebase.auth().signInWithCredential(credential);
 }
 
 // Messaging
@@ -63,7 +73,7 @@ function sendGroupMessage(group, message) {
     group
         .members
         .forEach((member) => {
-            sendUserMessage(member._id, message);
+            sendUserMessage(member.uid, message);
         });
 }
 
@@ -87,11 +97,24 @@ function createUser(email, password) {
         });
 }
 
+
+function loginWithEmailPassword(email,password){
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+}
+
+function logout(){
+    return firebase.auth().signOut();
+}
+
 export const firebaseDataLayer = {
     createUser,
+    facebookAuth,
+    googleAuth,
+    initialize,
+    loginWithEmailPassword,
+    logout,
     saveTeam,
     setupUserListener,
     sendUserMessage,
-    sendGroupMessage,
-    facebookAuth
+    sendGroupMessage
 };

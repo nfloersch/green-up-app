@@ -6,26 +6,39 @@ export function loginReducer(state = initialState, action) {
             return {
                 ...state,
                 user: action.user,
-                initialAuthChecked: true
+                initialAuthChecked: true,
+                creatingUser: false
+
             };
         case types.LOGIN_FAIL:
             return {
                 ...state,
                 user: null,
-                initialAuthChecked: true
+                initialAuthChecked: true,
+                creatingUser: false
+
 
             };
         case types.LOGOUT_SUCCESSFUL:
             return {
                 ...state,
                 user: null,
-                initialAuthChecked: true
+                initialAuthChecked: true,
+                creatingUser: false
             };
         case types.LOGOUT_FAIL:
             return {
                 ...state,
                 initialAuthChecked: true
             };
+
+        case types.CREATING_USER:
+            return{
+                ...state,
+                initialAuthChecked: true,
+                creatingUser: true
+            };
+
         default:
             return state;
     }

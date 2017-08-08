@@ -101,7 +101,7 @@ class Welcome extends Component {
     }
 
     loginWithGoogle() {
-        return void 0;
+        this.props.actions.googleLogin();
     }
 
     loginWithFacebook() {
@@ -120,10 +120,9 @@ class Welcome extends Component {
                 </View>
             )
             : (
-                <View style={{
-                    width: '100%'
-                }}>
-                    <LoginForm login={this.props.actions.login}/>
+                <View style={{width: '100%'}}>
+                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+
                     <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
                         <Text style={styles.linkText}>I forgot my password</Text>
                     </TouchableHighlight>

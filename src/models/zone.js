@@ -5,7 +5,7 @@ import {Coordinate} from './coordinate';
 import {isDate} from '../libs/isDate';
 
 export class Zone {
-    _id: string;
+    uid: string;
     name: string;
     description: string;
     status: string;
@@ -14,7 +14,7 @@ export class Zone {
     coordinates: [Coordinate];
 created: Date;
     constructor(args = {}) {
-        this._id = typeof args._id === 'string' ? args._id : null;
+        this.uid = typeof args.uid === 'string' ? args.uid : null;
         this.name = typeof args.name === 'string' ? args.name : null;
         this.description = typeof args.description === 'string' ? args.description : null;
         this.status = typeof args.status === 'string' ? args.status : null;

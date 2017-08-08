@@ -2,12 +2,12 @@
 
 
 export class Coordinate {
-    _id: string;
+    uid: string;
     lat: string;
     long: string;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string' ? args._id : null;
+        this.uid = typeof args.uid === 'string' ? args.uid : null;
         this.lat = typeof args.lat === 'string' ? args.name : null;
         this.long = typeof args.long === 'string' ? args.long : null;
     }

@@ -5,7 +5,7 @@ import {Zone} from './zone';
 import {UserSummary} from './user-summary';
 
 export default class Team {
-    _id : string;
+    uid : string;
     name : string;
     description : string;
     notes : [string];
@@ -23,8 +23,8 @@ export default class Team {
     userIsOwner : boolean;
 
     constructor(args = {}, userId : string) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this.uid = typeof args.uid === 'string'
+            ? args.uid
             : null;
         this.name = typeof args.name === 'string'
             ? args.name

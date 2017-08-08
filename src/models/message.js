@@ -4,7 +4,7 @@ import {messageTypes} from '../constants/message-types';
 import {isDate} from '../libs/isDate';
 
 export class Message {
-    _id : string;
+    uid : string;
     title: string
     text : string;
     userId : string;
@@ -16,8 +16,8 @@ export class Message {
     received : Date;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+        this.uid = typeof args.uid === 'string'
+            ? args.uid
             : null;
         this.title = typeof args.title === 'string'
             ? args.title
