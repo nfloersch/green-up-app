@@ -84,7 +84,9 @@ class TeamSearch extends Component {
 
     render() {
         var teams = this.props.searchResults.map(team => (
-            <TouchableHighlight key={team._id} style={styles.column} onPress={this.toTeamDetail(team)}>
+            <TouchableHighlight key={team._id} style={styles.column}
+                onPress={this.toTeamDetail(team)}
+            >
                 <View>
                     <Text style={styles.teams}>{team.name}</Text>
                 </View>
@@ -93,9 +95,12 @@ class TeamSearch extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
-                    <TextInput keyBoardType={'default'} onChangeText={this.onSearchTermChange} placeholder={'search teams'} style={{
-                        width: '80%'
-                    }} value={this.state.searchTerm}/>
+                    <TextInput keyBoardType={'default'} onChangeText={this.onSearchTermChange}
+                        placeholder={'search teams'} style={{
+                            width: '80%'
+                        }}
+                        value={this.state.searchTerm}
+                    />
                     <Button onPress={this.onSearchButtonPress} title={'search'}/>
                 </View>
                 <ScrollView style={styles.scrollview}>

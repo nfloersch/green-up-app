@@ -5,6 +5,7 @@ import {isDate} from '../libs/isDate';
 
 export class Message {
     _id : string;
+    title: string
     text : string;
     userId : string;
     teamId : string;
@@ -17,6 +18,9 @@ export class Message {
     constructor(args = {}) {
         this._id = typeof args._id === 'string'
             ? args._id
+            : null;
+        this.title = typeof args.title === 'string'
+            ? args.title
             : null;
         this.text = typeof args.text === 'string'
             ? args.text
