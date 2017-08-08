@@ -9,6 +9,7 @@ import {
     Button,
     Platform,
     StyleSheet,
+    ScrollView,
     Text,
     TouchableHighlight,
     View
@@ -53,6 +54,9 @@ export default class TeamEditorMap extends Component {
             .bind(this);
         this._handleMapClick = this
             ._handleMapClick
+            .bind(this);
+        this._removeMarker = this
+            ._removeMarker
             .bind(this);
         this.state = {
             location: null,
@@ -118,6 +122,10 @@ export default class TeamEditorMap extends Component {
         this.setState({markers});
     }
 
+    _removeMarker() {
+        this.state.markers.pop();
+    }
+
     _handleMapRegionChange(mapRegion) {
         this.setState({mapRegion});
     }
@@ -162,9 +170,12 @@ export default class TeamEditorMap extends Component {
                 <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
                 </Text>
-                <Text style={styles.paragraph}>
-                    Markers: {JSON.stringify(this.state.markers)}
-                </Text>
+                <ScrollView style={{width: '100%'}}>
+                    <Text style={styles.paragraph}>
+                        Markers: {JSON.stringify(this.state.markers)}
+                    </Text>
+                </ScrollView>
+                <Button title={'remove last marker'} onClick={this._removeMarker}/>
             </View>
         );
     }
