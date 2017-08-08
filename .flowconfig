@@ -1,6 +1,7 @@
 [ignore]
 ; We fork some components by platform
 .*/*[.]android.js
+.*/node_modules
 
 ; Ignore "BUCK" generated dirs
 <PROJECT_ROOT>/\.buckd/
@@ -44,4 +45,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 unsafe.enable_getters_and_setters=true
 
 [version]
-^0.42.0
+^0.51.0

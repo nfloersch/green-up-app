@@ -52,14 +52,23 @@ const AppNav = DrawerNavigator({
 
 class Nav extends Component {
     static propTypes = {
+        actions: PropTypes.object,
         session: PropTypes.object
     }
+
     constructor(props) {
         super(props);
     }
 
+    componentWillMount() {
+        this
+            .props
+            .actions
+            .getCurrentUser();
+    }
+
     render() {
-        var whichNav = this.props.session && this.props.session.user && this.props.session.user._id
+        var whichNav = this.props.isLoggedIn
             ? (<AppNav/>)
             : (<LoginNav/>);
         return (
@@ -70,8 +79,8 @@ class Nav extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+function mapStateToProps(state) {
+    return {isLoggedIn: !!state.loginReducer.user};
 }
 
 function mapDispatchToProps(dispatch) {

@@ -39,7 +39,8 @@ export default class LoginForm extends Component {
         title: 'Green Up Vermont'
     };
     static propTypes = {
-        login: PropTypes.func
+        buttonText: PropTypes.string,
+        onButtonPress: PropTypes.func
     };
 
     constructor(props) {
@@ -67,7 +68,7 @@ export default class LoginForm extends Component {
     onButtonPress() {
         this
             .props
-            .login(this.state.email, this.state.password);
+            .onButtonPress(this.state.email, this.state.password);
     }
 
     render() {
@@ -91,7 +92,7 @@ export default class LoginForm extends Component {
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
                         style={styles.inputStyle}/>
-                    <Button onPress={this.onButtonPress} title='Login'/>
+                    <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
                 </View>
             </View>
         );

@@ -1,39 +1,83 @@
+// @flow
+
 import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 import {User} from '../../models/user';
+import {AsyncStorage} from 'react-native';
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
-var dummyUser = {
-    _id: '123456',
-    firstName: 'Andy',
-    lastName: 'Pants',
-    email: 'andy.pants@example.com'
-};
+export function getCurrentUser() {
+    return (dispatch) => {
+        firebaseDataLayer.initialize(dispatch);
+    };
+}
 
-export function login(username, password) {
-    console.log('user logged in with ' + username + ' - ' + password);
-    return {
-        type: types.LOGIN_SUCCESSFUL,
-        session: {
-            user: dummyUser
+export function logout() {
+    return async (dispatch) => {
+        try {
+            const results = await firebaseDataLayer.logout();
+            // await Auth.GoogleSignInApi.signOut(apiClient);
+            dispatch({
+                type: types.LOGOUT_SUCCESSFUL,
+                results
+            });
+        } catch (error) {
+            dispatch({
+                type: types.LOGOUT_FAIL,
+                error
+            });
         }
     };
 }
 
 
-export function logout() {
-    return  (dispatch) => {
-        console.log('logout successful');
-        dispatch({
-            type: types.LOGOUT_SUCCESSFUL,
-            session: {
-                google: {},
-                facebook: {},
-                user: {}
-            }
+export function createUser(email, password) {
+    return () => {
+        firebaseDataLayer.createUser(email, password).then(x => {
+            dispatch({type: types.CREATING_USER});
+        }).catch(error => {
+            dispatch({type: types.CREATE_USER_FAIL, error});
+        })
+    };
+}
+
+
+export function loginWithEmailPassword(email: string, password: string) {
+    return (dispatch) => {
+        firebaseDataLayer.loginWithEmailPassword(email, password).catch(error => {
+            dispatch({type: types.LOGIN_FAIL, error});
         });
     };
 }
 
+export function googleLogin() {
+    return async function logIn(dispatch) {
+
+        try {
+            const result = await Expo.Google.logInAsync({
+                androidClientId: "439621369113-oe6f0lm8a5qds59019dfpjf5dnl364g0.apps.googleusercontent.com",
+                iosClientId: "439621369113-9iqssauvd4jnr3kqrl6it7sjdock5n53.apps.googleusercontent.com",
+                scopes: ['profile', 'email']
+            });
+
+            if (result.type === 'success') {
+                firebaseDataLayer.googleAuth(result.idToken).catch(error => {
+                    dispatch({
+                        type: types.LOGIN_FAIL,
+                        error
+                    });
+                });
+            } else {
+                dispatch({
+                    type: types.LOGIN_FAIL,
+                    error: "Google authentication failed"
+                });
+            }
+        } catch(error) {
+            dispatch({type: types.LOGIN_FAIL, error});
+        }
+    };
+}
 
 export function facebookLogin() {
     return async function logIn(dispatch) {
@@ -46,22 +90,21 @@ export function facebookLogin() {
             // Get the user's name using Facebook's Graph API
             const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
             const userInfo = await response.json();
-            const user = User.create(userInfo);
-            console.log('facebook login successful for ' + user.name);
-            dispatch({
-                type: types.LOGIN_SUCCESSFUL,
-                session: {
-                    facebook,
-                    user
-                }
+            console.log('facebook login successful for ' + userInfo.name);
+
+            firebaseDataLayer.facebookAuth(token).catch((error) => {
+                dispatch({
+                    type: types.LOGIN_FAIL,
+                   error,
+                });
             });
         } else {
             console.log('facebook login failed');
             dispatch({
                 type: types.LOGIN_FAIL,
                 session: {
-                    facebook : null,
-                    user :  null
+                    facebook: null,
+                    user: null
                 }
             });
         }

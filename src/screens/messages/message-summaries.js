@@ -74,7 +74,7 @@ class MessageSummaries extends Component {
     }
     render() {
         const myMessages = (this.props.messages || []).map(message => (
-            <TouchableHighlight key={message._id} onPress={this.toMessageDetail(message._id)}>
+            <TouchableHighlight key={message.uid} onPress={this.toMessageDetail(message.uid)}>
                 <View>
                     <Text style={styles.title}>{message.title}</Text>
                 </View>
@@ -91,7 +91,7 @@ class MessageSummaries extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {messages: state.messageReducer.session.user.messages};
+    return {messages: state.messageReducer.messages};
 }
 
 function mapDispatchToProps(dispatch) {

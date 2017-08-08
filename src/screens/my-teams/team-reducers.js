@@ -10,7 +10,7 @@ export function teamReducers(state = initialState, action) {
         case types.DELETE_TEAM:
             return {
                 ...state,
-                teams: (state.teams || []).filter(team => team._id !== action.teamId)
+                teams: (state.teams || []).filter(team => team.uid !== action.teamId)
             };
         case types.RETRIEVE_CONTACTS_SUCCESS:
             return {

@@ -135,7 +135,7 @@ class SendMessage extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {messages: state.messageReducer.session.user.messages};
+    return {messages: state.messageReducer.messages};
 }
 
 function mapDispatchToProps(dispatch) {

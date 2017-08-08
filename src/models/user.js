@@ -5,7 +5,7 @@ import {Team} from './team';
 import {isDate} from '../libs/isDate';
 
 export class User {
-    _id : string;
+    uid : string;
     firstName : string;
     lastName : string;
     email : string;
@@ -14,8 +14,8 @@ export class User {
     created : Date;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string' || typeof args.id === 'string'
-            ? args._id || args.id
+        this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
+            ? args.uid || args.id
             : null;
         this.name = typeof args.name === 'string'
             ? args.name
@@ -24,10 +24,14 @@ export class User {
             ? args.email
             : null;
         this.teams = Array.isArray(args.teams)
-            ? args.teams.map((team) => Team.create(team))
+            ? args
+                .teams
+                .map((team) => Team.create(team))
             : [];
         this.messages = Array.isArray(args.messages)
-            ? args.messages.map((message) => Message.create(message))
+            ? args
+                .messages
+                .map((message) => Message.create(message))
             : [];
         this.created = isDate(args.created)
             ? new Date(args.created)
