@@ -130,6 +130,13 @@ export default class TeamEditorMap extends Component {
                 coordinate={marker.latlng}
                 title={marker.title || 'you clicked here'}
                 description={marker.descrption || 'this is pretty comfy'}/>));
+        // Let's make the marker conditional on whether we have marker data
+        let mapMarker = !!(this.state.mapMarker)
+            ? (<MapView.Marker
+                coordinate={this.state.mapMarker.latlng}
+                title={this.state.mapMarker.title}
+                description={this.state.mapMarker.description}/>)
+            : null;
         return (
             <View style={styles.container}>
                 <Text style={styles.paragraph}>
@@ -137,20 +144,22 @@ export default class TeamEditorMap extends Component {
                 </Text>
                 <MapView
                     style={{
-                    alignSelf: 'stretch',
-                    height: 200
-                }}
+                        alignSelf: 'stretch',
+                        height: 200
+                    }}
                     region={this.state.mapRegion}
                     initialRegion={{
-                    latitude: 44.4615298,
-                    longitude: -73.218605,
-                    latitudeDelta: 0.0002,
-                    longitudeDelta: 0.0001
-                }}
+                        latitude: 44.4615298,
+                        longitude: -73.218605,
+                        latitudeDelta: 0.0002,
+                        longitudeDelta: 0.0001
+                    }}
                     onPress={this._handleMapClick}
                     onRegionChange={this._handleMapRegionChange}>
+                    {mapMarker}
+                    {markers}
                 </MapView>
-                {/* <Text style={styles.paragraph}>
+                <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
                 </Text>
                 <Text style={styles.paragraph}>
