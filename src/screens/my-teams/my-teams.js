@@ -120,7 +120,7 @@ class TeamSummaries extends Component {
     render() {
 
         var myTeams = (this.props.teams || []).map(team => (
-            <TouchableHighlight key={team._id} onPress={this.toTeamDetail(team)}>
+            <TouchableHighlight key={team.uid} onPress={this.toTeamDetail(team)}>
                 <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
                         <MaterialCommunityIcons name='message-text-outline' size={50}/>
@@ -144,7 +144,7 @@ class TeamSummaries extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.session.user.teams, owner: state.teamReducers.session.user};
+    return {teams: state.teamReducers.teams, owner: state.teamReducers.user};
 }
 
 function mapDispatchToProps(dispatch) {

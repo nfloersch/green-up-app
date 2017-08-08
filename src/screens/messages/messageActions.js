@@ -7,7 +7,7 @@ export function addMessageSuccess(data) {
 
 export function sendMessage(_message) {
     const newId = new Date().toISOString(); // use date to create unique id's for now.
-    const message = Message.create({_id: newId, ..._message});
+    const message = Message.create({uid: newId, ..._message});
     return {type: types.NEW_MESSAGE, message};
 }
 

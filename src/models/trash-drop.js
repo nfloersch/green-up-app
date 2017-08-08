@@ -4,7 +4,7 @@ import {Coordinate} from './coordinate';
 import {isDate} from '../libs/isDate';
 
 export class TrashDropLocation {
-    _id: string;
+    uid: string;
     bagCount: number;
     status: string;
     active: boolean;
@@ -13,7 +13,7 @@ export class TrashDropLocation {
     created: Date;
 
     constructor(args = {}) {
-        this._id = typeof args._id === 'string' ? args._id : null;
+        this.uid = typeof args.uid === 'string' ? args.uid : null;
         this.bagCount = typeof args.bagCont === 'number' ? args.bagCount : null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;

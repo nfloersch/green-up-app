@@ -108,17 +108,17 @@ class AllAboutGreenUpDay extends Component {
         };
         return (
             <View style={styles.container}>
-                <NavHeader navigation={this.props.navigation} screenTitle="About Green Up Day" showBack={false}/>
-                <GestureRecognizer
-                    onSwipe={(direction, state) => this.onSwipe(direction, state)}
-                    config = {config}
-                    style={{width: '100%'}}
-                >
-                    <ScrollView style={styles.text}>
+                <ScrollView style={styles.text}>
+                    <NavHeader navigation={this.props.navigation} screenTitle="About Green Up Day" showBack={false}/>
+                    <GestureRecognizer
+                        onSwipe={(direction, state) => this.onSwipe(direction, state)}
+                        config = {config}
+                        style={{width: '100%'}}
+                    >
                         <Text>{this.state.text}</Text>
                         <Text style={{margin: 10}}>{this.state.screen}</Text>
-                    </ScrollView>
-                </GestureRecognizer>
+                    </GestureRecognizer>
+                </ScrollView>
             </View>
         );
     }

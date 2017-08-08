@@ -84,7 +84,7 @@ class TeamSearch extends Component {
 
     render() {
         var teams = this.props.searchResults.map(team => (
-            <TouchableHighlight key={team._id} style={styles.column}
+            <TouchableHighlight key={team.uid} style={styles.column}
                 onPress={this.toTeamDetail(team)}
             >
                 <View>

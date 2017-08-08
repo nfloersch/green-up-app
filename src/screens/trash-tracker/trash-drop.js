@@ -122,7 +122,7 @@ class TrashDrop extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {markers: state.TrashTrackerReducers.session.user.markers};
+    return {markers: state.TrashTrackerReducers.trashDropMarkers};
 }
 
 function mapDispatchToProps(dispatch) {
