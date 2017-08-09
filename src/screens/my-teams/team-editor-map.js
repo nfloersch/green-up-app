@@ -11,6 +11,7 @@ import {
     StyleSheet,
     ScrollView,
     Text,
+    Alert,
     TouchableHighlight,
     View
 } from 'react-native';
@@ -47,6 +48,7 @@ export default class TeamEditorMap extends Component {
         // below.
         tabBarIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='blue'/>)
     };
+
     constructor(props) {
         super(props);
         this._handleMapRegionChange = this
@@ -58,6 +60,7 @@ export default class TeamEditorMap extends Component {
         this._removeMarker = this
             ._removeMarker
             .bind(this);
+        this.calloutClicked = this.calloutClicked.bind(this);
         this.state = {
             location: null,
             errorMessage: null,
@@ -70,14 +73,14 @@ export default class TeamEditorMap extends Component {
         if (Platform.OS === 'android' && !Constants.isDevice) {
             this.setState({
                 errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it again on your ' +
-                        'device!'
+                'device!'
             });
         } else {
             this._getLocationAsync();
         }
     }
 
-    _getLocationAsync = async() => {
+    _getLocationAsync = async () => {
         const status = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             this.setState({errorMessage: 'Permission to access location was denied'});
@@ -107,7 +110,7 @@ export default class TeamEditorMap extends Component {
                 longitudeDelta: 0.0421
             }
         });
-    }
+    };
 
     _handleMapClick(e) {
         let marker = {
@@ -131,6 +134,11 @@ export default class TeamEditorMap extends Component {
         this.setState({mapRegion});
     }
 
+    calloutClicked() {
+        console.log('yay');
+        Alert.alert('yay');
+    }
+
     render() {
         var markers = this
             .state
@@ -138,20 +146,23 @@ export default class TeamEditorMap extends Component {
             .map(marker => (<MapView.Marker
                 coordinate={marker.latlng}
                 title={marker.title || 'you clicked here'}
+                onPress = {this.calloutClicked}
+                onCalloutPress={this.calloutClicked}
                 description={marker.descrption || 'this is pretty comfy'}/>));
         // Let's make the marker conditional on whether we have marker data
         let mapMarker = !!(this.state.mapMarker)
             ? (<MapView.Marker
                 coordinate={this.state.mapMarker.latlng}
                 title={this.state.mapMarker.title}
-                description={this.state.mapMarker.description}/>)
-            : null;
-        return (
-            <View style={styles.container}>
-                <Text style={styles.paragraph}>
+                description={this.state.mapMarker.description}
+                    />)
+                    : null;
+                    return (
+                    <View style={styles.container}>
+                    <Text style={styles.paragraph}>
                     Current Location: {JSON.stringify(this.state.location)}
-                </Text>
-                <MapView
+                    </Text>
+                    <MapView
                     style={{
                         alignSelf: 'stretch',
                         height: 200
@@ -167,17 +178,17 @@ export default class TeamEditorMap extends Component {
                     onRegionChange={this._handleMapRegionChange}>
                     {mapMarker}
                     {markers}
-                </MapView>
-                <Text style={styles.paragraph}>
-                    Map Location: {JSON.stringify(this.state.mapRegion)}
-                </Text>
-                <ScrollView style={{width: '100%'}}>
+                    </MapView>
                     <Text style={styles.paragraph}>
-                        Markers: {JSON.stringify(this.state.markers)}
+                    Map Location: {JSON.stringify(this.state.mapRegion)}
                     </Text>
-                </ScrollView>
-                <Button title={'remove last marker'} onPress={this._removeMarker}/>
-            </View>
-        );
-    }
+                    <ScrollView style={{width: '100%'}}>
+                    <Text style={styles.paragraph}>
+                    Markers: {JSON.stringify(this.state.markers)}
+                    </Text>
+                    </ScrollView>
+                    <Button title={'remove last marker'} onPress={this._removeMarker}/>
+                    </View>
+                    );
+                }
 }
