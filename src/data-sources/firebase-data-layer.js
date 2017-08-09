@@ -1,19 +1,16 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
-import { User } from '../models/user';
-import { firebaseConfig } from "./firebase-config.js";
-//
-// // Initialize Firebase
-const firebaseConfig = {
-    apiKey: 'AIzaSyAjwSCpOvLPgYcFr26V3gmfwJlGb-VtWAs',
-    authDomain: 'greenupvermont-de02b.firebaseapp.com',
-    databaseURL: 'https://greenupvermont-de02b.firebaseio.com',
-    storageBucket: 'greenupvermont-de02b.appspot.com'
-};
+import {User} from '../models/user';
+import {firebaseConfig} from './firebase-config.js';
+
+//   Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
 
+var database = firebase.database();
+
 function initialize(dispatch) {
+
     /** Setup Listeners **/
     firebase
         .auth()
@@ -27,6 +24,15 @@ function initialize(dispatch) {
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
+
+
+    let teams = firebase.database().ref('teams/');
+
+    teams.on('value', function(snapshot) {
+        teams.on('value', function(snapshot) {
+            dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+        });
+    });
     /** end Listeners **/
 
 }
@@ -57,7 +63,7 @@ function sendUserMessage(userId, message) {
     firebase
         .database()
         .ref('users/' + userId)
-        .set({ messages: message });
+        .set({messages: message});
 }
 
 function setupUserListener(userId) {
@@ -90,7 +96,7 @@ function createUser(email, password) {
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .catch(function(error) {
+        .catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;

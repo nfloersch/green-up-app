@@ -99,7 +99,7 @@ class TeamSummaries extends Component {
             this.props.navigation.navigate(nextScreen);
         };
     }
-    
+
     toNewTeamEditor() {
         const team = Team.create({owner: this.props.owner});
         this.props.actions.selectTeam(team);
@@ -132,7 +132,7 @@ class TeamSummaries extends Component {
         ));
         return (
             <View style={styles.container}>
-                <Text>Team Summaries Screen</Text>
+                <Text>{"Team Summaries Screen"}</Text>
                 {myTeams}
                 <View style={styles.row}>
                     <Button onPress={this.toTeamSearch} title="Search Teams"/>
@@ -143,7 +143,7 @@ class TeamSummaries extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {teams: state.teamReducers.teams, owner: state.teamReducers.user};
 }
 

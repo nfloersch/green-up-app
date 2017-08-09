@@ -1,4 +1,3 @@
-
 import * as types from '../constants/actionTypes';
 
 export function userAuthenticated(user) {
@@ -21,3 +20,6 @@ export function userFailedAuthentication(error) {
     return {type: types.LOGIN_FAIL, error};
 }
 
+export function teamFetchSuccessful(teams) {
+    return {type: types.FETCH_TEAMS_SUCCESS, teams};
+}
