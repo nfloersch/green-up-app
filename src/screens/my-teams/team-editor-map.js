@@ -123,7 +123,8 @@ export default class TeamEditorMap extends Component {
     }
 
     _removeMarker() {
-        this.state.markers.pop();
+        var markers = this.state.markers.slice(0, this.state.markers.length - 1);
+        this.setState({markers});
     }
 
     _handleMapRegionChange(mapRegion) {
@@ -175,7 +176,7 @@ export default class TeamEditorMap extends Component {
                         Markers: {JSON.stringify(this.state.markers)}
                     </Text>
                 </ScrollView>
-                <Button title={'remove last marker'} onClick={this._removeMarker}/>
+                <Button title={'remove last marker'} onPress={this._removeMarker}/>
             </View>
         );
     }
