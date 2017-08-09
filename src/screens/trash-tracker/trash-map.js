@@ -43,8 +43,6 @@ export default class TrashMap extends Component {
     };
     constructor(props) {
         super(props);
-        this._handleMapRegionChange = this._handleMapRegionChange.bind(this);
-        this._handleMapClick = this._handleMapClick.bind(this);
         this.state = {
             location: Location.getCurrentPositionAsync({}),
             errorMessage: null,
@@ -90,7 +88,7 @@ export default class TrashMap extends Component {
             }});
     };
 
-    _handleMapRegionChange(mapRegion) {
+    handleMapRegionChange(mapRegion) {
         this.setState({mapRegion});
     }
 
