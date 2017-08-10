@@ -46,7 +46,7 @@ export default class TrashMap extends Component {
         this.state = {
             location: Location.getCurrentPositionAsync({}),
             errorMessage: null,
-            mapRegion: null,
+            mapRegion: Location.getCurrentPositionAsync({}),
             mapMarker: {
                 latlng:{}
             },
@@ -66,11 +66,15 @@ export default class TrashMap extends Component {
             .navigate('TrashDrop');
     }
 
-    _getLocationAsyn = async () => {
+    _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             this.setState({
-                errorMessage: 'Permission to edit this markers was denied'
+                location: Location.getLocationAsync({})
+                // errorMessage: 'Permission to determine location was denied'
+            });
+            this.setState({
+              location: Location.getLocationAsync({})
             });
         }
 
