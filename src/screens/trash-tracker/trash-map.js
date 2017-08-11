@@ -68,13 +68,13 @@ export default class TrashMap extends Component {
 
     _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
+        if (status === 'granted') {
             this.setState({
                 location: Location.getLocationAsync({})
                 // errorMessage: 'Permission to determine location was denied'
             });
             this.setState({
-              location: Location.getLocationAsync({})
+                location: null
             });
         }
 
@@ -111,7 +111,7 @@ export default class TrashMap extends Component {
                         longitudeDelta: 0.0001
                     }}
                     onRegionChange={this._handleMapRegionChange}
-                >
+                 >
                     <MapView.Marker
                         coordinate={this.state.mapMarker.latlng}
                         title={this.state.mapMarker.title}
