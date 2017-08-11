@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import logo from '../../../assets/GreenupVermontlogo.png';
 import facebookLogo from '../../../assets/facebook-logo.png';
 import googleLogo from '../../../assets/google-logo.png';
@@ -82,14 +82,15 @@ class Welcome extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Image source={logo} style={{
-                    height: 120,
-                    width: 120
-                }}/>
-                <LoginForm login={this.props.actions.login}/>
-                <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
-                    <Text style={styles.linkText}>I forgot my password</Text>
+                <ScrollView keyboardShouldPersistTaps='never'>
+                <View style={styles.container}>
+                    <Image source={logo} style={{
+                        height: 120,
+                        width: 120
+                    }}/>
+                    <LoginForm login={this.props.actions.login}/>
+                    <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
+                        <Text style={styles.linkText}>I forgot my password</Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
                     <Text style={styles.linkText}>Create a new account</Text>
@@ -106,7 +107,8 @@ class Welcome extends Component {
                         <Text style={styles.socialLoginText}>Login with Facebook</Text>
                     </View>
                 </TouchableHighlight>
-            </View>
+                </View>
+              </ScrollView>
         );
     }
 }
