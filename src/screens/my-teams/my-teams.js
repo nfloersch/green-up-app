@@ -4,12 +4,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     Button,
-    FlatList,
     StyleSheet,
     Text,
     TouchableHighlight,
+    ScrollView,
     View
 } from 'react-native';
+
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
@@ -118,27 +119,27 @@ class TeamSummaries extends Component {
     }
 
     render() {
-
-        var myTeams = (this.props.teams || []).map(team => (
-            <TouchableHighlight key={team.uid} onPress={this.toTeamDetail(team)}>
+        var teams = this.props.teams;
+        var myTeams = (Object.keys(teams) || []).map(key => (
+            <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
                         <MaterialCommunityIcons name='message-text-outline' size={50}/>
                     </TouchableHighlight>
-                    <Text style={styles.teams}>{team.name}</Text>
-                    <MaterialCommunityIcons name={this.toTeamIcon(team)} size={50}/>
+                    <Text style={styles.teams}>{teams[key].name}</Text>
+                    <MaterialCommunityIcons name={this.toTeamIcon(teams[key])} size={50}/>
                 </View>
             </TouchableHighlight>
         ));
         return (
-            <View style={styles.container}>
-                <Text>{"Team Summaries Screen"}</Text>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text>{'Team Summaries Screen'}</Text>
                 {myTeams}
                 <View style={styles.row}>
-                    <Button onPress={this.toTeamSearch} title="Search Teams"/>
-                    <Button onPress={this.toNewTeamEditor} title="New Team"/>
+                    <Button onPress={this.toTeamSearch} title='Search Teams'/>
+                    <Button onPress={this.toNewTeamEditor} title='New Team'/>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }

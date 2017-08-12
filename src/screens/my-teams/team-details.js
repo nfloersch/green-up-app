@@ -12,11 +12,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
         backgroundColor: '#F5FCFF',
         width: '100%',
+        height: '100%',
         padding: 10
     },
     teams: {
@@ -25,11 +23,9 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     info: {
-        flexDirection: 'row',
         width: '100%',
         marginLeft: '15%',
         marginRight: '15%',
-        justifyContent: 'space-between',
         margin: 10
     },
     textInfo: {
@@ -61,7 +57,7 @@ class TeamDetails extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Where:'}</Text>
