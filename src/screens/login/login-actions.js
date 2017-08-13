@@ -33,7 +33,7 @@ export function logout() {
 
 export function createUser(email, password) {
     return () => {
-        firebaseDataLayer.createUser(email, password).then(x => {
+        firebaseDataLayer.createUser(email, password).then(()=>{
             dispatch({type: types.CREATING_USER});
         }).catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});

@@ -10,12 +10,19 @@ import {
     ScrollView,
     View
 } from 'react-native';
-
+import {UserSummary} from "../../models/user-summary";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Team from '../../models/team';
+
+
+function currentUserIsTeamOwner(team, currentUser){
+  let teamUID = team && team.owner && team.owner.uid;
+  let userUID = currentUser && currentUser.uid;
+  return teamUID && userUID && teamUID === userUID;
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -58,7 +65,7 @@ class TeamSummaries extends Component {
         actions: PropTypes.object,
         teams: PropTypes.array,
         navigation: PropTypes.object,
-        owner: PropTypes.object,
+        currentUser: PropTypes.object,
         toTeamDetails: PropTypes.func
     };
 
@@ -84,11 +91,12 @@ class TeamSummaries extends Component {
 
     toTeamDetail(team : Object) {
         let nextScreen = 'TeamDetails';
+
         switch (true) {
             case team.invitationPending:
                 nextScreen = 'TeamInvitationDetails';
                 break;
-            case team.userIsOwner:
+            case currentUserIsTeamOwner(team, this.props.currentUser);
                 nextScreen = 'TeamEditor';
                 break;
             default:
@@ -102,7 +110,8 @@ class TeamSummaries extends Component {
     }
 
     toNewTeamEditor() {
-        const team = Team.create({owner: this.props.owner});
+        const owner =  UserSummary.create(this.props.currentUser);
+        const team = Team.create({owner});
         this.props.actions.selectTeam(team);
         this.props.navigation.navigate('TeamEditor');
     }
@@ -111,7 +120,7 @@ class TeamSummaries extends Component {
         switch (true) {
             case team.invitationPending:
                 return 'contact-mail';
-            case team.userIsOwner:
+            case currentUserIsTeamOwner(team, this.props.currentUser);
                 return 'pencil-box';
             default:
                 return 'arrow-right-thick';
@@ -145,7 +154,7 @@ class TeamSummaries extends Component {
 }
 
 function mapStateToProps(state) {
-    return {teams: state.teamReducers.teams, owner: state.teamReducers.user};
+    return {teams: state.teamReducers.teams, currentUser: state.loginReducer.user};
 }
 
 function mapDispatchToProps(dispatch) {

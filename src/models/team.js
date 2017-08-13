@@ -20,7 +20,6 @@ export default class Team {
     owner : UserSummary;
     invitePending : boolean;
     acceptancePending : boolean;
-    userIsOwner : boolean;
 
     constructor(args = {}, userId : string) {
         this.uid = typeof args.uid === 'string'

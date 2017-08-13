@@ -85,19 +85,11 @@ function sendGroupMessage(group, message) {
 }
 
 // Teams
-function saveTeam(team, users) {
+function saveTeam(team) {
     firebase
         .database()
         .ref('teams')
         .push(team);
-    if(!!user) {
-        var newTeams :
-        var newUser = Object.asssign({},user,{teams: user.teams})
-        firebase
-            .database()
-            .ref('users')
-            .push();
-    }
 }
 
 function createUser(email, password) {
