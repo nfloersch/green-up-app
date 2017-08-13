@@ -82,11 +82,13 @@ class Welcome extends Component {
 
     render() {
         return (
-                <ScrollView keyboardShouldPersistTaps='never'>
+            <View style={styles.container}>
+                <ScrollView keyboardShouldPersistTaps='never' color='#F5FCFF'>
                 <View style={styles.container}>
                     <Image source={logo} style={{
                         height: 120,
-                        width: 120
+                        width: 120,
+                        margin: 25
                     }}/>
                     <LoginForm login={this.props.actions.login}/>
                     <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
@@ -108,7 +110,8 @@ class Welcome extends Component {
                     </View>
                 </TouchableHighlight>
                 </View>
-              </ScrollView>
+                </ScrollView>
+              </View>
         );
     }
 }
