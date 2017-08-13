@@ -60,7 +60,9 @@ export default class TeamEditorMap extends Component {
         this._removeMarker = this
             ._removeMarker
             .bind(this);
-        this.calloutClicked = this.calloutClicked.bind(this);
+        this._removeLastMarker = this
+            ._removeLastMarker
+            .bind(this);
         this.state = {
             location: null,
             errorMessage: null,
@@ -125,18 +127,23 @@ export default class TeamEditorMap extends Component {
         this.setState({markers});
     }
 
-    _removeMarker() {
+    _removeMarker(marker) {
+        var markers = this.state.markers.slice(0, this.state.markers.length);
+        for(var i = markers.length; i <= 0; i -= 1) {
+            if(markers[i] === marker) {
+                markers.splice(i, 1);
+            }
+        }
+    }
+
+    _removeLastMarker() {
         var markers = this.state.markers.slice(0, this.state.markers.length - 1);
         this.setState({markers});
     }
 
+
     _handleMapRegionChange(mapRegion) {
         this.setState({mapRegion});
-    }
-
-    calloutClicked() {
-        console.log('yay');
-        Alert.alert('yay');
     }
 
     render() {
@@ -147,7 +154,7 @@ export default class TeamEditorMap extends Component {
                 coordinate={marker.latlng}
                 title={marker.title || 'you clicked here'}
                 onPress = {this.calloutClicked}
-                onCalloutPress={this.calloutClicked}
+                onCalloutPress={this._removeMarker(marker)}
                 description={marker.descrption || 'this is pretty comfy'}/>));
         // Let's make the marker conditional on whether we have marker data
         let mapMarker = !!(this.state.mapMarker)
@@ -155,14 +162,14 @@ export default class TeamEditorMap extends Component {
                 coordinate={this.state.mapMarker.latlng}
                 title={this.state.mapMarker.title}
                 description={this.state.mapMarker.description}
-                    />)
-                    : null;
-                    return (
-                    <View style={styles.container}>
-                    <Text style={styles.paragraph}>
+            />)
+            : null;
+        return (
+            <View style={styles.container}>
+                <Text style={styles.paragraph}>
                     Current Location: {JSON.stringify(this.state.location)}
-                    </Text>
-                    <MapView
+                </Text>
+                <MapView
                     style={{
                         alignSelf: 'stretch',
                         height: 200
@@ -178,17 +185,17 @@ export default class TeamEditorMap extends Component {
                     onRegionChange={this._handleMapRegionChange}>
                     {mapMarker}
                     {markers}
-                    </MapView>
-                    <Text style={styles.paragraph}>
+                </MapView>
+                <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
-                    </Text>
-                    <ScrollView style={{width: '100%'}}>
+                </Text>
+                <ScrollView style={{width: '100%'}}>
                     <Text style={styles.paragraph}>
                     Markers: {JSON.stringify(this.state.markers)}
                     </Text>
-                    </ScrollView>
-                    <Button title={'remove last marker'} onPress={this._removeMarker}/>
-                    </View>
-                    );
-                }
+                </ScrollView>
+                <Button title={'remove last marker'} onPress={this._removeLastMarker}/>
+            </View>
+        );
+    }
 }
