@@ -6,7 +6,6 @@ import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 const _teams = [...Array(43)].map((t, i) => {
     return Team.create({uid: i.toString(), name: `Team ${i}`});
 });
-
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
         // Ask for permission to query contacts.
@@ -43,10 +42,8 @@ export function searchForTeams(searchString) {
 export function selectTeam(team) {
     return {type: types.SELECT_TEAM, team};
 }
-
 export function saveTeam(team) {
     return async function (dispatch) {
-        // Ask for permission to query contacts.
         const savedTeam = await firebaseDataLayer.saveTeam(team);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
