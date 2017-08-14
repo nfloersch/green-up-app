@@ -50,12 +50,14 @@ export default class TrashMap extends Component {
             mapRegion: Location.getCurrentPositionAsync({}),
             markers: []
         };
+        this._getLocationAsync = this._getLocationAsync.bind(this);
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
     }
 
     componentDidMount() {
+
     }
 
     _goToTrashDrop() {
@@ -118,10 +120,13 @@ export default class TrashMap extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
+
+
+
                 <MapView
                     zoomEnabled={true}
                     style={{alignSelf: 'stretch', height: 200}}
-                    region={this.state.mapRegion}
+                    // region={this.state.mapRegion}
                     initialRegion={{
                         latitude: 44.4615298,
                         longitude: -73.218605,
