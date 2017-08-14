@@ -135,9 +135,11 @@ class TeamSummaries extends Component {
 
         const _myTeams = (Object.keys(teams || {}))
             .filter(
-                key => this.props.currentUser.uid in ((teams[key].members || []).map(member => member.uid))
+                key => {
+                    let memberIds = ((teams[key].members || []).map(member => member.uid));
+                    return memberIds.indexOf(this.props.currentUser.uid) !== -1;
+                }
             );
-        console.log(_myTeams);
         const myTeams = _myTeams.map(key => (
             <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.buttons}>
