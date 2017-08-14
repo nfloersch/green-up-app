@@ -129,7 +129,7 @@ export default class TeamEditorMap extends Component {
 
     _removeMarker(marker) {
         var markers = this.state.markers.slice(0, this.state.markers.length);
-        for(var i = markers.length; i <= 0; i -= 1) {
+        for(let i = markers.length; i <= 0; i -= 1) {
             if(markers[i] === marker) {
                 markers.splice(i, 1);
             }
