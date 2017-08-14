@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19007,
-  "packagerPid": 37586,
-  "expoServerNgrokUrl": "https://fx-5pe.adawson99.greenupvermont.exp.direct",
-  "packagerNgrokUrl": "https://packager.fx-5pe.adawson99.greenupvermont.exp.direct",
-  "ngrokPid": 37456
+  "packagerPort": 19003,
+  "packagerPid": 3434,
+  "expoServerNgrokUrl": "https://kt-n9i.johnneed.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.kt-n9i.johnneed.greenupvermont.exp.direct",
+  "ngrokPid": 3457
 }

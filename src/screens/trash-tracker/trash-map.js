@@ -7,7 +7,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Alert, TouchableHighlight, StyleSheet, Text, View, Platform} from 'react-native';
-import {Constants, Location, MapView, Permissions } from 'expo';
+import {Constants, Location, MapView, Permissions} from 'expo';
 import TrashDrop from './trash-drop';
 
 const styles = StyleSheet.create({
@@ -41,15 +41,13 @@ export default class TrashMap extends Component {
     static navigationOptions = {
         title: 'Trash Tracker'
     };
+
     constructor(props) {
         super(props);
         this.state = {
             location: Location.getCurrentPositionAsync({}),
             errorMessage: null,
             mapRegion: Location.getCurrentPositionAsync({}),
-            mapMarker: {
-                latlng:{}
-            },
             markers: []
         };
         this._goToTrashDrop = this
@@ -57,7 +55,8 @@ export default class TrashMap extends Component {
             .bind(this);
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     _goToTrashDrop() {
         this
@@ -81,15 +80,24 @@ export default class TrashMap extends Component {
         const location = await Location.getCurrentPositionAsync({});
         const newLat = Number(location.coords.latitude);
         const newLong = Number(location.coords.longitude);
-        this.setState({location,
-            mapMarker: {title: TrashDrop.marker, description: TrashDrop.marker.bagCount, latlng: {
-                longitude: newLong, latutude: newLat}},
+        const markers = this.state.markers.concat({
+            title: TrashDrop.marker,
+            description: TrashDrop.marker.bagCount,
+            latlng: {
+                longitude: newLong,
+                latutude: newLat
+            }
+        });
+        this.setState({
+            location,
+            markers,
             mapRegion: {
                 latitude: newLat,
                 longitude: newLong,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
-            }});
+            }
+        });
     };
 
     handleMapRegionChange(mapRegion) {
@@ -97,6 +105,16 @@ export default class TrashMap extends Component {
     }
 
     render() {
+
+        var myMarkers = this.state.markers.map(marker => (
+            <MapView.Marker
+                coordinate={marker.latlng}
+                title={marker.title}
+                description={marker.description}
+            />
+        ));
+
+
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
@@ -111,12 +129,8 @@ export default class TrashMap extends Component {
                         longitudeDelta: 0.0001
                     }}
                     onRegionChange={this._handleMapRegionChange}
-                 >
-                    <MapView.Marker
-                        coordinate={this.state.mapMarker.latlng}
-                        title={this.state.mapMarker.title}
-                        description={this.state.mapMarker.description}
-                    />
+                >
+                    {myMarkers}
                 </MapView>
 
                 <TouchableHighlight onPress={this._goToTrashDrop}>
