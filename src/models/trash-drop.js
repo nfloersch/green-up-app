@@ -3,7 +3,7 @@
 import {Coordinate} from './coordinate';
 import {isDate} from '../libs/isDate';
 
-export class TrashDropLocation {
+export default class TrashDrop {
     uid: string;
     bagCount: number;
     status: string;
@@ -12,8 +12,8 @@ export class TrashDropLocation {
     coordinate: Coordinate;
     created: Date;
 
-    constructor(args = {}) {
-        this.uid = typeof args.uid === 'string' ? args.uid : null;
+    constructor(args = {}, id) {
+        this.uid = !!id ? id : (typeof args.uid === 'string' ? args.uid : null);
         this.bagCount = typeof args.bagCont === 'number' ? args.bagCount : null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;
@@ -23,6 +23,6 @@ export class TrashDropLocation {
     }
 
     static create(args) {
-        return new TrashDropLocation(args);
+        return new TrashDrop(args);
     }
 }

@@ -7,8 +7,6 @@ import {firebaseConfig} from './firebase-config.js';
 
 firebase.initializeApp(firebaseConfig);
 
-var database = firebase.database();
-
 function initialize(dispatch) {
 
     /** Setup Listeners **/
@@ -17,7 +15,6 @@ function initialize(dispatch) {
         .onAuthStateChanged((user) => {
             if (!!user) {
                 console.log('We are authenticated now!');
-                console.log(user);
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
             } else {
                 console.log('We failed auth');
@@ -28,9 +25,17 @@ function initialize(dispatch) {
 
     let teams = firebase.database().ref('teams/');
 
-    teams.on('value', function(snapshot) {
-        teams.on('value', function(snapshot) {
+    teams.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
             dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+        });
+    });
+
+    let trashDrops = firebase.database().ref('trashDrops/');
+
+    trashDrops.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
+            dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
         });
     });
     /** end Listeners **/

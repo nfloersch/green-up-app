@@ -10,7 +10,7 @@ import {
     ScrollView,
     View
 } from 'react-native';
-import {UserSummary} from "../../models/user-summary";
+import {TeamMember} from '../../models/team-member';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
@@ -18,10 +18,10 @@ import {connect} from 'react-redux';
 import Team from '../../models/team';
 
 
-function currentUserIsTeamOwner(team, currentUser){
-  let teamUID = team && team.owner && team.owner.uid;
-  let userUID = currentUser && currentUser.uid;
-  return teamUID && userUID && teamUID === userUID;
+function currentUserIsTeamOwner(team, currentUser) {
+    const teamUID = team && team.owner && team.owner.uid;
+    const userUID = currentUser && currentUser.uid;
+    return teamUID && userUID && teamUID === userUID;
 }
 
 const styles = StyleSheet.create({
@@ -89,14 +89,15 @@ class TeamSummaries extends Component {
         this.props.navigation.navigate('MessageTeam');
     }
 
-    toTeamDetail(team : Object) {
+    toTeamDetail(team: Object) {
         let nextScreen = 'TeamDetails';
+        const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
 
         switch (true) {
-            case team.invitationPending:
+            case status === TeamMember.memberStatuses.INVITED:
                 nextScreen = 'TeamInvitationDetails';
                 break;
-            case currentUserIsTeamOwner(team, this.props.currentUser);
+            case currentUserIsTeamOwner(team, this.props.currentUser):
                 nextScreen = 'TeamEditor';
                 break;
             default:
@@ -110,17 +111,19 @@ class TeamSummaries extends Component {
     }
 
     toNewTeamEditor() {
-        const owner =  UserSummary.create(this.props.currentUser);
-        const team = Team.create({owner});
+        const owner = TeamMember.create(this.props.currentUser);
+        const members = [owner];
+        const team = Team.create({owner, members});
         this.props.actions.selectTeam(team);
         this.props.navigation.navigate('TeamEditor');
     }
 
-    toTeamIcon(team : Object) {
+    toTeamIcon(team: Object) {
+        const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
         switch (true) {
-            case team.invitationPending:
+            case status === TeamMember.memberStatuses.INVITED:
                 return 'contact-mail';
-            case currentUserIsTeamOwner(team, this.props.currentUser);
+            case currentUserIsTeamOwner(team, this.props.currentUser):
                 return 'pencil-box';
             default:
                 return 'arrow-right-thick';
@@ -128,8 +131,14 @@ class TeamSummaries extends Component {
     }
 
     render() {
-        var teams = this.props.teams;
-        var myTeams = (Object.keys(teams) || []).map(key => (
+        const teams = this.props.teams;
+
+        const _myTeams = (Object.keys(teams || {}))
+            .filter(
+                key => this.props.currentUser.uid in ((teams[key].members || []).map(member => member.uid))
+            );
+        console.log(_myTeams);
+        const myTeams = _myTeams.map(key => (
             <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.buttons}>
                     <TouchableHighlight onPress={this.toMessageTeam}>
@@ -154,7 +163,9 @@ class TeamSummaries extends Component {
 }
 
 function mapStateToProps(state) {
-    return {teams: state.teamReducers.teams, currentUser: state.loginReducer.user};
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    return {teams, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {
