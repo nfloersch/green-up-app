@@ -5,12 +5,12 @@ const memberStati = {
     INVITED: 'INVITED',
     ACCEPTED: 'ACCEPTED',
     DECLINED: 'DECLINED',
-    NOT_INVITED: 'NOT_INVITED'
+    NOT_INVITED: 'NOT_INVITED',
+    MEMBERSHIP_REQUESTED: 'MEMBERSHIP_REQUESTED'
 };
 
 export class TeamMember {
     uid: string;
-    userId: string;
     firstName: string;
     lastName: string;
     email: string;

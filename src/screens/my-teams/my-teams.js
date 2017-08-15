@@ -15,7 +15,6 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Team from '../../models/team';
 
 
 function currentUserIsTeamOwner(team, currentUser) {
@@ -112,10 +111,7 @@ class TeamSummaries extends Component {
     }
 
     toNewTeamEditor() {
-        const owner = TeamMember.create(this.props.currentUser);
-        const members = [owner];
-        const team = Team.create({owner, members});
-        this.props.actions.selectTeam(team);
+        this.props.actions.selectTeam();
         this.props.navigation.navigate('TeamEditor');
     }
 

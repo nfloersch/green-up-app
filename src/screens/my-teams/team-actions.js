@@ -42,9 +42,9 @@ export function searchForTeams(searchString) {
 export function selectTeam(team) {
     return {type: types.SELECT_TEAM, team};
 }
-export function saveTeam(team) {
+export function saveTeam(team, id) {
     return async function (dispatch) {
-        const savedTeam = await firebaseDataLayer.saveTeam(team);
+        const savedTeam = await firebaseDataLayer.saveTeam(team, id);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
 }

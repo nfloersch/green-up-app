@@ -22,6 +22,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import {vermontTowns} from '../../libs/vermont-towns';
+import Team from '../../models/team';
+import {TeamMember} from '../../models/team-member';
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -50,10 +52,20 @@ const styles = StyleSheet.create({
     }
 });
 
+
+function createNewTeam(currentUser) {
+    const owner = TeamMember.create(Object.assign({}, currentUser, {memberStatus: TeamMember.memberStatuses.ACCEPTED}));
+    const members = [owner];
+    return Team.create({owner, members});
+}
+
+
 class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        selectedTeam: PropTypes.object
+        currentUser: PropTypes.object,
+        selectedTeam: PropTypes.object,
+        teams: PropTypes.object
     };
 
     static navigationOptions = {
@@ -84,21 +96,24 @@ class TeamEditorDetails extends Component {
     }
 
     componentWillMount() {
-        var myTeam = this.props.selectedTeam === 'string' ?
-                     this.setState({selectedTeam: this.props.teams[this.props.selectedTeam]});
+
+        const selectedTeam = typeof this.props.selectedTeam === 'string' ? this.props.teams[this.props.selectedTeam] : createNewTeam(this.props.currentUser);
+        this.setState({selectedTeam});
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({selectedTeam: nextProps.selectedTeam});
+        if (nextProps.selectedTeam !== this.props.selectedTeam) {
+            const selectedTeam = typeof nextProps.selectedTeam === 'string' ? nextProps.teams[nextProps.selectedTeam] : createNewTeam(nextProps.currentUser);
+            this.setState({selectedTeam});
+        }
     }
 
     setSelectedOption(option) {
-        console.log(option);
         this.setState({selectedOption: option});
     }
 
     saveTeam() {
-        this.props.actions.saveTeam(this.state.selectedTeam);
+        this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeam);
     }
 
     setTeamValue(key) {
@@ -113,27 +128,30 @@ class TeamEditorDetails extends Component {
 
 
         return (
-            <ScrollView automaticallyAdjustContentInsets={false}
-                        onScroll={() => {
-                            console.log('onScroll!');
-                        }}
-                        scrollEventThrottle={200}
-                        style={styles.scrollView}>
+            <ScrollView
+                automaticallyAdjustContentInsets={false}
+                onScroll={() => {
+                    console.log('onScroll!');
+                }}
+                scrollEventThrottle={200}
+                style={styles.scrollView}>
                 <View style={styles.column}>
                     <Text style={styles.label}>Team Name:</Text>
-                    <TextInput keyBoardType={'default'}
-                               onChangeText={this.setTeamValue('name')}
-                               placeholder={'Team Name'}
-                               style={{
-                                   width: '80%'
-                               }}
-                               value={this.state.selectedTeam.name}/>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('name')}
+                        placeholder={'Team Name'}
+                        style={{
+                            width: '80%'
+                        }}
+                        value={this.state.selectedTeam.name}/>
                 </View>
-                <SegmentedControls options={this.options}
-                                   onSelection={this.setSelectedOption}
-                                   selectedOption={this.state.selectedOption}
-                                   selectedTint={'#EFEFEF'} tint={'#666666'}
-                                   extractText={(option) => option.label}/>
+                <SegmentedControls
+                    options={this.options}
+                    onSelection={this.setSelectedOption}
+                    selectedOption={this.state.selectedOption}
+                    selectedTint={'#EFEFEF'} tint={'#666666'}
+                    extractText={(option) => option.label}/>
 
                 <View style={styles.column}>
                     <Text style={styles.label}>Clean Up Location:</Text>
@@ -145,13 +163,14 @@ class TeamEditorDetails extends Component {
                 </View>
                 <View style={styles.column}>
                     <Text style={styles.label}>Town:</Text>
-                    <TextInput keyBoardType={'default'}
-                               onChangeText={this.setTeamValue('town')}
-                               placeholder={'Town'}
-                               style={{
-                                   width: '80%'
-                               }}
-                               value={this.state.selectedTeam.location}/>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('town')}
+                        placeholder={'Town'}
+                        style={{
+                            width: '80%'
+                        }}
+                        value={this.state.selectedTeam.location}/>
                 </View>
                 <Button title='Save' onPress={this.saveTeam}/>
             </ScrollView>
@@ -159,17 +178,26 @@ class TeamEditorDetails extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function
+
+mapStateToProps(state) {
     const currentUser = state.loginReducer.user;
     const teams = state.teamReducers.teams;
     const selectedTeam = state.teamReducers.selectedTeam;
     return {selectedTeam, teams, currentUser};
 }
 
-function mapDispatchToProps(dispatch) {
+function
+
+mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(teamActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);
+export default connect(mapStateToProps, mapDispatchToProps)
+
+(
+    TeamEditorDetails
+)
+;

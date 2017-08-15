@@ -90,11 +90,15 @@ function sendGroupMessage(group, message) {
 }
 
 // Teams
-function saveTeam(team) {
-    firebase
-        .database()
-        .ref('teams')
-        .push(team);
+function saveTeam(team, id) {
+    if (!id) {
+        firebase
+            .database()
+            .ref('teams')
+            .push(team);
+    } else {
+        firebase.database().ref(`teams/${id}`).set(team);
+    }
 }
 
 function createUser(email, password) {
