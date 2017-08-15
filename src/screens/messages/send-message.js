@@ -5,11 +5,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
+import Message from '../../models/message';
+import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as messageActions from './messageActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -57,6 +59,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     }
 });
+
 class SendMessage extends Component {
     static propTypes = {
         actions: PropTypes.object,
@@ -67,6 +70,7 @@ class SendMessage extends Component {
     static navigationOptions = {
         title: 'Send Message'
     };
+
     constructor(props) {
         super(props);
         this.changeTitle = this.changeTitle.bind(this);
@@ -88,7 +92,8 @@ class SendMessage extends Component {
     }
 
     sendMessage() {
-        this.props.actions.sendMessage({title: this.state.title, text: this.state.text});
+        const message = Message.create(this.state);
+        this.props.actions.sendMessage(message);
         this.props.navigation.navigate('MessageSummaries');
     }
 
@@ -123,7 +128,7 @@ class SendMessage extends Component {
                 </View>
                 <View style={styles.buttonRow}>
                     <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
-                        <Text style={styles.text}>Add Message</Text>
+                        <Text style={styles.text}>Send Message</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={styles.cancelButton} onPress={this.cancelMessage}>
                         <Text style={styles.text}>Cancel</Text>
@@ -134,8 +139,11 @@ class SendMessage extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {messages: state.messageReducer.messages};
+function mapStateToProps(state) {
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    const selectedTeam = state.teamReducers.selectedTeam;
+    return {selectedTeam, teams, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

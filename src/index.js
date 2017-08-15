@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as loginActions from './screens/login/login-actions';
 import PropTypes from 'prop-types';
-import {View, Alert, Text, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';
@@ -53,8 +53,9 @@ const AppNav = DrawerNavigator({
 class Nav extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        isLoggedIn: PropTypes.bool,
         session: PropTypes.object
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -68,7 +69,7 @@ class Nav extends Component {
     }
 
     render() {
-        var whichNav = this.props.isLoggedIn
+        const whichNav = this.props.isLoggedIn
             ? (<AppNav/>)
             : (<LoginNav/>);
         return (
