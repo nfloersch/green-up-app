@@ -1,26 +1,43 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
-import { User } from '../models/user';
-import { firebaseConfig } from "./firebase-config.js";
-//
+import {User} from '../models/user';
+import {firebaseConfig} from './firebase-config.js';
+
 //   Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
 
 function initialize(dispatch) {
+
     /** Setup Listeners **/
     firebase
         .auth()
         .onAuthStateChanged((user) => {
             if (!!user) {
                 console.log('We are authenticated now!');
-                console.log(user);
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
             } else {
                 console.log('We failed auth');
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
+
+
+    let teams = firebase.database().ref('teams/');
+
+    teams.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
+            dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+        });
+    });
+
+    let trashDrops = firebase.database().ref('trashDrops/');
+
+    trashDrops.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
+            dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
+        });
+    });
     /** end Listeners **/
 
 }
@@ -51,7 +68,7 @@ function sendUserMessage(userId, message) {
     firebase
         .database()
         .ref('users/' + userId)
-        .set({ messages: message });
+        .set({messages: message});
 }
 
 function setupUserListener(userId) {
@@ -73,25 +90,28 @@ function sendGroupMessage(group, message) {
 }
 
 // Teams
-function saveTeam(team) {
-    firebase
-        .database()
-        .ref('teams')
-        .push(team);
+function saveTeam(team, id) {
+    if (!id) {
+        firebase
+            .database()
+            .ref('teams')
+            .push(team);
+    } else {
+        firebase.database().ref(`teams/${id}`).set(team);
+    }
 }
 
 function createUser(email, password) {
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .catch(function(error) {
+        .catch((error) => {
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorMessage);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage); //eslint-disable-line
         });
 }
-
 
 function loginWithEmailPassword(email, password) {
     return firebase.auth().signInWithEmailAndPassword(email, password);

@@ -7,7 +7,7 @@ import Nav from './src/';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './src/reducers/';
-import thunk from 'redux-thunk'
+import thunk from 'redux-thunk';
 
 const store = createStore(reducer, applyMiddleware(thunk));
 
