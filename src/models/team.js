@@ -1,11 +1,10 @@
 // @flow
 
 import {isDate} from '../libs/isDate';
-import {Zone} from './zone';
+import {Location} from './location';
 import {TeamMember} from './team-member';
 
 export default class Team {
-    uid: string;
     name: string;
     description: string;
     notes: [string];
@@ -19,10 +18,7 @@ export default class Team {
     created: Date;
     owner: TeamMember;
 
-    constructor(args = {}, id) {
-        this.uid = !!id ? id : (typeof args.uid === 'string'
-            ? args.uid
-            : null);
+    constructor(args = {}) {
         this.name = typeof args.name === 'string'
             ? args.name
             : null;
@@ -55,13 +51,13 @@ export default class Team {
             : true;
         this.created = isDate(args.created)
             ? new Date(args.created)
-            : !!this.uid ? null : new Date();
+            : new Date();
         this.owner = TeamMember.create(args.owner);
 
     }
 
-    static create(args = {}, userId: string) {
-        return new Team(args, userId);
+    static create(args = {}) {
+        return new Team(args);
     }
 
 }

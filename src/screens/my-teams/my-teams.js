@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 class TeamSummaries extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array,
+        teams: PropTypes.object,
         navigation: PropTypes.object,
         currentUser: PropTypes.object,
         toTeamDetails: PropTypes.func
