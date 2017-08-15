@@ -89,8 +89,9 @@ class TeamSummaries extends Component {
         this.props.navigation.navigate('MessageTeam');
     }
 
-    toTeamDetail(team: Object) {
+    toTeamDetail(key: string) {
         let nextScreen = 'TeamDetails';
+        const team = (this.props.teams || {})[key];
         const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
 
         switch (true) {
@@ -105,7 +106,7 @@ class TeamSummaries extends Component {
                 break;
         }
         return () => {
-            this.props.actions.selectTeam(team);
+            this.props.actions.selectTeam(key);
             this.props.navigation.navigate(nextScreen);
         };
     }

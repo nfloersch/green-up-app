@@ -24,7 +24,7 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import {vermontTowns} from '../../libs/vermont-towns';
 
 const styles = StyleSheet.create({
-    scrollView:{
+    scrollView: {
         backgroundColor: '#FFFFFF',
         height: '100%'
     },
@@ -84,7 +84,8 @@ class TeamEditorDetails extends Component {
     }
 
     componentWillMount() {
-        this.setState({selectedTeam: this.props.selectedTeam});
+        var myTeam = this.props.selectedTeam === 'string' ?
+                     this.setState({selectedTeam: this.props.teams[this.props.selectedTeam]});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -113,7 +114,9 @@ class TeamEditorDetails extends Component {
 
         return (
             <ScrollView automaticallyAdjustContentInsets={false}
-                        onScroll={() => { console.log('onScroll!'); }}
+                        onScroll={() => {
+                            console.log('onScroll!');
+                        }}
                         scrollEventThrottle={200}
                         style={styles.scrollView}>
                 <View style={styles.column}>
@@ -157,7 +160,10 @@ class TeamEditorDetails extends Component {
 }
 
 function mapStateToProps(state) {
-    return {selectedTeam: state.teamReducers.selectedTeam};
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    const selectedTeam = state.teamReducers.selectedTeam;
+    return {selectedTeam, teams, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {
