@@ -5,18 +5,16 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Button, StyleSheet, Text, TouchableHighlight,ScrollView, View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
         backgroundColor: '#F5FCFF',
         width: '100%',
+        height: '100%',
         padding: 10
     },
     teams: {
@@ -25,11 +23,9 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     info: {
-        flexDirection: 'row',
         width: '100%',
         marginLeft: '15%',
         marginRight: '15%',
-        justifyContent: 'space-between',
         margin: 10
     },
     textInfo: {
@@ -61,7 +57,7 @@ class TeamDetails extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Where:'}</Text>
@@ -76,9 +72,9 @@ class TeamDetails extends Component {
                     <Text style={styles.boldInfo}>{this.props.selectedTeam.endTime}</Text>
                 </View>
                 <View style={styles.details}>
-                    <Text style={{fontSize: 10}}>{'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus facilisis urna, eget ornare odio blandit id. Praesent orci orci, porttitor non viverra sed, iaculis quis ex. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. '}</Text>
+                    <Text style={{fontSize: 10}}>{'Description'}</Text>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }

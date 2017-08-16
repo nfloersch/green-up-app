@@ -46,6 +46,7 @@ export default class TeamEditorMap extends Component {
         // below.
         tabBarIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='blue'/>)
     };
+
     constructor(props) {
         super(props);
         this._handleMapRegionChange = this
@@ -66,14 +67,14 @@ export default class TeamEditorMap extends Component {
         if (Platform.OS === 'android' && !Constants.isDevice) {
             this.setState({
                 errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it again on your ' +
-                        'device!'
+                'device!'
             });
         } else {
             this._getLocationAsync();
         }
     }
 
-    _getLocationAsync = async() => {
+    _getLocationAsync = async () => {
         const status = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             this.setState({errorMessage: 'Permission to access location was denied'});
@@ -103,7 +104,7 @@ export default class TeamEditorMap extends Component {
                 longitudeDelta: 0.0421
             }
         });
-    }
+    };
 
     _handleMapClick(e) {
         let marker = {
@@ -137,16 +138,16 @@ export default class TeamEditorMap extends Component {
                 </Text>
                 <MapView
                     style={{
-                    alignSelf: 'stretch',
-                    height: 200
-                }}
+                        alignSelf: 'stretch',
+                        height: 200
+                    }}
                     region={this.state.mapRegion}
                     initialRegion={{
-                    latitude: 44.4615298,
-                    longitude: -73.218605,
-                    latitudeDelta: 0.0002,
-                    longitudeDelta: 0.0001
-                }}
+                        latitude: 44.4615298,
+                        longitude: -73.218605,
+                        latitudeDelta: 0.0002,
+                        longitudeDelta: 0.0001
+                    }}
                     onPress={this._handleMapClick}
                     onRegionChange={this._handleMapRegionChange}>
                 </MapView>
