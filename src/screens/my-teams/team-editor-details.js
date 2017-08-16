@@ -178,26 +178,17 @@ class TeamEditorDetails extends Component {
     }
 }
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
     const currentUser = state.loginReducer.user;
     const teams = state.teamReducers.teams;
     const selectedTeam = state.teamReducers.selectedTeam;
     return {selectedTeam, teams, currentUser};
 }
 
-function
-
-mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(teamActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)
-
-(
-    TeamEditorDetails
-)
-;
+export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);
