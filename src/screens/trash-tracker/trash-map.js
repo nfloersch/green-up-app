@@ -57,7 +57,6 @@ export default class TrashMap extends Component {
     }
 
     componentDidMount() {
-
     }
 
     _goToTrashDrop() {
@@ -69,22 +68,24 @@ export default class TrashMap extends Component {
 
     _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if (status === 'granted') {
+        if ( status === 'granted') {
             this.setState({
-                location: Location.getLocationAsync({})
-                // errorMessage: 'Permission to determine location was denied'
+                location: Location.getCurrentPositionAsync({})
             });
             this.setState({
-                location: null
+                latitude: 44.3,
+                longitude: 47.33,
+                latitudeDelta: 1,
+                longitudeDelta: 2
             });
         }
 
-        const location = await Location.getCurrentPositionAsync({});
+        const location = await Location._getLocationAsync({});
         const newLat = Number(location.coords.latitude);
         const newLong = Number(location.coords.longitude);
         const markers = this.state.markers.concat({
             title: TrashDrop.marker,
-            description: TrashDrop.marker.bagCount,
+            description: Number(TrashDrop.marker.bagCount),
             latlng: {
                 longitude: newLong,
                 latutude: newLat
@@ -96,15 +97,11 @@ export default class TrashMap extends Component {
             mapRegion: {
                 latitude: newLat,
                 longitude: newLong,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001
             }
         });
     };
-
-    handleMapRegionChange(mapRegion) {
-        this.setState({mapRegion});
-    }
 
     render() {
 
@@ -120,20 +117,15 @@ export default class TrashMap extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
-
-
-
                 <MapView
                     zoomEnabled={true}
-                    style={{alignSelf: 'stretch', height: 200}}
-                    // region={this.state.mapRegion}
-                    initialRegion={{
-                        latitude: 44.4615298,
-                        longitude: -73.218605,
-                        latitudeDelta: 0.0002,
-                        longitudeDelta: 0.0001
-                    }}
-                    onRegionChange={this._handleMapRegionChange}
+                    showsUserLocation={true}
+                    showsMyLocatonButton={true}
+                    showsScale={true}
+                    followsUserLocation={true}
+                    showsCompass={true}
+                    style={{alignSelf: 'stretch', height: 300}}
+                    initialRegion={this.setState()}
                 >
                     {myMarkers}
                 </MapView>
