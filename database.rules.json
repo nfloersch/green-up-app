@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "teams": {
+      ".read": true,
+      ".write": true
+    },
+    "trashDrops": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
