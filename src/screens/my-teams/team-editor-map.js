@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         margin: 10
+    },
+    paragraph: {
+        justifyContent: 'center',
+        fontSize: 20
     }
 });
 export default class TeamEditorMap extends Component {
@@ -84,13 +88,13 @@ export default class TeamEditorMap extends Component {
         const newLat = Number(location.coords.latitude);
         const newLong = Number(location.coords.longitude);
         const markers = this.state.markers.concat({
-                title: 'YOU ARE HERE',
-                description: 'X marks the spot',
-                latlng: {
-                    longitude: newLong,
-                    latitude: newLat
-                }
-            });
+            title: 'YOU ARE HERE',
+            description: 'X marks the spot',
+            latlng: {
+                longitude: newLong,
+                latitude: newLat
+            }
+        });
         this.setState({
             location,
             markers,
@@ -114,14 +118,14 @@ export default class TeamEditorMap extends Component {
     }
 
     _removeMarker(marker) {
-        return  () => {
+        return () => {
             const markers = this.state.markers.filter(_marker => (
                 marker.latlng.latitude !== _marker.latlng.latitude ||
                 marker.latlng.longitude !== _marker.latlng.longitude
             ));
 
             this.setState({markers});
-        }
+        };
     }
 
     _removeLastMarker() {
@@ -140,36 +144,36 @@ export default class TeamEditorMap extends Component {
             .markers
             .map(marker => (
                 <MapView.Marker coordinate={marker.latlng}
-                                title={marker.title || 'you clicked here'}
-                                onPress={this.calloutClicked}
-                                onCalloutPress={this._removeMarker(marker)}
-                                description={marker.descrption || 'this is pretty comfy'}
+                    title={marker.title || 'you clicked here'}
+                    onPress={this.calloutClicked}
+                    onCalloutPress={this._removeMarker(marker)}
+                    description={marker.descrption || 'this is pretty comfy'}
                 />));
         // Let's make the marker conditional on whether we have marker data
-        let mapMarker = !!(this.state.mapMarker) ?
-            (
+        const mapMarker = !!(this.state.mapMarker)
+            ? (
                 <MapView.Marker coordinate={this.state.mapMarker.latlng}
-                                title={this.state.mapMarker.title}
-                                description={this.state.mapMarker.description}
+                    title={this.state.mapMarker.title}
+                    description={this.state.mapMarker.description}
                 />
             ) : null;
         return (
             <View style={styles.container}>
                 <Text style={styles.paragraph}>
-                    Current Location: {JSON.stringify(this.state.location)}
+                    Place markers where you want your team to work on. Tap on the marker text box to remove a marker.
                 </Text>
                 <MapView style={{alignSelf: 'stretch', height: 200}}
-                         region={this.state.mapRegion}
-                         initialRegion={
-                             {
-                                 latitude: 44.4615298,
-                                 longitude: -73.218605,
-                                 latitudeDelta: 0.0002,
-                                 longitudeDelta: 0.0001
-                             }
-                         }
-                         onPress={this._handleMapClick}
-                         onRegionChange={this._handleMapRegionChange}
+                    region={this.state.mapRegion}
+                    initialRegion={
+                        {
+                            latitude: 44.4615298,
+                            longitude: -73.218605,
+                            latitudeDelta: 0.0002,
+                            longitudeDelta: 0.0001
+                        }
+                    }
+                    onPress={this._handleMapClick}
+                    onRegionChange={this._handleMapRegionChange}
                 >
                     {mapMarker}{markers}
                 </MapView>
@@ -182,7 +186,7 @@ export default class TeamEditorMap extends Component {
                     </Text>
                 </ScrollView>
                 <Button title={'remove last marker'}
-                        onPress={this._removeLastMarker}
+                    onPress={this._removeLastMarker}
                 />
             </View>
         );
