@@ -134,6 +134,7 @@ export default class TeamEditorMap extends Component {
                 markers.splice(i, 1);
             }
         }
+        this.setState({markers});
     }
 
     _removeLastMarker() {
