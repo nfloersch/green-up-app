@@ -76,17 +76,19 @@ class TeamSummaries extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
-        this.toMessageTeam = this.toMessageTeam.bind(this);
+        this.sendMessge = this.sendMessage.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
+        this.state={selectedTeam: null, message: '', isModalVisible:false};
     }
 
     toTeamSearch() {
         this.props.navigation.navigate('TeamSearch');
     }
 
-    toMessageTeam() {
-        this.props.navigation.navigate('MessageTeam');
-    }
+    sendMessage(){
+        const team = this.props.teams[this.state.selectedTeam];
+        this.props.actions.sendTeamMessage(team, this.state.message);
+    };
 
     toTeamDetail(key: string) {
         let nextScreen = 'TeamDetails';
@@ -156,6 +158,27 @@ class TeamSummaries extends Component {
                     <Button onPress={this.toTeamSearch} title='Search Teams'/>
                     <Button onPress={this.toNewTeamEditor} title='New Team'/>
                 </View>
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        this.setState({message: '', selectedTeam: null});
+                    }}
+                >
+                    <View style={{marginTop: 22}}>
+                        <View>
+                            <Text>Hello World!</Text>
+
+                            <TouchableHighlight onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible);
+                            }}>
+                                <Text>Hide Modal</Text>
+                            </TouchableHighlight>
+
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         );
     }

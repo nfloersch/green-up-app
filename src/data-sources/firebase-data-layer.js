@@ -91,13 +91,16 @@ function sendGroupMessage(group, message) {
 
 // Teams
 function saveTeam(team, id) {
-    if (!id) {
+    const _id = id || team.uid;
+    let _team = Object.assign({},team);
+    Reflect.deleteProperty(_team, 'uid')
+    if (!_id) {
         firebase
             .database()
             .ref('teams')
             .push(team);
     } else {
-        firebase.database().ref(`teams/${id}`).set(team);
+        firebase.database().ref(`teams/${_id}`).set(_team);
     }
 }
 

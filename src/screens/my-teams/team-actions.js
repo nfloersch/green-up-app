@@ -30,6 +30,15 @@ export function retrieveContacts(_pageSize = 40) {
     };
 }
 
+
+export function sendTeamMessage(team,message){
+    return async function(dispatch){
+        const teamMembers = team.members.map(member => member.uid);
+        firebaseDataLayer.sendGroupMessage(teamMembers, message);
+        dispatch
+    }
+}
+
 export function selectTeam(team) {
     return {type: types.SELECT_TEAM, team};
 }
