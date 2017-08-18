@@ -6,10 +6,10 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, StyleSheet, Text, View, Platform} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet,
+Button, Modal, ScrollView, TextInput, Text, View, Platform} from 'react-native';
 import {Constants, Location, MapView, Permissions} from 'expo';
 import TrashDrop from './trash-drop';
-import {Modal, ScrollView,TextInput, Button, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
 import CheckBox from 'react-native-checkbox';
 
 const styles = StyleSheet.create({
@@ -109,13 +109,13 @@ export default class TrashMap extends Component {
 
     render() {
 
-        var myMarkers = this.state.markers.map(marker => (
+        var myMarkers = marker => (
             <MapView.Marker
                 coordinate={marker.latlng}
                 title={marker.title}
                 description={marker.description}
             />
-        ));
+        );
 
 
         return (
