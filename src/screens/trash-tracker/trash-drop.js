@@ -12,7 +12,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as trashTrackerActions from './TrashTrackerActions';
 import NavHeader from '../../components/NavHeader';
-import {TrashDropLocation}from '../../models/trash-drop';
+import {TrashDropLocation} from '../../models/trash-drop';
 
 import {
     Alert,
@@ -100,16 +100,18 @@ class TrashDrop extends Component {
                     <CheckBox label='None' onPress={() => {
                         this.toTrashMap(data);
                     }}/>
-                    <CheckBox label='Mattress(s)' onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
+                    <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
+                              onPress={() => {
+                                  this.setState({hasMattress: !this.state.hasMattress});
+                              }}
+                    />
                     <CheckBox label='Tires' onPress={() => {
                         this.toTrashMap(data);
                     }}/>
                     <CheckBox label='Hazardous Waste' onPress={() => {
                         this.toTrashMap(data);
                     }}/>
-                    <CheckBox label='Large Object(s)'onPress={() => {
+                    <CheckBox label='Large Object(s)' onPress={() => {
                         this.toTrashMap(data);
                     }}/>
                     <Button onPress={this.toTrashMap}

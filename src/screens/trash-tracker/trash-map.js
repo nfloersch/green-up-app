@@ -6,7 +6,8 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import {Modal, ScrollView,TextInput, Button, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import CheckBox from 'react-native-checkbox';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,15 +45,17 @@ export default class TrashMap extends Component {
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
+        this.state = {modalVisible: false};
     }
 
     componentDidMount() {}
 
     _goToTrashDrop() {
-        this
-            .props
-            .navigation
-            .navigate('TrashDrop');
+        this.setState({modalVisible: true});
+        // this
+        //     .props
+        //     .navigation
+        //     .navigate('TrashDrop');
     }
 
     render() {
@@ -64,6 +67,55 @@ export default class TrashMap extends Component {
                         <Text style={styles.text}>Drop Trash</Text>
                     </View>
                 </TouchableHighlight>
+                <Modal
+                    animationType={"slide"}
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {alert("Modal has been closed.")}}
+                >
+                    <ScrollView style={{marginTop: 22}}>
+                        <View>
+                            <TextInput
+                                keyboardType='numeric'
+                                placeholder=' 1'
+                                style={{
+                                    height: 40,
+                                    borderColor: 'gray',
+                                    borderWidth: 1
+                                }}
+                                onChangeText={(text) => this.setState({text})}
+                            />
+                            <Text style={styles.text}>Other Items</Text>
+                            <CheckBox label='None' onPress={() => {
+                                this.toTrashMap(data);
+                            }}/>
+                            <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
+                                      onPress={() => {
+                                          this.setState({hasMattress: !this.state.hasMattress});
+                                      }}
+                            />
+                            <CheckBox label='Tires' onPress={() => {
+                                this.toTrashMap(data);
+                            }}/>
+                            <CheckBox label='Hazardous Waste' onPress={() => {
+                                this.toTrashMap(data);
+                            }}/>
+                            <CheckBox label='Large Object(s)' onPress={() => {
+                                this.toTrashMap(data);
+                            }}/>
+                            <Button onPress={this.toTrashMap}
+                                    title='Mark the Spot'
+                                    color='green'/>
+
+                            <TouchableHighlight onPress={() => {
+                                this.setState({modalVisible: false})
+                            }}>
+                                <Text>Hide Modal</Text>
+                            </TouchableHighlight>
+
+                        </View>
+                    </ScrollView>
+                </Modal>
             </View>
         );
     }
