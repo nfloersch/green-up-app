@@ -77,7 +77,7 @@ class TrashDrop extends Component {
     }
 
     toTrashMap(data) {
-        const marker = TrashDropLocation.create({bagCount: this.bagCount, tags: this.tags});
+        const marker = TrashDropLocation.create({bagCount: this.bagCount});
         this.props.navigation.navigate('TrashMap');
     }
 
@@ -97,21 +97,31 @@ class TrashDrop extends Component {
                         onChangeText={(text) => this.setState({text})}
                     />
                     <Text style={styles.text}>Other Items</Text>
-                    <CheckBox label='None' onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
-                    <CheckBox label='Mattress(s)' onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
-                    <CheckBox label='Tires' onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
-                    <CheckBox label='Hazardous Waste' onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
-                    <CheckBox label='Large Object(s)'onPress={() => {
-                        this.toTrashMap(data);
-                    }}/>
+                    String data = ''
+                    <CheckBox checked={this.state.hasNone} label='None'
+                    onPress={() => {
+                        this.setState({hasNone: !this.state.hasNone});
+                    }} />
+                    <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
+                    onPress={() => {
+                        this.setState({hasMattress: !this.state.hasMattress});
+                    }}
+                    />
+                    <CheckBox checked={this.state.hasTires} label='Tire(s)'
+                    onPress={() => {
+                        this.setState({hasTires: !this.state.hasTires});
+                    }}
+                    />
+                    <CheckBox checked={this.state.hasHazardous} label='Hazardous Waste'
+                    onPress={() => {
+                        this.setState({hasHazardous: !this.state.hasHazardous});
+                    }}
+                    />
+                    <CheckBox checked={this.state.hasLarge} label='Large Object(s)'
+                    onPress={() => {
+                        this.setState({hasLarge: !this.state.hasLarge});
+                    }}
+                    />
                     <Button onPress={this.toTrashMap}
                         title='Mark the Spot'
                         color='green'/>

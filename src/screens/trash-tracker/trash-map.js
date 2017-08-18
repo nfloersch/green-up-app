@@ -83,9 +83,9 @@ export default class TrashMap extends Component {
         const location = await Location._getLocationAsync({});
         const newLat = Number(location.coords.latitude);
         const newLong = Number(location.coords.longitude);
-        const markers = this.state.markers.concat({
-            title: TrashDrop.marker,
-            description: Number(TrashDrop.marker.bagCount),
+        const marker = this.state.marker.concat({
+            title: TrashDrop.toTrashMap.marker,
+            description: Number(TrashDrop.toTrashMap.marker.bagCount),
             latlng: {
                 longitude: newLong,
                 latutude: newLat
@@ -93,7 +93,7 @@ export default class TrashMap extends Component {
         });
         this.setState({
             location,
-            markers,
+            marker,
             mapRegion: {
                 latitude: newLat,
                 longitude: newLong,
@@ -125,7 +125,7 @@ export default class TrashMap extends Component {
                     followsUserLocation={true}
                     showsCompass={true}
                     style={{alignSelf: 'stretch', height: 300}}
-                    initialRegion={this.setState()}
+                    // initialRegion={this.setState()}
                 >
                     {myMarkers}
                 </MapView>
