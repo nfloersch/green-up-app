@@ -1,28 +1,27 @@
 // @flow
 
-import {Coordinate} from './coordinate';
+import {Coordinates} from './coordinates';
 import {isDate} from '../libs/isDate';
 
-export class TrashDropLocation {
-    _id: string;
+export default class TrashDrop {
+    uid: string;
     bagCount: number;
     status: string;
     active: boolean;
     tags: [string];
-    coordinate: Coordinate;
+    coordinates: Coordinates;
     created: Date;
 
-    constructor(args = {}) {
-        this._id = typeof args._id === 'string' ? args._id : null;
-        this.bagCount = typeof args.bagCont === 'number' ? args.bagCount : null;
+    constructor(args: Object) {
+        this.bagCount = typeof args.bagCount === 'number' ? args.bagCount : null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;
         this.active = typeof args.active === 'boolean' ? args.active : true;
-        this.coordinate = typeof coordinate === 'object' ? Coordinate.create(this.coordinate) : null;
+        this.coordinates = typeof args.coordinates === 'object' ? Coordinates.create(args.coordinates) : null;
         this.created = isDate(args.created) ? new Date(args.created) : null;
     }
 
     static create(args) {
-        return new TrashDropLocation(args);
+        return new TrashDrop(args || {});
     }
 }

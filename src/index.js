@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as loginActions from './screens/login/login-actions';
 import PropTypes from 'prop-types';
-import {View, Alert} from 'react-native';
+import {View} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import Welcome from './screens/login/';
 import ForgotPassword from './screens/login/forgot-password';
@@ -15,6 +15,7 @@ import Donate from './screens/donate/Donate';
 import Teams from './screens/my-teams/';
 import TrashTracker from './screens/trash-tracker/';
 import AllAboutGreenUpDay from './screens/about-green-up-day/AllAboutGreenUpDay';
+import Logout from './screens/login/logout';
 
 const LoginNav = StackNavigator({
     Welcome: {
@@ -43,19 +44,32 @@ const AppNav = DrawerNavigator({
     },
     AllAboutGreenUpDay: {
         screen: AllAboutGreenUpDay
+    },
+    Logout: {
+        screen: Logout
     }
 }, {drawerPosition: 'right'});
 
 class Nav extends Component {
     static propTypes = {
+        actions: PropTypes.object,
+        isLoggedIn: PropTypes.bool,
         session: PropTypes.object
-    }
+    };
+
     constructor(props) {
         super(props);
     }
 
+    componentWillMount() {
+        this
+            .props
+            .actions
+            .getCurrentUser();
+    }
+
     render() {
-        var whichNav = this.props.session && this.props.session.user && this.props.session.user._id
+        const whichNav = this.props.isLoggedIn
             ? (<AppNav/>)
             : (<LoginNav/>);
         return (
@@ -66,8 +80,8 @@ class Nav extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+function mapStateToProps(state) {
+    return {isLoggedIn: !!state.loginReducer.user};
 }
 
 function mapDispatchToProps(dispatch) {

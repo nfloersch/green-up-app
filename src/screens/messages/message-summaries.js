@@ -58,6 +58,13 @@ class MessageSummaries extends Component {
     constructor(props) {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
+        this.toSendMessage = this.toSendMessage.bind(this);
+    }
+
+    toSendMessage() {
+        return () => {
+            this.props.navigation.navigate('SendMessage');
+        };
     }
 
     toMessageDetail(messageId) {
@@ -67,9 +74,9 @@ class MessageSummaries extends Component {
     }
     render() {
         const myMessages = (this.props.messages || []).map(message => (
-            <TouchableHighlight key={message._id} onPress={this.toMessageDetail(message._id)}>
+            <TouchableHighlight key={message.uid} onPress={this.toMessageDetail(message.uid)}>
                 <View>
-                    <Text style={styles.messages}>{message.message}</Text>
+                    <Text style={styles.title}>{message.title}</Text>
                 </View>
             </TouchableHighlight>
         ));
@@ -77,13 +84,14 @@ class MessageSummaries extends Component {
             <View style={styles.container}>
                 <Text>Message Summaries Screen</Text>
                 {myMessages}
+                <Button onPress={this.toSendMessage()} title={'create message'} />
             </View>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    return {messages: state.messageReducer.session.user.messages};
+    return {messages: state.messageReducer.messages};
 }
 
 function mapDispatchToProps(dispatch) {

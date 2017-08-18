@@ -3,10 +3,11 @@
 import {messageTypes} from '../constants/message-types';
 import {isDate} from '../libs/isDate';
 
-export class Message {
-    _id : string;
+export default class Message {
+    uid : string;
+    title: string;
     text : string;
-    userId : string;
+    sender : string;
     teamId : string;
     read : boolean;
     active : boolean;
@@ -14,15 +15,18 @@ export class Message {
     type : string;
     received : Date;
 
-    constructor(args = {}) {
-        this._id = typeof args._id === 'string'
-            ? args._id
+    constructor(args: Object) {
+        this.uid = typeof args.uid === 'string'
+            ? args.uid
+            : null;
+        this.title = typeof args.title === 'string'
+            ? args.title
             : null;
         this.text = typeof args.text === 'string'
             ? args.text
             : null;
-        this.userId = typeof args.userId === 'string'
-            ? args.userId
+        this.sender = typeof args.userId === 'string'
+            ? args.sender
             : null;
         this.teamId = typeof args.teamId === 'string'
             ? args.teamId
@@ -37,7 +41,7 @@ export class Message {
             ? args.link
             : null;
         this.type = typeof args.type === 'string' && args.type in messageTypes
-            ? type
+            ? args.type
             : null;
         this.received = isDate(args.received)
             ? new Date(args.received)
@@ -45,7 +49,8 @@ export class Message {
     }
 
     static create(args) {
-        return new Message(args);
+        return new Message(args || {});
     }
 
+    static messageTypes = messageTypes;
 }

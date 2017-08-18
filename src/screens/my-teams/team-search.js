@@ -6,7 +6,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Button,
     ScrollView,
     StyleSheet,
     Text,
@@ -45,10 +44,27 @@ const styles = StyleSheet.create({
         marginTop: 5
     }
 });
+
+/**
+ *
+ * @param {string} term
+ * @param {string[]} searchableString - things we search
+ * @returns {number} the number of matches
+ */
+function searchScore(term: string, searchableString: [string]) {
+    const terms = term.trim().split(' ');
+    const testTerm = terms[0].toLowerCase();
+    const score = searchableString.reduce((_score, interrogee) => (_score + (typeof interrogee === 'string' && interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0))
+        , 0);
+    return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(' '), searchableString);
+
+}
+
+
 class TeamSearch extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array,
+        teams: PropTypes.object,
         navigation: PropTypes.object,
         searchResults: PropTypes.array
     };
@@ -56,24 +72,30 @@ class TeamSearch extends Component {
     static navigationOptions = {
         title: 'Find a Team'
     };
+
     constructor(props) {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.onSearchTermChange = this.onSearchTermChange.bind(this);
-        this.onSearchButtonPress = this.onSearchButtonPress.bind(this);
         this.state = {
-            searchTerm: ''
+            searchTerm: '',
+            searchResults: []
         };
 
     }
 
-    onSearchTermChange(text) {
-        this.setState({searchTerm: text});
+    onSearchTermChange(searchTerm) {
+        const teams = this.props.teams;
+        const searchResults = Object.keys(this.props.teams).map(key => ({
+            key,
+            score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
+        }))
+            .filter(score => (score.score > 0))
+            .sort((score1, score2) => (score2.score - score1.score))
+            .map(score => score.key);
+        this.setState({searchResults, searchTerm});
     }
 
-    onSearchButtonPress() {
-        this.props.actions.searchForTeams(this.state.searchTerm);
-    }
 
     toTeamDetail(team) {
         return () => {
@@ -83,31 +105,39 @@ class TeamSearch extends Component {
     }
 
     render() {
-        var teams = this.props.searchResults.map(team => (
-            <TouchableHighlight key={team._id} style={styles.column} onPress={this.toTeamDetail(team)}>
+        const teams = this.props.teams;
+        const searchResults = this.state.searchResults.map(teamId => (
+            <TouchableHighlight
+                key={teamId} style={styles.column}
+                onPress={this.toTeamDetail(teamId)}
+            >
                 <View>
-                    <Text style={styles.teams}>{team.name}</Text>
+                    <Text style={styles.teams}>{teams[teamId].name}</Text>
                 </View>
             </TouchableHighlight>
         ));
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
-                    <TextInput keyBoardType={'default'} onChangeText={this.onSearchTermChange} placeholder={'search teams'} style={{
-                        width: '80%'
-                    }} value={this.state.searchTerm}/>
-                    <Button onPress={this.onSearchButtonPress} title={'search'}/>
+                    <TextInput
+                        keyBoardType={'default'} onChangeText={this.onSearchTermChange}
+                        placeholder={'search teams'}
+                        style={{
+                            width: '80%'
+                        }}
+                        value={this.state.searchTerm}
+                    />
                 </View>
                 <ScrollView style={styles.scrollview}>
-                    {teams}
+                    {searchResults}
                 </ScrollView>
             </View>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {searchResults: state.teamReducers.teamSearchResults};
+function mapStateToProps(state) {
+    return {teams: state.teamReducers.teams};
 }
 
 function mapDispatchToProps(dispatch) {

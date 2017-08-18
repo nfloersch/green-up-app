@@ -12,7 +12,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as trashTrackerActions from './TrashTrackerActions';
 import NavHeader from '../../components/NavHeader';
-import {TrashDropLocation}from '../../models/trash-drop';
+import {TrashDropLocation} from '../../models/trash-drop';
 
 import {
     Alert,
@@ -97,7 +97,6 @@ class TrashDrop extends Component {
                         onChangeText={(text) => this.setState({text})}
                     />
                     <Text style={styles.text}>Other Items</Text>
-                    String data = ''
                     <CheckBox checked={this.state.hasNone} label='None'
                         onPress={() => {
                             this.setState({hasNone: !this.state.hasNone});
@@ -132,7 +131,7 @@ class TrashDrop extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {markers: state.TrashTrackerReducers.session.user.markers};
+    return {markers: state.TrashTrackerReducers.trashDropMarkers};
 }
 
 function mapDispatchToProps(dispatch) {

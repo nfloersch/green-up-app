@@ -1,11 +1,16 @@
+// @flow
+
 import * as types from '../../constants/actionTypes';
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
 export function addMessageSuccess(data) {
     return {type: types.NEW_MESSAGE, data};
 }
 
-export function addMessage(message) {
-    return {type: types.NEW_MESSAGE, message};
+export function sendMessage(message: Object, recipients: [string]) {
+    return (dispatch) => {
+        recipients.map(recipient => firebaseDataLayer.sendMessage(message, recipient));
+    };
 }
 
 export function readMessageSuccess(data) {

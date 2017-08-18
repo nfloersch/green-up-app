@@ -1,34 +1,135 @@
 import firebase from 'firebase';
-//
-// // Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyAjwSCpOvLPgYcFr26V3gmfwJlGb-VtWAs",
-    authDomain: "greenupvermont-de02b.firebaseapp.com",
-    databaseURL: "https://greenupvermont-de02b.firebaseio.com",
-    storageBucket:  "greenupvermont-de02b.appspot.com"
-};
+import * as dataLayerActions from './data-layer-actions';
+import {User} from '../models/user';
+import {firebaseConfig} from './firebase-config.js';
+
+//   Initialize Firebase
 
 firebase.initializeApp(firebaseConfig);
 
+function initialize(dispatch) {
+
+    /** Setup Listeners **/
+    firebase
+        .auth()
+        .onAuthStateChanged((user) => {
+            if (!!user) {
+                console.log('We are authenticated now!');
+                dispatch(dataLayerActions.userAuthenticated(User.create(user)));
+            } else {
+                console.log('We failed auth');
+                dispatch(dataLayerActions.userFailedAuthentication());
+            }
+        });
+
+
+    let teams = firebase.database().ref('teams/');
+
+    teams.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
+            dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+        });
+    });
+
+    let trashDrops = firebase.database().ref('trashDrops/');
+
+    trashDrops.on('value', function (snapshot) {
+        teams.on('value', function (snapshot) {
+            dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
+        });
+    });
+    /** end Listeners **/
+
+}
+
+async function facebookAuth(token) {
+
+    // Build Firebase credential with the Facebook access token.
+    const credential = firebase
+        .auth
+        .FacebookAuthProvider
+        .credential(token);
+
+    // Sign in with credential from the Facebook user.
+    return firebase
+        .auth()
+        .signInWithCredential(credential);
+
+}
+
+async function googleAuth(token) {
+    // Build Firebase credential with the Google access token.
+    const credential = firebase.auth.GoogleAuthProvider.credential(token);
+    return firebase.auth().signInWithCredential(credential);
+}
+
+// Messaging
 function sendUserMessage(userId, message) {
-    firebase.database().ref('users/' + userId).set({messages: message});
+    firebase
+        .database()
+        .ref('users/' + userId)
+        .set({messages: message});
 }
 
 function setupUserListener(userId) {
-    firebase.database().ref('users/' + userId).on('value', (snapshot) => {
-        const user = snapshot.val();
-        console.log('User Changed ' + JSON.stringify(user));
-    });
+    firebase
+        .database()
+        .ref('users/' + userId)
+        .on('value', (snapshot) => {
+            const user = snapshot.val();
+            console.log('User Changed ' + JSON.stringify(user));
+        });
 }
 
 function sendGroupMessage(group, message) {
-    group.members.forEach((member) => {
-        sendUserMessage(member._id, message);
-    });
+    group
+        .members
+        .forEach((member) => {
+            sendUserMessage(member.uid, message);
+        });
 }
 
-function saveTeam(team) {
-    firebase.database().ref('teams').push(team);
+// Teams
+function saveTeam(team, id) {
+    if (!id) {
+        firebase
+            .database()
+            .ref('teams')
+            .push(team);
+    } else {
+        firebase.database().ref(`teams/${id}`).set(team);
+    }
 }
 
-export const firebaseDataLayer = {saveTeam, setupUserListener, sendUserMessage, sendGroupMessage};
+function createUser(email, password) {
+    firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch((error) =>{
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage, ); //eslint-disable-line
+        });
+}
+
+function loginWithEmailPassword(email, password) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+}
+
+function logout() {
+    return firebase.auth().signOut();
+}
+
+export const firebaseDataLayer = {
+    createUser,
+    facebookAuth,
+    googleAuth,
+    initialize,
+    loginWithEmailPassword,
+    logout,
+    saveTeam,
+    setupUserListener,
+    sendUserMessage,
+    sendGroupMessage
+};

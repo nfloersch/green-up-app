@@ -60,64 +60,110 @@ class Welcome extends Component {
 
     static propTypes = {
         actions: PropTypes.object,
-        navigation: PropTypes.object
+        initialAuthChecked: PropTypes.bool,
+        navigation: PropTypes.object,
+        user: PropTypes.object
     };
 
     static navigationOptions = {
         title: 'Login'
     };
+
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
-        this.onForgotPassword = this.onForgotPassword.bind(this);
-        this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
+        this.onForgotPassword = this
+            .onForgotPassword
+            .bind(this);
+        this.onCreateNewAccount = this
+            .onCreateNewAccount
+            .bind(this);
+        this.loginWithFacebook = this
+            .loginWithFacebook
+            .bind(this);
+        this.loginWithGoogle = this
+            .loginWithGoogle
+            .bind(this);
+        this.state = {};
     }
+
     onForgotPassword() {
-        this.props.navigation.navigate('ForgotPassword');
+        this
+            .props
+            .navigation
+            .navigate('ForgotPassword');
     }
+
     onCreateNewAccount() {
-        this.props.navigation.navigate('CreateNewAccount');
+        this
+            .props
+            .navigation
+            .navigate('CreateNewAccount');
     }
-    onButtonPress() {}
+
+    loginWithGoogle() {
+        this.props.actions.googleLogin();
+    }
+
+    loginWithFacebook() {
+        this
+            .props
+            .actions
+            .facebookLogin();
+    }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <ScrollView keyboardShouldPersistTaps='never' color='#F5FCFF'>
-                <View style={styles.container}>
-                    <Image source={logo} style={{
-                        height: 120,
-                        width: 120,
-                        margin: 25
-                    }}/>
-                    <LoginForm login={this.props.actions.login}/>
+
+        let content = !this.props.initialAuthChecked
+            ? (
+                <View>
+                    <Text>Thinking deep thoughts ...</Text>
+                </View>
+            )
+            : (
+                <View style={{width: '100%'}}>
+                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+
                     <TouchableHighlight style={styles.link} onPress={this.onForgotPassword}>
                         <Text style={styles.linkText}>I forgot my password</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
-                    <Text style={styles.linkText}>Create a new account</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
-                    <View style={styles.socialLogin}>
-                        <Image source={googleLogo} style={styles.logos}/>
-                        <Text style={styles.socialLoginText}>Login with Google</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.socialLoginButton} onPress={this.onButtonPress}>
-                    <View style={styles.socialLogin}>
-                        <Image source={facebookLogo} style={styles.logos}/>
-                        <Text style={styles.socialLoginText}>Login with Facebook</Text>
-                    </View>
-                </TouchableHighlight>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.link} onPress={this.onCreateNewAccount}>
+                        <Text style={styles.linkText}>Create a new account</Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                        style={styles.socialLoginButton}
+                        onPress={this.loginWithGoogle}>
+                        <View style={styles.socialLogin}>
+                            <Image source={googleLogo} style={styles.logos}/>
+                            <Text style={styles.socialLoginText}>Login with Google</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.socialLoginButton}
+                        onPress={this.loginWithFacebook}>
+                        <View style={styles.socialLogin}>
+                            <Image source={facebookLogo} style={styles.logos}/>
+                            <Text style={styles.socialLoginText}>Login with Facebook</Text>
+                        </View>
+                    </TouchableHighlight>
                 </View>
-                </ScrollView>
-              </View>
+            );
+
+        return (
+            <View style={styles.container}>
+                <Image
+                    source={logo}
+                    style={{
+                    height: 120,
+                    width: 120
+                }}/>{content}
+            </View>
         );
     }
 }
 
 function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+    return {user: state.loginReducer.user, initialAuthChecked: state.loginReducer.initialAuthChecked};
 }
 function mapDispatchToProps(dispatch) {
     return {
