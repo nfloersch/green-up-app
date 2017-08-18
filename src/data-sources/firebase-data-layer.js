@@ -67,8 +67,8 @@ async function googleAuth(token) {
 function sendUserMessage(userId, message) {
     firebase
         .database()
-        .ref('users/' + userId)
-        .set({messages: message});
+        .ref(`users/${userId}/messages`)
+        .push({messages: message});
 }
 
 function setupUserListener(userId) {
