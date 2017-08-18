@@ -99,28 +99,28 @@ class TrashDrop extends Component {
                     <Text style={styles.text}>Other Items</Text>
                     String data = ''
                     <CheckBox checked={this.state.hasNone} label='None'
-                    onPress={() => {
-                        this.setState({hasNone: !this.state.hasNone});
-                    }} />
+                        onPress={() => {
+                            this.setState({hasNone: !this.state.hasNone});
+                        }} />
                     <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
-                    onPress={() => {
-                        this.setState({hasMattress: !this.state.hasMattress});
-                    }}
+                        onPress={() => {
+                            this.setState({hasMattress: !this.state.hasMattress});
+                        }}
                     />
                     <CheckBox checked={this.state.hasTires} label='Tire(s)'
-                    onPress={() => {
-                        this.setState({hasTires: !this.state.hasTires});
-                    }}
+                        onPress={() => {
+                            this.setState({hasTires: !this.state.hasTires});
+                        }}
                     />
                     <CheckBox checked={this.state.hasHazardous} label='Hazardous Waste'
-                    onPress={() => {
-                        this.setState({hasHazardous: !this.state.hasHazardous});
-                    }}
+                        onPress={() => {
+                            this.setState({hasHazardous: !this.state.hasHazardous});
+                        }}
                     />
                     <CheckBox checked={this.state.hasLarge} label='Large Object(s)'
-                    onPress={() => {
-                        this.setState({hasLarge: !this.state.hasLarge});
-                    }}
+                        onPress={() => {
+                            this.setState({hasLarge: !this.state.hasLarge});
+                        }}
                     />
                     <Button onPress={this.toTrashMap}
                         title='Mark the Spot'
