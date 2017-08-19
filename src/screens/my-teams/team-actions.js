@@ -35,8 +35,7 @@ export function sendTeamMessage(team,message){
     return async function(dispatch){
         const teamMembers = team.members.map(member => member.uid);
         firebaseDataLayer.sendGroupMessage(teamMembers, message);
-        dispatch
-    }
+    };
 }
 
 export function selectTeam(team) {

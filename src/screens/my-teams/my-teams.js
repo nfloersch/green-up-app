@@ -8,13 +8,18 @@ import {
     Text,
     TouchableHighlight,
     ScrollView,
-    View
+    Modal,
+    View,
+    TextInput
 } from 'react-native';
+import {Message} from '../../models/message';
+
 import {TeamMember} from '../../models/team-member';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import withErrorHandler from '../../components/with-error-handler';
 
 
 function currentUserIsTeamOwner(team, currentUser) {
@@ -56,15 +61,45 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 15,
         justifyContent: 'space-around'
+    },
+    messageRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderWidth: 2,
+        borderColor: '#678',
+        width: '100%',
+        padding: 4,
+        marginTop: 10
+    },
+    buttonRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    addButton: {
+        width: '49%',
+        backgroundColor: '#0F0',
+        justifyContent: 'center',
+        padding: 10,
+        marginRight: 3
+    },
+    cancelButton: {
+        width: '49%',
+        backgroundColor: '#F00',
+        justifyContent: 'center',
+        padding: 10,
+        marginLeft: 3
     }
 });
 
-class TeamSummaries extends Component {
+class MyTeams extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.object,
-        navigation: PropTypes.object,
         currentUser: PropTypes.object,
+        handleError: PropTypes.func,
+        navigation: PropTypes.object,
+        teams: PropTypes.object,
         toTeamDetails: PropTypes.func
     };
 
@@ -76,19 +111,47 @@ class TeamSummaries extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
-        this.sendMessge = this.sendMessage.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
+        this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
-        this.state={selectedTeam: null, message: '', isModalVisible:false};
+        this.onMessageTextChange = this.onMessageTextChange.bind(this);
+        this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
     toTeamSearch() {
         this.props.navigation.navigate('TeamSearch');
     }
 
-    sendMessage(){
-        const team = this.props.teams[this.state.selectedTeam];
-        this.props.actions.sendTeamMessage(team, this.state.message);
-    };
+    openTeamMessageModal(selectedTeamId) {
+        return () => {
+            this.setState({messageText: '', selectedTeamId, isModalVisible: true});
+        };
+    }
+
+
+    sendMessage() {
+        const team = this.props.teams[this.state.selectedTeamId];
+        const myMessage = Message.create({
+            text: this.state.messageText,
+            sender: this.props.currentUser,
+            teamId: this.state.selectedTeamId,
+            type: Message.messageTypes.TEAM_MESSAGE
+        });
+
+        this.setState({sendingMessage: true}, () => {
+            this.props.actions.sendTeamMessage(team, myMessage)
+                .then(
+                    this.setState({messagetext: '', isModalVisible: false})
+                )
+                .catch((error) => {
+                    this.props.handleError(error);
+                });
+        });
+    }
+
+    onMessageTextChange(messageText) {
+        this.setState({messageText});
+    }
 
     toTeamDetail(key: string) {
         let nextScreen = 'TeamDetails';
@@ -142,7 +205,7 @@ class TeamSummaries extends Component {
         const myTeams = _myTeams.map(key => (
             <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.buttons}>
-                    <TouchableHighlight onPress={this.toMessageTeam}>
+                    <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
                         <MaterialCommunityIcons name='message-text-outline' size={50}/>
                     </TouchableHighlight>
                     <Text style={styles.teams}>{teams[key].name}</Text>
@@ -161,21 +224,32 @@ class TeamSummaries extends Component {
                 <Modal
                     animationType={'slide'}
                     transparent={false}
-                    visible={this.state.modalVisible}
+                    visible={this.state.isModalVisible}
                     onRequestClose={() => {
                         this.setState({message: '', selectedTeam: null});
                     }}
                 >
                     <View style={{marginTop: 22}}>
-                        <View>
-                            <Text>Hello World!</Text>
-
-                            <TouchableHighlight onPress={() => {
-                                this.setModalVisible(!this.state.modalVisible);
-                            }}>
-                                <Text>Hide Modal</Text>
+                        <View style={styles.messageRow}>
+                            <TextInput
+                                keyBoardType={'default'}
+                                multiline={true}
+                                numberOfLines={5}
+                                onChangeText={this.onMessageTextChange}
+                                placeholder={'message details'}
+                                value={this.state.messageText}
+                                style={{width: '100%'}}
+                            />
+                        </View>
+                        <View style={styles.buttonRow}>
+                            <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
+                                <Text style={styles.text}>Send Message</Text>
                             </TouchableHighlight>
-
+                            <TouchableHighlight style={styles.cancelButton} onPress={() => {
+                                this.setState({isModalVisible: false, messageText: ''});
+                            }}>
+                                <Text style={styles.text}>Cancel</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </Modal>
@@ -196,4 +270,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamSummaries);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(MyTeams));
+
