@@ -6,7 +6,10 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Modal, ScrollView,TextInput, Button, TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet,
+Button, Modal, ScrollView, TextInput, Text, View, Platform} from 'react-native';
+import {Constants, Location, MapView, Permissions} from 'expo';
+import TrashDrop from './trash-drop';
 import CheckBox from 'react-native-checkbox';
 
 const styles = StyleSheet.create({
@@ -40,15 +43,24 @@ export default class TrashMap extends Component {
     static navigationOptions = {
         title: 'Trash Tracker'
     };
+
     constructor(props) {
         super(props);
+        this.state = {
+            location: Location.getCurrentPositionAsync({}),
+            errorMessage: null,
+            mapRegion: Location.getCurrentPositionAsync({}),
+            markers: []
+        };
+        this._getLocationAsync = this._getLocationAsync.bind(this);
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
         this.state = {modalVisible: false};
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     _goToTrashDrop() {
         this.setState({modalVisible: true});
@@ -58,10 +70,70 @@ export default class TrashMap extends Component {
         //     .navigate('TrashDrop');
     }
 
+    _getLocationAsync = async () => {
+        const {status} = await Permissions.askAsync(Permissions.LOCATION);
+        if ( status === 'granted') {
+            this.setState({
+                location: Location.getCurrentPositionAsync({})
+            });
+            this.setState({
+                latitude: 44.3,
+                longitude: 47.33,
+                latitudeDelta: 1,
+                longitudeDelta: 2
+            });
+        }
+
+        const location = await Location._getLocationAsync({});
+        const newLat = Number(location.coords.latitude);
+        const newLong = Number(location.coords.longitude);
+        const marker = this.state.marker.concat({
+            title: TrashDrop.toTrashMap.marker,
+            description: Number(TrashDrop.toTrashMap.marker.bagCount),
+            latlng: {
+                longitude: newLong,
+                latutude: newLat
+            }
+        });
+        this.setState({
+            location,
+            marker,
+            mapRegion: {
+                latitude: newLat,
+                longitude: newLong,
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001
+            }
+        });
+    };
+
     render() {
+
+        var myMarkers = marker => (
+            <MapView.Marker
+                coordinate={marker.latlng}
+                title={marker.title}
+                description={marker.description}
+            />
+        );
+
+
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
+                <MapView
+                    zoomEnabled={true}
+                    showsUserLocation={true}
+                    showsMyLocatonButton={true}
+                    showsScale={true}
+                    followsUserLocation={true}
+                    showsCompass={true}
+                    style={{alignSelf: 'stretch', height: 300}}
+                    // initialRegion={this.setState()}
+                >
+                    {myMarkers}
+                </MapView>
+
                 <TouchableHighlight onPress={this._goToTrashDrop}>
                     <View>
                         <Text style={styles.text}>Drop Trash</Text>

@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import logo from '../../../assets/GreenupVermontlogo.png';
 import facebookLogo from '../../../assets/facebook-logo.png';
 import googleLogo from '../../../assets/google-logo.png';
