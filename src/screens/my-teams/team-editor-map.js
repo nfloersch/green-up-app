@@ -35,9 +35,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     paragraph: {
-        justifyContent: 'center',
         fontSize: 20,
-        textColor: '#fff'
+        color: 'white'
     }
 });
 export default class TeamEditorMap extends Component {

@@ -74,7 +74,7 @@ class TrashMap extends Component {
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
-        this.state = {modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
+        this.state = {location: {}, modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
     }
 
     componentDidMount() {
@@ -133,10 +133,6 @@ class TrashMap extends Component {
                     showsCompass={true}
                     style={{alignSelf: 'stretch', height: 300}}
                 >
-
-                    <MapView.Marker
-                        coordinate={this.state.mapMarker.coordinate}
-                    />
 
                 </MapView>
                 <TouchableHighlight onPress={this._goToTrashDrop}>
