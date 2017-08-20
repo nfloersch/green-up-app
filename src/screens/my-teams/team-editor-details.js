@@ -24,6 +24,8 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import {vermontTowns} from '../../libs/vermont-towns';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
+import {isDate} from '../../libs/isDate';
+
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -125,8 +127,7 @@ class TeamEditorDetails extends Component {
     }
 
     render() {
-
-
+       const selectedTeam = !!this.props.selectedTeamId ? this.props.teams[this.props.selectedTeamId] : Team.create();
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -159,15 +160,28 @@ class TeamEditorDetails extends Component {
                     </Picker>
                 </View>
                 <View style={styles.column}>
-                    <Text style={styles.label}>Town:</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('town')}
-                        placeholder={'Town'}
-                        style={{
-                            width: '80%'
-                        }}
-                        value={this.state.selectedTeam.location}/>
+                    <Text style={styles.label}>Location:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('location')} placeholder={'Location'} style={{
+                        width: '80%'
+                    }} value={selectedTeam.location}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Start:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('start')} placeholder={'Start'} style={{
+                        width: '80%'
+                    }} value={isDate(selectedTeam.start) ? selectedTeam.start.toString() : ''}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>End:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('end')} placeholder={'End'} style={{
+                        width: '80%'
+                    }} value={isDate(selectedTeam.end) ? selectedTeam.end.toString() : ''}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Notes:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('Notes')} placeholder={'Notes'} style={{
+                        width: '80%'
+                    }} value={selectedTeam.notes}/>
                 </View>
                 <Button title='Save' onPress={this.saveTeam}/>
             </ScrollView>
