@@ -163,7 +163,7 @@ export default class TeamEditorMap extends Component {
                 <Text style={styles.paragraph}>
                     Place markers where you want your team to work on. Tap on the marker text box to remove a marker.
                 </Text>
-                <MapView style={{alignSelf: 'stretch', height: 200}}
+                <MapView style={{alignSelf: 'stretch', height: '50%'}}
                     region={this.state.mapRegion}
                     initialRegion={
                         {
@@ -178,14 +178,14 @@ export default class TeamEditorMap extends Component {
                 >
                     {mapMarker}{markers}
                 </MapView>
-                <Text style={styles.paragraph}>
+                {/* <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
                 </Text>
                 <ScrollView style={{width: '100%'}}>
                     <Text style={styles.paragraph}>
                         Markers: {JSON.stringify(this.state.markers)}
                     </Text>
-                </ScrollView>
+                </ScrollView> */}
                 <Button title={'remove last marker'}
                     onPress={this._removeLastMarker}
                 />
