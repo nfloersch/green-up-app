@@ -177,14 +177,14 @@ export default class TeamEditorMap extends Component {
                 >
                     {mapMarker}{markers}
                 </MapView>
-                <Text style={styles.paragraph}>
+                {/* <Text style={styles.paragraph}>
                     Map Location: {JSON.stringify(this.state.mapRegion)}
                 </Text>
                 <ScrollView style={{width: '100%'}}>
                     <Text style={styles.paragraph}>
                         Markers: {JSON.stringify(this.state.markers)}
                     </Text>
-                </ScrollView>
+                </ScrollView> */}
                 <Button title={'remove last marker'}
                     onPress={this._removeLastMarker}
                 />
