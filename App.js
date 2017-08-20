@@ -1,5 +1,6 @@
 // @flow
 
+import 'es6-symbol/implement';
 import React, {Component} from 'react';
 
 import Nav from './src/';
@@ -20,4 +21,3 @@ export default class App extends Component {
         );
     }
 }
-
