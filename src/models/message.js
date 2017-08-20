@@ -44,8 +44,8 @@ export class Message {
         this.type = typeof args.type === 'string' && args.type in messageTypes
             ? args.type
             : null;
-        this.created = isDate(args.received)
-            ? new Date(args.received)
+        this.created = isDate(args.created)
+            ? new Date(args.created)
             : new Date();
     }
 

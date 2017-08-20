@@ -10,7 +10,7 @@ import CheckBox from 'react-native-checkbox';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as trashTrackerActions from './TrashTrackerActions';
+import * as trashTrackerActions from './trash-tracker-actions';
 import NavHeader from '../../components/NavHeader';
 import {TrashDropLocation} from '../../models/trash-drop';
 

@@ -5,11 +5,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, TouchableHighlight, View, Alert} from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {TeamMember} from '../../models/team-member';
+import withErrorHandler from '../../components/with-error-handler';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'left',
         margin: 10,
-        alignSelf:'center',
+        alignSelf: 'center',
         width: '96%'
     },
     textinput: {
@@ -32,8 +34,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey',
         width: '96%',
-        alignSelf:'center',
-        padding: 2,
+        alignSelf: 'center',
+        padding: 2
 
     },
     teams: {
@@ -42,44 +44,101 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class InviteForm extends Component {
+
+var inviteToTeam = Symbol();
+var changeInvitee = Symbol();
+
+function _changeInvitee(key) {
+    return (value) => {
+        this.setState({[key]: value});
+    };
+}
+
+function _inviteToTeam() {
+    const teamMember = TeamMember.create(Object.assign({}, this.state, {status: TeamMember.memberStatuses.INVITED}));
+    this.props.actions.inviteContacts(this.props.teams[this.props.selectedTeamId], this.props.currentUser, [teamMember]);
+    this.setState({firstName: '', lastName: '', email: '', phone: ''});
+}
+
+
+class InviteForm extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array
+        teams: PropTypes.object,
+        selectedTeamId: PropTypes.string,
+        currentUser: PropTypes.object
     };
 
     static navigationOptions = {
         title: 'Invite Team Members'
     };
+
     constructor(props) {
         super(props);
+        this[inviteToTeam] = _inviteToTeam.bind(this);
+        this[changeInvitee] = _changeInvitee.bind(this);
+        this.state = {firstName: '', lastName: '', email: '', phone: ''};
     }
+
 
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    Email
+                    Invitee&apos;sEmail
                 </Text>
-                <TextInput style={styles.textinput}
-                    placeholder='Type email here'
+                <TextInput
+                    style={styles.textinput}
+                    placeholder='john@example.com'
+                    value={this.state.email}
+                    onChangeText={this[changeInvitee]('email')}
                 />
                 <Text style={styles.text}>
-                    Name
+                    First Name
                 </Text>
-                <TextInput style={styles.textinput}
-                    placeholder='Type name here'
+                <TextInput
+                    style={styles.textinput}
+                    value={this.state.firstName}
+                    onChangeText={this[changeInvitee]('firstName')}
+                    placeholder='First'
+                />
+                <Text style={styles.text}>
+                    Last Name
+                </Text>
+                <TextInput
+                    style={styles.textinput}
+                    value={this.state.lastName}
+                    onChangeText={this[changeInvitee]('lastName')}
+                    placeholder='Last'
                 />
                 <Text style={styles.text}>
                     Phone (optional)
                 </Text>
-                <TextInput style={styles.textinput}
-                    placeholder='Type phone here'
+                <TextInput
+                    style={styles.textinput}
+                    placeholder='555-555-5555'
+                    value={this.state.phone}
+                    onChangeText={this[changeInvitee]('phone')}
                 />
                 <Button
-                    onPress={() => { Alert.alert('This will invite someone'); }}
-                    title = 'Invite to Group'/>
+                    onPress={this[inviteToTeam]}
+                    title='Invite to Team'/>
             </View>
         );
     }
 }
+
+function mapStateToProps(state) {
+    const selectedTeamId = state.teamReducers.selectedTeam;
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    return {teams, currentUser, selectedTeamId};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(teamActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(InviteForm));

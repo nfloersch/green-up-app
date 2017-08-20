@@ -6,11 +6,17 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, StyleSheet,
-Button, Modal, ScrollView, TextInput, Text, View, Platform} from 'react-native';
-import {Constants, Location, MapView, Permissions} from 'expo';
+import {
+    TouchableHighlight, StyleSheet,
+    Button, Modal, ScrollView, TextInput, Text, View
+} from 'react-native';
+import {Location, MapView, Permissions} from 'expo';
 import TrashDrop from './trash-drop';
 import CheckBox from 'react-native-checkbox';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as trashTrackerActions from './trash-tracker-actions';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -35,7 +41,13 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TrashMap extends Component {
+
+var addTrashDrop = Symbol();
+function _addTrashDrop (marker){
+    this.props.actions.dropTrash(marker);
+}
+
+class TrashMap extends Component {
 
     static propTypes = {
         navigation: PropTypes.object
@@ -53,6 +65,7 @@ export default class TrashMap extends Component {
             markers: []
         };
         this._getLocationAsync = this._getLocationAsync.bind(this);
+        this[addTrashDrop] = _addTrashDrop.bind(this);
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
@@ -72,7 +85,7 @@ export default class TrashMap extends Component {
 
     _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if ( status === 'granted') {
+        if (status === 'granted') {
             this.setState({
                 location: Location.getCurrentPositionAsync({})
             });
@@ -109,13 +122,15 @@ export default class TrashMap extends Component {
 
     render() {
 
-        var myMarkers = marker => (
-            <MapView.Marker
-                coordinate={marker.latlng}
-                title={marker.title}
-                description={marker.description}
-            />
-        );
+        function myMarkers(marker) {
+            return (
+                <MapView.Marker
+                    coordinate={marker.latlng}
+                    title={marker.title}
+                    description={marker.description}
+                />
+            );
+        }
 
 
         return (
@@ -140,10 +155,9 @@ export default class TrashMap extends Component {
                     </View>
                 </TouchableHighlight>
                 <Modal
-                    animationType={"slide"}
+                    animationType={'slide'}
                     transparent={false}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {alert("Modal has been closed.")}}
                 >
                     <ScrollView style={{marginTop: 22}}>
                         <View>
@@ -159,28 +173,26 @@ export default class TrashMap extends Component {
                             />
                             <Text style={styles.text}>Other Items</Text>
                             <CheckBox label='None' onPress={() => {
-                                this.toTrashMap(data);
                             }}/>
-                            <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
-                                      onPress={() => {
-                                          this.setState({hasMattress: !this.state.hasMattress});
-                                      }}
+                            <CheckBox
+                                checked={this.state.hasMattress} label='Mattress(s)'
+                                onPress={() => {
+                                    this.setState({hasMattress: !this.state.hasMattress});
+                                }}
                             />
                             <CheckBox label='Tires' onPress={() => {
-                                this.toTrashMap(data);
                             }}/>
                             <CheckBox label='Hazardous Waste' onPress={() => {
-                                this.toTrashMap(data);
                             }}/>
                             <CheckBox label='Large Object(s)' onPress={() => {
-                                this.toTrashMap(data);
                             }}/>
-                            <Button onPress={this.toTrashMap}
-                                    title='Mark the Spot'
-                                    color='green'/>
+                            <Button
+                                onPress={this[addTrashDrop]}
+                                title='Mark the Spot'
+                                color='green'/>
 
                             <TouchableHighlight onPress={() => {
-                                this.setState({modalVisible: false})
+                                this.setState({modalVisible: false});
                             }}>
                                 <Text>Hide Modal</Text>
                             </TouchableHighlight>
@@ -192,3 +204,16 @@ export default class TrashMap extends Component {
         );
     }
 }
+
+
+function mapStateToProps(state) {
+    return {messages: state.trashTrackerReducers.message};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(trashTrackerActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrashMap);

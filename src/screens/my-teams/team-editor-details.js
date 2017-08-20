@@ -64,7 +64,7 @@ class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
-        selectedTeam: PropTypes.object,
+        selectedTeamId: PropTypes.string,
         teams: PropTypes.object
     };
 
@@ -91,19 +91,19 @@ class TeamEditorDetails extends Component {
         this.saveTeam = this.saveTeam.bind(this);
         this.state = {
             selectedOption: this.options[0],
-            selectedTeam: {}
+            selectedTeamId: {}
         };
     }
 
     componentWillMount() {
 
-        const selectedTeam = typeof this.props.selectedTeam === 'string' ? this.props.teams[this.props.selectedTeam] : createNewTeam(this.props.currentUser);
+        const selectedTeam = typeof this.props.selectedTeamId === 'string' ? this.props.teams[this.props.selectedTeamId] : createNewTeam(this.props.currentUser);
         this.setState({selectedTeam});
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedTeam !== this.props.selectedTeam) {
-            const selectedTeam = typeof nextProps.selectedTeam === 'string' ? nextProps.teams[nextProps.selectedTeam] : createNewTeam(nextProps.currentUser);
+        if (nextProps.selectedTeamId !== this.props.selectedTeamId) {
+            const selectedTeam = typeof nextProps.selectedTeamId === 'string' ? nextProps.teams[nextProps.selectedTeamId] : createNewTeam(nextProps.currentUser);
             this.setState({selectedTeam});
         }
     }
@@ -113,7 +113,7 @@ class TeamEditorDetails extends Component {
     }
 
     saveTeam() {
-        this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeam);
+        this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeamId);
     }
 
     setTeamValue(key) {
@@ -130,9 +130,6 @@ class TeamEditorDetails extends Component {
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
-                onScroll={() => {
-                    console.log('onScroll!');
-                }}
                 scrollEventThrottle={200}
                 style={styles.scrollView}>
                 <View style={styles.column}>
@@ -158,7 +155,7 @@ class TeamEditorDetails extends Component {
                     <Picker
                         selectedValue={this.state.town}
                         onValueChange={(itemValue) => this.setState({town: itemValue})}>
-                        {vermontTowns.map(town => (<Picker.Item label={town} value={town}/>))}
+                        {vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
                     </Picker>
                 </View>
                 <View style={styles.column}>
@@ -183,8 +180,8 @@ function
 mapStateToProps(state) {
     const currentUser = state.loginReducer.user;
     const teams = state.teamReducers.teams;
-    const selectedTeam = state.teamReducers.selectedTeam;
-    return {selectedTeam, teams, currentUser};
+    const selectedTeamId = state.teamReducers.selectedTeamId;
+    return {selectedTeamId, teams, currentUser};
 }
 
 function

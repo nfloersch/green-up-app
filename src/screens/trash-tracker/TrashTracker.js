@@ -1,9 +1,6 @@
-/**
- /**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+
+ // @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from 'react-native-checkbox';

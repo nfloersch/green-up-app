@@ -15,7 +15,6 @@ function setupMessageListener(userId, dispatch) {
     });
 }
 
-
 function initialize(dispatch) {
 
     /** Setup Listeners **/
@@ -131,6 +130,13 @@ function logout() {
     return firebase.auth().signOut();
 }
 
+function sendInviteEmail(invitation) {
+    firebase
+        .database()
+        .ref('invitations')
+        .push(invitation);
+}
+
 export const firebaseDataLayer = {
     createUser,
     facebookAuth,
@@ -140,5 +146,6 @@ export const firebaseDataLayer = {
     logout,
     saveTeam,
     sendUserMessage,
+    sendInviteEmail,
     sendGroupMessage
 };
