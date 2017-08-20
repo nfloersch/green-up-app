@@ -15,7 +15,6 @@ export function messageReducer(state = initialState, action) {
                 ...state,
                 messages: action.messages
             };
-            return newState;
         default:
             return state;
     }
