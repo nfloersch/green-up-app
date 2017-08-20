@@ -189,18 +189,14 @@ class TeamEditorDetails extends Component {
     }
 }
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
     const currentUser = state.loginReducer.user;
     const teams = state.teamReducers.teams;
     const selectedTeamId = state.teamReducers.selectedTeamId;
     return {selectedTeamId, teams, currentUser};
 }
 
-function
-
-mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(teamActions, dispatch)
     };
