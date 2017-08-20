@@ -1,6 +1,8 @@
-import * as types from '../../constants/actionTypes';
+import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 import TrashDrop from '../../models/trash-drop';
 
-export function dropTrash(location) {
-    return {type: types.TRASH_DROP_SUCCESS, trashDrop: TrashDrop.create(location)};
+export function dropTrash(trashDrop) {
+    return () => {
+        firebaseDataLayer.dropTrash(TrashDrop.create(trashDrop));
+    };
 }

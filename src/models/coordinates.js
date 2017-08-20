@@ -1,7 +1,6 @@
 // @flow
 
-
-export class Coordinate {
+export class Coordinates {
     latitude: number;
     longitude: number;
 
@@ -11,6 +10,6 @@ export class Coordinate {
     }
 
     static create(args) {
-        return new Coordinate(args || {});
+        return new Coordinates(args || {});
     }
 }

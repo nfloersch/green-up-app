@@ -11,12 +11,11 @@ import {
     Button, Modal, ScrollView, TextInput, Text, View
 } from 'react-native';
 import {Location, MapView, Permissions} from 'expo';
-import TrashDrop from './trash-drop';
+import TrashDrop from '../../models/trash-drop';
 import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as trashTrackerActions from './trash-tracker-actions';
-
 
 const styles = StyleSheet.create({
     container: {
@@ -42,9 +41,20 @@ const styles = StyleSheet.create({
     }
 });
 
-var addTrashDrop = Symbol();
-function _addTrashDrop (marker){
-    this.props.actions.dropTrash(marker);
+const addTrashDrop = Symbol();
+const toggleTag = Symbol();
+
+function _addTrashDrop() {
+    this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));
+    this.setState({modalVisible: false});
+}
+
+function _toggleTag(tag) {
+    return () => {
+        const hasTag = this.state.tags.indexOf(tag) > -1;
+        const tags = hasTag ? this.state.tags.filter(_tag => _tag !== tag) : this.state.tags.concat(tag);
+        this.setState({tags});
+    };
 }
 
 class TrashMap extends Component {
@@ -58,67 +68,43 @@ class TrashMap extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            location: Location.getCurrentPositionAsync({}),
-            errorMessage: null,
-            mapRegion: Location.getCurrentPositionAsync({}),
-            markers: []
-        };
+        this[toggleTag] = _toggleTag.bind(this);
         this._getLocationAsync = this._getLocationAsync.bind(this);
         this[addTrashDrop] = _addTrashDrop.bind(this);
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
-        this.state = {modalVisible: false};
+        this.state = {modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
     }
 
     componentDidMount() {
+        this._getLocationAsync();
     }
 
     _goToTrashDrop() {
         this.setState({modalVisible: true});
-        // this
-        //     .props
-        //     .navigation
-        //     .navigate('TrashDrop');
     }
 
     _getLocationAsync = async () => {
-        const {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if (status === 'granted') {
-            this.setState({
-                location: Location.getCurrentPositionAsync({})
-            });
-            this.setState({
-                latitude: 44.3,
-                longitude: 47.33,
-                latitudeDelta: 1,
-                longitudeDelta: 2
-            });
+        let {status} = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({errorMessage: 'Permission to access location was denied'});
         }
 
-        const location = await Location._getLocationAsync({});
-        const newLat = Number(location.coords.latitude);
-        const newLong = Number(location.coords.longitude);
-        const marker = this.state.marker.concat({
-            title: TrashDrop.toTrashMap.marker,
-            description: Number(TrashDrop.toTrashMap.marker.bagCount),
-            latlng: {
-                longitude: newLong,
-                latutude: newLat
-            }
-        });
+        let location = await Location.getCurrentPositionAsync({});
+        let newLat = Number(location.coords.latitude);
+        let newLong = Number(location.coords.longitude);
         this.setState({
             location,
-            marker,
             mapRegion: {
                 latitude: newLat,
                 longitude: newLong,
-                latitudeDelta: 0.001,
-                longitudeDelta: 0.001
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
             }
         });
     };
+
 
     render() {
 
@@ -162,6 +148,7 @@ class TrashMap extends Component {
                     <ScrollView style={{marginTop: 22}}>
                         <View>
                             <TextInput
+                                value={this.state.bagCount}
                                 keyboardType='numeric'
                                 placeholder=' 1'
                                 style={{
@@ -169,23 +156,21 @@ class TrashMap extends Component {
                                     borderColor: 'gray',
                                     borderWidth: 1
                                 }}
-                                onChangeText={(text) => this.setState({text})}
+                                onChangeText={(text) => this.setState({bagCount: text})}
                             />
                             <Text style={styles.text}>Other Items</Text>
-                            <CheckBox label='None' onPress={() => {
-                            }}/>
                             <CheckBox
-                                checked={this.state.hasMattress} label='Mattress(s)'
-                                onPress={() => {
-                                    this.setState({hasMattress: !this.state.hasMattress});
-                                }}
-                            />
-                            <CheckBox label='Tires' onPress={() => {
-                            }}/>
-                            <CheckBox label='Hazardous Waste' onPress={() => {
-                            }}/>
-                            <CheckBox label='Large Object(s)' onPress={() => {
-                            }}/>
+                                label='Tires'
+                                checked={this.state.tags.indexOf('tires') > -1}
+                                onChange={this[toggleTag]('tires')}/>
+                            <CheckBox
+                                label='Large Object'
+                                checked={this.state.tags.indexOf('large') > -1}
+                                onChange={this[toggleTag]('large')}/>
+                            <CheckBox
+                                label='Needles/Bio-Waste'
+                                checked={this.state.tags.indexOf('bio-waste') > -1}
+                                onChange={this[toggleTag]('bio-waste')}/>
                             <Button
                                 onPress={this[addTrashDrop]}
                                 title='Mark the Spot'
@@ -194,7 +179,7 @@ class TrashMap extends Component {
                             <TouchableHighlight onPress={() => {
                                 this.setState({modalVisible: false});
                             }}>
-                                <Text>Hide Modal</Text>
+                                <Text>Cancel</Text>
                             </TouchableHighlight>
 
                         </View>

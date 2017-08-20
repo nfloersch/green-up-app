@@ -137,9 +137,18 @@ function sendInviteEmail(invitation) {
         .push(invitation);
 }
 
+function dropTrash(trashDrop) {
+    firebase
+        .database()
+        .ref('trashDrops/')
+        .push(trashDrop);
+}
+
+
 export const firebaseDataLayer = {
     createUser,
     facebookAuth,
+    dropTrash,
     googleAuth,
     initialize,
     loginWithEmailPassword,

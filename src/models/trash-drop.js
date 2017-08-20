@@ -9,7 +9,7 @@ export default class TrashDrop {
     status: string;
     active: boolean;
     tags: [string];
-    coordinates: Coordinates;
+    location: Coordinates;
     created: Date;
 
     constructor(args: Object) {
@@ -17,8 +17,8 @@ export default class TrashDrop {
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;
         this.active = typeof args.active === 'boolean' ? args.active : true;
-        this.coordinates = typeof args.coordinates === 'object' ? Coordinates.create(args.coordinates) : null;
-        this.created = isDate(args.created) ? new Date(args.created) : null;
+        this.location = Coordinates.create(args.location);
+        this.created = isDate(args.created) ? new Date(args.created) : new Date();
     }
 
     static create(args) {
