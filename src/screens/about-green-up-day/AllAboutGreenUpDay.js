@@ -60,6 +60,10 @@ class AllAboutGreenUpDay extends Component {
         };
     }
 
+    componentWillMount() {
+        Alert.alert('Swipe left and right to find more information on green up day');
+    }
+
     onSwipe(gestureName, gestureState) {
         const {SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
         this.setState({gestureName: gestureName});
@@ -104,7 +108,7 @@ class AllAboutGreenUpDay extends Component {
 
     render() {
         const config = {
-            velocityThreshold: 0.2,
+            velocityThreshold: 0.3,
             directionalOffsetThreshold: 80
         };
         return (
