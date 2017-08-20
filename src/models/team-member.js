@@ -15,6 +15,7 @@ export class TeamMember {
     lastName: string;
     email: string;
     memberStatus: string;
+    phone: string;
 
     constructor(args: Object) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
@@ -28,6 +29,9 @@ export class TeamMember {
             : null;
         this.email = typeof args.email === 'string'
             ? args.email
+            : null;
+        this.phone = typeof args.phone === 'string'
+            ? args.phone
             : null;
         this.memberStatus = typeof args.memberStatus === 'string'
             ? args.memberStatus

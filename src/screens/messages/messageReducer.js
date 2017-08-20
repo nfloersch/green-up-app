@@ -1,16 +1,19 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
+
 export function messageReducer(state = initialState, action) {
+    var newState = {};
     switch (action.type) {
         case types.NEW_MESSAGE:
-            const session = state.session;
-            const user = state.session.user;
-            const newState = {
+            newState = {
                 ...state,
-                user: {
-                    ...user,
-                    messages: [].concat(state.session.user.messages).concat(action.message)
-                }
+                messages: Object.assign({}, state.messages, {[action.message.uid]: action.message})
+            };
+            return newState;
+        case types.FETCH_MESSAGES_SUCCESS :
+            newState = {
+                ...state,
+                messages: action.messages
             };
         default:
             return state;

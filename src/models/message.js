@@ -2,8 +2,9 @@
 
 import {messageTypes} from '../constants/message-types';
 import {isDate} from '../libs/isDate';
+import {TeamMember} from './team-member';
 
-export default class Message {
+export class Message {
     uid : string;
     title: string;
     text : string;
@@ -13,7 +14,7 @@ export default class Message {
     active : boolean;
     link : string;
     type : string;
-    received : Date;
+    created : Date;
 
     constructor(args: Object) {
         this.uid = typeof args.uid === 'string'
@@ -25,8 +26,8 @@ export default class Message {
         this.text = typeof args.text === 'string'
             ? args.text
             : null;
-        this.sender = typeof args.userId === 'string'
-            ? args.sender
+        this.sender = typeof args.sender === 'object'
+            ? TeamMember.create(args.sender)
             : null;
         this.teamId = typeof args.teamId === 'string'
             ? args.teamId
@@ -43,9 +44,9 @@ export default class Message {
         this.type = typeof args.type === 'string' && args.type in messageTypes
             ? args.type
             : null;
-        this.received = isDate(args.received)
-            ? new Date(args.received)
-            : null;
+        this.created = isDate(args.created)
+            ? new Date(args.created)
+            : new Date();
     }
 
     static create(args) {

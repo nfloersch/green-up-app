@@ -7,7 +7,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StackNavigator} from 'react-navigation';
 import TrashMap from './trash-map';
-import TrashDrop from './trash-drop';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DrawerToggle from '../../components/drawer-toggle';
 
@@ -25,10 +24,6 @@ export default class TrashTracker extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            currentMessageId: null
-        };
-
     }
 
     componentDidMount() {}
@@ -37,10 +32,6 @@ export default class TrashTracker extends Component {
         var TrashTrackerNav = StackNavigator({
             TrashMap: {
                 screen: TrashMap,
-                navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
-            },
-            TrashDrop: {
-                screen: TrashDrop,
                 navigationOptions: () => ({headerRight: <DrawerToggle navigation={this.props.navigation}/>})
             }
         });

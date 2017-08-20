@@ -5,6 +5,7 @@ import {Location} from './location';
 import {TeamMember} from './team-member';
 
 export default class Team {
+    id: string;
     name: string;
     description: string;
     notes: [string];
@@ -19,6 +20,7 @@ export default class Team {
     owner: TeamMember;
 
     constructor(args = {}) {
+        this.id = typeof args.id === 'string' ? args.id : null;
         this.name = typeof args.name === 'string'
             ? args.name
             : null;
@@ -56,7 +58,10 @@ export default class Team {
 
     }
 
-    static create(args = {}) {
+    static create(args = {}, id) {
+        if (id) {
+            args.id = id;
+        }
         return new Team(args);
     }
 

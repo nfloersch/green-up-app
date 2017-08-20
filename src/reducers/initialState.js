@@ -2,12 +2,7 @@ export default {
     initialAuthChecked: false,
     creatingUser: false,
     user : null,
-    messages : [
-        {
-            title: '121212',
-            id: 201
-        }
-    ],
+    messages : {},
     teams : [],
     trashDropMarkers : [],
     teamSearchResults : [],
