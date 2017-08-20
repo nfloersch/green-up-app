@@ -115,7 +115,7 @@ export default class TrashMap extends Component {
                 >
 
                     <MapView.Marker
-                        coordinate={{longitude: this.state.longitude, latitude: this.state.latitude}}
+                        coordinate={{longitude: -72.7093, latitude: 44.04}}
                         title={'test'}
                     />
 
