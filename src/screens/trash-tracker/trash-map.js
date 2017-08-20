@@ -60,7 +60,8 @@ function _toggleTag(tag) {
 class TrashMap extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        trashDrops: PropTypes.object
     };
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -110,17 +111,19 @@ class TrashMap extends Component {
 
     render() {
 
-        function myMarkers(marker) {
+        function createMarker(marker, key) {
             return (
                 <MapView.Marker
-                    coordinate={marker.latlng}
-                    title={marker.title}
-                    description={marker.description}
+                    key={key}
+                    coordinate={marker.location}
+                    title={marker.bagCount}
+                    description={marker.tags.join(' ,')}
                 />
             );
         }
 
-
+       const myMarkerKeys = Object.keys(this.props.trashDrops || {});
+       const myMarkers = myMarkerKeys.map(key => createMarker(this.props.trashDrops[key], key));
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
@@ -133,7 +136,7 @@ class TrashMap extends Component {
                     showsCompass={true}
                     style={{alignSelf: 'stretch', height: 300}}
                 >
-
+                  {myMarkers}
                 </MapView>
                 <TouchableHighlight onPress={this._goToTrashDrop}>
                     <View>
@@ -192,7 +195,7 @@ class TrashMap extends Component {
 
 
 function mapStateToProps(state) {
-    return {messages: state.trashTrackerReducers.message};
+    return {trashDrops: state.trashTrackerReducers.trashDrops};
 }
 
 function mapDispatchToProps(dispatch) {
