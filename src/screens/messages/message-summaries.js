@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 class MessageSummaries extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        messages: PropTypes.array,
+        messages: PropTypes.object,
         navigation: PropTypes.object
     };
 
@@ -67,30 +67,33 @@ class MessageSummaries extends Component {
         };
     }
 
-    toMessageDetail(messageId) {
+    toMessageDetail() {
         return () => {
             this.props.navigation.navigate('MessageDetails');
         };
     }
+
     render() {
-        const myMessages = (this.props.messages || []).map(message => (
-            <TouchableHighlight key={message.uid} onPress={this.toMessageDetail(message.uid)}>
-                <View>
-                    <Text style={styles.title}>{message.title}</Text>
-                </View>
-            </TouchableHighlight>
-        ));
+        var messages = this.props.messages;
+        const myMessages = Object.keys(messages || {}).map(key =>
+            (
+                <TouchableHighlight key={key} onPress={this.toMessageDetail(key)}>
+                    <View>
+                        <Text style={styles.title}>{messages[key].text}</Text>
+                    </View>
+                </TouchableHighlight>
+            )
+        );
         return (
             <View style={styles.container}>
-                <Text>Message Summaries Screen</Text>
+                <Text>My Messages</Text>
                 {myMessages}
-                <Button onPress={this.toSendMessage()} title={'create message'} />
             </View>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {messages: state.messageReducer.messages};
 }
 

@@ -6,11 +6,16 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {TouchableHighlight, StyleSheet,
-    Modal, ScrollView, TextInput, Text, View} from 'react-native';
-import MapView from 'react-native-maps';
-import {Location, Permissions} from 'expo';
+import {
+    TouchableHighlight, StyleSheet,
+    Button, Modal, ScrollView, TextInput, Text, View
+} from 'react-native';
+import {Location, MapView, Permissions} from 'expo';
+import TrashDrop from '../../models/trash-drop';
 import CheckBox from 'react-native-checkbox';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as trashTrackerActions from './trash-tracker-actions';
 
 const styles = StyleSheet.create({
     container: {
@@ -35,7 +40,24 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-export default class TrashMap extends Component {
+
+const addTrashDrop = Symbol();
+const toggleTag = Symbol();
+
+function _addTrashDrop() {
+    this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));
+    this.setState({modalVisible: false});
+}
+
+function _toggleTag(tag) {
+    return () => {
+        const hasTag = this.state.tags.indexOf(tag) > -1;
+        const tags = hasTag ? this.state.tags.filter(_tag => _tag !== tag) : this.state.tags.concat(tag);
+        this.setState({tags});
+    };
+}
+
+class TrashMap extends Component {
 
     static propTypes = {
         navigation: PropTypes.object
@@ -46,13 +68,17 @@ export default class TrashMap extends Component {
 
     constructor(props) {
         super(props);
+        this[toggleTag] = _toggleTag.bind(this);
         this._getLocationAsync = this._getLocationAsync.bind(this);
-        this._goToTrashDrop = this._goToTrashDrop.bind(this);
-        this.state = {modalVisible: false, mapMarker:{}};
-
+        this[addTrashDrop] = _addTrashDrop.bind(this);
+        this._goToTrashDrop = this
+            ._goToTrashDrop
+            .bind(this);
+        this.state = {modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
     }
 
     componentDidMount() {
+        this._getLocationAsync();
     }
 
     _goToTrashDrop() {
@@ -81,7 +107,19 @@ export default class TrashMap extends Component {
         }
     };
 
+
     render() {
+
+        function myMarkers(marker) {
+            return (
+                <MapView.Marker
+                    coordinate={marker.latlng}
+                    title={marker.title}
+                    description={marker.description}
+                />
+            );
+        }
+
 
         return (
             <View style={styles.container}>
@@ -110,11 +148,11 @@ export default class TrashMap extends Component {
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {alert('Modal has been closed.')}}
                 >
                     <ScrollView style={{marginTop: 22}}>
                         <View>
                             <TextInput
+                                value={this.state.bagCount}
                                 keyboardType='numeric'
                                 placeholder=' 1'
                                 style={{
@@ -122,37 +160,30 @@ export default class TrashMap extends Component {
                                     borderColor: 'gray',
                                     borderWidth: 1
                                 }}
-                                onChangeText={(text) => this.setState({text})}
+                                onChangeText={(text) => this.setState({bagCount: text})}
                             />
                             <Text style={styles.text}>Other Items</Text>
-                            <CheckBox checked={this.state.hasNone} label='None'
-                                onPress={() => {
-                                    this.setState({hasNone: !this.state.hasNone});
-                                }} />
-                            <CheckBox checked={this.state.hasMattress} label='Mattress(s)'
-                                onPress={() => {
-                                    this.setState({hasMattress: !this.state.hasMattress});
-                                }}
-                            />
-                            <CheckBox checked={this.state.hasTires} label='Tire(s)'
-                                onPress={() => {
-                                    this.setState({hasTires: !this.state.hasTires});
-                                }}
-                            />
-                            <CheckBox checked={this.state.hasHazardous} label='Hazardous Waste'
-                                onPress={() => {
-                                    this.setState({hasHazardous: !this.state.hasHazardous});
-                                }}
-                            />
-                            <CheckBox checked={this.state.hasLarge} label='Large Object(s)'
-                                onPress={() => {
-                                    this.setState({hasLarge: !this.state.hasLarge});
-                                }}
-                            />
+                            <CheckBox
+                                label='Tires'
+                                checked={this.state.tags.indexOf('tires') > -1}
+                                onChange={this[toggleTag]('tires')}/>
+                            <CheckBox
+                                label='Large Object'
+                                checked={this.state.tags.indexOf('large') > -1}
+                                onChange={this[toggleTag]('large')}/>
+                            <CheckBox
+                                label='Needles/Bio-Waste'
+                                checked={this.state.tags.indexOf('bio-waste') > -1}
+                                onChange={this[toggleTag]('bio-waste')}/>
+                            <Button
+                                onPress={this[addTrashDrop]}
+                                title='Mark the Spot'
+                                color='green'/>
+
                             <TouchableHighlight onPress={() => {
                                 this.setState({modalVisible: false});
                             }}>
-                                <Text style={styles.text}>Mark the Spot</Text>
+                                <Text>Cancel</Text>
                             </TouchableHighlight>
 
                         </View>
@@ -162,3 +193,16 @@ export default class TrashMap extends Component {
         );
     }
 }
+
+
+function mapStateToProps(state) {
+    return {messages: state.trashTrackerReducers.message};
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(trashTrackerActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrashMap);

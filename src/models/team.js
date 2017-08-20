@@ -5,25 +5,27 @@ import {Location} from './location';
 import {TeamMember} from './team-member';
 
 export default class Team {
+    id: string;
     name: string;
     description: string;
     notes: [string];
-    location: string;
+    town: string;
     start: Date;
     end: Date;
     active: boolean;
     members: [TeamMember];
-    zones: [Zone];
+    locations: [Location];
     isPublic: boolean;
     created: Date;
     owner: TeamMember;
 
     constructor(args = {}) {
+        this.id = typeof args.id === 'string' ? args.id : null;
         this.name = typeof args.name === 'string'
             ? args.name
             : null;
-        this.location = typeof args.location === 'string'
-            ? args.location
+        this.town = typeof args.location === 'string'
+            ? args.town
             : null;
         this.description = typeof args.descrption === 'string'
             ? args.description
@@ -43,8 +45,8 @@ export default class Team {
         this.members = Array.isArray(args.members)
             ? args.members.map((member) => TeamMember.create(member))
             : [];
-        this.zones = Array.isArray(args.zones)
-            ? args.zones.map((zone) => Zone.create(zone))
+        this.locations = Array.isArray(args.locations)
+            ? args.locations.map((location) => Location.create(location))
             : [];
         this.isPublic = typeof args.isPublic === 'boolean'
             ? args.isPublic
@@ -56,7 +58,10 @@ export default class Team {
 
     }
 
-    static create(args = {}) {
+    static create(args = {}, id) {
+        if (id) {
+            args.id = id;
+        }
         return new Team(args);
     }
 

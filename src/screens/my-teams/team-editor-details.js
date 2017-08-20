@@ -24,6 +24,8 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import {vermontTowns} from '../../libs/vermont-towns';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
+import {isDate} from '../../libs/isDate';
+
 
 const styles = StyleSheet.create({
     scrollView: {
@@ -64,7 +66,7 @@ class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
-        selectedTeam: PropTypes.object,
+        selectedTeamId: PropTypes.string,
         teams: PropTypes.object
     };
 
@@ -91,19 +93,19 @@ class TeamEditorDetails extends Component {
         this.saveTeam = this.saveTeam.bind(this);
         this.state = {
             selectedOption: this.options[0],
-            selectedTeam: {}
+            selectedTeamId: {}
         };
     }
 
     componentWillMount() {
 
-        const selectedTeam = typeof this.props.selectedTeam === 'string' ? this.props.teams[this.props.selectedTeam] : createNewTeam(this.props.currentUser);
+        const selectedTeam = typeof this.props.selectedTeamId === 'string' ? this.props.teams[this.props.selectedTeamId] : createNewTeam(this.props.currentUser);
         this.setState({selectedTeam});
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedTeam !== this.props.selectedTeam) {
-            const selectedTeam = typeof nextProps.selectedTeam === 'string' ? nextProps.teams[nextProps.selectedTeam] : createNewTeam(nextProps.currentUser);
+        if (nextProps.selectedTeamId !== this.props.selectedTeamId) {
+            const selectedTeam = typeof nextProps.selectedTeamId === 'string' ? nextProps.teams[nextProps.selectedTeamId] : createNewTeam(nextProps.currentUser);
             this.setState({selectedTeam});
         }
     }
@@ -113,7 +115,7 @@ class TeamEditorDetails extends Component {
     }
 
     saveTeam() {
-        this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeam);
+        this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeamId);
     }
 
     setTeamValue(key) {
@@ -125,14 +127,10 @@ class TeamEditorDetails extends Component {
     }
 
     render() {
-
-
+       const selectedTeam = !!this.props.selectedTeamId ? this.props.teams[this.props.selectedTeamId] : Team.create();
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
-                onScroll={() => {
-                    console.log('onScroll!');
-                }}
                 scrollEventThrottle={200}
                 style={styles.scrollView}>
                 <View style={styles.column}>
@@ -158,19 +156,32 @@ class TeamEditorDetails extends Component {
                     <Picker
                         selectedValue={this.state.town}
                         onValueChange={(itemValue) => this.setState({town: itemValue})}>
-                        {vermontTowns.map(town => (<Picker.Item label={town} value={town}/>))}
+                        {vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
                     </Picker>
                 </View>
                 <View style={styles.column}>
-                    <Text style={styles.label}>Town:</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('town')}
-                        placeholder={'Town'}
-                        style={{
-                            width: '80%'
-                        }}
-                        value={this.state.selectedTeam.location}/>
+                    <Text style={styles.label}>Location:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('location')} placeholder={'Location'} style={{
+                        width: '80%'
+                    }} value={selectedTeam.location}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Start:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('start')} placeholder={'Start'} style={{
+                        width: '80%'
+                    }} value={isDate(selectedTeam.start) ? selectedTeam.start.toString() : ''}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>End:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('end')} placeholder={'End'} style={{
+                        width: '80%'
+                    }} value={isDate(selectedTeam.end) ? selectedTeam.end.toString() : ''}/>
+                </View>
+                <View style={styles.column}>
+                    <Text style={styles.label}>Notes:</Text>
+                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('Notes')} placeholder={'Notes'} style={{
+                        width: '80%'
+                    }} value={selectedTeam.notes}/>
                 </View>
                 <Button title='Save' onPress={this.saveTeam}/>
             </ScrollView>
@@ -178,26 +189,17 @@ class TeamEditorDetails extends Component {
     }
 }
 
-function
-
-mapStateToProps(state) {
+function mapStateToProps(state) {
     const currentUser = state.loginReducer.user;
     const teams = state.teamReducers.teams;
-    const selectedTeam = state.teamReducers.selectedTeam;
-    return {selectedTeam, teams, currentUser};
+    const selectedTeamId = state.teamReducers.selectedTeamId;
+    return {selectedTeamId, teams, currentUser};
 }
 
-function
-
-mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(teamActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)
-
-(
-    TeamEditorDetails
-)
-;
+export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);

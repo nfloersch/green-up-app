@@ -5,18 +5,15 @@ import PropTypes from 'prop-types';
 import {
     Button,
     StyleSheet,
-    Text,
-    TextInput,
-    TouchableHighlight,
     View,
-    ScrollView,
-    Alert
+    ScrollView
 } from 'react-native';
 import CheckBox from 'react-native-checkbox';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {TeamMember} from '../../models/team-member';
+import withErrorHandler from '../../components/with-error-handler';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,22 +30,33 @@ const styles = StyleSheet.create({
     }
 });
 
+const inviteToTeam = Symbol();
+
+function _inviteToTeam() {
+    const teamMembers = this.props.contacts.map(contact => TeamMember.create(Object.assign({}, contact, {status: TeamMember.memberStatuses.INVITED})));
+    this.props.actions.inviteContacts(this.props.teams[this.props.selectedTeamId], this.props.currentUser, teamMembers);
+}
+
 class InviteContacts extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        selectedTeamId: PropTypes.string,
+        currentUser: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object),
-        teams: PropTypes.array
+        teams: PropTypes.object
     };
 
     static navigationOptions = {
         title: 'Invite Contacts'
     };
+
     constructor(props) {
         super(props);
         this.toggleContact = this.toggleContact.bind(this);
+        this[inviteToTeam] = _inviteToTeam.bind(this);
         this.state = {
             contacts: []
-        }
+        };
     }
 
     componentWillMount() {
@@ -56,6 +64,7 @@ class InviteContacts extends Component {
             contacts: this.props.contacts || []
         });
     }
+
     componentDidMount() {
         this.props.actions.retrieveContacts();
     }
@@ -91,22 +100,31 @@ class InviteContacts extends Component {
                 default:
                     return 0;
             }
-        }).map(contact => (<CheckBox checked={contact.isSelected} key={contact.email} label={`${contact.firstName} ${contact.lastName}`} onChange={this.toggleContact(contact)}/>));
+        }).map(
+            contact => (
+                <CheckBox
+                    checked={contact.isSelected} key={contact.email}
+                    label={`${contact.firstName} ${contact.lastName}`}
+                    onChange={this.toggleContact(contact)}/>
+            )
+        );
         return (
             <View style={styles.container}>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
-                    <Button onPress={() => {
-                        Alert.alert('This will invite your contacts to your group');
-                    }} title='Invite to Group' color='green'/>
+                    <Button onPress={this[inviteToTeam]} title='Invite to team' color='green'/>
                 </ScrollView>
             </View>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {contacts: state.teamReducers.contacts};
+function mapStateToProps(state) {
+    const selectedTeamId = state.teamReducers.selectedTeam;
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    const contacts = state.teamReducers.contacts;
+    return {teams, currentUser, selectedTeamId, contacts};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -115,4 +133,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InviteContacts);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(InviteContacts));
