@@ -46,17 +46,10 @@ export default class TrashMap extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            location: Location.getCurrentPositionAsync({}),
-            latitude: 44.04,
-            longitude: 162.7093,
-            errorMessage: null,
-            mapRegion: Location.getCurrentPositionAsync({}),
-            mapMarker: {latlng:{}}
-        };
         this._getLocationAsync = this._getLocationAsync.bind(this);
         this._goToTrashDrop = this._goToTrashDrop.bind(this);
-        this.state = {modalVisible: false};
+        this.state = {modalVisible: false, mapMarker:{}};
+
     }
 
     componentDidMount() {
@@ -69,34 +62,23 @@ export default class TrashMap extends Component {
     _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if ( status === 'granted') {
+            const location = await Location.getCurrentPositionAsync({});
             this.setState({
-                location: Location.getCurrentPositionAsync({})
-            });
-            this.setState({
-                latitude: 44.04,
-                longitude: -72.7093,
-                latitudeDelta: 1,
-                longitudeDelta: 2
+                location,
+                mapMarker:{
+                    title:'X',
+                    pinColor:'blue',
+                    description:'X',
+                    coordinate:{longitude: Number(location.coords.longitude), latitude: Number(location.coords.latitude)}
+                },
+                mapRegion: {
+                    latitude: Number(location.coords.latitude),
+                    longitude: Number(location.coords.longitude),
+                    latitudeDelta: 0.001,
+                    longitudeDelta: 0.001
+                }
             });
         }
-
-        const location = await Location._getLocationAsync({});
-        const newLat = Number(location.coords.latitude);
-        const newLong = Number(location.coords.longitude);
-        this.setState({location,
-            mapMarker:{
-                title:'X',
-                pinColor:'blue',
-                description:'X',
-                coordinate:{longitude: -72.7093, latitude: 44.04}
-            },
-            mapRegion: {
-                latitude: newLat,
-                longitude: newLong,
-                latitudeDelta: 0.001,
-                longitudeDelta: 0.001
-            }
-        });
     };
 
     render() {
@@ -115,8 +97,7 @@ export default class TrashMap extends Component {
                 >
 
                     <MapView.Marker
-                        coordinate={{longitude: -72.7093, latitude: 44.04}}
-                        title={'test'}
+                        coordinate={this.state.mapMarker.coordinate}
                     />
 
                 </MapView>
@@ -126,10 +107,10 @@ export default class TrashMap extends Component {
                     </View>
                 </TouchableHighlight>
                 <Modal
-                    animationType={"slide"}
+                    animationType={'slide'}
                     transparent={false}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {alert("Modal has been closed.")}}
+                    onRequestClose={() => {alert('Modal has been closed.')}}
                 >
                     <ScrollView style={{marginTop: 22}}>
                         <View>
@@ -169,7 +150,7 @@ export default class TrashMap extends Component {
                                 }}
                             />
                             <TouchableHighlight onPress={() => {
-                                this.setState({modalVisible: false})
+                                this.setState({modalVisible: false});
                             }}>
                                 <Text style={styles.text}>Mark the Spot</Text>
                             </TouchableHighlight>

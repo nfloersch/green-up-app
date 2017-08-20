@@ -121,6 +121,9 @@ class TrashDrop extends Component {
                             this.setState({hasLarge: !this.state.hasLarge});
                         }}
                     />
+                    <Button onPress={this.toTrashMap}
+                        title='Mark the Spot'
+                        color='green'/>
                 </ScrollView>
             </View>
         );
