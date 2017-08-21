@@ -117,7 +117,7 @@ class TrashMap extends Component {
                     key={key}
                     coordinate={marker.location}
                     title={marker.bagCount}
-                    description={marker.tags.join(' ,')}
+                    description={marker.tags.join(', ')}
                 />
             );
         }
