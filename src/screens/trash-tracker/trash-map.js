@@ -75,7 +75,7 @@ class TrashMap extends Component {
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
-        this.state = {location: {}, modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
+        this.state = {location: {}, modalVisible: false, tags: [], bagCount: 1, text: 1, markers: [], errorMessage: null};
     }
 
     componentDidMount() {
@@ -115,9 +115,10 @@ class TrashMap extends Component {
             return (
                 <MapView.Marker
                     key={key}
+                    pinColor={'green'}
                     coordinate={marker.location}
-                    title={marker.bagCount}
-                    description={marker.tags.join(' ,')}
+                    title={String('# of Bags: ' + marker.bagCount)}
+                    description={marker.tags.join(', ')}
                 />
             );
         }
@@ -153,13 +154,13 @@ class TrashMap extends Component {
                             <TextInput
                                 value={this.state.bagCount}
                                 keyboardType='numeric'
-                                placeholder=' 1'
+                                placeholder='1'
                                 style={{
                                     height: 40,
                                     borderColor: 'gray',
                                     borderWidth: 1
                                 }}
-                                onChangeText={(text) => this.setState({bagCount: text})}
+                                onChangeText={(text) => this.setState({text, bagCount: Number(text)})}
                             />
                             <Text style={styles.text}>Other Items</Text>
                             <CheckBox
