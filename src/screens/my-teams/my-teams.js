@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#678',
         width: '100%',
+        height: '70%',
         padding: 4,
         marginTop: 10
     },
@@ -229,18 +230,21 @@ class MyTeams extends Component {
                         this.setState({message: '', selectedTeam: null});
                     }}
                 >
-                    <View style={{marginTop: 22}}>
-                        <View style={styles.messageRow}>
-                            <TextInput
-                                keyBoardType={'default'}
-                                multiline={true}
-                                numberOfLines={5}
-                                onChangeText={this.onMessageTextChange}
-                                placeholder={'message details'}
-                                value={this.state.messageText}
-                                style={{width: '100%'}}
-                            />
-                        </View>
+                    <View style={{marginTop: 22, flex: 1}}>
+                        <ScrollView>
+                            <View style={styles.messageRow}>
+                                <TextInput
+                                    keyBoardType={'default'}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    onChangeText={this.onMessageTextChange}
+                                    placeholder={'message details'}
+                                    underlineColorAndroid={'transparent'}
+                                    value={this.state.messageText}
+                                    style={{width: '100%', paddingTop: 30, paddingBottom: 30}}
+                                />
+                            </View>
+                        </ScrollView>
                         <View style={styles.buttonRow}>
                             <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
                                 <Text style={styles.text}>Send Message</Text>
@@ -271,4 +275,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(MyTeams));
-
