@@ -60,7 +60,8 @@ function _toggleTag(tag) {
 class TrashMap extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        trashDrops: PropTypes.object
     };
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -74,7 +75,7 @@ class TrashMap extends Component {
         this._goToTrashDrop = this
             ._goToTrashDrop
             .bind(this);
-        this.state = {modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
+        this.state = {location: {}, modalVisible: false, tags: [], bagCount: 1, markers: [], errorMessage: null};
     }
 
     componentDidMount() {
@@ -86,39 +87,43 @@ class TrashMap extends Component {
     }
 
     _getLocationAsync = async () => {
-        let {status} = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({errorMessage: 'Permission to access location was denied'});
+        const {status} = await Permissions.askAsync(Permissions.LOCATION);
+        if ( status === 'granted') {
+            const location = await Location.getCurrentPositionAsync({});
+            this.setState({
+                location,
+                mapMarker:{
+                    title:'X',
+                    pinColor:'blue',
+                    description:'X',
+                    coordinate:{longitude: Number(location.coords.longitude), latitude: Number(location.coords.latitude)}
+                },
+                mapRegion: {
+                    latitude: Number(location.coords.latitude),
+                    longitude: Number(location.coords.longitude),
+                    latitudeDelta: 0.001,
+                    longitudeDelta: 0.001
+                }
+            });
         }
-
-        let location = await Location.getCurrentPositionAsync({});
-        let newLat = Number(location.coords.latitude);
-        let newLong = Number(location.coords.longitude);
-        this.setState({
-            location,
-            mapRegion: {
-                latitude: newLat,
-                longitude: newLong,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-            }
-        });
     };
 
 
     render() {
 
-        function myMarkers(marker) {
+        function createMarker(marker, key) {
             return (
                 <MapView.Marker
-                    coordinate={marker.latlng}
-                    title={marker.title}
-                    description={marker.description}
+                    key={key}
+                    coordinate={marker.location}
+                    title={marker.bagCount}
+                    description={marker.tags.join(' ,')}
                 />
             );
         }
 
-
+       const myMarkerKeys = Object.keys(this.props.trashDrops || {});
+       const myMarkers = myMarkerKeys.map(key => createMarker(this.props.trashDrops[key], key));
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Trash Map</Text>
@@ -130,11 +135,9 @@ class TrashMap extends Component {
                     followsUserLocation={true}
                     showsCompass={true}
                     style={{alignSelf: 'stretch', height: 300}}
-                    // initialRegion={this.setState()}
                 >
-                    {myMarkers}
+                  {myMarkers}
                 </MapView>
-
                 <TouchableHighlight onPress={this._goToTrashDrop}>
                     <View>
                         <Text style={styles.text}>Drop Trash</Text>
@@ -192,7 +195,7 @@ class TrashMap extends Component {
 
 
 function mapStateToProps(state) {
-    return {messages: state.trashTrackerReducers.message};
+    return {trashDrops: state.trashTrackerReducers.trashDrops};
 }
 
 function mapDispatchToProps(dispatch) {
