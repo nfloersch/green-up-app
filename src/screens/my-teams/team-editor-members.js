@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
 class TeamEditorMembers extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array,
-        stackNav: PropTypes.object
+        teams: PropTypes.object,
+        stackNav: PropTypes.object,
+        screenProps: PropTypes.object,
     };
 
     static navigationOptions = {

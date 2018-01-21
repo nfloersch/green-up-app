@@ -33,7 +33,7 @@ export function logout() {
 
 export function createUser(email, password) {
     return () => {
-        firebaseDataLayer.createUser(email, password).then(x => {
+        firebaseDataLayer.createUser(email, password).then(()=>{
             dispatch({type: types.CREATING_USER});
         }).catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});
@@ -57,7 +57,8 @@ export function googleLogin() {
             const result = await Expo.Google.logInAsync({
                 androidClientId: "439621369113-oe6f0lm8a5qds59019dfpjf5dnl364g0.apps.googleusercontent.com",
                 iosClientId: "439621369113-9iqssauvd4jnr3kqrl6it7sjdock5n53.apps.googleusercontent.com",
-                scopes: ['profile', 'email']
+                scopes: ['profile', 'email'],
+                useBrowser: true
             });
 
             if (result.type === 'success') {

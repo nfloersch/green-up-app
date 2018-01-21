@@ -1,11 +1,12 @@
+// @flow
+
 import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
 import Expo from 'expo';
-import Team from '../../models/team';
+import {TeamMember} from '../../models/team-member';
+import {Invitation} from '../../models/invitation';
+
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
-const _teams = [...Array(43)].map((t, i) => {
-    return Team.create({uid: i.toString(), name: `Team ${i}`});
-});
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
@@ -15,6 +16,7 @@ export function retrieveContacts(_pageSize = 40) {
             // Permission was denied...
             dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
         }
+
         async function getContactsAsync(pageSize, pageOffset = 0) {
             const data = await Expo.Contacts.getContactsAsync({
                 fields: [
@@ -29,25 +31,39 @@ export function retrieveContacts(_pageSize = 40) {
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))
                 : contacts;
         }
+
         getContactsAsync(_pageSize);
     };
 }
-export function searchForTeams(searchString) {
-    return function (dispatch) {
-        return Promise.resolve().then(() => {
-            const teams = _teams.filter(team => (team.name.toLowerCase().indexOf(searchString.toLowerCase()) >= 0));
-            dispatch({type: types.SEARCH_TEAMS_SUCCESS, teams});
+
+
+export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
+    return async function () {
+        teamMembers.forEach(teamMember => {
+            if (!teamMember.uid) {
+                let invitation = Invitation.create({team, sender: currentUser, teamMember});
+                firebaseDataLayer.sendInviteEmail(invitation);
+            } else {
+                firebaseDataLayer.addTeamMember(team.id, currentUser.uid, teamMember);
+            }
         });
     };
 }
+
+export function sendTeamMessage(team, message) {
+    return async function () {
+        const teamMembers = team.members.map(member => member.uid);
+        firebaseDataLayer.sendGroupMessage(teamMembers, message);
+    };
+}
+
 export function selectTeam(team) {
     return {type: types.SELECT_TEAM, team};
 }
 
-export function saveTeam(team) {
+export function saveTeam(team, id) {
     return async function (dispatch) {
-        // Ask for permission to query contacts.
-        const savedTeam = await firebaseDataLayer.saveTeam(team);
+        const savedTeam = await firebaseDataLayer.saveTeam(team, id);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
 }

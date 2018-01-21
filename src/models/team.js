@@ -1,36 +1,31 @@
 // @flow
 
 import {isDate} from '../libs/isDate';
-import {Zone} from './zone';
-import {UserSummary} from './user-summary';
+import {Location} from './location';
+import {TeamMember} from './team-member';
 
 export default class Team {
-    uid : string;
-    name : string;
-    description : string;
-    notes : [string];
-    location : string;
-    start : Date;
-    end : Date;
-    active : boolean;
-    members : [UserSummary];
-    zones : [Zone];
-    isPublic : boolean;
-    created : Date;
-    owner : UserSummary;
-    invitePending : boolean;
-    acceptancePending : boolean;
-    userIsOwner : boolean;
+    id: string;
+    name: string;
+    description: string;
+    notes: [string];
+    town: string;
+    start: Date;
+    end: Date;
+    active: boolean;
+    members: [TeamMember];
+    locations: [Location];
+    isPublic: boolean;
+    created: Date;
+    owner: TeamMember;
 
-    constructor(args = {}, userId : string) {
-        this.uid = typeof args.uid === 'string'
-            ? args.uid
-            : null;
+    constructor(args = {}) {
+        this.id = typeof args.id === 'string' ? args.id : null;
         this.name = typeof args.name === 'string'
             ? args.name
             : null;
-        this.location = typeof args.location === 'string'
-            ? args.location
+        this.town = typeof args.location === 'string'
+            ? args.town
             : null;
         this.description = typeof args.descrption === 'string'
             ? args.description
@@ -48,29 +43,26 @@ export default class Team {
             ? args.active
             : true;
         this.members = Array.isArray(args.members)
-            ? args.members.map((member) => UserSummary.create(member))
+            ? args.members.map((member) => TeamMember.create(member))
             : [];
-        this.zones = Array.isArray(args.zones)
-            ? args.zones.map((zone) => Zone.create(zone))
+        this.locations = Array.isArray(args.locations)
+            ? args.locations.map((location) => Location.create(location))
             : [];
         this.isPublic = typeof args.isPublic === 'boolean'
             ? args.isPublic
             : true;
         this.created = isDate(args.created)
             ? new Date(args.created)
-            : null;
-        this.owner = UserSummary.create(args.owner);
-        this.invitePending = typeof args.invitePending === 'boolean'
-            ? args.invitePending
-            : false;
-        this.acceptancePending = typeof args.invitePending === 'boolean'
-            ? args.acceptancePending
-            : false;
-        this.userIsOwner = !!args.userId && args.userID === this.owner.userId;
+            : new Date();
+        this.owner = TeamMember.create(args.owner);
+
     }
 
-    static create(args = {}, userId : string) {
-        return new Team(args, userId);
+    static create(args = {}, id) {
+        if (id) {
+            args.id = id;
+        }
+        return new Team(args);
     }
 
 }

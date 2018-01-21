@@ -1,5 +1,6 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
+
 export function loginReducer(state = initialState, action) {
     switch (action.type) {
         case types.LOGIN_SUCCESSFUL:
@@ -8,7 +9,6 @@ export function loginReducer(state = initialState, action) {
                 user: action.user,
                 initialAuthChecked: true,
                 creatingUser: false
-
             };
         case types.LOGIN_FAIL:
             return {
@@ -16,8 +16,6 @@ export function loginReducer(state = initialState, action) {
                 user: null,
                 initialAuthChecked: true,
                 creatingUser: false
-
-
             };
         case types.LOGOUT_SUCCESSFUL:
             return {
@@ -33,7 +31,7 @@ export function loginReducer(state = initialState, action) {
             };
 
         case types.CREATING_USER:
-            return{
+            return {
                 ...state,
                 initialAuthChecked: true,
                 creatingUser: true

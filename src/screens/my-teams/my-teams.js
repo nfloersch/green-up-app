@@ -4,17 +4,29 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     Button,
-    FlatList,
     StyleSheet,
     Text,
     TouchableHighlight,
-    View
+    ScrollView,
+    Modal,
+    View,
+    TextInput
 } from 'react-native';
+import {Message} from '../../models/message';
+
+import {TeamMember} from '../../models/team-member';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as teamActions from './team-actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Team from '../../models/team';
+import withErrorHandler from '../../components/with-error-handler';
+
+
+function currentUserIsTeamOwner(team, currentUser) {
+    const teamUID = team && team.owner && team.owner.uid;
+    const userUID = currentUser && currentUser.uid;
+    return teamUID && userUID && teamUID === userUID;
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -49,15 +61,46 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 15,
         justifyContent: 'space-around'
+    },
+    messageRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderWidth: 2,
+        borderColor: '#678',
+        width: '100%',
+        height: '70%',
+        padding: 4,
+        marginTop: 10
+    },
+    buttonRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    addButton: {
+        width: '49%',
+        backgroundColor: '#0F0',
+        justifyContent: 'center',
+        padding: 10,
+        marginRight: 3
+    },
+    cancelButton: {
+        width: '49%',
+        backgroundColor: '#F00',
+        justifyContent: 'center',
+        padding: 10,
+        marginLeft: 3
     }
 });
 
-class TeamSummaries extends Component {
+class MyTeams extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.array,
+        currentUser: PropTypes.object,
+        handleError: PropTypes.func,
         navigation: PropTypes.object,
-        owner: PropTypes.object,
+        teams: PropTypes.object,
         toTeamDetails: PropTypes.func
     };
 
@@ -69,25 +112,58 @@ class TeamSummaries extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
-        this.toMessageTeam = this.toMessageTeam.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
+        this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
+        this.onMessageTextChange = this.onMessageTextChange.bind(this);
+        this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
     toTeamSearch() {
         this.props.navigation.navigate('TeamSearch');
     }
 
-    toMessageTeam() {
-        this.props.navigation.navigate('MessageTeam');
+    openTeamMessageModal(selectedTeamId) {
+        return () => {
+            this.setState({messageText: '', selectedTeamId, isModalVisible: true});
+        };
     }
 
-    toTeamDetail(team : Object) {
+
+    sendMessage() {
+        const team = this.props.teams[this.state.selectedTeamId];
+        const myMessage = Message.create({
+            text: this.state.messageText,
+            sender: this.props.currentUser,
+            teamId: this.state.selectedTeamId,
+            type: Message.messageTypes.TEAM_MESSAGE
+        });
+
+        this.setState({sendingMessage: true}, () => {
+            this.props.actions.sendTeamMessage(team, myMessage)
+                .then(
+                    this.setState({messagetext: '', isModalVisible: false})
+                )
+                .catch((error) => {
+                    this.props.handleError(error);
+                });
+        });
+    }
+
+    onMessageTextChange(messageText) {
+        this.setState({messageText});
+    }
+
+    toTeamDetail(key: string) {
         let nextScreen = 'TeamDetails';
+        const team = (this.props.teams || {})[key];
+        const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
+
         switch (true) {
-            case team.invitationPending:
+            case status === TeamMember.memberStatuses.INVITED:
                 nextScreen = 'TeamInvitationDetails';
                 break;
-            case team.userIsOwner:
+            case currentUserIsTeamOwner(team, this.props.currentUser):
                 nextScreen = 'TeamEditor';
                 break;
             default:
@@ -95,22 +171,22 @@ class TeamSummaries extends Component {
                 break;
         }
         return () => {
-            this.props.actions.selectTeam(team);
+            this.props.actions.selectTeam(key);
             this.props.navigation.navigate(nextScreen);
         };
     }
-    
+
     toNewTeamEditor() {
-        const team = Team.create({owner: this.props.owner});
-        this.props.actions.selectTeam(team);
+        this.props.actions.selectTeam();
         this.props.navigation.navigate('TeamEditor');
     }
 
-    toTeamIcon(team : Object) {
+    toTeamIcon(team: Object) {
+        const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
         switch (true) {
-            case team.invitationPending:
+            case status === TeamMember.memberStatuses.INVITED:
                 return 'contact-mail';
-            case team.userIsOwner:
+            case currentUserIsTeamOwner(team, this.props.currentUser):
                 return 'pencil-box';
             default:
                 return 'arrow-right-thick';
@@ -118,33 +194,78 @@ class TeamSummaries extends Component {
     }
 
     render() {
+        const teams = this.props.teams;
 
-        var myTeams = (this.props.teams || []).map(team => (
-            <TouchableHighlight key={team.uid} onPress={this.toTeamDetail(team)}>
+        const _myTeams = (Object.keys(teams || {}))
+            .filter(
+                key => {
+                    let memberIds = ((teams[key].members || []).map(member => member.uid));
+                    return memberIds.indexOf(this.props.currentUser.uid) !== -1;
+                }
+            );
+        const myTeams = _myTeams.map(key => (
+            <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.buttons}>
-                    <TouchableHighlight onPress={this.toMessageTeam}>
+                    <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
                         <MaterialCommunityIcons name='message-text-outline' size={50}/>
                     </TouchableHighlight>
-                    <Text style={styles.teams}>{team.name}</Text>
-                    <MaterialCommunityIcons name={this.toTeamIcon(team)} size={50}/>
+                    <Text style={styles.teams}>{teams[key].name}</Text>
+                    <MaterialCommunityIcons name={this.toTeamIcon(teams[key])} size={50}/>
                 </View>
             </TouchableHighlight>
         ));
         return (
-            <View style={styles.container}>
-                <Text>Team Summaries Screen</Text>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text>{'Team Summaries Screen'}</Text>
                 {myTeams}
                 <View style={styles.row}>
-                    <Button onPress={this.toTeamSearch} title="Search Teams"/>
-                    <Button onPress={this.toNewTeamEditor} title="New Team"/>
+                    <Button onPress={this.toTeamSearch} title='Search Teams'/>
+                    <Button onPress={this.toNewTeamEditor} title='New Team'/>
                 </View>
-            </View>
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.isModalVisible}
+                    onRequestClose={() => {
+                        this.setState({message: '', selectedTeam: null});
+                    }}
+                >
+                    <View style={{marginTop: 22, flex: 1}}>
+                        <ScrollView>
+                            <View style={styles.messageRow}>
+                                <TextInput
+                                    keyBoardType={'default'}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    onChangeText={this.onMessageTextChange}
+                                    placeholder={'message details'}
+                                    underlineColorAndroid={'transparent'}
+                                    value={this.state.messageText}
+                                    style={{width: '100%', paddingTop: 30, paddingBottom: 30}}
+                                />
+                            </View>
+                        </ScrollView>
+                        <View style={styles.buttonRow}>
+                            <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
+                                <Text style={styles.text}>Send Message</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight style={styles.cancelButton} onPress={() => {
+                                this.setState({isModalVisible: false, messageText: ''});
+                            }}>
+                                <Text style={styles.text}>Cancel</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </Modal>
+            </ScrollView>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {teams: state.teamReducers.teams, owner: state.teamReducers.user};
+function mapStateToProps(state) {
+    const currentUser = state.loginReducer.user;
+    const teams = state.teamReducers.teams;
+    return {teams, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -153,4 +274,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamSummaries);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(MyTeams));
