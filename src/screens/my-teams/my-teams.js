@@ -189,9 +189,9 @@ class MyTeams extends Component {
           <View style={styles.row}>
             <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
               <MaterialCommunityIcons name='message-text-outline' size={50} />
-                <Text style={styles.teams}>{teams[key].name}</Text>
-              <MaterialCommunityIcons name={this.toTeamIcon(teams[key])} size={50}/>
-              </TouchableHighlight>
+            </TouchableHighlight>
+            <Text style={styles.teams}>{teams[key].name}</Text>
+            <MaterialCommunityIcons name={this.toTeamIcon(teams[key])} size={50}/>
             </View>
         </TouchableHighlight>
         ));
