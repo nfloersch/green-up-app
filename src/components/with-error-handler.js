@@ -72,7 +72,7 @@ export default function withErrorHandler(WrappedComponent) {
             super(props);
             this[handleError] = _handleError.bind(this);
             this[dismissError] = _dismissError.bind(this);
-            this.state = {hasError: true, error: 'oops'};
+            this.state = {hasError: false, error: 'oops'};
         }
 
         render() {

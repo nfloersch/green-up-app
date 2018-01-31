@@ -26,27 +26,17 @@ import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
 import {isDate} from '../../libs/isDate';
 
-
 const styles = StyleSheet.create({
     scrollView: {
         backgroundColor: '#FFFFFF',
         height: '100%'
     },
-    // container: {
-    //     flex: 1,
-    //     justifyContent: 'flex-start',
-    //     alignItems: 'center',
-    //     backgroundColor: '#F5FCFF',
-    //     width: '100%',
-    //     height: '100%'
-    // },
     label: {
         fontSize: 20,
         textAlign: 'center',
         margin: 10
     },
     column: {
-        // flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#678',
         padding: 3,
@@ -54,13 +44,11 @@ const styles = StyleSheet.create({
     }
 });
 
-
 function createNewTeam(currentUser) {
     const owner = TeamMember.create(Object.assign({}, currentUser, {memberStatus: TeamMember.memberStatuses.ACCEPTED}));
     const members = [owner];
     return Team.create({owner, members});
 }
-
 
 class TeamEditorDetails extends Component {
     static propTypes = {
