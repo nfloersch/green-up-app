@@ -1,24 +1,21 @@
-// @flow
-
-import 'es6-symbol/implement';
-import 'babel-polyfill'
-import React, {Component} from 'react';
-
-import Nav from './src/';
-
+import React from 'react';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import reducer from './src/reducers/';
+import reducer from './reducers/';
 import thunk from 'redux-thunk';
-
+import LoadingScreen from './screens/loading-screen';
 const store = createStore(reducer, applyMiddleware(thunk));
 
-export default class App extends Component {
+export default class App extends React.Component {
+
     render() {
+
         return (
             <Provider store={store}>
-                <Nav/>
+                <LoadingScreen/>
             </Provider>
         );
     }
 }
+
+
