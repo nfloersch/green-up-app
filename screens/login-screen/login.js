@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 class Login extends Component {
 
     static propTypes = {
+        actions: PropTypes.object,
         navigation: PropTypes.object
     };
 
@@ -78,10 +79,11 @@ class Login extends Component {
                 <Image source={logo} style={{height: 120, width: 120}}/>
 
                 <View style={{width: '100%'}}>
-                    <LoginForm onButtonPress={() => this.props.actions.loginWithEmailPassword()}/>
+                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
 
-                    <TouchableHighlight style={styles.link}
-                                        onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                    <TouchableHighlight
+                        style={styles.link}
+                        onPress={() => this.props.navigation.navigate('ForgotPassword')}
                     >
                         <Text style={styles.linkText}>I forgot my password</Text>
                     </TouchableHighlight>

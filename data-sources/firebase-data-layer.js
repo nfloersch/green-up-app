@@ -78,16 +78,6 @@ function sendUserMessage(userId, message) {
         .push(message);
 }
 
-// function setupUserListener(userId) {
-//     firebase
-//         .database()
-//         .ref('users/' + userId)
-//         .on('value', (snapshot) => {
-//             const user = snapshot.val();
-//             console.log('User Changed ' + JSON.stringify(user));
-//             dataLayerActions.userFetchSuccessfule(user);
-//         });
-// }
 
 function sendGroupMessage(group, message) {
     group.forEach((memberUID) => {
@@ -98,7 +88,7 @@ function sendGroupMessage(group, message) {
 // Teams
 function saveTeam(team, id) {
     const _id = id || team.uid;
-    let _team = Object.assign({}, team);
+    const _team = Object.assign({}, team);
     Reflect.deleteProperty(_team, 'uid');
     if (!_id) {
         firebase
@@ -123,7 +113,12 @@ function createUser(email, password) {
 }
 
 function loginWithEmailPassword(email, password) {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    return firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(error => {
+            console.log('log in with email failed', error); // eslint-disable-line
+        });
 }
 
 function logout() {

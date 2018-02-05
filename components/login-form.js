@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+
 const styles = StyleSheet.create({
     inputStyle: {
         paddingRight: 5,
@@ -45,30 +46,19 @@ export default class LoginForm extends Component {
 
     constructor(props) {
         super(props);
-        this.onButtonPress = this
-            .onButtonPress
-            .bind(this);
-        this.onChangeState = this
-            .onChangeState
-            .bind(this);
-        this.state = {
-            email: '',
-            password: ''
-        };
+        this.onButtonPress = this.onButtonPress.bind(this);
+        this.onChangeState = this.onChangeState.bind(this);
+        this.state = {email: '', password: ''};
     }
 
     onChangeState(stateKey) {
         return (value) => {
-            let newState = {};
-            newState[stateKey] = value;
-            this.setState(newState);
+            this.setState({[stateKey]: value});
         };
     }
 
     onButtonPress() {
-        this
-            .props
-            .onButtonPress(this.state.email, this.state.password);
+        this.props.onButtonPress(this.state.email, this.state.password);
     }
 
     render() {
