@@ -243,7 +243,7 @@ class MyTeams extends Component {
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    const teams = state.teams.teams;
+    const teams = Object.values(state.teams.teams);
     return {teams, currentUser};
 }
 

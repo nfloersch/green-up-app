@@ -6,7 +6,7 @@ export function reducers(state = initialState, action) {
         case types.LOGOUT_SUCCESSFUL:
             return {
                 ...state,
-                user: null
+                currentUser: null
             };
         default:
             return state;
