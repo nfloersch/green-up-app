@@ -9,7 +9,7 @@ firebase.initializeApp(firebaseConfig);
 
 
 function setupMessageListener(userId, dispatch) {
-    let messages = firebase.database().ref(`messages/${userId}`);
+    const messages = firebase.database().ref(`messages/${userId}`);
     messages.on('value', (snapshot) => {
         dispatch(dataLayerActions.messageFetchSuccessful(snapshot.val()));
     });
@@ -22,12 +22,12 @@ async function initialize(dispatch) {
         .auth()
         .onAuthStateChanged((user) => {
             if (!!user) {
-                console.log('We are authenticated now!');
+                console.log('We are authenticated now!'); // eslint-disable-line
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
                 setupMessageListener(user.uid, dispatch);
 
             } else {
-                console.log('We failed auth');
+                console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
@@ -118,7 +118,7 @@ function createUser(email, password) {
             // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode, errorMessage); //eslint-disable-line
+            console.log(errorCode, errorMessage); // eslint-disable-line
         });
 }
 
