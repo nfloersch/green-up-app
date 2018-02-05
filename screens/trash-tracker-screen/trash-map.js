@@ -162,7 +162,7 @@ class TrashMap extends Component {
                     <ScrollView style={{marginTop: 22}}>
                         <View>
                             <TextInput
-                                value={this.state.bagCount}
+                                value={this.state.bagCount.toString()}
                                 keyboardType='numeric'
                                 placeholder='1'
                                 style={{

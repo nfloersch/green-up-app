@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, View} from 'react-native';
 import * as loginActions from './actions';
 import {bindActionCreators} from 'redux';
-import {connect, bindActionCreators} from 'react-redux';
+import {connect} from 'react-redux';
 const styles = StyleSheet.create({
     container: {
         flex: 1,

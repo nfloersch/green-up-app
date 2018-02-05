@@ -87,7 +87,7 @@ class InviteContacts extends Component {
 
     render() {
 
-        var myContacts = this.state.contacts.sort((a, b) => {
+        const myContacts = this.state.contacts.sort((a, b) => {
             switch (true) {
                 case(a.firstName < b.firstName):
                     return -1;

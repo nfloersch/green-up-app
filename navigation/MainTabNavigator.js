@@ -5,7 +5,7 @@ import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../screens/HomeScreen';
+import EphemeraScreen from '../screens/ephemera-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
 import TrashTrackerScreen from '../screens/trash-tracker-screen/';
@@ -13,9 +13,6 @@ import DonateScreen from '../screens/donate-screen/';
 
 export default TabNavigator(
     {
-        Home: {
-            screen: HomeScreen
-        },
         Messages: {
             screen: MessagesScreen
         },
@@ -27,6 +24,9 @@ export default TabNavigator(
         },
         Support: {
             screen: DonateScreen
+        },
+        Emphera: {
+            screen: EphemeraScreen
         }
     },
     {

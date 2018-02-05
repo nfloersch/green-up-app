@@ -66,8 +66,8 @@ export default function withErrorHandler(WrappedComponent) {
 
     return class WithErrorHandler extends Component {
 
-        static PropTypes = {
-            Component: PropTypes.object.isRequired
+        static propTypes = {
+            Component: PropTypes.any
         };
 
         constructor(props) {

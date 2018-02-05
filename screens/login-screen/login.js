@@ -80,13 +80,15 @@ class Login extends Component {
                 <View style={{width: '100%'}}>
                     <LoginForm onButtonPress={() => this.props.actions.loginWithEmailPassword()}/>
 
-                    <TouchableHighlight style={styles.link} onPress={this.props.navigation.navigate('ForgotPassword')}>
+                    <TouchableHighlight style={styles.link}
+                                        onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                    >
                         <Text style={styles.linkText}>I forgot my password</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
                         style={styles.link}
-                        onPress={this.props.navigation.navigate('CreateNewAccount')}
+                        onPress={() => this.props.navigation.navigate('CreateNewAccount')}
                     >
                         <Text style={styles.linkText}>Create a new account</Text>
                     </TouchableHighlight>
