@@ -111,14 +111,14 @@ function saveTeam(team, id) {
 }
 
 function createUser(email, password) {
-    firebase
+    return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .catch((error) => {
             // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage); //eslint-disable-line
+            console.log(errorCode, errorMessage); //eslint-disable-line
         });
 }
 

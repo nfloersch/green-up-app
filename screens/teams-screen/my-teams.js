@@ -136,7 +136,7 @@ class MyTeams extends Component {
         let nextScreen = 'TeamDetails';
         const team = (this.props.teams || {})[key];
         const status = (team.members || []).find(
-            member => member.uid === this.props.currentUser.uid
+            member => member.uid === (this.props.currentUser || {}).uid
         );
 
         switch (true) {
@@ -162,7 +162,7 @@ class MyTeams extends Component {
     }
 
     toTeamIcon(team: Object) {
-        const status = (team.members || []).find(member => member.uid === this.props.currentUser.uid);
+        const status = (team.members || []).find(member => member.uid === (this.props.currentUser || {}).uid);
         switch (true) {
             case status === TeamMember.memberStatuses.INVITED:
                 return 'contact-mail';
@@ -180,7 +180,7 @@ class MyTeams extends Component {
             .filter(
                 key => {
                     const memberIds = ((teams[key].members || []).map(member => member.uid));
-                    return memberIds.indexOf(this.props.currentUser.uid) !== -1;
+                    return memberIds.indexOf((this.props.currentUser || {}).uid) !== -1;
                 }
             );
 

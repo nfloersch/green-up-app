@@ -32,7 +32,8 @@ export function logout() {
 
 export function createUser(email: string, password: string) {
     return (dispatch: Object => *) => {
-        firebaseDataLayer.createUser(email, password).then(() => {
+        const _promise = firebaseDataLayer.createUser(email, password);
+        return _promise.then(() => {
             dispatch({type: types.CREATING_USER});
         }).catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});
