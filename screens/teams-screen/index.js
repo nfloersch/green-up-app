@@ -23,7 +23,7 @@ export default class Teams extends Component {
     };
 
     static navigationOptions = {
-        title: 'My Green Teams'
+        title: 'My Teams'
     };
 
     constructor(props) {
