@@ -3,44 +3,25 @@
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {StyleSheet, Text, View} from 'react-native';
+import Login from './login';
+import CreateNewAccount from './create-new-account';
+import ForgotPassword from './forgot-password';
+import ResetPassword from './reset-password';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+import {StackNavigator} from 'react-navigation';
+
+export default StackNavigator({
+    Login: {
+        screen: Login
+    },
+    CreateNewAccount: {
+        screen: CreateNewAccount
+    },
+    ForgotPassword: {
+        screen: ForgotPassword
+    },
+    ResetPassword: {
+        screen: ResetPassword
     }
 });
-
-export default class LoginScreen extends Component {
-
-    static propTypes = {
-        actions: PropTypes.object,
-        initialAuthChecked: PropTypes.bool,
-        navigation: PropTypes.object,
-        user: PropTypes.object
-    };
-
-    static navigationOptions = {
-        title: 'Login'
-    };
-
-    constructor(props) {
-        super(props);
-        this.state = {currentScreen: 'login'};
-    }
-
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text>LOGIN</Text>
-            </View>
-        );
-    }
-}
 

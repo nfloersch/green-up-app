@@ -85,7 +85,7 @@ class ABienTot extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+    return {session: state.login.session};
 }
 function mapDispatchToProps(dispatch) {
     return {

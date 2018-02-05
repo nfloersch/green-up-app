@@ -139,9 +139,9 @@ class SendMessage extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.loginReducer.user;
-    const teams = state.teamReducers.teams;
-    const selectedTeam = state.teamReducers.selectedTeam;
+    const currentUser = state.login.user;
+    const teams = state.teams.teams;
+    const selectedTeam = state.teams.selectedTeam;
     return {selectedTeam, teams, currentUser};
 }
 

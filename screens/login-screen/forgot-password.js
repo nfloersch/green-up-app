@@ -2,7 +2,10 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import * as loginActions from './actions';
+import {bindActionCreators} from 'redux';
+import {connect, bindActionCreators} from 'react-redux';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -22,7 +25,8 @@ const styles = StyleSheet.create({
     },
     link: {}
 });
-export default class ForgotPassword extends Component {
+
+class ForgotPassword extends Component {
 
     static propTypes = {
         navigation: PropTypes.object
@@ -45,3 +49,16 @@ export default class ForgotPassword extends Component {
         );
     }
 }
+
+
+
+function mapStateToProps(state, ownProps) {
+    return {session: state.login.session};
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(loginActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

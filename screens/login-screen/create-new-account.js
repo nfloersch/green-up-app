@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import LoginForm from '../../components/login-form';
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 class CreateNewAccount extends Component {
 
     static propTypes = {
+        actions: PropTypes.object,
         navigation: PropTypes.object
     };
 
@@ -52,7 +53,7 @@ class CreateNewAccount extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {session: state.loginReducer.session};
+    return {session: state.login.session};
 }
 function mapDispatchToProps(dispatch) {
     return {

@@ -13,7 +13,7 @@ export function getCurrentUser() {
 }
 
 export function logout() {
-    return async (dispatch) => {
+    return async (dispatch: Object => *) => {
         try {
             const results = await firebaseDataLayer.logout();
             // await Auth.GoogleSignInApi.signOut(apiClient);

@@ -54,20 +54,23 @@ const styles = StyleSheet.create({
     }
 });
 
-class LoginOptions extends Component {
+class Login extends Component {
 
     static propTypes = {
         navigation: PropTypes.object
     };
 
     static navigationOptions = {
-        title: 'Forgot Password'
+        title: 'Log In'
     };
+
     constructor(props) {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
     }
-    onButtonPress() {}
+
+    onButtonPress() {
+    }
 
     render() {
         return (
@@ -75,7 +78,7 @@ class LoginOptions extends Component {
                 <Image source={logo} style={{height: 120, width: 120}}/>
 
                 <View style={{width: '100%'}}>
-                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+                    <LoginForm onButtonPress={() => this.props.actions.loginWithEmailPassword()}/>
 
                     <TouchableHighlight style={styles.link} onPress={this.props.navigation.navigate('ForgotPassword')}>
                         <Text style={styles.linkText}>I forgot my password</Text>
@@ -90,7 +93,7 @@ class LoginOptions extends Component {
 
                     <TouchableHighlight
                         style={styles.socialLoginButton}
-                        onPress={this.props.actions.googleLogin()}>
+                        onPress={() => this.props.actions.googleLogin()}>
 
                         <View style={styles.socialLogin}>
                             <Image source={googleLogo} style={styles.logos}/>
@@ -100,7 +103,7 @@ class LoginOptions extends Component {
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={styles.socialLoginButton}
-                        onPress={this.props.actions.facebookLogin}
+                        onPress={() => this.props.actions.facebookLogin()}
                     >
 
                         <View style={styles.socialLogin}>
@@ -125,4 +128,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginOptions);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

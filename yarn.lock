@@ -4500,6 +4500,12 @@ react-native-vector-icons@4.4.2:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
+react-navigation-redux-helpers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-redux-helpers/-/react-navigation-redux-helpers-1.0.0.tgz#baca0d080c6d486a06cbf1d54056794e33d22cca"
+  dependencies:
+    invariant "^2.2.2"
+
 react-navigation@^1.0.0-beta.27:
   version "1.0.0-beta.27"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.0.0-beta.27.tgz#e6263b01975cd790e32b3711c2eb6cead96c102c"
