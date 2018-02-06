@@ -1,8 +1,8 @@
 {
-  "expoServerNgrokUrl": "https://df-a8z.johnneed.greenupvermont.exp.direct",
-  "packagerNgrokUrl": "https://packager.df-a8z.johnneed.greenupvermont.exp.direct",
-  "ngrokPid": 43754,
-  "expoServerPort": 19003,
-  "packagerPort": 19004,
-  "packagerPid": 43739
+  "expoServerNgrokUrl": "https://pg-vme.johnneed.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.pg-vme.johnneed.greenupvermont.exp.direct",
+  "ngrokPid": 1258,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 1223
 }

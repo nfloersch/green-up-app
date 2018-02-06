@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View, Alert} from 'react-native';
 import logo from '../../assets/images/green-up-logo.png';
 import facebookLogo from '../../assets/images/facebook-logo.png';
 import googleLogo from '../../assets/images/google-logo.png';
@@ -58,6 +58,7 @@ class Login extends Component {
 
     static propTypes = {
         actions: PropTypes.object,
+        loginError: PropTypes.any,
         navigation: PropTypes.object
     };
 
@@ -67,17 +68,26 @@ class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
     }
 
-    onButtonPress() {
+
+    componentWillReceiveProps(nextProps) {
+        if (!!nextProps.loginError) {
+            Alert.alert(
+                '',
+                (nextProps.loginError.message || 'Login Failed'),
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')}
+                ],
+                {cancelable: false}
+            );
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Image source={logo} style={{height: 120, width: 120}}/>
-
                 <View style={{width: '100%'}}>
                     <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
 
@@ -123,7 +133,11 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-    return {user: state.login.user, initialAuthChecked: state.login.initialAuthChecked};
+    return {
+        user: state.login.user,
+        initialAuthChecked: state.login.initialAuthChecked,
+        loginError: state.login.loginError
+    };
 }
 
 function mapDispatchToProps(dispatch) {

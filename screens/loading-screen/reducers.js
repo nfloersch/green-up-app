@@ -12,7 +12,7 @@ export function reducers(state = initialState, action) {
             return {
                 ...state,
                 initialAuthChecked: action.initialAuthChecked,
-                isLoggedIn: action.isLoggedIn
+                userIsLoggedIn: action.isLoggedIn
             };
         case types.LOADING_FAILED:
             return {

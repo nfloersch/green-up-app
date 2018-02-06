@@ -106,9 +106,8 @@ function createUser(email, password) {
         .createUserWithEmailAndPassword(email, password)
         .catch((error) => {
             // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage); // eslint-disable-line
+            console.log(error.message); // eslint-disable-line
+            throw error; // Rethrow so we can deal with error later too.
         });
 }
 
@@ -117,8 +116,14 @@ function loginWithEmailPassword(email, password) {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .catch(error => {
-            console.log('log in with email failed', error); // eslint-disable-line
+            console.log(error.message); // eslint-disable-line
+            throw error; // Rethrow so we can deal with error later too.
         });
+}
+
+
+function resetPassword(emailAddress){
+    return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
 function logout() {
@@ -148,6 +153,7 @@ export const firebaseDataLayer = {
     initialize,
     loginWithEmailPassword,
     logout,
+    resetPassword,
     saveTeam,
     sendUserMessage,
     sendInviteEmail,

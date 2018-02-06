@@ -16,14 +16,15 @@ export function reducers(state = initialState, action) {
                 ...state,
                 user: null,
                 initialAuthChecked: true,
-                creatingUser: false
+                creatingUser: false,
+                userIsLoggedIn: false,
+                loginError: action.error
             };
         case types.LOGOUT_SUCCESSFUL:
             return {
                 ...state,
-                user: null,
-                initialAuthChecked: true,
-                creatingUser: false
+                userIsLoggedIn: false,
+                initialAuthChecked: true
             };
         case types.LOGOUT_FAIL:
             return {

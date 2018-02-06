@@ -110,3 +110,19 @@ export function facebookLogin() {
         }
     };
 }
+
+export function resetPassword() {
+    return (dispatch) => {
+        firebaseDataLayer.resetPassword(dispatch)
+            .then(() => dispatch({type: types.RESET_PASSSWORD_SUCCESS}))
+            .catch(error => {
+                dispatch(
+                    {
+                        type: types.RESET_PASSWORD_FAIL,
+                        error
+                    }
+                );
+            });
+    };
+}
+
