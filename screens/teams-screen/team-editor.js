@@ -16,8 +16,8 @@ export default class TeamEditor extends Component {
     };
 
     static navigationOptions = {
-        drawerLabel: 'Team Editor',
-        drawerIcon: ({tintColor}) => (<FontAwesome name='users' size={24} color='green'/>)
+        title: 'Team Editor',
+        header: null
     };
 
     constructor(props) {
@@ -27,12 +27,14 @@ export default class TeamEditor extends Component {
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     render() {
-        var TeamEditorNav = TabNavigator({
+        const TeamEditorNav = TabNavigator({
             TeamDetails: {
-                screen: TeamEditorDetails
+                screen: TeamEditorDetails,
+                header: null
             },
             TeamInvitationDetails: {
                 screen: TeamEditorMembers
@@ -41,8 +43,8 @@ export default class TeamEditor extends Component {
                 screen: TeamEditorMap
             }
         });
-        return (<TeamEditorNav screenProps={{
-            stacknav: this.props.navigation
-        }}/>);
+        return (
+            <TeamEditorNav screenProps={{stacknav: this.props.navigation}}/>
+        );
     }
 }

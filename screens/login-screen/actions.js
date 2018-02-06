@@ -111,9 +111,9 @@ export function facebookLogin() {
     };
 }
 
-export function resetPassword() {
+export function resetPassword(emailAddress : string) {
     return (dispatch) => {
-        firebaseDataLayer.resetPassword(dispatch)
+        firebaseDataLayer.resetPassword(emailAddress)
             .then(() => dispatch({type: types.RESET_PASSSWORD_SUCCESS}))
             .catch(error => {
                 dispatch(

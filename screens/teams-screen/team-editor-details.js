@@ -138,7 +138,6 @@ class TeamEditorDetails extends Component {
                     selectedOption={this.state.selectedOption}
                     selectedTint={'#EFEFEF'} tint={'#666666'}
                     extractText={(option) => option.label}/>
-
                 <View style={styles.column}>
                     <Text style={styles.label}>Clean Up Location:</Text>
                     <Picker

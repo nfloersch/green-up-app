@@ -38,7 +38,6 @@ export function reducers(state = initialState, action) {
                 initialAuthChecked: true,
                 creatingUser: true
             };
-
         default:
             return state;
     }

@@ -38,12 +38,13 @@ const styles = StyleSheet.create({
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
-    },
+    }
 });
 
 class ForgotPassword extends Component {
 
     static propTypes = {
+        actions: PropTypes.object,
         navigation: PropTypes.object
     };
 
@@ -55,7 +56,7 @@ class ForgotPassword extends Component {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onChangeState = this.onChangeState.bind(this);
-        this.state = {email: ''};
+        this.state = {email: '', passwordResetSent: false};
     }
 
     onChangeState(stateKey) {
@@ -65,22 +66,29 @@ class ForgotPassword extends Component {
     }
 
     onButtonPress() {
+        this.props.actions.resetPassword(this.state.email);
+        this.setState({passwordResetSent: true});
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.label}>Email Address :</Text>
-                <TextInput
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onChangeText={this.onChangeState('password')}
-                    style={styles.inputStyle}
-                />
-                <Button onPress={this.onButtonPress} title={'Reset Password'}/>
-            </View>
-        );
+        return this.state.passwordResetSent
+            ? (
+                <View style={styles.container}>
+                    <Text style={styles.label}>Check your email</Text>
+                </View>
+            )
+            : (
+                <View style={styles.container}>
+                    <Text style={styles.label}>Email Address :</Text>
+                    <TextInput
+                        autoCorrect={false}
+                        value={this.state.email}
+                        onChangeText={this.onChangeState('email')}
+                        style={styles.inputStyle}
+                    />
+                    <Button onPress={this.onButtonPress} title={'Reset Password'}/>
+                </View>
+            );
     }
 }
 
