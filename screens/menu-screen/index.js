@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     }
 });
 
-class EphemeraScreen extends Component {
+class MenuScreen extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array,
@@ -25,7 +25,7 @@ class EphemeraScreen extends Component {
     };
 
     static navigationOptions = {
-        title: 'Misc'
+        title: 'Menu'
     };
 
     constructor(props) {
@@ -63,5 +63,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EphemeraScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);
 

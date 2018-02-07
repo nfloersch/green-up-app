@@ -80,15 +80,17 @@ export default function withErrorHandler(WrappedComponent) {
         render() {
             return (
                 <View style={styles.container}>
-                    <TouchableHighlight
-                        onPress={this[dismissError]}
-                        underlayColor={'rgba(255, 0, 0, 0.054)'}
-                        style={this.state.hasError ? styles.hasError : styles.noError}
-                    >
-                        <View style={styles.row}>
-                            <Text style={styles.text}>{this.state.error}</Text>
-                        </View>
-                    </TouchableHighlight>
+                    {!this.state.hasError ? null :
+                        (<TouchableHighlight
+                            onPress={this[dismissError]}
+                            underlayColor={'rgba(255, 0, 0, 0.054)'}
+                            style={this.state.hasError ? styles.hasError : styles.noError}
+                        >
+                            <View style={styles.row}>
+                                <Text style={styles.text}>{this.state.error}</Text>
+                            </View>
+                        </TouchableHighlight>)
+                    }
                     <WrappedComponent {...this.props} handleError={this[handleError]}/>
                 </View>
             );

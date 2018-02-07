@@ -52,7 +52,7 @@ class CreateNewAccount extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {session: state.login.session};
 }
 function mapDispatchToProps(dispatch) {

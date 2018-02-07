@@ -6,7 +6,6 @@
 import Login from './login';
 import CreateNewAccount from './create-new-account';
 import ForgotPassword from './forgot-password';
-import ResetPassword from './reset-password';
 
 import {StackNavigator} from 'react-navigation';
 
@@ -19,9 +18,6 @@ export default StackNavigator({
     },
     ForgotPassword: {
         screen: ForgotPassword
-    },
-    ResetPassword: {
-        screen: ResetPassword
     }
 });
 

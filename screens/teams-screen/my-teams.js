@@ -84,7 +84,9 @@ class MyTeams extends Component {
     };
 
     static navigationOptions = {
-        title: 'Teams'
+        title: 'Teams',
+        mode: 'modal',
+        header: null
     };
 
     constructor(props) {
@@ -205,9 +207,9 @@ class MyTeams extends Component {
                     </View>
                     {myTeams}
                     <Modal animationType={'slide'} transparent={false}
-                        visible={this.state.isModalVisible} onRequestClose={() => {
-                            this.setState({message: '', selectedTeam: null});
-                        }}>
+                           visible={this.state.isModalVisible} onRequestClose={() => {
+                        this.setState({message: '', selectedTeam: null});
+                    }}>
                         <View style={{marginTop: 22, flex: 1}}>
                             <ScrollView>
                                 <View style={styles.messageRow}>
@@ -227,9 +229,9 @@ class MyTeams extends Component {
                                     <Text style={styles.text}>Send Message</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style={styles.cancelButton}
-                                    onPress={() => {
-                                        this.setState({isModalVisible: false, messageText: ''});
-                                    }}>
+                                                    onPress={() => {
+                                                        this.setState({isModalVisible: false, messageText: ''});
+                                                    }}>
                                     <Text style={styles.text}>Cancel</Text>
                                 </TouchableHighlight>
                             </View>

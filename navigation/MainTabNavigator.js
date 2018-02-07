@@ -5,7 +5,7 @@ import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import EphemeraScreen from '../screens/ephemera-screen';
+import MenuScreen from '../screens/menu-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
 import TrashTrackerScreen from '../screens/trash-tracker-screen/';
@@ -18,6 +18,7 @@ export default TabNavigator(
         },
         Teams: {
             screen: TeamsScreen
+
         },
         TrashTracker: {
             screen: TrashTrackerScreen
@@ -25,8 +26,8 @@ export default TabNavigator(
         Support: {
             screen: DonateScreen
         },
-        Emphera: {
-            screen: EphemeraScreen
+        Menu: {
+            screen: MenuScreen
         }
     },
     {
@@ -38,21 +39,24 @@ export default TabNavigator(
                     case 'Messages':
                         iconName =
                             Platform.OS === 'ios'
-                                ? `ios-information-circle${focused ? '' : '-outline'}`
-                                : 'md-information-circle';
+                                ? `ios-chatbubbles${focused ? '' : '-outline'}`
+                                : 'md-chatbubbles';
                         break;
-                    case 'Groups':
-                        iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
+                    case 'Teams':
+                        iconName = Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts';
                         break;
                     case 'TrashTracker':
                         iconName =
-                            Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
+                            Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
                         break;
                     case 'Support' :
-                        iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-happy';
+                        iconName = Platform.OS === 'ios' ? `ios-happy${focused ? '' : '-outline'}` : 'md-happy';
+                        break;
+                    case 'Menu' :
+                        iconName = Platform.OS === 'ios' ? `ios-apps${focused ? '' : '-outline'}` : 'md-apps';
                         break;
                     default:
-                        iconName = Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link';
+                        iconName = Platform.OS === 'ios' ? `ios-apps${focused ? '' : '-outline'}` : 'md-apps';
                         break;
                 }
                 return (

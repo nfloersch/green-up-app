@@ -32,7 +32,7 @@ class LoadingScreen extends Component {
         isInitialAuthChecked: PropTypes.bool,
         actions: PropTypes.object,
         skipLoadingScreen: PropTypes.bool,
-        userIsLoggedIn : PropTypes.bool
+        userIsLoggedIn: PropTypes.bool
     };
 
     constructor(props) {
@@ -72,32 +72,31 @@ class LoadingScreen extends Component {
     };
 
     render() {
-        const content = () => {
-            switch (true) {
-                case (!this.props.isLoadingComplete && !this.props.skipLoadingScreen):
-                    return (
-                        <AppLoading
-                            startAsync={this._loadResourcesAsync}
-                            onError={this._handleLoadingError}
-                            onFinish={this._handleFinishLoading}
-                        />);
 
-                case (!this.props.userIsLoggedIn) :
-                    return (
-                        <LoginScreen/>
-                    );
+        switch (true) {
+            case (!this.props.isLoadingComplete && !this.props.skipLoadingScreen):
+                return (
+                    <AppLoading
+                        startAsync={this._loadResourcesAsync}
+                        onError={this._handleLoadingError}
+                        onFinish={this._handleFinishLoading}
+                    />);
 
-                default :
-                    return (
-                        <View style={styles.container}>
-                            {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
-                            {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}
-                            <RootNavigation/>
-                        </View>
-                    );
-            }
-        };
-        return content();
+            case (!this.props.userIsLoggedIn) :
+                return (
+                    <LoginScreen/>
+                );
+
+            default :
+                return (
+                    <View style={styles.container}>
+                        {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
+                        {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}
+                        <RootNavigation/>
+                    </View>
+                );
+        }
+
     }
 }
 
@@ -105,8 +104,8 @@ function mapStateToProps(state) {
     return {
         isLoadingComplete: state.loading.isLoadingComplete,
         initialAuthChecked: state.login.initialAuthChecked,
-        skipLoadingScreen : state.loading.skipLoadingScreen,
-        userIsLoggedIn : state.login.userIsLoggedIn
+        skipLoadingScreen: state.loading.skipLoadingScreen,
+        userIsLoggedIn: state.login.userIsLoggedIn
     };
 }
 
