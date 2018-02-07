@@ -200,15 +200,17 @@ class MyTeams extends Component {
                 <ScrollView style={{flex: 1}}>
                     <View style={styles.row}>
                         <Button onPress={() => {
-                            this.setState({openModal: 'NEW_TEAM'});
+                            this.props.navigation.navigate('TeamSearch');
                         }} title='Search Teams'/>
-                        <Button onPress={this.toNewTeamEditor} title='New Team'/>
+                        <Button onPress={() => {
+                            this.props.navigation.navigate('TeamEditor');
+                        }} title='New Team'/>
                     </View>
                     {myTeams}
                     <Modal animationType={'slide'} transparent={false}
-                           visible={this.state.isModalVisible} onRequestClose={() => {
-                        this.setState({message: '', selectedTeam: null});
-                    }}>
+                        visible={this.state.isModalVisible} onRequestClose={() => {
+                            this.setState({message: '', selectedTeam: null});
+                        }}>
                         <View style={{marginTop: 22, flex: 1}}>
                             <ScrollView>
                                 <View style={styles.messageRow}>
@@ -228,9 +230,9 @@ class MyTeams extends Component {
                                     <Text style={styles.text}>Send Message</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style={styles.cancelButton}
-                                                    onPress={() => {
-                                                        this.setState({isModalVisible: false, messageText: ''});
-                                                    }}>
+                                    onPress={() => {
+                                        this.setState({isModalVisible: false, messageText: ''});
+                                    }}>
                                     <Text style={styles.text}>Cancel</Text>
                                 </TouchableHighlight>
                             </View>
@@ -238,8 +240,8 @@ class MyTeams extends Component {
                     </Modal>
                 </ScrollView>
                 <Modal animationType={'slide'}
-                       transparent={false}
-                       visible={this.state.openModal === 'NEW_TEAM'}>
+                    transparent={false}
+                    visible={this.state.openModal === 'NEW_TEAM'}>
                     <TeamEditor/>
                 </Modal>
             </View>

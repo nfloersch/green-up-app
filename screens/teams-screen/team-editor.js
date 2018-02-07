@@ -16,8 +16,7 @@ export default class TeamEditor extends Component {
     };
 
     static navigationOptions = {
-        title: 'Team Editor',
-        header: null
+        title: 'Team Editor'
     };
 
     constructor(props) {

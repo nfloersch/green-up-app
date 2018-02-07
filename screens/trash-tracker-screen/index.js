@@ -6,7 +6,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import TrashMap from './trash-map';
-import {Text} from 'react-native';
 
 export default class TrashTracker extends Component {
     static propTypes = {

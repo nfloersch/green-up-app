@@ -1,17 +1,22 @@
 import {Notifications} from 'expo';
 import React from 'react';
 import {StackNavigator} from 'react-navigation';
-import EphemeraScreen from '../screens/ephemera-screen';
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
-import {Button} from 'react-native';
+import TeamEditor from '../screens/teams-screen/team-editor';
+import TeamSearch from '../screens/teams-screen/team-search';
 
 const RootStackNavigator = StackNavigator(
     {
         Main: {
             screen: MainTabNavigator
         },
-        Ephemera: {screen: EphemeraScreen}
+        TeamEditor : {
+            screen : TeamEditor
+        },
+        TeamSearch: {
+            screen: TeamSearch
+        }
     },
     {
         navigationOptions: () => ({
