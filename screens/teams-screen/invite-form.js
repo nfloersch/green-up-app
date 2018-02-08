@@ -141,4 +141,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(InviteForm));
+export default connect(mapStateToProps, mapDispatchToProps)(InviteForm);

@@ -133,4 +133,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(InviteContacts));
+export default connect(mapStateToProps, mapDispatchToProps)(InviteContacts);

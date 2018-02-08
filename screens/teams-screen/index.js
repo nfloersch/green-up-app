@@ -261,4 +261,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(MyTeams));
+export default connect(mapStateToProps, mapDispatchToProps)(MyTeams);
