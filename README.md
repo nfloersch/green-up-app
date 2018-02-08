@@ -1,6 +1,7 @@
 # Green Up Vermont
 ![Alt](/assets/GreenupVermontlogo.png "Green Up Vermont Logo")
 
-## Summer of Civic Hacking
+## An official Code for America Project
 
 A mobile app for Vermont's Green Up Day.
+
