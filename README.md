@@ -1,5 +1,5 @@
 # Green Up Vermont
-![Alt](/assets/app.png "Green Up Vermont Logo")
+![Alt](/assets/images/app.png "Green Up Vermont Logo")
 
 ## An official Code for America Project
 
