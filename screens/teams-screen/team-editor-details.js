@@ -10,11 +10,9 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    TouchableHighlight,
     View,
     Picker,
     ScrollView,
-    FlatList
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
@@ -29,7 +27,7 @@ import {isDate} from '../../libs/isDate';
 const styles = StyleSheet.create({
     scrollView: {
         backgroundColor: '#FFFFFF',
-        height: '100%'
+        height: '60%'
     },
     label: {
         fontSize: 20,

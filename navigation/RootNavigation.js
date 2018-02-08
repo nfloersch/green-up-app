@@ -5,11 +5,15 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 import TeamEditor from '../screens/teams-screen/team-editor';
 import TeamSearch from '../screens/teams-screen/team-search';
+import MessageDetails from '../screens/messages-screen/message-details';
 
 const RootStackNavigator = StackNavigator(
     {
         Main: {
             screen: MainTabNavigator
+        },
+        MessageDetails:{
+            screen : MessageDetails
         },
         TeamEditor : {
             screen : TeamEditor

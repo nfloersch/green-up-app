@@ -6,7 +6,6 @@ import {TabNavigator} from 'react-navigation';
 import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
-import {FontAwesome} from '@expo/vector-icons';
 
 export default class TeamEditor extends Component {
     static propTypes = {

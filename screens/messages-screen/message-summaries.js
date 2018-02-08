@@ -51,7 +51,7 @@ class MessageSummaries extends Component {
     };
 
     static navigationOptions = {
-        header: null
+        title: 'Message Board'
     };
 
     constructor(props) {
@@ -66,9 +66,9 @@ class MessageSummaries extends Component {
         };
     }
 
-    toMessageDetail() {
+    toMessageDetail(messageId) {
         return () => {
-            this.props.navigation.navigate('MessageDetails');
+            this.props.navigation.navigate('MessageDetails', {messageId});
         };
     }
 
