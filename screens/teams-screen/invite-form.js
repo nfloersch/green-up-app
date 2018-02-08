@@ -10,7 +10,7 @@ import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {TeamMember} from '../../models/team-member';
-import withErrorHandler from '../../components/with-error-handler';
+// import withErrorHandler from '../../components/with-error-handler';
 
 const styles = StyleSheet.create({
     container: {

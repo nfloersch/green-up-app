@@ -19,7 +19,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import withErrorHandler from '../../components/with-error-handler';
+// import withErrorHandler from '../../components/with-error-handler';
 
 function currentUserIsTeamOwner(team, currentUser) {
     const teamUID = team && team.owner && team.owner.uid;
