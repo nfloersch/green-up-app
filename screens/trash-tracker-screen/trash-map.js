@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     }
 });
 
-const addTrashDrop = Symbol();
-const toggleTag = Symbol();
+const addTrashDrop = 'addTrashDrop';
+const toggleTag = 'toggleTag';
 
 function _addTrashDrop() {
     this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const inviteToTeam = Symbol();
+const inviteToTeam = 'inviteToTeam';
 
 function _inviteToTeam() {
     const teamMembers = this.props.contacts.map(contact => TeamMember.create(Object.assign({}, contact, {status: TeamMember.memberStatuses.INVITED})));
