@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1
     }
 });
+
 export default class LoginForm extends Component {
     static navigationOptions = {
         title: 'Green Up Vermont'

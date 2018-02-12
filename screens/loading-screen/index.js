@@ -11,7 +11,7 @@ import LoginScreen from '../login-screen/';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
-import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, Alert, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -39,6 +39,10 @@ class LoadingScreen extends Component {
         super(props);
         this._handleFinishLoading = this._handleFinishLoading.bind(this);
         this._handleLoadingError = this._handleLoadingError.bind(this);
+    }
+
+    componentWillMount() {
+        this.props.actions.initialize();
     }
 
     _loadResourcesAsync = async () => Promise.all([
@@ -72,7 +76,7 @@ class LoadingScreen extends Component {
     };
 
     render() {
-
+        console.log('rendering loading screen');
         switch (true) {
             case (!this.props.isLoadingComplete && !this.props.skipLoadingScreen):
                 return (
@@ -80,7 +84,8 @@ class LoadingScreen extends Component {
                         startAsync={this._loadResourcesAsync}
                         onError={this._handleLoadingError}
                         onFinish={this._handleFinishLoading}
-                    />);
+                    />
+                );
 
             case (!this.props.userIsLoggedIn) :
                 return (
@@ -96,8 +101,8 @@ class LoadingScreen extends Component {
                     </View>
                 );
         }
+    };
 
-    }
 }
 
 function mapStateToProps(state) {

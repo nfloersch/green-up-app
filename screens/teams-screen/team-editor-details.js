@@ -12,7 +12,7 @@ import {
     TextInput,
     View,
     Picker,
-    ScrollView,
+    ScrollView
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
@@ -52,6 +52,7 @@ class TeamEditorDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
+        navigation: PropTypes.any,
         selectedTeamId: PropTypes.string,
         teams: PropTypes.object
     };
@@ -102,6 +103,7 @@ class TeamEditorDetails extends Component {
 
     saveTeam() {
         this.props.actions.saveTeam(this.state.selectedTeam, this.props.selectedTeamId);
+        this.props.navigation.goBack();
     }
 
     setTeamValue(key) {
@@ -119,6 +121,8 @@ class TeamEditorDetails extends Component {
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
                 style={styles.scrollView}>
+                <Button title='Save' onPress={this.saveTeam}/>
+
                 <View style={styles.column}>
                     <Text style={styles.label}>Team Name:</Text>
                     <TextInput
@@ -150,6 +154,7 @@ class TeamEditorDetails extends Component {
                         width: '80%'
                     }} value={selectedTeam.location}/>
                 </View>
+
                 <View style={styles.column}>
                     <Text style={styles.label}>Start:</Text>
                     <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('start')} placeholder={'Start'} style={{
@@ -168,7 +173,6 @@ class TeamEditorDetails extends Component {
                         width: '80%'
                     }} value={selectedTeam.notes}/>
                 </View>
-                <Button title='Save' onPress={this.saveTeam}/>
             </ScrollView>
         );
     }

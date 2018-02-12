@@ -7,8 +7,8 @@ import Expo from 'expo';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
 export function getCurrentUser() {
-    return (dispatch) => {
-        firebaseDataLayer.initialize(dispatch);
+    return (dispatch: Object => *) => {
+        firebaseDataLayer.getCurrentUser(dispatch);
     };
 }
 
@@ -111,7 +111,7 @@ export function facebookLogin() {
     };
 }
 
-export function resetPassword(emailAddress : string) {
+export function resetPassword(emailAddress: string) {
     return (dispatch) => {
         firebaseDataLayer.resetPassword(emailAddress)
             .then(() => dispatch({type: types.RESET_PASSSWORD_SUCCESS}))

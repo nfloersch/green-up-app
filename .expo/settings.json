@@ -1,9 +1,9 @@
 {
-  "hostType": "tunnel",
+  "hostType": "lan",
   "lanType": "ip",
-  "dev": false,
+  "dev": true,
   "strict": false,
   "minify": false,
   "urlType": "exp",
-  "urlRandomness": "z4-rij"
+  "urlRandomness": "aj-7cd"
 }

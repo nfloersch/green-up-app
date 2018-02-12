@@ -1,12 +1,6 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
-import {firebaseConfig} from './firebase-config.js';
-
-//   Initialize Firebase
-
-firebase.initializeApp(firebaseConfig);
-
 
 function setupMessageListener(userId, dispatch) {
     const messages = firebase.database().ref(`messages/${userId}`);
@@ -16,8 +10,10 @@ function setupMessageListener(userId, dispatch) {
 }
 
 async function initialize(dispatch) {
+    console.log('Initializing Firebase');
 
     /** Setup Listeners **/
+
     firebase
         .auth()
         .onAuthStateChanged((user) => {
@@ -31,21 +27,36 @@ async function initialize(dispatch) {
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
-
-
+    //
     const teams = firebase.database().ref('teams/');
-
+    //
     teams.on('value', (snapshot) => {
         dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
     });
 
-    const trashDrops = firebase.database().ref('trashDrops/');
+    // const trashDrops = firebase.database().ref('trashDrops/');
+    //
+    // await trashDrops.on('value', (snapshot) => {
+    //     dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
+    // });
 
-    trashDrops.on('value', (snapshot) => {
-        dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
-    });
 
     /** end Listeners **/
+
+
+// await firebase.getCurrentUser(
+//     (user) => {
+//         if (!!user) {
+//             console.log('We are authenticated now!'); // eslint-disable-line
+//             dispatch(dataLayerActions.userAuthenticated(User.create(user)));
+//             setupMessageListener(user.uid, dispatch);
+//
+//         } else {
+//             console.log('We are not logged in'); // eslint-disable-line
+//             dispatch(dataLayerActions.userFailedAuthentication());
+//         }
+//     }
+// );
 
 }
 
@@ -122,7 +133,7 @@ function loginWithEmailPassword(email, password) {
 }
 
 
-function resetPassword(emailAddress){
+function resetPassword(emailAddress) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 

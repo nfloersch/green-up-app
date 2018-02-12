@@ -108,12 +108,12 @@ export default class TeamEditorMap extends Component {
     };
 
     _handleMapClick(e) {
-        let marker = {
+        const marker = {
             title: 'you clicked here',
             description: 'a lovely little spot',
             latlng: e.nativeEvent.coordinate
         };
-        let markers = this.state.markers.concat(marker);
+        const markers = this.state.markers.concat(marker);
         this.setState({markers});
     }
 
@@ -142,8 +142,9 @@ export default class TeamEditorMap extends Component {
         var markers = this
             .state
             .markers
-            .map(marker => (
+            .map((marker, index) => (
                 <MapView.Marker coordinate={marker.latlng}
+                    key={index}
                     title={marker.title || 'you clicked here'}
                     onPress={this.calloutClicked}
                     onCalloutPress={this._removeMarker(marker)}

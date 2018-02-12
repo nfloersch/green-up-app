@@ -90,7 +90,6 @@ class Login extends Component {
                 <Image source={logo} style={{height: 120, width: 120}}/>
                 <View style={{width: '100%'}}>
                     <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
-
                     <TouchableHighlight
                         style={styles.link}
                         onPress={() => this.props.navigation.navigate('ForgotPassword')}
