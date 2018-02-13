@@ -15,6 +15,8 @@ import {
 import {Message} from '../../models/message';
 import TeamEditor from './team-editor';
 import {TeamMember} from '../../models/team-member';
+import Team from '../../models/team';
+
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
@@ -133,31 +135,34 @@ class MyTeams extends Component {
     }
 
     toTeamDetail(key: string) {
-        let nextScreen = 'TeamDetails';
-        const team = (this.props.teams || {})[key];
-        const status = (team.members || []).find(
-            member => member.uid === (this.props.currentUser || {}).uid
-        );
-
-        switch (true) {
-            case status === TeamMember.memberStatuses.INVITED:
-                nextScreen = 'TeamInvitationDetails';
-                break;
-            case currentUserIsTeamOwner(team, this.props.currentUser):
-                nextScreen = 'TeamEditor';
-                break;
-            default:
-                nextScreen = 'TeamDetails';
-                break;
-        }
         return () => {
-            this.props.actions.selectTeam(key);
+            let nextScreen = 'TeamDetails';
+            const team = (this.props.teams || {})[key];
+            const status = (team.members || []).find(
+                member => member.uid === (this.props.currentUser || {}).uid
+            );
+
+            switch (true) {
+                case status === TeamMember.memberStatuses.INVITED:
+                    nextScreen = 'TeamInvitationDetails';
+                    break;
+                case currentUserIsTeamOwner(team, this.props.currentUser):
+                    nextScreen = 'TeamEditor';
+                    break;
+                default:
+                    nextScreen = 'TeamDetails';
+                    break;
+            }
+            this.props.actions.selectTeam(team);
             this.props.navigation.navigate(nextScreen);
         };
     }
 
     toNewTeamEditor() {
-        this.props.actions.selectTeam();
+        const owner = TeamMember.create(Object.assign({}, this.props.currentUser, {memberStatus: TeamMember.memberStatuses.ACCEPTED}));
+        const members = [owner];
+        const team = Team.create({owner, members});
+        this.props.actions.selectTeam(team);
         this.props.navigation.navigate('TeamEditor');
     }
 
@@ -175,7 +180,6 @@ class MyTeams extends Component {
 
     render() {
         const teams = this.props.teams;
-
         const _myTeams = (Object.keys(teams || {}))
             .filter(
                 key => {
@@ -202,9 +206,7 @@ class MyTeams extends Component {
                         <Button onPress={() => {
                             this.props.navigation.navigate('TeamSearch');
                         }} title='Search Teams'/>
-                        <Button onPress={() => {
-                            this.props.navigation.navigate('TeamEditor');
-                        }} title='New Team'/>
+                        <Button onPress={this.toNewTeamEditor} title='New Team'/>
                     </View>
                     {myTeams}
                     <Modal animationType={'slide'} transparent={false}
