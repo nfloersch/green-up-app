@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     }
 });
 
-var inviteToTeam = Symbol();
-var changeInvitee = Symbol();
+var inviteToTeam = 'inviteToTeam';
+var changeInvitee = 'changeInvitee';
 
 function _changeInvitee(key) {
     return (value) => {
