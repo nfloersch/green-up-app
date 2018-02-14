@@ -5,8 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TouchableHighlight,ScrollView, View} from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -56,30 +55,32 @@ class TeamDetails extends Component {
     }
 
     render() {
+        const {selectedTeam} = this.props;
         return (
             <ScrollView contentContainerStyle={styles.container}>
-                <Text style={styles.teams}>{this.props.selectedTeam.name}</Text>
+                <Text style={styles.teams}>{selectedTeam.name}</Text>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Where:'}</Text>
-                    <Text style={styles.boldInfo}>{this.props.selectedTeam.location}</Text>
+                    <Text style={styles.boldInfo}>{selectedTeam.location}, {selectedTeam.town}</Text>
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Start:'}</Text>
-                    <Text style={styles.boldInfo}>{this.props.selectedTeam.startTime}</Text>
+                    <Text style={styles.boldInfo}>{selectedTeam.start}</Text>
                 </View>
                 <View style={styles.info}>
                     <Text style={styles.textInfo}>{'Ends:'}</Text>
-                    <Text style={styles.boldInfo}>{this.props.selectedTeam.endTime}</Text>
+                    <Text style={styles.boldInfo}>{selectedTeam.end}</Text>
                 </View>
                 <View style={styles.details}>
-                    <Text style={{fontSize: 10}}>{'Description'}</Text>
+                    <Text style={{fontSize: 10}}>{'Notes'}</Text>
+                    <Text style={styles.boldInfo}>{selectedTeam.notes}</Text>
                 </View>
             </ScrollView>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {selectedTeam: state.teams.selectedTeam};
 }
 
