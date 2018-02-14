@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Message from '../../models/message';
+import {Message} from '../../models/message';
 import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 import * as messageActions from '../../screens/messages-screen/actions';
 import {bindActionCreators} from 'redux';

@@ -9,7 +9,7 @@ export function addMessageSuccess(data) {
 
 export function sendMessage(message: Object, recipients: [string]) {
     return (dispatch) => {
-        recipients.map(recipient => firebaseDataLayer.sendMessage(message, recipient));
+        recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, message));
     };
 }
 

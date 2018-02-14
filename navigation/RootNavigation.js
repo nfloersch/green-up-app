@@ -6,20 +6,24 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 import TeamEditor from '../screens/teams-screen/team-editor';
 import TeamSearch from '../screens/teams-screen/team-search';
 import MessageDetails from '../screens/messages-screen/message-details';
+import NewMessage from '../screens/messages-screen/new-message';
 
 const RootStackNavigator = StackNavigator(
     {
         Main: {
             screen: MainTabNavigator
         },
-        MessageDetails:{
-            screen : MessageDetails
+        MessageDetails: {
+            screen: MessageDetails
         },
-        TeamEditor : {
-            screen : TeamEditor
+        TeamEditor: {
+            screen: TeamEditor
         },
         TeamSearch: {
             screen: TeamSearch
+        },
+        NewMessage: {
+            screen: NewMessage
         }
     },
     {

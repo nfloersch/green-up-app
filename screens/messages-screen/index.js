@@ -11,6 +11,16 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
+    button: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 20,
+        marginTop: 10,
+        color: '#000',
+        borderWidth: 0.5,
+        borderColor: '#d6d7da',
+        padding: 10
+    },
     container: {
         flex: 1,
         justifyContent: 'flex-start',
@@ -22,10 +32,17 @@ const styles = StyleSheet.create({
         // flex: 1,
         width: 32
     },
-    messages: {
+    message: {
+        fontSize: 20,
+        textAlign: 'left',
+        margin: 15,
+        color: '#000'
+    },
+    messageRead: {
         fontSize: 20,
         textAlign: 'center',
-        margin: 10
+        margin: 10,
+        color: '#555'
     },
     inputStyle: {
         paddingRight: 5,
@@ -78,14 +95,21 @@ class Messages extends Component {
             (
                 <TouchableHighlight key={key} onPress={this.toMessageDetail(key)}>
                     <View>
-                        <Text style={styles.title}>{messages[key].text}</Text>
+                        <Text style={!messages[key].read ? styles.message : styles.messageRead}>
+                            {messages[key].text}
+                        </Text>
                     </View>
                 </TouchableHighlight>
             )
         );
         return (
             <View style={styles.container}>
-                {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages yet, </Text>)}
+                <TouchableHighlight onPress={() => {
+                    this.props.navigation.navigate('NewMessage');
+                }}>
+                    <Text style={styles.button}>New Message</Text>
+                </TouchableHighlight>
+                {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
             </View>
         );
     }

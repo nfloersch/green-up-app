@@ -5,13 +5,19 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Message from '../../models/message';
-import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
-import * as messageActions from '../../screens/messages-screen/actions';
+import {Message} from '../../models/message';
+import {StyleSheet, Text, TextInput, TouchableHighlight, View, Picker} from 'react-native';
+import * as messageActions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
+    column: {
+        borderWidth: 1,
+        borderColor: '#678',
+        padding: 3,
+        width: '100%'
+    },
     container: {
         flex: 1,
         justifyContent: 'flex-start',
@@ -59,15 +65,17 @@ const styles = StyleSheet.create({
     }
 });
 
-class MessageTeam extends Component {
+class NewMessage extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        selectedTeam: PropTypes.object,
+        teams: PropTypes.array
     };
 
     static navigationOptions = {
-        title: 'Send Message'
+        title: 'Send A Message'
     };
 
     constructor(props) {
@@ -77,6 +85,7 @@ class MessageTeam extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
+            team: props.selectedTeam,
             title: '',
             text: ''
         };
@@ -91,18 +100,35 @@ class MessageTeam extends Component {
     }
 
     sendMessage() {
+        const teamId = this.props.selectedTeam || this.state.selectedTeam;
+        const team = this.props.teams.find(_team => teamId === _team.id);
+        const recipients = team.members;
         const message = Message.create(this.state);
-        this.props.actions.sendMessage(message);
+        this.props.actions.sendMessage(message, recipients);
         this.props.navigation.navigate('MessageSummaries');
     }
 
     cancelMessage() {
-        this.props.navigation.navigate('MessageSummaries');
+        this.props.navigation.goBack();
     }
 
     render() {
+
+        const TeamPicker = (<View style={styles.column}>
+                <Text style={styles.label}>Team :</Text>
+                <Picker
+                    selectedValue={this.state.selectedTeam || (this.props.teams || [])[0].id}
+                    onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
+                    {(this.props.teams || []).map(team => (
+                        <Picker.Item key={team.id} label={team.name} value={team.id}/>))}
+                </Picker>
+            </View>
+        );
+
+
         return (
             <View style={styles.container}>
+                {!this.props.selectedTeam ? TeamPicker : null}
                 <View style={styles.messageRow}>
                     <Text style={{fontSize: 18}}>Message Title: </Text>
                     <TextInput
@@ -140,7 +166,13 @@ class MessageTeam extends Component {
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    const teams = state.teams.teams;
+    const teams = (Object.keys(state.teams.teams || {}))
+        .filter(
+            key => {
+                const memberIds = ((state.teams.teams[key].members || []).map(member => member.uid));
+                return memberIds.indexOf((currentUser || {}).uid) !== -1;
+            }
+        ).map(key => state.teams.teams[key]);
     const selectedTeam = state.teams.selectedTeam;
     return {selectedTeam, teams, currentUser};
 }
@@ -151,4 +183,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageTeam);
+export default connect(mapStateToProps, mapDispatchToProps)(NewMessage);
