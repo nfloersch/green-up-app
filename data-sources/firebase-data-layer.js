@@ -27,7 +27,6 @@ async function initialize(dispatch) {
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
-    //
     const teams = firebase.database().ref('teams/');
     //
     teams.on('value', (snapshot) => {
@@ -100,7 +99,7 @@ function sendGroupMessage(group, message) {
 function saveTeam(team, id) {
     const _id = id || team.uid;
     const _team = Object.assign({}, team);
-    Reflect.deleteProperty(_team, 'uid');
+    delete _team.uid;
     if (!_id) {
         firebase
             .database()

@@ -10,8 +10,9 @@ export default class Team {
     description: string;
     notes: [string];
     town: string;
-    start: Date;
-    end: Date;
+    location: string;
+    start: string;
+    end: string;
     active: boolean;
     members: [TeamMember];
     locations: [Location];
@@ -24,20 +25,23 @@ export default class Team {
         this.name = typeof args.name === 'string'
             ? args.name
             : null;
-        this.town = typeof args.location === 'string'
+        this.town = typeof args.town === 'string'
             ? args.town
+            : null;
+        this.location = typeof args.location === 'string'
+            ? args.location
             : null;
         this.description = typeof args.descrption === 'string'
             ? args.description
             : null;
-        this.notes = Array.isArray(args.notes)
-            ? args.notes.filter(note => typeof note === 'string')
+        this.notes = typeof args.notes === 'string'
+            ? args.notes
             : null;
-        this.start = isDate(args.start)
-            ? new Date(args.start)
+        this.start = typeof args.start === 'string'
+            ? args.start
             : null;
-        this.end = isDate(args.end)
-            ? new Date(args.end)
+        this.end = typeof args.start === 'string'
+            ? args.end
             : null;
         this.active = typeof args.active === 'boolean'
             ? args.active
