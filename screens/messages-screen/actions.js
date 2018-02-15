@@ -2,15 +2,16 @@
 
 import * as types from '../../constants/actionTypes';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import {Message} from '../../models/message';
 
 export function addMessageSuccess(data) {
     return {type: types.NEW_MESSAGE, data};
 }
 
 export function sendMessage(message: Object, recipients: [string]) {
-    return (dispatch) => {
-        recipients.map(recipient => firebaseDataLayer.sendMessage(message, recipient));
-    };
+    const _message = Message.create(message);
+    console.log(JSON.stringify(_message));
+    return (dispatch) => recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
 }
 
 export function readMessageSuccess(data) {
