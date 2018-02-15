@@ -13,7 +13,6 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -97,8 +96,9 @@ class TeamSearch extends Component {
     }
 
 
-    toTeamDetail(team) {
+    toTeamDetail(teamId) {
         return () => {
+            const team = this.props.teams[teamId];
             this.props.actions.selectTeam(team);
             this.props.navigation.navigate('TeamDetails');
         };
