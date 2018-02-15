@@ -2,23 +2,23 @@ import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
 
-function returnType (entry)  {
-	switch (true) {
-	case (entry instanceof Date):
-		return entry.toString();
-	case Array.isArray(entry):
-		return entry.map(x => returnType(x));
-	case typeof entry === "object":
-		return stringifyDates(entry);
-	default:
-		return entry;
-	}
+function returnType(entry) {
+    switch (true) {
+        case (entry instanceof Date):
+            return entry.toString();
+        case Array.isArray(entry):
+            return entry.map(x => returnType(x));
+        case entry !== null && typeof entry === 'object' :
+            return stringifyDates(entry); // eslint-disable-line
+        default:
+            return entry;
+    }
 }
 
-function stringifyDates  (obj)  {
-	return Object.entries(obj).reduce((returnObj, entry) => Object.assign({}, returnObj, {
-			[entry[0]]: returnType(entry[1])
-		}), {});
+function stringifyDates(obj) {
+    return Object.entries(obj).reduce((returnObj, entry) => Object.assign({}, returnObj, {
+        [entry[0]]: returnType(entry[1])
+    }), {});
 }
 
 
@@ -102,7 +102,7 @@ async function googleAuth(token) {
 
 // Messaging
 function sendUserMessage(userId, message) {
-   const _message = stringifyDates(message);
+    const _message = stringifyDates(message);
     firebase
         .database()
         .ref(`messages/${userId}`)
@@ -176,11 +176,11 @@ function dropTrash(trashDrop) {
 }
 
 
-function updateMessage(message, userId){
-    const newMessage = Object.assign({}, message, {created : message.created.toString()}); // TODO fix this hack right
+function updateMessage(message, userId) {
+    const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
     return firebase
         .database()
-        .ref(`messages/${userId}/${message.id}`).set(newMessage);
+        .ref(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
 

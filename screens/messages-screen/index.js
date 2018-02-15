@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        currentUser: PropTypes.object,
         messages: PropTypes.object,
         navigation: PropTypes.object
     };
@@ -85,8 +86,13 @@ class Messages extends Component {
 
     toMessageDetail(messageId) {
         const myMessage = this.props.messages[messageId];
+        const userId = this.props.currentUser.uid;
         return () => {
-            this.props.actions.readMessage(myMessage);
+            // mark message as read
+
+            this.props.actions.readMessage(myMessage, userId);
+            // navigate to details screen
+
             this.props.navigation.navigate('MessageDetails', {messageId});
         };
     }
@@ -122,7 +128,8 @@ class Messages extends Component {
 }
 
 function mapStateToProps(state) {
-    return {messages: state.messages.messages};
+    const currentUser = state.login.user;
+    return {messages: state.messages.messages, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

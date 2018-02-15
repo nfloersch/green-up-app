@@ -8,7 +8,7 @@ export function userAuthenticated(user) {
 }
 
 export function messageFetchSuccessful(messages) {
-    const myMessages = Object.keys(messages || {}).reduce((messageHash, key) => (Object.assign({}, messageHash, {[key]: Message.create(messages[key])})), {});
+    const myMessages = Object.keys(messages || {}).reduce((messageHash, key) => (Object.assign({}, messageHash, {[key]: Message.create(Object.assign({uid: key}, messages[key]))})), {});
     return {type: types.FETCH_MESSAGES_SUCCESS, messages: myMessages};
 }
 
