@@ -85,7 +85,7 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            team: props.selectedTeam,
+            selectedTeam: props.selectedTeam || props.teams[0].id,
             title: '',
             text: ''
         };
@@ -105,7 +105,7 @@ class NewMessage extends Component {
         const recipients = team.members;
         const message = Message.create(this.state);
         this.props.actions.sendMessage(message, recipients);
-        this.props.navigation.navigate('MessageSummaries');
+        this.props.navigation.goBack();
     }
 
     cancelMessage() {
@@ -114,7 +114,8 @@ class NewMessage extends Component {
 
     render() {
 
-        const TeamPicker = (<View style={styles.column}>
+        const TeamPicker = (
+            <View style={styles.column}>
                 <Text style={styles.label}>Team :</Text>
                 <Picker
                     selectedValue={this.state.selectedTeam || (this.props.teams || [])[0].id}

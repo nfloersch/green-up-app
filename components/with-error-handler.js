@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     }
 });
 
-const handleError = Symbol();
-const dismissError = Symbol();
+const handleError = 'handleError';
+const dismissError = 'dismissError';
 
 function _handleError(error: any) {
     let hasError = false;

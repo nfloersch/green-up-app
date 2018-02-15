@@ -91,7 +91,9 @@ class Messages extends Component {
 
     render() {
         const messages = this.props.messages;
-        const myMessages = Object.keys(messages || {}).map(key =>
+        const messageKeys = Object.keys(messages || {});
+        const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
+        const myMessages = sortedKeys.map(key =>
             (
                 <TouchableHighlight key={key} onPress={this.toMessageDetail(key)}>
                     <View>
