@@ -46,7 +46,7 @@ class TeamEditorMembers extends Component {
     }
 
     inviteContacts() {
-        this.props.navigation.navigate('InviteContacts');
+        this.props.screenProps.stacknav.navigate('InviteContacts');
     }
 
     inviteForm() {

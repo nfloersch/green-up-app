@@ -8,6 +8,8 @@ import TeamSearch from '../screens/teams-screen/team-search';
 import TeamDetails from '../screens/teams-screen/team-details';
 import MessageDetails from '../screens/messages-screen/message-details';
 import NewMessage from '../screens/messages-screen/new-message';
+import InviteContacts from '../screens/teams-screen/invite-contacts';
+import InviteForm from '../screens/teams-screen/invite-form';
 
 const RootStackNavigator = StackNavigator(
     {
@@ -23,14 +25,16 @@ const RootStackNavigator = StackNavigator(
         TeamSearch: {
             screen: TeamSearch
         },
- 
+
         TeamDetails: {
             screen: TeamDetails
         },
         NewMessage: {
             screen: NewMessage
- 
-        }
+
+        },
+        InviteContacts: {screen: InviteContacts},
+        InviteForm: {screen: InviteForm}
     },
     {
         navigationOptions: () => ({
