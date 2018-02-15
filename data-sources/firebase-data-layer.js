@@ -156,6 +156,14 @@ function dropTrash(trashDrop) {
 }
 
 
+function updateMessage(message, userId){
+    const newMessage = Object.assign({}, message, {created : message.created.toString()}); // TODO fix this hack right
+    return firebase
+        .database()
+        .ref(`messages/${userId}/${message.id}`).set(newMessage);
+}
+
+
 export const firebaseDataLayer = {
     createUser,
     facebookAuth,
@@ -168,5 +176,6 @@ export const firebaseDataLayer = {
     saveTeam,
     sendUserMessage,
     sendInviteEmail,
-    sendGroupMessage
+    sendGroupMessage,
+    updateMessage
 };

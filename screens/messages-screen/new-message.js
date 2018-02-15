@@ -96,7 +96,7 @@ class NewMessage extends Component {
     }
 
     changeText(text) {
-        this.setState({text: text});
+        this.setState({text});
     }
 
     sendMessage() {
@@ -131,17 +131,6 @@ class NewMessage extends Component {
             <View style={styles.container}>
                 {!this.props.selectedTeam ? TeamPicker : null}
                 <View style={styles.messageRow}>
-                    <Text style={{fontSize: 18}}>Message Title: </Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        placeholder={'title'}
-                        onChangeText={this.changeTitle}
-                        style={{width: '65%'}}
-                        value={this.state.title}
-                        underlineColorAndroid={'transparent'}
-                    />
-                </View>
-                <View style={styles.messageRow}>
                     <TextInput
                         keyBoardType={'default'}
                         multiline={true}
@@ -149,7 +138,7 @@ class NewMessage extends Component {
                         onChangeText={this.changeText}
                         placeholder={'message details'}
                         value={this.state.text}
-                        style={{width: '100%'}}
+                        style={{width: '100%', height: 75}}
                     />
                 </View>
                 <View style={styles.buttonRow}>

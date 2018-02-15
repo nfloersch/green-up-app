@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'left',
         margin: 15,
-        color: '#000'
+        color: 'red'
     },
     messageRead: {
         fontSize: 20,
@@ -84,7 +84,9 @@ class Messages extends Component {
     }
 
     toMessageDetail(messageId) {
+        const myMessage = this.props.messages[messageId];
         return () => {
+            this.props.actions.readMessage(myMessage);
             this.props.navigation.navigate('MessageDetails', {messageId});
         };
     }
@@ -95,13 +97,15 @@ class Messages extends Component {
         const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
         const myMessages = sortedKeys.map(key =>
             (
-                <TouchableHighlight key={key} onPress={this.toMessageDetail(key)}>
-                    <View>
-                        <Text style={!messages[key].read ? styles.message : styles.messageRead}>
-                            {messages[key].text}
-                        </Text>
-                    </View>
-                </TouchableHighlight>
+                <View key={key}>
+                    <TouchableHighlight onPress={this.toMessageDetail(key)}>
+                        <View>
+                            <Text style={!messages[key].read ? styles.message : styles.messageRead}>
+                                {messages[key].text}
+                            </Text>
+                        </View>
+                    </TouchableHighlight>
+                </View>
             )
         );
         return (

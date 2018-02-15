@@ -18,9 +18,10 @@ export function readMessageSuccess(data) {
     return {type: types.READ_MESSAGE, data};
 }
 
-export function readMessage(messageId) {
-    return function (dispatch) {
-        return Promise.resolve(messageId).then(res => {
+export function readMessage(message) {
+    const _message = Object.assign({}, message, {read: true});
+    return (dispatch) => {
+        return firebaseDataLayer.updateMessage(_message).then(res => {
             dispatch(readMessage(res));
         }).catch(error => {
             console.log(error); //eslint-disable-line
