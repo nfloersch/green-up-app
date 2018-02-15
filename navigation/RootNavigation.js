@@ -5,6 +5,7 @@ import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 import TeamEditor from '../screens/teams-screen/team-editor';
 import TeamSearch from '../screens/teams-screen/team-search';
+import TeamDetails from '../screens/teams-screen/team-details';
 import MessageDetails from '../screens/messages-screen/message-details';
 import NewMessage from '../screens/messages-screen/new-message';
 
@@ -22,8 +23,13 @@ const RootStackNavigator = StackNavigator(
         TeamSearch: {
             screen: TeamSearch
         },
+ 
+        TeamDetails: {
+            screen: TeamDetails
+        },
         NewMessage: {
             screen: NewMessage
+ 
         }
     },
     {
