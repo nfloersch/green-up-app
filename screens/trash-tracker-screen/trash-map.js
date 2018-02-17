@@ -6,41 +6,25 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Location, MapView, Permissions} from 'expo';
+import CheckBox from 'react-native-checkbox';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {
     TouchableHighlight, StyleSheet,
     Button, Modal, ScrollView, TextInput, Text, View
 } from 'react-native';
-import {Location, MapView, Permissions} from 'expo';
+
 import TrashDrop from '../../models/trash-drop';
-import CheckBox from 'react-native-checkbox';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import * as actions from './actions';
+import {defaultStyles} from  '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignContent: 'space-around',
-        backgroundColor: 'white',
-        borderColor: 'white',
-        borderLeftWidth: 20,
-        borderRightWidth: 20,
-        justifyContent: 'flex-start'
-    },
-    text: {
-        fontSize: 30,
-        justifyContent: 'flex-start',
-        fontWeight: 'bold',
-        margin: 10
-    },
-    options: {
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        alignItems: 'center',
-        margin: 10
-    }
-});
 
+const myStyles = {
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 const addTrashDrop = 'addTrashDrop';
 const toggleTag = 'toggleTag';
 
@@ -149,47 +133,46 @@ class TrashMap extends Component {
                 >
                     {myMarkers}
                 </MapView>
-                <TouchableHighlight onPress={this._goToTrashDrop}>
-                    <View>
-                        <Text style={styles.text}>Drop Trash</Text>
-                    </View>
-                </TouchableHighlight>
+								<View style={styles.button}>
+										<Button
+											onPress={this._goToTrashDrop}
+											title='Create Trash Drop' />
+								</View>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.modalVisible}
                 >
                     <ScrollView style={{marginTop: 22}}>
-                        <View>
+                        <View style={styles.container}>
+                            <Text style={styles.heading2}>Number of Bags</Text>
                             <TextInput
                                 value={this.state.bagCount.toString()}
                                 keyboardType='numeric'
                                 placeholder='1'
-                                style={{
-                                    height: 40,
-                                    borderColor: 'gray',
-                                    borderWidth: 1
-                                }}
+                                style={styles.textInput}
                                 onChangeText={(text) => this.setState({text, bagCount: Number(text)})}
                             />
-                            <Text style={styles.text}>Other Items</Text>
-                            <CheckBox
-                                label='Needles/Bio-Waste'
-                                checked={this.state.tags.indexOf('bio-waste') > -1}
-                                onChange={this[toggleTag]('bio-waste')}/>
-                            <CheckBox
-                                label='Tires'
-                                checked={this.state.tags.indexOf('tires') > -1}
-                                onChange={this[toggleTag]('tires')}/>
-                            <CheckBox
-                                label='Large Object'
-                                checked={this.state.tags.indexOf('large') > -1}
-                                onChange={this[toggleTag]('large')}/>
-                            <Button
-                                onPress={this[addTrashDrop]}
-                                title='Mark the Spot'
-                                color='green'/>
-
+                            <Text style={styles.heading2}>Other Items</Text>
+                            <View style={styles.fieldset}>
+															<CheckBox
+																	label='Needles/Bio-Waste'
+																	checked={this.state.tags.indexOf('bio-waste') > -1}
+																	onChange={this[toggleTag]('bio-waste')}/>
+															<CheckBox
+																	label='Tires'
+																	checked={this.state.tags.indexOf('tires') > -1}
+																	onChange={this[toggleTag]('tires')}/>
+															<CheckBox
+																	label='Large Object'
+																	checked={this.state.tags.indexOf('large') > -1}
+																	onChange={this[toggleTag]('large')}/>
+														</View>
+														<View style={styles.button}>
+																<Button
+																	onPress={this[addTrashDrop]}
+																	title='Mark This Spot' />
+														</View>
                             <TouchableHighlight onPress={() => {
                                 this.setState({modalVisible: false});
                             }}>
