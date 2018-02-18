@@ -12,11 +12,13 @@ import {
     TextInput,
     View,
     Picker,
-    ScrollView
+    ScrollView,
+		TouchableOpacity
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 
 import * as actions from './actions';
@@ -45,22 +47,32 @@ class TeamEditorDetails extends Component {
     };
 
     constructor(props) {
-        super(props);
-        this.state = {
-            selectedTeam: {...props.selectedTeam}
-        };
+			super(props);
+			this.state = {
+					selectedTeam: {...props.selectedTeam},
+					isDateTimePickerVisible: false
+			};
     }
 
-    setSelectedOption(option) {
+		_showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+		_hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+		_handleDatePicked = (date) => {
+			this.setTeamValue('start')(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+			this._hideDateTimePicker();
+		};
+
+    setSelectedOption = (option) => {
         this.setTeamValue('isPublic')(option.value);
     }
 
-    saveTeam() {
+    saveTeam = () => {
         this.props.actions.saveTeam(this.state.selectedTeam, this.state.selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
     }
 
-    setTeamValue(key) {
+    setTeamValue = (key) => {
         return (value) => {
             const newSelectedTeam = Object.assign({}, this.state.selectedTeam);
             newSelectedTeam[key] = value;
@@ -68,10 +80,16 @@ class TeamEditorDetails extends Component {
         };
     }
 
+//			<View>
+//					<Text style={styles.heading2}>Select Town/City</Text>
+//					<Picker
+//							selectedValue={this.state.selectedTeam.town}
+//							onValueChange={this.setTeamValue('town')}>
+//							{vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
+//					</Picker>
+//			</View>
+
     render() {
-        this.setTeamValue = this.setTeamValue.bind(this);
-        this.setSelectedOption = this.setSelectedOption.bind(this);
-        this.saveTeam = this.saveTeam.bind(this);
         const isPublicOptions = [
             {
                 label: 'Public',
@@ -106,14 +124,7 @@ class TeamEditorDetails extends Component {
                     extractText={(option) => option.label}
                     testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
                 </View>
-								<View>
-                    <Text style={styles.heading2}>Select Town/City</Text>
-                    <Picker
-                        selectedValue={this.state.selectedTeam.town}
-                        onValueChange={this.setTeamValue('town')}>
-                        {vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
-                    </Picker>
-                </View>
+
                 <View>
                     <Text style={styles.heading2}>Clean Up Site</Text>
                     <TextInput
@@ -126,12 +137,17 @@ class TeamEditorDetails extends Component {
 
                 <View>
                     <Text style={styles.heading2}>Start Time</Text>
-                    <TextInput
-												keyBoardType={'default'}
-												onChangeText={this.setTeamValue('start')}
-												placeholder={'Start'}
-                        style={styles.textInput}
-												value={this.state.selectedTeam.start}/>
+										<View>
+											<TouchableOpacity onPress={this._showDateTimePicker}>
+												<Text>{this.state.selectedTeam.start}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='time'
+												isVisible={this.state.isDateTimePickerVisible}
+												onConfirm={this._handleDatePicked}
+												onCancel={this._hideDateTimePicker}
+											/>
+										</View>
                 </View>
                 <View>
                     <Text style={styles.heading2}>End Time</Text>
@@ -162,12 +178,12 @@ class TeamEditorDetails extends Component {
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
     return {selectedTeam};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
