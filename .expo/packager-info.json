@@ -1,8 +1,8 @@
 {
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "expoServerPort": 19000,
+  "expoServerPort": null,
+  "expoServerNgrokUrl": "https://mt-3mc.jmargolisvt.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.mt-3mc.jmargolisvt.greenupvermont.exp.direct",
+  "ngrokPid": 2760,
   "packagerPort": 19001,
-  "packagerPid": 24553
+  "packagerPid": 2710
 }
