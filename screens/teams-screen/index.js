@@ -2,6 +2,9 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {
     Button,
     StyleSheet,
@@ -12,15 +15,13 @@ import {
     View,
     TextInput
 } from 'react-native';
+
 import {Message} from '../../models/message';
 import TeamEditor from './team-editor';
 import {TeamMember} from '../../models/team-member';
 import Team from '../../models/team';
-
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as actions from './actions';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+
 // import withErrorHandler from '../../components/with-error-handler';
 
 function currentUserIsTeamOwner(team, currentUser) {

@@ -15,29 +15,19 @@ import {
     ScrollView
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {SegmentedControls} from 'react-native-radio-buttons';
-import {vermontTowns} from '../../libs/vermont-towns';
 
-const styles = StyleSheet.create({
-    scrollView: {
-        backgroundColor: '#FFFFFF',
-        height: '60%'
-    },
-    label: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    column: {
-        borderWidth: 1,
-        borderColor: '#678',
-        padding: 3,
-        width: '100%'
-    }
-});
+import * as actions from './actions';
+import {vermontTowns} from '../../libs/vermont-towns';
+import {defaultStyles} from  '../../styles/default-styles';
+
+const myStyles = {
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class TeamEditorDetails extends Component {
     static propTypes = {
@@ -91,25 +81,23 @@ class TeamEditorDetails extends Component {
                 value: false
             }
         ];
-       
+
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-                style={styles.scrollView}>
-                <Button title='Save' onPress={this.saveTeam}/>
+								style={styles.container}>
 
-                <View style={styles.column}>
-                    <Text style={styles.label}>Team Name:</Text>
+                <View>
+                    <Text style={styles.heading2}>Team Name</Text>
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.setTeamValue('name')}
                         placeholder={'Team Name'}
-                        style={{
-                            width: '80%'
-                        }}
+                        style={styles.textInput}
                         value={this.state.selectedTeam.name}/>
                 </View>
+								<View style={{marginTop: 10}}>
                 <SegmentedControls
                     options={isPublicOptions}
                     onSelection={this.setSelectedOption}
@@ -117,39 +105,58 @@ class TeamEditorDetails extends Component {
                     selectedTint={'#EFEFEF'} tint={'#666666'}
                     extractText={(option) => option.label}
                     testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
-                <View style={styles.column}>
-                    <Text style={styles.label}>Clean Up Location:</Text>
+                </View>
+								<View>
+                    <Text style={styles.heading2}>Select Town/City</Text>
                     <Picker
                         selectedValue={this.state.selectedTeam.town}
                         onValueChange={this.setTeamValue('town')}>
                         {vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
                     </Picker>
                 </View>
-                <View style={styles.column}>
-                    <Text style={styles.label}>Location:</Text>
-                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('location')} placeholder={'Location'} style={{
-                        width: '80%'
-                    }} value={this.state.selectedTeam.location}/>
+                <View>
+                    <Text style={styles.heading2}>Clean Up Site</Text>
+                    <TextInput
+												keyBoardType={'default'}
+												onChangeText={this.setTeamValue('location')}
+												placeholder={'Location'}
+                        style={styles.textInput}
+												value={this.state.selectedTeam.location}/>
                 </View>
 
-                <View style={styles.column}>
-                    <Text style={styles.label}>Start:</Text>
-                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('start')} placeholder={'Start'} style={{
-                        width: '80%'
-                    }} value={this.state.selectedTeam.start}/>
+                <View>
+                    <Text style={styles.heading2}>Start Time</Text>
+                    <TextInput
+												keyBoardType={'default'}
+												onChangeText={this.setTeamValue('start')}
+												placeholder={'Start'}
+                        style={styles.textInput}
+												value={this.state.selectedTeam.start}/>
                 </View>
-                <View style={styles.column}>
-                    <Text style={styles.label}>End:</Text>
-                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('end')} placeholder={'End'} style={{
-                        width: '80%'
-                    }} value={this.state.selectedTeam.end}/>
+                <View>
+                    <Text style={styles.heading2}>End Time</Text>
+                    <TextInput
+											keyBoardType={'default'}
+											onChangeText={this.setTeamValue('end')}
+											placeholder={'End'}
+                      style={styles.textInput}
+											value={this.state.selectedTeam.end}/>
                 </View>
-                <View style={styles.column}>
-                    <Text style={styles.label}>Notes:</Text>
-                    <TextInput keyBoardType={'default'} onChangeText={this.setTeamValue('notes')} placeholder={'Notes'} style={{
-                        width: '80%'
-                    }} value={this.state.selectedTeam.notes}/>
+                <View>
+                    <Text style={styles.heading2}>Notes</Text>
+                    <TextInput
+												keyBoardType={'default'}
+												onChangeText={this.setTeamValue('notes')}
+												placeholder={'Notes'}
+                        style={styles.textInput}
+												value={this.state.selectedTeam.notes}/>
                 </View>
+								<View style={styles.button}>
+									<Button
+										title='Save'
+										onPress={this.saveTeam}/>
+								</View>
+
             </ScrollView>
         );
     }

@@ -1,7 +1,6 @@
 export const defaultStyles = {
 	container: {
 		flex: 1,
-		justifyContent: 'flex-start',
 		alignContent: 'space-around',
 		backgroundColor: 'white',
 		borderColor: 'white',
