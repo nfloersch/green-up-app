@@ -36,5 +36,18 @@ export const defaultStyles = {
 		textAlign: 'center',
 		marginTop: 10,
 		marginBottom: 10
-	}
+	},
+	searchResultsTitle: {
+		fontSize: 20,
+		textAlign: 'center',
+		margin: 10
+	},
+	searchResult: {
+		marginTop: 2,
+		borderWidth: 1,
+		borderColor: '#000',
+		padding: 5,
+		backgroundColor: 'darkseagreen'
+	},
+
 }

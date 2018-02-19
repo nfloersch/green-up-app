@@ -54,13 +54,17 @@ class TeamEditorDetails extends Component {
 			};
     }
 
-		_showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+		_showDateTimePicker = () => this.setState({ isDateTimePickerVisible: !this.state.isDateTimePickerVisible });
 
-		_hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
-		_handleDatePicked = (date) => {
+		// would be great to combined these two, but not sure how to pass the second param
+		_handleStartDatePicked = (date) => {
 			this.setTeamValue('start')(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
-			this._hideDateTimePicker();
+			this._showDateTimePicker();
+		};
+
+		_handleEndDatePicked = (date) => {
+			this.setTeamValue('end')(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+			this._showDateTimePicker();
 		};
 
     setSelectedOption = (option) => {
@@ -139,24 +143,29 @@ class TeamEditorDetails extends Component {
                     <Text style={styles.heading2}>Start Time</Text>
 										<View>
 											<TouchableOpacity onPress={this._showDateTimePicker}>
-												<Text>{this.state.selectedTeam.start}</Text>
+    										<Text style={styles.textInput}>{this.state.selectedTeam.start || 'Select a Time'}</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='time'
 												isVisible={this.state.isDateTimePickerVisible}
-												onConfirm={this._handleDatePicked}
-												onCancel={this._hideDateTimePicker}
+												onConfirm={this._handleStartDatePicked}
+												onCancel={this._showDateTimePicker}
 											/>
 										</View>
                 </View>
                 <View>
                     <Text style={styles.heading2}>End Time</Text>
-                    <TextInput
-											keyBoardType={'default'}
-											onChangeText={this.setTeamValue('end')}
-											placeholder={'End'}
-                      style={styles.textInput}
-											value={this.state.selectedTeam.end}/>
+										<View>
+											<TouchableOpacity onPress={this._showDateTimePicker}>
+    										<Text style={styles.textInput}>{this.state.selectedTeam.end || 'Select a Time'}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='time'
+												isVisible={this.state.isDateTimePickerVisible}
+												onConfirm={this._handleEndDatePicked}
+												onCancel={this._showDateTimePicker}
+											/>
+										</View>
                 </View>
                 <View>
                     <Text style={styles.heading2}>Notes</Text>
