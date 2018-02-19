@@ -38,7 +38,6 @@ const myStyles = {
     scrollview: {
         marginTop: 10
     }
-
 };
 
 const combinedStyles = Object.assign({},defaultStyles,myStyles);

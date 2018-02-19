@@ -37,6 +37,11 @@ export const defaultStyles = {
 		marginTop: 10,
 		marginBottom: 10
 	},
+	label: {
+	},
+	data: {
+		fontWeight: 'bold'
+	},
 	searchResultsTitle: {
 		fontSize: 20,
 		textAlign: 'center',
