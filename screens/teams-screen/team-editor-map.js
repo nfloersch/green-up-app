@@ -9,36 +9,18 @@ import {
     Button,
     Platform,
     StyleSheet,
-    ScrollView,
     Text,
-    Alert,
-    TouchableHighlight,
     View
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Constants, MapView, Location, Permissions} from 'expo';
+import MapView, {Polygon} from 'react-native-maps'; 
+import {Constants, Location, Permissions} from 'expo';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    paragraph: {
-        fontSize: 20,
-        color: 'white'
-    }
-});
+import {defaultStyles} from  '../../styles/default-styles';
+import * as actions from './actions';
+
 export default class TeamEditorMap extends Component {
     static propTypes = {
         actions: PropTypes.object,
@@ -55,7 +37,7 @@ export default class TeamEditorMap extends Component {
 
     constructor(props) {
         super(props);
-        this._handleMapRegionChange = this._handleMapRegionChange.bind(this);
+        // TODO: Get existing markers from props
         this._handleMapClick = this._handleMapClick.bind(this);
         this._removeMarker = this._removeMarker.bind(this);
         this._removeLastMarker = this._removeLastMarker.bind(this);
@@ -85,22 +67,12 @@ export default class TeamEditorMap extends Component {
         }
 
         const location = await Location.getCurrentPositionAsync({});
-        const newLat = Number(location.coords.latitude);
-        const newLong = Number(location.coords.longitude);
-        const markers = this.state.markers.concat({
-            title: 'YOU ARE HERE',
-            description: 'X marks the spot',
-            latlng: {
-                longitude: newLong,
-                latitude: newLat
-            }
-        });
         this.setState({
-            location,
-            markers,
-            mapRegion: {
-                latitude: newLat,
-                longitude: newLong,
+            // location,
+            ...this.state,
+            initialMapLocation: {
+                latitude: Number(location.coords.latitude),
+                longitude:  Number(location.coords.longitude),
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
             }
@@ -108,13 +80,18 @@ export default class TeamEditorMap extends Component {
     };
 
     _handleMapClick(e) {
+        // TODO: dispatch action to save the new marker
+        // TODO: make sure unsaved team details don't get lost
         const marker = {
-            title: 'you clicked here',
-            description: 'a lovely little spot',
+            title: '',
+            description: 'clean area limit',
             latlng: e.nativeEvent.coordinate
         };
         const markers = this.state.markers.concat(marker);
-        this.setState({markers});
+        this.setState({
+            ...this.state,
+            markers
+        });
     }
 
     _removeMarker(marker) {
@@ -133,11 +110,6 @@ export default class TeamEditorMap extends Component {
         this.setState({markers});
     }
 
-
-    _handleMapRegionChange(mapRegion) {
-        this.setState({mapRegion});
-    }
-
     render() {
         var markers = this
             .state
@@ -145,12 +117,14 @@ export default class TeamEditorMap extends Component {
             .map((marker, index) => (
                 <MapView.Marker coordinate={marker.latlng}
                     key={index}
-                    title={marker.title || 'you clicked here'}
+                    title={marker.title || 'clean area border'}
                     onPress={this.calloutClicked}
                     onCalloutPress={this._removeMarker(marker)}
-                    description={marker.descrption || 'this is pretty comfy'}
+                    description={marker.descrption || 'tap to remove'}
                 />));
         // Let's make the marker conditional on whether we have marker data
+        // I believe this refers to the  trash map - and the idea is to display trash on the map
+        // this may be an issue considering trash drops do not appear to be persisted
         const mapMarker = !!(this.state.mapMarker)
             ? (
                 <MapView.Marker coordinate={this.state.mapMarker.latlng}
@@ -159,33 +133,20 @@ export default class TeamEditorMap extends Component {
                 />
             ) : null;
         return (
-            <View style={styles.container}>
-                <Text style={styles.paragraph}>
+            <View style={defaultStyles.container}>
+                <Text>
                     Place markers where you want your team to work on. Tap on the marker text box to remove a marker.
                 </Text>
                 <MapView style={{alignSelf: 'stretch', height: '50%'}}
-                    region={this.state.mapRegion}
-                    initialRegion={
-                        {
-                            latitude: 44.4615298,
-                            longitude: -73.218605,
-                            latitudeDelta: 0.0002,
-                            longitudeDelta: 0.0001
-                        }
-                    }
-                    onPress={this._handleMapClick}
-                    onRegionChange={this._handleMapRegionChange}
-                >
+                    initialRegion={this.state.initialMapLocation}
+                    onPress={this._handleMapClick}>
+
                     {mapMarker}{markers}
+                    
+                    {this.state.markers.length > 0 && (
+                        <Polygon coordinates={this.state.markers.map(m => m.latlng)} fillColor='#ffb3b3'/>
+                    )}
                 </MapView>
-                {/* <Text style={styles.paragraph}>
-                    Map Location: {JSON.stringify(this.state.mapRegion)}
-                </Text>
-                <ScrollView style={{width: '100%'}}>
-                    <Text style={styles.paragraph}>
-                        Markers: {JSON.stringify(this.state.markers)}
-                    </Text>
-                </ScrollView> */}
                 <Button title={'remove last marker'}
                     onPress={this._removeLastMarker}
                 />
