@@ -5,7 +5,7 @@ export const defaultStyles = {
 		backgroundColor: 'white',
 		borderColor: 'white',
 		borderLeftWidth: 20,
-		borderRightWidth: 20,
+		borderRightWidth: 20
 	},
 	button: {
 		padding: 5,
