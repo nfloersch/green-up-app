@@ -23,6 +23,7 @@
     "react-native-checkbox": "^2.0.0",
     "react-native-cli": "^2.0.1",
     "react-native-firebase": "^3.2.2",
+    "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-swipe-gestures": "^1.0.2",
     "react-navigation": "^1.0.0-beta.27",

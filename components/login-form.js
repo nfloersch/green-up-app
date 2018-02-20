@@ -1,40 +1,15 @@
 // @flow
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
-const styles = StyleSheet.create({
-    inputStyle: {
-        paddingRight: 5,
-        paddingLeft: 5,
-        paddingBottom: 2,
-        color: '#262626',
-        fontSize: 18,
-        fontWeight: '200',
-        height: 40,
-        width: '100%',
-        textAlign: 'left',
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderStyle: 'solid'
-    },
-    labelStyle: {
-        fontSize: 12,
-        color: '#7F7D7D',
-        fontWeight: '200',
-        width: '100%',
-        textAlign: 'left'
-    },
-    containerStyle: {
-        height: 45,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '100%',
-        borderColor: '#D4D4D4',
-        borderBottomWidth: 1
-    }
-});
+import {defaultStyles} from  '../styles/default-styles';
+
+const myStyles = {
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 export default class LoginForm extends Component {
     static navigationOptions = {
@@ -64,17 +39,17 @@ export default class LoginForm extends Component {
 
     render() {
         return (
-            <View style={{width: '100%', padding: 5}}>
-                <View style={styles.container}>
+            <View>
+                <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
                         autoCorrect={false}
                         placeholder='you@domain.com'
                         value={this.state.email}
                         onChangeText={this.onChangeState('email')}
-                        style={styles.inputStyle}/>
+                        style={styles.textInput}/>
                 </View>
-                <View style={styles.container}>
+                <View>
                     <Text style={styles.label}>Password</Text>
                     <TextInput
                         autoCorrect={false}
@@ -82,7 +57,7 @@ export default class LoginForm extends Component {
                         secureTextEntry={true}
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
-                        style={styles.inputStyle}/>
+                        style={styles.textInput}/>
                     <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
                 </View>
             </View>
