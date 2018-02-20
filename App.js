@@ -15,7 +15,6 @@ firebase.initializeApp(firebaseConfig);
 export default class App extends React.Component {
 
     render() {
-        console.log('app rendering');
         return (
             <Provider store={store}>
                 <LoadingScreen/>

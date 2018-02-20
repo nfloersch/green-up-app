@@ -34,13 +34,13 @@ const inviteToTeam = 'inviteToTeam';
 
 function _inviteToTeam() {
     const teamMembers = this.props.contacts.map(contact => TeamMember.create(Object.assign({}, contact, {status: TeamMember.memberStatuses.INVITED})));
-    this.props.actions.inviteContacts(this.props.teams[this.props.selectedTeamId], this.props.currentUser, teamMembers);
+    this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
 class InviteContacts extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        selectedTeamId: PropTypes.string,
+        selectedTeam: PropTypes.object,
         currentUser: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object),
         teams: PropTypes.object
@@ -120,11 +120,11 @@ class InviteContacts extends Component {
 }
 
 function mapStateToProps(state) {
-    const selectedTeamId = state.teams.selectedTeam;
+    const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
     const teams = state.teams.teams;
     const contacts = state.teams.contacts;
-    return {teams, currentUser, selectedTeamId, contacts};
+    return {teams, currentUser, selectedTeam, contacts};
 }
 
 function mapDispatchToProps(dispatch) {

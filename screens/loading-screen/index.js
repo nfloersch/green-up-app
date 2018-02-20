@@ -11,7 +11,7 @@ import LoginScreen from '../login-screen/';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
-import {Platform, StatusBar, Alert, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -46,7 +46,7 @@ class LoadingScreen extends Component {
     }
 
     _loadResourcesAsync = async () => Promise.all([
-        this.props.actions.initializeFirebase(),
+        this.props.actions.initialize(),
         Asset.loadAsync([
             require('../../assets/images/robot-dev.png'),
             require('../../assets/images/robot-prod.png'),
