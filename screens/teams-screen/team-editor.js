@@ -40,6 +40,10 @@ export default class TeamEditor extends Component {
             TeamEditorMap: {
                 screen: TeamEditorMap
             }
+        }, {
+            tabBarOptions: {
+                showIcon: true
+            }
         });
         return (
             <TeamEditorNav screenProps={{stacknav: this.props.navigation}}/>
