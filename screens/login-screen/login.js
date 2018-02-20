@@ -2,33 +2,28 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {Image, StyleSheet, Text, TouchableHighlight, View, Alert} from 'react-native';
+
+import * as actions from './actions';
 import logo from '../../assets/images/green-up-logo.png';
 import facebookLogo from '../../assets/images/facebook-logo.png';
 import googleLogo from '../../assets/images/google-logo.png';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import LoginForm from '../../components/login-form';
-import * as actions from './actions';
+import {defaultStyles} from  '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
+
+const myStyles = {
+		logo: {
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
     linkText: {
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5
     },
-    link: {},
     socialLoginButton: {
         borderColor: '#999999',
         borderStyle: 'solid',
@@ -49,10 +44,13 @@ const styles = StyleSheet.create({
         marginTop: 8
     },
     logos: {
-        width: 40,
-        height: 40
+        width: 30,
+        height: 30
     }
-});
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class Login extends Component {
 
@@ -87,18 +85,18 @@ class Login extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image source={logo} style={{height: 120, width: 120}}/>
+								<View style={styles.logo}>
+                	<Image source={logo} style={{height: 120, width: 120}}/>
+								</View>
                 <View style={{width: '100%'}}>
                     <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
                     <TouchableHighlight
-                        style={styles.link}
                         onPress={() => this.props.navigation.navigate('ForgotPassword')}
                     >
                         <Text style={styles.linkText}>I forgot my password</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
-                        style={styles.link}
                         onPress={() => this.props.navigation.navigate('CreateNewAccount')}
                     >
                         <Text style={styles.linkText}>Create a new account</Text>
@@ -131,7 +129,7 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     return {
         user: state.login.user,
         initialAuthChecked: state.login.initialAuthChecked,
@@ -139,7 +137,7 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };

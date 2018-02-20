@@ -13,36 +13,11 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%',
-        marginBottom: 5
-    },
-    teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    column: {
-        flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: '#678',
-        padding: 3,
-        width: '100%'
-    },
-    scrollview: {
-        width: '100%',
-        marginTop: 5
-    }
-});
+import * as actions from './actions';
+import {defaultStyles} from  '../../styles/default-styles';
 
 /**
  *
@@ -59,6 +34,14 @@ function searchScore(term: string, searchableString: [string]) {
 
 }
 
+const myStyles = {
+    scrollview: {
+        marginTop: 10
+    }
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class TeamSearch extends Component {
     static propTypes = {
@@ -108,23 +91,19 @@ class TeamSearch extends Component {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
             <TouchableHighlight
-                key={teamId} style={styles.column}
+                key={teamId} style={styles.searchResult}
                 onPress={this.toTeamDetail(teamId)}
             >
-                <View>
-                    <Text style={styles.teams}>{teams[teamId].name}</Text>
-                </View>
+            	<Text style={styles.searchResultsTitle}>{teams[teamId].name}</Text>
             </TouchableHighlight>
         ));
         return (
             <View style={styles.container}>
-                <View style={styles.column}>
+                <View style={{marginTop: 10}}>
                     <TextInput
                         keyBoardType={'default'} onChangeText={this.onSearchTermChange}
-                        placeholder={'search teams'}
-                        style={{
-                            width: '80%'
-                        }}
+                        placeholder={'Search Teams'}
+                        style={styles.textInput}
                         value={this.state.searchTerm}
                     />
                 </View>
@@ -136,11 +115,13 @@ class TeamSearch extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {teams: state.teams.teams};
+const mapStateToProps = (state) => {
+    return {
+			teams: state.teams.teams
+		};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };

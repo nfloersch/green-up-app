@@ -85,7 +85,7 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            selectedTeam: props.selectedTeam || props.teams[0].id,
+            selectedTeam: props.selectedTeam || (props.teams[0] || {}).id,
             title: '',
             text: ''
         };
@@ -118,7 +118,7 @@ class NewMessage extends Component {
             <View style={styles.column}>
                 <Text style={styles.label}>Team :</Text>
                 <Picker
-                    selectedValue={this.state.selectedTeam || (this.props.teams || [])[0].id}
+                    selectedValue={this.state.selectedTeam || ((this.props.teams || [])[0] || {}).id}
                     onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
                     {(this.props.teams || []).map(team => (
                         <Picker.Item key={team.id} label={team.name} value={team.id}/>))}
