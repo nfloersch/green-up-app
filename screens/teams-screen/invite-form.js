@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '96%'
     },
-    textinput: {
+    textInput: {
         fontSize: 18,
         textAlign: 'left',
         height: 28,
@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
     }
 });
 
-var inviteToTeam = 'inviteToTeam';
-var changeInvitee = 'changeInvitee';
-
 function _changeInvitee(key) {
     return (value) => {
         this.setState({[key]: value});
@@ -56,7 +53,7 @@ function _changeInvitee(key) {
 
 function _inviteToTeam() {
     const teamMember = TeamMember.create(Object.assign({}, this.state, {status: TeamMember.memberStatuses.INVITED}));
-    this.props.actions.inviteContacts(this.props.teams[this.props.selectedTeamId], this.props.currentUser, [teamMember]);
+    this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
     this.setState({firstName: '', lastName: '', email: '', phone: ''});
 }
 
@@ -65,7 +62,7 @@ class InviteForm extends Component {
     static propTypes = {
         actions: PropTypes.object,
         teams: PropTypes.object,
-        selectedTeamId: PropTypes.string,
+        selectedTeam: PropTypes.object,
         currentUser: PropTypes.object
     };
 
@@ -75,8 +72,8 @@ class InviteForm extends Component {
 
     constructor(props) {
         super(props);
-        this[inviteToTeam] = _inviteToTeam.bind(this);
-        this[changeInvitee] = _changeInvitee.bind(this);
+        this.inviteToTeam = _inviteToTeam.bind(this);
+        this.changeInvitee = _changeInvitee.bind(this);
         this.state = {firstName: '', lastName: '', email: '', phone: ''};
     }
 
@@ -85,43 +82,43 @@ class InviteForm extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>
-                    Invitee&apos;sEmail
+                    Invitee&apos;s Email
                 </Text>
                 <TextInput
-                    style={styles.textinput}
+                    style={styles.textInput}
                     placeholder='john@example.com'
                     value={this.state.email}
-                    onChangeText={this[changeInvitee]('email')}
+                    onChangeText={this.changeInvitee('email')}
                 />
                 <Text style={styles.text}>
                     First Name
                 </Text>
                 <TextInput
-                    style={styles.textinput}
+                    style={styles.textInput}
                     value={this.state.firstName}
-                    onChangeText={this[changeInvitee]('firstName')}
+                    onChangeText={this.changeInvitee('firstName')}
                     placeholder='First'
                 />
                 <Text style={styles.text}>
                     Last Name
                 </Text>
                 <TextInput
-                    style={styles.textinput}
+                    style={styles.textInput}
                     value={this.state.lastName}
-                    onChangeText={this[changeInvitee]('lastName')}
+                    onChangeText={this.changeInvitee('lastName')}
                     placeholder='Last'
                 />
                 <Text style={styles.text}>
                     Phone (optional)
                 </Text>
                 <TextInput
-                    style={styles.textinput}
+                    style={styles.textInput}
                     placeholder='555-555-5555'
                     value={this.state.phone}
-                    onChangeText={this[changeInvitee]('phone')}
+                    onChangeText={this.changeInvitee('phone')}
                 />
                 <Button
-                    onPress={this[inviteToTeam]}
+                    onPress={this.inviteToTeam}
                     title='Invite to Team'/>
             </View>
         );
@@ -129,10 +126,10 @@ class InviteForm extends Component {
 }
 
 function mapStateToProps(state) {
-    const selectedTeamId = state.teams.selectedTeam;
+    const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
     const teams = state.teams.teams;
-    return {teams, currentUser, selectedTeamId};
+    return {teams, currentUser, selectedTeam};
 }
 
 function mapDispatchToProps(dispatch) {
