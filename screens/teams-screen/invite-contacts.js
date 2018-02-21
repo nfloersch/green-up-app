@@ -30,10 +30,11 @@ const styles = StyleSheet.create({
     }
 });
 
-const inviteToTeam = 'inviteToTeam';
 
 function _inviteToTeam() {
-    const teamMembers = this.props.contacts.map(contact => TeamMember.create(Object.assign({}, contact, {status: TeamMember.memberStatuses.INVITED})));
+    const teamMembers = this.state.contacts
+        .filter(c => c.isSelected)
+        .map(contact => TeamMember.create(Object.assign({}, contact, {memberStatus: TeamMember.memberStatuses.INVITED})));
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
@@ -53,7 +54,7 @@ class InviteContacts extends Component {
     constructor(props) {
         super(props);
         this.toggleContact = this.toggleContact.bind(this);
-        this[inviteToTeam] = _inviteToTeam.bind(this);
+        this.inviteToTeam = _inviteToTeam.bind(this);
         this.state = {
             contacts: []
         };
@@ -112,7 +113,7 @@ class InviteContacts extends Component {
             <View style={styles.container}>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
-                    <Button onPress={this[inviteToTeam]} title='Invite to team' color='green'/>
+                    <Button onPress={this.inviteToTeam} title='Invite to team' color='green'/>
                 </ScrollView>
             </View>
         );
