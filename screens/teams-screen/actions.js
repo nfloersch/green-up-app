@@ -36,7 +36,6 @@ export function retrieveContacts(_pageSize = 40) {
     };
 }
 
-
 export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
     return async function () {
         teamMembers.forEach(teamMember => {
@@ -66,4 +65,9 @@ export function saveTeam(team, id) {
         const savedTeam = await firebaseDataLayer.saveTeam(team, id);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
+}
+
+export function saveLocations(locations, team) {
+    // TODO: Move locations to redux state so that we can properly handle saving a new team with locations
+    return firebaseDataLayer.saveLocations(locations, team.id);
 }

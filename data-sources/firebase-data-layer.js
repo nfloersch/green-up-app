@@ -131,6 +131,10 @@ function saveTeam(team, id) {
     }
 }
 
+async function saveLocations(locations, teamId) {
+    return firebase.database().ref(`teams/${teamId}/locations`).set(locations);
+}
+
 function createUser(email, password) {
     return firebase
         .auth()
@@ -194,6 +198,7 @@ export const firebaseDataLayer = {
     logout,
     resetPassword,
     saveTeam,
+    saveLocations,
     sendUserMessage,
     sendInviteEmail,
     sendGroupMessage,
