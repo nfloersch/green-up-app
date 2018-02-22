@@ -69,7 +69,8 @@ class Messages extends Component {
     };
 
     static navigationOptions = {
-        title: 'Message Board'
+        title: 'Message Board',
+        tabBarLabel: 'Messages'
     };
 
     constructor(props) {

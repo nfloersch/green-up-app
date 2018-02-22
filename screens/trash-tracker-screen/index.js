@@ -15,7 +15,8 @@ export default class TrashTracker extends Component {
     };
 
     static navigationOptions = {
-        title: 'Trash Tracker'
+        title: 'Trash Tracker',
+        tabBarLabel: 'Trash'
     };
 
     constructor(props) {

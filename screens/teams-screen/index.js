@@ -87,7 +87,8 @@ class MyTeams extends Component {
     };
 
     static navigationOptions = {
-        title: 'Green Teams'
+        title: 'Green Teams',
+        tabBarLabel: 'Teams'
     };
 
     constructor(props) {
