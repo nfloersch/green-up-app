@@ -5,7 +5,7 @@ import Contact from '../../models/contact';
 import Expo from 'expo';
 import {TeamMember} from '../../models/team-member';
 import {Invitation} from '../../models/invitation';
-
+import * as memberStatus from '../../constants/team-member-statuses';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 
 export function retrieveContacts(_pageSize = 40) {
@@ -41,12 +41,20 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
     return async function () {
         teamMembers.forEach(teamMember => {
             if (!teamMember.uid) {
-                let invitation = Invitation.create({team, sender: currentUser, teamMember});
+                const invitation = Invitation.create({team, sender: currentUser, teamMember});
                 firebaseDataLayer.sendInviteEmail(invitation);
             } else {
                 firebaseDataLayer.addTeamMember(team.id, currentUser.uid, teamMember);
             }
         });
+    };
+}
+
+
+export function askToJoinTeam(team: Object, user: Object) {
+    return async function () {
+        const potentialTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.REQUEST_TO_JOIN}));
+        firebaseDataLayer.updateTeamMember(team, potentialTeamMember);
     };
 }
 

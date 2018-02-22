@@ -40,7 +40,7 @@ export default class Team {
         this.start = typeof args.start === 'string'
             ? args.start
             : null;
-        this.end = typeof args.start === 'string'
+        this.end = typeof args.end === 'string'
             ? args.end
             : null;
         this.active = typeof args.active === 'boolean'

@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
+import Team from '../models/team';
 
 function returnType(entry) {
     switch (true) {
@@ -79,6 +80,23 @@ async function initialize(dispatch) {
 
 }
 
+
+// TODO fix the id vs uid dilemma
+async function updateTeamMember(team, member) {
+    const id = team.uid || team.id;
+    const members = team.members.filter(_member => (_member.uid !== member.uid)).concat(member);
+    const _team = Object.assign({}, team, {uid: null, id: null}, {members});
+    // delete _team.uid;
+    if (!id) {
+        firebase
+            .database()
+            .ref('teams')
+            .push(team);
+    } else {
+        firebase.database().ref(`teams/${id}`).set(_team);
+    }
+}
+
 async function facebookAuth(token) {
 
     // Build Firebase credential with the Facebook access token.
@@ -118,7 +136,7 @@ function sendGroupMessage(group, message) {
 
 // Teams
 function saveTeam(team, id) {
-    const _id = id || team.uid;
+    const _id = id || team.uid || team.id;
     const _team = Object.assign({}, team);
     delete _team.uid;
     if (!_id) {
@@ -197,5 +215,6 @@ export const firebaseDataLayer = {
     sendUserMessage,
     sendInviteEmail,
     sendGroupMessage,
-    updateMessage
+    updateMessage,
+    updateTeamMember
 };
