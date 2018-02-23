@@ -84,15 +84,6 @@ class TeamEditorDetails extends Component {
         };
     }
 
-//			<View>
-//					<Text style={styles.heading2}>Select Town/City</Text>
-//					<Picker
-//							selectedValue={this.state.selectedTeam.town}
-//							onValueChange={this.setTeamValue('town')}>
-//							{vermontTowns.map(town => (<Picker.Item key={town} label={town} value={town}/>))}
-//					</Picker>
-//			</View>
-
     render() {
         const isPublicOptions = [
             {
@@ -119,15 +110,27 @@ class TeamEditorDetails extends Component {
                         style={styles.textInput}
                         value={this.state.selectedTeam.name}/>
                 </View>
+
 								<View style={{marginTop: 10}}>
-                <SegmentedControls
-                    options={isPublicOptions}
-                    onSelection={this.setSelectedOption}
-                    selectedOption={this.state.selectedTeam.isPublic}
-                    selectedTint={'#EFEFEF'} tint={'#666666'}
-                    extractText={(option) => option.label}
-                    testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+									<SegmentedControls
+											options={isPublicOptions}
+											onSelection={this.setSelectedOption}
+											selectedOption={this.state.selectedTeam.isPublic}
+											selectedTint={'#EFEFEF'} tint={'#666666'}
+											extractText={(option) => option.label}
+											testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
                 </View>
+
+								<View>
+										<Text style={styles.heading2}>Select Town/City</Text>
+										<Picker
+												itemStyle={{height: 45}}
+												selectedValue={this.state.selectedTeam.town}
+												onValueChange={this.setTeamValue('town')}>
+												{vermontTowns.map(town =>
+														(<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
+										</Picker>
+								</View>
 
                 <View>
                     <Text style={styles.heading2}>Clean Up Site</Text>
@@ -153,6 +156,7 @@ class TeamEditorDetails extends Component {
 											/>
 										</View>
                 </View>
+
                 <View>
                     <Text style={styles.heading2}>End Time</Text>
 										<View>
@@ -167,6 +171,7 @@ class TeamEditorDetails extends Component {
 											/>
 										</View>
                 </View>
+
                 <View>
                     <Text style={styles.heading2}>Notes</Text>
                     <TextInput
@@ -176,6 +181,7 @@ class TeamEditorDetails extends Component {
                         style={styles.textInput}
 												value={this.state.selectedTeam.notes}/>
                 </View>
+
 								<View style={styles.button}>
 									<Button
 										title='Save'

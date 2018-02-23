@@ -18,7 +18,8 @@ export const defaultStyles = {
         borderWidth: 1,
         height: 40,
         padding: 5,
-        textAlign: 'center'
+        textAlign: 'center',
+				lineHeight: 25
     },
     fieldset: {
         borderWidth: 2,
