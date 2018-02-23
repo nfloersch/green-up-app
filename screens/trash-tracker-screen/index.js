@@ -23,9 +23,7 @@ export default class TrashTracker extends Component {
         super(props);
     }
 
-    componentDidMount() {
-    }
-
+    componentDidMount() {}
 
     render() {
         return (<TrashMap/>);

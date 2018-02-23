@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -69,7 +69,7 @@ class Profile extends Component {
     };
 
     static navigationOptions = {
-        title: 'Person',
+        title: 'Person'
     };
 
     constructor(props) {
@@ -78,17 +78,19 @@ class Profile extends Component {
     }
 
 
-
     _updateProfile() {
 
     }
 
     render() {
         const profile = this.props.profile;
-
+        const avatar = profile.photoURL;
         return (
             <View style={styles.container}>
-                 <Text>Profile</Text>
+                <Text>{profile.displayName}</Text>
+                <Image style={{width: 50, height: 50}}
+                       source={{uri: avatar}}
+                />
             </View>
         );
     }
