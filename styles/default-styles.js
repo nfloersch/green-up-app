@@ -5,13 +5,11 @@ export const defaultStyles = {
         backgroundColor: 'white',
         borderColor: 'white',
         borderLeftWidth: 20,
-        borderRightWidth: 20
+        borderRightWidth: 20,
+        borderTopWidth: 10,
     },
     button: {
         padding: 5,
-        borderWidth: 1,
-        borderColor: '#000',
-        backgroundColor: '#EFEFEF',
         marginTop: 10,
         marginBottom: 10
     },
