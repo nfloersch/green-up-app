@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Text, View, TouchableHighlight, StyleSheet} from 'react-native';
+import {Text, View, TouchableHighlight, StyleSheet, Linking} from 'react-native';
 import {bindActionCreators} from 'redux';
 import * as actions from '../login-screen/actions';
 import {connect} from 'react-redux';
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff'
     },
-    buttonText:{fontSize: 20, textAlign: 'center'},
+    buttonText: {fontSize: 20, textAlign: 'center'},
     button: {
         marginTop: 5,
         marginBottom: 5,
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 2
-    }});
+    }
+});
 
 class MenuScreen extends Component {
     static propTypes = {
@@ -66,6 +67,17 @@ class MenuScreen extends Component {
                 >
                     <View style={styles.socialLogin}>
                         <Text style={styles.buttonText}>Profile</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => {
+                        Linking.openURL('https://www.razoo.com/organization/Vermont-Green-Up');
+                    }}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>Support Green Up Day</Text>
                     </View>
                 </TouchableHighlight>
             </View>);

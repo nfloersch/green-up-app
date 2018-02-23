@@ -65,6 +65,7 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
 
 exports.createProfile = functions.auth.user().onCreate((event) => {
     const {uid, displayName, email, photoURL} = event.data;
-    admin.database().ref(`profiles/${uid}`).set({displayName, email, photoURL});
+    const created = (new Date()).toString();
+    admin.database().ref(`profiles/${uid}`).set({uid, displayName, email, photoURL, created});
 });
 

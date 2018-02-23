@@ -228,11 +228,11 @@ function updateMessage(message, userId) {
         .ref(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
-function updateProfile(profile, userId) {
-    const newProfile = Object.assign({}, profile, {created: profile.created.toString()}); // TODO fix this hack right
+function updateProfile(profile) {
+    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     return firebase
         .database()
-        .ref(`profiles/${userId}/${profile.uid}`).set(newProfile);
+        .ref(`profiles/${profile.uid}`).set(newProfile);
 }
 
 export const firebaseDataLayer = {
@@ -250,5 +250,6 @@ export const firebaseDataLayer = {
     sendInviteEmail,
     sendGroupMessage,
     updateMessage,
+    updateProfile,
     updateTeamMember
 };

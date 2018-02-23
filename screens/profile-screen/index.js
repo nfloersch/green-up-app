@@ -5,20 +5,18 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
-    button: {
+    buttonText: {
         fontSize: 20,
         textAlign: 'center',
         marginBottom: 20,
         marginTop: 10,
         color: '#000',
-        borderWidth: 0.5,
-        borderColor: '#d6d7da',
         padding: 10
     },
     container: {
@@ -57,8 +55,40 @@ const styles = StyleSheet.create({
         borderColor: '#DDDDDD',
         borderWidth: 1,
         borderStyle: 'solid'
+    },
+    buttonRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10
+    },
+    button: {
+        width: '49%',
+        backgroundColor: '#F00',
+        justifyContent: 'center',
+        padding: 10,
+        marginLeft: 3
+    },
+    inputRow: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        margin: 10
+    },
+    inputRowLabel: {
+        width: '20%',
+        margin: 5
+    },
+    inputRowControl: {
+        width: '75%',
+        margin: 5,
+        borderStyle: 'solid',
+        borderColor: '#AAA',
+        borderWidth: 1,
+        padding: 5
     }
 });
+
 
 class Profile extends Component {
     static propTypes = {
@@ -74,31 +104,87 @@ class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this._updateProfile = this._updateProfile.bind(this);
+        this._saveProfile = this._saveProfile.bind(this);
+        this._changeText = this._changeText.bind(this);
+        this._cancel = this._cancel.bind(this);
+        this.state = Object.assign({}, props.profile);
     }
 
 
-    _updateProfile() {
-
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(nextProps.profile) !== JSON.stringify(this.props.profile)) {
+            this.setState(nextProps.profile);
+        }
     }
+
+    _saveProfile() {
+        this.props.actions.saveProfile(this.state);
+    }
+
+    _cancel() {
+        this.setState(this.props.profile, () => {
+            this.props.navigation.goBack();
+        });
+    }
+
+    _changeText(key) {
+        return (text) => {
+            this.setState({[key]: text});
+        };
+    }
+
 
     render() {
         const profile = this.props.profile;
         const avatar = profile.photoURL;
+
         return (
             <View style={styles.container}>
-                <Text>{profile.displayName}</Text>
                 <Image style={{width: 50, height: 50}}
                        source={{uri: avatar}}
                 />
+                <View style={styles.inputRow}>
+                    <Text style={styles.inputRowLabel}>{'Your Name:'}</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        multiline={false}
+                        numberOfLines={1}
+                        onChangeText={this._changeText('displayName')}
+                        placeholder={'your name'}
+                        value={this.state.displayName}
+                        style={styles.inputRowControl}
+                    />
+                </View>
+                <View style={styles.inputRow}>
+                    <Text style={styles.inputRowLabel}>{'About Me:'}</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        multiline={true}
+                        numberOfLines={5}
+                        onChangeText={this._changeText('bio')}
+                        placeholder={'Maximum of 144 characters'}
+                        value={this.state.affiliations}
+                        style={styles.inputRowControl}
+                    />
+                </View>
+                <View style={styles.buttonRow}>
+                    <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
+                        <Text style={styles.buttonText}>Save Profile</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.button} onPress={this._cancel}>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableHighlight>
+                </View>
             </View>
         );
+
     }
 }
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    return {profile: state.profile.profile, currentUser};
+    const profile = state.profile.profile;
+    return {profile, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

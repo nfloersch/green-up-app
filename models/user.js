@@ -17,28 +17,24 @@ export class User {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
             ? args.uid || args.id
             : null;
-        this.firstName = typeof args.firstName === 'string'
-            ? args.firstName
-            : null;
-        this.lastName = typeof args.lastName === 'string'
-            ? args.lastName
+        this.displayName = typeof args.displayName === 'string'
+            ? args.displayName
             : null;
         this.email = typeof args.email === 'string'
             ? args.email
             : null;
-        this.phone = typeof args.phone === 'string'
-            ? args.phone
-            : null;
-        this.organization = typeof args.organization === 'string'
-            ? args.organization
-            : null;
-        this.blob = typeof args.blob === 'string'
-            ? args.blob
+        this.bio = typeof args.bio === 'string'
+            ? args.bio.slice(0, 143) // max-length is 144 characters
             : null;
         this.created = isDate(args.created)
             ? new Date(args.created)
             : null;
-
+        this.updated = isDate(args.updated)
+            ? new Date(args.updated)
+            : null;
+        this.photoURL = typeof args.photoURL === 'string'
+            ? args.photoURL
+            : null;
     }
 
     static create(args) {
