@@ -14,8 +14,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
-    }
-});
+    },
+    buttonText:{fontSize: 20, textAlign: 'center'},
+    button: {
+        marginTop: 5,
+        marginBottom: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginRight: 5,
+        marginLeft: 5,
+        backgroundColor: 'powderblue',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 2
+    }});
 
 class MenuScreen extends Component {
     static propTypes = {
@@ -40,13 +52,21 @@ class MenuScreen extends Component {
         return (
             <View style={styles.container}>
                 <TouchableHighlight
-                    style={styles.socialLoginButton}
+                    style={styles.button}
                     onPress={() => this.props.actions.logout()}
                 >
                     <View style={styles.socialLogin}>
-                        <Text style={styles.socialLoginText}>Log Out</Text>
+                        <Text style={styles.buttonText}>Log Out</Text>
                     </View>
 
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate('Profile')}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>Profile</Text>
+                    </View>
                 </TouchableHighlight>
             </View>);
     }

@@ -38,3 +38,11 @@ export function trashDropFetchSuccessful(_trashDrops: Object) {
     const trashDrops = Object.keys(_trashDrops || {}).reduce((trashDropObj, key) => (Object.assign({}, trashDropObj, {[key]: TrashDrop.create(_trashDrops[key], key)})), {});
     return {type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops};
 }
+
+export function profileFetchSuccessful(profile: Object) {
+    return {type: types.FETCH_PROFILE_SUCCESS, profile};
+}
+
+export function profileFetchFail(error: Object) {
+    return {type: types.FETCH_PROFILE_FAIL, error};
+}
