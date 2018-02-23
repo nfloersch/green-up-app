@@ -35,7 +35,9 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
-    label: {},
+    label: {
+			marginTop: 5
+		},
     data: {
         fontWeight: 'bold'
     },
