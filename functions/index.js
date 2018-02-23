@@ -1,4 +1,6 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -59,4 +61,10 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
     return sendInvitationEmail(email, displayName);
 });
 // [END ]
+
+
+exports.createProfile = functions.auth.user().onCreate((event) => {
+    const {uid, displayName, email, photoURL} = event.data;
+    admin.database().ref(`profiles/${uid}`).set({displayName, email, photoURL});
+});
 
