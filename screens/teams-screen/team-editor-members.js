@@ -108,7 +108,7 @@ class TeamEditorMembers extends Component {
                             name={icons[member.memberStatus] || (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
                             size={30}/>
                         <Text>{member.email}</Text>
-                        <Text>{(`${member.firstName} ${member.lastName}`).trim()}</Text>
+                        <Text>{(`${member.displayName}`)}</Text>
                     </View>
                 </TouchableHighlight>
             </View>

@@ -6,11 +6,11 @@ import {isDate} from '../libs/isDate';
 
 export class User {
     uid: string;
-    firstName: string;
-    lastName: string;
+    displayName: string;
+    updated: Date;
     email: string;
-    phone: string;
-    organization: string;
+    photoURL: string;
+    bio: string;
     created: Date;
 
     constructor(args = {}) {
@@ -18,13 +18,13 @@ export class User {
             ? args.uid || args.id
             : null;
         this.displayName = typeof args.displayName === 'string'
-            ? args.displayName
+            ? args.displayName.trim()
             : null;
         this.email = typeof args.email === 'string'
-            ? args.email
+            ? args.email.trim().toLowerCase()
             : null;
         this.bio = typeof args.bio === 'string'
-            ? args.bio.slice(0, 143) // max-length is 144 characters
+            ? args.bio.slice(0, 144).trim() // max-length is 144 characters
             : null;
         this.created = isDate(args.created)
             ? new Date(args.created)
