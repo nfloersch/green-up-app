@@ -24,7 +24,8 @@ class TeamEditorMap extends Component {
     static propTypes = {
         actions: PropTypes.object,
         selectedTeam: PropTypes.object,
-        locations: PropTypes.array
+        locations: PropTypes.array,
+        otherCleanAreas: PropTypes.array
     };
 
     static navigationOptions = {
@@ -148,7 +149,9 @@ class TeamEditorMap extends Component {
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
                     <Text>
-                        Place markers around the area you want your team to work on. Tap on the marker text box to remove a marker.
+                        Place markers around the area you want your team to work on.
+                        Tap on the marker text box to remove a marker.
+                        Blue markers represent areas that other teams are cleaning up.
                     </Text>
                     {!this.props.selectedTeam.id && (
                         <Text>
@@ -157,10 +160,12 @@ class TeamEditorMap extends Component {
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
                         onPress={this._handleMapClick}>
-                        {/* TODO: Show areas other teams have defined */}
                         {this.props.locations.length > 0 && teamLocationMarkers}
                         {this.props.locations.length > 0 && (
                             <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
+                        )}
+                        {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map(c =>
+                            (<Polygon coordinates={c} fillColor='#b1c8ed' />)
                         )}
                     </MapView>
                     <Button title={'remove last marker'}
@@ -173,7 +178,11 @@ class TeamEditorMap extends Component {
 function mapStateToProps(state) {
     const selectedTeam = state.teams.selectedTeam;
     const locations = state.teams.locations;
-    return {selectedTeam, locations};
+    const otherCleanAreas = Object.values(state.teams.teams)
+        .filter(team => team.id !== selectedTeam.id)
+        .map(team => team.locations.map(l => l.coordinates))
+        .filter(v => v.length > 0);
+    return {selectedTeam, locations, otherCleanAreas};
 
 }
 
