@@ -52,23 +52,6 @@ class MenuScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => this.props.actions.logout()}
-                >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Log Out</Text>
-                    </View>
-
-                </TouchableHighlight>
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => this.props.navigation.navigate('Profile')}
-                >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Profile</Text>
-                    </View>
-                </TouchableHighlight>
 
                 <TouchableHighlight
                     style={styles.button}
@@ -80,7 +63,35 @@ class MenuScreen extends Component {
                         <Text style={styles.buttonText}>Support Green Up Day</Text>
                     </View>
                 </TouchableHighlight>
-            </View>);
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate('About')}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>About Green Up Day</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate('Profile')}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>Profile</Text>
+                    </View>
+                </TouchableHighlight>
+
+
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={() => this.props.actions.logout()}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>Log Out</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
     }
 }
 

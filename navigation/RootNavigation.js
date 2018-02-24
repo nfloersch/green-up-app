@@ -11,6 +11,7 @@ import NewMessage from '../screens/messages-screen/new-message';
 import InviteContacts from '../screens/teams-screen/invite-contacts';
 import InviteForm from '../screens/teams-screen/invite-form';
 import Profile from '../screens/profile-screen/';
+import About from '../screens/about-screen/';
 
 const RootStackNavigator = StackNavigator(
     {
@@ -34,9 +35,9 @@ const RootStackNavigator = StackNavigator(
         },
         NewMessage: {
             screen: NewMessage
-
         },
         InviteContacts: {screen: InviteContacts},
+        About: {screen: About},
         InviteForm: {screen: InviteForm}
     },
     {
