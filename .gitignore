@@ -1,6 +1,7 @@
 node_modules/**/*
 firebase-config.js
-.expo
+*.expo
+.expo/**/*
 ### Linux ###
 *~
 
