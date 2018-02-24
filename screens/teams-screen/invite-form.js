@@ -54,7 +54,7 @@ function _changeInvitee(key) {
 function _inviteToTeam() {
     const teamMember = TeamMember.create(Object.assign({}, this.state, {status: TeamMember.memberStatuses.INVITED}));
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
-    this.setState({firstName: '', lastName: '', email: '', phone: ''});
+    this.setState({firstName: '', lastName: '', email: ''});
 }
 
 
@@ -76,7 +76,6 @@ class InviteForm extends Component {
         this.changeInvitee = _changeInvitee.bind(this);
         this.state = {firstName: '', lastName: '', email: '', phone: ''};
     }
-
 
     render() {
         return (
@@ -107,15 +106,6 @@ class InviteForm extends Component {
                     value={this.state.lastName}
                     onChangeText={this.changeInvitee('lastName')}
                     placeholder='Last'
-                />
-                <Text style={styles.text}>
-                    Phone (optional)
-                </Text>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='555-555-5555'
-                    value={this.state.phone}
-                    onChangeText={this.changeInvitee('phone')}
                 />
                 <Button
                     onPress={this.inviteToTeam}

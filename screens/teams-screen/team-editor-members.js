@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform} from 'react-native';
+import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform, Alert} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
@@ -48,6 +48,9 @@ class TeamEditorMembers extends Component {
         super(props);
         this.inviteContacts = this.inviteContacts.bind(this);
         this.inviteForm = this.inviteForm.bind(this);
+        this._handleRequestToJoin = this._handleRequestToJoin.bind(this);
+        this._handleCurrentMember = this._handleCurrentMember.bind(this);
+        this._handleInvitation = this._handleCurrentMember.bind(this);
     }
 
     inviteContacts() {
@@ -58,21 +61,58 @@ class TeamEditorMembers extends Component {
         this.props.screenProps.stacknav.navigate('InviteForm');
     }
 
+    _handleRequestToJoin(member: Object, team: Object) {
+        return () => {
+            Alert.alert('handle request to join');
+        };
+    }
+
+    _handleCurrentMember(member: Object, team: Object) {
+        return () => {
+            Alert.alert('handle current member');
+        };
+    }
+
+
+    _handleInvitation(member: Object, team: Object) {
+        return () => {
+            Alert.alert('handle Invitation');
+        };
+    }
+
+
     render() {
 
         const icons = {
-            [memberStatus.REQUEST_TO_JOIN]:  Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
-            [memberStatus.ACCEPTED]:  Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
-            [memberStatus.INVITED]:  Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [memberStatus.OWNER]:  Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
+            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
+            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
+            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
+
+
+        const memberActions = {
+            [memberStatus.REQUEST_TO_JOIN]: this._handleRequestToJoin,
+            [memberStatus.ACCEPTED]: this._handleCurrentMember,
+            [memberStatus.INVITED]: this._handleInvitation,
+            [memberStatus.OWNER]: () => {
+            }
+        };
+
 
         const members = (this.props.selectedTeam.members || []).map(member => (
             <View key={member.uid}>
-                <Ionicons name={icons[member.memberStatus] || (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')} size={30}/>
-                <Text>{member.email}</Text>
-                <Text>{(`${member.firstName} ${member.lastName}`).trim()}</Text>
+                <TouchableHighlight onPress={memberActions[member.memberStatus](member, this.props.selectedTeam)}>
+                    <View>
+                        <Ionicons
+                            name={icons[member.memberStatus] || (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                            size={30}/>
+                        <Text>{member.email}</Text>
+                        <Text>{(`${member.displayName}`)}</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
+
         ));
 
         return (

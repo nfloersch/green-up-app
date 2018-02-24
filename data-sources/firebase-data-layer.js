@@ -22,13 +22,36 @@ function stringifyDates(obj) {
     }), {});
 }
 
-
 function setupMessageListener(userId, dispatch) {
     const messages = firebase.database().ref(`messages/${userId}`);
     messages.on('value', (snapshot) => {
         dispatch(dataLayerActions.messageFetchSuccessful(snapshot.val()));
     });
 }
+
+function setupProfileListener(userId, dispatch) {
+    const messages = firebase.database().ref(`profiles/${userId}`);
+    messages.on('value', (snapshot) => {
+        dispatch(dataLayerActions.profileFetchSuccessful(snapshot.val()));
+    });
+}
+
+
+function setupTeamListener(dispatch) {
+    const teams = firebase.database().ref('teams');
+    teams.on('value', (snapshot) => {
+        dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+    });
+}
+
+
+function setupTrashDropListener(dispatch) {
+    const drops = firebase.database().ref('trashDrops');
+    drops.on('value', (snapshot) => {
+        dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
+    });
+}
+
 
 async function initialize(dispatch) {
     console.log('Initializing Firebase');
@@ -42,17 +65,20 @@ async function initialize(dispatch) {
                 console.log('We are authenticated now!'); // eslint-disable-line
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
                 setupMessageListener(user.uid, dispatch);
+                setupProfileListener(user.uid, dispatch);
+                setupTeamListener(dispatch);
+                setupTrashDropListener(dispatch);
 
             } else {
                 console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
-    const teams = firebase.database().ref('teams/');
+    //const teams = firebase.database().ref('teams/');
     //
-    teams.on('value', (snapshot) => {
-        dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
-    });
+    //teams.on('value', (snapshot) => {
+    //    dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
+   // });
 
     // const trashDrops = firebase.database().ref('trashDrops/');
     //
@@ -127,7 +153,6 @@ function sendUserMessage(userId, message) {
         .push(_message);
 }
 
-
 function sendGroupMessage(group, message) {
     group.forEach((memberUID) => {
         sendUserMessage(memberUID, message);
@@ -174,7 +199,6 @@ function loginWithEmailPassword(email, password) {
         });
 }
 
-
 function resetPassword(emailAddress) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
@@ -197,7 +221,6 @@ function dropTrash(trashDrop) {
         .push(trashDrop);
 }
 
-
 function updateMessage(message, userId) {
     const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
     return firebase
@@ -205,6 +228,12 @@ function updateMessage(message, userId) {
         .ref(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
+function updateProfile(profile) {
+    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
+    return firebase
+        .database()
+        .ref(`profiles/${profile.uid}`).set(newProfile);
+}
 
 export const firebaseDataLayer = {
     createUser,
@@ -221,5 +250,6 @@ export const firebaseDataLayer = {
     sendInviteEmail,
     sendGroupMessage,
     updateMessage,
+    updateProfile,
     updateTeamMember
 };

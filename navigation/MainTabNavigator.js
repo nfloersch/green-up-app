@@ -9,7 +9,7 @@ import MenuScreen from '../screens/menu-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
 import TrashTrackerScreen from '../screens/trash-tracker-screen/';
-import DonateScreen from '../screens/donate-screen/';
+// import DonateScreen from '../screens/donate-screen/';
 
 export default TabNavigator(
     {
@@ -23,9 +23,9 @@ export default TabNavigator(
         TrashTracker: {
             screen: TrashTrackerScreen
         },
-        Support: {
-            screen: DonateScreen
-        },
+        // Support: {
+        //     screen: DonateScreen
+        // },
         Menu: {
             screen: MenuScreen
         }
@@ -46,12 +46,11 @@ export default TabNavigator(
                         iconName = Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts';
                         break;
                     case 'TrashTracker':
-                        iconName =
-                            Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
+                        iconName = Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
                         break;
-                    case 'Support' :
-                        iconName = Platform.OS === 'ios' ? `ios-happy${focused ? '' : '-outline'}` : 'md-happy';
-                        break;
+                    // case 'Support' :
+                    //     iconName = Platform.OS === 'ios' ? `ios-happy${focused ? '' : '-outline'}` : 'md-happy';
+                    //     break;
                     case 'Menu' :
                         iconName = Platform.OS === 'ios' ? `ios-apps${focused ? '' : '-outline'}` : 'md-apps';
                         break;

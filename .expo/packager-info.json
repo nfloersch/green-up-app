@@ -1,8 +1,8 @@
 {
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://gm-mqj.johnneed.greenupvermont.exp.direct",
+  "packagerNgrokUrl": "https://packager.gm-mqj.johnneed.greenupvermont.exp.direct",
+  "ngrokPid": 34838,
   "expoServerPort": 19000,
   "packagerPort": 19002,
-  "packagerPid": 19009
+  "packagerPid": 34822
 }
