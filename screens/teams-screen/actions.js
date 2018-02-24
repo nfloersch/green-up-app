@@ -75,7 +75,16 @@ export function saveTeam(team, id) {
     };
 }
 
+export function setSelectedTeamValue(key, value) {
+    return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};
+}
+
 export function saveLocations(locations, team) {
-    // TODO: Move locations to redux state so that we can properly handle saving a new team with locations
-    return firebaseDataLayer.saveLocations(locations, team.id);
+    return async function(dispatch) {
+        if(team.id) {
+            await firebaseDataLayer.saveLocations(locations, team.id);
+        }
+
+        dispatch({type: types.LOCATIONS_UPDATED, locations});
+    };
 }

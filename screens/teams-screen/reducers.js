@@ -30,13 +30,28 @@ export function reducers(state = initialState, action) {
         case types.SELECT_TEAM:
             return {
                 ...state,
-                selectedTeam: action.team
+                selectedTeam: action.team,
+                locations: action.team.locations
             };
         case types.FETCH_TEAMS_SUCCESS :
             return {
                 ...state,
                 teams: action.teams
             };
+        case types.LOCATIONS_UPDATED: {
+            return {
+                ...state,
+                locations: action.locations
+            };
+        }
+        case types.SET_SELECTED_TEAM_VALUE: {
+            const newSelectedTeam = Object.assign({}, state.selectedTeam);
+            newSelectedTeam[action.data.key] = action.data.value;
+            return {
+                ...state,
+                selectedTeam: newSelectedTeam
+            };
+        }
         default:
             return state;
     }
