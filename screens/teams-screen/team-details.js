@@ -36,7 +36,8 @@ class TeamDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
-        selectedTeam: PropTypes.object
+        selectedTeam: PropTypes.object,
+        teams: PropTypes.object
     };
 
     static navigationOptions = {
@@ -48,17 +49,26 @@ class TeamDetails extends Component {
         this._askToJoin = this._askToJoin.bind(this);
         this._leaveTeam = this._leaveTeam.bind(this);
         this._acceptInvitation = this._acceptInvitation.bind(this);
+        this.state = {hasAsked: false};
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(nextProps.selectedTeam) !== JSON.stringify(this.props.selectedTeam)) {
+            this.setState({hasAsked: false});
+        }
+    }
 
     _acceptInvitation() {
+
     }
 
     _leaveTeam() {
     }
 
     _askToJoin() {
-        this.props.actions.askToJoinTeam(this.props.selectedTeam, this.props.currentUser);
+        this.setState({hasAsked: true}, () => {
+            this.props.actions.askToJoinTeam(this.props.selectedTeam, this.props.currentUser);
+        });
     }
 
     render() {
@@ -84,7 +94,7 @@ class TeamDetails extends Component {
                             </Text>
                         </TouchableHighlight>
                     );
-                case membership && membership.memberStatus === teamMemberStatuses.REQUEST_TO_JOIN :
+                case this.state.hasAsked || (membership && membership.memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
                         <Text style={styles.bannerText}>
                             {'Waiting on the Team Manager to approve your request'}

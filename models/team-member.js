@@ -11,27 +11,27 @@ const memberStati = {
 
 export class TeamMember {
     uid: string;
-    firstName: string;
-    lastName: string;
+    displayName: string;
+    bio: string;
     email: string;
     memberStatus: string;
-    phone: string;
+    photoURL: string;
 
     constructor(args: Object) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
             ? args.uid || args.id || args._id
             : null;
-        this.firstName = typeof args.firstName === 'string'
-            ? args.firstName
+        this.displayName = typeof args.displayName === 'string'
+            ? args.displayName
             : null;
-        this.lastName = typeof args.lastName === 'string'
-            ? args.lastName
+        this.bio = typeof args.bio === 'string'
+            ? args.bio
             : null;
         this.email = typeof args.email === 'string'
             ? args.email
             : null;
-        this.phone = typeof args.phone === 'string'
-            ? args.phone
+        this.photoURL = typeof args.photoURL === 'string'
+            ? args.photoURL
             : null;
         this.memberStatus = typeof args.memberStatus === 'string'
             ? args.memberStatus

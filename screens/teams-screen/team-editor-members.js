@@ -151,7 +151,7 @@ class TeamEditorMembers extends Component {
                     </View>
                 </TouchableHighlight>
 								<Text style={styles.memberName}>
-									{(`${member.firstName} ${member.lastName}`).trim()}
+									{(`${member.displayName}`).trim()}
 								</Text>
             </View>
 
