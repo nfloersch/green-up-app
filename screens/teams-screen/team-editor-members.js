@@ -33,7 +33,6 @@ class TeamEditorMembers extends Component {
         actions: PropTypes.object,
         teams: PropTypes.object,
         selectedTeam: PropTypes.object,
-        stackNav: PropTypes.object,
         screenProps: PropTypes.object
     };
 
@@ -63,7 +62,7 @@ class TeamEditorMembers extends Component {
 
     _handleRequestToJoin(member: Object, team: Object) {
         return () => {
-            Alert.alert('handle request to join');
+            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {team, member});
         };
     }
 

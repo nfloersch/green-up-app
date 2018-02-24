@@ -12,6 +12,7 @@ import InviteContacts from '../screens/teams-screen/invite-contacts';
 import InviteForm from '../screens/teams-screen/invite-form';
 import Profile from '../screens/profile-screen/';
 import About from '../screens/about-screen/';
+import TeamMemberDetails from '../screens/teams-screen/team-member-details';
 
 const RootStackNavigator = StackNavigator(
     {
@@ -38,7 +39,8 @@ const RootStackNavigator = StackNavigator(
         },
         InviteContacts: {screen: InviteContacts},
         About: {screen: About},
-        InviteForm: {screen: InviteForm}
+        InviteForm: {screen: InviteForm},
+        TeamMemberDetails: {screen : TeamMemberDetails}
     },
     {
         navigationOptions: () => ({

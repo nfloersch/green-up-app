@@ -1,8 +1,9 @@
 // @flow
 
-import {Message} from './message';
-import Team from './team';
 import {isDate} from '../libs/isDate';
+
+const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
+
 
 export class User {
     uid: string;
@@ -34,7 +35,7 @@ export class User {
             : null;
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
-            : null;
+            : defaultAvatar;
     }
 
     static create(args) {

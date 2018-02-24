@@ -7,6 +7,8 @@ import {TeamMember} from '../../models/team-member';
 import {Invitation} from '../../models/invitation';
 import * as memberStatus from '../../constants/team-member-statuses';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import Team from '../../models/team';
+
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
@@ -74,6 +76,27 @@ export function saveTeam(team, id) {
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
 }
+
+export function removeTeamMember(team, member) {
+    const uidOrEmail = member.uid || member.email;
+    return async function () {
+        const members = team.members.filter(_member => (_member.uid !== uidOrEmail && _member.email !== uidOrEmail));
+        const newTeam = Team.create(Object.assign({}, team, {members}));
+        firebaseDataLayer.saveTeam(newTeam);
+    };
+}
+
+
+export function addTeamMember(team, member, status) {
+    const uidOrEmail = member.uid || member.email;
+    const _newMember = TeamMember.create(Object.assign({}, member, {memberStatus: status || member.memberStatus}));
+    return async function () {
+        const members = team.members.filter(_member => (_member.uid !== uidOrEmail && _member.email !== uidOrEmail)).concat(_newMember);
+        const newTeam = Team.create(Object.assign({}, team, {members}));
+        firebaseDataLayer.saveTeam(newTeam);
+    };
+}
+
 
 export function saveLocations(locations, team) {
     // TODO: Move locations to redux state so that we can properly handle saving a new team with locations
