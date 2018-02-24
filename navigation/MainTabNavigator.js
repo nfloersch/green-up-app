@@ -43,11 +43,10 @@ export default TabNavigator(
                                 : 'md-chatbubbles';
                         break;
                     case 'Teams':
-                        iconName = git Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts';
+                        iconName = Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts';
                         break;
                     case 'TrashTracker':
-                        iconName =
-                            Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
+                        iconName = Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
                         break;
                     // case 'Support' :
                     //     iconName = Platform.OS === 'ios' ? `ios-happy${focused ? '' : '-outline'}` : 'md-happy';
@@ -72,6 +71,6 @@ export default TabNavigator(
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
         animationEnabled: true,
-        swipeEnabled: false,
+        swipeEnabled: false
     }
 );
