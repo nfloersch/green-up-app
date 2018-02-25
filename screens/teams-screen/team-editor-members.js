@@ -45,7 +45,6 @@ class TeamEditorMembers extends Component {
         actions: PropTypes.object,
         teams: PropTypes.object,
         selectedTeam: PropTypes.object,
-        stackNav: PropTypes.object,
         screenProps: PropTypes.object
     };
 
@@ -61,9 +60,7 @@ class TeamEditorMembers extends Component {
         this.inviteContacts = this.inviteContacts.bind(this);
         this.inviteForm = this.inviteForm.bind(this);
         this.getIconColor = this.getIconColor.bind(this);
-        this._handleRequestToJoin = this._handleRequestToJoin.bind(this);
-        this._handleCurrentMember = this._handleCurrentMember.bind(this);
-        this._handleInvitation = this._handleCurrentMember.bind(this);
+        this._toMemberDetails = this._toMemberDetails.bind(this);
     }
 
     inviteContacts() {
@@ -103,22 +100,9 @@ class TeamEditorMembers extends Component {
 			}
 		}
 
-    _handleRequestToJoin(member: Object, team: Object) {
+    _toMemberDetails(member: Object, team: Object) {
         return () => {
-            Alert.alert('handle request to join');
-        };
-    }
-
-    _handleCurrentMember(member: Object, team: Object) {
-        return () => {
-            Alert.alert('handle current member');
-        };
-    }
-
-
-    _handleInvitation(member: Object, team: Object) {
-        return () => {
-            Alert.alert('handle Invitation');
+            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {team, member});
         };
     }
 
@@ -131,23 +115,16 @@ class TeamEditorMembers extends Component {
             [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
 
-        const memberActions = {
-            [memberStatus.REQUEST_TO_JOIN]: this._handleRequestToJoin,
-            [memberStatus.ACCEPTED]: this._handleCurrentMember,
-            [memberStatus.INVITED]: this._handleInvitation,
-            [memberStatus.OWNER]: () => {}
-        };
-
         const members = (this.props.selectedTeam.members || []).map(member => (
-            <View key={member.uid} style={styles.item}>
-                <TouchableHighlight onPress={memberActions[member.memberStatus](member, this.props.selectedTeam)}>
-                    <View style={styles.member}>
-                        <Ionicons
-                            name={icons[member.memberStatus] ||
-															(Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                            size={30}
-														style={this.getIconColor(member.memberStatus)} />
-                        <Text style={styles.memberEmail}>{member.email}</Text>
+            <View key={member.uid}>
+                <TouchableHighlight onPress={this._toMemberDetails(member, this.props.selectedTeam)}>
+                    <View>
+											<Ionicons
+													name={icons[member.memberStatus] ||
+														(Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+													size={30}
+													style={this.getIconColor(member.memberStatus)} />
+											<Text style={styles.memberEmail}>{member.email}</Text>
                     </View>
                 </TouchableHighlight>
 								<Text style={styles.memberName}>

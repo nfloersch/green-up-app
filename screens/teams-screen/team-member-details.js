@@ -5,10 +5,12 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, Image, Button, TouchableHighlight} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {TeamMember} from '../../models/team-member';
+import * as status from '../../constants/team-member-statuses';
 
 const styles = StyleSheet.create({
     buttonText: {
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
 });
 
 
-class Profile extends Component {
+class TeamMemberDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
@@ -105,6 +107,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this._updateTeamMember = this._updateTeamMember.bind(this);
+        this._removeTeamMember = this._removeTeamMember.bind(this);
         this._cancel = this._cancel.bind(this);
         this.state = Object.assign({}, props.profile);
     }
@@ -116,72 +119,96 @@ class Profile extends Component {
         }
     }
 
-    _updateTeamMember(newStatus) {
-        return() => {
-            this.props.actions.updateTeamMember(team, member);
-        }
+    _updateTeamMember(team: Object, member: Object) {
+        return (bits: Object) => {
+            const _member = TeamMember.create(Object.assign({}, member, bits));
+            this.props.actions.updateTeamMember(team, _member);
+        };
     }
 
-    _removeTeamMember(memberId){
-
+    _removeTeamMember(team, member) {
+        return () => {
+            this.props.actions.removeTeamMember(team, member);
+        };
     }
+
     _cancel() {
         this.setState(this.props.profile, () => {
             this.props.navigation.goBack();
         });
     }
 
-    _changeText(key) {
-        return (text) => {
-            this.setState({[key]: text});
-        };
-    }
-
 
     render() {
-        const profile = this.props.profile;
-        const avatar = profile.photoURL;
+        const {member, team} = this.props.navigation.state.params;
+        const avatar = member.photoURL;
+
+        function getButtons(teamMember: Object) {
+            switch (teamMember.memberStatus) {
+                case status.OWNER :
+                    return (<View><Text>You own this team</Text></View>);
+                case status.REQUEST_TO_JOIN :
+                    return (
+                        <View>
+                            <Text>{teamMember.displayName || teamMember.email} wants to join your team</Text>
+                            <View>
+                                <Button onPress={() => {
+                                    this.props.actions.removeTeamMember(team, teamMember);
+                                }} title={'Ignore'}/>
+                                <Button onPress={() => {
+                                    this.props.actions.addTeamMember(team, teamMember, status.ACCEPTED);
+                                }} title={'Add To This Team'}/>
+                            </View>
+                        </View>
+                    );
+                case status.ACCEPTED :
+                    return (
+                        <View>
+                            <Text>{teamMember.displayName || teamMember.email} is a member of your team</Text>
+                            <View>
+                                <Button onPress={() => {
+                                    this.props.actions.removeTeamMember(teamMember);
+                                }} title={'Ignore'}/>
+                            </View>
+                        </View>
+                    );
+                case status.INVITED :
+                    return (
+                        <View>
+                            <Text>{teamMember.displayName || teamMember.email} is invited to your team, but has yet to
+                                accept</Text>
+                            <View>
+                                <Button onPress={() => {
+                                    this.props.actions.removeTeamMember(teamMember);
+                                }} title={'Ignore'}/>
+                            </View>
+                        </View>
+                    );
+                default :
+                    return (<Text>{teamMember.displayName || teamMember.email} is not a member of your team</Text>);
+            }
+        }
 
         return (
             <View style={styles.container}>
-                <Image style={{width: 50, height: 50}}
-                       source={{uri: avatar}}
-                />
-                <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{'Your Name:'}</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        multiline={false}
-                        numberOfLines={1}
-                        onChangeText={this._changeText('displayName')}
-                        placeholder={'your name'}
-                        value={this.state.displayName}
-                        style={styles.inputRowControl}
+                <View>
+                    <Image
+                        style={{width: 50, height: 50}}
+                        source={{uri: avatar}}
                     />
+                    <Text style={styles.inputRowLabel}>{member.displayName}</Text>
                 </View>
                 <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{'About Me:'}</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        multiline={true}
-                        numberOfLines={5}
-                        onChangeText={this._changeText('bio')}
-                        placeholder={'Maximum of 144 characters'}
-                        value={this.state.affiliations}
-                        style={styles.inputRowControl}
-                    />
+                    <Text style={styles.inputRowLabel}>{`About ${member.displayName}`}</Text>
+                    <Text>
+                        {member.bio}
+                    </Text>
                 </View>
                 <View style={styles.buttonRow}>
-                    <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
-                        <Text style={styles.buttonText}>Save Profile</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.button} onPress={this._cancel}>
-                        <Text style={styles.buttonText}>Cancel</Text>
-                    </TouchableHighlight>
+                    {getButtons.bind(this)(member)}
                 </View>
             </View>
         );
-
     }
 }
 
@@ -197,4 +224,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberDetails);

@@ -11,19 +11,25 @@ import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    TouchableHighlight, StyleSheet,
-    Button, Modal, ScrollView, TextInput, Text, View
+    TouchableHighlight,
+    StyleSheet,
+    Button,
+    Modal,
+    ScrollView,
+    TextInput,
+    Text,
+    View
 } from 'react-native';
 
 import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 
 const myStyles = {
 };
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const addTrashDrop = 'addTrashDrop';
 const toggleTag = 'toggleTag';
@@ -112,14 +118,15 @@ class TrashMap extends Component {
                     key={key}
                     pinColor={'green'}
                     coordinate={marker.location}
-                    title={String('# of Bags: ' + marker.bagCount)}
+                    title={String(`# of Bags: ${ marker.bagCount}`)}
                     description={marker.tags.join(', ')}
                 />
             );
         }
-
-        const myMarkerKeys = Object.keys(this.props.trashDrops || {});
-        const myMarkers = myMarkerKeys.map(key => createMarker(this.props.trashDrops[key], key));
+        const drops = this.props.trashDrops || {};
+        // Adding a map marker without a long & lat causes the app to crash :(
+        const myMarkerKeys = Object.keys(drops).filter(key => !!(drops[key].coordinate && drops[key].coordinate.longitude && drops[key].coordinate.latitude));
+        const myMarkers = myMarkerKeys.map(key => createMarker(drops[key], key));
         return (
             <View style={styles.container}>
                 <MapView
@@ -133,11 +140,11 @@ class TrashMap extends Component {
                 >
                     {myMarkers}
                 </MapView>
-								<View style={styles.button}>
-										<Button
-											onPress={this._goToTrashDrop}
-											title='Create Trash Drop' />
-								</View>
+                <View style={styles.button}>
+                    <Button
+                        onPress={this._goToTrashDrop}
+                        title='Create Trash Drop' />
+                </View>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
@@ -155,24 +162,24 @@ class TrashMap extends Component {
                             />
                             <Text style={styles.heading2}>Other Items</Text>
                             <View style={styles.fieldset}>
-															<CheckBox
-																	label='Needles/Bio-Waste'
-																	checked={this.state.tags.indexOf('bio-waste') > -1}
-																	onChange={this[toggleTag]('bio-waste')}/>
-															<CheckBox
-																	label='Tires'
-																	checked={this.state.tags.indexOf('tires') > -1}
-																	onChange={this[toggleTag]('tires')}/>
-															<CheckBox
-																	label='Large Object'
-																	checked={this.state.tags.indexOf('large') > -1}
-																	onChange={this[toggleTag]('large')}/>
-														</View>
-														<View style={styles.button}>
-																<Button
-																	onPress={this[addTrashDrop]}
-																	title='Mark This Spot' />
-														</View>
+                                <CheckBox
+                                    label='Needles/Bio-Waste'
+                                    checked={this.state.tags.indexOf('bio-waste') > -1}
+                                    onChange={this[toggleTag]('bio-waste')}/>
+                                <CheckBox
+                                    label='Tires'
+                                    checked={this.state.tags.indexOf('tires') > -1}
+                                    onChange={this[toggleTag]('tires')}/>
+                                <CheckBox
+                                    label='Large Object'
+                                    checked={this.state.tags.indexOf('large') > -1}
+                                    onChange={this[toggleTag]('large')}/>
+                            </View>
+                            <View style={styles.button}>
+                                <Button
+                                    onPress={this[addTrashDrop]}
+                                    title='Mark This Spot' />
+                            </View>
                             <TouchableHighlight onPress={() => {
                                 this.setState({modalVisible: false});
                             }}>

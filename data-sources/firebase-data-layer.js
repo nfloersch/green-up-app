@@ -174,7 +174,7 @@ function saveTeam(team, id) {
     }
 }
 
-async function saveLocations(locations, teamId) {
+function saveLocations(locations, teamId) {
     return firebase.database().ref(`teams/${teamId}/locations`).set(locations);
 }
 

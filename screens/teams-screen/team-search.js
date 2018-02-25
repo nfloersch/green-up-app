@@ -17,7 +17,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 /**
  *
@@ -40,7 +40,7 @@ const myStyles = {
     }
 };
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class TeamSearch extends Component {
@@ -48,7 +48,8 @@ class TeamSearch extends Component {
         actions: PropTypes.object,
         teams: PropTypes.object,
         navigation: PropTypes.object,
-        searchResults: PropTypes.array
+        searchResults: PropTypes.array,
+        currentUser: PropTypes.object
     };
 
     static navigationOptions = {
@@ -63,15 +64,16 @@ class TeamSearch extends Component {
             searchTerm: '',
             searchResults: []
         };
-
     }
 
     onSearchTermChange(searchTerm) {
         const teams = this.props.teams;
-        const searchResults = Object.keys(this.props.teams).map(key => ({
-            key,
-            score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
-        }))
+        const searchResults = Object.keys(this.props.teams)
+            .filter(key => teams[key].isPublic === true || teams[key].members.find(m => m.uid === this.props.currentUser.uid))
+            .map(key => ({
+                key,
+                score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
+            }))
             .filter(score => (score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
@@ -94,7 +96,7 @@ class TeamSearch extends Component {
                 key={teamId} style={styles.searchResult}
                 onPress={this.toTeamDetail(teamId)}
             >
-            	<Text style={styles.searchResultsTitle}>{teams[teamId].name}</Text>
+                <Text style={styles.searchResultsTitle}>{teams[teamId].name}</Text>
             </TouchableHighlight>
         ));
         return (
@@ -115,16 +117,13 @@ class TeamSearch extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-			teams: state.teams.teams
-		};
-}
+const mapStateToProps = (state) => ({
+    teams: state.teams.teams,
+    currentUser: state.login.user
+});
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamSearch);

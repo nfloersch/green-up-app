@@ -23,7 +23,9 @@ import * as actions from './actions';
 class TeamEditorMap extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        selectedTeam: PropTypes.object
+        selectedTeam: PropTypes.object,
+        locations: PropTypes.array,
+        otherCleanAreas: PropTypes.array
     };
 
     static navigationOptions = {
@@ -40,7 +42,7 @@ class TeamEditorMap extends Component {
         this._removeMarker = this._removeMarker.bind(this);
         this._removeLastMarker = this._removeLastMarker.bind(this);
 
-        const {locations} = this.props.selectedTeam;
+        const {locations} = this.props;
 
         // if there are pins on the map, set initial location where the first pin is, otherwise device location will be set on componentWillMount
         const initialMapLocation = locations && locations.length > 0 ? {
@@ -51,7 +53,6 @@ class TeamEditorMap extends Component {
         } : null;
 
         this.state = {
-            locations: locations,
             initialMapLocation: initialMapLocation
         };
     }
@@ -108,45 +109,31 @@ class TeamEditorMap extends Component {
         });
 
     _handleMapClick(e) {
-        // TODO: dispatch action to save the new marker
-        // TODO: make sure unsaved team details don't get lost
-        const marker = {
-            name: '',
-            description: 'clean area limit',
+        this.props.actions.saveLocations(this.props.locations.concat({
+            title: 'clean area border',
+            description: 'tap to remove',
             coordinates: e.nativeEvent.coordinate
-        };
-
-        const newState = {
-            ...this.state,
-            locations: this.state.locations.concat(marker)
-        };
-
-        actions.saveLocations(newState.locations, this.props.selectedTeam);
-
-        // move this to an action and handle through redux
-        this.setState(newState);
+        }), this.props.selectedTeam);
     }
 
     _removeMarker(marker) {
         return () => {
-            const locations = this.state.locations.filter(_marker => (
+            const locations = this.props.locations.filter(_marker => (
                 marker.coordinates.latitude !== _marker.coordinates.latitude ||
                 marker.coordinates.longitude !== _marker.coordinates.longitude
             ));
-            actions.saveLocations(locations, this.props.selectedTeam);
-            this.setState({locations});
+            this.props.actions.saveLocations(locations, this.props.selectedTeam);
         };
     }
 
     _removeLastMarker() {
-        var locations = this.state.locations.slice(0, this.state.locations.length - 1);
-        actions.saveLocations(locations, this.props.selectedTeam);
-        this.setState({locations});
+        const locations = this.props.locations.slice(0, this.props.locations.length - 1);
+        this.props.actions.saveLocations(locations, this.props.selectedTeam);
     }
 
     render() {
         var teamLocationMarkers = this
-            .state
+            .props
             .locations
             .map((marker, index) => (
                 <MapView.Marker coordinate={marker.coordinates}
@@ -155,21 +142,30 @@ class TeamEditorMap extends Component {
                     onPress={this.calloutClicked}
                     onCalloutPress={this._removeMarker(marker)}
                     description={marker.descrption || 'tap to remove'}
+                    image={require('../../assets/images/ic_person_pin_circle_white_24dp_2x.png')}
                 />));
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
                     <Text>
-                        Place markers where you want your team to work on. Tap on the marker text box to remove a marker.
+                        Place markers around the area you want your team to work on.
+                        Tap on the marker text box to remove a marker.
+                        Blue markers represent areas that other teams are cleaning up.
                     </Text>
+                    {!this.props.selectedTeam.id && (
+                        <Text>
+                            The markers will only be saved when you return to the details page and save the team details.
+                        </Text>)}
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
                         onPress={this._handleMapClick}>
-                        {/* TODO: Show areas other teams have defined */}
-                        {this.state.locations.length > 0 && teamLocationMarkers}
-                        {this.state.locations.length > 0 && (
-                            <Polygon coordinates={this.state.locations.map(m => m.coordinates)} fillColor='#ffb3b3'/>
+                        {this.props.locations.length > 0 && teamLocationMarkers}
+                        {this.props.locations.length > 0 && (
+                            <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
+                        )}
+                        {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map(c =>
+                            (<Polygon coordinates={c} fillColor='#b1c8ed' />)
                         )}
                     </MapView>
                     <Button title={'remove last marker'}
@@ -181,7 +177,13 @@ class TeamEditorMap extends Component {
 
 function mapStateToProps(state) {
     const selectedTeam = state.teams.selectedTeam;
-    return {selectedTeam};
+    const locations = state.teams.locations;
+    const otherCleanAreas = Object.values(state.teams.teams)
+        .filter(team => team.id !== selectedTeam.id)
+        .map(team => team.locations.map(l => l.coordinates))
+        .filter(v => v.length > 0);
+    return {selectedTeam, locations, otherCleanAreas};
+
 }
 
 function mapDispatchToProps(dispatch) {
