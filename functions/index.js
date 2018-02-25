@@ -47,7 +47,7 @@ function sendInvitationEmail(email, displayName) {
 
 // [START ]
 /**
- * Sends a welcome email to new user.
+ * Sends a invitation email to an invited user.
  */
 // [START onCreateTrigger]
 exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onCreate((event) => {
@@ -69,3 +69,6 @@ exports.createProfile = functions.auth.user().onCreate((event) => {
     admin.database().ref(`profiles/${uid}`).set({uid, displayName, email, photoURL, created});
 });
 
+exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers').onDelete((event) => {
+    return (email, displayName);
+});

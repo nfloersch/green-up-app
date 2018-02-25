@@ -51,7 +51,6 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
     };
 }
 
-
 export function askToJoinTeam(team: Object, user: Object) {
     return async function () {
         const potentialTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.REQUEST_TO_JOIN}));

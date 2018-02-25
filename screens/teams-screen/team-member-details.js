@@ -167,8 +167,8 @@ class TeamMemberDetails extends Component {
                             <Text>{teamMember.displayName || teamMember.email} is a member of your team</Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(teamMember);
-                                }} title={'Ignore'}/>
+                                    this.props.actions.removeTeamMember(team, teamMember);
+                                }} title={'Remove from Team'}/>
                             </View>
                         </View>
                     );
@@ -179,8 +179,8 @@ class TeamMemberDetails extends Component {
                                 accept</Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(teamMember);
-                                }} title={'Ignore'}/>
+                                    this.props.actions.removeTeamMmeber(team, teamMember);
+                                }} title={'Revoke Invitation'}/>
                             </View>
                         </View>
                     );

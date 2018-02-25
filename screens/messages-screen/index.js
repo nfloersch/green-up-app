@@ -5,67 +5,46 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import * as actions from './actions';
+import {StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-const styles = StyleSheet.create({
-    button: {
-        fontSize: 20,
-        textAlign: 'center',
-        marginBottom: 20,
-        marginTop: 10,
-        color: '#000',
-        borderWidth: 0.5,
-        borderColor: '#d6d7da',
-        padding: 10
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    headerButton: {
-        // flex: 1,
-        width: 32
-    },
+import * as actions from './actions';
+import {defaultStyles} from '../../styles/default-styles';
+
+const myStyles = {
     message: {
-        fontSize: 20,
-        textAlign: 'left',
-        margin: 15,
-        color: 'red'
-    },
-    messageRead: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: '#555'
-    },
-    inputStyle: {
-        paddingRight: 5,
-        paddingLeft: 5,
-        paddingBottom: 2,
-        color: '#262626',
-        fontSize: 18,
-        fontWeight: '200',
-        height: 40,
-        width: '100%',
-        textAlign: 'left',
-        borderColor: '#DDDDDD',
+        marginBottom: 10,
+        padding: 5,
         borderWidth: 1,
+        borderColor: '#888',
         borderStyle: 'solid'
-    }
-});
+    },
+    read: {
+        backgroundColor: '#EFEFEF'
+    },
+    unread: {
+        borderTopColor: 'green',
+        borderTopWidth: 3
+    },
+    newMsg: {
+        fontWeight: 'bold'
+    },
+    oldMsg: {}
+};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         messages: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        userHasTeams: PropTypes.bool,
+        teamsLoaded: PropTypes.bool,
+        messagesLoaded: PropTypes.bool
     };
 
     static navigationOptions = {
@@ -79,6 +58,12 @@ class Messages extends Component {
         this.toSendMessage = this.toSendMessage.bind(this);
     }
 
+    componentWillUpdate(nextProps) {
+        if (nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
+            this.props.navigation.navigate('Teams');
+        }
+    }
+
     toSendMessage() {
         return () => {
             this.props.navigation.navigate('SendMessage');
@@ -90,10 +75,9 @@ class Messages extends Component {
         const userId = this.props.currentUser.uid;
         return () => {
             // mark message as read
-
             this.props.actions.readMessage(myMessage, userId);
-            // navigate to details screen
 
+            // navigate to details screen
             this.props.navigation.navigate('MessageDetails', {messageId});
         };
     }
@@ -106,37 +90,48 @@ class Messages extends Component {
             (
                 <View key={key}>
                     <TouchableHighlight onPress={this.toMessageDetail(key)}>
-                        <View>
-                            <Text style={!messages[key].read ? styles.message : styles.messageRead}>
-                                {messages[key].text}
+                        <View style={[styles.message,
+                            messages[key].read ?
+                                styles.read : styles.unread]}>
+                            <Text style={messages[key].read ?
+                                styles.oldMsg : styles.newMsg}>
+                                {messages[key].text.length > 80 ?
+                                    `${messages[key].text.slice(0, 80)}...` :
+                                    messages[key].text}
                             </Text>
+                            <Text style={{fontSize: 10, textAlign: 'right'}}>{messages[key].sender.email}</Text>
                         </View>
                     </TouchableHighlight>
                 </View>
             )
         );
+
+
         return (
-            <View style={styles.container}>
-                <TouchableHighlight onPress={() => {
-                    this.props.navigation.navigate('NewMessage');
-                }}>
-                    <Text style={styles.button}>New Message</Text>
-                </TouchableHighlight>
+            <ScrollView style={styles.container}>
+                <Button
+                    onPress={() => {
+                        this.props.navigation.navigate('NewMessage');
+                    }}
+                    title='New Message'
+                />
                 {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
-            </View>
+            </ScrollView>
+
         );
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const currentUser = state.login.user;
     return {messages: state.messages.messages, currentUser};
-}
 
-function mapDispatchToProps(dispatch) {
+};
+
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
