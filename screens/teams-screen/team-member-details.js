@@ -127,9 +127,8 @@ class TeamMemberDetails extends Component {
     }
 
     _removeTeamMember(team, member) {
-        const id = member.uid || member.email;
         return () => {
-            this.props.actions.removeTeamMember(team, id);
+            this.props.actions.removeTeamMember(team, member);
         };
     }
 
