@@ -5,13 +5,11 @@ export const defaultStyles = {
         backgroundColor: 'white',
         borderColor: 'white',
         borderLeftWidth: 20,
-        borderRightWidth: 20
+        borderRightWidth: 20,
+        borderTopWidth: 10,
     },
     button: {
         padding: 5,
-        borderWidth: 1,
-        borderColor: '#000',
-        backgroundColor: '#EFEFEF',
         marginTop: 10,
         marginBottom: 10
     },
@@ -20,7 +18,8 @@ export const defaultStyles = {
         borderWidth: 1,
         height: 40,
         padding: 5,
-        textAlign: 'center'
+        textAlign: 'center',
+				lineHeight: 25
     },
     fieldset: {
         borderWidth: 2,
@@ -36,7 +35,9 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
-    label: {},
+    label: {
+			marginTop: 5
+		},
     data: {
         fontWeight: 'bold'
     },

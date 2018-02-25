@@ -5,27 +5,17 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
 import LoginForm from '../../components/login-form';
 import * as loginActions from './actions';
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    linkText: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
-    },
-    link: {}
-});
+import {defaultStyles} from  '../../styles/default-styles';
+
+const myStyles = {
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
+
 class CreateNewAccount extends Component {
 
     static propTypes = {
@@ -36,28 +26,30 @@ class CreateNewAccount extends Component {
     static navigationOptions = {
         title: 'Create New Account'
     };
-    constructor(props) {
+
+		constructor(props) {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
     }
-    onButtonPress() {}
+
+		onButtonPress() {}
 
     render() {
         return (
             <View style={styles.container}>
-                <Text>Create New Account</Text>
                 <LoginForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
             </View>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {session: state.login.session};
+const mapStateToProps = (state) => {
+   return {session: state.login.session};
 }
-function mapDispatchToProps(dispatch) {
+
+const mapDispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(loginActions, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     };
 }
 

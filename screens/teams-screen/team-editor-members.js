@@ -7,26 +7,38 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform, Alert} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
-import * as memberStatus from '../../constants/team-member-statuses';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    }
-});
+import * as actions from './actions';
+import * as memberStatus from '../../constants/team-member-statuses';
+import {defaultStyles} from  '../../styles/default-styles';
+
+const myStyles = {
+	member: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-start'
+	},
+	memberEmail: {
+		marginLeft: 10,
+		lineHeight: 25
+	},
+	memberName: {
+		marginLeft: 35,
+		paddingBottom: 5
+	},
+	item: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#888',
+		marginBottom: 10
+	}
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
+
 
 class TeamEditorMembers extends Component {
     static propTypes = {
@@ -47,6 +59,7 @@ class TeamEditorMembers extends Component {
         super(props);
         this.inviteContacts = this.inviteContacts.bind(this);
         this.inviteForm = this.inviteForm.bind(this);
+        this.getIconColor = this.getIconColor.bind(this);
         this._toMemberDetails = this._toMemberDetails.bind(this);
     }
 
@@ -58,6 +71,35 @@ class TeamEditorMembers extends Component {
         this.props.screenProps.stacknav.navigate('InviteForm');
     }
 
+		getIconColor(status) {
+			switch (status) {
+				case 'ACCEPTED':
+					return {
+						color: 'green'
+					}
+				case 'OWNER':
+					return {
+						color: 'blue'
+					}
+				case 'INVITED':
+					return {
+						color: 'orange'
+					}
+				case 'NOT_INVITED':
+					return {
+						color: 'red'
+					}
+				case 'REQUEST_TO_JOIN':
+					return {
+						color: 'purple'
+					}
+				default:
+					return {
+						color: 'black'
+					}
+			}
+		}
+
     _toMemberDetails(member: Object, team: Object) {
         return () => {
             this.props.screenProps.stacknav.navigate('TeamMemberDetails', {team, member});
@@ -66,7 +108,6 @@ class TeamEditorMembers extends Component {
 
 
     render() {
-
         const icons = {
             [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
             [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
@@ -78,13 +119,17 @@ class TeamEditorMembers extends Component {
             <View key={member.uid}>
                 <TouchableHighlight onPress={this._toMemberDetails(member, this.props.selectedTeam)}>
                     <View>
-                        <Ionicons
-                            name={icons[member.memberStatus] || (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                            size={30}/>
-                        <Text>{member.email}</Text>
-                        <Text>{(`${member.displayName}`)}</Text>
+											<Ionicons
+													name={icons[member.memberStatus] ||
+														(Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+													size={30}
+													style={this.getIconColor(member.memberStatus)} />
+											<Text style={styles.memberEmail}>{member.email}</Text>
                     </View>
                 </TouchableHighlight>
+								<Text style={styles.memberName}>
+									{(`${member.displayName}`).trim()}
+								</Text>
             </View>
 
         ));
@@ -92,7 +137,6 @@ class TeamEditorMembers extends Component {
         return (
             <View style={styles.container}>
                 <View>
-                    <Text>Team Editor Members Screen</Text>
                     <Button onPress={this.inviteContacts} title='Invite Contacts'/>
                     <Button onPress={this.inviteForm} title='Invite to Team'/>
                 </View>
@@ -106,11 +150,14 @@ class TeamEditorMembers extends Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    return {teams: state.teams.teams, selectedTeam: state.teams.selectedTeam};
+const mapStateToProps = (state) => {
+    return {
+			teams: state.teams.teams,
+			selectedTeam: state.teams.selectedTeam
+		};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };

@@ -7,28 +7,20 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Text, View, TouchableHighlight, StyleSheet, Linking} from 'react-native';
 import {bindActionCreators} from 'redux';
-import * as actions from '../login-screen/actions';
 import {connect} from 'react-redux';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    buttonText: {fontSize: 20, textAlign: 'center'},
-    button: {
-        marginTop: 5,
-        marginBottom: 5,
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginRight: 5,
-        marginLeft: 5,
-        backgroundColor: 'powderblue',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 2
-    }
-});
+import * as actions from '../login-screen/actions';
+import {defaultStyles} from  '../../styles/default-styles';
+
+const myStyles = {
+	menuItem: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
+};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class MenuScreen extends Component {
     static propTypes = {
@@ -44,10 +36,6 @@ class MenuScreen extends Component {
     constructor(props) {
         super(props);
     }
-
-    componentDidMount() {
-    }
-
 
     render() {
         return (
@@ -96,15 +84,15 @@ class MenuScreen extends Component {
 }
 
 
-function mapStateToProps(state) {
-    return {};
+const mapStateToProps = (state) => {
+    return {
+		};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);
-
