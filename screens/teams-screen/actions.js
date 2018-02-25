@@ -76,6 +76,11 @@ export function saveTeam(team, id) {
     };
 }
 
+
+export function setSelectedTeamValue(key, value) {
+    return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};
+}
+
 export function removeTeamMember(team, member) {
     const uidOrEmail = member.uid || member.email;
     return async function () {
@@ -84,7 +89,6 @@ export function removeTeamMember(team, member) {
         firebaseDataLayer.saveTeam(newTeam);
     };
 }
-
 
 export function addTeamMember(team, member, status) {
     const uidOrEmail = member.uid || member.email;
@@ -96,8 +100,12 @@ export function addTeamMember(team, member, status) {
     };
 }
 
-
 export function saveLocations(locations, team) {
-    // TODO: Move locations to redux state so that we can properly handle saving a new team with locations
-    return firebaseDataLayer.saveLocations(locations, team.id);
+    return async function(dispatch) {
+        if(team.id) {
+            await firebaseDataLayer.saveLocations(locations, team.id);
+        }
+
+        dispatch({type: types.LOCATIONS_UPDATED, locations});
+    };
 }
