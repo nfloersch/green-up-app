@@ -65,7 +65,10 @@ class Messages extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         messages: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        userHasTeams: PropTypes.bool,
+        teamsLoaded: PropTypes.bool,
+        messagesLoaded: PropTypes.bool
     };
 
     static navigationOptions = {
@@ -77,6 +80,12 @@ class Messages extends Component {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this.toSendMessage = this.toSendMessage.bind(this);
+    }
+
+    componentWillUpdate(nextProps) {
+        if(nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
+            this.props.navigation.navigate('Teams');
+        }
     }
 
     toSendMessage() {
@@ -99,38 +108,64 @@ class Messages extends Component {
     }
 
     render() {
-        const messages = this.props.messages;
-        const messageKeys = Object.keys(messages || {});
-        const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
-        const myMessages = sortedKeys.map(key =>
-            (
-                <View key={key}>
-                    <TouchableHighlight onPress={this.toMessageDetail(key)}>
+        if(this.props.teamsLoaded && this.props.messagesLoaded) {
+            const messages = this.props.messages;
+            const messageKeys = Object.keys(messages || {});
+            const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
+            const myMessages = sortedKeys.length > 0 ? sortedKeys.map(key =>
+                (
+                    <View key={key}>
+                        <TouchableHighlight onPress={this.toMessageDetail(key)}>
+                            <View>
+                                <Text style={!messages[key].read ? styles.message : styles.messageRead}>
+                                    {messages[key].text}
+                                </Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                )) : (<Text>Sorry, no messages </Text>);
+
+            return (
+                <View style={styles.container}>
+                    {this.props.userHasTeams ? (
                         <View>
-                            <Text style={!messages[key].read ? styles.message : styles.messageRead}>
-                                {messages[key].text}
-                            </Text>
+                            <TouchableHighlight onPress={() => { this.props.navigation.navigate('NewMessage'); }}>
+                                <Text style={styles.button}>New Message</Text>
+                            </TouchableHighlight>
+                            <View>
+                                {myMessages}
+                            </View>
                         </View>
-                    </TouchableHighlight>
+                    ) : (
+                        <TouchableHighlight onPress={() => { this.props.navigation.navigate('Teams'); }}>
+                            <View>
+                                <Text>Whoops, you're lonley in here. It seems like you don't have any teams to send messages to.</Text>
+                                <Text style={styles.button}> Start your own team or join an exising one.</Text>
+                            </View>
+                        </TouchableHighlight>
+                    )}
                 </View>
-            )
-        );
+            );
+        }
+
         return (
-            <View style={styles.container}>
-                <TouchableHighlight onPress={() => {
-                    this.props.navigation.navigate('NewMessage');
-                }}>
-                    <Text style={styles.button}>New Message</Text>
-                </TouchableHighlight>
-                {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
+            <View> 
+                <Text>Running around, gathering data... please wait</Text>
             </View>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.login.user;
-    return {messages: state.messages.messages, currentUser};
+    return {
+        messages: state.messages.messages,
+        currentUser: state.login.user,
+        userHasTeams: Object.values(state.teams.teams)
+            .filter(team => typeof team.members.find(member => member.uid === state.login.user.uid) !== 'undefined')
+            .length > 0,
+        teamsLoaded: state.messages.teamsLoaded,
+        messagesLoaded: state.messages.loaded
+    };
 }
 
 function mapDispatchToProps(dispatch) {
