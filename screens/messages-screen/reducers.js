@@ -1,5 +1,10 @@
 import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+
+const initialState = {
+    messages: {},
+    messagesLoaded: false,
+    teamsLoaded: false
+};
 
 export function reducers(state = initialState, action) {
     switch (action.type) {
@@ -11,7 +16,13 @@ export function reducers(state = initialState, action) {
         case types.FETCH_MESSAGES_SUCCESS :
             return {
                 ...state,
-                messages: action.messages
+                messages: action.messages,
+                loaded: true
+            };
+        case types.FETCH_TEAMS_SUCCESS :
+            return {
+                ...state,
+                teamsLoaded: true
             };
         default:
             return state;
