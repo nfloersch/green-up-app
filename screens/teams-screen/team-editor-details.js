@@ -36,7 +36,8 @@ class TeamEditorDetails extends Component {
         actions: PropTypes.object,
         navigation: PropTypes.any,
         selectedTeam: PropTypes.object,
-        screenProps: PropTypes.object
+        screenProps: PropTypes.object,
+        locations: PropTypes.array
     };
 
     static navigationOptions = {
@@ -47,14 +48,13 @@ class TeamEditorDetails extends Component {
     };
 
     constructor(props) {
-			super(props);
-			this.state = {
-					selectedTeam: {...props.selectedTeam},
-					isDateTimePickerVisible: false
-			};
+        super(props);
+        this.state = {
+            isDateTimePickerVisible: false
+        };
     }
 
-		_showDateTimePicker = () => this.setState({ isDateTimePickerVisible: !this.state.isDateTimePickerVisible });
+		_showDateTimePicker = () => this.setState({isDateTimePickerVisible: !this.state.isDateTimePickerVisible});
 
 		// would be great to combined these two, but not sure how to pass the second param
 		_handleStartDatePicked = (date) => {
@@ -68,20 +68,18 @@ class TeamEditorDetails extends Component {
 		};
 
     setSelectedOption = (option) => {
-        this.setTeamValue('isPublic')(option.value);
+        this.props.actions.setSelectedTeamValue('isPublic', option.value);
     }
 
     saveTeam = () => {
-        this.props.actions.saveTeam(this.state.selectedTeam, this.state.selectedTeam.id);
+        const {selectedTeam} = this.props;
+        selectedTeam.locations = this.props.locations;
+        this.props.actions.saveTeam(selectedTeam, selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
     }
 
-    setTeamValue = (key) => {
-        return (value) => {
-            const newSelectedTeam = Object.assign({}, this.state.selectedTeam);
-            newSelectedTeam[key] = value;
-            this.setState(Object.assign({}, this.state, {selectedTeam: newSelectedTeam}));
-        };
+    setTeamValue = (key) => (value) => {
+        this.props.actions.setSelectedTeamValue(key, value);
     }
 
 //			<View>
@@ -104,6 +102,8 @@ class TeamEditorDetails extends Component {
             }
         ];
 
+        const {selectedTeam} = this.props;
+
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -117,13 +117,13 @@ class TeamEditorDetails extends Component {
                         onChangeText={this.setTeamValue('name')}
                         placeholder={'Team Name'}
                         style={styles.textInput}
-                        value={this.state.selectedTeam.name}/>
+                        value={selectedTeam.name}/>
                 </View>
 								<View style={{marginTop: 10}}>
                 <SegmentedControls
                     options={isPublicOptions}
                     onSelection={this.setSelectedOption}
-                    selectedOption={this.state.selectedTeam.isPublic}
+                    selectedOption={selectedTeam.isPublic}
                     selectedTint={'#EFEFEF'} tint={'#666666'}
                     extractText={(option) => option.label}
                     testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
@@ -136,14 +136,14 @@ class TeamEditorDetails extends Component {
 												onChangeText={this.setTeamValue('location')}
 												placeholder={'Location'}
                         style={styles.textInput}
-												value={this.state.selectedTeam.location}/>
+												value={selectedTeam.location}/>
                 </View>
 
                 <View>
                     <Text style={styles.heading2}>Start Time</Text>
 										<View>
 											<TouchableOpacity onPress={this._showDateTimePicker}>
-    										<Text style={styles.textInput}>{this.state.selectedTeam.start || 'Select a Time'}</Text>
+    										<Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='time'
@@ -157,7 +157,7 @@ class TeamEditorDetails extends Component {
                     <Text style={styles.heading2}>End Time</Text>
 										<View>
 											<TouchableOpacity onPress={this._showDateTimePicker}>
-    										<Text style={styles.textInput}>{this.state.selectedTeam.end || 'Select a Time'}</Text>
+    										<Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='time'
@@ -174,7 +174,7 @@ class TeamEditorDetails extends Component {
 												onChangeText={this.setTeamValue('notes')}
 												placeholder={'Notes'}
                         style={styles.textInput}
-												value={this.state.selectedTeam.notes}/>
+												value={selectedTeam.notes}/>
                 </View>
 								<View style={styles.button}>
 									<Button
@@ -189,13 +189,14 @@ class TeamEditorDetails extends Component {
 
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
-    return {selectedTeam};
-}
+    const locations = state.teams.locations;
+    return {selectedTeam, locations};
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);
