@@ -115,7 +115,7 @@ class TeamEditorDetails extends Component {
 									<SegmentedControls
 											options={isPublicOptions}
 											onSelection={this.setSelectedOption}
-											selectedOption={this.state.selectedTeam.isPublic}
+											selectedOption={selectedTeam.isPublic}
 											selectedTint={'#EFEFEF'} tint={'#666666'}
 											extractText={(option) => option.label}
 											testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
@@ -125,7 +125,7 @@ class TeamEditorDetails extends Component {
 										<Text style={styles.heading2}>Select Town/City</Text>
 										<Picker
 												itemStyle={{height: 45}}
-												selectedValue={this.state.selectedTeam.town}
+												selectedValue={selectedTeam.town}
 												onValueChange={this.setTeamValue('town')}>
 												{vermontTowns.map(town =>
 														(<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
