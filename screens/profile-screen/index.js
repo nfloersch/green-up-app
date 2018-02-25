@@ -123,7 +123,7 @@ class Profile extends Component {
 
     _cancel() {
         this.setState(this.props.profile, () => {
-            this.props.navigation.goBack();
+            this.props.navigation.goBack('Main');
         });
     }
 
@@ -140,21 +140,41 @@ class Profile extends Component {
 
         return (
             <View style={styles.container}>
-                <View>
-                <Image style={{width: 50, height: 50}}
-                       source={{uri: avatar}}
+                <Image
+                    style={{width: 50, height: 50}}
+                    source={{uri: avatar}}
                 />
-                     <Text style={styles.inputRowLabel}>{profile.displayName}</Text>
-
+                <View style={styles.inputRow}>
+                    <Text style={styles.inputRowLabel}>{'My Name:'}</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        multiline={false}
+                        numberOfLines={1}
+                        onChangeText={this._changeText('displayName')}
+                        placeholder={'your name'}
+                        value={this.state.displayName}
+                        style={styles.inputRowControl}
+                    />
                 </View>
                 <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{`About ${profile.displayName}`}</Text>
-                    <Text>
-                        {profile.bio}
-                    </Text>
+                    <Text style={styles.inputRowLabel}>{'About Me:'}</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        multiline={true}
+                        numberOfLines={5}
+                        onChangeText={this._changeText('bio')}
+                        placeholder={'Maximum of 144 characters'}
+                        value={this.state.bio}
+                        style={styles.inputRowControl}
+                    />
                 </View>
                 <View style={styles.buttonRow}>
-                    {buttons}
+                    <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
+                        <Text style={styles.buttonText}>Save Profile</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.button} onPress={this._cancel}>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
