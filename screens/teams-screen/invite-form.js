@@ -6,44 +6,19 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
+import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
+import {defaultStyles} from  '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'left',
-        margin: 10,
-        alignSelf: 'center',
-        width: '96%'
-    },
-    textInput: {
-        fontSize: 18,
-        textAlign: 'left',
-        height: 28,
-        borderWidth: 1,
-        borderColor: 'grey',
-        width: '96%',
-        alignSelf: 'center',
-        padding: 2
+const myStyles = {
+};
 
-    },
-    teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    }
-});
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 function _changeInvitee(key) {
     return (value) => {
@@ -80,7 +55,7 @@ class InviteForm extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>
+                <Text style={styles.label}>
                     Invitee&apos;s Email
                 </Text>
                 <TextInput
@@ -89,7 +64,7 @@ class InviteForm extends Component {
                     value={this.state.email}
                     onChangeText={this.changeInvitee('email')}
                 />
-                <Text style={styles.text}>
+                <Text style={styles.label}>
                     First Name
                 </Text>
                 <TextInput
@@ -98,7 +73,7 @@ class InviteForm extends Component {
                     onChangeText={this.changeInvitee('firstName')}
                     placeholder='First'
                 />
-                <Text style={styles.text}>
+                <Text style={styles.label}>
                     Last Name
                 </Text>
                 <TextInput
@@ -106,6 +81,15 @@ class InviteForm extends Component {
                     value={this.state.lastName}
                     onChangeText={this.changeInvitee('lastName')}
                     placeholder='Last'
+                />
+                <Text style={styles.label}>
+                    Phone (optional)
+                </Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder='555-555-5555'
+                    value={this.state.phone}
+                    onChangeText={this.changeInvitee('phone')}
                 />
                 <Button
                     onPress={this.inviteToTeam}
@@ -115,14 +99,14 @@ class InviteForm extends Component {
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
     const teams = state.teams.teams;
     return {teams, currentUser, selectedTeam};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };

@@ -3,43 +3,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF'
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    linkText: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5
-    },
-    link: {},
-    inputStyle: {
-        paddingRight: 5,
-        paddingLeft: 5,
-        paddingBottom: 2,
-        color: '#262626',
-        fontSize: 18,
-        fontWeight: '200',
-        height: 40,
-        width: '100%',
-        textAlign: 'left',
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderStyle: 'solid'
-    }
-});
+import * as actions from './actions';
+import {defaultStyles} from  '../../styles/default-styles';
+
+const myStyles = {
+};
+
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class ForgotPassword extends Component {
 
@@ -83,8 +57,9 @@ class ForgotPassword extends Component {
                     <TextInput
                         autoCorrect={false}
                         value={this.state.email}
+												placeholder='you@domain.com'
                         onChangeText={this.onChangeState('email')}
-                        style={styles.inputStyle}
+                        style={styles.textInput}
                     />
                     <Button onPress={this.onButtonPress} title={'Reset Password'}/>
                 </View>
@@ -92,12 +67,11 @@ class ForgotPassword extends Component {
     }
 }
 
-
-function mapStateToProps(state) {
-    return {session: state.login.session};
+const mapStateToProps = (state) => {
+   return {session: state.login.session};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };

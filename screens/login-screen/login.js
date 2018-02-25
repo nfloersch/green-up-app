@@ -17,35 +17,40 @@ import {defaultStyles} from  '../../styles/default-styles';
 const myStyles = {
 		logo: {
 			justifyContent: 'center',
-			alignItems: 'center'
+			alignItems: 'center',
+			backgroundColor: 'darkseagreen',
+			marginBottom: 10
 		},
     linkText: {
         textAlign: 'center',
-        color: '#333333',
+        color: '#333',
         marginBottom: 5
     },
     socialLoginButton: {
-        borderColor: '#999999',
-        borderStyle: 'solid',
-        borderWidth: 1,
         width: '100%',
-        height: 60,
-        backgroundColor: 'mintcream',
+        height: 40,
         padding: 10,
-        marginTop: 5
+        marginTop: 5,
+				shadowColor: '#000',
+				shadowOffset: {width: 2, height: 2},
+				shadowOpacity: 0.5,
+				shadowRadius: 2,
+				borderRadius: 2
     },
     socialLogin: {
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        flexDirection: 'row'
+        flexWrap: 'wrap'
     },
     socialLoginText: {
-        fontSize: 24,
-        marginTop: 8
-    },
+        fontSize: 16,
+				fontWeight: '700',
+				color: '#888',
+				marginLeft: 20
+		},
     logos: {
-        width: 30,
-        height: 30
+        width: 20,
+        height: 20,
+				alignSelf: 'flex-start',
+				flexDirection: 'row'
     }
 };
 
@@ -91,37 +96,31 @@ class Login extends Component {
                 <View style={{width: '100%'}}>
                     <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
                     <TouchableHighlight
-                        onPress={() => this.props.navigation.navigate('ForgotPassword')}
-                    >
+                        onPress={() => this.props.navigation.navigate('ForgotPassword')}>
                         <Text style={styles.linkText}>I forgot my password</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
-                        onPress={() => this.props.navigation.navigate('CreateNewAccount')}
-                    >
+                        onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
                         <Text style={styles.linkText}>Create a new account</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
                         style={styles.socialLoginButton}
                         onPress={() => this.props.actions.googleLogin()}>
-
-                        <View style={styles.socialLogin}>
-                            <Image source={googleLogo} style={styles.logos}/>
-                            <Text style={styles.socialLoginText}>Login with Google</Text>
-                        </View>
-
+											<View style={styles.socialLogin}>
+												<Image source={googleLogo} style={styles.logos}/>
+												<Text style={styles.socialLoginText}>Log in with Google</Text>
+											</View>
                     </TouchableHighlight>
-                    <TouchableHighlight
+
+										<TouchableHighlight
                         style={styles.socialLoginButton}
-                        onPress={() => this.props.actions.facebookLogin()}
-                    >
-
-                        <View style={styles.socialLogin}>
-                            <Image source={facebookLogo} style={styles.logos}/>
-                            <Text style={styles.socialLoginText}>Login with Facebook</Text>
-                        </View>
-
+                        onPress={() => this.props.actions.facebookLogin()}>
+											<View style={styles.socialLogin}>
+												<Image source={facebookLogo} style={styles.logos}/>
+												<Text style={styles.socialLoginText}>Log in with Facebook</Text>
+											</View>
                     </TouchableHighlight>
                 </View>
             </View>

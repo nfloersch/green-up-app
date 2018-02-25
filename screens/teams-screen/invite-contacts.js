@@ -9,27 +9,19 @@ import {
     ScrollView
 } from 'react-native';
 import CheckBox from 'react-native-checkbox';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
+import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
+import {defaultStyles} from  '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    teams: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    }
-});
+const myStyles = {
+};
 
+const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 function _inviteToTeam() {
     const teamMembers = this.state.contacts
@@ -87,7 +79,6 @@ class InviteContacts extends Component {
     }
 
     render() {
-
         const myContacts = this.state.contacts.sort((a, b) => {
             switch (true) {
                 case(a.firstName < b.firstName):
@@ -109,18 +100,21 @@ class InviteContacts extends Component {
                     onChange={this.toggleContact(contact)}/>
             )
         );
+
         return (
             <View style={styles.container}>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
-                    <Button onPress={this.inviteToTeam} title='Invite to team' color='green'/>
+                    <Button
+											onPress={this.inviteToTeam}
+											title='Invite to team' />
                 </ScrollView>
             </View>
         );
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
     const teams = state.teams.teams;
@@ -128,7 +122,7 @@ function mapStateToProps(state) {
     return {teams, currentUser, selectedTeam, contacts};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
