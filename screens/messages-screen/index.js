@@ -10,31 +10,30 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
     message: {
-			marginBottom: 10,
-			padding: 5,
-			borderWidth: 1,
-			borderColor: '#888',
-			borderStyle: 'solid'
-		},
+        marginBottom: 10,
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#888',
+        borderStyle: 'solid'
+    },
     read: {
-			backgroundColor: '#EFEFEF'
+        backgroundColor: '#EFEFEF'
     },
     unread: {
-			borderTopColor: 'green',
-			borderTopWidth: 3
+        borderTopColor: 'green',
+        borderTopWidth: 3
     },
-		newMsg: {
-			fontWeight: 'bold'
-		},
-		oldMsg: {
-		}
+    newMsg: {
+        fontWeight: 'bold'
+    },
+    oldMsg: {}
 };
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class Messages extends Component {
@@ -42,7 +41,10 @@ class Messages extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         messages: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        userHasTeams: PropTypes.bool,
+        teamsLoaded: PropTypes.bool,
+        messagesLoaded: PropTypes.bool
     };
 
     static navigationOptions = {
@@ -54,6 +56,12 @@ class Messages extends Component {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this.toSendMessage = this.toSendMessage.bind(this);
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
+            this.props.navigation.navigate('Teams');
+        }
     }
 
     toSendMessage() {
@@ -69,7 +77,7 @@ class Messages extends Component {
             // mark message as read
             this.props.actions.readMessage(myMessage, userId);
 
-						// navigate to details screen
+            // navigate to details screen
             this.props.navigation.navigate('MessageDetails', {messageId});
         };
     }
@@ -80,32 +88,36 @@ class Messages extends Component {
         const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
         const myMessages = sortedKeys.map(key =>
             (
-                <View key={key} >
+                <View key={key}>
                     <TouchableHighlight onPress={this.toMessageDetail(key)}>
                         <View style={[styles.message,
-																				messages[key].read ?
-																				styles.read : styles.unread]}>
+                            messages[key].read ?
+                                styles.read : styles.unread]}>
                             <Text style={messages[key].read ?
-																				styles.oldMsg : styles.newMsg}>
-															{messages[key].text.length > 80 ?
-																`${messages[key].text.slice(0, 80)}...`:
-																 messages[key].text}
-														</Text>
-                        		<Text style={{fontSize: 10, textAlign: 'right'}}>{messages[key].sender.email}</Text>
-												</View>
+                                styles.oldMsg : styles.newMsg}>
+                                {messages[key].text.length > 80 ?
+                                    `${messages[key].text.slice(0, 80)}...` :
+                                    messages[key].text}
+                            </Text>
+                            <Text style={{fontSize: 10, textAlign: 'right'}}>{messages[key].sender.email}</Text>
+                        </View>
                     </TouchableHighlight>
                 </View>
             )
         );
+
+
         return (
             <ScrollView style={styles.container}>
                 <Button
-										onPress={() => {
-                    	this.props.navigation.navigate('NewMessage');}}
-										title='New Message'
-								/>
+                    onPress={() => {
+                        this.props.navigation.navigate('NewMessage');
+                    }}
+                    title='New Message'
+                />
                 {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
             </ScrollView>
+
         );
     }
 }
@@ -113,12 +125,13 @@ class Messages extends Component {
 const mapStateToProps = (state) => {
     const currentUser = state.login.user;
     return {messages: state.messages.messages, currentUser};
-}
+
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);
