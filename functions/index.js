@@ -1,3 +1,6 @@
+import {User} from '../models/user';
+import * as dataLayerActions from '../data-sources/data-layer-actions';
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
@@ -82,3 +85,17 @@ exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers/{i
         admin.database().ref('test').push(event.data.previous);
     }
 });
+
+// exports.checkInvitations = functions.auth().onAuthStateChanged((user) => {
+//     if (!!user && user.email) {
+//
+//         const invitations = admin.database().ref('invitations');
+//         invitations.on('value', (snapshot) => {
+//             const invites = snapshot.val();
+//             const keys = Object.keys(invites).filter(key => invites[key].teamMember.email.toLowerCase() === user.email.toLowerCase());
+//             keys.forEach(key => {
+//                 functions.
+//             });
+//          });
+//     }
+// });

@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
-import Team from '../models/team';
 
 function returnType(entry) {
     switch (true) {
@@ -36,14 +35,12 @@ function setupProfileListener(userId, dispatch) {
     });
 }
 
-
 function setupTeamListener(dispatch) {
     const teams = firebase.database().ref('teams');
     teams.on('value', (snapshot) => {
         dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
     });
 }
-
 
 function setupTrashDropListener(dispatch) {
     const drops = firebase.database().ref('trashDrops');
@@ -68,7 +65,6 @@ async function initialize(dispatch) {
                 setupProfileListener(user.uid, dispatch);
                 setupTeamListener(dispatch);
                 setupTrashDropListener(dispatch);
-
             } else {
                 console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());

@@ -175,11 +175,13 @@ class TeamMemberDetails extends Component {
                 case status.INVITED :
                     return (
                         <View>
-                            <Text>{teamMember.displayName || teamMember.email} is invited to your team, but has yet to
-                                accept</Text>
+                            <Text>
+                                {teamMember.displayName || teamMember.email} is invited to your team, but has yet to
+                                accept
+                            </Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMmeber(team, teamMember);
+                                    this.props.actions.removeTeamMember(team, teamMember);
                                 }} title={'Revoke Invitation'}/>
                             </View>
                         </View>
