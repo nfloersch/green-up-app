@@ -164,8 +164,8 @@ class TeamEditorMap extends Component {
                         {this.props.locations.length > 0 && (
                             <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
                         )}
-                        {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map(c =>
-                            (<Polygon coordinates={c} fillColor='#b1c8ed' />)
+                        {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((c, index) =>
+                            (<Polygon key={index} coordinates={c} fillColor='#b1c8ed' />)
                         )}
                     </MapView>
                     <Button title={'remove last marker'}
