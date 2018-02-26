@@ -13,30 +13,30 @@ import {Ionicons} from '@expo/vector-icons';
 
 import * as actions from './actions';
 import * as memberStatus from '../../constants/team-member-statuses';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-	member: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'flex-start'
-	},
-	memberEmail: {
-		marginLeft: 10,
-		lineHeight: 25
-	},
-	memberName: {
-		marginLeft: 35,
-		paddingBottom: 5
-	},
-	item: {
-		borderBottomWidth: 1,
-		borderBottomColor: '#888',
-		marginBottom: 10
-	}
+    member: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
+    },
+    memberEmail: {
+        marginLeft: 10,
+        lineHeight: 25
+    },
+    memberName: {
+        marginLeft: 35,
+        paddingBottom: 5
+    },
+    item: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#888',
+        marginBottom: 10
+    }
 };
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 
@@ -71,34 +71,34 @@ class TeamEditorMembers extends Component {
         this.props.screenProps.stacknav.navigate('InviteForm');
     }
 
-		getIconColor(status) {
-			switch (status) {
-				case 'ACCEPTED':
-					return {
-						color: 'green'
-					}
-				case 'OWNER':
-					return {
-						color: 'blue'
-					}
-				case 'INVITED':
-					return {
-						color: 'orange'
-					}
-				case 'NOT_INVITED':
-					return {
-						color: 'red'
-					}
-				case 'REQUEST_TO_JOIN':
-					return {
-						color: 'purple'
-					}
-				default:
-					return {
-						color: 'black'
-					}
-			}
-		}
+    getIconColor(status) {
+        switch (status) {
+            case 'ACCEPTED':
+                return {
+                    color: 'green'
+                };
+            case 'OWNER':
+                return {
+                    color: 'blue'
+                };
+            case 'INVITED':
+                return {
+                    color: 'orange'
+                };
+            case 'NOT_INVITED':
+                return {
+                    color: 'red'
+                };
+            case 'REQUEST_TO_JOIN':
+                return {
+                    color: 'purple'
+                };
+            default:
+                return {
+                    color: 'black'
+                };
+        }
+    }
 
     _toMemberDetails(member: Object, team: Object) {
         return () => {
@@ -116,20 +116,20 @@ class TeamEditorMembers extends Component {
         };
 
         const members = (this.props.selectedTeam.members || []).map(member => (
-            <View key={member.uid}>
+            <View key={member.uid || member.email}>
                 <TouchableHighlight onPress={this._toMemberDetails(member, this.props.selectedTeam)}>
                     <View>
-											<Ionicons
-													name={icons[member.memberStatus] ||
-														(Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-													size={30}
-													style={this.getIconColor(member.memberStatus)} />
-											<Text style={styles.memberEmail}>{member.email}</Text>
+                        <Ionicons
+                            name={icons[member.memberStatus] ||
+                            (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                            size={30}
+                            style={this.getIconColor(member.memberStatus)}/>
+                        <Text style={styles.memberEmail}>{member.email}</Text>
                     </View>
                 </TouchableHighlight>
-								<Text style={styles.memberName}>
-									{(`${member.displayName}`).trim()}
-								</Text>
+                <Text style={styles.memberName}>
+                    {(`${member.displayName}`).trim()}
+                </Text>
             </View>
 
         ));
@@ -152,15 +152,15 @@ class TeamEditorMembers extends Component {
 
 const mapStateToProps = (state) => {
     return {
-			teams: state.teams.teams,
-			selectedTeam: state.teams.selectedTeam
-		};
-}
+        teams: state.teams.teams,
+        selectedTeam: state.teams.selectedTeam
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);
