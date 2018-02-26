@@ -27,7 +27,8 @@ function _changeInvitee(key) {
 }
 
 function _inviteToTeam() {
-    const teamMember = TeamMember.create(Object.assign({}, this.state, {status: TeamMember.memberStatuses.INVITED}));
+    const displayName = `${this.state.firstName} ${this.state.lastName}`;
+    const teamMember = TeamMember.create(Object.assign({}, this.state, {displayName, memberStatus: TeamMember.memberStatuses.INVITED}));
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
     this.setState({firstName: '', lastName: '', email: ''});
 }

@@ -51,14 +51,21 @@ function sendInvitationEmail(email, displayName) {
  */
 // [START onCreateTrigger]
 exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onCreate((event) => {
-    // [END onCreateTrigger]
-    // [START eventAttributes]
     const invitation = event.data.val();
-    const email = invitation.teamMember.email;
-    const displayName = `${invitation.teamMember.firstName} ${invitation.teamMember.lastName}`; // The display name of the user.
-    // [END eventAttributes]
-
-    return sendInvitationEmail(email, displayName);
+    const teamMember = invitation.teamMember;
+    const email = teamMember.email.toLowerCase();
+    const newMember = Object.assign({}, teamMember, {
+        email,
+        memberStatus: 'INVITED',
+        invitationId: event.params.pushId
+    });
+    // admin.database().ref(`teams/${invitation.team.id}/members`).push(newMember);
+    const members = admin.database().ref(`teams/${invitation.team.id}/members`);
+    members.on('value', (snapshot) => {
+        const _members = snapshot.val();
+        members.set(_members.concat(newMember));
+    });
+    return sendInvitationEmail(email, invitation.displayName);
 });
 // [END ]
 
@@ -69,6 +76,9 @@ exports.createProfile = functions.auth.user().onCreate((event) => {
     admin.database().ref(`profiles/${uid}`).set({uid, displayName, email, photoURL, created});
 });
 
-exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers').onDelete((event) => {
-    return (email, displayName);
+exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers/{index}').onDelete((event) => {
+    // Only edit data when it is first created.
+    if (event.data.previous.exists()) {
+        admin.database().ref('test').push(event.data.previous);
+    }
 });

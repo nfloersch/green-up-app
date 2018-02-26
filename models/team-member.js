@@ -15,6 +15,7 @@ export class TeamMember {
     displayName: string;
     bio: string;
     email: string;
+    invitationId: string;
     memberStatus: string;
     photoURL: string;
 
@@ -29,7 +30,7 @@ export class TeamMember {
             ? args.bio
             : null;
         this.email = typeof args.email === 'string'
-            ? args.email
+            ? args.email.toLowerCase()
             : null;
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
@@ -37,6 +38,9 @@ export class TeamMember {
         this.memberStatus = typeof args.memberStatus === 'string'
             ? args.memberStatus
             : memberStati.NOT_INVITED;
+        this.invitationId = typeof args.invitationId === 'string'
+            ? args.invitationId
+            : null;
     }
 
     static create(args: any) {
