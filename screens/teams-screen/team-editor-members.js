@@ -1,4 +1,4 @@
-/**
+	/**
  * GreenUpVermont React Native App
  * https://github.com/johnneed/GreenUpVermont
  * @flow
@@ -16,24 +16,26 @@ import * as memberStatus from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-    member: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start'
-    },
-    memberEmail: {
-        marginLeft: 10,
-        lineHeight: 25
-    },
-    memberName: {
-        marginLeft: 35,
-        paddingBottom: 5
-    },
-    item: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#888',
-        marginBottom: 10
-    }
+		member: {
+				flex: 1,
+				flexDirection: 'row',
+				justifyContent: 'flex-start'
+		},
+		memberEmail: {
+				marginLeft: 10,
+				lineHeight: 25
+		},
+		memberName: {
+				marginLeft: 35,
+				paddingBottom: 5,
+				fontSize: 10,
+				lineHeight: 10
+		},
+		item: {
+				borderBottomWidth: 1,
+				borderBottomColor: '#888',
+				marginBottom: 10
+		}
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -116,9 +118,9 @@ class TeamEditorMembers extends Component {
         };
 
         const members = (this.props.selectedTeam.members || []).map(member => (
-            <View key={member.uid || member.email}>
+            <View key={member.uid || member.email} style={styles.item}>
                 <TouchableHighlight onPress={this._toMemberDetails(member, this.props.selectedTeam)}>
-                    <View>
+                    <View style={styles.member}>
                         <Ionicons
                             name={icons[member.memberStatus] ||
                             (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
