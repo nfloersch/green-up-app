@@ -1,6 +1,3 @@
-import {User} from '../models/user';
-import * as dataLayerActions from '../data-sources/data-layer-actions';
-
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
@@ -54,6 +51,7 @@ function sendInvitationEmail(email, displayName) {
  */
 // [START onCreateTrigger]
 exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onCreate((event) => {
+    const database = admin.database();
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
     const email = teamMember.email.toLowerCase();
@@ -62,12 +60,38 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
         memberStatus: 'INVITED',
         invitationId: event.params.pushId
     });
-    // admin.database().ref(`teams/${invitation.team.id}/members`).push(newMember);
-    const members = admin.database().ref(`teams/${invitation.team.id}/members`);
-    members.on('value', (snapshot) => {
+
+    // Add message if user exists
+    // const test = database.ref('test');
+
+    const profiles = database.ref('profiles');
+    profiles.once('value', (snapshot) => {
+        const myProfiles = snapshot.val();
+
+        const userId = Object.keys(myProfiles).find(key => myProfiles[key].email.toLowerCase() === email);
+        //  if (!!userId) {
+        const message = {
+            active: true,
+            created: (new Date()).toString(),
+            read: false,
+            sender: invitation.sender,
+            teamId: invitation.team.id,
+            type: 'INVITATION',
+            text: `You have been invited to join team: ${invitation.team.name}`
+        };
+
+        database.ref(`messages/${userId}`).push(message);
+
+
+        // }
+    });
+    // Add invitee to team
+    const members = database.ref(`teams/${invitation.team.id}/members`);
+    members.once('value', (snapshot) => {
         const _members = snapshot.val();
         members.set(_members.concat(newMember));
     });
+    // Send Email
     return sendInvitationEmail(email, invitation.displayName);
 });
 // [END ]

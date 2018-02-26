@@ -2,18 +2,17 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import LoginForm from '../../components/login-form';
-import * as loginActions from './actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import * as actions from './actions';
+import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class CreateNewAccount extends Component {
@@ -27,12 +26,13 @@ class CreateNewAccount extends Component {
         title: 'Create New Account'
     };
 
-		constructor(props) {
+    constructor(props) {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
     }
 
-		onButtonPress() {}
+    onButtonPress() {
+    }
 
     render() {
         return (
@@ -44,13 +44,13 @@ class CreateNewAccount extends Component {
 }
 
 const mapStateToProps = (state) => {
-   return {session: state.login.session};
-}
+    return {session: state.login.session};
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAccount );
+export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAccount);
