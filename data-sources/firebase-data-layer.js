@@ -49,6 +49,12 @@ function setupTrashDropListener(dispatch) {
     });
 }
 
+function setupSupplyLocationsListener(dispatch) {
+    const supplyLocations = firebase.database().ref('supplyLocations');
+    supplyLocations.on('value', (snapshot) => {
+        dispatch(dataLayerActions.supplyLocationsFetchSuccessful(snapshot.val()));
+    });
+}
 
 async function initialize(dispatch) {
     console.log('Initializing Firebase');
@@ -65,6 +71,7 @@ async function initialize(dispatch) {
                 setupProfileListener(user.uid, dispatch);
                 setupTeamListener(dispatch);
                 setupTrashDropListener(dispatch);
+                setupSupplyLocationsListener(dispatch);
             } else {
                 console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
@@ -74,7 +81,7 @@ async function initialize(dispatch) {
     //
     //teams.on('value', (snapshot) => {
     //    dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
-   // });
+    // });
 
     // const trashDrops = firebase.database().ref('trashDrops/');
     //

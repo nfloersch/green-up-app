@@ -46,3 +46,8 @@ export function profileFetchSuccessful(profile: Object) {
 export function profileFetchFail(error: Object) {
     return {type: types.FETCH_PROFILE_FAIL, error};
 }
+
+export function supplyLocationsFetchSuccessful(supplyLocations: Object) {
+
+    return {type: types.FETCH_SUPPLY_LOCATIONS_SUCCESS, supplyLocations};
+}

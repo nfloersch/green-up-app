@@ -1,0 +1,14 @@
+[
+  {
+    "location": "City Hall",
+    "address": {
+      "street": "1 Church Street",
+      "city": "Burlington",
+      "zip": "05451"
+    },
+    "coordinates": {
+      "latitude": "",
+      "longitude": ""
+    }
+  }
+]

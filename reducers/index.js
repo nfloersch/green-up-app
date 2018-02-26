@@ -5,7 +5,8 @@ import {reducers as login} from '../screens/login-screen/reducers';
 import {reducers as teams} from '../screens/teams-screen/reducers';
 import {reducers as profile} from '../screens/profile-screen/reducers';
 import {reducers as trashTracker} from '../screens/trash-tracker-screen/reducers';
+import {reducers as trashBagFinder} from '../screens/trash-bag-finder-screen/reducers';
 
-const rootReducer = combineReducers({loading, login, messages, teams, trashTracker, profile});
+const rootReducer = combineReducers({loading, login, messages, teams, trashTracker, profile, trashBagFinder});
 
 export default rootReducer;

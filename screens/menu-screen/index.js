@@ -62,6 +62,15 @@ class MenuScreen extends Component {
 
                 <TouchableHighlight
                     style={styles.button}
+                    onPress={() => this.props.navigation.navigate('TrashBagFinder')}
+                >
+                    <View style={styles.socialLogin}>
+                        <Text style={styles.buttonText}>Trash Bag Finder</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={styles.button}
                     onPress={() => this.props.navigation.navigate('Profile')}
                 >
                     <View style={styles.socialLogin}>
