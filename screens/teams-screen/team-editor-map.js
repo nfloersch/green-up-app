@@ -11,7 +11,7 @@ import {
     Text,
     View
 } from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import MapView, {Polygon} from 'react-native-maps';
@@ -33,7 +33,11 @@ class TeamEditorMap extends Component {
         tabBarLabel: 'Map',
         // Note: By default the icon is only shown on iOS. Search the showIcon option
         // below.
-        tabBarIcon: () => (<MaterialCommunityIcons name='map-marker' size={24} color='blue'/>)
+        tabBarIcon: ({focused}) => (
+            <Ionicons name={Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin'}
+                size={24}
+                color='blue'
+            />)
     };
 
     constructor(props) {
@@ -47,7 +51,7 @@ class TeamEditorMap extends Component {
         // if there are pins on the map, set initial location where the first pin is, otherwise device location will be set on componentWillMount
         const initialMapLocation = locations && locations.length > 0 ? {
             latitude: Number(locations[0].coordinates.latitude),
-            longitude:  Number(locations[0].coordinates.longitude),
+            longitude: Number(locations[0].coordinates.longitude),
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         } : null;
@@ -58,7 +62,7 @@ class TeamEditorMap extends Component {
     }
 
     componentWillMount() {
-        if(this.state.initialMapLocation === null) {
+        if (this.state.initialMapLocation === null) {
             if (Platform.OS === 'android' && !Constants.isDevice) {
                 this.setState({
                     errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it again on your ' +
@@ -70,7 +74,7 @@ class TeamEditorMap extends Component {
                         this.setState({
                             initialMapLocation: {
                                 latitude: Number(location.latitude),
-                                longitude:  Number(location.longitude),
+                                longitude: Number(location.longitude),
                                 latitudeDelta: 0.0922,
                                 longitudeDelta: 0.0421
                             }
@@ -99,10 +103,10 @@ class TeamEditorMap extends Component {
             return Location.getCurrentPositionAsync({});
         })
         .then((location) => {
-            if(location) {
+            if (location) {
                 return {
                     latitude: Number(location.coords.latitude),
-                    longitude:  Number(location.coords.longitude)
+                    longitude: Number(location.coords.longitude)
                 };
             }
             throw new Error('location is not available');
@@ -149,13 +153,13 @@ class TeamEditorMap extends Component {
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
                     <Text>
-                        Place markers around the area you want your team to work on.
-                        Tap on the marker text box to remove a marker.
-                        Blue markers represent areas that other teams are cleaning up.
+                    Place markers around the area you want your team to work on.
+                    Tap on the marker text box to remove a marker.
+                    Blue markers represent areas that other teams are cleaning up.
                     </Text>
                     {!this.props.selectedTeam.id && (
                         <Text>
-                            The markers will only be saved when you return to the details page and save the team details.
+                        The markers will only be saved when you return to the details page and save the team details.
                         </Text>)}
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
@@ -165,7 +169,7 @@ class TeamEditorMap extends Component {
                             <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
                         )}
                         {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((c, index) =>
-                            (<Polygon key={index} coordinates={c} fillColor='#b1c8ed' />)
+                            (<Polygon key={index} coordinates={c} fillColor='#b1c8ed'/>)
                         )}
                     </MapView>
                     <Button title={'remove last marker'}

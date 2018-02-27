@@ -1,12 +1,11 @@
-	/**
+/**
  * GreenUpVermont React Native App
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform, Alert} from 'react-native';
-import {FontAwesome} from '@expo/vector-icons';
+import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -16,26 +15,26 @@ import * as memberStatus from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-		member: {
-				flex: 1,
-				flexDirection: 'row',
-				justifyContent: 'flex-start'
-		},
-		memberEmail: {
-				marginLeft: 10,
-				lineHeight: 25
-		},
-		memberName: {
-				marginLeft: 35,
-				paddingBottom: 5,
-				fontSize: 10,
-				lineHeight: 10
-		},
-		item: {
-				borderBottomWidth: 1,
-				borderBottomColor: '#888',
-				marginBottom: 10
-		}
+    member: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start'
+    },
+    memberEmail: {
+        marginLeft: 10,
+        lineHeight: 25
+    },
+    memberName: {
+        marginLeft: 35,
+        paddingBottom: 5,
+        fontSize: 10,
+        lineHeight: 10
+    },
+    item: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#888',
+        marginBottom: 10
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -54,7 +53,11 @@ class TeamEditorMembers extends Component {
         title: 'Team Members',
         tabBarLabel: 'Members',
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({tintColor}) => (<FontAwesome name='users' size={24} color='blue'/>)
+        tabBarIcon: ({focused}) => (
+            <Ionicons name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
+                size={24}
+                color='blue'
+            />)
     };
 
     constructor(props) {
@@ -152,17 +155,13 @@ class TeamEditorMembers extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const mapStateToProps = (state) => (
+    {
         teams: state.teams.teams,
         selectedTeam: state.teams.selectedTeam
-    };
-};
+    });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-};
+
+const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);

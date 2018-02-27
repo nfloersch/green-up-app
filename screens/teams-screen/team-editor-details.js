@@ -12,10 +12,11 @@ import {
     TextInput,
     View,
     Picker,
+    Platform,
     ScrollView,
-		TouchableOpacity
+    TouchableOpacity
 } from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -23,12 +24,11 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class TeamEditorDetails extends Component {
@@ -44,7 +44,9 @@ class TeamEditorDetails extends Component {
         title: 'Team Details',
         tabBarLabel: 'Details',
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: () => (<MaterialCommunityIcons name='information' size={24} color='blue'/>)
+        tabBarIcon: ({focused}) => (<Ionicons
+            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
+            size={24} color='blue'/>)
     };
 
     constructor(props) {
@@ -54,33 +56,33 @@ class TeamEditorDetails extends Component {
         };
     }
 
-		_showDateTimePicker = () => this.setState({isDateTimePickerVisible: !this.state.isDateTimePickerVisible});
+    _showDateTimePicker = () => this.setState({isDateTimePickerVisible: !this.state.isDateTimePickerVisible});
 
-		// would be great to combined these two, but not sure how to pass the second param
-		_handleStartDatePicked = (date) => {
-			this.setTeamValue('start')(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
-			this._showDateTimePicker();
-		};
+    // would be great to combined these two, but not sure how to pass the second param
+    _handleStartDatePicked = (date) => {
+        this.setTeamValue('start')(date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+        this._showDateTimePicker();
+    };
 
-		_handleEndDatePicked = (date) => {
-			this.setTeamValue('end')(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
-			this._showDateTimePicker();
-		};
+    _handleEndDatePicked = (date) => {
+        this.setTeamValue('end')(date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+        this._showDateTimePicker();
+    };
 
     setSelectedOption = (option) => {
         this.props.actions.setSelectedTeamValue('isPublic', option.value);
-    }
+    };
 
     saveTeam = () => {
         const {selectedTeam} = this.props;
         selectedTeam.locations = this.props.locations;
         this.props.actions.saveTeam(selectedTeam, selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
-    }
+    };
 
     setTeamValue = (key) => (value) => {
         this.props.actions.setSelectedTeamValue(key, value);
-    }
+    };
 
     render() {
         const isPublicOptions = [
@@ -99,7 +101,7 @@ class TeamEditorDetails extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-								style={styles.container}>
+                style={styles.container}>
 
                 <View>
                     <Text style={styles.heading2}>Team Name</Text>
@@ -111,82 +113,82 @@ class TeamEditorDetails extends Component {
                         value={selectedTeam.name}/>
                 </View>
 
-								<View style={{marginTop: 10}}>
-									<SegmentedControls
-											options={isPublicOptions}
-											onSelection={this.setSelectedOption}
-											selectedOption={selectedTeam.isPublic}
-											selectedTint={'#EFEFEF'} tint={'#666666'}
-											extractText={(option) => option.label}
-											testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+                <View style={{marginTop: 10}}>
+                    <SegmentedControls
+                        options={isPublicOptions}
+                        onSelection={this.setSelectedOption}
+                        selectedOption={selectedTeam.isPublic}
+                        selectedTint={'#EFEFEF'} tint={'#666666'}
+                        extractText={(option) => option.label}
+                        testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
                 </View>
 
-								<View>
-										<Text style={styles.heading2}>Select Town/City</Text>
-										<Picker
-												itemStyle={{height: 45}}
-												selectedValue={selectedTeam.town}
-												onValueChange={this.setTeamValue('town')}>
-												{vermontTowns.map(town =>
-														(<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
-										</Picker>
-								</View>
+                <View>
+                    <Text style={styles.heading2}>Select Town/City</Text>
+                    <Picker
+                        itemStyle={{height: 45}}
+                        selectedValue={selectedTeam.town}
+                        onValueChange={this.setTeamValue('town')}>
+                        {vermontTowns.map(town =>
+                            (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
+                    </Picker>
+                </View>
 
                 <View>
                     <Text style={styles.heading2}>Clean Up Site</Text>
                     <TextInput
-												keyBoardType={'default'}
-												onChangeText={this.setTeamValue('location')}
-												placeholder={'Location'}
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('location')}
+                        placeholder={'Location'}
                         style={styles.textInput}
-												value={selectedTeam.location}/>
+                        value={selectedTeam.location}/>
                 </View>
 
                 <View>
                     <Text style={styles.heading2}>Start Time</Text>
-										<View>
-											<TouchableOpacity onPress={this._showDateTimePicker}>
-    										<Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
-											</TouchableOpacity>
-											<DateTimePicker
-												mode='time'
-												isVisible={this.state.isDateTimePickerVisible}
-												onConfirm={this._handleStartDatePicked}
-												onCancel={this._showDateTimePicker}
-											/>
-										</View>
+                    <View>
+                        <TouchableOpacity onPress={this._showDateTimePicker}>
+                            <Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            mode='time'
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleStartDatePicked}
+                            onCancel={this._showDateTimePicker}
+                        />
+                    </View>
                 </View>
 
                 <View>
                     <Text style={styles.heading2}>End Time</Text>
-										<View>
-											<TouchableOpacity onPress={this._showDateTimePicker}>
-    										<Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
-											</TouchableOpacity>
-											<DateTimePicker
-												mode='time'
-												isVisible={this.state.isDateTimePickerVisible}
-												onConfirm={this._handleEndDatePicked}
-												onCancel={this._showDateTimePicker}
-											/>
-										</View>
+                    <View>
+                        <TouchableOpacity onPress={this._showDateTimePicker}>
+                            <Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            mode='time'
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleEndDatePicked}
+                            onCancel={this._showDateTimePicker}
+                        />
+                    </View>
                 </View>
 
                 <View>
                     <Text style={styles.heading2}>Notes</Text>
                     <TextInput
-												keyBoardType={'default'}
-												onChangeText={this.setTeamValue('notes')}
-												placeholder={'Notes'}
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('notes')}
+                        placeholder={'Notes'}
                         style={styles.textInput}
-												value={selectedTeam.notes}/>
+                        value={selectedTeam.notes}/>
                 </View>
 
-								<View style={styles.button}>
-									<Button
-										title='Save'
-										onPress={this.saveTeam}/>
-								</View>
+                <View style={styles.button}>
+                    <Button
+                        title='Save'
+                        onPress={this.saveTeam}/>
+                </View>
 
             </ScrollView>
         );
@@ -199,10 +201,6 @@ const mapStateToProps = (state) => {
     return {selectedTeam, locations};
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-};
+const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);

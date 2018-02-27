@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 import {
     Button,
     StyleSheet,
@@ -13,7 +13,7 @@ import {
     ScrollView,
     Modal,
     View,
-    TextInput
+    TextInput, Platform
 } from 'react-native';
 
 import {Message} from '../../models/message';
@@ -21,6 +21,7 @@ import TeamEditor from './team-editor';
 import {TeamMember} from '../../models/team-member';
 import Team from '../../models/team';
 import * as actions from './actions';
+import * as memberStatus from '../../constants/team-member-statuses';
 
 // import withErrorHandler from '../../components/with-error-handler';
 
@@ -169,18 +170,18 @@ class MyTeams extends Component {
     }
 
     toTeamIcon(team: Object) {
-        const status = (team.members || []).find(member => member.uid === (this.props.currentUser || {}).uid);
-        switch (true) {
-            case status === TeamMember.memberStatuses.INVITED:
-                return 'contact-mail';
-            case currentUserIsTeamOwner(team, this.props.currentUser):
-                return 'pencil-box';
-            default:
-                return 'arrow-right-thick';
-        }
+        const status = (team.members || []).find(member => member.uid === (this.props.currentUser || {}).uid).memberStatus;
+        const icons = {
+            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock',
+            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
+            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'
+        };
+        return icons[(team.owner.uid === this.props.currentUser.uid ? memberStatus.OWNER : status)];
     }
 
     render() {
+
         const teams = this.props.teams;
         const _myTeams = (Object.keys(teams || {}))
             .filter(
@@ -194,10 +195,10 @@ class MyTeams extends Component {
             <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
                 <View style={styles.row}>
                     <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
-                        <MaterialCommunityIcons name='message-text-outline' size={50}/>
+                        <Ionicons name= {(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')} size={30}/>
                     </TouchableHighlight>
                     <Text style={styles.teams}>{teams[key].name}</Text>
-                    <MaterialCommunityIcons name={this.toTeamIcon(teams[key])} size={50}/>
+                    <Ionicons name={this.toTeamIcon(teams[key])} size={30} style={{color: 'black'}}/>
                 </View>
             </TouchableHighlight>
         ));

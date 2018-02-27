@@ -15,18 +15,20 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 function _inviteToTeam() {
     const teamMembers = this.state.contacts
         .filter(c => c.isSelected)
-        .map(contact => TeamMember.create(Object.assign({}, contact, {memberStatus: TeamMember.memberStatuses.INVITED})));
+        .map(contact => TeamMember.create(Object.assign({}, contact, {
+            displayName: `${contact.firstName} ${contact.lastName}`,
+            memberStatus: TeamMember.memberStatuses.INVITED
+        })));
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
@@ -85,7 +87,7 @@ class InviteContacts extends Component {
                     return -1;
                 case(a.firstName > b.firstName):
                     return 1;
-                case(a.firstLastName < b.LastName):
+                case(a.LastName < b.LastName):
                     return -1;
                 case(a.LastName > b.LastName):
                     return 1;
@@ -93,11 +95,13 @@ class InviteContacts extends Component {
                     return 0;
             }
         }).map(
-            contact => (
+            (contact, i) => (
                 <CheckBox
-                    checked={contact.isSelected} key={contact.email}
+                    checked={contact.isSelected}
+                    key={i}
                     label={`${contact.firstName} ${contact.lastName}`}
-                    onChange={this.toggleContact(contact)}/>
+                    onChange={this.toggleContact(contact)}
+                />
             )
         );
 
@@ -106,8 +110,9 @@ class InviteContacts extends Component {
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
                     <Button
-											onPress={this.inviteToTeam}
-											title='Invite to team' />
+                        onPress={this.inviteToTeam}
+                        title='Invite to team'
+                    />
                 </ScrollView>
             </View>
         );
@@ -120,12 +125,10 @@ const mapStateToProps = (state) => {
     const teams = state.teams.teams;
     const contacts = state.teams.contacts;
     return {teams, currentUser, selectedTeam, contacts};
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteContacts);
