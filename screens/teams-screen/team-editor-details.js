@@ -54,14 +54,17 @@ class TeamEditorDetails extends Component {
         this.state = {
             startDateTimePickerVisible: false,
 						endDateTimePickerVisible: false,
+						datePickerVisible: false
         };
     }
 
 		showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
 		showEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: true });
+		showDatePicker = () => this.setState({ datePickerVisible: true });
 
 		hideStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: false });
 		hideEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: false });
+		hideDatePicker = () => this.setState({ datePickerVisible: false });
 
 		// android returns 24hr time with leading zero and no am/pm designation so
 		// we fix it up here to display consistently with ios
@@ -73,6 +76,13 @@ class TeamEditorDetails extends Component {
 			const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
 			return newTime = `${hr}:${orig[1]} ${ampm}`
 		}
+
+		_handleDatePicked = (pickedDate) => {
+			const arr = pickedDate.toString().split(' ');
+			const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
+			this.setTeamValue('date')(date);
+			this.hideDatePicker();
+		};
 
 		_handleStartDatePicked = (date) => {
 			let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
@@ -165,6 +175,22 @@ class TeamEditorDetails extends Component {
                         placeholder={'Location'}
                         style={styles.textInput}
                         value={selectedTeam.location}/>
+                </View>
+
+                <View>
+                    <Text style={styles.heading2}>Date</Text>
+										<View>
+											<TouchableOpacity onPress={this.showDatePicker}>
+    										<Text style={styles.textInput}>{selectedTeam.date || 'Select a Date'}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='date'
+												date={new Date('5/5/2018')}
+												isVisible={this.state.datePickerVisible}
+												onConfirm={this._handleDatePicked}
+												onCancel={this.hideDatePicker}
+											/>
+										</View>
                 </View>
 
                 <View>
