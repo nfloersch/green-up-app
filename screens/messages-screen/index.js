@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import {messageTypes} from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
@@ -73,17 +73,27 @@ class Messages extends Component {
     toMessageDetail(messageId) {
         const myMessage = this.props.messages[messageId];
         const userId = this.props.currentUser.uid;
-        return () => {
-            // mark message as read
-            this.props.actions.readMessage(myMessage, userId);
+        switch (myMessage.type) {
+            case messageTypes.INVITATION :
+                return () => {
+                    this.props.actions.readMessage(myMessage, userId);
+                    this.props.actions.selectTeamById(myMessage.teamId);
+                    this.props.navigation.navigate('TeamDetails');
+                };
 
-            // navigate to details screen
-            this.props.navigation.navigate('MessageDetails', {messageId});
-        };
+            default :
+                return () => {
+                    // mark message as read
+                    this.props.actions.readMessage(myMessage, userId);
+
+                    // navigate to details screen
+                    this.props.navigation.navigate('MessageDetails', {messageId});
+                };
+        }
     }
 
     render() {
-        if(this.props.teamsLoaded && this.props.messagesLoaded) {
+        if (this.props.teamsLoaded && this.props.messagesLoaded) {
             const messages = this.props.messages;
             const messageKeys = Object.keys(messages || {});
             const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
@@ -121,11 +131,14 @@ class Messages extends Component {
                 </ScrollView>
             ) : (
                 <View style={styles.container}>
-                    <Text style={defaultStyles.heading2}>Whoops, you're lonely in here. 
-                        It seems like you don't have any teams to send messages to. Start your own team or join an existing one.
+                    <Text style={defaultStyles.heading2}>Whoops, you're lonely in here.
+                        It seems like you don't have any teams to send messages to. Start your own team or join an
+                        existing one.
                     </Text>
                     <Button
-                        onPress={() => { this.props.navigation.navigate('Teams'); }}
+                        onPress={() => {
+                            this.props.navigation.navigate('Teams');
+                        }}
                         title='Go to my teams'
                     />
                 </View>

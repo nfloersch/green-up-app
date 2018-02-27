@@ -2,6 +2,40 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
+
+const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
+
+class TeamMember {
+    constructor(args) {
+        this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
+            ? args.uid || args.id || args._id
+            : null;
+        this.displayName = typeof args.displayName === 'string'
+            ? args.displayName
+            : null;
+        this.bio = typeof args.bio === 'string'
+            ? args.bio
+            : null;
+        this.email = typeof args.email === 'string'
+            ? args.email.toLowerCase()
+            : null;
+        this.photoURL = typeof args.photoURL === 'string'
+            ? args.photoURL
+            : defaultAvatar;
+        this.memberStatus = typeof args.memberStatus === 'string'
+            ? args.memberStatus
+            : 'NOT_INVITED';
+        this.invitationId = typeof args.invitationId === 'string'
+            ? args.invitationId
+            : null;
+    }
+
+    static create(args) {
+        return new TeamMember(args || {});
+    }
+}
+
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -52,14 +86,11 @@ function sendInvitationEmail(email, displayName) {
 // [START onCreateTrigger]
 exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onCreate((event) => {
     const database = admin.database();
+    const invitationId = event.params.pushId;
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
     const email = teamMember.email.toLowerCase();
-    const newMember = Object.assign({}, teamMember, {
-        email,
-        memberStatus: 'INVITED',
-        invitationId: event.params.pushId
-    });
+    const members = database.ref(`teams/${invitation.team.id}/members`);
 
     // Add message if user exists
     // const test = database.ref('test');
@@ -69,28 +100,46 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
         const myProfiles = snapshot.val();
 
         const userId = Object.keys(myProfiles).find(key => myProfiles[key].email.toLowerCase() === email);
-        //  if (!!userId) {
-        const message = {
-            active: true,
-            created: (new Date()).toString(),
-            read: false,
-            sender: invitation.sender,
-            teamId: invitation.team.id,
-            type: 'INVITATION',
-            text: `You have been invited to join team: ${invitation.team.name}`
-        };
+        if (!!userId) {
+            // Add Invite Message
+            const message = {
+                active: true,
+                created: (new Date()).toString(),
+                read: false,
+                sender: invitation.sender,
+                teamId: invitation.team.id,
+                type: 'INVITATION',
+                text: `You have been invited to join team: ${invitation.team.name}`
+            };
 
-        database.ref(`messages/${userId}`).push(message);
+            database.ref(`messages/${userId}`).push(message);
+            const newMember = TeamMember.create(
+                Object.assign({}, myProfiles[userId], {memberStatus: 'INVITED'})
+            );
 
-
-        // }
+            // Add invitee to team
+            members.once('value', (_snapshot) => {
+                const _members = _snapshot.val();
+                members.set(_members.concat(newMember));
+            });
+            // Remove invitation - we don't need it anymore:
+            database.ref(`invitations/${invitationId}`).remove();
+        } else {
+            // Add invitee to team
+            const newMember = TeamMember.create(
+                Object.assign({}, teamMember, {
+                    email,
+                    memberStatus: 'INVITED',
+                    invitationId: event.params.pushId
+                })
+            );
+            members.once('value', (_snapshot) => {
+                const _members = _snapshot.val();
+                members.set(_members.concat(TeamMember.create(newMember)));
+            });
+        }
     });
-    // Add invitee to team
-    const members = database.ref(`teams/${invitation.team.id}/members`);
-    members.once('value', (snapshot) => {
-        const _members = snapshot.val();
-        members.set(_members.concat(newMember));
-    });
+
     // Send Email
     return sendInvitationEmail(email, invitation.displayName);
 });

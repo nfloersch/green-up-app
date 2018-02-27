@@ -58,6 +58,14 @@ export function askToJoinTeam(team: Object, user: Object) {
     };
 }
 
+export function acceptInvitation(team: Object, user: Object) {
+    return async function () {
+        const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
+        firebaseDataLayer.updateTeamMember(team, newTeamMember);
+    };
+}
+
+
 export function sendTeamMessage(team, message) {
     return async function () {
         const teamMembers = team.members.map(member => member.uid);
@@ -77,11 +85,11 @@ export function saveTeam(team, id) {
 }
 
 
-export function setSelectedTeamValue(key, value) {
+export function setSelectedTeamValue(key: string, value: any) {
     return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};
 }
 
-export function removeTeamMember(team, member) {
+export function removeTeamMember(team: Team, member: TeamMember) {
     const uidOrEmail = member.uid || member.email;
     return async function () {
         const members = team.members.filter(_member => (_member.uid !== uidOrEmail && _member.email !== uidOrEmail));
@@ -90,7 +98,7 @@ export function removeTeamMember(team, member) {
     };
 }
 
-export function addTeamMember(team, member, status) {
+export function addTeamMember(team: Team, member: TeamMember, status: string) {
     const uidOrEmail = member.uid || member.email;
     const _newMember = TeamMember.create(Object.assign({}, member, {memberStatus: status || member.memberStatus}));
     return async function () {
@@ -101,11 +109,15 @@ export function addTeamMember(team, member, status) {
 }
 
 export function saveLocations(locations, team) {
-    return async function(dispatch) {
-        if(team.id) {
+    return async function (dispatch) {
+        if (team.id) {
             await firebaseDataLayer.saveLocations(locations, team.id);
         }
 
         dispatch({type: types.LOCATIONS_UPDATED, locations});
     };
+}
+
+export function selectTeamById(teamId: string) {
+    return {type: types.SELECT_TEAM_BY_ID, teamId};
 }

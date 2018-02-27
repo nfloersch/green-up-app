@@ -30,8 +30,13 @@ export function reducers(state = initialState, action) {
         case types.SELECT_TEAM:
             return {
                 ...state,
-                selectedTeam: action.team,
+                selectedTeam: state.teams[action.team.id],
                 locations: action.team.locations
+            };
+        case types.SELECT_TEAM_BY_ID :
+            return {
+                ...state,
+                selectedTeam: state.teams[action.teamId]
             };
         case types.FETCH_TEAMS_SUCCESS :
             return {

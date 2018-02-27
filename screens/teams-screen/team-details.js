@@ -59,7 +59,7 @@ class TeamDetails extends Component {
     }
 
     _acceptInvitation() {
-
+        this.props.actions.acceptInvitation(this.props.selectedTeam, this.props.currentUser);
     }
 
     _leaveTeam() {
@@ -142,6 +142,7 @@ class TeamDetails extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
     currentUser: state.login.user
 });
