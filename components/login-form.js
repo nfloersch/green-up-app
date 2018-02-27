@@ -58,8 +58,10 @@ export default class LoginForm extends Component {
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
                         style={styles.textInput}/>
-                    <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
-                </View>
+										<View style={styles.button}>
+                    	<Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
+                		</View>
+								</View>
             </View>
         );
     }

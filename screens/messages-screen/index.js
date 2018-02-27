@@ -119,12 +119,14 @@ class Messages extends Component {
 
             return this.props.userHasTeams ? (
                 <ScrollView style={styles.container}>
+								<View style={styles.button} >
                     <Button
                         onPress={() => {
                             this.props.navigation.navigate('NewMessage');
                         }}
                         title='New Message'
                     />
+										</View>
                     <View>
                         {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
                     </View>
@@ -132,8 +134,7 @@ class Messages extends Component {
             ) : (
                 <View style={styles.container}>
                     <Text style={defaultStyles.heading2}>Whoops, you're lonely in here.
-                        It seems like you don't have any teams to send messages to. Start your own team or join an
-                        existing one.
+                        It seems like you don't have any teams to send messages to. Start your own team or join an existing one.
                     </Text>
                     <Button
                         onPress={() => {

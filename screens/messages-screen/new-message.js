@@ -5,65 +5,23 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Message} from '../../models/message';
-import {StyleSheet, Text, TextInput, TouchableHighlight, View, Picker} from 'react-native';
-import * as messageActions from './actions';
+import {StyleSheet, Text, TextInput, TouchableHighlight,
+				View, Picker, Button} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-const styles = StyleSheet.create({
-    column: {
-        borderWidth: 1,
-        borderColor: '#678',
-        padding: 3,
-        width: '100%'
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    messages: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    messageRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderWidth: 2,
-        borderColor: '#678',
-        width: '100%',
-        padding: 4,
-        marginTop: 10
-    },
-    buttonRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    addButton: {
-        width: '49%',
-        backgroundColor: '#0F0',
-        justifyContent: 'center',
-        padding: 10,
-        marginRight: 3
-    },
-    cancelButton: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
-    },
-    text: {
-        color: '#FFF',
-        textAlign: 'center'
-    }
-});
+import * as messageActions from './actions';
+import {Message} from '../../models/message';
+import {defaultStyles} from '../../styles/default-styles';
+
+const myStyles = {
+		messageInput: {
+			height: 300
+		}
+};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class NewMessage extends Component {
     static propTypes = {
@@ -115,9 +73,11 @@ class NewMessage extends Component {
     render() {
 
         const TeamPicker = (
-            <View style={styles.column}>
-                <Text style={styles.label}>Team :</Text>
+            <View>
+                <Text style={styles.label}>Select Team to Message:</Text>
                 <Picker
+										style={styles.button}
+										itemStyle={{height: 45}}
                     selectedValue={this.state.selectedTeam || ((this.props.teams || [])[0] || {}).id}
                     onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
                     {(this.props.teams || []).map(team => (
@@ -130,25 +90,25 @@ class NewMessage extends Component {
         return (
             <View style={styles.container}>
                 {!this.props.selectedTeam ? TeamPicker : null}
-                <View style={styles.messageRow}>
+                <View>
                     <TextInput
                         keyBoardType={'default'}
                         multiline={true}
-                        numberOfLines={5}
+                        numberOfLines={20}
                         onChangeText={this.changeText}
                         placeholder={'message details'}
                         value={this.state.text}
-                        style={{width: '100%', height: 75}}
+												style={[styles.textInput, styles.messageInput]}
                     />
                 </View>
-                <View style={styles.buttonRow}>
-                    <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
-                        <Text style={styles.text}>Send Message</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.cancelButton} onPress={this.cancelMessage}>
-                        <Text style={styles.text}>Cancel</Text>
-                    </TouchableHighlight>
-                </View>
+                <View style={styles.button}>
+                    <Button
+												onPress={this.sendMessage}
+												title='Send Message' />
+								</View>
+								<TouchableHighlight onPress={this.cancelMessage}>
+										<Text>Cancel</Text>
+								</TouchableHighlight>
             </View>
         );
     }
