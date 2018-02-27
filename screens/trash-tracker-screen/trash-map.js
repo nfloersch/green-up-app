@@ -25,33 +25,17 @@ import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
-
 const myStyles = {
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-const addTrashDrop = 'addTrashDrop';
-const toggleTag = 'toggleTag';
-
-function _addTrashDrop() {
-    this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));
-    this.setState({modalVisible: false});
-}
-
-function _toggleTag(tag) {
-    return () => {
-        const hasTag = this.state.tags.indexOf(tag) > -1;
-        const tags = hasTag ? this.state.tags.filter(_tag => _tag !== tag) : this.state.tags.concat(tag);
-        this.setState({tags});
-    };
-}
 
 class TrashMap extends Component {
-
     static propTypes = {
         navigation: PropTypes.object,
-        trashDrops: PropTypes.object
+        trashDrops: PropTypes.object,
+        actions: PropTypes.object
     };
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -59,12 +43,6 @@ class TrashMap extends Component {
 
     constructor(props) {
         super(props);
-        this[toggleTag] = _toggleTag.bind(this);
-        this._getLocationAsync = this._getLocationAsync.bind(this);
-        this[addTrashDrop] = _addTrashDrop.bind(this);
-        this._goToTrashDrop = this
-            ._goToTrashDrop
-            .bind(this);
         this.state = {
             location: {},
             modalVisible: false,
@@ -72,7 +50,8 @@ class TrashMap extends Component {
             bagCount: 1,
             text: 1,
             markers: [],
-            errorMessage: null
+            errorMessage: null,
+            initialMapLocation: null
         };
     }
 
@@ -80,38 +59,39 @@ class TrashMap extends Component {
         this._getLocationAsync();
     }
 
-    _goToTrashDrop() {
-        this.setState({modalVisible: true});
-    }
-
     _getLocationAsync = async () => {
+        // TODO: what if the user doesn't grant permission to location
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
             const location = await Location.getCurrentPositionAsync({});
             this.setState({
                 location,
-                mapMarker: {
-                    title: 'X',
-                    pinColor: 'blue',
-                    description: 'X',
-                    coordinate: {
-                        longitude: Number(location.coords.longitude),
-                        latitude: Number(location.coords.latitude)
-                    }
-                },
-                mapRegion: {
+                initialMapLocation: {
                     latitude: Number(location.coords.latitude),
                     longitude: Number(location.coords.longitude),
-                    latitudeDelta: 0.001,
-                    longitudeDelta: 0.001
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421
                 }
             });
         }
     };
 
+    _toggleTag = (tag) => () => {
+        const hasTag = this.state.tags.indexOf(tag) > -1;
+        const tags = hasTag ? this.state.tags.filter(_tag => _tag !== tag) : this.state.tags.concat(tag);
+        this.setState({tags});
+    }
 
     render() {
+        const addTrashDrop = () => {
+            this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));
+            this.setState({modalVisible: false});
+        };
 
+        const goToTrashDrop = () => {
+            this.setState({modalVisible: true});
+        };
+        
         function createMarker(marker, key) {
             return (
                 <MapView.Marker
@@ -125,72 +105,71 @@ class TrashMap extends Component {
         }
         const drops = this.props.trashDrops || {};
         // Adding a map marker without a long & lat causes the app to crash :(
-        const myMarkerKeys = Object.keys(drops).filter(key => !!(drops[key].coordinate && drops[key].coordinate.longitude && drops[key].coordinate.latitude));
+        const myMarkerKeys = Object.keys(drops).filter(key => !!(drops[key].location && drops[key].location.longitude && drops[key].location.latitude));
         const myMarkers = myMarkerKeys.map(key => createMarker(drops[key], key));
-        return (
-            <View style={styles.container}>
-                <MapView
-                    zoomEnabled={true}
-                    showsUserLocation={true}
-                    showsMyLocatonButton={true}
-                    showsScale={true}
-                    followsUserLocation={true}
-                    showsCompass={true}
-                    style={{alignSelf: 'stretch', height: 300}}
-                >
-                    {myMarkers}
-                </MapView>
-                <View style={styles.button}>
-                    <Button
-                        onPress={this._goToTrashDrop}
-                        title='Create Trash Drop' />
-                </View>
-                <Modal
-                    animationType={'slide'}
-                    transparent={false}
-                    visible={this.state.modalVisible}
-                >
-                    <ScrollView style={{marginTop: 22}}>
-                        <View style={styles.container}>
-                            <Text style={styles.heading2}>Number of Bags</Text>
-                            <TextInput
-                                value={this.state.bagCount.toString()}
-                                keyboardType='numeric'
-                                placeholder='1'
-                                style={styles.textInput}
-                                onChangeText={(text) => this.setState({text, bagCount: Number(text)})}
-                            />
-                            <Text style={styles.heading2}>Other Items</Text>
-                            <View style={styles.fieldset}>
-                                <CheckBox
-                                    label='Needles/Bio-Waste'
-                                    checked={this.state.tags.indexOf('bio-waste') > -1}
-                                    onChange={this[toggleTag]('bio-waste')}/>
-                                <CheckBox
-                                    label='Tires'
-                                    checked={this.state.tags.indexOf('tires') > -1}
-                                    onChange={this[toggleTag]('tires')}/>
-                                <CheckBox
-                                    label='Large Object'
-                                    checked={this.state.tags.indexOf('large') > -1}
-                                    onChange={this[toggleTag]('large')}/>
-                            </View>
-                            <View style={styles.button}>
-                                <Button
-                                    onPress={this[addTrashDrop]}
-                                    title='Mark This Spot' />
-                            </View>
-                            <TouchableHighlight onPress={() => {
-                                this.setState({modalVisible: false});
-                            }}>
-                                <Text>Cancel</Text>
-                            </TouchableHighlight>
+        return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
+            : this.state.initialMapLocation && (
+                <View style={styles.container}>
+                    <MapView
+                        initialRegion={this.state.initialMapLocation}
+                        showsUserLocation={true}
+                        showsMyLocationButton={true} // TODO: figure out why this doesn't work
+                        followsUserLocation={true}
+                        showsCompass={true}
+                        style={{alignSelf: 'stretch', height: 300}}>
+                        {myMarkers}
+                    </MapView>
+                    <View style={styles.button}>
+                        <Button
+                            onPress={goToTrashDrop}
+                            title='Create Trash Drop' />
+                    </View>
+                    <Modal
+                        animationType={'slide'}
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => { this.setState({bagCount: 1}); }}>
+                        <ScrollView style={{marginTop: 22}}>
+                            <View style={styles.container}>
+                                <Text style={styles.heading2}>Number of Bags</Text>
+                                <TextInput
+                                    value={this.state.bagCount.toString()}
+                                    keyboardType='numeric'
+                                    placeholder='1'
+                                    style={styles.textInput}
+                                    onChangeText={(text) => this.setState({text, bagCount: Number(text)})}
+                                />
+                                <Text style={styles.heading2}>Other Items</Text>
+                                <View style={styles.fieldset}>
+                                    <CheckBox
+                                        label='Needles/Bio-Waste'
+                                        checked={this.state.tags.indexOf('bio-waste') > -1}
+                                        onChange={this._toggleTag('bio-waste')}/>
+                                    <CheckBox
+                                        label='Tires'
+                                        checked={this.state.tags.indexOf('tires') > -1}
+                                        onChange={this._toggleTag('tires')}/>
+                                    <CheckBox
+                                        label='Large Object'
+                                        checked={this.state.tags.indexOf('large') > -1}
+                                        onChange={this._toggleTag('large')}/>
+                                </View>
+                                <View style={styles.button}>
+                                    <Button
+                                        onPress={addTrashDrop}
+                                        title='Mark This Spot' />
+                                </View>
+                                <TouchableHighlight onPress={() => {
+                                    this.setState({modalVisible: false});
+                                }}>
+                                    <Text>Cancel</Text>
+                                </TouchableHighlight>
 
-                        </View>
-                    </ScrollView>
-                </Modal>
-            </View>
-        );
+                            </View>
+                        </ScrollView>
+                    </Modal>
+                </View>
+            );
     }
 }
 
