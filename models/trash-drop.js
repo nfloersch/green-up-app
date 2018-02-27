@@ -11,6 +11,7 @@ export default class TrashDrop {
     tags: [string];
     location: Coordinates;
     created: Date;
+    wasCollected: boolean;
 
     constructor(args: Object) {
         this.bagCount = typeof args.bagCount === 'number' ? args.bagCount : null;
@@ -19,6 +20,7 @@ export default class TrashDrop {
         this.active = typeof args.active === 'boolean' ? args.active : true;
         this.location = Coordinates.create(args.location);
         this.created = isDate(args.created) ? new Date(args.created) : new Date();
+        this.wasCollected = typeof args.wasCollected === 'boolean' ? args.wasCollected : null;
     }
 
     static create(args) {
