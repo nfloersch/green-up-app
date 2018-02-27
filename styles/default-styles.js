@@ -9,7 +9,6 @@ export const defaultStyles = {
         borderTopWidth: 10,
     },
     button: {
-        padding: 5,
         marginTop: 10,
         marginBottom: 10
     },
