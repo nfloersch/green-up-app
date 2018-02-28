@@ -84,7 +84,8 @@ class MyTeams extends Component {
         currentUser: PropTypes.object,
         handleError: PropTypes.func,
         navigation: PropTypes.object,
-        teams: PropTypes.array,
+        teamMembers: PropTypes.object,
+        teams: PropTypes.object,
         toTeamDetails: PropTypes.func
     };
 
@@ -124,7 +125,7 @@ class MyTeams extends Component {
         });
 
         this.setState({sendingMessage: true}, () => {
-            this.props.actions.sendTeamMessage(this.state.selectedTeamId, myMessage)
+            this.props.actions.sendTeamMessage(this.props.teamMembers[this.state.selectedTeamId] || {}, myMessage)
                 .then(
                     this.setState({messagetext: '', isModalVisible: false})
                 )
@@ -249,7 +250,8 @@ function mapStateToProps(state) {
     const profile = state.profile;
     const currentUser = User.create(Object.assign({}, user, profile));
     const teams = state.teams.teams;
-    return {teams, currentUser};
+    const teamMembers = state.teams.teamMembers || {};
+    return {teams, currentUser, teamMembers};
 }
 
 function mapDispatchToProps(dispatch) {

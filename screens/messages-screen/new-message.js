@@ -29,9 +29,11 @@ class NewMessage extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.array,
+        myTeams: PropTypes.array,
         navigation: PropTypes.object,
         selectedTeam: PropTypes.object,
-        teams: PropTypes.array
+        teamMembers: PropTypes.object,
+        teams: PropTypes.object
     };
 
     static navigationOptions = {
@@ -45,7 +47,7 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            selectedTeam: props.selectedTeam || (props.teams[0] || {}).id,
+            selectedTeam: props.selectedTeam || (props.myTeams[0] || {}).id,
             title: '',
             text: ''
         };
@@ -61,8 +63,7 @@ class NewMessage extends Component {
 
     sendMessage() {
         const teamId = this.props.selectedTeam || this.state.selectedTeam;
-        const team = this.props.teams.find(_team => teamId === _team.id);
-        const recipients = team.members;
+        const recipients = Object.values(this.props.teamMembers[teamId]);
         const message = Message.create(this.state);
         this.props.actions.sendMessage(message, recipients);
         this.props.navigation.goBack();
@@ -80,9 +81,9 @@ class NewMessage extends Component {
                 <Picker
                     style={styles.button}
                     itemStyle={{height: 45}}
-                    selectedValue={this.state.selectedTeam || ((this.props.teams || [])[0] || {}).id}
+                    selectedValue={this.state.selectedTeam || ((this.props.myTeams || [])[0] || {}).id}
                     onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
-                    {(this.props.teams || []).map(team => (
+                    {(this.props.myTeams || []).map(team => (
                         <Picker.Item key={team.id} label={team.name} value={team.id}/>))}
                 </Picker>
             </View>
@@ -118,9 +119,11 @@ class NewMessage extends Component {
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    const teams = Object.values((state.profile || {}).teams).map(key => state.teams.teams[key]);
+    const myTeams = Object.keys((state.profile || {}).teams).map(key => state.teams.teams[key]);
+    const teams = state.teams.teams;
+    const teamMembers = state.teams.teamMembers;
     const selectedTeam = state.teams.selectedTeam;
-    return {selectedTeam, teams, currentUser};
+    return {selectedTeam, teams, myTeams, teamMembers, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {
