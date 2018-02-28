@@ -51,10 +51,11 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
     };
 }
 
-export function askToJoinTeam(team: Object, user: Object) {
+export function askToJoinTeam(team: any, user: Object) {
+    const teamId = typeof team === 'string' ? team : team.id;
     return async function () {
         const potentialTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.REQUEST_TO_JOIN}));
-        firebaseDataLayer.updateTeamMember(team, potentialTeamMember);
+        firebaseDataLayer.addTeamMember(teamId, potentialTeamMember);
     };
 }
 
@@ -66,10 +67,10 @@ export function acceptInvitation(team: Object, user: Object) {
 }
 
 
-export function sendTeamMessage(team, message) {
+export function sendTeamMessage(teamMembers, message) {
     return async function () {
-        const teamMembers = team.members.map(member => member.uid);
-        firebaseDataLayer.sendGroupMessage(teamMembers, message);
+        const _teamMembers = Object.values(teamMembers).map(member => member.uid);
+        firebaseDataLayer.sendGroupMessage(_teamMembers, message);
     };
 }
 

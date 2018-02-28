@@ -5,8 +5,10 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TextInput, TouchableHighlight,
-				View, Picker, Button} from 'react-native';
+import {
+    StyleSheet, Text, TextInput, TouchableHighlight,
+    View, Picker, Button
+} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -15,9 +17,9 @@ import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-		messageInput: {
-			height: 300
-		}
+    messageInput: {
+        height: 300
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -76,8 +78,8 @@ class NewMessage extends Component {
             <View>
                 <Text style={styles.label}>Select Team to Message:</Text>
                 <Picker
-										style={styles.button}
-										itemStyle={{height: 45}}
+                    style={styles.button}
+                    itemStyle={{height: 45}}
                     selectedValue={this.state.selectedTeam || ((this.props.teams || [])[0] || {}).id}
                     onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
                     {(this.props.teams || []).map(team => (
@@ -98,17 +100,17 @@ class NewMessage extends Component {
                         onChangeText={this.changeText}
                         placeholder={'message details'}
                         value={this.state.text}
-												style={[styles.textInput, styles.messageInput]}
+                        style={[styles.textInput, styles.messageInput]}
                     />
                 </View>
                 <View style={styles.button}>
                     <Button
-												onPress={this.sendMessage}
-												title='Send Message' />
-								</View>
-								<TouchableHighlight onPress={this.cancelMessage}>
-										<Text>Cancel</Text>
-								</TouchableHighlight>
+                        onPress={this.sendMessage}
+                        title='Send Message'/>
+                </View>
+                <TouchableHighlight onPress={this.cancelMessage}>
+                    <Text>Cancel</Text>
+                </TouchableHighlight>
             </View>
         );
     }
@@ -116,13 +118,7 @@ class NewMessage extends Component {
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    const teams = (Object.keys(state.teams.teams || {}))
-        .filter(
-            key => {
-                const memberIds = ((state.teams.teams[key].members || []).map(member => member.uid));
-                return memberIds.indexOf((currentUser || {}).uid) !== -1;
-            }
-        ).map(key => state.teams.teams[key]);
+    const teams = Object.values((state.profile || {}).teams).map(key => state.teams.teams[key]);
     const selectedTeam = state.teams.selectedTeam;
     return {selectedTeam, teams, currentUser};
 }

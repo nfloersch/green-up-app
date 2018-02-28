@@ -30,7 +30,7 @@ export function reducers(state = initialState, action) {
         case types.SELECT_TEAM:
             return {
                 ...state,
-                selectedTeam: state.teams[action.team.id],
+                selectedTeam: action.team,
                 locations: action.team.locations
             };
         case types.SELECT_TEAM_BY_ID :
@@ -55,6 +55,12 @@ export function reducers(state = initialState, action) {
             return {
                 ...state,
                 selectedTeam: newSelectedTeam
+            };
+        }
+        case types.TEAM_MEMBER_FETCH_SUCCESS : {
+            return {
+                ...state,
+                teamMembers : {...state.teamMembers, [action.id]: action.membership}
             };
         }
         default:

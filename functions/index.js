@@ -159,6 +159,16 @@ exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers/{i
     }
 });
 
+exports.createTeamMembers = functions.database.ref('teams/{pushId}').onCreate((event) => {
+    const database = admin.database();
+    const teamId = event.params.pushId;
+    const created = (new Date()).toString();
+    const owner = Object.assign({}, event.data.val().owner, {memberStatus: 'OWNER', created});
+    database.ref(`teamMembers/${teamId}`).push(owner);
+    database.ref(`profiles/${owner.uid}/teams/${teamId}`).set('OWNER');
+});
+
+
 // exports.checkInvitations = functions.auth().onAuthStateChanged((user) => {
 //     if (!!user && user.email) {
 //

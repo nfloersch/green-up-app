@@ -9,6 +9,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'reac
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {User} from '../../models/user';
 
 const styles = StyleSheet.create({
     buttonText: {
@@ -183,8 +184,9 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.login.user;
-    const profile = state.profile.profile;
+    const user = state.login.user;
+    const profile = state.profile;
+    const currentUser = User.create(Object.assign({}, user, profile));
     return {profile, currentUser};
 }
 

@@ -2,6 +2,8 @@ import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
 
+let myTeamMemberListeners = [];
+
 function returnType(entry) {
     switch (true) {
         case (entry instanceof Date):
@@ -29,9 +31,32 @@ function setupMessageListener(userId, dispatch) {
 }
 
 function setupProfileListener(userId, dispatch) {
-    const messages = firebase.database().ref(`profiles/${userId}`);
-    messages.on('value', (snapshot) => {
-        dispatch(dataLayerActions.profileFetchSuccessful(snapshot.val()));
+    const db = firebase.database();
+    const profile = db.ref(`profiles/${userId}`);
+    profile.on('value', (snapshot) => {
+        const data = snapshot.val();
+        dispatch(dataLayerActions.profileFetchSuccessful(data));
+
+        const newTeamMemberListeners = Object.keys(data.teams);
+        // remove oldlisteners for teamMemberLists
+        const removeUs = myTeamMemberListeners.filter(l => newTeamMemberListeners.indexOf(l) === -1);
+        removeUs.forEach(id => {
+            db.ref(`teamMembers/${id}`).off('value');
+        });
+
+        // add newlisteners
+        const addUs = newTeamMemberListeners.filter(l => myTeamMemberListeners.indexOf(l) === -1);
+
+        myTeamMemberListeners = newTeamMemberListeners;
+
+        addUs.forEach(id => {
+            db.ref(`teamMembers/${id}`).on('value', (snapShot) => {
+                const data = snapShot.val();
+                dispatch(dataLayerActions.teamMemberFetchSuccessful(data, id));
+            });
+        });
+
+        // send off success dispatch
     });
 }
 
@@ -108,7 +133,6 @@ async function initialize(dispatch) {
 // );
 
 }
-
 
 // TODO fix the id vs uid dilemma
 async function updateTeamMember(team, member) {
@@ -238,7 +262,15 @@ function updateProfile(profile) {
         .ref(`profiles/${profile.uid}`).set(newProfile);
 }
 
+function addTeamMember(teamId, teamMember) {
+    firebase
+        .database()
+        .ref(`teamMembers/${teamId}`)
+        .push(teamMember);
+}
+
 export const firebaseDataLayer = {
+    addTeamMember,
     createUser,
     facebookAuth,
     dropTrash,

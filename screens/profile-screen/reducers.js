@@ -1,5 +1,6 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
+import {User} from '../../models/user';
 
 export function reducers(state = initialState, action) {
     switch (action.type) {
@@ -7,12 +8,11 @@ export function reducers(state = initialState, action) {
         case types.FETCH_PROFILE_SUCCESS :
             return {
                 ...state,
-                profile: Object.assign({}, action.profile)
+                ...action.profile
             };
         case types.FETCH_PROFILE_FAIL :
             return {
-                ...state,
-                profile: null
+                ...state
             };
         default:
             return state;

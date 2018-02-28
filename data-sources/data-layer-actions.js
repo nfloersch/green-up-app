@@ -43,6 +43,11 @@ export function profileFetchSuccessful(profile: Object) {
     return {type: types.FETCH_PROFILE_SUCCESS, profile};
 }
 
+
+export function teamMemberFetchSuccessful(membership:Object, teamId: string){
+    return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
+}
+
 export function profileFetchFail(error: Object) {
     return {type: types.FETCH_PROFILE_FAIL, error};
 }

@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {
+    Alert,
     Button,
     StyleSheet,
     Text,
@@ -21,7 +22,7 @@ import TeamEditor from './team-editor';
 import {TeamMember} from '../../models/team-member';
 import Team from '../../models/team';
 import * as actions from './actions';
-import * as memberStatus from '../../constants/team-member-statuses';
+import {User} from '../../models/user';
 
 // import withErrorHandler from '../../components/with-error-handler';
 
@@ -114,7 +115,7 @@ class MyTeams extends Component {
     }
 
     sendMessage() {
-        const team = this.props.teams[this.state.selectedTeamId];
+        // const team = this.props.teams[this.state.selectedTeamId];
         const myMessage = Message.create({
             text: this.state.messageText,
             sender: this.props.currentUser,
@@ -123,12 +124,12 @@ class MyTeams extends Component {
         });
 
         this.setState({sendingMessage: true}, () => {
-            this.props.actions.sendTeamMessage(team, myMessage)
+            this.props.actions.sendTeamMessage(this.state.selectedTeamId, myMessage)
                 .then(
                     this.setState({messagetext: '', isModalVisible: false})
                 )
                 .catch((error) => {
-                    this.props.handleError(error);
+                    Alert.alert('Your message failed delivery :-(');
                 });
         });
     }
@@ -137,13 +138,10 @@ class MyTeams extends Component {
         this.setState({messageText});
     }
 
-    toTeamDetail(key: string) {
+    toTeamDetail(status, team) {
         return () => {
             let nextScreen = 'TeamDetails';
-            const team = (this.props.teams || {})[key];
-            const status = (team.members || []).find(
-                member => member.uid === (this.props.currentUser || {}).uid
-            );
+
 
             switch (true) {
                 case status === TeamMember.memberStatuses.INVITED:
@@ -162,43 +160,35 @@ class MyTeams extends Component {
     }
 
     toNewTeamEditor() {
-        const owner = TeamMember.create(Object.assign({}, this.props.currentUser, {memberStatus: TeamMember.memberStatuses.ACCEPTED}));
-        const members = [owner];
-        const team = Team.create({owner, members});
+        const owner = TeamMember.create(Object.assign({}, this.props.currentUser, {memberStatus: TeamMember.memberStatuses.OWNER}));
+        const team = Team.create({owner});
         this.props.actions.selectTeam(team);
         this.props.navigation.navigate('TeamEditor');
     }
 
-    toTeamIcon(team: Object) {
-        const status = (team.members || []).find(member => member.uid === (this.props.currentUser || {}).uid).memberStatus;
+    toTeamIcon(status: string) {
         const icons = {
-            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock',
-            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
-            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'
+            [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
+            [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
+            [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
         };
-        return icons[(team.owner.uid === this.props.currentUser.uid ? memberStatus.OWNER : status)];
+        return icons[status];
     }
 
     render() {
 
         const teams = this.props.teams;
-        const _myTeams = (Object.keys(teams || {}))
-            .filter(
-                key => {
-                    const memberIds = ((teams[key].members || []).map(member => member.uid));
-                    return memberIds.indexOf((this.props.currentUser || {}).uid) !== -1;
-                }
-            );
-
-        const myTeams = _myTeams.map(key => (
-            <TouchableHighlight key={key} onPress={this.toTeamDetail(key)}>
+        const user = this.props.currentUser;
+        const myTeams = (Object.keys(user.teams || {})).map(key => (
+            <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                 <View style={styles.row}>
                     <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
-                        <Ionicons name= {(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')} size={30}/>
+                        <Ionicons name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                            size={30}/>
                     </TouchableHighlight>
                     <Text style={styles.teams}>{teams[key].name}</Text>
-                    <Ionicons name={this.toTeamIcon(teams[key])} size={30} style={{color: 'black'}}/>
+                    <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
                 </View>
             </TouchableHighlight>
         ));
@@ -255,8 +245,10 @@ class MyTeams extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.login.user;
-    const teams = Object.values(state.teams.teams);
+    const user = state.login.user;
+    const profile = state.profile;
+    const currentUser = User.create(Object.assign({}, user, profile));
+    const teams = state.teams.teams;
     return {teams, currentUser};
 }
 

@@ -6,37 +6,26 @@ export function reducers(state = initialState, action) {
         case types.LOGIN_SUCCESSFUL:
             return {
                 ...state,
-                userIsLoggedIn : true,
-                user: action.user,
-                initialAuthChecked: true,
-                creatingUser: false
+                userIsLoggedIn: true,
+                user: action.user
             };
         case types.LOGIN_FAIL:
             return {
                 ...state,
                 user: null,
-                initialAuthChecked: true,
-                creatingUser: false,
                 userIsLoggedIn: false,
                 loginError: action.error
             };
         case types.LOGOUT_SUCCESSFUL:
             return {
                 ...state,
-                userIsLoggedIn: false,
-                initialAuthChecked: true
+                userIsLoggedIn: false
             };
         case types.LOGOUT_FAIL:
             return {
                 ...state,
-                initialAuthChecked: true
-            };
-
-        case types.CREATING_USER:
-            return {
-                ...state,
-                initialAuthChecked: true,
-                creatingUser: true
+                user: null,
+                userIsLoggedIn: false
             };
         default:
             return state;

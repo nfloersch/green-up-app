@@ -11,7 +11,7 @@ export function addMessageSuccess(data) {
 export function sendMessage(message: Object, recipients: [string]) {
     const _message = Message.create(message);
     console.log(JSON.stringify(_message));
-    return (dispatch) => recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
+    return (dispatch) => Object.values(recipients).map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
 }
 
 export function readMessageSuccess(data) {

@@ -16,6 +16,7 @@
     "eslint-plugin-react": "^7.6.1",
     "expo": "^25.0.0",
     "firebase": "^4.9.0",
+    "point-in-polygon-extended": "0.0.1",
     "prop-types": "^15.6.0",
     "react": "16.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",

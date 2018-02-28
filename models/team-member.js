@@ -1,14 +1,6 @@
 // @flow
-
+import * as memberStati from '../constants/team-member-statuses';
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
-
-const memberStati = {
-    INVITED: 'INVITED',
-    ACCEPTED: 'ACCEPTED',
-    DECLINED: 'DECLINED',
-    NOT_INVITED: 'NOT_INVITED',
-    MEMBERSHIP_REQUESTED: 'MEMBERSHIP_REQUESTED'
-};
 
 export class TeamMember {
     uid: string;

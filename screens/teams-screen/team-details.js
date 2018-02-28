@@ -67,7 +67,7 @@ class TeamDetails extends Component {
 
     _askToJoin() {
         this.setState({hasAsked: true}, () => {
-            this.props.actions.askToJoinTeam(this.props.selectedTeam, this.props.currentUser);
+            this.props.actions.askToJoinTeam(this.props.selectedTeam.id, this.props.currentUser);
         });
     }
 

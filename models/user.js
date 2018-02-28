@@ -11,6 +11,7 @@ export class User {
     updated: Date;
     email: string;
     photoURL: string;
+    teams: Object;
     bio: string;
     created: Date;
 
@@ -33,6 +34,7 @@ export class User {
         this.updated = isDate(args.updated)
             ? new Date(args.updated)
             : null;
+        this.teams = args.teams || {};
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
             : defaultAvatar;
