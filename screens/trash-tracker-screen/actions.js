@@ -6,3 +6,9 @@ export function dropTrash(trashDrop) {
         firebaseDataLayer.dropTrash(TrashDrop.create(trashDrop));
     };
 }
+
+export function updateTrashDrop(trashDrop) {
+    return () => {
+        firebaseDataLayer.updateTrashDrop(TrashDrop.create(trashDrop));
+    };
+}

@@ -224,6 +224,13 @@ function dropTrash(trashDrop) {
         .push(trashDrop);
 }
 
+function updateTrashDrop(trashDrop) {
+    firebase
+        .database()
+        .ref(`trashDrops/${trashDrop.uid}`)
+        .set(trashDrop);
+}
+
 function updateMessage(message, userId) {
     const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
     return firebase
@@ -254,5 +261,6 @@ export const firebaseDataLayer = {
     sendGroupMessage,
     updateMessage,
     updateProfile,
-    updateTeamMember
+    updateTeamMember,
+    updateTrashDrop
 };
