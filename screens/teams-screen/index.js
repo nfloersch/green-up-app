@@ -237,7 +237,8 @@ class MyTeams extends Component {
                 </ScrollView>
                 <Modal animationType={'slide'}
                     transparent={false}
-                    visible={this.state.openModal === 'NEW_TEAM'}>
+                    visible={this.state.openModal === 'NEW_TEAM'}
+                    onRequestClose={() => {}}>
                     <TeamEditor/>
                 </Modal>
             </View>
