@@ -16,6 +16,7 @@ import {
     Button,
     Modal,
     ScrollView,
+    Switch,
     TextInput,
     Text,
     View
@@ -34,8 +35,9 @@ const styles = StyleSheet.create(combinedStyles);
 class TrashMap extends Component {
     static propTypes = {
         navigation: PropTypes.object,
-        trashDrops: PropTypes.object,
-        actions: PropTypes.object
+        actions: PropTypes.object,
+        drops: PropTypes.array,
+        currentUser: PropTypes.object
     };
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -44,14 +46,18 @@ class TrashMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            location: {},
+            drop : {
+                id: null,
+                location: {},
+                tags: [],
+                bagCount: 1,
+                wasCollected: false,
+                createdBy: {uid: props.currentUser.uid, email: props.currentUser.email}
+            },
             modalVisible: false,
-            tags: [],
-            bagCount: 1,
-            text: 1,
-            markers: [],
             errorMessage: null,
-            initialMapLocation: null
+            initialMapLocation: null,
+            showCollectedTrash: false
         };
     }
 
@@ -77,39 +83,61 @@ class TrashMap extends Component {
     };
 
     _toggleTag = (tag) => () => {
-        const hasTag = this.state.tags.indexOf(tag) > -1;
-        const tags = hasTag ? this.state.tags.filter(_tag => _tag !== tag) : this.state.tags.concat(tag);
-        this.setState({tags});
+        const hasTag = this.state.drop.tags.indexOf(tag) > -1;
+        const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
+        this.setState({drop: {...this.state.drop, tags}});
+    }
+
+    closeModal() {
+        this.setState({
+            modalVisible: false,
+            drop: {
+                id: null,
+                location: {},
+                tags: [],
+                bagCount: 1,
+                wasCollected: false,
+                createdBy: {uid: this.props.currentUser.uid, email: this.props.currentUser.email}
+            }
+        });
     }
 
     render() {
-        const addTrashDrop = () => {
-            this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state, {location: this.state.location.coords})));
-            this.setState({modalVisible: false});
+        const saveTrashDrop = () => {
+            if(this.state.drop.uid) {
+                this.props.actions.updateTrashDrop(this.state.drop);
+            } else {
+                this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.state.location.coords})));
+            }
+
+            this.closeModal();
+        };
+
+        const collectTrashDrop = () => {
+            this.setState(
+                {
+                    drop: Object.assign({}, this.state.drop, {
+                        wasCollected: true,
+                        collectedBy: {
+                            uid: this.props.currentUser.uid, 
+                            email: this.props.currentUser.email
+                        }})
+                }, saveTrashDrop);
         };
 
         const goToTrashDrop = () => {
             this.setState({modalVisible: true});
         };
-        
-        function createMarker(marker, key) {
-            return (
-                <MapView.Marker
-                    key={key}
-                    pinColor={'green'}
-                    coordinate={marker.location}
-                    title={String(`# of Bags: ${ marker.bagCount}`)}
-                    description={marker.tags.join(', ')}
-                />
-            );
-        }
-        const drops = this.props.trashDrops || {};
-        // Adding a map marker without a long & lat causes the app to crash :(
-        const myMarkerKeys = Object.keys(drops).filter(key => !!(drops[key].location && drops[key].location.longitude && drops[key].location.latitude));
-        const myMarkers = myMarkerKeys.map(key => createMarker(drops[key], key));
+
+        const {drops} = this.props;
+
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && (
                 <View style={styles.container}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+                        <Text style={styles.label}>Show Collected Trash</Text>
+                        <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+                    </View>
                     <MapView
                         initialRegion={this.state.initialMapLocation}
                         showsUserLocation={true}
@@ -117,7 +145,16 @@ class TrashMap extends Component {
                         followsUserLocation={true}
                         showsCompass={true}
                         style={{alignSelf: 'stretch', height: 300}}>
-                        {myMarkers}
+                        {drops && drops.filter(drop => this.state.showCollectedTrash || !drop.wasCollected).map(drop => (
+                            <MapView.Marker
+                                key={drop.uid}
+                                pinColor={drop.wasCollected ? 'wheat' : 'green'} // a limited number of colors are rendered properly on android ;( https://github.com/react-community/react-native-maps/issues/887
+                                coordinate={drop.location}
+                                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                                description={'Tap to view, edit or collect'}
+                                onCalloutPress={() => { this.setState({modalVisible: true, drop: drop}); }}
+                            />
+                        ))}
                     </MapView>
                     <View style={styles.button}>
                         <Button
@@ -128,43 +165,57 @@ class TrashMap extends Component {
                         animationType={'slide'}
                         transparent={false}
                         visible={this.state.modalVisible}
-                        onRequestClose={() => { this.setState({bagCount: 1}); }}>
+                        onRequestClose={() => { this.closeModal(); }}>
                         <ScrollView style={{marginTop: 22}}>
                             <View style={styles.container}>
                                 <Text style={styles.heading2}>Number of Bags</Text>
                                 <TextInput
-                                    value={this.state.bagCount.toString()}
+                                    underlineColorAndroid='transparent'
+                                    editable={!this.state.drop.wasCollected}
+                                    value={this.state.drop.bagCount.toString()}
                                     keyboardType='numeric'
                                     placeholder='1'
                                     style={styles.textInput}
-                                    onChangeText={(text) => this.setState({text, bagCount: Number(text)})}
+                                    onChangeText={(text) => this.setState({drop: {...this.state.drop, bagCount: Number(text)}})}
                                 />
                                 <Text style={styles.heading2}>Other Items</Text>
                                 <View style={styles.fieldset}>
                                     <CheckBox
+                                        editable={!this.state.drop.wasCollected}
                                         label='Needles/Bio-Waste'
-                                        checked={this.state.tags.indexOf('bio-waste') > -1}
+                                        checked={this.state.drop.tags.indexOf('bio-waste') > -1}
                                         onChange={this._toggleTag('bio-waste')}/>
                                     <CheckBox
+                                        editable={!this.state.drop.wasCollected}
                                         label='Tires'
-                                        checked={this.state.tags.indexOf('tires') > -1}
+                                        checked={this.state.drop.tags.indexOf('tires') > -1}
                                         onChange={this._toggleTag('tires')}/>
                                     <CheckBox
+                                        editable={!this.state.drop.wasCollected}
                                         label='Large Object'
-                                        checked={this.state.tags.indexOf('large') > -1}
+                                        checked={this.state.drop.tags.indexOf('large') > -1}
                                         onChange={this._toggleTag('large')}/>
                                 </View>
+                                {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
+                                (
+                                    <View style={styles.button}>
+                                        <Button
+                                            onPress={saveTrashDrop}
+                                            title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'} />
+                                    </View>
+                                )}
+                                {this.state.drop.uid && !this.state.drop.wasCollected && (
+                                    <View style={styles.button}>
+                                        <Button
+                                            onPress={collectTrashDrop}
+                                            title='Collect Trash'/>
+                                    </View>
+                                )}
                                 <View style={styles.button}>
                                     <Button
-                                        onPress={addTrashDrop}
-                                        title='Mark This Spot' />
+                                        onPress={() => { this.closeModal();}}
+                                        title='Cancel' />
                                 </View>
-                                <TouchableHighlight onPress={() => {
-                                    this.setState({modalVisible: false});
-                                }}>
-                                    <Text>Cancel</Text>
-                                </TouchableHighlight>
-
                             </View>
                         </ScrollView>
                     </Modal>
@@ -175,7 +226,11 @@ class TrashMap extends Component {
 
 
 function mapStateToProps(state) {
-    return {trashDrops: state.trashTracker.trashDrops};
+    const drops = Object.keys(state.trashTracker.trashDrops || {})
+        .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
+        .map(key => ({...state.trashTracker.trashDrops[key], uid: key})); // TODO: Handle default values here
+
+    return {drops: drops, currentUser: state.login.user};
 }
 
 function mapDispatchToProps(dispatch) {

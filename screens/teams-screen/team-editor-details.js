@@ -14,7 +14,7 @@ import {
     Picker,
     Platform,
     ScrollView,
-    TouchableOpacity
+		TouchableOpacity
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
@@ -51,22 +51,55 @@ class TeamEditorDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isDateTimePickerVisible: false
+            startDateTimePickerVisible: false,
+						endDateTimePickerVisible: false,
+						datePickerVisible: false
         };
     }
 
-    _showDateTimePicker = () => this.setState({isDateTimePickerVisible: !this.state.isDateTimePickerVisible});
+		showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
+		showEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: true });
+		showDatePicker = () => this.setState({ datePickerVisible: true });
 
-    // would be great to combined these two, but not sure how to pass the second param
-    _handleStartDatePicked = (date) => {
-        this.setTeamValue('start')(date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
-        this._showDateTimePicker();
-    };
+		hideStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: false });
+		hideEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: false });
+		hideDatePicker = () => this.setState({ datePickerVisible: false });
 
-    _handleEndDatePicked = (date) => {
-        this.setTeamValue('end')(date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
-        this._showDateTimePicker();
-    };
+		// android returns 24hr time with leading zero and no am/pm designation so
+		// we fix it up here to display consistently with ios
+		fixAndroidTime = time => {
+			const orig = time.split(':');
+			const hour = orig[0];
+			const hourNum = parseInt(hour, 10);
+			const ampm =  hourNum > 11 ? 'PM' : 'AM';
+			const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
+			return newTime = `${hr}:${orig[1]} ${ampm}`
+		}
+
+		_handleDatePicked = (pickedDate) => {
+			const arr = pickedDate.toString().split(' ');
+			const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
+			this.setTeamValue('date')(date);
+			this.hideDatePicker();
+		};
+
+		_handleStartDatePicked = (date) => {
+			let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
+			if (Platform.OS === 'android') {
+				start = this.fixAndroidTime(start);
+			}
+			this.setTeamValue('start')(start);
+			this.hideStartDateTimePicker();
+		};
+
+		_handleEndDatePicked = (date) => {
+			let end = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute:'2-digit'});
+			if (Platform.OS === 'android') {
+				end = this.fixAndroidTime(end);
+			}
+			this.setTeamValue('end')(end);
+			this.hideEndDateTimePicker();
+		};
 
     setSelectedOption = (option) => {
         this.props.actions.setSelectedTeamValue('isPublic', option.value);
@@ -102,7 +135,7 @@ class TeamEditorDetails extends Component {
                 scrollEventThrottle={200}
                 style={styles.container}>
 
-                <View>
+								<View>
                     <Text style={styles.heading2}>Team Name</Text>
                     <TextInput
                         keyBoardType={'default'}
@@ -144,33 +177,51 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
+                    <Text style={styles.heading2}>Date</Text>
+										<View>
+											<TouchableOpacity onPress={this.showDatePicker}>
+    										<Text style={styles.textInput}>{selectedTeam.date || 'Select a Date'}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='date'
+												date={new Date('5/5/2018')}
+												isVisible={this.state.datePickerVisible}
+												onConfirm={this._handleDatePicked}
+												onCancel={this.hideDatePicker}
+											/>
+										</View>
+                </View>
+
+                <View>
                     <Text style={styles.heading2}>Start Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this._showDateTimePicker}>
-                            <Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleStartDatePicked}
-                            onCancel={this._showDateTimePicker}
-                        />
-                    </View>
+										<View>
+											<TouchableOpacity onPress={this.showStartDateTimePicker}>
+    										<Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='time'
+												isVisible={this.state.startDateTimePickerVisible}
+												onConfirm={this._handleStartDatePicked}
+												onCancel={this.hideStartDateTimePicker}
+												is24Hour={false}
+											/>
+										</View>
                 </View>
 
                 <View>
                     <Text style={styles.heading2}>End Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this._showDateTimePicker}>
-                            <Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this._handleEndDatePicked}
-                            onCancel={this._showDateTimePicker}
-                        />
-                    </View>
+										<View>
+											<TouchableOpacity onPress={this.showEndDateTimePicker}>
+    										<Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
+											</TouchableOpacity>
+											<DateTimePicker
+												mode='time'
+												isVisible={this.state.endDateTimePickerVisible}
+												onConfirm={this._handleEndDatePicked}
+												onCancel={this.hideEndDateTimePicker}
+												is24Hour={false}
+											/>
+										</View>
                 </View>
 
                 <View>
