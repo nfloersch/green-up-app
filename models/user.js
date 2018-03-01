@@ -39,7 +39,6 @@ export class User {
             ? args.photoURL
             : defaultAvatar;
     }
-
     static create(args) {
         return new User(args);
     }

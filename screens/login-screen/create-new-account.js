@@ -6,7 +6,7 @@ import {StyleSheet, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import LoginForm from '../../components/login-form';
+import CreateAccountForm from '../../components/create-account-form';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
@@ -37,7 +37,7 @@ class CreateNewAccount extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <LoginForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
+                <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
             </View>
         );
     }

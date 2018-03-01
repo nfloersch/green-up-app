@@ -2,7 +2,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
 
 class TeamMember {
@@ -34,14 +33,28 @@ class TeamMember {
         return new TeamMember(args || {});
     }
 }
+class Profile {
+    constructor(args) {
+        this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
+            ? args.uid || args.id || args._id
+            : null;
+        this.displayName = args.displayName || (args.params || {}).displayName || null;
+        this.bio = typeof args.bio === 'string'
+            ? args.bio
+            : null;
+        this.email = typeof args.email === 'string'
+            ? args.email.toLowerCase()
+            : null;
+        this.photoURL = typeof args.photoURL === 'string'
+            ? args.photoURL
+            : defaultAvatar;
+        this.created = (new Date()).toString();
+    }
 
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send('Hello from Firebase!');
-});
+    static create(args) {
+        return new Profile(args || {});
+    }
+}
 
 
 const nodemailer = require('nodemailer');
@@ -78,13 +91,11 @@ function sendInvitationEmail(email, displayName) {
     return mailTransport.sendMail(mailOptions).then(() => console.log('New welcome email sent to:', email));
 }
 
-
-// [START ]
 /**
+ * User setup after an invitation create
  * Sends a invitation email to an invited user.
  */
-// [START onCreateTrigger]
-exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onCreate((event) => {
+exports.onInvitationCreate = functions.database.ref('invitations/{pushId}').onCreate((event) => {
     const database = admin.database();
     const invitationId = event.params.pushId;
     const invitation = event.data.val();
@@ -92,11 +103,13 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
     const email = teamMember.email.toLowerCase();
     const teamId = invitation.team.id;
     const members = database.ref(`teamMembers/${teamId}`);
+    const profiles = database.ref('profiles');
+
+    sendInvitationEmail(email, invitation.displayName);
 
     // Add message if user exists
     // const test = database.ref('test');
 
-    const profiles = database.ref('profiles');
     profiles.once('value', (snapshot) => {
         const myProfiles = snapshot.val();
         const userId = Object.keys(myProfiles).find(key => myProfiles[key].email.toLowerCase() === email);
@@ -139,16 +152,12 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
     });
 
     // Send Email
-    return sendInvitationEmail(email, invitation.displayName);
 });
-// [END ]
 
-
-exports.createProfile = functions.auth.user().onCreate((event) => {
-    const {uid, displayName, email, photoURL} = event.data;
-    const created = (new Date()).toString();
-    admin.database().ref(`profiles/${uid}`).set({uid, displayName, email, photoURL, created});
-});
+// exports.createProfile = functions.auth.user().onCreate((event) => {
+//     const uid = event.data.uid;
+//     admin.database().ref(`profiles/${uid}`).set(Profile.create(event.data));
+// });
 
 exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers/{index}').onDelete((event) => {
     // Only edit data when it is first created.
@@ -166,6 +175,12 @@ exports.createTeamMembers = functions.database.ref('teams/{pushId}').onCreate((e
     database.ref(`profiles/${owner.uid}/teams/${teamId}`).set('OWNER');
 });
 
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+exports.helloWorld = functions.https.onRequest((request, response) => {
+    response.send('Hello from Firebase!');
+});
 
 // exports.checkInvitations = functions.auth().onAuthStateChanged((user) => {
 //     if (!!user && user.email) {

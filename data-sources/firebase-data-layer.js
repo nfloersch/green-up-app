@@ -162,14 +162,26 @@ async function facebookAuth(token) {
     // Sign in with credential from the Facebook user.
     return firebase
         .auth()
-        .signInWithCredential(credential);
+        .signInWithCredential(credential)
+        .then((user) => {
+            const {uid, email, displayName, photoURL} = user;
+            const newProfile = User.create({uid, email, displayName, photoURL});
+            newProfile.created = (new Date()).toString();
+            firebase.database().ref(`profiles/${uid}`).set(newProfile);
+        });
 
 }
 
 async function googleAuth(token) {
     // Build Firebase credential with the Google access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
-    return firebase.auth().signInWithCredential(credential);
+    return firebase.auth().signInWithCredential(credential)
+        .then((user) => {
+            const {uid, email, displayName, photoURL} = user;
+            const newProfile = User.create({uid, email, displayName, photoURL});
+            newProfile.created = (new Date()).toString();
+            firebase.database().ref(`profiles/${uid}`).set(newProfile);
+        });
 }
 
 // Messaging
@@ -206,10 +218,15 @@ function saveLocations(locations, teamId) {
     return firebase.database().ref(`teams/${teamId}/locations`).set(locations);
 }
 
-function createUser(email, password) {
+function createUser(email, password, displayName) {
     return firebase
         .auth()
-        .createUserWithEmailAndPassword(email, password)
+        .createUserWithEmailAndPassword(email, password).then((user) => {
+            const uid = user.uid;
+            const newProfile = User.create({uid, email, displayName});
+            newProfile.created = (new Date()).toString();
+            firebase.database().ref(`profiles/${uid}`).set(newProfile);
+        })
         .catch((error) => {
             // Handle Errors here.
             console.log(error.message); // eslint-disable-line
