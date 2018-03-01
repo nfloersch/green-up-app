@@ -136,7 +136,7 @@ class TeamEditorDetails extends Component {
                 style={styles.container}>
 
 								<View>
-                    <Text style={styles.heading2}>Team Name</Text>
+                    <Text style={styles.label}>Team Name</Text>
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.setTeamValue('name')}
@@ -156,7 +156,7 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>Select Town/City</Text>
+                    <Text style={styles.label}>Select Town/City</Text>
                     <Picker
                         itemStyle={{height: 45}}
                         selectedValue={selectedTeam.town}
@@ -167,7 +167,7 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>Clean Up Site</Text>
+                    <Text style={styles.label}>Clean Up Site</Text>
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.setTeamValue('location')}
@@ -177,7 +177,11 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>Date</Text>
+                    <Text style={styles.label}>Date</Text>
+										<Text style={styles.alertInfo}>
+											May 5th is the official Green Up Day, but teams
+											may choose to work up to one week before or after.
+										</Text>
 										<View>
 											<TouchableOpacity onPress={this.showDatePicker}>
     										<Text style={styles.textInput}>{selectedTeam.date || 'Select a Date'}</Text>
@@ -185,6 +189,8 @@ class TeamEditorDetails extends Component {
 											<DateTimePicker
 												mode='date'
 												date={new Date('5/5/2018')}
+												minimumDate={new Date('4/28/2018')}
+												maximumDate={new Date('5/13/2018')}
 												isVisible={this.state.datePickerVisible}
 												onConfirm={this._handleDatePicked}
 												onCancel={this.hideDatePicker}
@@ -193,7 +199,7 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>Start Time</Text>
+                    <Text style={styles.label}>Start Time</Text>
 										<View>
 											<TouchableOpacity onPress={this.showStartDateTimePicker}>
     										<Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
@@ -209,7 +215,7 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>End Time</Text>
+                    <Text style={styles.label}>End Time</Text>
 										<View>
 											<TouchableOpacity onPress={this.showEndDateTimePicker}>
     										<Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
@@ -225,7 +231,7 @@ class TeamEditorDetails extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.heading2}>Notes</Text>
+                    <Text style={styles.label}>Notes</Text>
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.setTeamValue('notes')}

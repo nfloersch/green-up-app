@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, ScrollView, View, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, ScrollView, View, TouchableHighlight, Button} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -25,8 +25,7 @@ const myStyles = {
     memberStatusBanner: {
         paddingTop: 5,
         paddingBottom: 5
-    },
-    bannerText: {textAlign: 'center', marginTop: 5, marginBottom: 5}
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -77,36 +76,38 @@ class TeamDetails extends Component {
             const membership = selectedTeam.members.find(member => member.uid === currentUser.uid || member.email === currentUser.email);
             switch (true) {
                 case selectedTeam.owner.uid === currentUser.uid :
-                    return (<Text style={styles.bannerText}>{'You own this team'}</Text>);
+                    return (<Text style={styles.alertInfo}>{'You own this team'}</Text>);
                 case membership && membership.memberStatus === teamMemberStatuses.INVITED:
                     return (
-                        <TouchableHighlight onPress={this._acceptInvitation}>
-                            <Text style={styles.bannerText}>
-                                {'Accept Invitation'}
-                            </Text>
-                        </TouchableHighlight>
+											   <Button
+													style={styles.button}
+													onPress={this._acceptInvitation}
+                          title = 'Accept Invitation' />
                     );
                 case membership && membership.memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
-                        <TouchableHighlight onPress={this._leaveTeam}>
-                            <Text style={styles.bannerText}>
-                                {'You are already a member'}
-                            </Text>
-                        </TouchableHighlight>
+												<View>
+													<Text style={styles.alertDanger}>
+															{'You are already a member'}
+													</Text>
+													<Button
+														style={styles.button}
+														onPress={this._leaveTeam}
+														title = 'Leave Team' />
+												</View>
                     );
                 case this.state.hasAsked || (membership && membership.memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
-                        <Text style={styles.bannerText}>
+                        <Text style={styles.alertInfo}>
                             {'Waiting on the Team Manager to approve your request'}
                         </Text>
                     );
                 default :
                     return (
-                        <TouchableHighlight onPress={this._askToJoin}>
-                            <Text style={styles.bannerText}>
-                                {'Ask to join this group'}
-                            </Text>
-                        </TouchableHighlight>
+                        <Button
+													style={styles.button}
+													onPress={this._askToJoin}
+                          title = 'Ask to join this group' />
                     );
             }
         };
