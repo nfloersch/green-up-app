@@ -11,6 +11,7 @@ export default class Team {
     notes: [string];
     town: string;
     location: string;
+		date: string
     start: string;
     end: string;
     active: boolean;
@@ -36,6 +37,9 @@ export default class Team {
             : null;
         this.notes = typeof args.notes === 'string'
             ? args.notes
+            : null;
+				this.date = typeof args.date === 'string'
+            ? args.date
             : null;
         this.start = typeof args.start === 'string'
             ? args.start
