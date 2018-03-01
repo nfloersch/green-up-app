@@ -108,7 +108,7 @@ class Profile extends Component {
         this._saveProfile = this._saveProfile.bind(this);
         this._changeText = this._changeText.bind(this);
         this._cancel = this._cancel.bind(this);
-        this.state = Object.assign({}, props.profile);
+        this.state = Object.assign({}, props.currentUser);
     }
 
 
@@ -119,12 +119,13 @@ class Profile extends Component {
     }
 
     _saveProfile() {
-        this.props.actions.saveProfile(this.state);
+        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)));
+        this.props.navigation.goBack();
     }
 
     _cancel() {
         this.setState(this.props.profile, () => {
-            this.props.navigation.goBack('Main');
+            this.props.navigation.goBack();
         });
     }
 

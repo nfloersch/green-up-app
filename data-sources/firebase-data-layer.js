@@ -34,25 +34,26 @@ function setupProfileListener(userId, dispatch) {
     const db = firebase.database();
     const profile = db.ref(`profiles/${userId}`);
     profile.on('value', (snapshot) => {
-        const data = snapshot.val();
+        const data = snapshot.val() || {};
         dispatch(dataLayerActions.profileFetchSuccessful(data));
 
-        const newTeamMemberListeners = Object.keys(data.teams);
-        // remove oldlisteners for teamMemberLists
+        const newTeamMemberListeners = Object.keys(data.teams || {});
+
+        // remove old listeners for teamMemberLists
         const removeUs = myTeamMemberListeners.filter(l => newTeamMemberListeners.indexOf(l) === -1);
         removeUs.forEach(id => {
             db.ref(`teamMembers/${id}`).off('value');
         });
 
-        // add newlisteners
+        // add new listeners for teamMemberLists
         const addUs = newTeamMemberListeners.filter(l => myTeamMemberListeners.indexOf(l) === -1);
 
         myTeamMemberListeners = newTeamMemberListeners;
 
         addUs.forEach(id => {
             db.ref(`teamMembers/${id}`).on('value', (snapShot) => {
-                const data = snapShot.val();
-                dispatch(dataLayerActions.teamMemberFetchSuccessful(data, id));
+                const _data = snapShot.val();
+                dispatch(dataLayerActions.teamMemberFetchSuccessful(_data, id));
             });
         });
 
@@ -135,20 +136,20 @@ async function initialize(dispatch) {
 }
 
 // TODO fix the id vs uid dilemma
-async function updateTeamMember(team, member) {
-    const id = team.uid || team.id;
-    const members = team.members.filter(_member => (_member.uid !== member.uid)).concat(member);
-    const _team = Object.assign({}, team, {uid: null, id: null}, {members});
-    // delete _team.uid;
-    if (!id) {
-        firebase
-            .database()
-            .ref('teams')
-            .push(team);
-    } else {
-        firebase.database().ref(`teams/${id}`).set(_team);
-    }
-}
+// async function updateTeamMember(team, member) {
+//     const id = team.uid || team.id;
+//     const members = team.members.filter(_member => (_member.uid !== member.uid)).concat(member);
+//     const _team = Object.assign({}, team, {uid: null, id: null}, {members});
+//     // delete _team.uid;
+//     if (!id) {
+//         firebase
+//             .database()
+//             .ref('teams')
+//             .push(team);
+//     } else {
+//         firebase.database().ref(`teams/${id}`).set(_team);
+//     }
+// }
 
 async function facebookAuth(token) {
 
@@ -269,6 +270,17 @@ function addTeamMember(teamId, teamMember) {
         .push(teamMember);
 }
 
+function updateTeamMember(teamId, memberId, teamMember) {
+    firebase
+        .database()
+        .ref(`teamMembers/${teamId}/${memberId}`)
+        .set(teamMember);
+}
+
+function removeTeamMember(teamId: string, membershipId: string) {
+    firebase.database().rev(`teamMembers/${teamId}/${membershipId}`).remove();
+}
+
 export const firebaseDataLayer = {
     addTeamMember,
     createUser,
@@ -278,6 +290,7 @@ export const firebaseDataLayer = {
     initialize,
     loginWithEmailPassword,
     logout,
+    removeTeamMember,
     resetPassword,
     saveTeam,
     saveLocations,

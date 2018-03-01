@@ -10,13 +10,13 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from '../login-screen/actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-	menuItem: {
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
+    menuItem: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -93,15 +93,10 @@ class MenuScreen extends Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-		};
-}
+const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);

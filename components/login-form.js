@@ -3,12 +3,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
-import {defaultStyles} from  '../styles/default-styles';
+import {defaultStyles} from '../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 export default class LoginForm extends Component {
@@ -24,7 +23,7 @@ export default class LoginForm extends Component {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onChangeState = this.onChangeState.bind(this);
-        this.state = {email: '', password: ''};
+        this.state = {email: '', password: '', displayName: ''};
     }
 
     onChangeState(stateKey) {
@@ -34,7 +33,7 @@ export default class LoginForm extends Component {
     }
 
     onButtonPress() {
-        this.props.onButtonPress(this.state.email, this.state.password);
+        this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
     }
 
     render() {
@@ -58,10 +57,10 @@ export default class LoginForm extends Component {
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
                         style={styles.textInput}/>
-										<View style={styles.button}>
-                    	<Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
-                		</View>
-								</View>
+                </View>
+                <View style={styles.button}>
+                    <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
+                </View>
             </View>
         );
     }

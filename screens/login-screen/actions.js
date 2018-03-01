@@ -15,12 +15,11 @@ export function getCurrentUser() {
 export function logout() {
     return async (dispatch: Object => *) => {
         try {
-            const results = await firebaseDataLayer.logout();
-            // await Auth.GoogleSignInApi.signOut(apiClient);
             dispatch({
                 type: types.LOGOUT_SUCCESSFUL,
                 results
             });
+            return await firebaseDataLayer.logout();
         } catch (error) {
             dispatch({
                 type: types.LOGOUT_FAIL,
@@ -30,11 +29,12 @@ export function logout() {
     };
 }
 
-export function createUser(email: string, password: string) {
+export function createUser(email: string, password: string, displayName: string) {
     return (dispatch: Object => *) => {
-        const _promise = firebaseDataLayer.createUser(email, password);
-        return _promise.then(() => {
-            dispatch({type: types.CREATING_USER});
+        dispatch({type: types.CREATING_USER});
+        const _promise = firebaseDataLayer.createUser(email, password, displayName);
+        return _promise.then((data) => {
+            console.log(data);
         }).catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});
         });

@@ -1,7 +1,7 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
 
-export function reducers(state = initialState, action) {
+export function reducers(state = initialState.trashBagFinder, action) {
     switch (action.type) {
 
         case types.FETCH_SUPPLY_LOCATIONS_SUCCESS :

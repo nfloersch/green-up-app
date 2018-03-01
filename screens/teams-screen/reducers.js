@@ -1,6 +1,7 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
-export function reducers(state = initialState, action) {
+
+export function reducers(state = initialState.teams, action) {
     switch (action.type) {
         case types.NEW_TEAM:
             return {
@@ -60,7 +61,7 @@ export function reducers(state = initialState, action) {
         case types.TEAM_MEMBER_FETCH_SUCCESS : {
             return {
                 ...state,
-                teamMembers : {...state.teamMembers, [action.teamId]: action.membership}
+                teamMembers: {...state.teamMembers, [action.teamId]: action.membership}
             };
         }
         default:

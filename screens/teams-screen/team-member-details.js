@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, Button, TouchableHighlight} from 'react-native';
+import {StyleSheet, Text, View, Image, Button} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -119,10 +119,10 @@ class TeamMemberDetails extends Component {
         }
     }
 
-    _updateTeamMember(team: Object, member: Object) {
-        return (bits: Object) => {
-            const _member = TeamMember.create(Object.assign({}, member, bits));
-            this.props.actions.updateTeamMember(team, _member);
+    _updateTeamMember(teamId: string, membershipId: string, member: Object) {
+        return (newStatus: Object) => {
+            const _member = TeamMember.create(Object.assign({}, member, (newStatus? {memberStatus: newStatus} : {})));
+            this.props.actions.updateTeamMember(teamId, membershipId, _member);
         };
     }
 
@@ -140,7 +140,8 @@ class TeamMemberDetails extends Component {
 
 
     render() {
-        const {member, team} = this.props.navigation.state.params;
+        const {membershipId, teamId} = this.props.navigation.state.params;
+        const member = this.props.teamMembers[teamId][membershipId];
         const avatar = member.photoURL;
 
         function getButtons(teamMember: Object) {
@@ -153,10 +154,10 @@ class TeamMemberDetails extends Component {
                             <Text>{teamMember.displayName || teamMember.email} wants to join your team</Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(team, teamMember);
+                                    this._removeTeamMember(teamId, membershipId);
                                 }} title={'Ignore'}/>
                                 <Button onPress={() => {
-                                    this.props.actions.addTeamMember(team, teamMember, status.ACCEPTED);
+                                    this._updateTeamMember(teamId, membershipId, teamMember)(status.ACCEPTED);
                                 }} title={'Add To This Team'}/>
                             </View>
                         </View>
@@ -167,7 +168,7 @@ class TeamMemberDetails extends Component {
                             <Text>{teamMember.displayName || teamMember.email} is a member of your team</Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(team, teamMember);
+                                    this.props.actions.removeTeamMember(teamId, membershipId);
                                 }} title={'Remove from Team'}/>
                             </View>
                         </View>
@@ -181,7 +182,7 @@ class TeamMemberDetails extends Component {
                             </Text>
                             <View>
                                 <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(team, teamMember);
+                                    this.props.actions.removeTeamMember(teamId, membershipId);
                                 }} title={'Revoke Invitation'}/>
                             </View>
                         </View>
@@ -198,12 +199,12 @@ class TeamMemberDetails extends Component {
                         style={{width: 50, height: 50}}
                         source={{uri: avatar}}
                     />
-                    <Text style={styles.inputRowLabel}>{member.displayName}</Text>
+                    <Text style={styles.inputRowLabel}>{member.displayName || ''}</Text>
                 </View>
                 <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{`About ${member.displayName}`}</Text>
+                    <Text style={styles.inputRowLabel}>{`About ${member.displayName || ''}`}</Text>
                     <Text>
-                        {member.bio}
+                        {member.bio || ''}
                     </Text>
                 </View>
                 <View style={styles.buttonRow}>
@@ -217,7 +218,8 @@ class TeamMemberDetails extends Component {
 function mapStateToProps(state) {
     const currentUser = state.login.user;
     const profile = state.profile.profile;
-    return {profile, currentUser};
+    const teamMembers = state.teams.teamMembers || {};
+    return {profile, currentUser, teamMembers};
 }
 
 function mapDispatchToProps(dispatch) {

@@ -44,6 +44,7 @@ const styles = StyleSheet.create(combinedStyles);
 class TeamEditorMembers extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        teamMembers: PropTypes.object,
         teams: PropTypes.object,
         selectedTeam: PropTypes.object,
         screenProps: PropTypes.object
@@ -105,9 +106,9 @@ class TeamEditorMembers extends Component {
         }
     }
 
-    _toMemberDetails(member: Object, team: Object) {
+    _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
-            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {team, member});
+            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
         };
     }
 
@@ -119,21 +120,22 @@ class TeamEditorMembers extends Component {
             [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
             [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
-
-        const members = (this.props.selectedTeam.members || []).map(member => (
-            <View key={member.uid || member.email} style={styles.item}>
-                <TouchableHighlight onPress={this._toMemberDetails(member, this.props.selectedTeam)}>
+        const teamId = this.props.selectedTeam.id;
+        const members = this.props.teamMembers[teamId] || {};
+        const memberButtons = Object.keys(members).map(membershipId => (
+            <View key={members[membershipId].uid || members[membershipId].email} style={styles.item}>
+                <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipId)}>
                     <View style={styles.member}>
                         <Ionicons
-                            name={icons[member.memberStatus] ||
+                            name={icons[members[membershipId].memberStatus] ||
                             (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
                             size={30}
-                            style={this.getIconColor(member.memberStatus)}/>
-                        <Text style={styles.memberEmail}>{member.email}</Text>
+                            style={this.getIconColor(members[membershipId].memberStatus)}/>
+                        <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
                     </View>
                 </TouchableHighlight>
                 <Text style={styles.memberName}>
-                    {(`${member.displayName}`).trim()}
+                    {(`${members[membershipId].displayName}`).trim()}
                 </Text>
             </View>
 
@@ -147,7 +149,7 @@ class TeamEditorMembers extends Component {
                 </View>
                 <View>
                     <ScrollView>
-                        {members}
+                        {memberButtons}
                     </ScrollView>
                 </View>
             </View>
@@ -158,7 +160,8 @@ class TeamEditorMembers extends Component {
 const mapStateToProps = (state) => (
     {
         teams: state.teams.teams,
-        selectedTeam: state.teams.selectedTeam
+        selectedTeam: state.teams.selectedTeam,
+        teamMembers: state.teams.teamMembers
     });
 
 

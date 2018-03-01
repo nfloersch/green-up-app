@@ -90,7 +90,8 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
     const email = teamMember.email.toLowerCase();
-    const members = database.ref(`teams/${invitation.team.id}/members`);
+    const teamId = invitation.team.id;
+    const members = database.ref(`teamMembers/${teamId}`);
 
     // Add message if user exists
     // const test = database.ref('test');
@@ -98,8 +99,8 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
     const profiles = database.ref('profiles');
     profiles.once('value', (snapshot) => {
         const myProfiles = snapshot.val();
-
         const userId = Object.keys(myProfiles).find(key => myProfiles[key].email.toLowerCase() === email);
+
         if (!!userId) {
             // Add Invite Message
             const message = {
@@ -113,17 +114,17 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
             };
 
             database.ref(`messages/${userId}`).push(message);
+
+            // Add invitee to team
             const newMember = TeamMember.create(
                 Object.assign({}, myProfiles[userId], {memberStatus: 'INVITED'})
             );
 
-            // Add invitee to team
-            members.once('value', (_snapshot) => {
-                const _members = _snapshot.val();
-                members.set(_members.concat(newMember));
-            });
+            members.push(newMember);
+
             // Remove invitation - we don't need it anymore:
             database.ref(`invitations/${invitationId}`).remove();
+
         } else {
             // Add invitee to team
             const newMember = TeamMember.create(
@@ -133,10 +134,7 @@ exports.sendInvitationEmail = functions.database.ref('invitations/{pushId}').onC
                     invitationId: event.params.pushId
                 })
             );
-            members.once('value', (_snapshot) => {
-                const _members = _snapshot.val();
-                members.set(_members.concat(TeamMember.create(newMember)));
-            });
+            members.push(newMember);
         }
     });
 

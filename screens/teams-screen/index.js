@@ -24,14 +24,6 @@ import Team from '../../models/team';
 import * as actions from './actions';
 import {User} from '../../models/user';
 
-// import withErrorHandler from '../../components/with-error-handler';
-
-function currentUserIsTeamOwner(team, currentUser) {
-    const teamUID = team && team.owner && team.owner.uid;
-    const userUID = currentUser && currentUser.uid;
-    return teamUID && userUID && teamUID === userUID;
-}
-
 const styles = StyleSheet.create({
     headerButton: {
         width: 32
@@ -142,13 +134,11 @@ class MyTeams extends Component {
     toTeamDetail(status, team) {
         return () => {
             let nextScreen = 'TeamDetails';
-
-
             switch (true) {
                 case status === TeamMember.memberStatuses.INVITED:
                     nextScreen = 'TeamInvitationDetails';
                     break;
-                case currentUserIsTeamOwner(team, this.props.currentUser):
+                case status === TeamMember.memberStatuses.OWNER:
                     nextScreen = 'TeamEditor';
                     break;
                 default:

@@ -159,7 +159,7 @@ function mapStateToProps(state) {
     return {
         messages: state.messages.messages,
         currentUser: state.login.user,
-        userHasTeams: Object.values(state.profile ? state.profile.teams : {}).length > 0,
+        userHasTeams: Object.values(state.profile.teams || {}).length > 0,
         teamsLoaded: state.messages.teamsLoaded,
         messagesLoaded: state.messages.loaded
     };

@@ -1,12 +1,7 @@
 import * as types from '../../constants/actionTypes';
+import initialState from '../../reducers/initialState';
 
-const initialState = {
-    messages: {},
-    messagesLoaded: false,
-    teamsLoaded: false
-};
-
-export function reducers(state = initialState, action) {
+export function reducers(state = initialState.messages, action) {
     switch (action.type) {
         case types.NEW_MESSAGE:
             return {

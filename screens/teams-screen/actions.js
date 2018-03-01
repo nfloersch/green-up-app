@@ -59,10 +59,10 @@ export function askToJoinTeam(team: any, user: Object) {
     };
 }
 
-export function acceptInvitation(team: Object, user: Object) {
+export function acceptInvitation(teamId: string, memberId: string, user: Object) {
     return async function () {
         const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
-        firebaseDataLayer.updateTeamMember(team, newTeamMember);
+        firebaseDataLayer.updateTeamMember(teamId, memberId, newTeamMember);
     };
 }
 
@@ -90,22 +90,23 @@ export function setSelectedTeamValue(key: string, value: any) {
     return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};
 }
 
-export function removeTeamMember(team: Team, member: TeamMember) {
-    const uidOrEmail = member.uid || member.email;
+export function removeTeamMember(teamId: string, memberId: string) {
     return async function () {
-        const members = team.members.filter(_member => (_member.uid !== uidOrEmail && _member.email !== uidOrEmail));
-        const newTeam = Team.create(Object.assign({}, team, {members}));
-        firebaseDataLayer.saveTeam(newTeam);
+        firebaseDataLayer.removeTeamMember(teamId, memberId);
     };
 }
 
-export function addTeamMember(team: Team, member: TeamMember, status: string) {
-    const uidOrEmail = member.uid || member.email;
+export function addTeamMember(teamId: string, member: TeamMember, status: string) {
     const _newMember = TeamMember.create(Object.assign({}, member, {memberStatus: status || member.memberStatus}));
     return async function () {
-        const members = team.members.filter(_member => (_member.uid !== uidOrEmail && _member.email !== uidOrEmail)).concat(_newMember);
-        const newTeam = Team.create(Object.assign({}, team, {members}));
-        firebaseDataLayer.saveTeam(newTeam);
+        firebaseDataLayer.addTeamMember(teamId, _newMember);
+    };
+}
+
+export function updateTeamMember(teamId: string, membershipId:string, member: TeamMember, status: string) {
+    const _newMember = TeamMember.create(Object.assign({}, member, {memberStatus: status || member.memberStatus}));
+    return async function () {
+        firebaseDataLayer.updateTeamMember(teamId, membershipId,_newMember);
     };
 }
 

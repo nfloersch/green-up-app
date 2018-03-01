@@ -50,7 +50,7 @@ class InviteForm extends Component {
         super(props);
         this.inviteToTeam = _inviteToTeam.bind(this);
         this.changeInvitee = _changeInvitee.bind(this);
-        this.state = {firstName: '', lastName: '', email: '', phone: ''};
+        this.state = {firstName: '', lastName: '', email: ''};
     }
 
     render() {
@@ -82,15 +82,6 @@ class InviteForm extends Component {
                     value={this.state.lastName}
                     onChangeText={this.changeInvitee('lastName')}
                     placeholder='Last'
-                />
-                <Text style={styles.label}>
-                    Phone (optional)
-                </Text>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='555-555-5555'
-                    value={this.state.phone}
-                    onChangeText={this.changeInvitee('phone')}
                 />
                 <Button
                     onPress={this.inviteToTeam}
