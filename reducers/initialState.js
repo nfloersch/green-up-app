@@ -7,7 +7,7 @@ export default {
         skipLoadingScreen: false
     },
     login: {
-        isLoggedIn: false,
+        userIsLoggedIn: false,
         initialAuthChecked: false,
         creatingUser: false,
         user: null

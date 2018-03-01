@@ -81,7 +81,7 @@ class MenuScreen extends Component {
 
                 <TouchableHighlight
                     style={styles.button}
-                    onPress={() => this.props.actions.logout()}
+                    onPress={this.props.actions.logout}
                 >
                     <View style={styles.socialLogin}>
                         <Text style={styles.buttonText}>Log Out</Text>

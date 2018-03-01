@@ -13,20 +13,19 @@ export function getCurrentUser() {
 }
 
 export function logout() {
-    return async (dispatch: Object => *) => {
-        try {
-            dispatch({
-                type: types.LOGOUT_SUCCESSFUL,
-                results
+    return (dispatch: Object => *) => {
+        firebaseDataLayer.logout()
+            .then((results) => {
+                dispatch({
+                    type: types.LOGOUT_SUCCESSFUL,
+                    results
+                });
+            })
+            .catch(err => {
+                dispatch({type: types.LOGOUT_FAIL, err});
             });
-            return await firebaseDataLayer.logout();
-        } catch (error) {
-            dispatch({
-                type: types.LOGOUT_FAIL,
-                error
-            });
-        }
     };
+
 }
 
 export function createUser(email: string, password: string, displayName: string) {

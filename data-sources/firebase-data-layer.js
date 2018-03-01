@@ -103,9 +103,9 @@ async function initialize(dispatch) {
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
-    //const teams = firebase.database().ref('teams/');
+    // const teams = firebase.database().ref('teams/');
     //
-    //teams.on('value', (snapshot) => {
+    // teams.on('value', (snapshot) => {
     //    dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
     // });
 
@@ -165,11 +165,14 @@ async function facebookAuth(token) {
         .signInWithCredential(credential)
         .then((user) => {
             const {uid, email, displayName, photoURL} = user;
-            const newProfile = User.create({uid, email, displayName, photoURL});
-            newProfile.created = (new Date()).toString();
-            firebase.database().ref(`profiles/${uid}`).set(newProfile);
+            firebase.database().ref(`profiles/${uid}`).once('value').then(snapshot => {
+                if (!snapshot.val()) {
+                    const newProfile = User.create({uid, email, displayName, photoURL});
+                    newProfile.created = (new Date()).toString();
+                    firebase.database().ref(`profiles/${uid}`).set(newProfile);
+                }
+            });
         });
-
 }
 
 async function googleAuth(token) {
@@ -178,9 +181,13 @@ async function googleAuth(token) {
     return firebase.auth().signInWithCredential(credential)
         .then((user) => {
             const {uid, email, displayName, photoURL} = user;
-            const newProfile = User.create({uid, email, displayName, photoURL});
-            newProfile.created = (new Date()).toString();
-            firebase.database().ref(`profiles/${uid}`).set(newProfile);
+            firebase.database().ref(`profiles/${uid}`).once('value').then(snapshot => {
+                if (!snapshot.val()) {
+                    const newProfile = User.create({uid, email, displayName, photoURL});
+                    newProfile.created = (new Date()).toString();
+                    firebase.database().ref(`profiles/${uid}`).set(newProfile);
+                }
+            });
         });
 }
 
