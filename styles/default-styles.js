@@ -26,6 +26,40 @@ export const defaultStyles = {
         borderRadius: 5,
         padding: 5
     },
+		// Twitter Bootstrap alert styles
+		alertInfo: {
+			fontSize: 10,
+			color: '#004085',
+			backgroundColor: '#cce5ff',
+			borderColor: '#b8daff',
+			padding: 3,
+			marginBottom: 5,
+			borderWidth: 1,
+			borderRadius: 5,
+			overflow: 'hidden'
+		},
+		alertSuccess: {
+			fontSize: 10,
+			color: '#155724',
+			backgroundColor: '#d4edda',
+			borderColor: '#c3e6cb',
+			padding: 3,
+			marginBottom: 5,
+			borderWidth: 1,
+			borderRadius: 5,
+			overflow: 'hidden'
+		},
+		alertDanger: {
+			fontSize: 10,
+			color: '#721c24',
+			backgroundColor: '#f8d7da',
+			borderColor: '#f5c6cb',
+			padding: 3,
+			marginBottom: 5,
+			borderWidth: 1,
+			borderRadius: 20,
+			overflow: 'hidden'
+		},
     heading1: {},
     heading2: {
         fontWeight: 'bold',
@@ -52,5 +86,4 @@ export const defaultStyles = {
         padding: 5,
         backgroundColor: 'darkseagreen'
     }
-
-};
+}
