@@ -53,7 +53,7 @@ class ForgotPassword extends Component {
             )
             : (
                 <View style={styles.container}>
-                    <Text style={styles.label}>Email Address :</Text>
+                    <Text style={styles.label}>Email Address</Text>
                     <TextInput
                         autoCorrect={false}
                         value={this.state.email}

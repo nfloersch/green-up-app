@@ -25,7 +25,11 @@ import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {};
+const myStyles = {
+	selected: {
+		opacity: 0.5
+	}
+};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -127,7 +131,10 @@ class TeamEditorDetails extends Component {
             }
         ];
 
-        const {selectedTeam} = this.props;
+        const {selectedTeam} = this.props,
+							dateIsSelected = selectedTeam.date === null,
+							startIsSelected = selectedTeam.start === null,
+							endIsSelected = selectedTeam.end === null;
 
         return (
             <ScrollView
@@ -184,7 +191,9 @@ class TeamEditorDetails extends Component {
 										</Text>
 										<View>
 											<TouchableOpacity onPress={this.showDatePicker}>
-    										<Text style={styles.textInput}>{selectedTeam.date || 'Select a Date'}</Text>
+    										<Text style={[styles.textInput, dateIsSelected && styles.selected]}>
+													{selectedTeam.date || 'Select a Date'}
+												</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='date'
@@ -202,7 +211,9 @@ class TeamEditorDetails extends Component {
                     <Text style={styles.label}>Start Time</Text>
 										<View>
 											<TouchableOpacity onPress={this.showStartDateTimePicker}>
-    										<Text style={styles.textInput}>{selectedTeam.start || 'Select a Time'}</Text>
+    										<Text style={[styles.textInput, startIsSelected && styles.selected]}>
+													{selectedTeam.start || 'Select a Date'}
+												</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='time'
@@ -218,7 +229,9 @@ class TeamEditorDetails extends Component {
                     <Text style={styles.label}>End Time</Text>
 										<View>
 											<TouchableOpacity onPress={this.showEndDateTimePicker}>
-    										<Text style={styles.textInput}>{selectedTeam.end || 'Select a Time'}</Text>
+    										<Text style={[styles.textInput, endIsSelected && styles.selected]}>
+													{selectedTeam.end || 'Select a Date'}
+												</Text>
 											</TouchableOpacity>
 											<DateTimePicker
 												mode='time'
