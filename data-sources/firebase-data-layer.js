@@ -327,18 +327,24 @@ function updateTeamMember(teamId, teamMember) {
 }
 
 function removeTeamMember(teamId: string, membershipId: string) {
-    firebase.database().ref(`teamMembers/${teamId}/${membershipId}`).remove();
+    return firebase.database().ref(`teamMembers/${teamId}/${membershipId}`).remove();
 }
 
 function leaveTeam(teamId: string, user: Object) {
     const db = firebase.database();
 
     const membershipId = user.email.toLowerCase().replace(/\./g, ':');
-    db.ref(`teamMembers/${teamId}/${membershipId}`).remove()
-        .then(() => {
-            db.ref(`profiles/${user.uid}/teams/${teamId}`).remove();
-        });
+    return db.ref(`teamMembers/${teamId}/${membershipId}`).remove()
+        .then(() => db.ref(`profiles/${user.uid}/teams/${teamId}`).remove());
 }
+
+function revokeInvitation(teamId: string, membershipId: string) {
+    const db = firebase.database();
+    const _membershipId = membershipId.toLowerCase().replace(/\./g, ':');
+    return db.ref(`teamMembers/${teamId}/${_membershipId}`).remove()
+        .then(() => db.ref(`invitations/${_membershipId}/${teamId}`).remove());
+}
+
 
 export const firebaseDataLayer = {
     addTeamMember,
@@ -352,6 +358,7 @@ export const firebaseDataLayer = {
     removeTeamMember,
     leaveTeam,
     resetPassword,
+    revokeInvitation,
     saveTeam,
     saveLocations,
     sendUserMessage,

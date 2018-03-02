@@ -50,27 +50,35 @@ class TeamDetails extends Component {
         this._askToJoin = this._askToJoin.bind(this);
         this._leaveTeam = this._leaveTeam.bind(this);
         this._acceptInvitation = this._acceptInvitation.bind(this);
+        this._declineInvitation = this._declineInvitation.bind(this);
         this.state = {hasAsked: false};
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Object) {
         if (JSON.stringify(nextProps.selectedTeam) !== JSON.stringify(this.props.selectedTeam)) {
             this.setState({hasAsked: false});
         }
     }
 
-    _acceptInvitation() {
-        this.props.actions.acceptInvitation(this.props.selectedTeam.id, this.props.currentUser);
+
+    _declineInvitation(teamId: string, membershipId: string) {
+        return () => this.props.actions.revokeInvitation(teamId, membershipId);
     }
 
-    _leaveTeam() {
-        this.props.actions.leaveTeam(this.props.selectedTeam.id, this.props.currentUser);
+    _acceptInvitation(teamId: string, user: Object) {
+        return () => this.props.actions.acceptInvitation(teamId, user);
     }
 
-    _askToJoin() {
-        this.setState({hasAsked: true}, () => {
-            this.props.actions.askToJoinTeam(this.props.selectedTeam.id, this.props.currentUser);
-        });
+    _leaveTeam(teamId: string, user: Object) {
+        return () => this.props.actions.leaveTeam(teamId, user);
+    }
+
+    _askToJoin(teamId: string, user: Object) {
+        return () => {
+            this.setState({hasAsked: true}, () => {
+                this.props.actions.askToJoinTeam(teamId, user);
+            });
+        };
     }
 
     render() {
@@ -83,10 +91,16 @@ class TeamDetails extends Component {
             switch (true) {
                 case memberStatus === teamMemberStatuses.INVITED:
                     return (
-                        <Button
-                            style={styles.button}
-                            onPress={this._acceptInvitation}
-                            title='Accept Invitation'/>
+                        <View>
+                            <Button
+                                style={styles.button}
+                                onPress={this._acceptInvitation(selectedTeam.id, currentUser)}
+                                title='Accept Invitation'/>
+                            <Button
+                                style={styles.button}
+                                onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}
+                                title={'Decline Invitation'}/>
+                        </View>
                     );
                 case selectedTeam.owner.uid === currentUser.uid :
                     return (<Text style={styles.alertInfo}>{'You own this team'}</Text>);
@@ -98,7 +112,7 @@ class TeamDetails extends Component {
                             </Text>
                             <Button
                                 style={styles.button}
-                                onPress={this._leaveTeam}
+                                onPress={this._leaveTeam(selectedTeam.id, currentUser)}
                                 title='Leave Team'/>
                         </View>
                     );
@@ -112,7 +126,7 @@ class TeamDetails extends Component {
                     return (
                         <Button
                             style={styles.button}
-                            onPress={this._askToJoin}
+                            onPress={this._askToJoin(selectedTeam.id, currentUser)}
                             title='Ask to join this group'/>
                     );
             }

@@ -91,9 +91,11 @@ export function setSelectedTeamValue(key: string, value: any) {
 }
 
 export function removeTeamMember(teamId: string, memberId: string) {
-    return async function () {
-        firebaseDataLayer.removeTeamMember(teamId, memberId);
-    };
+    return () => firebaseDataLayer.removeTeamMember(teamId, memberId);
+}
+
+export function revokeInvitation(teamId: string, membershipId: string) {
+    return () => firebaseDataLayer.revokeInvitation(teamId, membershipId);
 }
 
 export function addTeamMember(teamId: string, member: TeamMember, status: string) {
@@ -129,3 +131,4 @@ export function leaveTeam(teamId: string, user: Object) {
         firebaseDataLayer.leaveTeam(teamId, user);
     };
 }
+

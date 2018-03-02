@@ -97,7 +97,7 @@ class TeamMemberDetails extends Component {
         currentUser: PropTypes.object,
         profile: PropTypes.object,
         navigation: PropTypes.object,
-        teamMembers : PropTypes.object
+        teamMembers: PropTypes.object
     };
 
     static navigationOptions = {
@@ -121,14 +121,15 @@ class TeamMemberDetails extends Component {
 
     _updateTeamMember(teamId: string, membershipId: string, member: Object) {
         return (newStatus: Object) => {
-            const _member = TeamMember.create(Object.assign({}, member, (newStatus? {memberStatus: newStatus} : {})));
+            const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
             this.props.actions.updateTeamMember(teamId, membershipId, _member);
         };
     }
 
-    _removeTeamMember(team, member) {
+    _removeTeamMember(teamId, membershipId) {
         return () => {
-            this.props.actions.removeTeamMember(team, member);
+            this.props.navigation.goBack();
+            this.props.actions.revokeInvitation(teamId, membershipId);
         };
     }
 
@@ -142,7 +143,8 @@ class TeamMemberDetails extends Component {
     render() {
         const {membershipId, teamId} = this.props.navigation.state.params;
         const member = this.props.teamMembers[teamId][membershipId];
-        const avatar = member.photoURL;
+        const avatar = (member || {}).photoURL;
+
 
         function getButtons(teamMember: Object) {
             switch (teamMember.memberStatus) {
@@ -153,9 +155,7 @@ class TeamMemberDetails extends Component {
                         <View>
                             <Text>{teamMember.displayName || teamMember.email} wants to join your team</Text>
                             <View>
-                                <Button onPress={() => {
-                                    this._removeTeamMember(teamId, membershipId);
-                                }} title={'Ignore'}/>
+                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Ignore'}/>
                                 <Button onPress={() => {
                                     this._updateTeamMember(teamId, membershipId, teamMember)(status.ACCEPTED);
                                 }} title={'Add To This Team'}/>
@@ -167,9 +167,7 @@ class TeamMemberDetails extends Component {
                         <View>
                             <Text>{teamMember.displayName || teamMember.email} is a member of your team</Text>
                             <View>
-                                <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(teamId, membershipId);
-                                }} title={'Remove from Team'}/>
+                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Remove from Team'}/>
                             </View>
                         </View>
                     );
@@ -181,9 +179,7 @@ class TeamMemberDetails extends Component {
                                 accept
                             </Text>
                             <View>
-                                <Button onPress={() => {
-                                    this.props.actions.removeTeamMember(teamId, membershipId);
-                                }} title={'Revoke Invitation'}/>
+                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Revoke Invitation'}/>
                             </View>
                         </View>
                     );
@@ -194,22 +190,32 @@ class TeamMemberDetails extends Component {
 
         return (
             <View style={styles.container}>
-                <View>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={{uri: avatar}}
-                    />
-                    <Text style={styles.inputRowLabel}>{member.displayName || ''}</Text>
-                </View>
-                <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{`About ${member.displayName || ''}`}</Text>
-                    <Text>
-                        {member.bio || ''}
-                    </Text>
-                </View>
-                <View style={styles.buttonRow}>
-                    {getButtons.bind(this)(member)}
-                </View>
+                {
+                    (Boolean(member)) &&
+
+                    (
+                        <View>
+                            <View>
+                                <Image
+                                    style={{width: 50, height: 50}}
+                                    source={{uri: avatar}}
+                                />
+                                <Text style={styles.inputRowLabel}>{member.displayName || ''}</Text>
+                            </View>
+                            <View style={styles.inputRow}>
+                                <Text style={styles.inputRowLabel}>
+                                    {`About ${member.displayName || ''}`}
+                                </Text>
+                                <Text>
+                                    {member.bio || ''}
+                                </Text>
+                            </View>
+                            <View style={styles.buttonRow}>
+                                {getButtons.bind(this)(member)}
+                            </View>
+                        </View>
+                    )
+                }
             </View>
         );
     }
