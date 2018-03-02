@@ -327,7 +327,17 @@ function updateTeamMember(teamId, teamMember) {
 }
 
 function removeTeamMember(teamId: string, membershipId: string) {
-    firebase.database().rev(`teamMembers/${teamId}/${membershipId}`).remove();
+    firebase.database().ref(`teamMembers/${teamId}/${membershipId}`).remove();
+}
+
+function leaveTeam(teamId: string, user: Object) {
+    const db = firebase.database();
+
+    const membershipId = user.email.toLowerCase().replace(/\./g, ':');
+    db.ref(`teamMembers/${teamId}/${membershipId}`).remove()
+        .then(() => {
+            db.ref(`profiles/${user.uid}/teams/${teamId}`).remove();
+        });
 }
 
 export const firebaseDataLayer = {
@@ -340,6 +350,7 @@ export const firebaseDataLayer = {
     loginWithEmailPassword,
     logout,
     removeTeamMember,
+    leaveTeam,
     resetPassword,
     saveTeam,
     saveLocations,

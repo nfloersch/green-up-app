@@ -60,10 +60,11 @@ class TeamDetails extends Component {
     }
 
     _acceptInvitation() {
-        this.props.actions.acceptInvitation(this.props.selectedTeam.id,  this.props.currentUser);
+        this.props.actions.acceptInvitation(this.props.selectedTeam.id, this.props.currentUser);
     }
 
     _leaveTeam() {
+        this.props.actions.leaveTeam(this.props.selectedTeam.id, this.props.currentUser);
     }
 
     _askToJoin() {

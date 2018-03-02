@@ -123,3 +123,9 @@ export function saveLocations(locations, team) {
 export function selectTeamById(teamId: string) {
     return {type: types.SELECT_TEAM_BY_ID, teamId};
 }
+
+export function leaveTeam(teamId: string, user: Object) {
+    return async function () {
+        firebaseDataLayer.leaveTeam(teamId, user);
+    };
+}
