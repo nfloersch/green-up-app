@@ -88,7 +88,7 @@ class Messages extends Component {
         switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
-                    this.props.actions.readMessage(message, userId);
+                    // this.props.actions.readMessage(message, userId);
                     this.props.actions.selectTeamById(message.teamId);
                     this.props.navigation.navigate('TeamDetails');
                 };
@@ -97,7 +97,6 @@ class Messages extends Component {
                 return () => {
                     // mark message as read
                     this.props.actions.readMessage(message, userId);
-
                     // navigate to details screen
                     this.props.navigation.navigate('MessageDetails', {messageId: message.uid});
                 };
