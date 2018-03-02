@@ -59,10 +59,10 @@ export function askToJoinTeam(team: any, user: Object) {
     };
 }
 
-export function acceptInvitation(teamId: string, memberId: string, user: Object) {
+export function acceptInvitation(teamId: string, user: Object) {
     return async function () {
         const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
-        firebaseDataLayer.updateTeamMember(teamId, memberId, newTeamMember);
+        firebaseDataLayer.addTeamMember(teamId, newTeamMember);
     };
 }
 

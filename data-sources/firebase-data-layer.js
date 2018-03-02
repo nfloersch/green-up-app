@@ -84,8 +84,8 @@ function setupSupplyLocationsListener(dispatch) {
 
 function setupInvitationListener(email, dispatch) {
     const db = firebase.database();
-    const emailKey = email.toLowerCase().replace(/\./g, ':');
-    const invitations = db.ref(`invitations/${emailKey}`);
+    const membershipId = email.toLowerCase().replace(/\./g, ':');
+    const invitations = db.ref(`invitations/${membershipId}`);
     invitations.on('value', (snapshot) => {
         dispatch(dataLayerActions.invitationFetchSuccessful(snapshot.val()));
     });
@@ -271,12 +271,12 @@ function logout() {
 
 function inviteTeamMember(invitation) {
     const db = firebase.database();
-    const emailKey = invitation.teamMember.email.toLowerCase().replace(/\./g, ':');
+    const membershipId = invitation.teamMember.email.toLowerCase().replace(/\./g, ':');
     const teamId = invitation.team.id;
     return db
-        .ref(`invitations/${emailKey}/${teamId}`)
+        .ref(`invitations/${membershipId}/${teamId}`)
         .set(invitation)
-        .then(db.ref(`teamMembers/${teamId}/${emailKey}`).set(invitation.teamMember));
+        .then(db.ref(`teamMembers/${teamId}/${membershipId}`).set(invitation.teamMember));
 }
 
 function dropTrash(trashDrop) {
@@ -309,15 +309,21 @@ function updateProfile(profile) {
 
 function addTeamMember(teamId, teamMember) {
     const db = firebase.database();
-    const emailKey = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${emailKey}`).set(teamMember);
+    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
+    return db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember)
+        .then(() => {
+            db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).set('ACCEPTED');
+        })
+        .then(() => {
+            db.ref(`invitations/${membershipId}/${teamId}`).remove();
+        });
+
 }
 
-function updateTeamMember(teamId, memberId, teamMember) {
+function updateTeamMember(teamId, teamMember) {
     const db = firebase.database();
-    return db
-        .ref(`teamMembers/${teamId}/${memberId}`)
-        .set(teamMember);
+    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
+    return db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember);
 }
 
 function removeTeamMember(teamId: string, membershipId: string) {
