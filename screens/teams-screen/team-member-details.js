@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
     }
 });
 
-
 class TeamMemberDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         profile: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        teamMembers : PropTypes.object
     };
 
     static navigationOptions = {

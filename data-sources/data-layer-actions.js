@@ -56,3 +56,7 @@ export function supplyLocationsFetchSuccessful(supplyLocations: Object) {
 
     return {type: types.FETCH_SUPPLY_LOCATIONS_SUCCESS, supplyLocations};
 }
+
+export function invitationFetchSuccessful(invitations: Object) {
+    return {type: types.FETCH_INVITATIONS_SUCCESS, invitations};
+}

@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {messageTypes} from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import {Message} from '../../models/message';
 
 const myStyles = {
     message: {
@@ -30,7 +31,16 @@ const myStyles = {
     newMsg: {
         fontWeight: 'bold'
     },
-    oldMsg: {}
+    oldMsg: {},
+    friendlySuggestion: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#AAA',
+        fontSize: 20,
+        color: '#333',
+        padding: 10,
+        margin: 10
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -40,6 +50,8 @@ class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
+        invitations: PropTypes.object,
+        invitationsLoaded: PropTypes.bool,
         messages: PropTypes.object,
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
@@ -58,11 +70,12 @@ class Messages extends Component {
         this.toSendMessage = this.toSendMessage.bind(this);
     }
 
-    componentWillUpdate(nextProps) {
-        if (nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
-            this.props.navigation.navigate('Teams');
-        }
-    }
+    // Stopping the redirect for now, this is causing issue with some of the new code. (JN)
+    // componentWillUpdate(nextProps) {
+    // if (nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
+    //     this.props.navigation.navigate('Teams');
+    // }
+    // }
 
     toSendMessage() {
         return () => {
@@ -70,45 +83,63 @@ class Messages extends Component {
         };
     }
 
-    toMessageDetail(messageId) {
-        const myMessage = this.props.messages[messageId];
+    toMessageDetail(message) {
         const userId = this.props.currentUser.uid;
-        switch (myMessage.type) {
+        switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
-                    this.props.actions.readMessage(myMessage, userId);
-                    this.props.actions.selectTeamById(myMessage.teamId);
+                    this.props.actions.readMessage(message, userId);
+                    this.props.actions.selectTeamById(message.teamId);
                     this.props.navigation.navigate('TeamDetails');
                 };
 
             default :
                 return () => {
                     // mark message as read
-                    this.props.actions.readMessage(myMessage, userId);
+                    this.props.actions.readMessage(message, userId);
 
                     // navigate to details screen
-                    this.props.navigation.navigate('MessageDetails', {messageId});
+                    this.props.navigation.navigate('MessageDetails', {messageId: message.uid});
                 };
         }
     }
 
     render() {
-        if (this.props.teamsLoaded && this.props.messagesLoaded) {
-            const messages = this.props.messages;
+        if (this.props.teamsLoaded && this.props.messagesLoaded && this.props.invitationsLoaded) {
+            const invitations = this.props.invitations;
+            const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
+                Object.assign({}, obj, {
+                    [key]: Message.create(
+                        {
+                            uid: key,
+                            text: `${invitations[key].sender.displayName} has invited to join team : ${invitations[key].team.name}`,
+                            sender: invitations[key].sender,
+                            teamId: key,
+                            read: false,
+                            active: true,
+                            type: messageTypes.INVITATION
+                        }
+                    )
+                })
+            ), {});
+            const messages = Object.assign({}, this.props.messages, invitationMessages);
             const messageKeys = Object.keys(messages || {});
-            const sortedKeys = messageKeys.sort((key1, key2) => messages[key2].created.valueOf() - messages[key1].created.valueOf());
+            const sortedKeys = messageKeys.sort((key1, key2) => {
+                const diff = messages[key2].created.valueOf() - messages[key1].created.valueOf();
+                return diff;
+            });
             const myMessages = sortedKeys.map(key =>
                 (
                     <View key={key}>
-                        <TouchableHighlight onPress={this.toMessageDetail(key)}>
+                        <TouchableHighlight onPress={this.toMessageDetail(messages[key])}>
                             <View style={[styles.message,
-                                messages[key].read ?
-                                    styles.read : styles.unread]}>
-                                <Text style={messages[key].read ?
-                                    styles.oldMsg : styles.newMsg}>
-                                    {messages[key].text.length > 80 ?
-                                        `${messages[key].text.slice(0, 80)}...` :
-                                        messages[key].text}
+                                messages[key].read
+                                    ? styles.read : styles.unread]}>
+                                <Text style={messages[key].read
+                                    ? styles.oldMsg : styles.newMsg}>
+                                    {messages[key].text.length > 80
+                                        ? `${messages[key].text.slice(0, 80)}...`
+                                        : messages[key].text}
                                 </Text>
                                 <Text style={{fontSize: 10, textAlign: 'right'}}>{messages[key].sender.email}</Text>
                             </View>
@@ -117,7 +148,7 @@ class Messages extends Component {
                 )
             );
 
-            return this.props.userHasTeams ? (
+            return (myMessages.length > 0 || this.props.userHasTeams) ? (
                 <ScrollView style={styles.container}>
                     <View style={styles.button}>
                         <Button
@@ -128,7 +159,13 @@ class Messages extends Component {
                         />
                     </View>
                     <View>
-                        {myMessages.length > 0 ? myMessages : (<Text>Sorry, no messages </Text>)}
+                        {myMessages.length > 0
+                            ? myMessages
+                            : (
+                                <Text style={defaultStyles.heading2}>
+                                    {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your team mates.'}
+                                </Text>
+                            )}
                     </View>
                 </ScrollView>
             ) : (
@@ -157,11 +194,13 @@ class Messages extends Component {
 
 function mapStateToProps(state) {
     return {
-        messages: state.messages.messages,
         currentUser: state.login.user,
+        invitations: state.teams.invitations || {},
+        invitationsLoaded: state.messages.invitationsLoaded,
+        messages: state.messages.messages || {},
+        messagesLoaded: state.messages.loaded,
         userHasTeams: Object.values(state.profile.teams || {}).length > 0,
-        teamsLoaded: state.messages.teamsLoaded,
-        messagesLoaded: state.messages.loaded
+        teamsLoaded: state.messages.teamsLoaded
     };
 }
 

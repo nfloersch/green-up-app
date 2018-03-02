@@ -33,6 +33,7 @@ class TeamMember {
         return new TeamMember(args || {});
     }
 }
+
 class Profile {
     constructor(args) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
@@ -96,62 +97,12 @@ function sendInvitationEmail(email, displayName) {
  * Sends a invitation email to an invited user.
  */
 exports.onInvitationCreate = functions.database.ref('invitations/{pushId}').onCreate((event) => {
-    const database = admin.database();
-    const invitationId = event.params.pushId;
+
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
     const email = teamMember.email.toLowerCase();
-    const teamId = invitation.team.id;
-    const members = database.ref(`teamMembers/${teamId}`);
-    const profiles = database.ref('profiles');
 
     sendInvitationEmail(email, invitation.displayName);
-
-    // Add message if user exists
-    // const test = database.ref('test');
-
-    profiles.once('value', (snapshot) => {
-        const myProfiles = snapshot.val();
-        const userId = Object.keys(myProfiles).find(key => myProfiles[key].email.toLowerCase() === email);
-
-        if (!!userId) {
-            // Add Invite Message
-            const message = {
-                active: true,
-                created: (new Date()).toString(),
-                read: false,
-                sender: invitation.sender,
-                teamId: invitation.team.id,
-                type: 'INVITATION',
-                text: `You have been invited to join team: ${invitation.team.name}`
-            };
-
-            database.ref(`messages/${userId}`).push(message);
-
-            // Add invitee to team
-            const newMember = TeamMember.create(
-                Object.assign({}, myProfiles[userId], {memberStatus: 'INVITED'})
-            );
-
-            members.push(newMember);
-
-            // Remove invitation - we don't need it anymore:
-            database.ref(`invitations/${invitationId}`).remove();
-
-        } else {
-            // Add invitee to team
-            const newMember = TeamMember.create(
-                Object.assign({}, teamMember, {
-                    email,
-                    memberStatus: 'INVITED',
-                    invitationId: event.params.pushId
-                })
-            );
-            members.push(newMember);
-        }
-    });
-
-    // Send Email
 });
 
 // exports.createProfile = functions.auth.user().onCreate((event) => {

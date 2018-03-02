@@ -82,6 +82,15 @@ function setupSupplyLocationsListener(dispatch) {
     });
 }
 
+function setupInvitationListener(email, dispatch) {
+    const db = firebase.database();
+    const emailKey = email.toLowerCase().replace(/\./g, ':');
+    const invitations = db.ref(`invitations/${emailKey}`);
+    invitations.on('value', (snapshot) => {
+        dispatch(dataLayerActions.invitationFetchSuccessful(snapshot.val()));
+    });
+}
+
 async function initialize(dispatch) {
     console.log('Initializing Firebase');
 
@@ -98,6 +107,7 @@ async function initialize(dispatch) {
                 setupTeamListener(dispatch);
                 setupTrashDropListener(dispatch);
                 setupSupplyLocationsListener(dispatch);
+                setupInvitationListener(user.email, dispatch);
             } else {
                 console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
@@ -259,11 +269,14 @@ function logout() {
     return firebase.auth().signOut();
 }
 
-function sendInviteEmail(invitation) {
-    firebase
-        .database()
-        .ref('invitations')
-        .push(invitation);
+function inviteTeamMember(invitation) {
+    const db = firebase.database();
+    const emailKey = invitation.teamMember.email.toLowerCase().replace(/\./g, ':');
+    const teamId = invitation.team.id;
+    return db
+        .ref(`invitations/${emailKey}/${teamId}`)
+        .set(invitation)
+        .then(db.ref(`teamMembers/${teamId}/${emailKey}`).set(invitation.teamMember));
 }
 
 function dropTrash(trashDrop) {
@@ -295,15 +308,14 @@ function updateProfile(profile) {
 }
 
 function addTeamMember(teamId, teamMember) {
-    firebase
-        .database()
-        .ref(`teamMembers/${teamId}`)
-        .push(teamMember);
+    const db = firebase.database();
+    const emailKey = teamMember.email.toLowerCase().replace(/\./g, ':');
+    return db.ref(`teamMembers/${teamId}/${emailKey}`).set(teamMember);
 }
 
 function updateTeamMember(teamId, memberId, teamMember) {
-    firebase
-        .database()
+    const db = firebase.database();
+    return db
         .ref(`teamMembers/${teamId}/${memberId}`)
         .set(teamMember);
 }
@@ -326,7 +338,7 @@ export const firebaseDataLayer = {
     saveTeam,
     saveLocations,
     sendUserMessage,
-    sendInviteEmail,
+    inviteTeamMember,
     sendGroupMessage,
     updateMessage,
     updateProfile,

@@ -12,12 +12,11 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 function _changeInvitee(key) {
@@ -28,7 +27,10 @@ function _changeInvitee(key) {
 
 function _inviteToTeam() {
     const displayName = `${this.state.firstName} ${this.state.lastName}`;
-    const teamMember = TeamMember.create(Object.assign({}, this.state, {displayName, memberStatus: TeamMember.memberStatuses.INVITED}));
+    const teamMember = TeamMember.create(Object.assign({}, this.state, {
+        displayName,
+        memberStatus: TeamMember.memberStatuses.INVITED
+    }));
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
     this.setState({firstName: '', lastName: '', email: ''});
 }
@@ -96,12 +98,12 @@ const mapStateToProps = (state) => {
     const currentUser = state.login.user;
     const teams = state.teams.teams;
     return {teams, currentUser, selectedTeam};
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteForm);

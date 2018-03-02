@@ -6,7 +6,6 @@ import {TeamMember} from './team-member';
 
 export class Message {
     uid : string;
-    title: string;
     text : string;
     sender : string;
     teamId : string;
@@ -19,9 +18,6 @@ export class Message {
     constructor(args: Object) {
         this.uid = typeof args.uid === 'string'
             ? args.uid
-            : null;
-        this.title = typeof args.title === 'string'
-            ? args.title
             : null;
         this.text = typeof args.text === 'string'
             ? args.text

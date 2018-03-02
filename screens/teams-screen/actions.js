@@ -8,6 +8,7 @@ import {Invitation} from '../../models/invitation';
 import * as memberStatus from '../../constants/team-member-statuses';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 import Team from '../../models/team';
+import {Alert} from 'react-native';
 
 
 export function retrieveContacts(_pageSize = 40) {
@@ -41,12 +42,11 @@ export function retrieveContacts(_pageSize = 40) {
 export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
     return async function () {
         teamMembers.forEach(teamMember => {
-            if (!teamMember.uid) {
-                const invitation = Invitation.create({team, sender: currentUser, teamMember});
-                firebaseDataLayer.sendInviteEmail(invitation);
-            } else {
-                firebaseDataLayer.addTeamMember(team.id, currentUser.uid, teamMember);
-            }
+            const invitation = Invitation.create({team, sender: currentUser, teamMember});
+            firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
+                Alert.alert(err);
+                throw err;
+            });
         });
     };
 }
@@ -103,10 +103,10 @@ export function addTeamMember(teamId: string, member: TeamMember, status: string
     };
 }
 
-export function updateTeamMember(teamId: string, membershipId:string, member: TeamMember, status: string) {
+export function updateTeamMember(teamId: string, membershipId: string, member: TeamMember, status: string) {
     const _newMember = TeamMember.create(Object.assign({}, member, {memberStatus: status || member.memberStatus}));
     return async function () {
-        firebaseDataLayer.updateTeamMember(teamId, membershipId,_newMember);
+        firebaseDataLayer.updateTeamMember(teamId, membershipId, _newMember);
     };
 }
 

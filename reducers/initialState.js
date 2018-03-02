@@ -16,6 +16,7 @@ export default {
     messages: {
         messages: {},
         loaded: false,
+        invitationsLoaded : false,
         teamsLoaded: false
     },
     teams: {teams: [], teamMembers: {}, contact: [], selectedTeam: null, locations: []},
