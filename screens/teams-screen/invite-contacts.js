@@ -16,6 +16,7 @@ import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
+import * as validators from '../../libs/validators';
 
 const myStyles = {};
 
@@ -29,16 +30,18 @@ function _inviteToTeam() {
             displayName: `${contact.firstName} ${contact.lastName}`,
             memberStatus: TeamMember.memberStatuses.INVITED
         })));
+    this.props.navigator.navigate.goBack();
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
 class InviteContacts extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        selectedTeam: PropTypes.object,
-        currentUser: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object),
-        teams: PropTypes.object
+        currentUser: PropTypes.object,
+        navigator: PropTypes.object,
+        selectedTeam: PropTypes.object,
+        teamMembers: PropTypes.object
     };
 
     static navigationOptions = {
@@ -81,29 +84,31 @@ class InviteContacts extends Component {
     }
 
     render() {
-        const myContacts = this.state.contacts.sort((a, b) => {
-            switch (true) {
-                case(a.firstName < b.firstName):
-                    return -1;
-                case(a.firstName > b.firstName):
-                    return 1;
-                case(a.LastName < b.LastName):
-                    return -1;
-                case(a.LastName > b.LastName):
-                    return 1;
-                default:
-                    return 0;
-            }
-        }).map(
-            (contact, i) => (
-                <CheckBox
-                    checked={contact.isSelected}
-                    key={i}
-                    label={`${contact.firstName} ${contact.lastName}`}
-                    onChange={this.toggleContact(contact)}
-                />
-            )
-        );
+        const myContacts = this.state.contacts
+            .filter(contact => validators.email(contact.email) && !validators.isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
+            .sort((a, b) => {
+                switch (true) {
+                    case(a.firstName < b.firstName):
+                        return -1;
+                    case(a.firstName > b.firstName):
+                        return 1;
+                    case(a.lastName < b.lastName):
+                        return -1;
+                    case(a.lastName > b.lastName):
+                        return 1;
+                    default:
+                        return 0;
+                }
+            }).map(
+                (contact, i) => (
+                    <CheckBox
+                        checked={contact.isSelected}
+                        key={i}
+                        label={`${contact.firstName} ${contact.lastName}`}
+                        onChange={this.toggleContact(contact)}
+                    />
+                )
+            );
 
         return (
             <View style={styles.container}>
@@ -122,9 +127,9 @@ class InviteContacts extends Component {
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
-    const teams = state.teams.teams;
+    const teamMembers = state.teams.teamMembers;
     const contacts = state.teams.contacts;
-    return {teams, currentUser, selectedTeam, contacts};
+    return {teamMembers, currentUser, selectedTeam, contacts};
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {email, isInTeam} from '../../libs/validators';
 
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
@@ -35,13 +36,12 @@ function _inviteToTeam() {
     this.setState({firstName: '', lastName: '', email: ''});
 }
 
-
 class InviteForm extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        teams: PropTypes.object,
+        currentUser: PropTypes.object,
         selectedTeam: PropTypes.object,
-        currentUser: PropTypes.object
+        teamMembers: PropTypes.object
     };
 
     static navigationOptions = {
@@ -55,7 +55,10 @@ class InviteForm extends Component {
         this.state = {firstName: '', lastName: '', email: ''};
     }
 
+
     render() {
+        const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
+        const emailIsInvalid = !email(this.state.email) || isInTeam(teamMembers, this.state.email);
         return (
             <View style={styles.container}>
                 <Text style={styles.label}>
@@ -67,6 +70,7 @@ class InviteForm extends Component {
                     value={this.state.email}
                     onChangeText={this.changeInvitee('email')}
                 />
+                <Text>{ isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
                 <Text style={styles.label}>
                     First Name
                 </Text>
@@ -86,6 +90,7 @@ class InviteForm extends Component {
                     placeholder='Last'
                 />
                 <Button
+                    disabled={emailIsInvalid}
                     onPress={this.inviteToTeam}
                     title='Invite to Team'/>
             </View>
@@ -96,14 +101,12 @@ class InviteForm extends Component {
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
     const currentUser = state.login.user;
-    const teams = state.teams.teams;
-    return {teams, currentUser, selectedTeam};
+    const teamMembers = state.teams.teamMembers;
+    return {teamMembers, currentUser, selectedTeam};
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-};
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteForm);
