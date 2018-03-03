@@ -310,14 +310,10 @@ function updateProfile(profile) {
 function addTeamMember(teamId, teamMember) {
     const db = firebase.database();
     const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember)
-        .then(() => {
-            db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).set('ACCEPTED');
-        })
-        .then(() => {
-            db.ref(`invitations/${membershipId}/${teamId}`).remove();
-        });
-
+    return db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).set('ACCEPTED')
+        .then(() => db.ref(`invitations/${membershipId}/${teamId}`).remove()
+            .then(() => db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember))
+        );
 }
 
 function updateTeamMember(teamId, teamMember) {
@@ -326,16 +322,17 @@ function updateTeamMember(teamId, teamMember) {
     return db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember);
 }
 
-function removeTeamMember(teamId: string, membershipId: string) {
-    return firebase.database().ref(`teamMembers/${teamId}/${membershipId}`).remove();
+function removeTeamMember(teamId: string, teamMember: Object) {
+    const db = firebase.database();
+    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
+    return db.ref(`teamMembers/${teamId}/${membershipId}`).remove();
 }
 
-function leaveTeam(teamId: string, user: Object) {
+function leaveTeam(teamId: string, teamMember: Object) {
     const db = firebase.database();
-
-    const membershipId = user.email.toLowerCase().replace(/\./g, ':');
+    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
     return db.ref(`teamMembers/${teamId}/${membershipId}`).remove()
-        .then(() => db.ref(`profiles/${user.uid}/teams/${teamId}`).remove());
+        .then(() => db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).remove());
 }
 
 function revokeInvitation(teamId: string, membershipId: string) {

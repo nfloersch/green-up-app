@@ -94,8 +94,6 @@ const styles = StyleSheet.create({
 class TeamMemberDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        profile: PropTypes.object,
         navigation: PropTypes.object,
         teamMembers: PropTypes.object
     };
@@ -119,17 +117,26 @@ class TeamMemberDetails extends Component {
         }
     }
 
-    _updateTeamMember(teamId: string, membershipId: string, member: Object) {
+
+    _updateTeamMember(teamId: string, member: Object) {
         return (newStatus: Object) => {
             const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
-            this.props.actions.updateTeamMember(teamId, membershipId, _member);
+            this.props.navigation.goBack();
+            this.props.actions.updateTeamMember(teamId, _member, newStatus);
         };
     }
 
-    _removeTeamMember(teamId, membershipId) {
+    _revokeInvitation(teamId, membershipId) {
         return () => {
             this.props.navigation.goBack();
             this.props.actions.revokeInvitation(teamId, membershipId);
+        };
+    }
+
+    _removeTeamMember(teamId: string, user: Object) {
+        return () => {
+            this.props.navigation.goBack();
+            this.props.actions.removeTeamMember(teamId, user);
         };
     }
 
@@ -157,7 +164,7 @@ class TeamMemberDetails extends Component {
                             <View>
                                 <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Ignore'}/>
                                 <Button onPress={() => {
-                                    this._updateTeamMember(teamId, membershipId, teamMember)(status.ACCEPTED);
+                                    this._updateTeamMember(teamId, member)(status.ACCEPTED);
                                 }} title={'Add To This Team'}/>
                             </View>
                         </View>
@@ -167,7 +174,7 @@ class TeamMemberDetails extends Component {
                         <View>
                             <Text>{teamMember.displayName || teamMember.email} is a member of your team</Text>
                             <View>
-                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Remove from Team'}/>
+                                <Button onPress={this._removeTeamMember(teamId, member)} title={'Remove from Team'}/>
                             </View>
                         </View>
                     );
@@ -179,7 +186,8 @@ class TeamMemberDetails extends Component {
                                 accept
                             </Text>
                             <View>
-                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Revoke Invitation'}/>
+                                <Button onPress={this._revokeInvitation(teamId, membershipId)}
+                                        title={'Revoke Invitation'}/>
                             </View>
                         </View>
                     );
@@ -222,10 +230,8 @@ class TeamMemberDetails extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.login.user;
-    const profile = state.profile.profile;
     const teamMembers = state.teams.teamMembers || {};
-    return {profile, currentUser, teamMembers};
+    return {teamMembers};
 }
 
 function mapDispatchToProps(dispatch) {
