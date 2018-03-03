@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {messageTypes} from '../../constants/message-types';
+import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {Message} from '../../models/message';

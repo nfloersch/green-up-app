@@ -1,6 +1,6 @@
 // @flow
 
-import {messageTypes} from '../constants/message-types';
+import * as messageTypes from '../constants/message-types';
 import {isDate} from '../libs/isDate';
 import {TeamMember} from './team-member';
 

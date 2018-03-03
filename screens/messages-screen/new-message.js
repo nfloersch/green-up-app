@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import * as messageActions from './actions';
 import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
+import * as messageTypes from '../../constants/message-types';
 
 const myStyles = {
     messageInput: {
@@ -28,10 +29,10 @@ const styles = StyleSheet.create(combinedStyles);
 class NewMessage extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        messages: PropTypes.array,
+        currentUser: PropTypes.object,
         myTeams: PropTypes.array,
         navigation: PropTypes.object,
-        selectedTeam: PropTypes.object,
+        selectedTeamId: PropTypes.object,
         teamMembers: PropTypes.object,
         teams: PropTypes.object
     };
@@ -47,7 +48,7 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            selectedTeam: props.selectedTeam || (props.myTeams[0] || {}).id,
+            selectedTeamId: props.selectedTeamId || (props.myTeams[0] || {}).id,
             title: '',
             text: ''
         };
@@ -62,9 +63,16 @@ class NewMessage extends Component {
     }
 
     sendMessage() {
-        const teamId = this.props.selectedTeam || this.state.selectedTeam;
-        const recipients = Object.values(this.props.teamMembers[teamId]);
-        const message = Message.create(this.state);
+        const teamId = this.props.selectedTeamId || this.state.selectedTeamId;
+        const recipients = Object.values(this.props.teamMembers[teamId] || []);
+        const message = Message.create(
+            {
+                ...this.state,
+                type: messageTypes.TEAM_MESSAGE,
+                sender: this.props.currentUser,
+                teamId
+            }
+        );
         this.props.actions.sendMessage(message, recipients);
         this.props.navigation.goBack();
     }
@@ -81,8 +89,8 @@ class NewMessage extends Component {
                 <Picker
                     style={styles.button}
                     itemStyle={{height: 45}}
-                    selectedValue={this.state.selectedTeam || ((this.props.myTeams || [])[0] || {}).id}
-                    onValueChange={(itemValue) => this.setState({selectedTeam: itemValue})}>
+                    selectedValue={this.state.selectedTeamId || ((this.props.myTeams || [])[0] || {}).id}
+                    onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
                     {(this.props.myTeams || []).map(team => (
                         <Picker.Item key={team.id} label={team.name} value={team.id}/>))}
                 </Picker>
@@ -92,7 +100,7 @@ class NewMessage extends Component {
 
         return (
             <View style={styles.container}>
-                {!this.props.selectedTeam ? TeamPicker : null}
+                {!this.props.selectedTeamId ? TeamPicker : null}
                 <View>
                     <TextInput
                         keyBoardType={'default'}
@@ -122,8 +130,8 @@ function mapStateToProps(state) {
     const myTeams = Object.keys((state.profile || {}).teams).map(key => state.teams.teams[key]);
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers;
-    const selectedTeam = state.teams.selectedTeam;
-    return {selectedTeam, teams, myTeams, teamMembers, currentUser};
+    const selectedTeamId = state.teams.selectedTeam;
+    return {selectedTeamId, teams, myTeams, teamMembers, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

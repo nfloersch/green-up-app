@@ -3,15 +3,17 @@
 import * as types from '../../constants/actionTypes';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 import {Message} from '../../models/message';
+import * as statuses from '../../constants/team-member-statuses';
 
 export function addMessageSuccess(data) {
     return {type: types.NEW_MESSAGE, data};
 }
 
-export function sendMessage(message: Object, recipients: [string]) {
+export function sendMessage(message: Object, recipients: [Object]) {
     const _message = Message.create(message);
     console.log(JSON.stringify(_message));
-    return (dispatch) => Object.values(recipients).map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
+    const _recipients = recipients.filter(recipient => recipient.memberStatus === statuses.ACCEPTED || recipient.memberStatus === statuses.OWNER);
+    return () => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
 }
 
 export function readMessageSuccess(data) {
