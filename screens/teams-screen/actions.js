@@ -96,6 +96,10 @@ export function createTeam(team: Object) {
     return () => firebaseDataLayer.createTeam(team);
 }
 
+export function deleteTeam(teamId: string){
+    return () => firebaseDataLayer.deleteTeam(teamId);
+}
+
 export function setSelectedTeamValue(key: string, value: any) {
     return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};
 }

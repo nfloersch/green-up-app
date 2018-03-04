@@ -6,6 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
+    Alert,
     Button,
     StyleSheet,
     Text,
@@ -115,6 +116,23 @@ class TeamEditorDetails extends Component {
         selectedTeam.locations = this.props.locations;
         this.props.actions.createTeam(selectedTeam, selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
+    };
+
+    deleteTeam = () => {
+        Alert.alert(
+            'DANGER!',
+            'Are you really, really sure you want to permanently delete this team?',
+            [
+                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {
+                    text: 'Yes', onPress: () => {
+                        this.props.screenProps.stacknav.goBack();
+                        this.props.actions.deleteTeam(this.props.selectedTeam.id);
+                    }
+                }
+            ],
+            {cancelable: true}
+        );
     };
 
     setTeamValue = (key) => (value) => {
@@ -260,7 +278,13 @@ class TeamEditorDetails extends Component {
                         title='Save'
                         onPress={this.saveTeam}/>
                 </View>
-
+                <View style={styles.dangerArea}>
+                    <Button
+                        style={styles.doNotPushThisButton}
+                        title='Delete Team'
+                        onPress={this.deleteTeam}
+                    />
+                </View>
             </ScrollView>
         );
     }

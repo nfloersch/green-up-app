@@ -2,6 +2,11 @@ import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
 
+// TODO : Fix these promise chains
+// Some of these functions have nested promises where some of the promised are ignored (Not returned)
+// Use async await for those and refactor to be more transactional in case of failure.
+// We should also add catches to all promises where appropriate. (JN)
+
 let myTeamMemberListeners = [];
 
 function returnType(entry) {
@@ -145,22 +150,6 @@ async function initialize(dispatch) {
 
 }
 
-// TODO fix the id vs uid dilemma
-// async function updateTeamMember(team, member) {
-//     const id = team.uid || team.id;
-//     const members = team.members.filter(_member => (_member.uid !== member.uid)).concat(member);
-//     const _team = Object.assign({}, team, {uid: null, id: null}, {members});
-//     // delete _team.uid;
-//     if (!id) {
-//         firebase
-//             .database()
-//             .ref('teams')
-//             .push(team);
-//     } else {
-//         firebase.database().ref(`teams/${id}`).set(_team);
-//     }
-// }
-
 async function facebookAuth(token) {
 
     // Build Firebase credential with the Facebook access token.
@@ -232,6 +221,13 @@ function createTeam(team: Object = {}) {
             () => {
                 db.ref(`profiles/${ownerId}/teams/${teamId}`).set('OWNER');
             });
+    });
+}
+
+function deleteTeam(teamId: string) {
+    const db = firebase.database();
+    return db.ref(`teamMembers/${teamId}`).remove().then(() => {
+        db.ref(`teams/${teamId}`).remove();
     });
 }
 
@@ -350,6 +346,7 @@ export const firebaseDataLayer = {
     addTeamMember,
     createTeam,
     createUser,
+    deleteTeam,
     dropTrash,
     facebookAuth,
     googleAuth,
