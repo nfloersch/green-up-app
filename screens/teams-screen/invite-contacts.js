@@ -30,7 +30,7 @@ function _inviteToTeam() {
             displayName: `${contact.firstName} ${contact.lastName}`,
             memberStatus: TeamMember.memberStatuses.INVITED
         })));
-    this.props.navigator.navigate.goBack();
+    this.props.navigation.goBack();
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
@@ -39,7 +39,7 @@ class InviteContacts extends Component {
         actions: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object),
         currentUser: PropTypes.object,
-        navigator: PropTypes.object,
+        navigation: PropTypes.object,
         selectedTeam: PropTypes.object,
         teamMembers: PropTypes.object
     };

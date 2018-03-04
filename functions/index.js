@@ -108,19 +108,8 @@ exports.onInvitationCreate = functions.database.ref('invitations/{pushId}').onCr
 
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
     const db = admin.database();
-    const removeFromProfile = (uid, teamId) => db
-        .ref(`profiles/${uid}`)
-        .once('value')
-        .then((snapshot) => {
-            if (snapshot.val()) {
-                const teams = Object.keys(snapshot.val().teams)
-                    .filter(key => key !== teamId)
-                    .reduce((newTeams, key) => ({...newTeams, [key]: snapshot.val()[key]}), {});
-                const newProfile = {...snapshot.val(), teams};
-                db.ref(`profiles/${uid}`).set(newProfile);
-            }
-        });
-    const removeInvitation = (membershipKey, teamId) => db.remove(`invitations/${membershipKey}/${teamId}`);
+    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
+    const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
 
     const memberships = event.data.previous;
     if (memberships.exists()) {
