@@ -13,8 +13,7 @@ import * as actions from '../login-screen/actions';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-    menuItem: {
-        justifyContent: 'center',
+    menu: {
         alignItems: 'center'
     }
 };
@@ -39,7 +38,7 @@ class MenuScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, styles.menu]}>
 
                 <TouchableHighlight
                     style={styles.button}
@@ -47,16 +46,16 @@ class MenuScreen extends Component {
                         Linking.openURL('https://www.razoo.com/organization/Vermont-Green-Up');
                     }}
                 >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Support Green Up Day</Text>
+                    <View>
+                        <Text>Support Green Up Day</Text>
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight
                     style={styles.button}
                     onPress={() => this.props.navigation.navigate('About')}
                 >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>About Green Up Day</Text>
+                    <View>
+                        <Text>About Green Up Day</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -64,8 +63,8 @@ class MenuScreen extends Component {
                     style={styles.button}
                     onPress={() => this.props.navigation.navigate('TrashBagFinder')}
                 >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Trash Bag Finder</Text>
+                    <View>
+                        <Text>Trash Bag Finder</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -73,8 +72,8 @@ class MenuScreen extends Component {
                     style={styles.button}
                     onPress={() => this.props.navigation.navigate('Profile')}
                 >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Profile</Text>
+                    <View>
+                        <Text>My Profile</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -83,8 +82,8 @@ class MenuScreen extends Component {
                     style={styles.button}
                     onPress={this.props.actions.logout}
                 >
-                    <View style={styles.socialLogin}>
-                        <Text style={styles.buttonText}>Log Out</Text>
+                    <View>
+                        <Text>Log Out</Text>
                     </View>
                 </TouchableHighlight>
             </View>

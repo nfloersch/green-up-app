@@ -5,91 +5,22 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'react-native';
-import * as actions from './actions';
+import {StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Button} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
+import * as actions from './actions';
 import {User} from '../../models/user';
+import {defaultStyles} from '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    buttonText: {
-        fontSize: 20,
-        textAlign: 'center',
-        marginBottom: 20,
-        marginTop: 10,
-        color: '#000',
-        padding: 10
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    headerButton: {
-        // flex: 1,
-        width: 32
-    },
-    message: {
-        fontSize: 20,
-        textAlign: 'left',
-        margin: 15,
-        color: 'red'
-    },
-    messageRead: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: '#555'
-    },
-    inputStyle: {
-        paddingRight: 5,
-        paddingLeft: 5,
-        paddingBottom: 2,
-        color: '#262626',
-        fontSize: 18,
-        fontWeight: '200',
-        height: 40,
-        width: '100%',
-        textAlign: 'left',
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderStyle: 'solid'
-    },
-    buttonRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    button: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
-    },
-    inputRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        margin: 10
-    },
-    inputRowLabel: {
-        width: '20%',
-        margin: 5
-    },
-    inputRowControl: {
-        width: '75%',
-        margin: 5,
-        borderStyle: 'solid',
-        borderColor: '#AAA',
-        borderWidth: 1,
-        padding: 5
+const myStyles = {
+    aboutMeInput: {
+        height: 80
     }
-});
+};
 
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class Profile extends Component {
     static propTypes = {
@@ -100,7 +31,7 @@ class Profile extends Component {
     };
 
     static navigationOptions = {
-        title: 'Person'
+        title: 'My Profile'
     };
 
     constructor(props) {
@@ -142,40 +73,47 @@ class Profile extends Component {
 
         return (
             <View style={styles.container}>
-                <Image
-                    style={{width: 50, height: 50}}
-                    source={{uri: avatar}}
-                />
-                <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{'My Name:'}</Text>
+                <View style={styles.profileHeader}>
+                  <Image
+                      style={{width: 50, height: 50}}
+                      source={{uri: avatar}}
+                  />
+                  <Text style={styles.profileName}>
+                    {this.state.displayName || ''}
+                  </Text>
+                </View>
+                <View>
+                    <Text style={styles.label}>My Name</Text>
                     <TextInput
+                        style={styles.textInput}
                         keyBoardType={'default'}
                         multiline={false}
                         numberOfLines={1}
                         onChangeText={this._changeText('displayName')}
-                        placeholder={'your name'}
+                        placeholder={'Your name'}
                         value={this.state.displayName}
-                        style={styles.inputRowControl}
                     />
                 </View>
-                <View style={styles.inputRow}>
-                    <Text style={styles.inputRowLabel}>{'About Me:'}</Text>
+                <View>
+                    <Text style={styles.label}>About Me</Text>
                     <TextInput
+                        style={[styles.textInput, styles.aboutMeInput]}
                         keyBoardType={'default'}
                         multiline={true}
                         numberOfLines={5}
+                        maxLength={144}
                         onChangeText={this._changeText('bio')}
                         placeholder={'Maximum of 144 characters'}
                         value={this.state.bio}
-                        style={styles.inputRowControl}
                     />
                 </View>
-                <View style={styles.buttonRow}>
-                    <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
-                        <Text style={styles.buttonText}>Save Profile</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.button} onPress={this._cancel}>
-                        <Text style={styles.buttonText}>Cancel</Text>
+                <View>
+                    <Button
+                        style={styles.button}
+                        title='Save Profile'
+                        onPress={this._saveProfile} />
+                    <TouchableHighlight onPress={this._cancel}>
+                        <Text>Cancel</Text>
                     </TouchableHighlight>
                 </View>
             </View>

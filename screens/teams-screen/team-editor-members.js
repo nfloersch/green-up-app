@@ -144,8 +144,14 @@ class TeamEditorMembers extends Component {
         return (
             <View style={styles.container}>
                 <View>
-                    <Button onPress={this.inviteContacts} title='Invite Contacts'/>
-                    <Button onPress={this.inviteForm} title='Invite to Team'/>
+                    <Button
+                      style={styles.button}
+                      onPress={this.inviteContacts}
+                      title='Invite Contacts'/>
+                    <Button
+                      style={styles.button}
+                      onPress={this.inviteForm}
+                      title='Invite to Team'/>
                 </View>
                 <View>
                     <ScrollView>

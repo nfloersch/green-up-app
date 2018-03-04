@@ -232,7 +232,7 @@ class TeamEditorDetails extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showStartDateTimePicker}>
                             <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {selectedTeam.start || 'Select a Date'}
+                                {selectedTeam.start || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -250,7 +250,7 @@ class TeamEditorDetails extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showEndDateTimePicker}>
                             <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {selectedTeam.end || 'Select a Date'}
+                                {selectedTeam.end || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
