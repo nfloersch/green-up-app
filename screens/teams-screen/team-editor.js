@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TabNavigator} from 'react-navigation';
+
 import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
@@ -25,10 +26,16 @@ export default class TeamEditor extends Component {
         };
     }
 
-    componentDidMount() {
+    setDefault = status => {
+      if (status === 'OWNER') {
+        return 'TeamInvitationDetails'
+      } else {
+        return 'TeamDetails'
+      }
     }
 
     render() {
+        const { status } = this.props.navigation.state.params || '';
         const TeamEditorNav = TabNavigator({
 
             TeamInvitationDetails: {
@@ -44,7 +51,9 @@ export default class TeamEditor extends Component {
         }, {
             tabBarOptions: {
                 showIcon: true
-            }
+            },
+            animationEnabled: true,
+            initialRouteName: this.setDefault(status)
         });
         return (
             <TeamEditorNav screenProps={{stacknav: this.props.navigation}}/>

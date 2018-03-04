@@ -114,7 +114,7 @@ class MyTeams extends Component {
                     break;
             }
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen);
+            this.props.navigation.navigate(nextScreen, {status});
         };
     }
 

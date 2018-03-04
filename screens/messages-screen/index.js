@@ -167,7 +167,7 @@ class Messages extends Component {
                             ? myMessages
                             : (
                                 <Text style={defaultStyles.heading2}>
-                                    {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your team mates.'}
+                                    {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your teammates.'}
                                 </Text>
                             )}
                     </View>
