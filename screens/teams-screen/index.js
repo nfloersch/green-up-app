@@ -136,25 +136,27 @@ class MyTeams extends Component {
         const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
-        const myTeams = (Object.keys(user.teams || {})).map(key => (
-            <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
-                <View style={styles.row}>
-                    {/*
+        const myTeams = (Object.keys(user.teams || {}))
+            .filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
+            .map(key => (
+                <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
+                    <View style={styles.row}>
+                        {/*
                     <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
 */}
-                    <TouchableHighlight onPress={() => {
-                        this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                    }}>
-                        <Ionicons
-                            name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                            size={30}
-                        />
-                    </TouchableHighlight>
-                    <Text style={styles.teams}>{teams[key].name}</Text>
-                    <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
-                </View>
-            </TouchableHighlight>
-        ));
+                        <TouchableHighlight onPress={() => {
+                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                        }}>
+                            <Ionicons
+                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                size={30}
+                            />
+                        </TouchableHighlight>
+                        <Text style={styles.teams}>{teams[key].name}</Text>
+                        <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
+                    </View>
+                </TouchableHighlight>
+            ));
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
