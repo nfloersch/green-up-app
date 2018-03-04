@@ -21,6 +21,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
+
+import Colors from '../../constants/Colors';
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
@@ -50,7 +52,9 @@ class TeamEditorDetails extends Component {
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
         tabBarIcon: ({focused}) => (<Ionicons
             name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
-            size={24} color='blue'/>)
+            size={24}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+         />)
     };
 
     constructor(props) {

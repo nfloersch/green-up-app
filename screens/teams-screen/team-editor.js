@@ -2,8 +2,9 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {TabNavigator} from 'react-navigation';
+import {TabNavigator, TabBarBottom} from 'react-navigation';
 
+import Colors from '../../constants/Colors';
 import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
@@ -49,10 +50,20 @@ export default class TeamEditor extends Component {
                 header: null
             }
         }, {
-            tabBarOptions: {
-                showIcon: true
-            },
+        tabBarComponent: TabBarBottom,
+        tabBarPosition: 'bottom',
             animationEnabled: true,
+            swipeEnabled: false,
+        tabBarOptions: {
+          activeTintColor: Colors.tabIconSelected,
+          inactiveTintColor: Colors.tabIconDefault,
+        labelStyle: {
+          fontSize: 10
+        },
+        style: {
+          backgroundColor: Colors.tabBarBackground
+        }
+        },
             initialRouteName: this.setDefault(status)
         });
         return (

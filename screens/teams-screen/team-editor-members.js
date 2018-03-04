@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 
+import Colors from '../../constants/Colors';
 import * as actions from './actions';
 import * as memberStatus from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
@@ -57,7 +58,7 @@ class TeamEditorMembers extends Component {
         tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
                 size={24}
-                color='blue'
+                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
             />)
     };
 

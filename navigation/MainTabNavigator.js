@@ -4,7 +4,6 @@ import {Ionicons} from '@expo/vector-icons';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 import Colors from '../constants/Colors';
-
 import MenuScreen from '../screens/menu-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
@@ -71,6 +70,16 @@ export default TabNavigator(
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
         animationEnabled: true,
-        swipeEnabled: false
+        swipeEnabled: false,
+        tabBarOptions: {
+          activeTintColor: Colors.tabIconSelected,
+          inactiveTintColor: Colors.tabIconDefault,
+        labelStyle: {
+          fontSize: 10
+        },
+        style: {
+          backgroundColor: Colors.tabBarBackground
+        }
     }
+  }
 );
