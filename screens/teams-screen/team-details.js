@@ -36,6 +36,7 @@ class TeamDetails extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         invitations: PropTypes.object,
+        navigation : PropTypes.object,
         selectedTeam: PropTypes.object,
         teamMembers: PropTypes.object,
         teams: PropTypes.object
@@ -60,7 +61,6 @@ class TeamDetails extends Component {
         }
     }
 
-
     _declineInvitation(teamId: string, membershipId: string) {
         return () => this.props.actions.revokeInvitation(teamId, membershipId);
     }
@@ -71,6 +71,13 @@ class TeamDetails extends Component {
 
     _leaveTeam(teamId: string, user: Object) {
         return () => this.props.actions.leaveTeam(teamId, user);
+    }
+
+    _removeRequest(teamId: string, user: Object) {
+        return () => {
+            this.props.navigation.goBack();
+            this.props.actions.leaveTeam(teamId, user);
+        };
     }
 
     _askToJoin(team: Object, user: Object) {
@@ -113,14 +120,22 @@ class TeamDetails extends Component {
                             <Button
                                 style={styles.button}
                                 onPress={this._leaveTeam(selectedTeam.id, currentUser)}
-                                title='Leave Team'/>
+                                title='Leave Team'
+                            />
                         </View>
                     );
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
-                        <Text style={styles.alertInfo}>
-                            {'Waiting on the Team Manager to approve your request'}
-                        </Text>
+                        <View>
+                            <Text style={styles.alertInfo}>
+                                {'Waiting on the Team Manager to approve your request'}
+                            </Text>
+                            <Button
+                                style={styles.button}
+                                onPress={this._removeRequest(selectedTeam.id, currentUser)}
+                                title='Remove Request'
+                            />
+                        </View>
                     );
                 default :
                     return (
