@@ -30,15 +30,16 @@ export default class TeamEditor extends Component {
 
     render() {
         const TeamEditorNav = TabNavigator({
-            TeamDetails: {
-                screen: TeamEditorDetails,
-                header: null
-            },
+
             TeamInvitationDetails: {
                 screen: TeamEditorMembers
             },
             TeamEditorMap: {
                 screen: TeamEditorMap
+            },
+            TeamDetails: {
+                screen: TeamEditorDetails,
+                header: null
             }
         }, {
             tabBarOptions: {

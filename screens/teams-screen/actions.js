@@ -72,16 +72,21 @@ export function sendTeamMessage(teamMembers, message) {
     };
 }
 
-export function selectTeam(team) {
+export function selectTeam(team: Object) {
     return {type: types.SELECT_TEAM, team};
 }
 
-export function saveTeam(team, id) {
+export function saveTeam(team: Object) {
     return async function (dispatch) {
-        const savedTeam = await firebaseDataLayer.saveTeam(team, id);
+        const savedTeam = await firebaseDataLayer.saveTeam(team);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
 }
+
+export function createTeam(team: Object) {
+    return () => firebaseDataLayer.createTeam(team);
+}
+
 
 export function setSelectedTeamValue(key: string, value: any) {
     return {type: types.SET_SELECTED_TEAM_VALUE, data: {key, value}};

@@ -16,7 +16,6 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -25,6 +24,8 @@ import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
+import {TeamMember} from '../../models/team-member';
+import * as statuses from '../../constants/team-member-statuses';
 
 const myStyles = {
     selected: {
@@ -34,91 +35,124 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+const freshState = (owner) => ({
+    ...Team.create({owner}),
+    startDateTimePickerVisible: false,
+    endDateTimePickerVisible: false,
+    datePickerVisible: false
+});
 
-class TeamEditorDetails extends Component {
+class NewTeam extends Component {
     static propTypes = {
         actions: PropTypes.object,
-        navigation: PropTypes.any,
-        selectedTeam: PropTypes.object,
-        screenProps: PropTypes.object,
+        closeModal: PropTypes.any, // TODO : this should be of type 'fun' but we get a prop warning.  Fix this hack. (JN)
+        owner: PropTypes.object,
         locations: PropTypes.array
     };
 
     static navigationOptions = {
-        title: 'Team Details',
-        tabBarLabel: 'Details',
-        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({focused}) => (<Ionicons
-            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
-            size={24} color='blue'/>)
+        title: 'Create A Team Details'
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            startDateTimePickerVisible: false,
-            endDateTimePickerVisible: false,
-            datePickerVisible: false
-        };
+        this._cancel = this._cancel.bind(this);
+        this._createTeam = this._createTeam.bind(this);
+        this.showStartDateTimePicker = this.showStartDateTimePicker.bind(this);
+        this.showEndDateTimePicker = this.showEndDateTimePicker.bind(this);
+        this.hideStartDateTimePicker = this.hideStartDateTimePicker.bind(this);
+        this.hideEndDateTimePicker = this.hideEndDateTimePicker.bind(this);
+        this.showDatePicker = this.showDatePicker.bind(this);
+        this.hideDatePicker = this.hideDatePicker.bind(this);
+        this.fixAndroidTime = this.fixAndroidTime.bind(this);
+        this._handleDatePicked = this._handleDatePicked.bind(this);
+        this._handleStartDatePicked = this._handleStartDatePicked.bind(this);
+        this._handleEndDatePicked = this._handleEndDatePicked.bind(this);
+        this.setSelectedOption = this.setSelectedOption.bind(this);
+        this.setTeamValue = this.setTeamValue.bind(this);
+        this.state = freshState(props.owner);
     }
 
-    showStartDateTimePicker = () => this.setState({startDateTimePickerVisible: true});
-    showEndDateTimePicker = () => this.setState({endDateTimePickerVisible: true});
-    showDatePicker = () => this.setState({datePickerVisible: true});
+    showStartDateTimePicker() {
+        this.setState({startDateTimePickerVisible: true});
+    }
 
-    hideStartDateTimePicker = () => this.setState({startDateTimePickerVisible: false});
-    hideEndDateTimePicker = () => this.setState({endDateTimePickerVisible: false});
-    hideDatePicker = () => this.setState({datePickerVisible: false});
+    showEndDateTimePicker() {
+        this.setState({endDateTimePickerVisible: true});
+    }
+
+    showDatePicker() {
+        this.setState({datePickerVisible: true});
+    }
+
+    hideStartDateTimePicker() {
+        this.setState({startDateTimePickerVisible: false});
+    }
+
+    hideEndDateTimePicker() {
+        this.setState({endDateTimePickerVisible: false});
+    }
+
+    hideDatePicker() {
+        this.setState({datePickerVisible: false});
+    }
+
+    _cancel() {
+        this.setState(freshState(this.props.owner), this.props.closeModal);
+    }
+
+    _createTeam() {
+        console.log('CREATE TEAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
+        this.props.actions.createTeam(team);
+        this.setState(freshState(this.props.owner), this.props.closeModal);
+    }
 
     // android returns 24hr time with leading zero and no am/pm designation so
     // we fix it up here to display consistently with ios
-    fixAndroidTime = time => {
+    fixAndroidTime(time) {
         const orig = time.split(':');
         const hour = orig[0];
         const hourNum = parseInt(hour, 10);
         const ampm = hourNum > 11 ? 'PM' : 'AM';
         const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
-        return `${hr}:${orig[1]} ${ampm}`;
-    };
+        return `${hr}:${orig[1]}${ampm}`;
+    }
 
-    _handleDatePicked = (pickedDate) => {
+    _handleDatePicked(pickedDate) {
         const arr = pickedDate.toString().split(' ');
-        const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
+        const date = `${arr[0]}${arr[1]}${arr[2]}${arr[3]}`;
         this.setTeamValue('date')(date);
         this.hideDatePicker();
-    };
+    }
 
-    _handleStartDatePicked = (date) => {
+    _handleStartDatePicked(date) {
         let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
         if (Platform.OS === 'android') {
             start = this.fixAndroidTime(start);
         }
         this.setTeamValue('start')(start);
         this.hideStartDateTimePicker();
-    };
+    }
 
-    _handleEndDatePicked = (date) => {
+
+    _handleEndDatePicked(date) {
         let end = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
         if (Platform.OS === 'android') {
             end = this.fixAndroidTime(end);
         }
         this.setTeamValue('end')(end);
         this.hideEndDateTimePicker();
-    };
+    }
 
-    setSelectedOption = (option) => {
-        this.props.actions.setSelectedTeamValue('isPublic', option.value);
-    };
 
-    saveTeam = () => {
-        const {selectedTeam} = this.props;
-        selectedTeam.locations = this.props.locations;
-        this.props.actions.createTeam(selectedTeam, selectedTeam.id);
-        this.props.screenProps.stacknav.goBack();
-    };
+    setSelectedOption(option) {
+        this.setState({isPublic: option.value});
+    }
+
 
     setTeamValue = (key) => (value) => {
-        this.props.actions.setSelectedTeamValue(key, value);
+        this.setState({[key]: value});
     };
 
     render() {
@@ -132,10 +166,9 @@ class TeamEditorDetails extends Component {
             }
         ];
 
-        const {selectedTeam} = this.props;
-        const dateIsSelected = selectedTeam.date === null;
-        const endIsSelected = selectedTeam.end === null;
-        const startIsSelected = selectedTeam.start === null;
+        const dateIsSelected = this.state.date === null;
+        const endIsSelected = this.state.end === null;
+        const startIsSelected = this.state.start === null;
 
 
         return (
@@ -151,14 +184,13 @@ class TeamEditorDetails extends Component {
                         onChangeText={this.setTeamValue('name')}
                         placeholder={'Team Name'}
                         style={styles.textInput}
-                        value={selectedTeam.name}/>
+                        value={this.state.name}/>
                 </View>
-
                 <View style={{marginTop: 10}}>
                     <SegmentedControls
                         options={isPublicOptions}
                         onSelection={this.setSelectedOption}
-                        selectedOption={selectedTeam.isPublic}
+                        selectedOption={this.state.isPublic}
                         selectedTint={'#EFEFEF'} tint={'#666666'}
                         extractText={(option) => option.label}
                         testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
@@ -168,7 +200,7 @@ class TeamEditorDetails extends Component {
                     <Text style={styles.label}>Select Town/City</Text>
                     <Picker
                         itemStyle={{height: 45}}
-                        selectedValue={selectedTeam.town}
+                        selectedValue={this.state.town}
                         onValueChange={this.setTeamValue('town')}>
                         {vermontTowns.map(town =>
                             (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
@@ -182,7 +214,7 @@ class TeamEditorDetails extends Component {
                         onChangeText={this.setTeamValue('location')}
                         placeholder={'Location'}
                         style={styles.textInput}
-                        value={selectedTeam.location}/>
+                        value={this.state.location}/>
                 </View>
 
                 <View>
@@ -194,7 +226,7 @@ class TeamEditorDetails extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showDatePicker}>
                             <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
-                                {selectedTeam.date || 'Select a Date'}
+                                {this.state.date || 'Select a Date'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -214,7 +246,7 @@ class TeamEditorDetails extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showStartDateTimePicker}>
                             <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {selectedTeam.start || 'Select a Date'}
+                                {this.state.start || 'Select a Date'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -232,7 +264,7 @@ class TeamEditorDetails extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showEndDateTimePicker}>
                             <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {selectedTeam.end || 'Select a Date'}
+                                {this.state.end || 'Select a Date'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -252,13 +284,16 @@ class TeamEditorDetails extends Component {
                         onChangeText={this.setTeamValue('notes')}
                         placeholder={'Notes'}
                         style={styles.textInput}
-                        value={selectedTeam.notes}/>
+                        value={this.state.notes}/>
                 </View>
 
                 <View style={styles.button}>
                     <Button
                         title='Save'
-                        onPress={this.saveTeam}/>
+                        onPress={this._createTeam}/>
+                    <Button
+                        title='Cancel'
+                        onPress={this._cancel}/>
                 </View>
 
             </ScrollView>
@@ -267,11 +302,13 @@ class TeamEditorDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const selectedTeam = state.teams.selectedTeam || Team.create({});
+    const profile = state.profile;
+    const user = state.login.user;
+    const owner = TeamMember.create({...profile, ...user, memberStatus: statuses.OWNER});
     const locations = state.teams.locations;
-    return {selectedTeam, locations};
+    return {locations, owner};
 };
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
