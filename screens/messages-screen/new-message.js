@@ -48,10 +48,22 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            selectedTeamId: props.selectedTeamId || (props.myTeams[0] || {}).id,
+            selectedTeamId: props.navigation.selectedTeamId || props.selectedTeamId || (props.myTeams[0] || {}).id,
             title: '',
             text: ''
         };
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        const nextTeamId = nextProps.navigation.selectedTeamId || nextProps.selectedTeamId;
+        if (Boolean(nextTeamId) && nextTeamId !== this.state.selectedTeamId) {
+            this.setState({
+                selectedTeamId: nextTeamId,
+                title: '',
+                text: ''
+            });
+        }
     }
 
     changeTitle(title) {

@@ -6,7 +6,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {
-    Alert,
     Button,
     StyleSheet,
     Text,
@@ -14,15 +13,14 @@ import {
     ScrollView,
     Modal,
     View,
-    TextInput, Platform
+    Platform
 } from 'react-native';
 
-import {Message} from '../../models/message';
-import TeamEditor from './team-editor';
+import NewTeam from './new-team';
 import {TeamMember} from '../../models/team-member';
-import Team from '../../models/team';
 import * as actions from './actions';
 import {User} from '../../models/user';
+
 
 const styles = StyleSheet.create({
     headerButton: {
@@ -90,45 +88,15 @@ class MyTeams extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);
-        this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
+        // this.sendMessage = this.sendMessage.bind(this);
+        // this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
-        this.onMessageTextChange = this.onMessageTextChange.bind(this);
+        // this.onMessageTextChange = this.onMessageTextChange.bind(this);
         this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
     toTeamSearch() {
         this.props.navigation.navigate('TeamSearch');
-    }
-
-    openTeamMessageModal(selectedTeamId) {
-        return () => {
-            this.setState({messageText: '', selectedTeamId, isModalVisible: true, openModal: null});
-        };
-    }
-
-    sendMessage() {
-        // const team = this.props.teams[this.state.selectedTeamId];
-        const myMessage = Message.create({
-            text: this.state.messageText,
-            sender: this.props.currentUser,
-            teamId: this.state.selectedTeamId,
-            type: Message.messageTypes.TEAM_MESSAGE
-        });
-
-        this.setState({sendingMessage: true}, () => {
-            this.props.actions.sendTeamMessage(this.props.teamMembers[this.state.selectedTeamId] || {}, myMessage)
-                .then(
-                    this.setState({messagetext: '', isModalVisible: false})
-                )
-                .catch((error) => {
-                    Alert.alert('Your message failed delivery :-(');
-                });
-        });
-    }
-
-    onMessageTextChange(messageText) {
-        this.setState({messageText});
     }
 
     toTeamDetail(status, team) {
@@ -151,10 +119,7 @@ class MyTeams extends Component {
     }
 
     toNewTeamEditor() {
-        const owner = TeamMember.create(Object.assign({}, this.props.currentUser, {memberStatus: TeamMember.memberStatuses.OWNER}));
-        const team = Team.create({owner});
-        this.props.actions.selectTeam(team);
-        this.props.navigation.navigate('TeamEditor');
+        this.setState({openModal: 'NEW_TEAM'});
     }
 
     toTeamIcon(status: string) {
@@ -168,21 +133,30 @@ class MyTeams extends Component {
     }
 
     render() {
-
+        const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
-        const myTeams = (Object.keys(user.teams || {})).map(key => (
-            <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
-                <View style={styles.row}>
+        const myTeams = (Object.keys(user.teams || {}))
+            .filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
+            .map(key => (
+                <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
+                    <View style={styles.row}>
+                        {/*
                     <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
-                        <Ionicons name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                            size={30}/>
-                    </TouchableHighlight>
-                    <Text style={styles.teams}>{teams[key].name}</Text>
-                    <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
-                </View>
-            </TouchableHighlight>
-        ));
+*/}
+                        <TouchableHighlight onPress={() => {
+                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                        }}>
+                            <Ionicons
+                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                size={30}
+                            />
+                        </TouchableHighlight>
+                        <Text style={styles.teams}>{teams[key].name}</Text>
+                        <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
+                    </View>
+                </TouchableHighlight>
+            ));
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
@@ -193,43 +167,17 @@ class MyTeams extends Component {
                         <Button onPress={this.toNewTeamEditor} title='New Team'/>
                     </View>
                     {myTeams}
-                    <Modal animationType={'slide'} transparent={false}
-                        visible={this.state.isModalVisible} onRequestClose={() => {
-                            this.setState({message: '', selectedTeam: null});
-                        }}>
-                        <View style={{marginTop: 22, flex: 1}}>
-                            <ScrollView>
-                                <View style={styles.messageRow}>
-                                    <TextInput
-                                        keyBoardType={'default'}
-                                        multiline={true}
-                                        numberOfLines={5}
-                                        onChangeText={this.onMessageTextChange}
-                                        placeholder={'message details'}
-                                        underlineColorAndroid={'transparent'}
-                                        value={this.state.messageText}
-                                        style={{width: '100%', paddingTop: 30, paddingBottom: 30}}/>
-                                </View>
-                            </ScrollView>
-                            <View style={styles.buttonRow}>
-                                <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
-                                    <Text style={styles.text}>Send Message</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight style={styles.cancelButton}
-                                    onPress={() => {
-                                        this.setState({isModalVisible: false, messageText: ''});
-                                    }}>
-                                    <Text style={styles.text}>Cancel</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </Modal>
                 </ScrollView>
-                <Modal animationType={'slide'}
+                <Modal
+                    animationType={'slide'}
                     transparent={false}
                     visible={this.state.openModal === 'NEW_TEAM'}
-                    onRequestClose={() => {}}>
-                    <TeamEditor/>
+                    onRequestClose={() => {
+                    }}
+                >
+                    <View style={{marginTop: 22, flex: 1}}>
+                        <NewTeam closeModal={_closeModal}/>
+                    </View>
                 </Modal>
             </View>
         );

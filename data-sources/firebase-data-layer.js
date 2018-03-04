@@ -204,7 +204,7 @@ async function googleAuth(token) {
 // Messaging
 function sendUserMessage(userId, message) {
     const _message = stringifyDates(message);
-    firebase
+    return firebase
         .database()
         .ref(`messages/${userId}`)
         .push(_message);
@@ -217,25 +217,29 @@ function sendGroupMessage(group, message) {
 }
 
 // Teams
-function saveTeam(team, id) {
-    const _id = id || team.uid || team.id;
-    const _team = Object.assign({}, team);
-    delete _team.uid;
-    if (!_id) {
-        firebase
-            .database()
-            .ref('teams')
-            .push(team);
-    } else {
-        firebase.database().ref(`teams/${_id}`).set(_team);
-    }
+function saveTeam(team) {
+    const _id = team.uid || team.id;
+    const _team = {...team, uid: null};
+    return firebase.database().ref(`teams/${_id}`).set(_team);
 }
 
-function saveLocations(locations, teamId) {
+function createTeam(team: Object = {}) {
+    const db = firebase.database();
+    const ownerId = (team.owner || {}).uid;
+    return db.ref('teams').push(team).then((_team) => {
+        const teamId = _team.key;
+        db.ref(`teamMembers/${teamId}/${ownerId}`).set(team.owner).then(
+            () => {
+                db.ref(`profiles/${ownerId}/teams/${teamId}`).set('OWNER');
+            });
+    });
+}
+
+function saveLocations(locations: Object, teamId: string) {
     return firebase.database().ref(`teams/${teamId}/locations`).set(locations);
 }
 
-function createUser(email, password, displayName) {
+function createUser(email: string, password: string, displayName: string) {
     return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password).then((user) => {
@@ -251,7 +255,7 @@ function createUser(email, password, displayName) {
         });
 }
 
-function loginWithEmailPassword(email, password) {
+function loginWithEmailPassword(email: string, password: string) {
     return firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -261,7 +265,7 @@ function loginWithEmailPassword(email, password) {
         });
 }
 
-function resetPassword(emailAddress) {
+function resetPassword(emailAddress: string) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
@@ -269,7 +273,7 @@ function logout() {
     return firebase.auth().signOut();
 }
 
-function inviteTeamMember(invitation) {
+function inviteTeamMember(invitation: Object) {
     const db = firebase.database();
     const membershipId = invitation.teamMember.email.toLowerCase().replace(/\./g, ':');
     const teamId = invitation.team.id;
@@ -279,35 +283,35 @@ function inviteTeamMember(invitation) {
         .then(db.ref(`teamMembers/${teamId}/${membershipId}`).set(invitation.teamMember));
 }
 
-function dropTrash(trashDrop) {
+function dropTrash(trashDrop: Object) {
     firebase
         .database()
         .ref('trashDrops/')
         .push(trashDrop);
 }
 
-function updateTrashDrop(trashDrop) {
+function updateTrashDrop(trashDrop: Object) {
     firebase
         .database()
         .ref(`trashDrops/${trashDrop.uid}`)
         .set(trashDrop);
 }
 
-function updateMessage(message, userId) {
+function updateMessage(message: Object, userId: string) {
     const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
     return firebase
         .database()
         .ref(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
-function updateProfile(profile) {
+function updateProfile(profile: Object) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     return firebase
         .database()
         .ref(`profiles/${profile.uid}`).set(newProfile);
 }
 
-function addTeamMember(teamId, teamMember) {
+function addTeamMember(teamId: string, teamMember: Object) {
     const db = firebase.database();
     const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
     return db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).set('ACCEPTED')
@@ -342,24 +346,24 @@ function revokeInvitation(teamId: string, membershipId: string) {
         .then(() => db.ref(`invitations/${_membershipId}/${teamId}`).remove());
 }
 
-
 export const firebaseDataLayer = {
     addTeamMember,
+    createTeam,
     createUser,
-    facebookAuth,
     dropTrash,
+    facebookAuth,
     googleAuth,
     initialize,
+    inviteTeamMember,
     loginWithEmailPassword,
     logout,
-    removeTeamMember,
     leaveTeam,
+    removeTeamMember,
     resetPassword,
     revokeInvitation,
-    saveTeam,
     saveLocations,
+    saveTeam,
     sendUserMessage,
-    inviteTeamMember,
     sendGroupMessage,
     updateMessage,
     updateProfile,

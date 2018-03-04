@@ -8,7 +8,8 @@ import {Invitation} from '../../models/invitation';
 import * as memberStatus from '../../constants/team-member-statuses';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
 import {Alert} from 'react-native';
-
+import * as messageTypes from '../../constants/message-types';
+import {Message} from '../../models/message';
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
@@ -50,11 +51,19 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
     };
 }
 
-export function askToJoinTeam(team: any, user: Object) {
+export function askToJoinTeam(team: Object, user: Object) {
+    const message = Message.create({
+        text: `${user.displayName || user.email} is requesting to join your team ${team.name} `,
+        sender: user,
+        teamId: team.id,
+        type: messageTypes.REQUEST_TO_JOIN
+    });
     const teamId = typeof team === 'string' ? team : team.id;
+
     return async function () {
         const potentialTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.REQUEST_TO_JOIN}));
-        firebaseDataLayer.addTeamMember(teamId, potentialTeamMember);
+        await firebaseDataLayer.addTeamMember(teamId, potentialTeamMember);
+        await firebaseDataLayer.sendUserMessage(team.owner.uid, message);
     };
 }
 
@@ -72,15 +81,19 @@ export function sendTeamMessage(teamMembers, message) {
     };
 }
 
-export function selectTeam(team) {
+export function selectTeam(team: Object) {
     return {type: types.SELECT_TEAM, team};
 }
 
-export function saveTeam(team, id) {
+export function saveTeam(team: Object) {
     return async function (dispatch) {
-        const savedTeam = await firebaseDataLayer.saveTeam(team, id);
+        const savedTeam = await firebaseDataLayer.saveTeam(team);
         dispatch({type: types.SAVE_TEAM_SUCCESS, savedTeam});
     };
+}
+
+export function createTeam(team: Object) {
+    return () => firebaseDataLayer.createTeam(team);
 }
 
 export function setSelectedTeamValue(key: string, value: any) {

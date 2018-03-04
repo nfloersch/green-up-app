@@ -5,15 +5,15 @@ import {isDate} from '../libs/isDate';
 import {TeamMember} from './team-member';
 
 export class Message {
-    uid : string;
-    text : string;
-    sender : string;
-    teamId : string;
-    read : boolean;
-    active : boolean;
-    link : string;
-    type : string;
-    created : Date;
+    uid: string;
+    text: string;
+    sender: string;
+    teamId: string;
+    read: boolean;
+    active: boolean;
+    link: string;
+    type: string;
+    created: Date;
 
     constructor(args: Object) {
         this.uid = typeof args.uid === 'string'
