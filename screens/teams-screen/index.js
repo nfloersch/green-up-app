@@ -176,7 +176,7 @@ class MyTeams extends Component {
                     }}
                 >
                     <View style={{marginTop: 22, flex: 1}}>
-                        <NewTeam test="test" closeModal={_closeModal}/>
+                        <NewTeam closeModal={_closeModal}/>
                     </View>
                 </Modal>
             </View>

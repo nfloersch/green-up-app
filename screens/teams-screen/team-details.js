@@ -73,10 +73,10 @@ class TeamDetails extends Component {
         return () => this.props.actions.leaveTeam(teamId, user);
     }
 
-    _askToJoin(teamId: string, user: Object) {
+    _askToJoin(team: Object, user: Object) {
         return () => {
             this.setState({hasAsked: true}, () => {
-                this.props.actions.askToJoinTeam(teamId, user);
+                this.props.actions.askToJoinTeam(team, user);
             });
         };
     }
@@ -126,7 +126,7 @@ class TeamDetails extends Component {
                     return (
                         <Button
                             style={styles.button}
-                            onPress={this._askToJoin(selectedTeam.id, currentUser)}
+                            onPress={this._askToJoin(selectedTeam, currentUser)}
                             title='Ask to join this group'/>
                     );
             }

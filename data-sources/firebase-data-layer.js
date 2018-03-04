@@ -204,7 +204,7 @@ async function googleAuth(token) {
 // Messaging
 function sendUserMessage(userId, message) {
     const _message = stringifyDates(message);
-    firebase
+    return firebase
         .database()
         .ref(`messages/${userId}`)
         .push(_message);
@@ -345,7 +345,6 @@ function revokeInvitation(teamId: string, membershipId: string) {
     return db.ref(`teamMembers/${teamId}/${_membershipId}`).remove()
         .then(() => db.ref(`invitations/${_membershipId}/${teamId}`).remove());
 }
-
 
 export const firebaseDataLayer = {
     addTeamMember,

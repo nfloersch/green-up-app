@@ -95,6 +95,7 @@ class TeamMemberDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
         navigation: PropTypes.object,
+        profile: PropTypes.object,
         teamMembers: PropTypes.object
     };
 

@@ -92,7 +92,13 @@ class Messages extends Component {
                     this.props.actions.selectTeamById(message.teamId);
                     this.props.navigation.navigate('TeamDetails');
                 };
-
+            case messageTypes.REQUEST_TO_JOIN :
+                return () => {
+                    const membershipId = message.sender.email.toLowerCase().replace(/\./g, ':');
+                    const teamId = message.teamId;
+                    this.props.actions.readMessage(message, userId);
+                    this.props.navigation.navigate('TeamMemberDetails', {teamId, membershipId});
+                };
             default :
                 return () => {
                     // mark message as read
@@ -123,10 +129,9 @@ class Messages extends Component {
             ), {});
             const messages = Object.assign({}, this.props.messages, invitationMessages);
             const messageKeys = Object.keys(messages || {});
-            const sortedKeys = messageKeys.sort((key1, key2) => {
-                const diff = messages[key2].created.valueOf() - messages[key1].created.valueOf();
-                return diff;
-            });
+            const sortedKeys = messageKeys.sort((key1, key2) => (
+                messages[key2].created.valueOf() - messages[key1].created.valueOf()
+            ));
             const myMessages = sortedKeys.map(key =>
                 (
                     <View key={key}>
