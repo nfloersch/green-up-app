@@ -40,6 +40,10 @@ const myStyles = {
         color: '#333',
         padding: 10,
         margin: 10
+    },
+    loadingScreen: {
+      justifyContent: 'center',
+      alignItems: 'center'
     }
 };
 
@@ -189,8 +193,8 @@ class Messages extends Component {
         }
 
         return (
-            <View>
-                <Text>Running around, gathering data... please wait</Text>
+            <View style={[styles.container, styles.loadingScreen]}>
+                <Text>Loading...</Text>
             </View>
         );
     }
