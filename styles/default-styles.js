@@ -88,5 +88,22 @@ export const defaultStyles = {
         borderColor: '#000',
         padding: 5,
         backgroundColor: 'darkseagreen'
-    }
+    },
+		profileHeader: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: '#000',
+      backgroundColor: 'darkseagreen'
+  	},
+  	profileName: {
+    	paddingLeft: 10,
+    	paddingTop: 12.5,
+    	fontSize: 20,
+			color: '#fff',
+			textShadowColor: '#000',
+		  textShadowRadius: 2,
+			textShadowOffset: {width: 2 ,height: 2}
+  	}
 }

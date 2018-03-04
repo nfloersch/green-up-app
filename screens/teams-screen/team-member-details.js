@@ -14,21 +14,7 @@ import {TeamMember} from '../../models/team-member';
 import * as status from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-  profileHeader: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      marginBottom: 10,
-      borderWidth: 1,
-      borderColor: '#000',
-      backgroundColor: 'darkseagreen'
-  },
-  profileName: {
-    paddingLeft: 10,
-    paddingTop: 12.5,
-    fontSize: 20
-  }
-};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);

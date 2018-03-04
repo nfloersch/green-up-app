@@ -73,7 +73,7 @@ class MenuScreen extends Component {
                     onPress={() => this.props.navigation.navigate('Profile')}
                 >
                     <View>
-                        <Text>Profile</Text>
+                        <Text>My Profile</Text>
                     </View>
                 </TouchableHighlight>
 
