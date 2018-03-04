@@ -6,9 +6,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+
+import * as actions from './actions';
+import {defaultStyles} from '../../styles/default-styles';
 
 const aboutGreenUp = 'Green Up Vermont is a nonprofit organization with 501(c) (3) status.\n\nGreen Up' +
     '’s mission is to promote the stewardship of our state’s natural landscape and wa' +
@@ -89,85 +91,11 @@ const aboutTP = 'Talking Points – a summary of the Green Up Day program, to be
     'so all seven Vermont Subaru dealers are official sites for bag pick up and drop ' +
     'off.';
 
+const myStyles = {
+};
 
-const styles = StyleSheet.create({
-    buttonText: {
-        fontSize: 20,
-        textAlign: 'center',
-        marginBottom: 20,
-        marginTop: 10,
-        color: '#000',
-        padding: 10
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    headerButton: {
-        // flex: 1,
-        width: 32
-    },
-    message: {
-        fontSize: 20,
-        textAlign: 'left',
-        margin: 15,
-        color: 'red'
-    },
-    messageRead: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: '#555'
-    },
-    inputStyle: {
-        paddingRight: 5,
-        paddingLeft: 5,
-        paddingBottom: 2,
-        color: '#262626',
-        fontSize: 18,
-        fontWeight: '200',
-        height: 40,
-        width: '100%',
-        textAlign: 'left',
-        borderColor: '#DDDDDD',
-        borderWidth: 1,
-        borderStyle: 'solid'
-    },
-    buttonRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    button: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
-    },
-    inputRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        margin: 10
-    },
-    inputRowLabel: {
-        width: '20%',
-        margin: 5
-    },
-    inputRowControl: {
-        width: '75%',
-        margin: 5,
-        borderStyle: 'solid',
-        borderColor: '#AAA',
-        borderWidth: 1,
-        padding: 5
-    }
-});
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 
 class About extends Component {
@@ -219,17 +147,17 @@ class About extends Component {
             <View style={styles.container}>
                 <ScrollView>
                     <View>
-                        <Text>About Green Up</Text>
+                        <Text style={styles.heading2}>About Green Up</Text>
                         <Text>{aboutGreenUp}</Text>
                     </View>
                     <View>
-                        <Text>FAQ's</Text>
+                        <Text style={styles.heading2}>FAQ</Text>
                         <View>{
                             frequentlyAskedQuestions.map(
                                 (faq, i) => (
                                     <View key={i}>
-                                        <Text>{faq.q}</Text>
-                                        <Text>{faq.a}</Text>
+                                        <Text style={{fontWeight: 'bold'}}>{faq.q}</Text>
+                                        <Text style={{marginBottom: 10}}>{faq.a}</Text>
                                     </View>)
                             )
                         }
@@ -241,13 +169,13 @@ class About extends Component {
     }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
     const currentUser = state.login.user;
     const profile = state.profile.profile;
     return {profile, currentUser};
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
