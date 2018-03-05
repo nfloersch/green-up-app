@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
+import MapView, {Polygon} from 'react-native-maps';
 
 const myStyles = {
     teamTitle: {
@@ -36,7 +37,8 @@ class TeamDetails extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         invitations: PropTypes.object,
-        navigation : PropTypes.object,
+        locations: PropTypes.object,
+        navigation: PropTypes.object,
         selectedTeam: PropTypes.object,
         teamMembers: PropTypes.object,
         teams: PropTypes.object
@@ -90,6 +92,29 @@ class TeamDetails extends Component {
 
     render() {
         const {currentUser, selectedTeam} = this.props;
+        const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
+        const isTeamMember = (currentUser.uid in teamMembers);
+        const teamMemberList = (
+            <View>
+                <Text style={[styles.heading2]}>
+                    {'Team Members'}
+                </Text>
+                {
+                    Object.values(teamMembers).map((member, i) => (<Text key={i}>{member.displayName}</Text>))
+                }
+            </View>);
+        const teamLocationMarkers = this
+            .props
+            .locations
+            .map((marker, index) => (
+                <MapView.Marker coordinate={marker.coordinates}
+                    key={index}
+                    title={marker.title || 'clean area border'}
+                    // onPress={this.calloutClicked}
+                    // onCalloutPress={this._removeMarker(marker)}
+                    // description={marker.descrption || 'tap to remove'}
+                    image={require('../../assets/images/ic_person_pin_circle_white_24dp_2x.png')}
+                />));
         const getMemberStatus = () => {
             const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
             const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
@@ -172,12 +197,27 @@ class TeamDetails extends Component {
                         <Text>{selectedTeam.notes}</Text>
                     </Text>
                 </View>
+                <View>
+                    <Text style={[styles.heading2]}>
+                        {'Clean Up Location'}
+                    </Text>
+                    <MapView style={{alignSelf: 'stretch', height: '50%'}}
+                        // initialRegion={this.state.initialMapLocation}
+                        onPress={this._handleMapClick}>
+                        {this.props.locations.length > 0 && teamLocationMarkers}
+                        {this.props.locations.length > 0 && (
+                            <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
+                        )}
+                    </MapView>
+                </View>
+                {teamMemberList}
             </ScrollView>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
+    locations: state.teams.locations,
     invitations: state.teams.invitations || {},
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,

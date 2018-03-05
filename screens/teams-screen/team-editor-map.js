@@ -136,7 +136,7 @@ class TeamEditorMap extends Component {
     }
 
     render() {
-        var teamLocationMarkers = this
+        const teamLocationMarkers = this
             .props
             .locations
             .map((marker, index) => (
