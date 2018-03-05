@@ -11,7 +11,6 @@ import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    TouchableHighlight,
     StyleSheet,
     Button,
     Modal,
@@ -21,6 +20,9 @@ import {
     Text,
     View
 } from 'react-native';
+
+import * as turf from '@turf/helpers';
+import booleanWithin from '@turf/boolean-within';
 
 import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
@@ -70,6 +72,14 @@ class TrashMap extends Component {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
             const location = await Location.getCurrentPositionAsync({});
+
+            const townPolygonsData = require('../../libs/VT_Boundaries__town_polygons.json');
+            const currentLocation = turf.point([location.coords.longitude, location.coords.latitude]);
+            const town = townPolygonsData.features.find((f) => {
+                const feature = turf.feature(f.geometry);
+                return booleanWithin(currentLocation, feature);
+            });
+
             this.setState({
                 location,
                 initialMapLocation: {
@@ -77,7 +87,8 @@ class TrashMap extends Component {
                     longitude: Number(location.coords.longitude),
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421
-                }
+                },
+                town: town ? town.properties.TOWNNAMEMC : ''
             });
         }
     };
@@ -119,7 +130,7 @@ class TrashMap extends Component {
                     drop: Object.assign({}, this.state.drop, {
                         wasCollected: true,
                         collectedBy: {
-                            uid: this.props.currentUser.uid, 
+                            uid: this.props.currentUser.uid,
                             email: this.props.currentUser.email
                         }})
                 }, saveTrashDrop);
@@ -213,7 +224,7 @@ class TrashMap extends Component {
                                 )}
                                 <View style={styles.button}>
                                     <Button
-                                        onPress={() => { this.closeModal();}}
+                                        onPress={() => { this.closeModal(); }}
                                         title='Cancel' />
                                 </View>
                             </View>
