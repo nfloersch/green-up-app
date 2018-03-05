@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 
+import Colors from '../../constants/Colors';
 import * as actions from './actions';
 import * as memberStatus from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
@@ -57,27 +58,23 @@ class TeamEditorMembers extends Component {
         tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
                 size={24}
-                color='blue'
+                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
             />)
     };
 
     constructor(props) {
         super(props);
-        this.inviteContacts = this.inviteContacts.bind(this);
-        this.inviteForm = this.inviteForm.bind(this);
-        this.getIconColor = this.getIconColor.bind(this);
-        this._toMemberDetails = this._toMemberDetails.bind(this);
     }
 
-    inviteContacts() {
+    inviteContacts = () => {
         this.props.screenProps.stacknav.navigate('InviteContacts');
     }
 
-    inviteForm() {
+    inviteForm = () => {
         this.props.screenProps.stacknav.navigate('InviteForm');
     }
 
-    getIconColor(status) {
+    getIconColor = status => {
         switch (status) {
             case 'ACCEPTED':
                 return {
@@ -106,6 +103,22 @@ class TeamEditorMembers extends Component {
         }
     }
 
+    getStatusText = status => {
+        switch (status) {
+            case 'ACCEPTED':
+                return 'is on your team';
+            case 'OWNER':
+                return 'owns this team';
+            case 'INVITED':
+                return 'has been invited';
+            case 'NOT_INVITED':
+                return 'has not been invited';
+            case 'REQUEST_TO_JOIN':
+                return 'is requesting to join your team';
+            default:
+                return '';
+        }
+    }
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
             this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
@@ -135,7 +148,7 @@ class TeamEditorMembers extends Component {
                     </View>
                 </TouchableHighlight>
                 <Text style={styles.memberName}>
-                    {(`${members[membershipId].displayName || ''}`).trim()}
+                    {(`${members[membershipId].displayName} ${this.getStatusText(members[membershipId].memberStatus)}`).trim()}
                 </Text>
             </View>
 
