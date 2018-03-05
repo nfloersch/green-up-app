@@ -9,37 +9,29 @@ import {StyleSheet, Text, TextInput, View} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {defaultStyles} from '../../styles/default-styles';
 
-const styles = StyleSheet.create({
-    label:{
-      fontSize: 20,
-      paddingTop: 5,
-      paddingLeft: 5,
-      fontWeight: 'bold'
+const myStyles = {
+  // team:{
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   paddingLeft: 5
+  // },
+  // team_name:{
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  // },
+  // message:{
+  //   paddingTop: 5,
+  //   paddingLeft: 15,
+  //   borderTopWidth: 1,
+  //   borderTopColor: '#000'
+  //
+  // }
+};
 
-    },
-    data:{
-      fontSize: 15,
-      fontWeight: '400',
-
-    },
-    team:{
-      fontSize: 20,
-      fontWeight: 'bold',
-      paddingLeft: 5
-    },
-    team_name:{
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    message:{
-      paddingTop: 5,
-      paddingLeft: 15,
-      borderTopWidth: 1,
-      borderTopColor: '#000'
-
-    }
-});
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class MessageDetails extends Component {
     static propTypes = {
@@ -62,25 +54,27 @@ class MessageDetails extends Component {
         const teamId = message.teamId;
         const team = Object.values(this.props.teams[teamId] || [])
         return (
-            <View style={team}>
+            <View style={styles.container}>
                 {!message
                     ? (<Text>{message || 'Oops, sorry.  We could not find that message'}</Text>)
                     : (
-                        <View style={styles.container}>
-                          <Text style={styles.label}>
-                            <Text>From:{' '}</Text>
+                        <View style={{alignSelf: 'flex-start'}}>
+                          <Text style={styles.dataBlock}>
+                            <Text style={styles.label}>{'From: '}</Text>
                             <Text style={styles.data}>
                               {message.sender.displayName}
                             </Text>
                           </Text>
-                          <Text style={styles.label}>
-                            <Text>Team:{' '}</Text>
+                          <Text style={styles.dataBlock}>
+                            <Text style={styles.label}>{'Team: '}</Text>
                             <Text style={styles.data}>
                               {team.name}
                             </Text>
                           </Text>
-                          <Text style={styles.label}>Message:</Text>
-                          <Text style={styles.message}>{message.text}</Text>
+                          <Text style={styles.dataBlock}>
+                            <Text style={styles.label}>{'Message: '}</Text>
+                            <Text style={styles.data}>{message.text}</Text>
+                          </Text>
                         </View>
                     )
                 }
