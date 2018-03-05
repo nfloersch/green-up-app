@@ -34,6 +34,20 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
+// TODO: Load data from the database
+const dummyTownData = {
+    Winooski: {
+        RoadsideDropOffAllowed: true,
+        DropOffMessage: 'Leave on roadsides at intersections.',
+        DropOffLocationName: 'Monkey House',
+        DropOffLocationAddress: '30 Main St, Winooski, VT 05404',
+        DropOffLocationCoordinates: {
+            latitude: 44.4907233,
+            longitude: -73.1865139
+        }
+    }
+};
+
 class TrashMap extends Component {
     static propTypes = {
         navigation: PropTypes.object,
@@ -141,14 +155,29 @@ class TrashMap extends Component {
         };
 
         const {drops} = this.props;
+        const townInfo = dummyTownData[this.state.town];
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && (
                 <View style={styles.container}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
-                        <Text style={styles.label}>Show Collected Trash</Text>
-                        <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-                    </View>
+                    {townInfo.RoadsideDropOffAllowed === true &&
+                        (<View>
+                            <Text style={styles.alertInfo}>
+                                <Text>You are in {this.state.town} and leaving trash bags on the roadside is allowed.</Text>
+                                <Text>{townInfo.DropOffMessage}</Text>
+                            </Text>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+                                <Text style={styles.label}>Show Collected Trash</Text>
+                                <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+                            </View>
+                        </View>)}
+                    {townInfo.RoadsideDropOffAllowed === false &&
+                        (<Text style={styles.alertInfo}>
+                            <Text>You are in {this.state.town} and leaving trash bags on the roadside is <Text style={{fontWeight: 'bold'}}>not</Text> allowed.
+                            Please bring collected trash to the designated drop off location.</Text>
+                            <Text>{'\n'}Drop off location: {townInfo.DropOffLocationName}</Text>
+                            <Text>{'\n'}Drop off address: {townInfo.DropOffLocationAddress}</Text>
+                        </Text>)}
                     <MapView
                         initialRegion={this.state.initialMapLocation}
                         showsUserLocation={true}
@@ -156,7 +185,7 @@ class TrashMap extends Component {
                         followsUserLocation={true}
                         showsCompass={true}
                         style={{alignSelf: 'stretch', height: 300}}>
-                        {drops && drops.filter(drop => this.state.showCollectedTrash || !drop.wasCollected).map(drop => (
+                        {townInfo.RoadsideDropOffAllowed === true && drops && drops.filter(drop => this.state.showCollectedTrash || !drop.wasCollected).map(drop => (
                             <MapView.Marker
                                 key={drop.uid}
                                 pinColor={drop.wasCollected ? 'wheat' : 'green'} // a limited number of colors are rendered properly on android ;( https://github.com/react-community/react-native-maps/issues/887
@@ -166,12 +195,23 @@ class TrashMap extends Component {
                                 onCalloutPress={() => { this.setState({modalVisible: true, drop: drop}); }}
                             />
                         ))}
+                        {townInfo.RoadsideDropOffAllowed === false && (
+                            <MapView.Marker
+                                key={`${this.state.town}DropOffLocation`}
+                                pinColor='blue'
+                                coordinate={townInfo.DropOffLocationCoordinates}
+                                title='Drop Off Location'
+                                description={`${townInfo.DropOffLocationName}, ${townInfo.DropOffLocationAddress}`}
+                            />
+                        )}
                     </MapView>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={goToTrashDrop}
-                            title='Create Trash Drop' />
-                    </View>
+                    {townInfo.RoadsideDropOffAllowed === true && (
+                        <View style={styles.button}>
+                            <Button
+                                onPress={goToTrashDrop}
+                                title='Create Trash Drop' />
+                        </View>
+                    )}
                     <Modal
                         animationType={'slide'}
                         transparent={false}
