@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import MapView, {Polygon} from 'react-native-maps';
 import {Constants, Location, Permissions} from 'expo';
 
+import Colors from '../../constants/Colors';
 import {defaultStyles} from '../../styles/default-styles';
 import * as actions from './actions';
 
@@ -36,7 +37,7 @@ class TeamEditorMap extends Component {
         tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin'}
                 size={24}
-                color='blue'
+                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
             />)
     };
 
