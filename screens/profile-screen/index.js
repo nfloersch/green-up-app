@@ -78,7 +78,7 @@ class Profile extends Component {
                       style={{width: 50, height: 50}}
                       source={{uri: avatar}}
                   />
-                  <Text style={styles.profileName}>
+                  <Text style={[styles.profileName, styles.heading2]}>
                     {this.state.displayName || ''}
                   </Text>
                 </View>

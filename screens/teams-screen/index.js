@@ -20,53 +20,29 @@ import NewTeam from './new-team';
 import {TeamMember} from '../../models/team-member';
 import * as actions from './actions';
 import {User} from '../../models/user';
+import {defaultStyles} from '../../styles/default-styles';
 
+const myStyles = {
+  row: {
+      width: '100%',
+      flexDirection: 'row',
+      paddingTop: 15,
+      justifyContent: 'space-around'
+  },
+  messageRow: {
+      justifyContent: 'center',
+      flexDirection: 'row',
+      borderWidth: 2,
+      borderColor: '#678',
+      width: '100%',
+      height: '70%',
+      padding: 4,
+      marginTop: 10
+  },
+};
 
-const styles = StyleSheet.create({
-    headerButton: {
-        width: 32
-    },
-    teams: {
-        fontSize: 18,
-        margin: 2
-    },
-    row: {
-        width: '100%',
-        flexDirection: 'row',
-        paddingTop: 15,
-        justifyContent: 'space-around'
-    },
-    messageRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderWidth: 2,
-        borderColor: '#678',
-        width: '100%',
-        height: '70%',
-        padding: 4,
-        marginTop: 10
-    },
-    buttonRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    addButton: {
-        width: '49%',
-        backgroundColor: '#0F0',
-        justifyContent: 'center',
-        padding: 10,
-        marginRight: 3
-    },
-    cancelButton: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
-    }
-});
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class MyTeams extends Component {
     static propTypes = {
@@ -80,7 +56,7 @@ class MyTeams extends Component {
     };
 
     static navigationOptions = {
-        title: 'Green Teams',
+        title: 'My Teams',
         tabBarLabel: 'Teams'
     };
 
@@ -89,7 +65,6 @@ class MyTeams extends Component {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         // this.sendMessage = this.sendMessage.bind(this);
-        // this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
         // this.onMessageTextChange = this.onMessageTextChange.bind(this);
         this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
@@ -141,9 +116,6 @@ class MyTeams extends Component {
             .map(key => (
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
-                        {/*
-                    <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
-*/}
                         <TouchableHighlight onPress={() => {
                             this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
                         }}>
@@ -158,26 +130,31 @@ class MyTeams extends Component {
                 </TouchableHighlight>
             ));
         return (
-            <View style={{flex: 1}}>
+            <View style={styles.container}>
                 <ScrollView style={{flex: 1}}>
-                    <View style={styles.row}>
-                        <Button onPress={() => {
-                            this.props.navigation.navigate('TeamSearch');
-                        }} title='Search Teams'/>
-                        <Button onPress={this.toNewTeamEditor} title='New Team'/>
+                    <View style={styles.button}>
+                      <Button
+                          onPress={() => {this.props.navigation.navigate('TeamSearch');}}
+                          title='Search Teams'/>
                     </View>
-                    {myTeams}
+                    <View style={styles.button}>
+                      <Button
+                          onPress={this.toNewTeamEditor}
+                          title='New Team'/>
+                    </View>
+                    <View>
+                      <Text style={styles.heading2}>My Teams</Text>
+                      {myTeams}
+                    </View>
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.openModal === 'NEW_TEAM'}
-                    onRequestClose={() => {
-                    }}
-                >
-                    <View style={{marginTop: 22, flex: 1}}>
-                        <NewTeam closeModal={_closeModal}/>
-                    </View>
+                    onRequestClose={() => {}}>
+                  <View style={styles.container}>
+                      <NewTeam closeModal={_closeModal}/>
+                  </View>
                 </Modal>
             </View>
         );

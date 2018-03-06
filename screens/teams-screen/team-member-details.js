@@ -115,10 +115,9 @@ class TeamMemberDetails extends Component {
                     return (
                         <View>
                             <Text>
-                                {teamMember.displayName || teamMember.email} is invited to your team, but has yet to
-                                accept
+                                {`${teamMember.displayName || teamMember.email} has been invited to your team, but has yet to accept.`}
                             </Text>
-                            <View>
+                            <View style={styles.button}>
                                 <Button onPress={this._revokeInvitation(teamId, membershipId)}
                                         title={'Revoke Invitation'}/>
                             </View>
@@ -141,7 +140,7 @@ class TeamMemberDetails extends Component {
                                   style={{width: 50, height: 50}}
                                   source={{uri: avatar}}
                               />
-                              <Text style={styles.profileName}>
+                              <Text style={[styles.profileName, styles.heading2]}>
                                 {member.displayName || ''}
                               </Text>
                             </View>

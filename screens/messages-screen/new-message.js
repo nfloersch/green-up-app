@@ -121,7 +121,7 @@ class NewMessage extends Component {
                         onChangeText={this.changeText}
                         placeholder={'message details'}
                         value={this.state.text}
-                        style={[styles.textInput, styles.messageInput]}
+                        style={[styles.textArea, styles.messageInput]}
                     />
                 </View>
                 <View style={styles.button}>

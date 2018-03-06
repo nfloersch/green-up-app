@@ -1,3 +1,5 @@
+const alertFontSize = 12;
+
 export const defaultStyles = {
     container: {
         flex: 1,
@@ -12,12 +14,17 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
+    textArea: {
+        borderColor: '#000',
+        borderWidth: 1,
+        padding: 5
+    },
     textInput: {
         borderColor: '#000',
         borderWidth: 1,
         height: 40,
         padding: 5,
-        textAlign: 'center',
+        textAlign: 'left',
         lineHeight: 25
     },
     fieldset: {
@@ -28,7 +35,7 @@ export const defaultStyles = {
     },
 		// Twitter Bootstrap alert styles
 		alertInfo: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#004085',
 			backgroundColor: '#cce5ff',
 			borderColor: '#b8daff',
@@ -40,7 +47,7 @@ export const defaultStyles = {
       textAlign: 'center'
 		},
 		alertSuccess: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#155724',
 			backgroundColor: '#d4edda',
 			borderColor: '#c3e6cb',
@@ -52,7 +59,7 @@ export const defaultStyles = {
       textAlign: 'center'
 		},
 		alertDanger: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#721c24',
 			backgroundColor: '#f8d7da',
 			borderColor: '#f5c6cb',
@@ -68,8 +75,13 @@ export const defaultStyles = {
         fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 10
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'darkseagreen',
+        color: '#fff',
+        textShadowColor: '#000',
+        textShadowRadius: 2,
+        textShadowOffset: {width: 2 ,height: 2}
     },
     label: {
       marginTop: 5
@@ -100,10 +112,6 @@ export const defaultStyles = {
     profileName: {
       paddingLeft: 10,
       paddingTop: 12.5,
-      fontSize: 20,
-      color: '#fff',
-      textShadowColor: '#000',
-      textShadowRadius: 2,
-      textShadowOffset: {width: 2 ,height: 2}
+      fontSize: 20
     }
 }
