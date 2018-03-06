@@ -9,7 +9,8 @@ import {
     Button,
     Platform,
     Text,
-    View
+    View,
+    StyleSheet
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
@@ -20,6 +21,11 @@ import {Constants, Location, Permissions} from 'expo';
 import Colors from '../../constants/Colors';
 import {defaultStyles} from '../../styles/default-styles';
 import * as actions from './actions';
+
+const myStyles = {};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class TeamEditorMap extends Component {
     static propTypes = {
@@ -173,9 +179,11 @@ class TeamEditorMap extends Component {
                             (<Polygon key={index} coordinates={c} fillColor='#b1c8ed'/>)
                         )}
                     </MapView>
-                    <Button title={'remove last marker'}
-                        onPress={this._removeLastMarker}
-                    />
+                    <View style={styles.button}>
+                      <Button title={'remove last marker'}
+                          onPress={this._removeLastMarker}
+                      />
+                    </View>
                 </View>);
     }
 }

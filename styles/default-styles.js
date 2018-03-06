@@ -12,6 +12,11 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
+    textArea: {
+        borderColor: '#000',
+        borderWidth: 1,
+        padding: 5
+    },
     textInput: {
         borderColor: '#000',
         borderWidth: 1,
