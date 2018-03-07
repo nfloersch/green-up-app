@@ -81,6 +81,8 @@ export const defaultStyles = {
         textAlign: 'center',
         paddingTop: 10,
         paddingBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
         backgroundColor: 'darkseagreen',
         color: '#fff',
         textShadowColor: '#000',

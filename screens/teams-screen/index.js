@@ -24,21 +24,28 @@ import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
   row: {
-      width: '100%',
-      flexDirection: 'row',
-      paddingTop: 15,
-      justifyContent: 'space-around'
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    borderBottomWidth: 1,
+    borderBottomColor: '#888',
+    height: 50,
+    alignItems: 'center'
   },
-  messageRow: {
-      justifyContent: 'center',
-      flexDirection: 'row',
-      borderWidth: 2,
-      borderColor: '#678',
-      width: '100%',
-      height: '70%',
-      padding: 4,
-      marginTop: 10
+  teamIcon: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
+  messageIcon: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  teamName: {
+    flex: 4
+  }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -116,16 +123,23 @@ class MyTeams extends Component {
             .map(key => (
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
-                        <TouchableHighlight onPress={() => {
-                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                        }}>
-                            <Ionicons
-                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                size={30}
-                            />
-                        </TouchableHighlight>
-                        <Text style={styles.teams}>{teams[key].name}</Text>
-                        <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
+                        <Text style={styles.teamName}>{teams[key].name}</Text>
+                        <View style={styles.messageIcon}>
+                          <TouchableHighlight onPress={() => {
+                              this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                          }}>
+                              <Ionicons
+                                  name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                  size={30}
+                              />
+                          </TouchableHighlight>
+                        </View>
+                        <View style={styles.teamIcon}>
+                          <Ionicons
+                              name={this.toTeamIcon(user.teams[key])}
+                              size={30}
+                           />
+                         </View>
                     </View>
                 </TouchableHighlight>
             ));
