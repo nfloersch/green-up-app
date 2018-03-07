@@ -37,6 +37,10 @@ function searchScore(term: string, searchableString: [string]) {
 const myStyles = {
     scrollview: {
         marginTop: 10
+    },
+    city: {
+      fontWeight: 'bold',
+      textAlign: 'center'
     }
 };
 
@@ -69,7 +73,8 @@ class TeamSearch extends Component {
     onSearchTermChange(searchTerm) {
         const teams = this.props.teams;
         const searchResults = Object.keys(this.props.teams)
-            .filter(key => teams[key].isPublic === true || teams[key].members.find(m => m.uid === this.props.currentUser.uid))
+            .filter(key => teams[key].isPublic === true ||
+                    teams[key].members.find(m => m.uid === this.props.currentUser.uid))
             .map(key => ({
                 key,
                 score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
@@ -92,19 +97,26 @@ class TeamSearch extends Component {
     render() {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
+          <View style={styles.searchResult}>
             <TouchableHighlight
-                key={teamId} style={styles.searchResult}
-                onPress={this.toTeamDetail(teamId)}
-            >
-                <Text style={styles.searchResultsTitle}>{teams[teamId].name}</Text>
+                key={teamId}
+                onPress={this.toTeamDetail(teamId)}>
+              <Text style={[styles.searchResultsTitle, styles.heading]}>
+                {teams[teamId].name}
+              </Text>
             </TouchableHighlight>
+              <Text style={styles.city}>
+                {teams[teamId].town}
+              </Text>
+          </View>
         ));
         return (
             <View style={styles.container}>
                 <View style={{marginTop: 10}}>
                     <TextInput
-                        keyBoardType={'default'} onChangeText={this.onSearchTermChange}
-                        placeholder={'Search Teams'}
+                        keyBoardType={'default'}
+                        onChangeText={this.onSearchTermChange}
+                        placeholder={'Search by Team Name or City/Town'}
                         style={styles.textInput}
                         value={this.state.searchTerm}
                     />
