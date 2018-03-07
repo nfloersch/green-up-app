@@ -97,7 +97,7 @@ class TeamDetails extends Component {
         const isTeamMember = Boolean(teamMembers[currentUser.uid] || teamMembers[membershipId]);
         const teamMemberList = (
             <View>
-                <Text style={[styles.heading2]}>
+                <Text style={[styles.heading]}>
                     {'Team Members'}
                 </Text>
                 {
@@ -174,7 +174,7 @@ class TeamDetails extends Component {
         };
         return (
             <ScrollView contentContainerStyle={styles.container}>
-                <Text style={[styles.heading2, styles.teamTitle]}>
+                <Text style={[styles.heading, styles.teamTitle]}>
                     {selectedTeam.name}
                 </Text>
                 <View style={styles.memberStatusBanner}>
@@ -198,7 +198,7 @@ class TeamDetails extends Component {
                         <Text>{selectedTeam.notes}</Text>
                     </Text>
                     <View>
-                        <Text style={[styles.heading2]}>
+                        <Text style={[styles.heading]}>
                             {'Clean Up Location'}
                         </Text>
                         <MapView style={{alignSelf: 'stretch', height: '50%'}}

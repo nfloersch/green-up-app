@@ -168,7 +168,7 @@ class TrashMap extends Component {
                         onRequestClose={() => { this.closeModal(); }}>
                         <ScrollView style={{marginTop: 22}}>
                             <View style={styles.container}>
-                                <Text style={styles.heading2}>Number of Bags</Text>
+                                <Text style={styles.heading}>Number of Bags</Text>
                                 <TextInput
                                     underlineColorAndroid='transparent'
                                     editable={!this.state.drop.wasCollected}
@@ -178,7 +178,7 @@ class TrashMap extends Component {
                                     style={styles.textInput}
                                     onChangeText={(text) => this.setState({drop: {...this.state.drop, bagCount: Number(text)}})}
                                 />
-                                <Text style={styles.heading2}>Other Items</Text>
+                                <Text style={styles.heading}>Other Items</Text>
                                 <View style={styles.fieldset}>
                                     <CheckBox
                                         editable={!this.state.drop.wasCollected}

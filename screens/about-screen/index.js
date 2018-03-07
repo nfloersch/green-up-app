@@ -147,11 +147,11 @@ class About extends Component {
             <View style={styles.container}>
                 <ScrollView>
                     <View>
-                        <Text style={styles.heading2}>About Green Up</Text>
+                        <Text style={styles.heading}>About Green Up</Text>
                         <Text>{aboutGreenUp}</Text>
                     </View>
                     <View>
-                        <Text style={styles.heading2}>FAQ</Text>
+                        <Text style={styles.heading}>FAQ</Text>
                         <View>{
                             frequentlyAskedQuestions.map(
                                 (faq, i) => (

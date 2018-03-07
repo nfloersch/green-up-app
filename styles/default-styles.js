@@ -73,8 +73,7 @@ export const defaultStyles = {
 			overflow: 'hidden',
       textAlign: 'center'
     },
-    heading1: {},
-    heading2: {
+    heading: {
         fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',

@@ -170,7 +170,7 @@ class Messages extends Component {
                         {myMessages.length > 0
                             ? myMessages
                             : (
-                                <Text style={defaultStyles.heading2}>
+                                <Text style={defaultStyles.heading}>
                                     {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your teammates.'}
                                 </Text>
                             )}
@@ -178,7 +178,7 @@ class Messages extends Component {
                 </ScrollView>
             ) : (
                 <View style={styles.container}>
-                    <Text style={defaultStyles.heading2}>Whoops, you're lonely in here.
+                    <Text style={defaultStyles.heading}>Whoops, you're lonely in here.
                         It seems like you don't have any teams to send messages to. Start your own team or join an
                         existing one.
                     </Text>

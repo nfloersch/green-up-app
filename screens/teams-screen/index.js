@@ -143,7 +143,7 @@ class MyTeams extends Component {
                           title='New Team'/>
                     </View>
                     <View>
-                      <Text style={styles.heading2}>My Teams</Text>
+                      <Text style={styles.heading}>My Teams</Text>
                       {myTeams}
                     </View>
                 </ScrollView>
