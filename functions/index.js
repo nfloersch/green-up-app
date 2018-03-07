@@ -2,37 +2,38 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
+const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
 
-// class TeamMember {
-//     constructor(args) {
-//         this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
-//             ? args.uid || args.id || args._id
-//             : null;
-//         this.displayName = typeof args.displayName === 'string'
-//             ? args.displayName
-//             : null;
-//         this.bio = typeof args.bio === 'string'
-//             ? args.bio
-//             : null;
-//         this.email = typeof args.email === 'string'
-//             ? args.email.toLowerCase()
-//             : null;
-//         this.photoURL = typeof args.photoURL === 'string'
-//             ? args.photoURL
-//             : defaultAvatar;
-//         this.memberStatus = typeof args.memberStatus === 'string'
-//             ? args.memberStatus
-//             : 'NOT_INVITED';
-//         this.invitationId = typeof args.invitationId === 'string'
-//             ? args.invitationId
-//             : null;
-//     }
-//
-//     static create(args) {
-//         return new TeamMember(args || {});
-//     }
-// }
+class TeamMember {
+    constructor(args) {
+        this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
+            ? args.uid || args.id || args._id
+            : null;
+        this.displayName = typeof args.displayName === 'string'
+            ? args.displayName
+            : null;
+        this.bio = typeof args.bio === 'string'
+            ? args.bio
+            : null;
+        this.email = typeof args.email === 'string'
+            ? args.email.toLowerCase()
+            : null;
+        this.photoURL = typeof args.photoURL === 'string'
+            ? args.photoURL
+            : defaultAvatar;
+        this.memberStatus = typeof args.memberStatus === 'string'
+            ? args.memberStatus
+            : 'NOT_INVITED';
+        this.invitationId = typeof args.invitationId === 'string'
+            ? args.invitationId
+            : null;
+    }
+
+    static create(args) {
+        return new TeamMember(args || {});
+    }
+}
+
 //
 // class Profile {
 //     constructor(args) {
@@ -119,13 +120,6 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
         });
     }
 });
-
-// exports.removeInvitation = functions.database.ref('teams/{pushId}/teamMembers/{index}').onDelete((event) => {
-//     // Only edit data when it is first created.
-//     if (event.data.previous.exists()) {
-//         admin.database().ref('test').push(event.data.previous);
-//     }
-// });
 
 
 exports.helloWorld = functions.https.onRequest((request, response) => {

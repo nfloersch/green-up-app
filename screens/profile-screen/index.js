@@ -50,7 +50,7 @@ class Profile extends Component {
     }
 
     _saveProfile() {
-        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)));
+        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)), this.props.teamMembers || {});
         this.props.navigation.goBack();
     }
 
@@ -111,7 +111,7 @@ class Profile extends Component {
                     <Button
                         style={styles.button}
                         title='Save Profile'
-                        onPress={this._saveProfile} />
+                        onPress={this._saveProfile}/>
                     <TouchableHighlight onPress={this._cancel}>
                         <Text>Cancel</Text>
                     </TouchableHighlight>
@@ -126,7 +126,8 @@ function mapStateToProps(state) {
     const user = state.login.user;
     const profile = state.profile;
     const currentUser = User.create(Object.assign({}, user, profile));
-    return {profile, currentUser};
+    const teamMembers = state.teams.teamMembers;
+    return {profile, currentUser, teamMembers};
 }
 
 function mapDispatchToProps(dispatch) {

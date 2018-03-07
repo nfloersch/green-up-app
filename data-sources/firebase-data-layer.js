@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
+import {TeamMember} from '../models/team-member';
 
 // TODO : Fix these promise chains
 // Some of these functions have nested promises where some of the promised are ignored (Not returned)
@@ -300,11 +301,17 @@ function updateMessage(message: Object, userId: string) {
         .ref(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
-function updateProfile(profile: Object) {
+function updateProfile(profile: Object, teamMembers: Object) {
+    const db = firebase.database();
+    const membershipKey = profile.email.toLowerCase().replace(/\./g, ':');
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
-    return firebase
-        .database()
-        .ref(`profiles/${profile.uid}`).set(newProfile);
+    const profileUpdate = db.ref(`profiles/${profile.uid}`).set(newProfile);
+    const teamUpdates = Object.keys(teamMembers).map(key => {
+        const oldTeamMember = teamMembers[key][membershipKey];
+        const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
+        return db.ref(`teamMembers/${key}/${membershipKey}`).set(newTeamMember);
+    });
+    return Promise.all(teamUpdates.concat(profileUpdate));
 }
 
 function addTeamMember(teamId: string, teamMember: Object) {
