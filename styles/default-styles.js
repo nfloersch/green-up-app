@@ -18,7 +18,7 @@ export const defaultStyles = {
         borderColor: '#000',
         borderWidth: 1,
         padding: 5,
-				height: 300,
+				height: 250,
 				justifyContent: 'flex-start'
     },
     textInput: {

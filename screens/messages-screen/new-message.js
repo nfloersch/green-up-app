@@ -126,9 +126,11 @@ class NewMessage extends Component {
                         onPress={this.sendMessage}
                         title='Send Message'/>
                 </View>
-                <TouchableHighlight onPress={this.cancelMessage}>
-                    <Text>Cancel</Text>
-                </TouchableHighlight>
+                <View style={styles.button}>
+                    <Button
+                        onPress={this.cancelMessage}
+                        title='Cancel'/>
+                </View>
             </View>
         );
     }
