@@ -17,7 +17,9 @@ export const defaultStyles = {
     textArea: {
         borderColor: '#000',
         borderWidth: 1,
-        padding: 5
+        padding: 5,
+				height: 300,
+				justifyContent: 'flex-start'
     },
     textInput: {
         borderColor: '#000',

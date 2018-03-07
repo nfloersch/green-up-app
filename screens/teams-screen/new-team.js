@@ -30,6 +30,9 @@ import * as statuses from '../../constants/team-member-statuses';
 const myStyles = {
     selected: {
         opacity: 0.5
+    },
+    scroll: {
+      marginBottom: 10
     }
 };
 
@@ -161,7 +164,7 @@ class NewTeam extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-                style={styles.container}>
+                style={[styles.container, styles.scroll]}>
 
                 <View>
                     <Text style={styles.label}>Team Name</Text>
@@ -267,9 +270,12 @@ class NewTeam extends Component {
                     <Text style={styles.label}>Notes</Text>
                     <TextInput
                         keyBoardType={'default'}
+                        multiline={true}
+                        numberOfLines={20}
+                        textAlignVertical='top'
                         onChangeText={this.setTeamValue('notes')}
                         placeholder={'Notes'}
-                        style={styles.textInput}
+                        style={styles.textArea}
                         value={this.state.notes}/>
                 </View>
 
