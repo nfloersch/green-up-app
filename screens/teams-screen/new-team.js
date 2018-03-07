@@ -218,11 +218,11 @@ class NewTeam extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.label}>Date</Text>
                     <Text style={styles.alertInfo}>
                         May 5th is the official Green Up Day, but teams
                         may choose to work up to one week before or after.
                     </Text>
+                    <Text style={styles.label}>Date</Text>
                     <View>
                         <TouchableOpacity onPress={this.showDatePicker}>
                             <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
@@ -246,7 +246,7 @@ class NewTeam extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showStartDateTimePicker}>
                             <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {this.state.start || 'Select a Date'}
+                                {this.state.start || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -264,7 +264,7 @@ class NewTeam extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showEndDateTimePicker}>
                             <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {this.state.end || 'Select a Date'}
+                                {this.state.end || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -291,6 +291,8 @@ class NewTeam extends Component {
                     <Button
                         title='Save'
                         onPress={this._createTeam}/>
+                </View>
+                <View style={styles.button}>
                     <Button
                         title='Cancel'
                         onPress={this._cancel}/>
