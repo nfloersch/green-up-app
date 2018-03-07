@@ -20,12 +20,15 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
+import {Ionicons} from '@expo/vector-icons';
+
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
+import Colors from '../../constants/Colors';
 
 const myStyles = {
     selected: {
@@ -54,7 +57,14 @@ class NewTeam extends Component {
     };
 
     static navigationOptions = {
-        title: 'Create A Team Details'
+        title: 'Team Details',
+        tabBarLabel: 'Details',
+        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+        tabBarIcon: ({focused}) => (<Ionicons
+            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
+            size={24}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+         />)
     };
 
     constructor(props) {
