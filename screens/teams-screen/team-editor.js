@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 import Colors from '../../constants/Colors';
-import TeamEditorDetails from './team-editor-details';
+import NewTeam from './new-team';
+//import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
 
@@ -31,7 +32,7 @@ export default class TeamEditor extends Component {
       if (status === 'OWNER') {
         return 'TeamInvitationDetails'
       } else {
-        return 'TeamDetails'
+        return 'NewTeam'
       }
     }
 
@@ -46,7 +47,7 @@ export default class TeamEditor extends Component {
                 screen: TeamEditorMap
             },
             TeamDetails: {
-                screen: TeamEditorDetails,
+                screen: NewTeam,
                 header: null
             }
         }, {

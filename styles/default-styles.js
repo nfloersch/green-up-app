@@ -1,3 +1,5 @@
+const alertFontSize = 12;
+
 export const defaultStyles = {
     container: {
         flex: 1,
@@ -22,7 +24,7 @@ export const defaultStyles = {
         borderWidth: 1,
         height: 40,
         padding: 5,
-        textAlign: 'center',
+        textAlign: 'left',
         lineHeight: 25
     },
     fieldset: {
@@ -33,36 +35,39 @@ export const defaultStyles = {
     },
 		// Twitter Bootstrap alert styles
 		alertInfo: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#004085',
 			backgroundColor: '#cce5ff',
 			borderColor: '#b8daff',
 			padding: 3,
 			marginBottom: 5,
+			marginTop: 5,
 			borderWidth: 1,
 			borderRadius: 5,
 			overflow: 'hidden',
       textAlign: 'center'
 		},
 		alertSuccess: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#155724',
 			backgroundColor: '#d4edda',
 			borderColor: '#c3e6cb',
 			padding: 3,
 			marginBottom: 5,
+			marginTop: 5,
 			borderWidth: 1,
 			borderRadius: 5,
 			overflow: 'hidden',
       textAlign: 'center'
 		},
 		alertDanger: {
-			fontSize: 10,
+			fontSize: alertFontSize,
 			color: '#721c24',
 			backgroundColor: '#f8d7da',
 			borderColor: '#f5c6cb',
 			padding: 3,
 			marginBottom: 5,
+			marginTop: 5,
 			borderWidth: 1,
 			borderRadius: 20,
 			overflow: 'hidden',
@@ -73,8 +78,13 @@ export const defaultStyles = {
         fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 10
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'darkseagreen',
+        color: '#fff',
+        textShadowColor: '#000',
+        textShadowRadius: 2,
+        textShadowOffset: {width: 2 ,height: 2}
     },
     label: {
       marginTop: 5
@@ -105,10 +115,6 @@ export const defaultStyles = {
     profileName: {
       paddingLeft: 10,
       paddingTop: 12.5,
-      fontSize: 20,
-      color: '#fff',
-      textShadowColor: '#000',
-      textShadowRadius: 2,
-      textShadowOffset: {width: 2 ,height: 2}
+      fontSize: 20
     }
 }
