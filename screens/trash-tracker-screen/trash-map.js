@@ -163,12 +163,17 @@ class TrashMap extends Component {
 
         // by convention, we're importing town names as upper case, any characters different
         // than uppercase letters replaced with underscore
-        const encodedTownName = this.state.town.toUpperCase().replace('/[^A-Z]/g', '_');
+        const encodedTownName = this.state.town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && (
                 <View style={styles.container}>
+                    {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
+                        <Text style={styles.alertInfo}>
+                            Information about trash dropping is not available at this time for the town you're in.
+                        </Text>
+                    )}
                     {townInfo.RoadsideDropOffAllowed === true &&
                         (<View>
                             <Text style={styles.alertInfo}>
