@@ -4,15 +4,15 @@ import initialState from '../../reducers/initialState';
 export function reducers(state = initialState.trashBagFinder, action) {
     switch (action.type) {
 
-        case types.FETCH_SUPPLY_LOCATIONS_SUCCESS :
+        case types.FETCH_TOWN_DATA_SUCCESS :
             return {
                 ...state,
-                supplyLocations: Object.assign({}, action.supplyLocations)
+                townData: Object.assign({}, action.townData)
             };
         case types.FETCH_SUPPLY_LOCATIONS_FAIL :
             return {
                 ...state,
-                supplyLocations: {}
+                townData: {}
             };
         default:
             return state;
