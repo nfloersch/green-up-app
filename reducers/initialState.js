@@ -20,7 +20,7 @@ export default {
         teamsLoaded: false
     },
     teams: {teams: [], teamMembers: {}, contact: [], selectedTeam: null, locations: []},
-    trashBagFinder: {supplyLocations: {}},
+    trashBagFinder: {townData: {}},
     trashTracker: [],
     teamSearchResults: [],
     selectedTeam: null
