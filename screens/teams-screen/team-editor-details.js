@@ -55,7 +55,7 @@ class TeamEditorDetails extends Component {
             name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
             size={24}
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-         />)
+        />)
     };
 
     constructor(props) {
@@ -118,7 +118,7 @@ class TeamEditorDetails extends Component {
     saveTeam = () => {
         const {selectedTeam} = this.props;
         selectedTeam.locations = this.props.locations;
-        this.props.actions.createTeam(selectedTeam, selectedTeam.id);
+        this.props.actions.saveTeam(selectedTeam, selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
     };
 
@@ -165,7 +165,11 @@ class TeamEditorDetails extends Component {
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
                 style={styles.container}>
-
+                <View style={defaultStyles.row}>
+                    <Button
+                        title='Save'
+                        onPress={this.saveTeam}/>
+                </View>
                 <View>
                     <Text style={styles.label}>Team Name</Text>
                     <TextInput
@@ -277,11 +281,7 @@ class TeamEditorDetails extends Component {
                         value={selectedTeam.notes}/>
                 </View>
 
-                <View style={styles.button}>
-                    <Button
-                        title='Save'
-                        onPress={this.saveTeam}/>
-                </View>
+
                 <View style={styles.dangerArea}>
                     <Button
                         style={styles.doNotPushThisButton}

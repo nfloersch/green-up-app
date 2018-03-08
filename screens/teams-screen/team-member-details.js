@@ -78,35 +78,41 @@ class TeamMemberDetails extends Component {
 
     render() {
         const {membershipId, teamId} = this.props.navigation.state.params;
-        const member = this.props.teamMembers[teamId][membershipId];
+        const member = (this.props.teamMembers[teamId] || {})[membershipId];
         const avatar = (member || {}).photoURL;
 
 
-        function getButtons(teamMember: Object) {
+        function getButtons(teamMember: Object = {}) {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
                     return (<View><Text style={styles.alertInfo}>You own this team</Text></View>);
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View>
-                            <Text style={styles.alertInfo}>{teamMember.displayName || teamMember.email} wants to join your team</Text>
+                            <Text style={styles.alertInfo}>{teamMember.displayName || teamMember.email} wants to join
+                                your team</Text>
                             <View>
-                              <Text>
-                                {`About ${member.displayName || ''}: `}
-                                  {member.bio || ''}
-                              </Text>
-                                <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Ignore'}/>
-                                <Button onPress={() => {
-                                    this._updateTeamMember(teamId, member)(status.ACCEPTED);
-                                }} title={'Add To This Team'}/>
+                                <Text>
+                                    {`About ${member.displayName || ''}: `}
+                                    {member.bio || ''}
+                                </Text>
+                                <View style={styles.button}>
+                                    <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Ignore'}/>
+                                </View>
+                                <View style={styles.button}>
+                                    <Button onPress={() => {
+                                        this._updateTeamMember(teamId, member)(status.ACCEPTED);
+                                    }} title={'Add To This Team'}/>
+                                </View>
                             </View>
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
                         <View>
-                            <Text style={{textAlign:'center'}}>{teamMember.displayName || teamMember.email} is a member of your team.</Text>
-                            <View>
+                            <Text style={{textAlign: 'center'}}>{teamMember.displayName || teamMember.email} is a member
+                                of your team.</Text>
+                            <View style={styles.button}>
                                 <Button onPress={this._removeTeamMember(teamId, member)} title={'Remove from Team'}/>
                             </View>
                         </View>
@@ -115,10 +121,9 @@ class TeamMemberDetails extends Component {
                     return (
                         <View>
                             <Text>
-                                {teamMember.displayName || teamMember.email} is invited to your team, but has yet to
-                                accept
+                                {`${teamMember.displayName || teamMember.email} has been invited to your team, but has yet to accept.`}
                             </Text>
-                            <View>
+                            <View style={styles.button}>
                                 <Button onPress={this._revokeInvitation(teamId, membershipId)}
                                         title={'Revoke Invitation'}/>
                             </View>
@@ -137,17 +142,17 @@ class TeamMemberDetails extends Component {
                     (
                         <View>
                             <View style={styles.profileHeader}>
-                              <Image
-                                  style={{width: 50, height: 50}}
-                                  source={{uri: avatar}}
-                              />
-                              <Text style={styles.profileName}>
-                                {member.displayName || ''}
-                              </Text>
+                                <Image
+                                    style={{width: 50, height: 50}}
+                                    source={{uri: avatar}}
+                                />
+                                <Text style={[styles.profileName, styles.heading]}>
+                                    {member.displayName || ''}
+                                </Text>
                             </View>
 
                             <View>
-                              {getButtons.bind(this)(member)}
+                                {getButtons.bind(this)(member)}
                             </View>
                         </View>
                     )
@@ -160,12 +165,10 @@ class TeamMemberDetails extends Component {
 const mapStateToProps = state => {
     const teamMembers = state.teams.teamMembers || {};
     return {teamMembers};
-}
+};
 
-const mapDispatchToProps = dispatch => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberDetails);

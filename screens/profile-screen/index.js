@@ -66,7 +66,6 @@ class Profile extends Component {
         };
     }
 
-
     render() {
         const profile = this.props.profile;
         const avatar = profile.photoURL;
@@ -74,13 +73,13 @@ class Profile extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.profileHeader}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={{uri: avatar}}
-                    />
-                    <Text style={styles.profileName}>
-                        {this.state.displayName || ''}
-                    </Text>
+                  <Image
+                      style={{width: 50, height: 50}}
+                      source={{uri: avatar}}
+                  />
+                  <Text style={[styles.profileName, styles.heading]}>
+                    {this.state.displayName || ''}
+                  </Text>
                 </View>
                 <View>
                     <Text style={styles.label}>My Name</Text>

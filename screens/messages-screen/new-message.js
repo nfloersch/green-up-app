@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    StyleSheet, Text, TextInput, TouchableHighlight,
+    StyleSheet, Text, TextInput,
     View, Picker, Button
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -16,12 +16,9 @@ import * as messageActions from './actions';
 import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
+import * as teamStatus from '../../constants/team-member-statuses';
 
-const myStyles = {
-    messageInput: {
-        height: 300
-    }
-};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -53,7 +50,6 @@ class NewMessage extends Component {
             text: ''
         };
     }
-
 
     componentWillReceiveProps(nextProps) {
         const nextTeamId = nextProps.navigation.selectedTeamId || nextProps.selectedTeamId;
@@ -94,6 +90,11 @@ class NewMessage extends Component {
     }
 
     render() {
+        const user = this.props.currentUser || {};
+        const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
+        const canSendMessage = (teamId) => {
+            return [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        }
 
         const TeamPicker = (
             <View>
@@ -103,7 +104,7 @@ class NewMessage extends Component {
                     itemStyle={{height: 45}}
                     selectedValue={this.state.selectedTeamId || ((this.props.myTeams || [])[0] || {}).id}
                     onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
-                    {(this.props.myTeams || []).map(team => (
+                    {(this.props.myTeams || []).filter(team => canSendMessage(team.id)).map(team => (
                         <Picker.Item key={team.id} label={team.name} value={team.id}/>))}
                 </Picker>
             </View>
@@ -112,26 +113,28 @@ class NewMessage extends Component {
 
         return (
             <View style={styles.container}>
+                <View style={defaultStyles.row}>
+                    <Button
+                        onPress={this.sendMessage}
+                        title='Send Message'
+                    />
+                    <Button onPress={this.cancelMessage}
+                        title='Cancel'
+                    />
+                </View>
                 {!this.props.selectedTeamId ? TeamPicker : null}
                 <View>
                     <TextInput
                         keyBoardType={'default'}
                         multiline={true}
+                        textAlignVertical='top'
                         numberOfLines={20}
                         onChangeText={this.changeText}
-                        placeholder={'message details'}
+                        placeholder={'Message details'}
                         value={this.state.text}
-                        style={[styles.textInput, styles.messageInput]}
+                        style={styles.textArea}
                     />
                 </View>
-                <View style={styles.button}>
-                    <Button
-                        onPress={this.sendMessage}
-                        title='Send Message'/>
-                </View>
-                <TouchableHighlight onPress={this.cancelMessage}>
-                    <Text>Cancel</Text>
-                </TouchableHighlight>
             </View>
         );
     }

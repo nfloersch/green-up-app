@@ -20,59 +20,44 @@ import NewTeam from './new-team';
 import {TeamMember} from '../../models/team-member';
 import * as actions from './actions';
 import {User} from '../../models/user';
+import {defaultStyles} from '../../styles/default-styles';
+import * as teamStatus from '../../constants/team-member-statuses';
 
-
-const styles = StyleSheet.create({
-    headerButton: {
-        width: 32
-    },
-    teams: {
-        fontSize: 18,
-        margin: 2
-    },
+const myStyles = {
     row: {
-        width: '100%',
         flexDirection: 'row',
-        paddingTop: 15,
-        justifyContent: 'space-around'
+        justifyContent: 'flex-start',
+        borderBottomWidth: 1,
+        borderBottomColor: '#888',
+        height: 50,
+        alignItems: 'center'
     },
-    messageRow: {
-        justifyContent: 'center',
+    teamIcon: {
+        flex: 1,
         flexDirection: 'row',
-        borderWidth: 2,
-        borderColor: '#678',
-        width: '100%',
-        height: '70%',
-        padding: 4,
-        marginTop: 10
+        justifyContent: 'flex-end',
+        alignItems: 'center'
     },
-    buttonRow: {
-        justifyContent: 'center',
+    messageIcon: {
+        flex: 1,
         flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
+        justifyContent: 'flex-end',
+        alignItems: 'center'
     },
-    addButton: {
-        width: '49%',
-        backgroundColor: '#0F0',
-        justifyContent: 'center',
-        padding: 10,
-        marginRight: 3
-    },
-    cancelButton: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
+    teamName: {
+        flex: 4
     }
-});
+};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class MyTeams extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         handleError: PropTypes.func,
+        invitations: PropTypes.object,
         navigation: PropTypes.object,
         teamMembers: PropTypes.object,
         teams: PropTypes.object,
@@ -80,7 +65,7 @@ class MyTeams extends Component {
     };
 
     static navigationOptions = {
-        title: 'Green Teams',
+        title: 'My Teams',
         tabBarLabel: 'Teams'
     };
 
@@ -89,7 +74,6 @@ class MyTeams extends Component {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         // this.sendMessage = this.sendMessage.bind(this);
-        // this.openTeamMessageModal = this.openTeamMessageModal.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
         // this.onMessageTextChange = this.onMessageTextChange.bind(this);
         this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
@@ -122,60 +106,101 @@ class MyTeams extends Component {
         this.setState({openModal: 'NEW_TEAM'});
     }
 
-    toTeamIcon(status: string) {
+    toTeamIcon = (teamKey: string) => {
+        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
+        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
+        const memberStatus = TeamMember.memberStatuses;
         const icons = {
-            [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
-            [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
-            [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
+            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
+            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
+            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
-        return icons[status];
-    }
+
+        // const icons = {
+        //     [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
+        //     [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+        //     [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
+        //     [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
+        // };
+        return icons[status || 'INVITED'];
+    };
+
+
+    getIconColor = (teamKey: string) => {
+        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
+        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
+        const iconColors = {
+            ACCEPTED: 'green',
+            OWNER: 'blue',
+            INVITED: 'orange',
+            NOT_INVITED: 'red',
+            REQUEST_TO_JOIN: 'purple'
+        };
+        return iconColors[status || 'INVITED'] || 'black';
+    };
 
     render() {
         const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
-        const myTeams = (Object.keys(user.teams || {}))
-            .filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
+        const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
+        const canSendMessage = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        const teamKeys = Object.keys((user.teams || {})).concat(Object.keys(this.props.invitations || {}));
+        const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => (
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
-                        {/*
-                    <TouchableHighlight onPress={this.openTeamMessageModal(key)}>
-*/}
-                        <TouchableHighlight onPress={() => {
-                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                        }}>
+                        <Text style={styles.teamName}>{teams[key].name}</Text>
+                        <View style={styles.teamIcon}>
                             <Ionicons
-                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                style={{color: this.getIconColor(key)}}
+                                name={this.toTeamIcon(key)}
                                 size={30}
                             />
-                        </TouchableHighlight>
-                        <Text style={styles.teams}>{teams[key].name}</Text>
-                        <Ionicons name={this.toTeamIcon(user.teams[key])} size={30} style={{color: 'black'}}/>
+                        </View>
+                        <View style={styles.messageIcon}>
+                            {
+                                canSendMessage(key) ? (<TouchableHighlight onPress={() => {
+                                    this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                                }}>
+                                    <Ionicons
+                                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                        size={30}
+                                    />
+                                </TouchableHighlight>) : null
+                            }
+                        </View>
                     </View>
                 </TouchableHighlight>
             ));
         return (
-            <View style={{flex: 1}}>
+            <View style={styles.container}>
                 <ScrollView style={{flex: 1}}>
-                    <View style={styles.row}>
-                        <Button onPress={() => {
-                            this.props.navigation.navigate('TeamSearch');
-                        }} title='Search Teams'/>
-                        <Button onPress={this.toNewTeamEditor} title='New Team'/>
+                    <View style={styles.button}>
+                        <Button
+                            onPress={() => {
+                                this.props.navigation.navigate('TeamSearch');
+                            }}
+                            title='Search Teams'/>
                     </View>
-                    {myTeams}
+                    <View style={styles.button}>
+                        <Button
+                            onPress={this.toNewTeamEditor}
+                            title='New Team'/>
+                    </View>
+                    <View>
+                        <Text style={styles.heading}>My Teams</Text>
+                        {myTeams}
+                    </View>
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.openModal === 'NEW_TEAM'}
                     onRequestClose={() => {
-                    }}
-                >
-                    <View style={{marginTop: 22, flex: 1}}>
+                    }}>
+                    <View style={styles.container}>
                         <NewTeam closeModal={_closeModal}/>
                     </View>
                 </Modal>
@@ -187,10 +212,11 @@ class MyTeams extends Component {
 function mapStateToProps(state) {
     const user = state.login.user;
     const profile = state.profile;
+    const invitations = state.teams.invitations;
     const currentUser = User.create(Object.assign({}, user, profile));
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers || {};
-    return {teams, currentUser, teamMembers};
+    return {teams, currentUser, teamMembers, invitations};
 }
 
 function mapDispatchToProps(dispatch) {
