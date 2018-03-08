@@ -21,6 +21,9 @@ import {
     View
 } from 'react-native';
 
+import * as turf from '@turf/helpers';
+import booleanWithin from '@turf/boolean-within';
+
 import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
@@ -36,7 +39,8 @@ class TrashMap extends Component {
         navigation: PropTypes.object,
         actions: PropTypes.object,
         drops: PropTypes.array,
-        currentUser: PropTypes.object
+        currentUser: PropTypes.object,
+        townData: PropTypes.object
     };
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -56,7 +60,8 @@ class TrashMap extends Component {
             modalVisible: false,
             errorMessage: null,
             initialMapLocation: null,
-            showCollectedTrash: false
+            showCollectedTrash: false,
+            town: ''
         };
     }
 
@@ -69,6 +74,14 @@ class TrashMap extends Component {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
             const location = await Location.getCurrentPositionAsync({});
+
+            const townPolygonsData = require('../../libs/VT_Boundaries__town_polygons.json');
+            const currentLocation = turf.point([location.coords.longitude, location.coords.latitude]);
+            const town = townPolygonsData.features.find((f) => {
+                const feature = turf.feature(f.geometry);
+                return booleanWithin(currentLocation, feature);
+            });
+
             this.setState({
                 location,
                 initialMapLocation: {
@@ -76,7 +89,8 @@ class TrashMap extends Component {
                     longitude: Number(location.coords.longitude),
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421
-                }
+                },
+                town: town ? town.properties.TOWNNAMEMC : ''
             });
         }
     };
@@ -128,15 +142,40 @@ class TrashMap extends Component {
             this.setState({modalVisible: true});
         };
 
-        const {drops} = this.props;
+        const {drops, townData} = this.props;
+
+        // by convention, we're importing town names as upper case, any characters different
+        // than uppercase letters replaced with underscore
+        const encodedTownName = this.state.town.toUpperCase().replace(/[^A-Z]/g, '_');
+        const townInfo = townData[encodedTownName] || {};
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && (
                 <View style={styles.container}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
-                        <Text style={styles.label}>Show Collected Trash</Text>
-                        <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-                    </View>
+                    {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
+                        <Text style={styles.alertInfo}>
+                            Information about trash dropping is not available at this time for the town you're in.
+                        </Text>
+                    )}
+                    {townInfo.RoadsideDropOffAllowed === true &&
+                        (<View>
+                            <Text style={styles.alertInfo}>
+                                <Text>You are in {this.state.town} and leaving trash bags on the roadside is allowed.</Text>
+                            </Text>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+                                <Text style={styles.label}>Show Collected Trash</Text>
+                                <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+                            </View>
+                        </View>)}
+                    {townInfo.RoadsideDropOffAllowed === false &&
+                        (<Text style={styles.alertInfo}>
+                            <Text>You are in {this.state.town} and leaving trash bags on the roadside is <Text style={{fontWeight: 'bold'}}>not</Text> allowed.
+                            Please bring collected trash to the designated drop off locations.</Text>
+                            {townInfo.DropOffLocations.map(d => (
+                                <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
+                            ))}
+
+                        </Text>)}
                     <MapView
                         initialRegion={this.state.initialMapLocation}
                         showsUserLocation={true}
@@ -144,7 +183,7 @@ class TrashMap extends Component {
                         followsUserLocation={true}
                         showsCompass={true}
                         style={{alignSelf: 'stretch', height: 300}}>
-                        {drops && drops.filter(drop => this.state.showCollectedTrash || !drop.wasCollected).map(drop => (
+                        {townInfo.RoadsideDropOffAllowed === true && drops && drops.filter(drop => this.state.showCollectedTrash || !drop.wasCollected).map(drop => (
                             <MapView.Marker
                                 key={drop.uid}
                                 pinColor={drop.wasCollected ? 'wheat' : 'green'} // a limited number of colors are rendered properly on android ;( https://github.com/react-community/react-native-maps/issues/887
@@ -154,12 +193,24 @@ class TrashMap extends Component {
                                 onCalloutPress={() => { this.setState({modalVisible: true, drop: drop}); }}
                             />
                         ))}
+                        {townInfo.RoadsideDropOffAllowed === false && townInfo.DropOffLocations &&
+                            townInfo.DropOffLocations.map((d, i) => d.DropOffLocationCoordinates && (
+                                <MapView.Marker
+                                    key={`${this.state.town}DropOffLocation${i}`}
+                                    pinColor='blue'
+                                    coordinate={d.DropOffLocationCoordinates}
+                                    title='Drop Off Location'
+                                    description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
+                                />
+                            ))}
                     </MapView>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={goToTrashDrop}
-                            title='Create Trash Drop' />
-                    </View>
+                    {townInfo.RoadsideDropOffAllowed === true && (
+                        <View style={styles.button}>
+                            <Button
+                                onPress={goToTrashDrop}
+                                title='Create Trash Drop' />
+                        </View>
+                    )}
                     <Modal
                         animationType={'slide'}
                         transparent={false}
@@ -212,7 +263,7 @@ class TrashMap extends Component {
                                 )}
                                 <View style={styles.button}>
                                     <Button
-                                        onPress={() => { this.closeModal();}}
+                                        onPress={() => { this.closeModal(); }}
                                         title='Cancel' />
                                 </View>
                             </View>
@@ -223,13 +274,12 @@ class TrashMap extends Component {
     }
 }
 
-
 function mapStateToProps(state) {
     const drops = Object.keys(state.trashTracker.trashDrops || {})
         .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
-        .map(key => ({...state.trashTracker.trashDrops[key], uid: key})); // TODO: Handle default values here
-
-    return {drops: drops, currentUser: state.login.user};
+        .map(key => ({...state.trashTracker.trashDrops[key], uid: key}));
+    const townData = state.trashBagFinder.townData;
+    return {drops: drops, currentUser: state.login.user, townData};
 }
 
 function mapDispatchToProps(dispatch) {

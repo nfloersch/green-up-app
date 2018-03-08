@@ -61,6 +61,8 @@
   "dependencies": {
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^6.2.2",
+    "@turf/boolean-within": "^6.0.0",
+    "@turf/helpers": "^6.0.1",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.16.0",
     "eslint-plugin-babel": "^4.1.2",
