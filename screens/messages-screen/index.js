@@ -160,9 +160,12 @@ class Messages extends Component {
                         {myMessages.length > 0
                             ? myMessages
                             : (
-                                <Text>
-                                    {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your teammates.'}
-                                </Text>
+                                <View>
+                                  <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
+                                  <Text>
+                                    {'\n'}{'Start the ball rolling by sending one to your teammates.'}
+                                  </Text>
+                                </View>
                             )}
                     </View>
                 </ScrollView>
