@@ -253,10 +253,20 @@ function createUser(email: string, password: string, displayName: string) {
         });
 }
 
-function loginWithEmailPassword(email: string, password: string) {
+function loginWithEmailPassword(_email: string, password: string) {
     return firebase
         .auth()
-        .signInWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(_email, password)
+        .then((user) => {
+            const {uid, email, displayName, photoURL} = user;
+            firebase.database().ref(`profiles/${uid}`).once('value').then(snapshot => {
+                if (!snapshot.val()) {
+                    const newProfile = User.create({uid, email, displayName, photoURL});
+                    newProfile.created = (new Date()).toString();
+                    firebase.database().ref(`profiles/${uid}`).set(newProfile);
+                }
+            });
+        })
         .catch(error => {
             console.log(error.message); // eslint-disable-line
             throw error; // Rethrow so we can deal with error later too.

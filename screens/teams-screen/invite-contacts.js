@@ -23,6 +23,13 @@ const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
+
+function getDisplayName(contact) {
+    return (contact.firstName || contact.lastName)
+        ? (`${contact.firstName} ${contact.lastName}`).trim()
+        : (contact.email);
+}
+
 function _inviteToTeam() {
     const teamMembers = this.state.contacts
         .filter(c => c.isSelected)
@@ -104,7 +111,7 @@ class InviteContacts extends Component {
                     <CheckBox
                         checked={contact.isSelected}
                         key={i}
-                        label={`${contact.firstName} ${contact.lastName}`}
+                        label={getDisplayName(contact)}
                         onChange={this.toggleContact(contact)}
                     />
                 )
@@ -114,12 +121,12 @@ class InviteContacts extends Component {
             <View style={styles.container}>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
-                <View style={styles.button}>
-                    <Button
-                        onPress={this.inviteToTeam}
-                        title='Invite to team'
-                    />
-                </View>
+                    <View style={styles.button}>
+                        <Button
+                            onPress={this.inviteToTeam}
+                            title='Invite to team'
+                        />
+                    </View>
                 </ScrollView>
             </View>
         );

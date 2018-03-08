@@ -21,31 +21,32 @@ import {TeamMember} from '../../models/team-member';
 import * as actions from './actions';
 import {User} from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
+import * as teamStatus from '../../constants/team-member-statuses';
 
 const myStyles = {
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    borderBottomWidth: 1,
-    borderBottomColor: '#888',
-    height: 50,
-    alignItems: 'center'
-  },
-  teamIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  messageIcon: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  teamName: {
-    flex: 4
-  }
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        borderBottomWidth: 1,
+        borderBottomColor: '#888',
+        height: 50,
+        alignItems: 'center'
+    },
+    teamIcon: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    messageIcon: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    teamName: {
+        flex: 4
+    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -56,6 +57,7 @@ class MyTeams extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         handleError: PropTypes.func,
+        invitations: PropTypes.object,
         navigation: PropTypes.object,
         teamMembers: PropTypes.object,
         teams: PropTypes.object,
@@ -104,42 +106,71 @@ class MyTeams extends Component {
         this.setState({openModal: 'NEW_TEAM'});
     }
 
-    toTeamIcon(status: string) {
+    toTeamIcon = (teamKey: string) => {
+        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
+        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
+        const memberStatus = TeamMember.memberStatuses;
         const icons = {
-            [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
-            [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
-            [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
+            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
+            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
+            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
-        return icons[status];
-    }
+
+        // const icons = {
+        //     [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
+        //     [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+        //     [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
+        //     [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
+        // };
+        return icons[status || 'INVITED'];
+    };
+
+
+    getIconColor = (teamKey: string) => {
+        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
+        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
+        const iconColors = {
+            ACCEPTED: 'green',
+            OWNER: 'blue',
+            INVITED: 'orange',
+            NOT_INVITED: 'red',
+            REQUEST_TO_JOIN: 'purple'
+        };
+        return iconColors[status || 'INVITED'] || 'black';
+    };
 
     render() {
         const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
-        const myTeams = (Object.keys(user.teams || {}))
-            .filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
+        const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
+        const canSendMessage = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        const teamKeys = Object.keys((user.teams || {})).concat(Object.keys(this.props.invitations || {}));
+        const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => (
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
                         <Text style={styles.teamName}>{teams[key].name}</Text>
-                        <View style={styles.messageIcon}>
-                          <TouchableHighlight onPress={() => {
-                              this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                          }}>
-                              <Ionicons
-                                  name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                  size={30}
-                              />
-                          </TouchableHighlight>
-                        </View>
                         <View style={styles.teamIcon}>
-                          <Ionicons
-                              name={this.toTeamIcon(user.teams[key])}
-                              size={30}
-                           />
-                         </View>
+                            <Ionicons
+                                style={{color: this.getIconColor(key)}}
+                                name={this.toTeamIcon(key)}
+                                size={30}
+                            />
+                        </View>
+                        <View style={styles.messageIcon}>
+                            {
+                                canSendMessage(key) ? (<TouchableHighlight onPress={() => {
+                                    this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                                }}>
+                                    <Ionicons
+                                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                        size={30}
+                                    />
+                                </TouchableHighlight>) : null
+                            }
+                        </View>
                     </View>
                 </TouchableHighlight>
             ));
@@ -147,28 +178,31 @@ class MyTeams extends Component {
             <View style={styles.container}>
                 <ScrollView style={{flex: 1}}>
                     <View style={styles.button}>
-                      <Button
-                          onPress={() => {this.props.navigation.navigate('TeamSearch');}}
-                          title='Search Teams'/>
+                        <Button
+                            onPress={() => {
+                                this.props.navigation.navigate('TeamSearch');
+                            }}
+                            title='Search Teams'/>
                     </View>
                     <View style={styles.button}>
-                      <Button
-                          onPress={this.toNewTeamEditor}
-                          title='New Team'/>
+                        <Button
+                            onPress={this.toNewTeamEditor}
+                            title='New Team'/>
                     </View>
                     <View>
-                      <Text style={styles.heading}>My Teams</Text>
-                      {myTeams}
+                        <Text style={styles.heading}>My Teams</Text>
+                        {myTeams}
                     </View>
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.openModal === 'NEW_TEAM'}
-                    onRequestClose={() => {}}>
-                  <View style={styles.container}>
-                      <NewTeam closeModal={_closeModal}/>
-                  </View>
+                    onRequestClose={() => {
+                    }}>
+                    <View style={styles.container}>
+                        <NewTeam closeModal={_closeModal}/>
+                    </View>
                 </Modal>
             </View>
         );
@@ -178,10 +212,11 @@ class MyTeams extends Component {
 function mapStateToProps(state) {
     const user = state.login.user;
     const profile = state.profile;
+    const invitations = state.teams.invitations;
     const currentUser = User.create(Object.assign({}, user, profile));
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers || {};
-    return {teams, currentUser, teamMembers};
+    return {teams, currentUser, teamMembers, invitations};
 }
 
 function mapDispatchToProps(dispatch) {

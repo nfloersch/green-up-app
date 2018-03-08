@@ -22,7 +22,7 @@ export class TeamMember {
             ? args.bio
             : null;
         this.email = typeof args.email === 'string'
-            ? args.email.toLowerCase()
+            ? args.email.toLowerCase().trim()
             : null;
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL

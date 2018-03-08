@@ -3,7 +3,8 @@
 import {isDate} from '../libs/isDate';
 import Location from './location';
 import {TeamMember} from './team-member';
-
+// TODO : Make this default date configurable on Firebase.
+const defaultDate = 'Sat May 05 2018';
 export default class Team {
     id: string;
     name: string;
@@ -11,7 +12,7 @@ export default class Team {
     notes: [string];
     town: string;
     location: string;
-		date: string
+    date: string;
     start: string;
     end: string;
     active: boolean;
@@ -32,15 +33,15 @@ export default class Team {
         this.location = typeof args.location === 'string'
             ? args.location
             : null;
-        this.description = typeof args.descrption === 'string'
+        this.description = typeof args.description === 'string'
             ? args.description
             : null;
         this.notes = typeof args.notes === 'string'
             ? args.notes
             : null;
-				this.date = typeof args.date === 'string'
+        this.date = typeof args.date === 'string'
             ? args.date
-            : null;
+            : defaultDate;
         this.start = typeof args.start === 'string'
             ? args.start
             : null;

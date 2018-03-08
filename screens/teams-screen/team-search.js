@@ -39,8 +39,8 @@ const myStyles = {
         marginTop: 10
     },
     city: {
-      fontWeight: 'bold',
-      textAlign: 'center'
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 };
 
@@ -72,9 +72,9 @@ class TeamSearch extends Component {
 
     onSearchTermChange(searchTerm) {
         const teams = this.props.teams;
-        const searchResults = Object.keys(this.props.teams)
+        const _searchResults = Object.keys(this.props.teams)
             .filter(key => teams[key].isPublic === true ||
-                    teams[key].members.find(m => m.uid === this.props.currentUser.uid))
+                teams[key].members.find(m => m.uid === this.props.currentUser.uid))
             .map(key => ({
                 key,
                 score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
@@ -82,6 +82,8 @@ class TeamSearch extends Component {
             .filter(score => (score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
+        //eliminate dupes
+        const searchResults = Array.from(new Set(_searchResults));
         this.setState({searchResults, searchTerm});
     }
 
@@ -97,18 +99,18 @@ class TeamSearch extends Component {
     render() {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
-          <View style={styles.searchResult}>
-            <TouchableHighlight
-                key={teamId}
-                onPress={this.toTeamDetail(teamId)}>
-              <Text style={[styles.searchResultsTitle, styles.heading]}>
-                {teams[teamId].name}
-              </Text>
-            </TouchableHighlight>
-              <Text style={styles.city}>
-                {teams[teamId].town}
-              </Text>
-          </View>
+            <View key={teamId} style={styles.searchResult}>
+                <TouchableHighlight
+                    key={teamId}
+                    onPress={this.toTeamDetail(teamId)}>
+                    <Text style={[styles.searchResultsTitle, styles.heading]}>
+                        {teams[teamId].name}
+                    </Text>
+                </TouchableHighlight>
+                <Text style={styles.city}>
+                    {teams[teamId].town}
+                </Text>
+            </View>
         ));
         return (
             <View style={styles.container}>
