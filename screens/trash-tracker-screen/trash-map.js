@@ -34,23 +34,6 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-// // TODO: Load data from the database
-// const dummyTownData = {
-//     Winooski: {
-//         RoadsideDropOffAllowed: true,
-//         Details: '',
-//         PickupLocationName: '',
-//         PickupLocationAddress: '',
-//         DropOffMessage: 'Leave on roadsides at intersections.',
-//         DropOffLocationName: 'Monkey House',
-//         DropOffLocationAddress: '30 Main St, Winooski, VT 05404',
-//         DropOffLocationCoordinates: {
-//             latitude: 44.4907233,
-//             longitude: -73.1865139
-//         }
-//     }
-// };
-
 class TrashMap extends Component {
     static propTypes = {
         navigation: PropTypes.object,
@@ -290,7 +273,6 @@ class TrashMap extends Component {
             );
     }
 }
-
 
 function mapStateToProps(state) {
     const drops = Object.keys(state.trashTracker.trashDrops || {})
