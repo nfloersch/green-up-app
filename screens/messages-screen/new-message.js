@@ -145,7 +145,7 @@ function mapStateToProps(state) {
     const myTeams = Object.keys((state.profile || {}).teams).map(key => state.teams.teams[key]);
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers;
-    const selectedTeamId = state.teams.selectedTeam;
+    const selectedTeamId = (state.teams.selectedTeam || {}).id;
     return {selectedTeamId, teams, myTeams, teamMembers, currentUser};
 }
 
