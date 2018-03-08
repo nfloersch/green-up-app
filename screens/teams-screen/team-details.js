@@ -186,6 +186,10 @@ class TeamDetails extends Component {
                         <Text style={styles.data}>{selectedTeam.location}, {selectedTeam.town}</Text>
                     </Text>
                     <Text style={styles.dataBlock}>
+                        <Text style={styles.label}>{'Owner: '}</Text>
+                        <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
+                    </Text>
+                    <Text style={styles.dataBlock}>
                         <Text style={styles.label}>{'Start: '}</Text>
                         <Text style={styles.data}>{selectedTeam.start}</Text>
                     </Text>
