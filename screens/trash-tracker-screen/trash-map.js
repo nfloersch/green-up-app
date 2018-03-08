@@ -11,7 +11,6 @@ import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    TouchableHighlight,
     StyleSheet,
     Button,
     Modal,

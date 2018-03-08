@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
 
 import Colors from '../../constants/Colors';
-import NewTeam from './new-team';
-//import TeamEditorDetails from './team-editor-details';
+import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
 
@@ -29,15 +28,15 @@ export default class TeamEditor extends Component {
     }
 
     setDefault = status => {
-      if (status === 'OWNER') {
-        return 'TeamInvitationDetails'
-      } else {
-        return 'NewTeam'
-      }
+        if (status === 'OWNER') {
+            return 'TeamInvitationDetails';
+        }
+        return 'NewTeam';
+
     }
 
     render() {
-        const { status } = this.props.navigation.state.params || '';
+        const {status} = this.props.navigation.state.params || '';
         const TeamEditorNav = TabNavigator({
 
             TeamInvitationDetails: {
@@ -47,24 +46,24 @@ export default class TeamEditor extends Component {
                 screen: TeamEditorMap
             },
             TeamDetails: {
-                screen: NewTeam,
+                screen: TeamEditorDetails,
                 header: null
             }
         }, {
-        tabBarComponent: TabBarBottom,
-        tabBarPosition: 'bottom',
+            tabBarComponent: TabBarBottom,
+            tabBarPosition: 'bottom',
             animationEnabled: true,
             swipeEnabled: false,
-        tabBarOptions: {
-          activeTintColor: Colors.tabIconSelected,
-          inactiveTintColor: Colors.tabIconDefault,
-        labelStyle: {
-          fontSize: 10
-        },
-        style: {
-          backgroundColor: Colors.tabBarBackground
-        }
-        },
+            tabBarOptions: {
+                activeTintColor: Colors.tabIconSelected,
+                inactiveTintColor: Colors.tabIconDefault,
+                labelStyle: {
+                    fontSize: 10
+                },
+                style: {
+                    backgroundColor: Colors.tabBarBackground
+                }
+            },
             initialRouteName: this.setDefault(status)
         });
         return (

@@ -50,7 +50,6 @@ class NewMessage extends Component {
         };
     }
 
-
     componentWillReceiveProps(nextProps) {
         const nextTeamId = nextProps.navigation.selectedTeamId || nextProps.selectedTeamId;
         if (Boolean(nextTeamId) && nextTeamId !== this.state.selectedTeamId) {
