@@ -6,6 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
+    Alert,
     Button,
     StyleSheet,
     Text,
@@ -103,8 +104,12 @@ class NewTeam extends Component {
     _createTeam = () => {
         console.log('CREATE TEAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
-        this.props.actions.createTeam(team);
-        this.setState(freshState(this.props.owner), this.props.closeModal);
+        if(!team.name){
+                Alert.alert("Please give your team a name.");
+        } else {
+            this.props.actions.createTeam(team);
+            this.setState(freshState(this.props.owner), this.props.closeModal);
+        }
     }
 
     // android returns 24hr time with leading zero and no am/pm designation so
