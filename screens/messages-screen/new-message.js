@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    StyleSheet, Text, TextInput, TouchableHighlight,
+    StyleSheet, Text, TextInput,
     View, Picker, Button
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -112,6 +112,15 @@ class NewMessage extends Component {
 
         return (
             <View style={styles.container}>
+                <View style={defaultStyles.row}>
+                    <Button
+                        onPress={this.sendMessage}
+                        title='Send Message'
+                    />
+                    <Button onPress={this.cancelMessage}
+                        title='Cancel'
+                    />
+                </View>
                 {!this.props.selectedTeamId ? TeamPicker : null}
                 <View>
                     <TextInput
@@ -124,14 +133,6 @@ class NewMessage extends Component {
                         style={[styles.textInput, styles.messageInput]}
                     />
                 </View>
-                <View style={styles.button}>
-                    <Button
-                        onPress={this.sendMessage}
-                        title='Send Message'/>
-                </View>
-                <TouchableHighlight onPress={this.cancelMessage}>
-                    <Text>Cancel</Text>
-                </TouchableHighlight>
             </View>
         );
     }

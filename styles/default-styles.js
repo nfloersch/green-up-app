@@ -12,6 +12,12 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
+    buttonRow: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
+    },
     textInput: {
         borderColor: '#000',
         borderWidth: 1,
