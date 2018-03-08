@@ -89,10 +89,12 @@ class InviteForm extends Component {
                     onChangeText={this.changeInvitee('lastName')}
                     placeholder='Last'
                 />
+                <View style={styles.button}>
                 <Button
                     disabled={emailIsInvalid}
                     onPress={this.inviteToTeam}
                     title='Invite to Team'/>
+                </View>
             </View>
         );
     }

@@ -20,16 +20,22 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
+import {Ionicons} from '@expo/vector-icons';
+
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
+import Colors from '../../constants/Colors';
 
 const myStyles = {
     selected: {
         opacity: 0.5
+    },
+    scroll: {
+      marginBottom: 10
     }
 };
 
@@ -51,57 +57,50 @@ class NewTeam extends Component {
     };
 
     static navigationOptions = {
-        title: 'Create A Team Details'
+        title: 'Team Details',
+        tabBarLabel: 'Details',
+        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+        tabBarIcon: ({focused}) => (<Ionicons
+            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
+            size={24}
+            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+         />)
     };
 
     constructor(props) {
         super(props);
-        this._cancel = this._cancel.bind(this);
-        this._createTeam = this._createTeam.bind(this);
-        this.showStartDateTimePicker = this.showStartDateTimePicker.bind(this);
-        this.showEndDateTimePicker = this.showEndDateTimePicker.bind(this);
-        this.hideStartDateTimePicker = this.hideStartDateTimePicker.bind(this);
-        this.hideEndDateTimePicker = this.hideEndDateTimePicker.bind(this);
-        this.showDatePicker = this.showDatePicker.bind(this);
-        this.hideDatePicker = this.hideDatePicker.bind(this);
-        this.fixAndroidTime = this.fixAndroidTime.bind(this);
-        this._handleDatePicked = this._handleDatePicked.bind(this);
-        this._handleStartDatePicked = this._handleStartDatePicked.bind(this);
-        this._handleEndDatePicked = this._handleEndDatePicked.bind(this);
-        this.setSelectedOption = this.setSelectedOption.bind(this);
-        this.setTeamValue = this.setTeamValue.bind(this);
         this.state = freshState(props.owner);
     }
 
-    showStartDateTimePicker() {
+    showStartDateTimePicker = () => {
         this.setState({startDateTimePickerVisible: true});
     }
 
-    showEndDateTimePicker() {
+    showEndDateTimePicker = () => {
         this.setState({endDateTimePickerVisible: true});
     }
 
-    showDatePicker() {
+    showDatePicker = () => {
         this.setState({datePickerVisible: true});
     }
 
-    hideStartDateTimePicker() {
+    hideStartDateTimePicker = () => {
         this.setState({startDateTimePickerVisible: false});
     }
 
-    hideEndDateTimePicker() {
+    hideEndDateTimePicker = () => {
         this.setState({endDateTimePickerVisible: false});
     }
 
-    hideDatePicker() {
+    hideDatePicker = () => {
         this.setState({datePickerVisible: false});
     }
 
-    _cancel() {
+    _cancel = () => {
         this.setState(freshState(this.props.owner), this.props.closeModal);
     }
 
-    _createTeam() {
+    _createTeam = () => {
         console.log('CREATE TEAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
         this.props.actions.createTeam(team);
@@ -110,23 +109,23 @@ class NewTeam extends Component {
 
     // android returns 24hr time with leading zero and no am/pm designation so
     // we fix it up here to display consistently with ios
-    fixAndroidTime(time) {
+    fixAndroidTime = time => {
         const orig = time.split(':');
         const hour = orig[0];
         const hourNum = parseInt(hour, 10);
         const ampm = hourNum > 11 ? 'PM' : 'AM';
         const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
-        return `${hr}:${orig[1]}${ampm}`;
+        return `${hr}:${orig[1]} ${ampm}`;
     }
 
-    _handleDatePicked(pickedDate) {
+    _handleDatePicked = pickedDate => {
         const arr = pickedDate.toString().split(' ');
-        const date = `${arr[0]}${arr[1]}${arr[2]}${arr[3]}`;
+        const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
         this.setTeamValue('date')(date);
         this.hideDatePicker();
     }
 
-    _handleStartDatePicked(date) {
+    _handleStartDatePicked = date => {
         let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
         if (Platform.OS === 'android') {
             start = this.fixAndroidTime(start);
@@ -136,7 +135,7 @@ class NewTeam extends Component {
     }
 
 
-    _handleEndDatePicked(date) {
+    _handleEndDatePicked = date => {
         let end = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
         if (Platform.OS === 'android') {
             end = this.fixAndroidTime(end);
@@ -146,7 +145,7 @@ class NewTeam extends Component {
     }
 
 
-    setSelectedOption(option) {
+    setSelectedOption = option => {
         this.setState({isPublic: option.value});
     }
 
@@ -175,7 +174,9 @@ class NewTeam extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-                style={styles.container}>
+ 
+                style={[styles.container, styles.scroll]}>
+ 
                 <View style={defaultStyles.row}>
                     <Button
                         title='Save'
@@ -184,6 +185,7 @@ class NewTeam extends Component {
                         title='Cancel'
                         onPress={this._cancel}/>
                 </View>
+ 
                 <View>
                     <Text style={styles.label}>Team Name</Text>
                     <TextInput
@@ -225,11 +227,11 @@ class NewTeam extends Component {
                 </View>
 
                 <View>
-                    <Text style={styles.label}>Date</Text>
                     <Text style={styles.alertInfo}>
                         May 5th is the official Green Up Day, but teams
                         may choose to work up to one week before or after.
                     </Text>
+                    <Text style={styles.label}>Date</Text>
                     <View>
                         <TouchableOpacity onPress={this.showDatePicker}>
                             <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
@@ -253,7 +255,7 @@ class NewTeam extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showStartDateTimePicker}>
                             <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {this.state.start || 'Select a Date'}
+                                {this.state.start || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -271,7 +273,7 @@ class NewTeam extends Component {
                     <View>
                         <TouchableOpacity onPress={this.showEndDateTimePicker}>
                             <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {this.state.end || 'Select a Date'}
+                                {this.state.end || 'Select a Time'}
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -288,9 +290,12 @@ class NewTeam extends Component {
                     <Text style={styles.label}>Notes</Text>
                     <TextInput
                         keyBoardType={'default'}
+                        multiline={true}
+                        numberOfLines={20}
+                        textAlignVertical='top'
                         onChangeText={this.setTeamValue('notes')}
                         placeholder={'Notes'}
-                        style={styles.textInput}
+                        style={styles.textArea}
                         value={this.state.notes}/>
                 </View>
             </ScrollView>

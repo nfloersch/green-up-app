@@ -17,11 +17,7 @@ import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
 
-const myStyles = {
-    messageInput: {
-        height: 300
-    }
-};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -126,11 +122,12 @@ class NewMessage extends Component {
                     <TextInput
                         keyBoardType={'default'}
                         multiline={true}
+                        textAlignVertical='top'
                         numberOfLines={20}
                         onChangeText={this.changeText}
-                        placeholder={'message details'}
+                        placeholder={'Message details'}
                         value={this.state.text}
-                        style={[styles.textInput, styles.messageInput]}
+                        style={styles.textArea}
                     />
                 </View>
             </View>

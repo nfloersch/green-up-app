@@ -53,7 +53,7 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
 
 export function askToJoinTeam(team: Object, user: Object) {
     const message = Message.create({
-        text: `${user.displayName || user.email} is requesting to join your team ${team.name} `,
+        text: `${user.displayName || user.email} is requesting to join ${team.name} `,
         sender: user,
         teamId: team.id,
         type: messageTypes.REQUEST_TO_JOIN
@@ -145,4 +145,3 @@ export function leaveTeam(teamId: string, user: Object) {
         firebaseDataLayer.leaveTeam(teamId, user);
     };
 }
-

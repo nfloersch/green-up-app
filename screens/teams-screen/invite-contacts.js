@@ -114,10 +114,12 @@ class InviteContacts extends Component {
             <View style={styles.container}>
                 <ScrollView keyboardShouldPersistTaps='never'>
                     {myContacts}
+                <View style={styles.button}>
                     <Button
                         onPress={this.inviteToTeam}
                         title='Invite to team'
                     />
+                </View>
                 </ScrollView>
             </View>
         );
