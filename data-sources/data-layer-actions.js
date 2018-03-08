@@ -44,7 +44,7 @@ export function profileFetchSuccessful(profile: Object) {
 }
 
 
-export function teamMemberFetchSuccessful(membership:Object, teamId: string){
+export function teamMemberFetchSuccessful(membership:Object, teamId: string) {
     return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
 }
 
@@ -52,9 +52,9 @@ export function profileFetchFail(error: Object) {
     return {type: types.FETCH_PROFILE_FAIL, error};
 }
 
-export function supplyLocationsFetchSuccessful(supplyLocations: Object) {
+export function townDataFetchSuccessful(townData: Object) {
 
-    return {type: types.FETCH_SUPPLY_LOCATIONS_SUCCESS, supplyLocations};
+    return {type: types.FETCH_TOWN_DATA_SUCCESS, townData};
 }
 
 export function invitationFetchSuccessful(invitations: Object) {
