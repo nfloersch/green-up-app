@@ -174,8 +174,18 @@ class NewTeam extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
+ 
                 style={[styles.container, styles.scroll]}>
-
+ 
+                <View style={defaultStyles.row}>
+                    <Button
+                        title='Save'
+                        onPress={this._createTeam}/>
+                    <Button
+                        title='Cancel'
+                        onPress={this._cancel}/>
+                </View>
+ 
                 <View>
                     <Text style={styles.label}>Team Name</Text>
                     <TextInput
@@ -288,18 +298,6 @@ class NewTeam extends Component {
                         style={styles.textArea}
                         value={this.state.notes}/>
                 </View>
-
-                <View style={styles.button}>
-                    <Button
-                        title='Save'
-                        onPress={this._createTeam}/>
-                </View>
-                <View style={styles.button}>
-                    <Button
-                        title='Cancel'
-                        onPress={this._cancel}/>
-                </View>
-
             </ScrollView>
         );
     }

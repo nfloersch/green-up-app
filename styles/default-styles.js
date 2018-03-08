@@ -14,12 +14,20 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
+ 
     textArea: {
         borderColor: '#000',
         borderWidth: 1,
         padding: 5,
 				height: 250,
 				justifyContent: 'flex-start'
+    },
+    buttonRow: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
+ 
     },
     textInput: {
         borderColor: '#000',

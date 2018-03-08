@@ -215,12 +215,13 @@ function saveTeam(team) {
 
 function createTeam(team: Object = {}) {
     const db = firebase.database();
-    const ownerId = (team.owner || {}).uid;
+    const ownerId = (team.owner || {}).email.toLowerCase().replace(/\./g, ':');
+    const uid = team.owner.uid;
     return db.ref('teams').push(team).then((_team) => {
         const teamId = _team.key;
         db.ref(`teamMembers/${teamId}/${ownerId}`).set(team.owner).then(
             () => {
-                db.ref(`profiles/${ownerId}/teams/${teamId}`).set('OWNER');
+                db.ref(`profiles/${uid}/teams/${teamId}`).set('OWNER');
             });
     });
 }

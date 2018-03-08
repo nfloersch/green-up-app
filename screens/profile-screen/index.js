@@ -66,7 +66,6 @@ class Profile extends Component {
         };
     }
 
-
     render() {
         const profile = this.props.profile;
         const avatar = profile.photoURL;
