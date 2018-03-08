@@ -277,7 +277,7 @@ class TrashMap extends Component {
 function mapStateToProps(state) {
     const drops = Object.keys(state.trashTracker.trashDrops || {})
         .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
-        .map(key => ({...state.trashTracker.trashDrops[key], uid: key})); // TODO: Handle default values here
+        .map(key => ({...state.trashTracker.trashDrops[key], uid: key}));
     const townData = state.trashBagFinder.townData;
     return {drops: drops, currentUser: state.login.user, townData};
 }
