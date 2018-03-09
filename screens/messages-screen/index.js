@@ -31,16 +31,6 @@ const myStyles = {
     newMsg: {
         fontWeight: 'bold'
     },
-    oldMsg: {},
-    friendlySuggestion: {
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: '#AAA',
-        fontSize: 20,
-        color: '#333',
-        padding: 10,
-        margin: 10
-    },
     loadingScreen: {
       justifyContent: 'center',
       alignItems: 'center'
@@ -170,17 +160,19 @@ class Messages extends Component {
                         {myMessages.length > 0
                             ? myMessages
                             : (
-                                <Text style={defaultStyles.heading}>
-                                    {'Sorry, no messages yet.'}{'\n'}{'\n'}{'Start the ball rolling by sending one to your teammates.'}
-                                </Text>
+                                <View>
+                                  <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
+                                  <Text>
+                                    {'\n'}{'Start the ball rolling by sending one to your teammates.'}
+                                  </Text>
+                                </View>
                             )}
                     </View>
                 </ScrollView>
             ) : (
                 <View style={styles.container}>
-                    <Text style={defaultStyles.heading}>Whoops, you're lonely in here.
-                        It seems like you don't have any teams to send messages to. Start your own team or join an
-                        existing one.
+                    <Text style={styles.alertInfo}>
+                      You don't have any teams to send messages to. Start your own team or join an existing one.
                     </Text>
                     <Button
                         onPress={() => {

@@ -34,9 +34,6 @@ import Colors from '../../constants/Colors';
 const myStyles = {
     selected: {
         opacity: 0.5
-    },
-    scroll: {
-        marginBottom: 10
     }
 };
 
@@ -179,13 +176,15 @@ class NewTeam extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-                style={[styles.container, styles.scroll]}
+                style={styles.scroll}
             >
 
-                <View style={defaultStyles.row}>
+                <View style={styles.button}>
                     <Button
                         title='Save'
                         onPress={this._createTeam}/>
+                </View>
+                <View style={styles.button}>
                     <Button
                         title='Cancel'
                         onPress={this._cancel}/>

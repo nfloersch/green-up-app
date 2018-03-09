@@ -125,5 +125,8 @@ export const defaultStyles = {
         paddingLeft: 10,
         paddingTop: 12.5,
         fontSize: 20
+    },
+    scroll: {
+      marginBottom: 10
     }
 };
