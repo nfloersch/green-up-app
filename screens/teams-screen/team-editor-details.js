@@ -164,8 +164,8 @@ class TeamEditorDetails extends Component {
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
-                style={styles.container}>
-                <View style={defaultStyles.row}>
+                style={[styles.container, styles.scroll]}>
+                <View style={styles.button}>
                     <Button
                         title='Save'
                         onPress={this.saveTeam}/>
@@ -282,9 +282,8 @@ class TeamEditorDetails extends Component {
                 </View>
 
 
-                <View style={styles.dangerArea}>
+                <View style={[styles.button, styles.danger]}>
                     <Button
-                        style={styles.doNotPushThisButton}
                         title='Delete Team'
                         onPress={this.deleteTeam}
                     />
