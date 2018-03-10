@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -36,21 +36,27 @@ class CreateNewAccount extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
-            </View>
+            <KeyboardAvoidingView
+                style={defaultStyles.frame}
+                behavior='padding'
+            >
+                <ScrollView style={styles.container}>
+                    <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
+                    {
+                        Platform.OS === 'ios'
+                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                            : null
+                    }
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {session: state.login.session};
-};
+const mapStateToProps = (state) => ({session: state.login.session});
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-};
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAccount);

@@ -6,7 +6,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
+    Alert,
     Button,
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
@@ -73,38 +75,42 @@ class NewTeam extends Component {
 
     showStartDateTimePicker = () => {
         this.setState({startDateTimePickerVisible: true});
-    }
+    };
 
     showEndDateTimePicker = () => {
         this.setState({endDateTimePickerVisible: true});
-    }
+    };
 
     showDatePicker = () => {
         this.setState({datePickerVisible: true});
-    }
+    };
 
     hideStartDateTimePicker = () => {
         this.setState({startDateTimePickerVisible: false});
-    }
+    };
 
     hideEndDateTimePicker = () => {
         this.setState({endDateTimePickerVisible: false});
-    }
+    };
 
     hideDatePicker = () => {
         this.setState({datePickerVisible: false});
-    }
+    };
 
     _cancel = () => {
         this.setState(freshState(this.props.owner), this.props.closeModal);
-    }
+    };
 
     _createTeam = () => {
         console.log('CREATE TEAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
-        this.props.actions.createTeam(team);
-        this.setState(freshState(this.props.owner), this.props.closeModal);
-    }
+        if (!team.name) {
+            Alert.alert('Please give your team a name.');
+        } else {
+            this.props.actions.createTeam(team);
+            this.setState(freshState(this.props.owner), this.props.closeModal);
+        }
+    };
 
     // android returns 24hr time with leading zero and no am/pm designation so
     // we fix it up here to display consistently with ios
@@ -115,14 +121,14 @@ class NewTeam extends Component {
         const ampm = hourNum > 11 ? 'PM' : 'AM';
         const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
         return `${hr}:${orig[1]} ${ampm}`;
-    }
+    };
 
     _handleDatePicked = pickedDate => {
         const arr = pickedDate.toString().split(' ');
         const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
         this.setTeamValue('date')(date);
         this.hideDatePicker();
-    }
+    };
 
     _handleStartDatePicked = date => {
         let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
@@ -131,7 +137,7 @@ class NewTeam extends Component {
         }
         this.setTeamValue('start')(start);
         this.hideStartDateTimePicker();
-    }
+    };
 
 
     _handleEndDatePicked = date => {
@@ -141,12 +147,12 @@ class NewTeam extends Component {
         }
         this.setTeamValue('end')(end);
         this.hideEndDateTimePicker();
-    }
+    };
 
 
     setSelectedOption = option => {
         this.setState({isPublic: option.value});
-    }
+    };
 
 
     setTeamValue = (key) => (value) => {
@@ -182,13 +188,16 @@ class NewTeam extends Component {
         const comp = (a, b) => {a.toLowerCase().trim() === b.toLowerCase().trim()};
 
         return (
+          <KeyboardAvoidingView
+              style={styles.frame}
+              behavior='padding'
+          >
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
                 style={styles.scroll}
                 keyboardShouldPersistTaps={'always'}
             >
-
                 <View style={styles.button}>
                     <Button
                         title='Save'
@@ -253,73 +262,75 @@ class NewTeam extends Component {
                         may choose to work up to one week before or after.
                     </Text>
                     <Text style={styles.label}>Date</Text>
-                    <View>
-                        <TouchableOpacity onPress={this.showDatePicker}>
-                            <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
-                                {this.state.date || 'Select a Date'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='date'
-                            date={new Date('5/5/2018')}
-                            minimumDate={new Date('4/28/2018')}
-                            maximumDate={new Date('5/13/2018')}
-                            isVisible={this.state.datePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this.hideDatePicker}
-                        />
+                      <View>
+                          <TouchableOpacity onPress={this.showDatePicker}>
+                              <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
+                                  {this.state.date || 'Select a Date'}
+                              </Text>
+                          </TouchableOpacity>
+                          <DateTimePicker
+                              mode='date'
+                              date={new Date('5/5/2018')}
+                              minimumDate={new Date('4/28/2018')}
+                              maximumDate={new Date('5/13/2018')}
+                              isVisible={this.state.datePickerVisible}
+                              onConfirm={this._handleDatePicked}
+                              onCancel={this.hideDatePicker}
+                          />
+                      </View>
                     </View>
-                </View>
 
-                <View>
-                    <Text style={styles.label}>Start Time</Text>
                     <View>
-                        <TouchableOpacity onPress={this.showStartDateTimePicker}>
-                            <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {this.state.start || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.startDateTimePickerVisible}
-                            onConfirm={this._handleStartDatePicked}
-                            onCancel={this.hideStartDateTimePicker}
-                            is24Hour={false}
-                        />
+                        <Text style={styles.label}>Start Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showStartDateTimePicker}>
+                                <Text style={[styles.textInput, startIsSelected && styles.selected]}>
+                                    {this.state.start || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.startDateTimePickerVisible}
+                                onConfirm={this._handleStartDatePicked}
+                                onCancel={this.hideStartDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
                     </View>
-                </View>
 
-                <View>
-                    <Text style={styles.label}>End Time</Text>
                     <View>
-                        <TouchableOpacity onPress={this.showEndDateTimePicker}>
-                            <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {this.state.end || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.endDateTimePickerVisible}
-                            onConfirm={this._handleEndDatePicked}
-                            onCancel={this.hideEndDateTimePicker}
-                            is24Hour={false}
-                        />
+                        <Text style={styles.label}>End Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showEndDateTimePicker}>
+                                <Text style={[styles.textInput, endIsSelected && styles.selected]}>
+                                    {this.state.end || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.endDateTimePickerVisible}
+                                onConfirm={this._handleEndDatePicked}
+                                onCancel={this.hideEndDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
                     </View>
-                </View>
 
-                <View>
-                    <Text style={styles.label}>Notes</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        multiline={true}
-                        numberOfLines={20}
-                        textAlignVertical='top'
-                        onChangeText={this.setTeamValue('notes')}
-                        placeholder={'Notes'}
-                        style={styles.textArea}
-                        value={this.state.notes}/>
-                </View>
-            </ScrollView>
+                    <View>
+                        <Text style={styles.label}>Notes</Text>
+                        <TextInput
+                            keyBoardType={'default'}
+                            multiline={true}
+                            numberOfLines={20}
+                            textAlignVertical='top'
+                            onChangeText={this.setTeamValue('notes')}
+                            placeholder={'Notes'}
+                            style={styles.textArea}
+                            value={this.state.notes}/>
+                    </View>
+
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }

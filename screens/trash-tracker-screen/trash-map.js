@@ -11,10 +11,11 @@ import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    StyleSheet,
     Button,
+    KeyboardAvoidingView,
     Modal,
     ScrollView,
+    StyleSheet,
     Switch,
     TextInput,
     Text,
@@ -28,8 +29,7 @@ import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -42,6 +42,7 @@ class TrashMap extends Component {
         currentUser: PropTypes.object,
         townData: PropTypes.object
     };
+
     static navigationOptions = {
         title: 'Trash Tracker'
     };
@@ -49,7 +50,7 @@ class TrashMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            drop : {
+            drop: {
                 id: null,
                 location: {},
                 tags: [],
@@ -99,7 +100,7 @@ class TrashMap extends Component {
         const hasTag = this.state.drop.tags.indexOf(tag) > -1;
         const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
         this.setState({drop: {...this.state.drop, tags}});
-    }
+    };
 
     closeModal() {
         this.setState({
@@ -117,7 +118,7 @@ class TrashMap extends Component {
 
     render() {
         const saveTrashDrop = () => {
-            if(this.state.drop.uid) {
+            if (this.state.drop.uid) {
                 this.props.actions.updateTrashDrop(this.state.drop);
             } else {
                 this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.state.location.coords})));
@@ -134,7 +135,8 @@ class TrashMap extends Component {
                         collectedBy: {
                             uid: this.props.currentUser.uid,
                             email: this.props.currentUser.email
-                        }})
+                        }
+                    })
                 }, saveTrashDrop);
         };
 
@@ -154,28 +156,30 @@ class TrashMap extends Component {
                 <View style={styles.container}>
                     {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
                         <Text style={styles.alertInfo}>
-                            Information about trash dropping is not available at this time for the town you're in.
+                        Information about trash dropping is not available at this time for the town you're in.
                         </Text>
                     )}
                     {townInfo.RoadsideDropOffAllowed === true &&
-                        (<View>
-                            <Text style={styles.alertInfo}>
-                                <Text>You are in {this.state.town} and leaving trash bags on the roadside is allowed.</Text>
-                            </Text>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
-                                <Text style={styles.label}>Show Collected Trash</Text>
-                                <Switch value={this.state.showCollectedTrash} onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-                            </View>
-                        </View>)}
+                (<View>
+                    <Text style={styles.alertInfo}>
+                        <Text>You are in {this.state.town} and leaving trash bags on the roadside is allowed.</Text>
+                    </Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
+                        <Text style={styles.label}>Show Collected Trash</Text>
+                        <Switch value={this.state.showCollectedTrash}
+                            onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+                    </View>
+                </View>)}
                     {townInfo.RoadsideDropOffAllowed === false &&
-                        (<Text style={styles.alertInfo}>
-                            <Text>You are in {this.state.town} and leaving trash bags on the roadside is <Text style={{fontWeight: 'bold'}}>not</Text> allowed.
-                            Please bring collected trash to the designated drop off locations.</Text>
-                            {townInfo.DropOffLocations.map(d => (
-                                <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
-                            ))}
+                (<Text style={styles.alertInfo}>
+                    <Text>You are in {this.state.town} and leaving trash bags on the roadside is <Text
+                        style={{fontWeight: 'bold'}}>not</Text> allowed.
+                        Please bring collected trash to the designated drop off locations.</Text>
+                    {townInfo.DropOffLocations.map(d => (
+                        <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
+                    ))}
 
-                        </Text>)}
+                </Text>)}
                     <MapView
                         initialRegion={this.state.initialMapLocation}
                         showsUserLocation={true}
@@ -190,84 +194,102 @@ class TrashMap extends Component {
                                 coordinate={drop.location}
                                 title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
                                 description={'Tap to view, edit or collect'}
-                                onCalloutPress={() => { this.setState({modalVisible: true, drop: drop}); }}
+                                onCalloutPress={() => {
+                                    this.setState({modalVisible: true, drop: drop});
+                                }}
                             />
                         ))}
                         {townInfo.RoadsideDropOffAllowed === false && townInfo.DropOffLocations &&
-                            townInfo.DropOffLocations.map((d, i) => d.DropOffLocationCoordinates && (
-                                <MapView.Marker
-                                    key={`${this.state.town}DropOffLocation${i}`}
-                                    pinColor='blue'
-                                    coordinate={d.DropOffLocationCoordinates}
-                                    title='Drop Off Location'
-                                    description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
-                                />
-                            ))}
+                    townInfo.DropOffLocations.map((d, i) => d.DropOffLocationCoordinates && (
+                        <MapView.Marker
+                            key={`${this.state.town}DropOffLocation${i}`}
+                            pinColor='blue'
+                            coordinate={d.DropOffLocationCoordinates}
+                            title='Drop Off Location'
+                            description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
+                        />
+                    ))}
                     </MapView>
                     {townInfo.RoadsideDropOffAllowed === true && (
                         <View style={styles.button}>
                             <Button
                                 onPress={goToTrashDrop}
-                                title='Create Trash Drop' />
+                                title='Create Trash Drop'/>
                         </View>
                     )}
                     <Modal
                         animationType={'slide'}
                         transparent={false}
                         visible={this.state.modalVisible}
-                        onRequestClose={() => { this.closeModal(); }}>
-                        <ScrollView style={{marginTop: 22}}>
-                            <View style={styles.container}>
-                                <Text style={styles.label}>Number of Bags</Text>
-                                <TextInput
-                                    underlineColorAndroid='transparent'
-                                    editable={!this.state.drop.wasCollected}
-                                    value={this.state.drop.bagCount.toString()}
-                                    keyboardType='numeric'
-                                    placeholder='1'
-                                    style={styles.textInput}
-                                    onChangeText={(text) => this.setState({drop: {...this.state.drop, bagCount: Number(text)}})}
-                                />
-                                <Text style={styles.label}>Other Items</Text>
-                                <View style={styles.fieldset}>
-                                    <CheckBox
+                        onRequestClose={() => {
+                            this.closeModal();
+                        }}>
+                        <KeyboardAvoidingView
+                            style={defaultStyles.frame}
+                            behavior='padding'
+                        >
+                            <ScrollView style={{marginTop: 22}}>
+                                <View style={styles.container}>
+                                    <Text style={styles.label}>Number of Bags</Text>
+                                    <TextInput
+                                        underlineColorAndroid='transparent'
                                         editable={!this.state.drop.wasCollected}
-                                        label='Needles/Bio-Waste'
-                                        checked={this.state.drop.tags.indexOf('bio-waste') > -1}
-                                        onChange={this._toggleTag('bio-waste')}/>
-                                    <CheckBox
-                                        editable={!this.state.drop.wasCollected}
-                                        label='Tires'
-                                        checked={this.state.drop.tags.indexOf('tires') > -1}
-                                        onChange={this._toggleTag('tires')}/>
-                                    <CheckBox
-                                        editable={!this.state.drop.wasCollected}
-                                        label='Large Object'
-                                        checked={this.state.drop.tags.indexOf('large') > -1}
-                                        onChange={this._toggleTag('large')}/>
-                                </View>
-                                {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
+                                        value={this.state.drop.bagCount.toString()}
+                                        keyboardType='numeric'
+                                        placeholder='1'
+                                        style={styles.textInput}
+                                        onChangeText={(text) => this.setState({
+                                            drop: {
+                                                ...this.state.drop,
+                                                bagCount: Number(text)
+                                            }
+                                        })}
+                                    />
+                                    <Text style={styles.label}>Other Items</Text>
+                                    <View style={styles.fieldset}>
+                                        <CheckBox
+                                            editable={!this.state.drop.wasCollected}
+                                            label='Needles/Bio-Waste'
+                                            checked={this.state.drop.tags.indexOf('bio-waste') > -1}
+                                            onChange={this._toggleTag('bio-waste')}/>
+                                        <CheckBox
+                                            editable={!this.state.drop.wasCollected}
+                                            label='Tires'
+                                            checked={this.state.drop.tags.indexOf('tires') > -1}
+                                            onChange={this._toggleTag('tires')}/>
+                                        <CheckBox
+                                            editable={!this.state.drop.wasCollected}
+                                            label='Large Object'
+                                            checked={this.state.drop.tags.indexOf('large') > -1}
+                                            onChange={this._toggleTag('large')}/>
+                                    </View>
+                                    {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
                                 (
                                     <View style={styles.button}>
                                         <Button
                                             onPress={saveTrashDrop}
-                                            title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'} />
+                                            title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}/>
                                     </View>
                                 )}
-                                {this.state.drop.uid && !this.state.drop.wasCollected && (
+                                    {this.state.drop.uid && !this.state.drop.wasCollected && (
+                                        <View style={styles.button}>
+                                            <Button
+                                                onPress={collectTrashDrop}
+                                                title='Collect Trash'/>
+                                        </View>
+                                    )}
                                     <View style={styles.button}>
                                         <Button
-                                            onPress={collectTrashDrop}
-                                            title='Collect Trash'/>
+                                            onPress={() => {
+                                                this.closeModal();
+                                            }}
+                                            title='Cancel'/>
                                     </View>
-                                )}
-                                <View style={styles.button}>
-                                    <Button
-                                        onPress={() => { this.closeModal(); }}
-                                        title='Cancel' />
                                 </View>
-                            </View>
-                        </ScrollView>
+                            </ScrollView>
+                            <View style={defaultStyles.padForIOSKeyboard}/>
+
+                        </KeyboardAvoidingView>
                     </Modal>
                 </View>
             );

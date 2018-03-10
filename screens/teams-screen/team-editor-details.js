@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {
     Alert,
     Button,
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
@@ -177,6 +178,10 @@ class TeamEditorDetails extends Component {
         const comp = (a, b) => {a.toLowerCase().trim() === b.toLowerCase().trim()};
 
         return (
+            <KeyboardAvoidingView
+                style={defaultStyles.frame}
+                behavior='padding'
+            >
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
@@ -235,85 +240,86 @@ class TeamEditorDetails extends Component {
                         style={styles.textInput}
                         value={selectedTeam.location}/>
                 </View>
-
-                <View>
-                    <Text style={styles.label}>Date</Text>
-                    <Text style={styles.alertInfo}>
-                        May 5th is the official Green Up Day, but teams
-                        may choose to work up to one week before or after.
-                    </Text>
                     <View>
-                        <TouchableOpacity onPress={this.showDatePicker}>
-                            <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
-                                {selectedTeam.date || 'Select a Date'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='date'
-                            date={new Date('5/5/2018')}
-                            minimumDate={new Date('4/28/2018')}
-                            maximumDate={new Date('5/13/2018')}
-                            isVisible={this.state.datePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this.hideDatePicker}
+                        <Text style={styles.label}>Date</Text>
+                        <Text style={styles.alertInfo}>
+                            May 5th is the official Green Up Day, but teams
+                            may choose to work up to one week before or after.
+                        </Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showDatePicker}>
+                                <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
+                                    {selectedTeam.date || 'Select a Date'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='date'
+                                date={new Date('5/5/2018')}
+                                minimumDate={new Date('4/28/2018')}
+                                maximumDate={new Date('5/13/2018')}
+                                isVisible={this.state.datePickerVisible}
+                                onConfirm={this._handleDatePicked}
+                                onCancel={this.hideDatePicker}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Start Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showStartDateTimePicker}>
+                                <Text style={[styles.textInput, startIsSelected && styles.selected]}>
+                                    {selectedTeam.start || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.startDateTimePickerVisible}
+                                onConfirm={this._handleStartDatePicked}
+                                onCancel={this.hideStartDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>End Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showEndDateTimePicker}>
+                                <Text style={[styles.textInput, endIsSelected && styles.selected]}>
+                                    {selectedTeam.end || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.endDateTimePickerVisible}
+                                onConfirm={this._handleEndDatePicked}
+                                onCancel={this.hideEndDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Notes</Text>
+                        <TextInput
+                            keyBoardType={'default'}
+                            onChangeText={this.setTeamValue('notes')}
+                            placeholder={'Notes'}
+                            style={styles.textInput}
+                            value={selectedTeam.notes}/>
+                    </View>
+
+
+                    <View style={[styles.button, styles.danger]}>
+                        <Button
+                            title='Delete Team'
+                            onPress={this.deleteTeam}
                         />
                     </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Start Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this.showStartDateTimePicker}>
-                            <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {selectedTeam.start || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.startDateTimePickerVisible}
-                            onConfirm={this._handleStartDatePicked}
-                            onCancel={this.hideStartDateTimePicker}
-                            is24Hour={false}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>End Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this.showEndDateTimePicker}>
-                            <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {selectedTeam.end || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.endDateTimePickerVisible}
-                            onConfirm={this._handleEndDatePicked}
-                            onCancel={this.hideEndDateTimePicker}
-                            is24Hour={false}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Notes</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('notes')}
-                        placeholder={'Notes'}
-                        style={styles.textInput}
-                        value={selectedTeam.notes}/>
-                </View>
-
-
-                <View style={[styles.button, styles.danger]}>
-                    <Button
-                        title='Delete Team'
-                        onPress={this.deleteTeam}
-                    />
-                </View>
-            </ScrollView>
+                    <View style={defaultStyles.padForIOSKeyboard}/>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
