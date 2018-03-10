@@ -73,6 +73,7 @@
     "react": "16.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-animatable": "^1.2.4",
+    "react-native-autocomplete-input": "^3.5.0",
     "react-native-checkbox": "^2.0.0",
     "react-native-cli": "^2.0.1",
     "react-native-firebase": "^3.2.2",

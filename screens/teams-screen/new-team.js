@@ -11,7 +11,6 @@ import {
     Text,
     TextInput,
     View,
-    Picker,
     Platform,
     ScrollView,
     TouchableOpacity
@@ -20,6 +19,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
+import Autocomplete from 'react-native-autocomplete-input';
 import {Ionicons} from '@expo/vector-icons';
 
 import * as actions from './actions';
@@ -42,7 +42,9 @@ const freshState = (owner) => ({
     ...Team.create({owner}),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
-    datePickerVisible: false
+    datePickerVisible: false,
+    query: '',
+    town: ''
 });
 
 class NewTeam extends Component {
@@ -149,7 +151,14 @@ class NewTeam extends Component {
 
     setTeamValue = (key) => (value) => {
         this.setState({[key]: value});
-    };
+    }
+
+    findTown = query => {
+      if (query === '') {
+        return [];
+      }
+      return vermontTowns.filter(x => x.indexOf(query) > -1)
+    }
 
     render() {
         const isPublicOptions = [
@@ -162,16 +171,22 @@ class NewTeam extends Component {
             }
         ];
 
+        // DateTimePicker
         const dateIsSelected = this.state.date === null;
         const endIsSelected = this.state.end === null;
         const startIsSelected = this.state.start === null;
 
+        // Autocomplete
+        const { query, town } = this.state;
+        const towns = this.findTown(query);
+        const comp = (a, b) => {a.toLowerCase().trim() === b.toLowerCase().trim()};
 
         return (
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 scrollEventThrottle={200}
                 style={styles.scroll}
+                keyboardShouldPersistTaps={'always'}
             >
 
                 <View style={styles.button}>
@@ -204,15 +219,22 @@ class NewTeam extends Component {
                         testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
                 </View>
 
-                <View>
+                <View style={{zIndex: 1}}>
                     <Text style={styles.label}>Select Town/City</Text>
-                    <Picker
-                        itemStyle={{height: 45}}
-                        selectedValue={this.state.town}
-                        onValueChange={this.setTeamValue('town')}>
-                        {vermontTowns.map(town =>
-                            (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
-                    </Picker>
+                      <Autocomplete
+                          inputContainerStyle={{borderColor: '#000'}}
+                          data={query.length > 0 &&
+                                comp(query, towns[0] || '') ? [] : towns}
+                          defaultValue={this.state.town || ''}
+                          onChangeText={text => this.setState({ query: text })}
+                          renderItem={town => (
+                            <TouchableOpacity
+                                style={styles.suggestion}
+                                onPress={() => {this.setState({ query: '', town: town });}}>
+                              <Text>{town}</Text>
+                            </TouchableOpacity>
+                          )}
+                        />
                 </View>
 
                 <View>

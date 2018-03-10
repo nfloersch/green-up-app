@@ -128,5 +128,12 @@ export const defaultStyles = {
     },
     scroll: {
       marginBottom: 10
+    },
+    suggestion: {
+      paddingTop: 10,
+      paddingBottom: 10,
+      paddingLeft: 5,
+      borderColor: '#ABABAB',
+      borderBottomWidth: 1
     }
 };
