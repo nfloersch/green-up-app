@@ -163,7 +163,7 @@ class TeamEditorDetails extends Component {
 
         return (
             <KeyboardAvoidingView
-                style={styles.container}
+                style={defaultStyles.frame}
                 behavior='padding'
             >
                 <ScrollView
@@ -293,6 +293,7 @@ class TeamEditorDetails extends Component {
                             onPress={this.deleteTeam}
                         />
                     </View>
+                    <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
             </KeyboardAvoidingView>
         );

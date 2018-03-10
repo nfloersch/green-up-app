@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {
     Button,
     KeyboardAvoidingView,
-    Picker,
+    Picker, Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -117,10 +117,10 @@ class NewMessage extends Component {
 
         return (
             <KeyboardAvoidingView
-                style={styles.container}
+                style={defaultStyles.frame}
                 behavior='padding'
             >
-                <ScrollView style={styles.container}>
+                <ScrollView style={defaultStyles.container}>
                     <View style={defaultStyles.row}>
                         <Button
                             onPress={this.sendMessage}
@@ -143,6 +143,11 @@ class NewMessage extends Component {
                             style={styles.textArea}
                         />
                     </View>
+                    {
+                        Platform.OS === 'ios'
+                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                            : null
+                    }
                 </ScrollView>
             </KeyboardAvoidingView>
         );

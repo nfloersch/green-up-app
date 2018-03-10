@@ -1,6 +1,43 @@
 const alertFontSize = 12;
 
 export const defaultStyles = {
+    alertSuccess: {
+        fontSize: alertFontSize,
+        color: '#155724',
+        backgroundColor: '#d4edda',
+        borderColor: '#c3e6cb',
+        padding: 3,
+        marginBottom: 5,
+        marginTop: 5,
+        borderWidth: 1,
+        borderRadius: 5,
+        overflow: 'hidden',
+        textAlign: 'center'
+    },
+    alertDanger: {
+        fontSize: alertFontSize,
+        color: '#721c24',
+        backgroundColor: '#f8d7da',
+        borderColor: '#f5c6cb',
+        padding: 3,
+        marginBottom: 5,
+        marginTop: 5,
+        borderWidth: 1,
+        borderRadius: 20,
+        overflow: 'hidden',
+        textAlign: 'center'
+    },
+    button: {
+        marginTop: 10,
+        marginBottom: 10
+    },
+    buttonRow: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingTop: 15,
+        justifyContent: 'space-around'
+
+    },
     container: {
         flex: 1,
         alignContent: 'space-around',
@@ -10,24 +47,12 @@ export const defaultStyles = {
         borderRightWidth: 20,
         borderTopWidth: 10
     },
-    button: {
-        marginTop: 10,
-        marginBottom: 10
-    },
-
     textArea: {
         borderColor: '#000',
         borderWidth: 1,
         padding: 5,
         height: 250,
         justifyContent: 'flex-start'
-    },
-    buttonRow: {
-        width: '100%',
-        flexDirection: 'row',
-        paddingTop: 15,
-        justifyContent: 'space-around'
-
     },
     textInput: {
         borderColor: '#000',
@@ -57,31 +82,9 @@ export const defaultStyles = {
         overflow: 'hidden',
         textAlign: 'center'
     },
-    alertSuccess: {
-        fontSize: alertFontSize,
-        color: '#155724',
-        backgroundColor: '#d4edda',
-        borderColor: '#c3e6cb',
-        padding: 3,
-        marginBottom: 5,
-        marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 5,
-        overflow: 'hidden',
-        textAlign: 'center'
-    },
-    alertDanger: {
-        fontSize: alertFontSize,
-        color: '#721c24',
-        backgroundColor: '#f8d7da',
-        borderColor: '#f5c6cb',
-        padding: 3,
-        marginBottom: 5,
-        marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 20,
-        overflow: 'hidden',
-        textAlign: 'center'
+    frame: {
+        height: '100%',
+        width: '100%'
     },
     heading: {
         fontWeight: 'bold',
@@ -113,6 +116,8 @@ export const defaultStyles = {
         padding: 5,
         backgroundColor: 'darkseagreen'
     },
+    padForIOSKeyboard: {height: 80},
+    padForIOSKeyboardBig: {height: 150},
     profileHeader: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -127,6 +132,6 @@ export const defaultStyles = {
         fontSize: 20
     },
     scroll: {
-      marginBottom: 10
+        marginBottom: 10
     }
 };
