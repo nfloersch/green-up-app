@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import {
     Alert,
     Button,
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
@@ -161,134 +162,139 @@ class TeamEditorDetails extends Component {
 
 
         return (
-            <ScrollView
-                automaticallyAdjustContentInsets={false}
-                scrollEventThrottle={200}
-                style={[styles.container, styles.scroll]}>
-                <View style={styles.button}>
-                    <Button
-                        title='Save'
-                        onPress={this.saveTeam}/>
-                </View>
-                <View>
-                    <Text style={styles.label}>Team Name</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('name')}
-                        placeholder={'Team Name'}
-                        style={styles.textInput}
-                        value={selectedTeam.name}/>
-                </View>
-
-                <View style={{marginTop: 10}}>
-                    <SegmentedControls
-                        options={isPublicOptions}
-                        onSelection={this.setSelectedOption}
-                        selectedOption={selectedTeam.isPublic}
-                        selectedTint={'#EFEFEF'} tint={'#666666'}
-                        extractText={(option) => option.label}
-                        testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Select Town/City</Text>
-                    <Picker
-                        itemStyle={{height: 45}}
-                        selectedValue={selectedTeam.town}
-                        onValueChange={this.setTeamValue('town')}>
-                        {vermontTowns.map(town =>
-                            (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
-                    </Picker>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Clean Up Site</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('location')}
-                        placeholder={'Location'}
-                        style={styles.textInput}
-                        value={selectedTeam.location}/>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Date</Text>
-                    <Text style={styles.alertInfo}>
-                        May 5th is the official Green Up Day, but teams
-                        may choose to work up to one week before or after.
-                    </Text>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior='padding'
+            >
+                <ScrollView
+                    automaticallyAdjustContentInsets={false}
+                    scrollEventThrottle={200}
+                    style={[styles.container, styles.scroll]}>
+                    <View style={styles.button}>
+                        <Button
+                            title='Save'
+                            onPress={this.saveTeam}/>
+                    </View>
                     <View>
-                        <TouchableOpacity onPress={this.showDatePicker}>
-                            <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
-                                {selectedTeam.date || 'Select a Date'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='date'
-                            date={new Date('5/5/2018')}
-                            minimumDate={new Date('4/28/2018')}
-                            maximumDate={new Date('5/13/2018')}
-                            isVisible={this.state.datePickerVisible}
-                            onConfirm={this._handleDatePicked}
-                            onCancel={this.hideDatePicker}
+                        <Text style={styles.label}>Team Name</Text>
+                        <TextInput
+                            keyBoardType={'default'}
+                            onChangeText={this.setTeamValue('name')}
+                            placeholder={'Team Name'}
+                            style={styles.textInput}
+                            value={selectedTeam.name}/>
+                    </View>
+
+                    <View style={{marginTop: 10}}>
+                        <SegmentedControls
+                            options={isPublicOptions}
+                            onSelection={this.setSelectedOption}
+                            selectedOption={selectedTeam.isPublic}
+                            selectedTint={'#EFEFEF'} tint={'#666666'}
+                            extractText={(option) => option.label}
+                            testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Select Town/City</Text>
+                        <Picker
+                            itemStyle={{height: 45}}
+                            selectedValue={selectedTeam.town}
+                            onValueChange={this.setTeamValue('town')}>
+                            {vermontTowns.map(town =>
+                                (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
+                        </Picker>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Clean Up Site</Text>
+                        <TextInput
+                            keyBoardType={'default'}
+                            onChangeText={this.setTeamValue('location')}
+                            placeholder={'Location'}
+                            style={styles.textInput}
+                            value={selectedTeam.location}/>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Date</Text>
+                        <Text style={styles.alertInfo}>
+                            May 5th is the official Green Up Day, but teams
+                            may choose to work up to one week before or after.
+                        </Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showDatePicker}>
+                                <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
+                                    {selectedTeam.date || 'Select a Date'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='date'
+                                date={new Date('5/5/2018')}
+                                minimumDate={new Date('4/28/2018')}
+                                maximumDate={new Date('5/13/2018')}
+                                isVisible={this.state.datePickerVisible}
+                                onConfirm={this._handleDatePicked}
+                                onCancel={this.hideDatePicker}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Start Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showStartDateTimePicker}>
+                                <Text style={[styles.textInput, startIsSelected && styles.selected]}>
+                                    {selectedTeam.start || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.startDateTimePickerVisible}
+                                onConfirm={this._handleStartDatePicked}
+                                onCancel={this.hideStartDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>End Time</Text>
+                        <View>
+                            <TouchableOpacity onPress={this.showEndDateTimePicker}>
+                                <Text style={[styles.textInput, endIsSelected && styles.selected]}>
+                                    {selectedTeam.end || 'Select a Time'}
+                                </Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                mode='time'
+                                isVisible={this.state.endDateTimePickerVisible}
+                                onConfirm={this._handleEndDatePicked}
+                                onCancel={this.hideEndDateTimePicker}
+                                is24Hour={false}
+                            />
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.label}>Notes</Text>
+                        <TextInput
+                            keyBoardType={'default'}
+                            onChangeText={this.setTeamValue('notes')}
+                            placeholder={'Notes'}
+                            style={styles.textInput}
+                            value={selectedTeam.notes}/>
+                    </View>
+
+
+                    <View style={[styles.button, styles.danger]}>
+                        <Button
+                            title='Delete Team'
+                            onPress={this.deleteTeam}
                         />
                     </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Start Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this.showStartDateTimePicker}>
-                            <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                {selectedTeam.start || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.startDateTimePickerVisible}
-                            onConfirm={this._handleStartDatePicked}
-                            onCancel={this.hideStartDateTimePicker}
-                            is24Hour={false}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>End Time</Text>
-                    <View>
-                        <TouchableOpacity onPress={this.showEndDateTimePicker}>
-                            <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                {selectedTeam.end || 'Select a Time'}
-                            </Text>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            mode='time'
-                            isVisible={this.state.endDateTimePickerVisible}
-                            onConfirm={this._handleEndDatePicked}
-                            onCancel={this.hideEndDateTimePicker}
-                            is24Hour={false}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <Text style={styles.label}>Notes</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('notes')}
-                        placeholder={'Notes'}
-                        style={styles.textInput}
-                        value={selectedTeam.notes}/>
-                </View>
-
-
-                <View style={[styles.button, styles.danger]}>
-                    <Button
-                        title='Delete Team'
-                        onPress={this.deleteTeam}
-                    />
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }

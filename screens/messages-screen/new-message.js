@@ -6,8 +6,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    StyleSheet, Text, TextInput,
-    View, Picker, Button
+    Button,
+    KeyboardAvoidingView,
+    Picker,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -92,9 +98,7 @@ class NewMessage extends Component {
     render() {
         const user = this.props.currentUser || {};
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
-        const canSendMessage = (teamId) => {
-            return [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
-        }
+        const canSendMessage = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
 
         const TeamPicker = (
             <View>
@@ -112,37 +116,44 @@ class NewMessage extends Component {
 
 
         return (
-            <View style={styles.container}>
-                <View style={defaultStyles.row}>
-                    <Button
-                        onPress={this.sendMessage}
-                        title='Send Message'
-                    />
-                    <Button onPress={this.cancelMessage}
-                        title='Cancel'
-                    />
-                </View>
-                {!this.props.selectedTeamId ? TeamPicker : null}
-                <View>
-                    <TextInput
-                        keyBoardType={'default'}
-                        multiline={true}
-                        textAlignVertical='top'
-                        numberOfLines={20}
-                        onChangeText={this.changeText}
-                        placeholder={'Message details'}
-                        value={this.state.text}
-                        style={styles.textArea}
-                    />
-                </View>
-            </View>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior='padding'
+            >
+                <ScrollView style={styles.container}>
+                    <View style={defaultStyles.row}>
+                        <Button
+                            onPress={this.sendMessage}
+                            title='Send Message'
+                        />
+                        <Button onPress={this.cancelMessage}
+                            title='Cancel'
+                        />
+                    </View>
+                    {!this.props.selectedTeamId ? TeamPicker : null}
+                    <View>
+                        <TextInput
+                            keyBoardType={'default'}
+                            multiline={true}
+                            textAlignVertical='top'
+                            numberOfLines={20}
+                            onChangeText={this.changeText}
+                            placeholder={'Message details'}
+                            value={this.state.text}
+                            style={styles.textArea}
+                        />
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
 
 function mapStateToProps(state) {
     const currentUser = state.login.user;
-    const myTeams = Object.keys((state.profile || {}).teams).map(key => state.teams.teams[key]);
+    const myTeams = Object.keys((state.profile || {}).teams)
+        .map(key => state.teams.teams[key]) // match id's to their teams
+        .filter(team => Boolean(team)); // remove deleted teams, just in case
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers;
     const selectedTeamId = (state.teams.selectedTeam || {}).id;

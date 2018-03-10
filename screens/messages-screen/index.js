@@ -32,8 +32,8 @@ const myStyles = {
         fontWeight: 'bold'
     },
     loadingScreen: {
-      justifyContent: 'center',
-      alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 };
 
@@ -161,10 +161,10 @@ class Messages extends Component {
                             ? myMessages
                             : (
                                 <View>
-                                  <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
-                                  <Text>
-                                    {'\n'}{'Start the ball rolling by sending one to your teammates.'}
-                                  </Text>
+                                    <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
+                                    <Text>
+                                        {'\n'}{'Start the ball rolling by sending one to your teammates.'}
+                                    </Text>
                                 </View>
                             )}
                     </View>
@@ -172,7 +172,7 @@ class Messages extends Component {
             ) : (
                 <View style={styles.container}>
                     <Text style={styles.alertInfo}>
-                      You don't have any teams to send messages to. Start your own team or join an existing one.
+                        You don't have any teams to send messages to. Start your own team or join an existing one.
                     </Text>
                     <Button
                         onPress={() => {
