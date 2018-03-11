@@ -122,13 +122,16 @@ class Profile extends Component {
                         />
                     </View>
                     <View>
+                      <View style={styles.button}>
                         <Button
-                            style={styles.button}
                             title='Save Profile'
                             onPress={this._saveProfile}/>
-                        <TouchableHighlight onPress={this._cancel}>
-                            <Text>Cancel</Text>
-                        </TouchableHighlight>
+                      </View>
+                      <View style={styles.button}>
+                          <Button
+                              title='Cancel'
+                              onPress={this._cancel}/>
+                      </View>
                     </View>
                     {
                         Platform.OS === 'ios'

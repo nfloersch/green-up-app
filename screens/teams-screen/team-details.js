@@ -236,7 +236,7 @@ const mapStateToProps = (state) => ({
     invitations: state.teams.invitations || {},
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
-    currentUser: TeamMember.create({...state.login.user, ...state.profile}),
+    currentUser: TeamMember.create({...state.profile, ...state.login.user}),
     teamMembers: state.teams.teamMembers
 });
 
