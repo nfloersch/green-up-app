@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, ScrollView, View, Button} from 'react-native';
+import {StyleSheet, Text, ScrollView, View, Button, Alert} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -72,7 +72,15 @@ class TeamDetails extends Component {
     }
 
     _leaveTeam(teamId: string, user: Object) {
-        return () => this.props.actions.leaveTeam(teamId, user);
+        Alert.alert(
+            'DANGER!',
+            'Are you really, really sure you want to leave this team?',
+            [
+                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => this.props.actions.leaveTeam(teamId, user)}
+            ],
+            {cancelable: true}
+        );
     }
 
     _removeRequest(teamId: string, user: Object) {
@@ -140,12 +148,12 @@ class TeamDetails extends Component {
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
                         <View>
-                            <Text style={styles.alertDanger}>
-                                {'You are already a member'}
+                            <Text style={styles.alertInfo}>
+                                {'You are a member of this team.'}
                             </Text>
                             <Button
                                 style={styles.button}
-                                onPress={this._leaveTeam(selectedTeam.id, currentUser)}
+                                onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}
                                 title='Leave Team'
                             />
                         </View>

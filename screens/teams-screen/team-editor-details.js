@@ -13,22 +13,22 @@ import {
     Text,
     TextInput,
     View,
-    Picker,
     Platform,
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
+import Autocomplete from 'react-native-autocomplete-input';
+import {Ionicons} from '@expo/vector-icons';
 
-import Colors from '../../constants/Colors';
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
+import Colors from '../../constants/Colors';
 
 const myStyles = {
     selected: {
@@ -64,7 +64,9 @@ class TeamEditorDetails extends Component {
         this.state = {
             startDateTimePickerVisible: false,
             endDateTimePickerVisible: false,
-            datePickerVisible: false
+            datePickerVisible: false,
+            query: '',
+            town: this.props.selectedTeam.town
         };
     }
 
@@ -119,6 +121,7 @@ class TeamEditorDetails extends Component {
     saveTeam = () => {
         const {selectedTeam} = this.props;
         selectedTeam.locations = this.props.locations;
+        selectedTeam.town = this.state.town;
         this.props.actions.saveTeam(selectedTeam, selectedTeam.id);
         this.props.screenProps.stacknav.goBack();
     };
@@ -142,7 +145,14 @@ class TeamEditorDetails extends Component {
 
     setTeamValue = (key) => (value) => {
         this.props.actions.setSelectedTeamValue(key, value);
-    };
+    }
+
+    findTown = query => {
+      if (query === '') {
+        return [];
+      }
+      return vermontTowns.filter(x => x.indexOf(query) > -1)
+    }
 
     render() {
         const isPublicOptions = [
@@ -156,66 +166,80 @@ class TeamEditorDetails extends Component {
         ];
 
         const {selectedTeam} = this.props;
+
+        // DateTimePicker
         const dateIsSelected = selectedTeam.date === null;
         const endIsSelected = selectedTeam.end === null;
         const startIsSelected = selectedTeam.start === null;
 
+        // Autocomplete
+        const { query, town } = this.state;
+        const towns = this.findTown(query);
+        const comp = (a, b) => {a.toLowerCase().trim() === b.toLowerCase().trim()};
 
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
                 behavior='padding'
             >
-                <ScrollView
-                    automaticallyAdjustContentInsets={false}
-                    scrollEventThrottle={200}
-                    style={[styles.container, styles.scroll]}>
-                    <View style={styles.button}>
-                        <Button
-                            title='Save'
-                            onPress={this.saveTeam}/>
-                    </View>
-                    <View>
-                        <Text style={styles.label}>Team Name</Text>
-                        <TextInput
-                            keyBoardType={'default'}
-                            onChangeText={this.setTeamValue('name')}
-                            placeholder={'Team Name'}
-                            style={styles.textInput}
-                            value={selectedTeam.name}/>
-                    </View>
+            <ScrollView
+                automaticallyAdjustContentInsets={false}
+                scrollEventThrottle={200}
+                style={[styles.container, styles.scroll]}
+                keyboardShouldPersistTaps={'always'}
+            >
+                <View style={styles.button}>
+                    <Button
+                        title='Save'
+                        onPress={this.saveTeam}/>
+                </View>
+                <View>
+                    <Text style={styles.label}>Team Name</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('name')}
+                        placeholder={'Team Name'}
+                        style={styles.textInput}
+                        value={selectedTeam.name}/>
+                </View>
 
-                    <View style={{marginTop: 10}}>
-                        <SegmentedControls
-                            options={isPublicOptions}
-                            onSelection={this.setSelectedOption}
-                            selectedOption={selectedTeam.isPublic}
-                            selectedTint={'#EFEFEF'} tint={'#666666'}
-                            extractText={(option) => option.label}
-                            testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
-                    </View>
+                <View style={{marginTop: 10}}>
+                    <SegmentedControls
+                        options={isPublicOptions}
+                        onSelection={this.setSelectedOption}
+                        selectedOption={selectedTeam.isPublic}
+                        selectedTint={'#EFEFEF'} tint={'#666666'}
+                        extractText={(option) => option.label}
+                        testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+                </View>
 
-                    <View>
-                        <Text style={styles.label}>Select Town/City</Text>
-                        <Picker
-                            itemStyle={{height: 45}}
-                            selectedValue={selectedTeam.town}
-                            onValueChange={this.setTeamValue('town')}>
-                            {vermontTowns.map(town =>
-                                (<Picker.Item key={town} label={town} value={town} style={{fontSize: 2}}/>))}
-                        </Picker>
-                    </View>
+                <View style={{zIndex: 1}}>
+                    <Text style={styles.label}>Select Town/City</Text>
+                      <Autocomplete
+                          inputContainerStyle={{borderColor: '#000'}}
+                          data={query.length > 0 &&
+                                comp(query, towns[0] || '') ? [] : towns}
+                          defaultValue={this.state.town || ''}
+                          onChangeText={text => this.setState({ query: text })}
+                          renderItem={town => (
+                            <TouchableOpacity
+                                style={styles.suggestion}
+                                onPress={() => {this.setState({ query: '', town: town });}}>
+                              <Text>{town}</Text>
+                            </TouchableOpacity>
+                          )}
+                        />
+                </View>
 
-                    <View>
-                        <Text style={styles.label}>Clean Up Site</Text>
-                        <TextInput
-                            keyBoardType={'default'}
-                            onChangeText={this.setTeamValue('location')}
-                            placeholder={'Location'}
-                            style={styles.textInput}
-                            value={selectedTeam.location}/>
-                    </View>
-
+                <View>
+                    <Text style={styles.label}>Clean Up Site</Text>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.setTeamValue('location')}
+                        placeholder={'Location'}
+                        style={styles.textInput}
+                        value={selectedTeam.location}/>
+                </View>
                     <View>
                         <Text style={styles.label}>Date</Text>
                         <Text style={styles.alertInfo}>
