@@ -117,12 +117,6 @@ class MyTeams extends Component {
             [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
 
-        // const icons = {
-        //     [TeamMember.memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-eye' : 'md-eye',
-        //     [TeamMember.memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-        //     [TeamMember.memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-settings' : 'md-settings',
-        //     [TeamMember.memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
-        // };
         return icons[status || 'INVITED'];
     };
 
@@ -161,14 +155,18 @@ class MyTeams extends Component {
                         </View>
                         <View style={styles.messageIcon}>
                             {
-                                canSendMessage(key) ? (<TouchableHighlight onPress={() => {
-                                    this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                                }}>
-                                    <Ionicons
-                                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                        size={30}
-                                    />
-                                </TouchableHighlight>) : null
+                                canSendMessage(key)
+                                    ? (
+                                        <TouchableHighlight onPress={() => {
+                                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                                        }}>
+                                            <Ionicons
+                                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                                size={30}
+                                            />
+                                        </TouchableHighlight>
+                                    )
+                                    : null
                             }
                         </View>
                     </View>

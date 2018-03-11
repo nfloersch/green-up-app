@@ -101,6 +101,10 @@ export const defaultStyles = {
     label: {
         marginTop: 5
     },
+    largeText: {
+        marginTop:5,
+        fontSize: 20
+    },
     data: {
         fontWeight: 'bold'
     },
