@@ -12,6 +12,7 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import MapView, {Polygon} from 'react-native-maps';
+import {TeamMember} from '../../models/team-member';
 
 const myStyles = {
     teamTitle: {
@@ -235,7 +236,7 @@ const mapStateToProps = (state) => ({
     invitations: state.teams.invitations || {},
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
-    currentUser: state.login.user,
+    currentUser: TeamMember.create({...state.login.user, ...state.profile}),
     teamMembers: state.teams.teamMembers
 });
 

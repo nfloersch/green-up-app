@@ -35,7 +35,7 @@ class NewMessage extends Component {
         currentUser: PropTypes.object,
         myTeams: PropTypes.array,
         navigation: PropTypes.object,
-        selectedTeamId: PropTypes.object,
+        selectedTeamId: PropTypes.string,
         teamMembers: PropTypes.object,
         teams: PropTypes.object
     };

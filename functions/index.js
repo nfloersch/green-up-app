@@ -98,7 +98,7 @@ function sendInvitationEmail(email, displayName) {
  * User setup after an invitation create
  * Sends a invitation email to an invited user.
  */
-exports.onInvitationCreate = functions.database.ref('invitations/{pushId}').onCreate((event) => {
+exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invitationId}').onCreate((event) => {
 
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;

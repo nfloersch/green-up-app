@@ -97,7 +97,7 @@ class Profile extends Component {
                         </Text>
                     </View>
                     <View>
-                        <Text style={styles.label}>My Name</Text>
+                        <Text style={styles.label}>{'My Name'}</Text>
                         <TextInput
                             style={styles.textInput}
                             keyBoardType={'default'}
@@ -134,7 +134,8 @@ class Profile extends Component {
                         Platform.OS === 'ios'
                             ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
                             : null
-                    }                </ScrollView>
+                    }
+                </ScrollView>
             </KeyboardAvoidingView>
         );
 

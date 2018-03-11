@@ -111,7 +111,7 @@ class MyTeams extends Component {
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
         const memberStatus = TeamMember.memberStatuses;
         const icons = {
-            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-add-circle-outline' : 'md-plus',
+            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
             [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
             [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
             [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
