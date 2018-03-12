@@ -57,7 +57,8 @@ class ForgotPassword extends Component {
                     <TextInput
                         autoCorrect={false}
                         value={this.state.email}
-												placeholder='you@domain.com'
+                        keyBoardType='email-address'
+                        placeholder='you@domain.com'
                         onChangeText={this.onChangeState('email')}
                         style={styles.textInput}
                     />

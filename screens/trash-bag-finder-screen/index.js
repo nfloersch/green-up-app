@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -31,24 +31,37 @@ class TrashBagFinder extends Component {
     };
 
     static navigationOptions = {
-        title: 'Where To Find Bags'
+        title: 'Find Bags & Stuff'
     };
 
     constructor(props) {
         super(props);
+        this.onSearchTermChange = this.onSearchTermChange.bind(this);
+        this.state = {searchResults: [], searchTerm: ''};
     }
+
+    onSearchTermChange(searchTerm) {
+        const towns = this.props.towns;
+
+        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].Name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
+        this.setState({searchResults, searchTerm});
+    }
+
 
     render() {
 
         const towns = this.props.towns;
-        const locations = Object.keys(towns).map(town => (
-            <View key={town} style={styles.town}>
-                <Text>{towns[town].Name}</Text>
+        const keys = this.state.searchResults.length === 0 ? Object.keys(towns) : this.state.searchResults;
+        const locations = keys.map(key => (
+            <View key={key} style={styles.town}>
+
+
+                <Text>{towns[key].Name}</Text>
                 {
-                    ((towns[town].PickupLocations || []).length === 0)
+                    ((towns[key].PickupLocations || []).length === 0)
                         ? (<View
                             style={styles.location}><Text>{'No trash bag pickup locations in this town'}</Text></View>)
-                        : towns[town].PickupLocations.map((loc, i) => (
+                        : towns[key].PickupLocations.map((loc, i) => (
                             <View key={i} style={styles.location}>
                                 {Boolean(loc.PickupLocationName) ? (<Text>{loc.PickupLocationName}</Text>) : null}
                                 {Boolean(loc.PickupLocationAddress) ? (<Text>{loc.PickupLocationAddress}</Text>) : null}
@@ -62,9 +75,17 @@ class TrashBagFinder extends Component {
 
         return (
             <View style={styles.container}>
+                <View style={{marginTop: 10, marginBottom: 10}}>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.onSearchTermChange}
+                        placeholder={'Search by Team Name or City/Town'}
+                        style={styles.textInput}
+                        value={this.state.searchTerm}
+                    />
+                </View>
                 <ScrollView>
                     <View>
-
                         {locations}
                     </View>
                 </ScrollView>
