@@ -15,7 +15,7 @@ import {
 import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import MapView, {Polygon} from 'react-native-maps';
+import MapView from 'react-native-maps';
 import {Constants, Location, Permissions} from 'expo';
 
 import Colors from '../../constants/Colors';
@@ -121,7 +121,7 @@ class TeamEditorMap extends Component {
 
     _handleMapClick(e) {
         this.props.actions.saveLocations(this.props.locations.concat({
-            title: 'clean area border',
+            title: 'clean area',
             description: 'tap to remove',
             coordinates: e.nativeEvent.coordinate
         }), this.props.selectedTeam);
@@ -143,24 +143,13 @@ class TeamEditorMap extends Component {
     }
 
     render() {
-        const teamLocationMarkers = this
-            .props
-            .locations
-            .map((marker, index) => (
-                <MapView.Marker coordinate={marker.coordinates}
-                    key={index}
-                    title={marker.title || 'clean area border'}
-                    onPress={this.calloutClicked}
-                    onCalloutPress={this._removeMarker(marker)}
-                    description={marker.descrption || 'tap to remove'}
-                    image={require('../../assets/images/ic_person_pin_circle_white_24dp_2x.png')}
-                />));
+        const {locations, otherCleanAreas} = this.props;
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
                     <Text>
-                    Place markers around the area you want your team to work on.
+                    Place markers in the area you want your team to work on.
                     Tap on the marker text box to remove a marker.
                     Blue markers represent areas that other teams are cleaning up.
                     </Text>
@@ -171,18 +160,24 @@ class TeamEditorMap extends Component {
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
                         onPress={this._handleMapClick}>
-                        {this.props.locations.length > 0 && teamLocationMarkers}
-                        {this.props.locations.length > 0 && (
-                            <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
-                        )}
-                        {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((c, index) =>
-                            (<Polygon key={index} coordinates={c} fillColor='#b1c8ed'/>)
-                        )}
+                        {this.props.locations.length > 0 && locations.map((marker, index) => (
+                            <MapView.Marker coordinate={marker.coordinates}
+                                key={`location${index}`}
+                                title={marker.title || 'clean area'}
+                                onCalloutPress={this._removeMarker(marker)}
+                                description={marker.description || 'tap to remove'}
+                            />))}
+
+                        {this.props.otherCleanAreas.length > 0 && otherCleanAreas.map((a) =>
+                            (<MapView.Marker coordinate={a.coordinates}
+                                pinColor='blue'
+                                title={a.title}
+                            />))}
                     </MapView>
                     <View style={styles.button}>
-                      <Button title={'remove last marker'}
-                          onPress={this._removeLastMarker}
-                      />
+                        <Button title={'remove last marker'}
+                            onPress={this._removeLastMarker}
+                        />
                     </View>
                 </View>);
     }
@@ -193,10 +188,8 @@ function mapStateToProps(state) {
     const locations = state.teams.locations;
     const otherCleanAreas = Object.values(state.teams.teams)
         .filter(team => team.id !== selectedTeam.id)
-        .map(team => team.locations.map(l => l.coordinates))
-        .filter(v => v.length > 0);
+        .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {key: '', coordinates: l.coordinates, title: `clean area for team: ${ team.name}`}))), []);
     return {selectedTeam, locations, otherCleanAreas};
-
 }
 
 function mapDispatchToProps(dispatch) {
