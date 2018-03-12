@@ -8,6 +8,11 @@ export function reducers(state = initialState.trashTracker, action) {
                 ...state,
                 trashDrops: action.trashDrops
             };
+        case types.USER_LOCATION_UPDATED:
+            return {
+                ...state,
+                location: action.location
+            };
         default:
             return state;
     }

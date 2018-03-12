@@ -40,7 +40,8 @@ class TrashMap extends Component {
         actions: PropTypes.object,
         drops: PropTypes.array,
         currentUser: PropTypes.object,
-        townData: PropTypes.object
+        townData: PropTypes.object,
+        location: PropTypes.object
     };
 
     static navigationOptions = {
@@ -60,38 +61,37 @@ class TrashMap extends Component {
             },
             modalVisible: false,
             errorMessage: null,
-            initialMapLocation: null,
-            showCollectedTrash: false,
-            town: ''
+            showCollectedTrash: false
         };
     }
 
     componentDidMount() {
-        this._getLocationAsync();
+        if(!this.props.location) {
+            this._getLocationAsync();
+        }
+    }
+
+    _getTown(location) {
+        const townPolygonsData = require('../../libs/VT_Boundaries__town_polygons.json');
+        const currentLocation = turf.point([location.coords.longitude, location.coords.latitude]);
+        const town = townPolygonsData.features.find((f) => {
+            const feature = turf.feature(f.geometry);
+            return booleanWithin(currentLocation, feature);
+        });
+
+        return town ? town.properties.TOWNNAMEMC : '';
     }
 
     _getLocationAsync = async () => {
         // TODO: what if the user doesn't grant permission to location
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
+
         if (status === 'granted') {
             const location = await Location.getCurrentPositionAsync({});
+            this.props.actions.locationUpdated(location);
 
-            const townPolygonsData = require('../../libs/VT_Boundaries__town_polygons.json');
-            const currentLocation = turf.point([location.coords.longitude, location.coords.latitude]);
-            const town = townPolygonsData.features.find((f) => {
-                const feature = turf.feature(f.geometry);
-                return booleanWithin(currentLocation, feature);
-            });
-
-            this.setState({
-                location,
-                initialMapLocation: {
-                    latitude: Number(location.coords.latitude),
-                    longitude: Number(location.coords.longitude),
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421
-                },
-                town: town ? town.properties.TOWNNAMEMC : ''
+            Location.watchPositionAsync({timeInterval: 3000, distanceInterval: 20}, (l) => {
+                this.props.actions.locationUpdated(l);
             });
         }
     };
@@ -121,7 +121,7 @@ class TrashMap extends Component {
             if (this.state.drop.uid) {
                 this.props.actions.updateTrashDrop(this.state.drop);
             } else {
-                this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.state.location.coords})));
+                this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.props.location.coords})));
             }
 
             this.closeModal();
@@ -148,11 +148,18 @@ class TrashMap extends Component {
 
         // by convention, we're importing town names as upper case, any characters different
         // than uppercase letters replaced with underscore
-        const encodedTownName = this.state.town.toUpperCase().replace(/[^A-Z]/g, '_');
+        const town = this.props.location ? this._getTown(this.props.location) : '';
+        const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
+        const initialMapLocation = this.props.location ? {
+            latitude: Number(this.props.location.coords.latitude),
+            longitude: Number(this.props.location.coords.longitude),
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+        } : null;
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
-            : this.state.initialMapLocation && (
+            : initialMapLocation && (
                 <View style={styles.container}>
                     {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
                         <Text style={styles.alertInfo}>
@@ -162,7 +169,7 @@ class TrashMap extends Component {
                     {townInfo.RoadsideDropOffAllowed === true &&
                 (<View>
                     <Text style={styles.alertInfo}>
-                        <Text>You are in {this.state.town} and leaving trash bags on the roadside is allowed.</Text>
+                        <Text>You are in {town} and leaving trash bags on the roadside is allowed.</Text>
                     </Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>
                         <Text style={styles.label}>Show Collected Trash</Text>
@@ -172,7 +179,7 @@ class TrashMap extends Component {
                 </View>)}
                     {townInfo.RoadsideDropOffAllowed === false &&
                 (<Text style={styles.alertInfo}>
-                    <Text>You are in {this.state.town} and leaving trash bags on the roadside is <Text
+                    <Text>You are in {town} and leaving trash bags on the roadside is <Text
                         style={{fontWeight: 'bold'}}>not</Text> allowed.
                         Please bring collected trash to the designated drop off locations.</Text>
                     {townInfo.DropOffLocations.map(d => (
@@ -181,7 +188,7 @@ class TrashMap extends Component {
 
                 </Text>)}
                     <MapView
-                        initialRegion={this.state.initialMapLocation}
+                        initialRegion={initialMapLocation}
                         showsUserLocation={true}
                         showsMyLocationButton={true} // TODO: figure out why this doesn't work
                         followsUserLocation={true}
@@ -202,7 +209,7 @@ class TrashMap extends Component {
                         {townInfo.RoadsideDropOffAllowed === false && townInfo.DropOffLocations &&
                     townInfo.DropOffLocations.map((d, i) => d.DropOffLocationCoordinates && (
                         <MapView.Marker
-                            key={`${this.state.town}DropOffLocation${i}`}
+                            key={`${town}DropOffLocation${i}`}
                             pinColor='blue'
                             coordinate={d.DropOffLocationCoordinates}
                             title='Drop Off Location'
@@ -301,7 +308,8 @@ function mapStateToProps(state) {
         .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
         .map(key => ({...state.trashTracker.trashDrops[key], uid: key}));
     const townData = state.trashBagFinder.townData;
-    return {drops: drops, currentUser: state.login.user, townData};
+
+    return {drops: drops, currentUser: state.login.user, townData, location: state.trashTracker.location};
 }
 
 function mapDispatchToProps(dispatch) {
