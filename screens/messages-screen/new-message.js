@@ -97,7 +97,7 @@ class NewMessage extends Component {
 
     render() {
         const user = this.props.currentUser || {};
-        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId || this.props.selectedTeamId;
+        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId;
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
         const canSendMessage = (teamId: string) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
         const teamName = ((this.props.myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
@@ -172,8 +172,7 @@ function mapStateToProps(state) {
         .filter(team => Boolean(team)); // remove deleted teams, just in case
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers;
-    const selectedTeamId = (state.teams.selectedTeam || {}).id;
-    return {selectedTeamId, teams, myTeams, teamMembers, currentUser};
+    return {teams, myTeams, teamMembers, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {
