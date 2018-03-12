@@ -97,7 +97,7 @@ class NewMessage extends Component {
 
     render() {
         const user = this.props.currentUser || {};
-        const selectedTeamId = this.props.navigation.state.params.selectedTeamId || this.props.selectedTeamId;
+        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId || this.props.selectedTeamId;
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
         const canSendMessage = (teamId: string) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
         const teamName = ((this.props.myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
@@ -105,23 +105,7 @@ class NewMessage extends Component {
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
-        const getTeamControl = (teamId: string) => !teamId ? (
-            <View>
-                <Text style={styles.label}>Select Team to Message:</Text>
-                <Picker
-                    style={styles.button}
-                    itemStyle={{height: 45}}
-                    selectedValue={this.state.selectedTeamId || selectedTeamId || ((this.props.myTeams || [])[0] || {}).id}
-                    onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
-                    {items}
-                </Picker>
-            </View>
-        ) : (
-            <View>
-                <Text style={styles.label}>Send a Message To</Text>
-                <Text style={styles.largeText}>{teamName}</Text>
-            </View>
-        );
+        const teamValue = this.state.selectedTeamId || selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
 
 
         return (
@@ -136,10 +120,28 @@ class NewMessage extends Component {
                             title='Send Message'
                         />
                         <Button onPress={this.cancelMessage}
-                                title='Cancel'
+                            title='Cancel'
                         />
                     </View>
-                    {getTeamControl(selectedTeamId)}
+                    {
+                        !selectedTeamId ? (
+                            <View>
+                                <Text style={styles.label}>Select Team to Message:</Text>
+                                <Picker
+                                    style={styles.button}
+                                    itemStyle={{height: 45}}
+                                    selectedValue={teamValue}
+                                    onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
+                                    {items}
+                                </Picker>
+                            </View>
+                        ) : (
+                            <View>
+                                <Text style={styles.label}>Send a Message To</Text>
+                                <Text style={styles.largeText}>{teamName}</Text>
+                            </View>
+                        )
+                    }
                     <View>
                         <TextInput
                             keyBoardType={'default'}
