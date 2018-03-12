@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
-import MapView from 'react-native-maps';
+import MapView, {Polygon} from 'react-native-maps';
 import {TeamMember} from '../../models/team-member';
 
 const myStyles = {
@@ -55,20 +55,7 @@ class TeamDetails extends Component {
         this._leaveTeam = this._leaveTeam.bind(this);
         this._acceptInvitation = this._acceptInvitation.bind(this);
         this._declineInvitation = this._declineInvitation.bind(this);
-
-        const {locations} = this.props;
-
-        const initialMapLocation = locations && locations.length > 0 ? {
-            latitude: Number(locations[0].coordinates.latitude),
-            longitude: Number(locations[0].coordinates.longitude),
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01
-        } : null;
-
-        this.state = {
-            hasAsked: false,
-            initialMapLocation: initialMapLocation
-        };
+        this.state = {hasAsked: false};
     }
 
     componentWillReceiveProps(nextProps: Object) {
@@ -115,7 +102,7 @@ class TeamDetails extends Component {
     render() {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
-        const membershipId = currentUser.email.toLowerCase().replace(/\./g, ':');
+        const membershipId = currentUser.email.toLowerCase().replace(/\./g,':');
         const isTeamMember = Boolean(teamMembers[currentUser.uid] || teamMembers[membershipId]);
         const teamMemberList = (
             <View>
@@ -123,10 +110,21 @@ class TeamDetails extends Component {
                     {'Team Members'}
                 </Text>
                 {
-                    Object.values(teamMembers).map((member, i) => (<Text key={i}>{member.displayName || member.email}</Text>))
+                    Object.values(teamMembers).map((member, i) => (<Text key={i}>{member.displayName ||  member.email}</Text>))
                 }
             </View>);
-
+        const teamLocationMarkers = this
+            .props
+            .locations
+            .map((marker, index) => (
+                <MapView.Marker coordinate={marker.coordinates}
+                    key={index}
+                    title={marker.title || 'clean area border'}
+                    // onPress={this.calloutClicked}
+                    // onCalloutPress={this._removeMarker(marker)}
+                    // description={marker.descrption || 'tap to remove'}
+                    image={require('../../assets/images/ic_person_pin_circle_white_24dp_2x.png')}
+                />));
         const getMemberStatus = () => {
             const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
             const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
@@ -212,22 +210,19 @@ class TeamDetails extends Component {
                         <Text style={styles.label}>{'Notes: '}</Text>
                         <Text>{selectedTeam.notes}</Text>
                     </Text>
-                    {this.props.locations && this.props.locations.length > 0 && (
-                        <View>
-                            <Text style={[styles.heading]}>
-                                {'Clean Up Location'}
-                            </Text>
-                            <MapView style={{alignSelf: 'stretch', height: '50%'}}
-                                initialRegion={this.state.initialMapLocation}
-                                onPress={this._handleMapClick}>
-                                {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
-                                    <MapView.Marker coordinate={marker.coordinates}
-                                        key={index}
-                                        title={marker.title || 'clean area'}
-                                    />))}
-                            </MapView>
-                        </View>
-                    )}
+                    <View>
+                        <Text style={[styles.heading]}>
+                            {'Clean Up Location'}
+                        </Text>
+                        <MapView style={{alignSelf: 'stretch', height: '50%'}}
+                            // initialRegion={this.state.initialMapLocation}
+                                 onPress={this._handleMapClick}>
+                            {this.props.locations.length > 0 && teamLocationMarkers}
+                            {this.props.locations.length > 0 && (
+                                <Polygon coordinates={this.props.locations.map(m => m.coordinates)} fillColor='#b3e6cc'/>
+                            )}
+                        </MapView>
+                    </View>
                     {isTeamMember ? teamMemberList : null}
                 </View>
 
