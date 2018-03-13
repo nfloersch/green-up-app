@@ -113,13 +113,16 @@ class NewMessage extends Component {
                 style={defaultStyles.frame}
                 behavior='padding'
             >
-                <ScrollView style={defaultStyles.container}>
-                    <View style={defaultStyles.row}>
+                <ScrollView style={styles.container}>
+                    <View style={styles.button}>
                         <Button
                             onPress={this.sendMessage}
                             title='Send Message'
                         />
-                        <Button onPress={this.cancelMessage}
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            onPress={this.cancelMessage}
                             title='Cancel'
                         />
                     </View>
