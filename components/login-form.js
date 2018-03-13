@@ -42,6 +42,7 @@ export default class LoginForm extends Component {
                 <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
+                        keyBoardType='email-address'
                         autoCorrect={false}
                         placeholder='you@domain.com'
                         value={this.state.email}
@@ -51,6 +52,7 @@ export default class LoginForm extends Component {
                 <View>
                     <Text style={styles.label}>Password</Text>
                     <TextInput
+                        keyBoardType={'default'}
                         autoCorrect={false}
                         placeholder={'*****'}
                         secureTextEntry={true}
