@@ -4,60 +4,19 @@
  * @flow
  */
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Message from '../../models/message';
-import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
-import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {StyleSheet, Text, TextInput, TouchableHighlight, View} from 'react-native';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-        width: '100%'
-    },
-    messages: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    messageRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderWidth: 2,
-        borderColor: '#678',
-        width: '100%',
-        padding: 4,
-        marginTop: 10
-    },
-    buttonRow: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10
-    },
-    addButton: {
-        width: '49%',
-        backgroundColor: '#0F0',
-        justifyContent: 'center',
-        padding: 10,
-        marginRight: 3
-    },
-    cancelButton: {
-        width: '49%',
-        backgroundColor: '#F00',
-        justifyContent: 'center',
-        padding: 10,
-        marginLeft: 3
-    },
-    text: {
-        color: '#FFF',
-        textAlign: 'center'
-    }
-});
+import * as actions from './actions';
+import Message from '../../models/message';
+import {defaultStyles} from '../../styles/default-styles';
+
+const myStyles = {};
+
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 class SendMessage extends Component {
     static propTypes = {
@@ -125,13 +84,15 @@ class SendMessage extends Component {
                         style={{width: '100%'}}
                     />
                 </View>
-                <View style={styles.buttonRow}>
-                    <TouchableHighlight style={styles.addButton} onPress={this.sendMessage}>
-                        <Text style={styles.text}>Send Message</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.cancelButton} onPress={this.cancelMessage}>
-                        <Text style={styles.text}>Cancel</Text>
-                    </TouchableHighlight>
+                <View style={styles.button}>
+                    <Button
+                        title='Send Message'
+                        onPress={this.sendMessage}/>
+                </View>
+                <View style={styles.button}>
+                    <Button
+                        title='Cancel'
+                        onPress={this.cancelMessage}/>
                 </View>
             </View>
         );
