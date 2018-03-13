@@ -98,7 +98,7 @@ class Login extends Component {
             >
                 <ScrollView style={styles.container}>
                     <View style={styles.logo}>
-                	<Image source={logo} style={{height: 120, width: 120}}/>
+                        <Image source={logo} style={{height: 120, width: 120}}/>
                     </View>
                     <View style={{width: '100%'}}>
                         <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
@@ -106,12 +106,10 @@ class Login extends Component {
                             onPress={() => this.props.navigation.navigate('ForgotPassword')}>
                             <Text style={styles.linkText}>I forgot my password</Text>
                         </TouchableHighlight>
-
                         <TouchableHighlight
                             onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
                             <Text style={styles.linkText}>Create a new account</Text>
                         </TouchableHighlight>
-
                         <TouchableHighlight
                             style={styles.socialLoginButton}
                             onPress={() => this.props.actions.googleLogin()}>
@@ -120,7 +118,6 @@ class Login extends Component {
                                 <Text style={styles.socialLoginText}>Log in with Google</Text>
                             </View>
                         </TouchableHighlight>
-
                         <TouchableHighlight
                             style={styles.socialLoginButton}
                             onPress={() => this.props.actions.facebookLogin()}>

@@ -12,6 +12,7 @@ export function getCurrentUser() {
     };
 }
 
+
 export function logout() {
     return (dispatch: Object => *) => {
         firebaseDataLayer.logout()
@@ -123,5 +124,9 @@ export function resetPassword(emailAddress: string) {
                 );
             });
     };
+}
+
+export function isLoggingInViaSSO(_isLoggingInViaSSO: Boolean) {
+    return {type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO};
 }
 

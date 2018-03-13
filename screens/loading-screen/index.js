@@ -11,7 +11,7 @@ import LoginScreen from '../login-screen/';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
-import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -86,12 +86,14 @@ class LoadingScreen extends Component {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-
+            case (this.props.isLoggingInViaSSO):
+                return (
+                    <Text>LOADING</Text>
+                );
             case (!this.props.userIsLoggedIn) :
                 return (
                     <LoginScreen/>
                 );
-
             default :
                 return (
                     <View style={styles.container}>
@@ -109,6 +111,7 @@ function mapStateToProps(state) {
     return {
         isLoadingComplete: state.loading.isLoadingComplete,
         initialAuthChecked: state.login.initialAuthChecked,
+        isLoggingIn : state.login.isLoggingIn,
         skipLoadingScreen: state.loading.skipLoadingScreen,
         userIsLoggedIn: state.login.userIsLoggedIn
     };

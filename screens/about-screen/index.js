@@ -20,9 +20,7 @@ const aboutContacts = 'Green Up Vermont staff:\nMelinda Vieux, President\nMelani
     'nager \n\nContact Us:\n\tPhone:\n\t802-229-4586\n\t800-974-3259\n\tEmail: greenu' +
     'p@greenupvermont.org\n\n\tBy mail: Green Up Vermont\n\tP. O. Box 1191\n\tMontpel' +
     'ier, VT 05601-1191\n\nVisit the Green Up Vermont Board of Directors page for det' +
-    'ailed information about our board.\n\nIf you are a town clerk looking for the 20' +
-    '16 report for Town Meeting, click here: Town Report 2016\n\nOur office is   loca' +
-    'ted in Montpelier at 14-16 Baldwin Street, Montpelier, Vermont: Untitled';
+    'ailed information about our board.';
 const frequentlyAskedQuestions = [
     {
         q: 'What is Green Up Day?',
@@ -59,13 +57,6 @@ const frequentlyAskedQuestions = [
     }, {
         q: 'How many people participate in Green Up Day?',
         a: 'Over 22,000 people volunteer annually in picking up litter on Green Up Day. Over 50,000 bags of trash are collected annually.'
-    }, {
-        q: 'How can I donate?',
-        a: 'You can make a secure donation online by clicking here. You can also send a check, made payable to Green Up Vermont, to PO Box 1191' +
-        ', Montpelier, VT 05601-1191.'
-    }, {
-        q: 'Want to learn more?',
-        a: 'Visit the Green Up Guides page.'
     }
 ];
 const aboutTP = 'Talking Points – a summary of the Green Up Day program, to be used in interviews' +
@@ -91,8 +82,7 @@ const aboutTP = 'Talking Points – a summary of the Green Up Day program, to be
     'so all seven Vermont Subaru dealers are official sites for bag pick up and drop ' +
     'off.';
 
-const myStyles = {
-};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -173,12 +163,12 @@ const mapStateToProps = state => {
     const currentUser = state.login.user;
     const profile = state.profile.profile;
     return {profile, currentUser};
-}
+};
 
 const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(actions, dispatch)
     };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(About);

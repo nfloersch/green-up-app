@@ -10,7 +10,8 @@ export default {
         userIsLoggedIn: false,
         initialAuthChecked: false,
         creatingUser: false,
-        user: null
+        user: null,
+        isLoggingInViaSSO: false
     },
     profile: {},
     messages: {

@@ -27,6 +27,8 @@ export function reducers(state = initialState.login, action) {
             };
         case types.LOGOUT_FAIL:
             return initialState.login;
+        case types.IS_LOGGING_IN_VIA_SSO:
+            return {...state, isLoggingInViaSSO: action.isLoggingInViaSSO};
         default:
             return state;
     }
