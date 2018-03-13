@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 class LoadingScreen extends Component {
     static propTypes = {
         isLoadingComplete: PropTypes.bool,
-        isInitialAuthChecked: PropTypes.bool,
+        initialAuthChecked: PropTypes.bool,
         isLoggingInViaSSO: PropTypes.bool,
         actions: PropTypes.object,
         skipLoadingScreen: PropTypes.bool,
@@ -92,10 +92,15 @@ class LoadingScreen extends Component {
                 return (
                     <PleaseWait/>
                 );
+            case (!this.props.initialAuthChecked):
+                return (
+                    <PleaseWait/>
+                );
             case (!this.props.userIsLoggedIn) :
                 return (
                     <LoginScreen/>
                 );
+
             default :
                 return (
                     <View style={styles.container}>
