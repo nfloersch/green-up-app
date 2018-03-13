@@ -111,7 +111,7 @@ class Messages extends Component {
                     [key]: Message.create(
                         {
                             uid: key,
-                            text: `${invitations[key].sender.displayName} has invited to join team : ${invitations[key].team.name}`,
+                            text: `${invitations[key].sender.displayName} has invited you to join team : ${invitations[key].team.name}`,
                             sender: invitations[key].sender,
                             teamId: key,
                             read: false,
@@ -133,13 +133,20 @@ class Messages extends Component {
                             <View style={[styles.message,
                                 messages[key].read
                                     ? styles.read : styles.unread]}>
+                                <Text style={{
+                                    fontSize: 10,
+                                    textAlign: 'left'
+                                }}>{(this.props.teams[messages[key].teamId] || {}).name || ''} :</Text>
                                 <Text style={messages[key].read
                                     ? styles.oldMsg : styles.newMsg}>
                                     {messages[key].text.length > 80
                                         ? `${messages[key].text.slice(0, 80)}...`
                                         : messages[key].text}
                                 </Text>
-                                <Text style={{fontSize: 10, textAlign: 'right'}}>{messages[key].sender.email}</Text>
+                                <Text style={{
+                                    fontSize: 10,
+                                    textAlign: 'right'
+                                }}>--{messages[key].sender.displayName || messages[key].sender.email}</Text>
                             </View>
                         </TouchableHighlight>
                     </View>
@@ -147,7 +154,7 @@ class Messages extends Component {
             );
 
             return (myMessages.length > 0 || this.props.userHasTeams) ? (
-                <ScrollView style={styles.container}>
+                <View style={styles.frame}>
                     <View style={styles.button}>
                         <Button
                             onPress={() => {
@@ -156,19 +163,21 @@ class Messages extends Component {
                             title='New Message'
                         />
                     </View>
-                    <View>
-                        {myMessages.length > 0
-                            ? myMessages
-                            : (
-                                <View>
-                                    <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
-                                    <Text>
-                                        {'\n'}{'Start the ball rolling by sending one to your teammates.'}
-                                    </Text>
-                                </View>
-                            )}
-                    </View>
-                </ScrollView>
+                    <ScrollView style={styles.container}>
+                        <View>
+                            {myMessages.length > 0
+                                ? myMessages
+                                : (
+                                    <View>
+                                        <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
+                                        <Text>
+                                            {'\n'}{'Start the ball rolling by sending one to your team.'}
+                                        </Text>
+                                    </View>
+                                )}
+                        </View>
+                    </ScrollView>
+                </View>
             ) : (
                 <View style={styles.container}>
                     <Text style={styles.alertInfo}>
@@ -200,7 +209,8 @@ function mapStateToProps(state) {
         messages: state.messages.messages || {},
         messagesLoaded: state.messages.loaded,
         userHasTeams: Object.values(state.profile.teams || {}).length > 0,
-        teamsLoaded: state.messages.teamsLoaded
+        teamsLoaded: state.messages.teamsLoaded,
+        teams: state.teams.teams
     };
 }
 

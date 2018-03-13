@@ -160,10 +160,10 @@ class NewTeam extends Component {
     }
 
     findTown = query => {
-      if (query === '') {
-        return [];
-      }
-      return vermontTowns.filter(x => x.indexOf(query) > -1)
+        if (query === '') {
+            return [];
+        }
+        return vermontTowns.filter(x => x.indexOf(query) > -1);
     }
 
     render() {
@@ -183,154 +183,158 @@ class NewTeam extends Component {
         const startIsSelected = this.state.start === null;
 
         // Autocomplete
-        const { query, town } = this.state;
+        const {query} = this.state;
         const towns = this.findTown(query);
-        const comp = (a, b) => {a.toLowerCase().trim() === b.toLowerCase().trim()};
+        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
-          <KeyboardAvoidingView
-              style={styles.frame}
-              behavior='padding'
-          >
-            <ScrollView
-                automaticallyAdjustContentInsets={false}
-                scrollEventThrottle={200}
-                style={styles.scroll}
-                keyboardShouldPersistTaps={'always'}
-            >
-                <View style={styles.button}>
-                    <Button
-                        title='Save'
-                        onPress={this._createTeam}/>
+            <View style={styles.frame}>
+                <View style={{width: '100%', height: 60, marginTop: 15, backgroundColor: '#EEEEEE'}}>
+                    <View style={styles.buttonBar}>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                title='Save'
+                                onPress={this._createTeam}/>
+                        </View>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                title='Cancel'
+                                onPress={this._cancel}/>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.button}>
-                    <Button
-                        title='Cancel'
-                        onPress={this._cancel}/>
-                </View>
+                <KeyboardAvoidingView
+                    style={styles.frame}
+                    behavior='padding'
+                >
+                    <ScrollView
+                        automaticallyAdjustContentInsets={false}
+                        scrollEventThrottle={200}
+                        keyboardShouldPersistTaps={'always'}
+                    >
+                        <View>
+                            <Text style={styles.label}>Team Name</Text>
+                            <TextInput
+                                keyBoardType={'default'}
+                                onChangeText={this.setTeamValue('name')}
+                                placeholder={'Team Name'}
+                                style={styles.textInput}
+                                value={this.state.name}/>
+                        </View>
+                        <View style={{marginTop: 10}}>
+                            <SegmentedControls
+                                options={isPublicOptions}
+                                onSelection={this.setSelectedOption}
+                                selectedOption={this.state.isPublic}
+                                selectedTint={'#EFEFEF'} tint={'#666666'}
+                                extractText={(option) => option.label}
+                                testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+                        </View>
 
-                <View>
-                    <Text style={styles.label}>Team Name</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('name')}
-                        placeholder={'Team Name'}
-                        style={styles.textInput}
-                        value={this.state.name}/>
-                </View>
-                <View style={{marginTop: 10}}>
-                    <SegmentedControls
-                        options={isPublicOptions}
-                        onSelection={this.setSelectedOption}
-                        selectedOption={this.state.isPublic}
-                        selectedTint={'#EFEFEF'} tint={'#666666'}
-                        extractText={(option) => option.label}
-                        testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
-                </View>
-
-                <View style={{zIndex: 1}}>
-                    <Text style={styles.label}>Select Town/City</Text>
-                      <Autocomplete
-                          inputContainerStyle={{borderColor: '#000'}}
-                          data={query.length > 0 &&
+                        <View style={{zIndex: 1}}>
+                            <Text style={styles.label}>Select Town/City</Text>
+                            <Autocomplete
+                                inputContainerStyle={{borderColor: '#000'}}
+                                data={query.length > 0 &&
                                 comp(query, towns[0] || '') ? [] : towns}
-                          defaultValue={this.state.town || ''}
-                          onChangeText={text => this.setState({ query: text })}
-                          renderItem={town => (
-                            <TouchableOpacity
-                                style={styles.suggestion}
-                                onPress={() => {this.setState({ query: '', town: town });}}>
-                              <Text>{town}</Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                </View>
+                                defaultValue={this.state.town || ''}
+                                onChangeText={text => this.setState({query: text})}
+                                renderItem={town => (
+                                    <TouchableOpacity
+                                        style={styles.suggestion}
+                                        onPress={() => { this.setState({query: '', town: town}); }}>
+                                        <Text>{town}</Text>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        </View>
 
-                <View>
-                    <Text style={styles.label}>Clean Up Site</Text>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.setTeamValue('location')}
-                        placeholder={'Location'}
-                        style={styles.textInput}
-                        value={this.state.location}/>
-                </View>
+                        <View>
+                            <Text style={styles.label}>Clean Up Site</Text>
+                            <TextInput
+                                keyBoardType={'default'}
+                                onChangeText={this.setTeamValue('location')}
+                                placeholder={'Location'}
+                                style={styles.textInput}
+                                value={this.state.location}/>
+                        </View>
 
-                <View>
-                    <Text style={styles.alertInfo}>
+                        <View>
+                            <Text style={styles.alertInfo}>
                         May 5th is the official Green Up Day, but teams
                         may choose to work up to one week before or after.
-                    </Text>
-                    <Text style={styles.label}>Date</Text>
-                      <View>
-                          <TouchableOpacity onPress={this.showDatePicker}>
-                              <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
-                                  {this.state.date || 'Select a Date'}
-                              </Text>
-                          </TouchableOpacity>
-                          <DateTimePicker
-                              mode='date'
-                              date={new Date('5/5/2018')}
-                              minimumDate={new Date('4/28/2018')}
-                              maximumDate={new Date('5/13/2018')}
-                              isVisible={this.state.datePickerVisible}
-                              onConfirm={this._handleDatePicked}
-                              onCancel={this.hideDatePicker}
-                          />
-                      </View>
-                    </View>
-
-                    <View>
-                        <Text style={styles.label}>Start Time</Text>
-                        <View>
-                            <TouchableOpacity onPress={this.showStartDateTimePicker}>
-                                <Text style={[styles.textInput, startIsSelected && styles.selected]}>
-                                    {this.state.start || 'Select a Time'}
-                                </Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                mode='time'
-                                isVisible={this.state.startDateTimePickerVisible}
-                                onConfirm={this._handleStartDatePicked}
-                                onCancel={this.hideStartDateTimePicker}
-                                is24Hour={false}
-                            />
+                            </Text>
+                            <Text style={styles.label}>Date</Text>
+                            <View>
+                                <TouchableOpacity onPress={this.showDatePicker}>
+                                    <Text style={[styles.textInput, dateIsSelected && styles.selected]}>
+                                        {this.state.date || 'Select a Date'}
+                                    </Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    mode='date'
+                                    date={new Date('5/5/2018')}
+                                    minimumDate={new Date('4/28/2018')}
+                                    maximumDate={new Date('5/13/2018')}
+                                    isVisible={this.state.datePickerVisible}
+                                    onConfirm={this._handleDatePicked}
+                                    onCancel={this.hideDatePicker}
+                                />
+                            </View>
                         </View>
-                    </View>
 
-                    <View>
-                        <Text style={styles.label}>End Time</Text>
                         <View>
-                            <TouchableOpacity onPress={this.showEndDateTimePicker}>
-                                <Text style={[styles.textInput, endIsSelected && styles.selected]}>
-                                    {this.state.end || 'Select a Time'}
-                                </Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                mode='time'
-                                isVisible={this.state.endDateTimePickerVisible}
-                                onConfirm={this._handleEndDatePicked}
-                                onCancel={this.hideEndDateTimePicker}
-                                is24Hour={false}
-                            />
+                            <Text style={styles.label}>Start Time</Text>
+                            <View>
+                                <TouchableOpacity onPress={this.showStartDateTimePicker}>
+                                    <Text style={[styles.textInput, startIsSelected && styles.selected]}>
+                                        {this.state.start || 'Select a Time'}
+                                    </Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    mode='time'
+                                    isVisible={this.state.startDateTimePickerVisible}
+                                    onConfirm={this._handleStartDatePicked}
+                                    onCancel={this.hideStartDateTimePicker}
+                                    is24Hour={false}
+                                />
+                            </View>
                         </View>
-                    </View>
 
-                    <View>
-                        <Text style={styles.label}>Notes</Text>
-                        <TextInput
-                            keyBoardType={'default'}
-                            multiline={true}
-                            numberOfLines={20}
-                            textAlignVertical='top'
-                            onChangeText={this.setTeamValue('notes')}
-                            placeholder={'Notes'}
-                            style={styles.textArea}
-                            value={this.state.notes}/>
-                    </View>
+                        <View>
+                            <Text style={styles.label}>End Time</Text>
+                            <View>
+                                <TouchableOpacity onPress={this.showEndDateTimePicker}>
+                                    <Text style={[styles.textInput, endIsSelected && styles.selected]}>
+                                        {this.state.end || 'Select a Time'}
+                                    </Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    mode='time'
+                                    isVisible={this.state.endDateTimePickerVisible}
+                                    onConfirm={this._handleEndDatePicked}
+                                    onCancel={this.hideEndDateTimePicker}
+                                    is24Hour={false}
+                                />
+                            </View>
+                        </View>
 
-                </ScrollView>
-            </KeyboardAvoidingView>
+                        <View>
+                            <Text style={styles.label}>Notes</Text>
+                            <TextInput
+                                keyBoardType={'default'}
+                                multiline={true}
+                                numberOfLines={20}
+                                textAlignVertical='top'
+                                onChangeText={this.setTeamValue('notes')}
+                                placeholder={'Notes'}
+                                style={styles.textArea}
+                                value={this.state.notes}/>
+                        </View>
+
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
         );
     }
 }

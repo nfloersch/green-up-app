@@ -68,11 +68,11 @@ class TeamEditorMembers extends Component {
 
     inviteContacts = () => {
         this.props.screenProps.stacknav.navigate('InviteContacts');
-    }
+    };
 
     inviteForm = () => {
         this.props.screenProps.stacknav.navigate('InviteForm');
-    }
+    };
 
     getIconColor = status => {
         switch (status) {
@@ -101,7 +101,7 @@ class TeamEditorMembers extends Component {
                     color: 'black'
                 };
         }
-    }
+    };
 
     getStatusText = status => {
         switch (status) {
@@ -118,7 +118,8 @@ class TeamEditorMembers extends Component {
             default:
                 return '';
         }
-    }
+    };
+
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
             this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
@@ -155,23 +156,26 @@ class TeamEditorMembers extends Component {
         ));
 
         return (
-            <View style={styles.container}>
-                <View style={styles.button}>
-                    <Button
-                        onPress={this.inviteContacts}
-                        title='Invite from Contacts'/>
-                 </View>
-                 <View style={styles.button}>
-                    <Button
-                        style={styles.button}
-                        onPress={this.inviteForm}
-                        title='Invite by Email'/>
+
+            <View style={styles.frame}>
+                <View style={{width: '100%', height: 60}}>
+                    <View style={styles.buttonBar}>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                style={styles.button}
+                                onPress={this.inviteForm}
+                                title='Invite A Friend'/>
+                        </View>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                onPress={this.inviteContacts}
+                                title='From Contacts'/>
+                        </View>
+                    </View>
                 </View>
-                <View>
-                    <ScrollView>
-                        {memberButtons}
-                    </ScrollView>
-                </View>
+                <ScrollView style={styles.container}>
+                    {memberButtons}
+                </ScrollView>
             </View>
         );
     }

@@ -173,22 +173,25 @@ class MyTeams extends Component {
                 </TouchableHighlight>
             ));
         return (
-            <View style={styles.container}>
-                <ScrollView style={{flex: 1}}>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={() => {
-                                this.props.navigation.navigate('TeamSearch');
-                            }}
-                            title='Search Teams'/>
+            <View style={styles.frame}>
+                <View style={{width: '100%', height: 60}}>
+                    <View style={styles.buttonBar}>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                onPress={() => {
+                                    this.props.navigation.navigate('TeamSearch');
+                                }}
+                                title='Search Teams'/>
+                        </View>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                onPress={this.toNewTeamEditor}
+                                title='New Team'/>
+                        </View>
                     </View>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={this.toNewTeamEditor}
-                            title='New Team'/>
-                    </View>
+                </View>
+                <ScrollView style={styles.container}>
                     <View>
-                        <Text style={styles.heading}>My Teams</Text>
                         {myTeams}
                     </View>
                 </ScrollView>

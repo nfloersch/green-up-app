@@ -1,6 +1,19 @@
 const alertFontSize = 12;
 
 export const defaultStyles = {
+    alertInfo: {
+        fontSize: alertFontSize,
+        color: '#004085',
+        backgroundColor: '#cce5ff',
+        borderColor: '#b8daff',
+        padding: 3,
+        marginBottom: 5,
+        marginTop: 5,
+        borderWidth: 1,
+        borderRadius: 5,
+        overflow: 'hidden',
+        textAlign: 'center'
+    },
     alertSuccess: {
         fontSize: alertFontSize,
         color: '#155724',
@@ -31,13 +44,23 @@ export const defaultStyles = {
         marginTop: 10,
         marginBottom: 10
     },
+    buttonBar: {
+        width: '100%',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    buttonBarButton: {
+        width: '48%',
+        marginTop: 10
+    },
     buttonRow: {
         width: '100%',
+        flex: 1,
         flexDirection: 'row',
-        paddingTop: 15,
-        justifyContent: 'space-around'
-
+        justifyContent: 'space-between'
     },
+
     container: {
         flex: 1,
         alignContent: 'space-around',
@@ -47,40 +70,14 @@ export const defaultStyles = {
         borderRightWidth: 20,
         borderTopWidth: 10
     },
-    textArea: {
-        borderColor: '#000',
-        borderWidth: 1,
-        padding: 5,
-        height: 250,
-        justifyContent: 'flex-start'
-    },
-    textInput: {
-        borderColor: '#000',
-        borderWidth: 1,
-        height: 40,
-        padding: 5,
-        textAlign: 'left',
-        lineHeight: 25
+    data: {
+        fontWeight: 'bold'
     },
     fieldset: {
         borderWidth: 2,
         borderColor: '#000',
         borderRadius: 5,
         padding: 5
-    },
-    // Twitter Bootstrap alert styles
-    alertInfo: {
-        fontSize: alertFontSize,
-        color: '#004085',
-        backgroundColor: '#cce5ff',
-        borderColor: '#b8daff',
-        padding: 3,
-        marginBottom: 5,
-        marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 5,
-        overflow: 'hidden',
-        textAlign: 'center'
     },
     frame: {
         height: '100%',
@@ -102,23 +99,8 @@ export const defaultStyles = {
         marginTop: 5
     },
     largeText: {
-        marginTop:5,
+        marginTop: 5,
         fontSize: 20
-    },
-    data: {
-        fontWeight: 'bold'
-    },
-    searchResultsTitle: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
-    searchResult: {
-        marginTop: 2,
-        borderWidth: 1,
-        borderColor: '#000',
-        padding: 5,
-        backgroundColor: 'darkseagreen'
     },
     padForIOSKeyboard: {height: 80},
     padForIOSKeyboardBig: {height: 150},
@@ -136,13 +118,40 @@ export const defaultStyles = {
         fontSize: 20
     },
     scroll: {
-      marginBottom: 10
+        marginBottom: 10
+    },
+    searchResultsTitle: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
+    },
+    searchResult: {
+        marginTop: 2,
+        borderWidth: 1,
+        borderColor: '#000',
+        padding: 5,
+        backgroundColor: 'darkseagreen'
     },
     suggestion: {
-      paddingTop: 10,
-      paddingBottom: 10,
-      paddingLeft: 5,
-      borderColor: '#ABABAB',
-      borderBottomWidth: 1
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 5,
+        borderColor: '#ABABAB',
+        borderBottomWidth: 1
+    },
+    textArea: {
+        borderColor: '#000',
+        borderWidth: 1,
+        padding: 5,
+        height: 250,
+        justifyContent: 'flex-start'
+    },
+    textInput: {
+        borderColor: '#000',
+        borderWidth: 1,
+        height: 40,
+        padding: 5,
+        textAlign: 'left',
+        lineHeight: 25
     }
 };
