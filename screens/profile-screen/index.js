@@ -82,64 +82,71 @@ class Profile extends Component {
         const avatar = profile.photoURL;
 
         return (
-            <KeyboardAvoidingView
-                style={defaultStyles.frame}
-                behavior='padding'
-            >
-                <ScrollView style={styles.container}>
-                    <View style={styles.profileHeader}>
-                        <Image
-                            style={{width: 50, height: 50}}
-                            source={{uri: avatar}}
-                        />
-                        <Text style={[styles.profileName, styles.heading]}>
-                            {this.state.displayName || ''}
-                        </Text>
+
+            <View style={styles.frame}>
+                <View style={{width: '100%', height: 60}}>
+                    <View style={styles.buttonBar}>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                title='Save Profile'
+                                onPress={this._saveProfile}/>
+                        </View>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                title='Cancel'
+                                onPress={this._cancel}/>
+                        </View>
                     </View>
-                    <View>
-                        <Text style={styles.label}>{'My Name'}</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            keyBoardType={'default'}
-                            multiline={false}
-                            numberOfLines={1}
-                            onChangeText={this._changeText('displayName')}
-                            placeholder={'Your name'}
-                            value={this.state.displayName}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.label}>About Me</Text>
-                        <TextInput
-                            style={[styles.textInput, styles.aboutMeInput]}
-                            keyBoardType={'default'}
-                            multiline={true}
-                            numberOfLines={5}
-                            maxLength={144}
-                            onChangeText={this._changeText('bio')}
-                            placeholder={'Maximum of 144 characters'}
-                            value={this.state.bio}
-                        />
-                    </View>
-                    <View>
-                      <View style={styles.button}>
-                        <Button
-                            title='Save Profile'
-                            onPress={this._saveProfile}/>
-                      </View>
-                      <View style={styles.button}>
-                          <Button
-                              title='Cancel'
-                              onPress={this._cancel}/>
-                      </View>
-                    </View>
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                            : null
-                    }
-                </ScrollView>
-            </KeyboardAvoidingView>
+                </View>
+
+
+                <KeyboardAvoidingView
+                    style={defaultStyles.frame}
+                    behavior='padding'
+                >
+                    <ScrollView style={styles.container}>
+                        <View style={styles.profileHeader}>
+                            <Image
+                                style={{width: 50, height: 50}}
+                                source={{uri: avatar}}
+                            />
+                            <Text style={[styles.profileName, styles.heading]}>
+                                {this.state.displayName || ''}
+                            </Text>
+                        </View>
+                        <View>
+                            <Text style={styles.label}>{'My Name'}</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                keyBoardType={'default'}
+                                multiline={false}
+                                numberOfLines={1}
+                                onChangeText={this._changeText('displayName')}
+                                placeholder={'Your name'}
+                                value={this.state.displayName}
+                            />
+                        </View>
+                        <View>
+                            <Text style={styles.label}>About Me</Text>
+                            <TextInput
+                                style={[styles.textInput, styles.aboutMeInput]}
+                                keyBoardType={'default'}
+                                multiline={true}
+                                numberOfLines={5}
+                                maxLength={144}
+                                onChangeText={this._changeText('bio')}
+                                placeholder={'Maximum of 144 characters'}
+                                value={this.state.bio}
+                            />
+                        </View>
+                        {
+                            Platform.OS === 'ios'
+                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                                : null
+                        }
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
         );
 
     }

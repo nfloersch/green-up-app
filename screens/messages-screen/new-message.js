@@ -106,64 +106,68 @@ class NewMessage extends Component {
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
         const teamValue = this.state.selectedTeamId || selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
-
-
         return (
-            <KeyboardAvoidingView
-                style={defaultStyles.frame}
-                behavior='padding'
-            >
-                <ScrollView style={styles.container}>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={this.sendMessage}
-                            title='Send Message'
-                        />
+            <View style={styles.frame}>
+                <View style={{width: '100%', height: 60}}>
+                    <View style={styles.buttonBar}>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                onPress={this.sendMessage}
+                                title='Send Message'
+                            />
+                        </View>
+                        <View style={styles.buttonBarButton}>
+                            <Button
+                                onPress={this.cancelMessage}
+                                title='Cancel'
+                            />
+                        </View>
                     </View>
-                    <View style={styles.button}>
-                        <Button
-                            onPress={this.cancelMessage}
-                            title='Cancel'
-                        />
-                    </View>
-                    {
-                        !selectedTeamId ? (
-                            <View>
-                                <Text style={styles.label}>Select Team to Message:</Text>
-                                <Picker
-                                    style={styles.button}
-                                    itemStyle={{height: 45}}
-                                    selectedValue={teamValue}
-                                    onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
-                                    {items}
-                                </Picker>
-                            </View>
-                        ) : (
-                            <View>
-                                <Text style={styles.label}>Send a Message To</Text>
-                                <Text style={styles.largeText}>{teamName}</Text>
-                            </View>
-                        )
-                    }
-                    <View>
-                        <TextInput
-                            keyBoardType={'default'}
-                            multiline={true}
-                            textAlignVertical='top'
-                            numberOfLines={20}
-                            onChangeText={this.changeText}
-                            placeholder={'Message details'}
-                            value={this.state.text}
-                            style={styles.textArea}
-                        />
-                    </View>
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                            : null
-                    }
-                </ScrollView>
-            </KeyboardAvoidingView>
+                </View>
+                <KeyboardAvoidingView
+                    style={defaultStyles.frame}
+                    behavior='padding'
+                >
+                    <ScrollView style={styles.container}>
+                        {
+                            !selectedTeamId ? (
+                                <View>
+                                    <Text style={styles.label}>Select Team to Message:</Text>
+                                    <Picker
+                                        style={styles.button}
+                                        itemStyle={{height: 45}}
+                                        selectedValue={teamValue}
+                                        onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
+                                        {items}
+                                    </Picker>
+                                </View>
+                            ) : (
+                                <View>
+                                    <Text style={styles.label}>Send a Message To</Text>
+                                    <Text style={styles.largeText}>{teamName}</Text>
+                                </View>
+                            )
+                        }
+                        <View>
+                            <TextInput
+                                keyBoardType={'default'}
+                                multiline={true}
+                                textAlignVertical='top'
+                                numberOfLines={20}
+                                onChangeText={this.changeText}
+                                placeholder={'Message details'}
+                                value={this.state.text}
+                                style={styles.textArea}
+                            />
+                        </View>
+                        {
+                            Platform.OS === 'ios'
+                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                                : null
+                        }
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
         );
     }
 }

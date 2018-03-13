@@ -60,52 +60,56 @@ class InviteForm extends Component {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
         const emailIsInvalid = !email(this.state.email) || isInTeam(teamMembers, this.state.email);
         return (
-            <KeyboardAvoidingView
-                style={styles.frame}
-                behavior='padding'
-            >
-                <ScrollView style={styles.container}>
-                    <Text style={styles.label}>
-                        Invitee&apos;s Email
-                    </Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder='john@example.com'
-                        value={this.state.email}
-                        onChangeText={this.changeInvitee('email')}
-                    />
-                    <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
-                    <Text style={styles.label}>
-                        First Name
-                    </Text>
-                    <TextInput
-                        style={styles.textInput}
-                        value={this.state.firstName}
-                        onChangeText={this.changeInvitee('firstName')}
-                        placeholder='First'
-                    />
-                    <Text style={styles.label}>
-                        Last Name
-                    </Text>
-                    <TextInput
-                        style={styles.textInput}
-                        value={this.state.lastName}
-                        onChangeText={this.changeInvitee('lastName')}
-                        placeholder='Last'
-                    />
-                    <View style={styles.button}>
-                        <Button
-                            disabled={emailIsInvalid}
-                            onPress={this.inviteToTeam}
-                            title='Invite to Team'/>
-                    </View>
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboard}/>)
-                            : null
-                    }
-                </ScrollView>
-            </KeyboardAvoidingView>
+
+            <View style={styles.frame}>
+                <View style={styles.button}>
+                    <Button
+                        disabled={emailIsInvalid}
+                        onPress={this.inviteToTeam}
+                        title='Invite to Team'/>
+                </View>
+                <KeyboardAvoidingView
+                    style={styles.frame}
+                    behavior='padding'
+                >
+                    <ScrollView style={styles.container}>
+                        <Text style={styles.label}>
+                            Invitee&apos;s Email
+                        </Text>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder='john@example.com'
+                            value={this.state.email}
+                            onChangeText={this.changeInvitee('email')}
+                        />
+                        <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
+                        <Text style={styles.label}>
+                            First Name
+                        </Text>
+                        <TextInput
+                            style={styles.textInput}
+                            value={this.state.firstName}
+                            onChangeText={this.changeInvitee('firstName')}
+                            placeholder='First'
+                        />
+                        <Text style={styles.label}>
+                            Last Name
+                        </Text>
+                        <TextInput
+                            style={styles.textInput}
+                            value={this.state.lastName}
+                            onChangeText={this.changeInvitee('lastName')}
+                            placeholder='Last'
+                        />
+
+                        {
+                            Platform.OS === 'ios'
+                                ? (<View style={defaultStyles.padForIOSKeyboard}/>)
+                                : null
+                        }
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </View>
         );
     }
 }

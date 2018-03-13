@@ -156,7 +156,6 @@ class TeamEditorMembers extends Component {
         ));
 
         return (
-
             <View style={styles.frame}>
                 <View style={{width: '100%', height: 60}}>
                     <View style={styles.buttonBar}>
