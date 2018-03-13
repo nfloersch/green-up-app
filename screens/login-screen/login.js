@@ -87,8 +87,21 @@ class Login extends Component {
                 ],
                 {cancelable: false}
             );
+
         }
     }
+
+
+    googleLogin = () => {
+        this.props.actions.isLoggingInViaSSO(true);
+        return this.props.actions.googleLogin();
+    };
+
+
+    facebookLogin = () => {
+        this.props.actions.isLoggingInViaSSO(true);
+        return this.props.actions.facebookLogin();
+    };
 
     render() {
         return (
@@ -112,7 +125,7 @@ class Login extends Component {
                         </TouchableHighlight>
                         <TouchableHighlight
                             style={styles.socialLoginButton}
-                            onPress={() => this.props.actions.googleLogin()}>
+                            onPress={this.googleLogin}>
                             <View style={styles.socialLogin}>
                                 <Image source={googleLogo} style={styles.logos}/>
                                 <Text style={styles.socialLoginText}>Log in with Google</Text>
@@ -120,7 +133,7 @@ class Login extends Component {
                         </TouchableHighlight>
                         <TouchableHighlight
                             style={styles.socialLoginButton}
-                            onPress={() => this.props.actions.facebookLogin()}>
+                            onPress={this.facebookLogin}>
                             <View style={styles.socialLogin}>
                                 <Image source={facebookLogo} style={styles.logos}/>
                                 <Text style={styles.socialLoginText}>Log in with Facebook</Text>

@@ -8,6 +8,7 @@ export function reducers(state = initialState.login, action) {
                 ...state,
                 userIsLoggedIn: true,
                 user: action.user,
+                loginError: null,
                 creatingUser: false
             };
         case types.LOGIN_FAIL:

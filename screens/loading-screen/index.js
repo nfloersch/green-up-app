@@ -11,8 +11,9 @@ import LoginScreen from '../login-screen/';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
-import {Platform, StatusBar, StyleSheet, View, Text} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
+import PleaseWait from './please-wait';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,6 +31,7 @@ class LoadingScreen extends Component {
     static propTypes = {
         isLoadingComplete: PropTypes.bool,
         isInitialAuthChecked: PropTypes.bool,
+        isLoggingInViaSSO: PropTypes.bool,
         actions: PropTypes.object,
         skipLoadingScreen: PropTypes.bool,
         userIsLoggedIn: PropTypes.bool
@@ -88,7 +90,7 @@ class LoadingScreen extends Component {
                 );
             case (this.props.isLoggingInViaSSO):
                 return (
-                    <Text>LOADING</Text>
+                    <PleaseWait/>
                 );
             case (!this.props.userIsLoggedIn) :
                 return (
@@ -111,7 +113,7 @@ function mapStateToProps(state) {
     return {
         isLoadingComplete: state.loading.isLoadingComplete,
         initialAuthChecked: state.login.initialAuthChecked,
-        isLoggingIn : state.login.isLoggingIn,
+        isLoggingInViaSSO : state.login.isLoggingInViaSSO,
         skipLoadingScreen: state.loading.skipLoadingScreen,
         userIsLoggedIn: state.login.userIsLoggedIn
     };

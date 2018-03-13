@@ -19,3 +19,7 @@ export function loadingCompleted() {
 export function initialize() {
     return (dispatch: Object => any) => firebaseDataLayer.initialize(dispatch);
 }
+
+export function isLoggingInViaSSO(_isLoggingInViaSSO: Boolean) {
+    return {type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO};
+}
