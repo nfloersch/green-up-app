@@ -5,13 +5,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, ScrollView, View} from 'react-native';
+import {StyleSheet, Image, Text, ScrollView, View} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {messageHeader: {margin: 10}};
+const myStyles = {messageHeader: {margin: 5}};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -44,10 +44,19 @@ class MessageDetails extends Component {
                         <View style={{flex: 1}}>
                             <View style={{
                                 borderBottomColor: '#CCC',
-                                borderBottomWidth: 1
+                                borderBottomWidth: 1,
+                                height: 70
                             }}>
-                                <Text style={styles.messageHeader}>{`From : ${message.sender.displayName}`}</Text>
-                                <Text style={styles.messageHeader}>{`To: ${team.name}`}</Text>
+                                <View style={{flex: 1, flexDirection: 'row', padding: 10}}>
+                                    <Image
+                                        style={{width: 50, height: 50, marginRight: 10}}
+                                        source={{uri: message.sender.photoURL}}
+                                    />
+                                    <View>
+                                        <Text style={styles.messageHeader}>{`From : ${message.sender.displayName}`}</Text>
+                                        <Text style={styles.messageHeader}>{`To: ${team.name}`}</Text>
+                                    </View>
+                                </View>
                             </View>
                             <ScrollView style={{
                                 padding: 10
