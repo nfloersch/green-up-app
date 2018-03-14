@@ -6,11 +6,15 @@ import {
     Button,
     StyleSheet,
     View,
-    ScrollView
+    ScrollView,
+    TouchableHighlight,
+    Text,
+    CheckBox,
+    Platform
 } from 'react-native';
-import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import IOSCheckBox from 'react-native-checkbox';
 
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
@@ -89,6 +93,7 @@ class InviteContacts extends Component {
     }
 
     render() {
+        const selected = this.state.selectedContacts || [];
         const myContacts = this.state.contacts
             .filter(contact => validators.email(contact.email) && !validators.isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
             .sort((a, b) => {
@@ -106,12 +111,33 @@ class InviteContacts extends Component {
                 }
             }).map(
                 (contact) => (
-                    <CheckBox
-                        checked={this.state.selectedContacts.indexOf(contact.email) > -1}
-                        key={contact.email}
-                        label={getDisplayName(contact)}
-                        onChange={this.toggleContact(contact.email)}
-                    />
+                    (Platform.OS === 'ios')
+                        ? (
+                            <View key={contact.email}>
+                            <IOSCheckBox
+                                checked={(selected.indexOf(contact.email) > -1)}
+                                label={getDisplayName(contact)}
+                                onChange={this.toggleContact(contact.email)}
+                            />
+                            </View>
+                        )
+                        : (<TouchableHighlight key={contact.email} onPress={this.toggleContact(contact.email)}>
+                            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
+                                <CheckBox
+                                    style={{
+                                        height: 18,
+                                        width: 18,
+                                        borderColor: '#CCC',
+                                        borderWidth: 1,
+                                        borderStyle: 'solid',
+                                        marginRight: 5,
+                                        marginTop: 2
+                                    }}
+                                    value={(selected.indexOf(contact.email) > -1)}
+                                />
+                                <Text style={{fontSize: 20}}>{getDisplayName(contact)}</Text>
+                            </View>
+                        </TouchableHighlight>)
                 )
             );
 
