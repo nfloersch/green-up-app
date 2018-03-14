@@ -13,7 +13,7 @@ import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
-import PleaseWait from './please-wait';
+import ThinkingGreenThoughts from './thinking-green-thoughts';
 
 const styles = StyleSheet.create({
     container: {
@@ -90,11 +90,11 @@ class LoadingScreen extends Component {
                 );
             case (this.props.isLoggingInViaSSO):
                 return (
-                    <PleaseWait/>
+                    <ThinkingGreenThoughts/>
                 );
             case (!this.props.initialAuthChecked):
                 return (
-                    <PleaseWait/>
+                    <ThinkingGreenThoughts/>
                 );
             case (!this.props.userIsLoggedIn) :
                 return (

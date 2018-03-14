@@ -32,7 +32,7 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class PleaseWait extends Component {
+class ThinkingGreenThoughts extends Component {
 
     static propTypes = {
         actions: PropTypes.object,
@@ -70,7 +70,7 @@ class PleaseWait extends Component {
                     <Image source={logo} style={{height: 120, width: 120}}/>
                 </View>
                 <View style={{width: '100%'}}>
-                    <Text style={styles.linkText}>{'Thinking deep thoughts...'}</Text>
+                    <Text style={styles.linkText}>{'Thinking green thoughts...'}</Text>
                 </View>
             </ScrollView>
         );
@@ -87,4 +87,4 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PleaseWait);
+export default connect(mapStateToProps, mapDispatchToProps)(ThinkingGreenThoughts);

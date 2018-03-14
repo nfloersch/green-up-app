@@ -32,7 +32,7 @@ function getDisplayName(contact) {
 
 function _inviteToTeam() {
     const teamMembers = this.state.contacts
-        .filter(contact => this.state.selectedContacts.indexOf(contact.email) > -1)
+        .filter(c => c.isSelected)
         .map(contact => TeamMember.create(Object.assign({}, contact, {
             displayName: `${contact.firstName} ${contact.lastName}`,
             memberStatus: TeamMember.memberStatuses.INVITED
@@ -60,7 +60,7 @@ class InviteContacts extends Component {
         this.toggleContact = this.toggleContact.bind(this);
         this.inviteToTeam = _inviteToTeam.bind(this);
         this.state = {
-            contacts: [], selectedContacts: []
+            contacts: []
         };
     }
 
@@ -80,11 +80,13 @@ class InviteContacts extends Component {
         });
     }
 
-    toggleContact(email) {
+    toggleContact(contact) {
         return () => {
-            const emails = this.state.selectedContacts || [];
-            const newContacts = (emails.indexOf(email) > -1) ? emails.filter(_email => _email !== email) : emails.concat(email);
-            this.setState({selectedContacts: newContacts});
+            const newContact = Object.assign({}, contact, {
+                isSelected: !contact.isSelected
+            });
+            const newContacts = this.state.contacts.filter(cntct => (cntct.email !== newContact.email)).concat(newContact);
+            this.setState({contacts: newContacts});
         };
     }
 
@@ -105,12 +107,12 @@ class InviteContacts extends Component {
                         return 0;
                 }
             }).map(
-                (contact) => (
+                (contact, i) => (
                     <CheckBox
-                        checked={this.state.selectedContacts.indexOf(contact.email) > -1}
-                        key={contact.email}
+                        checked={contact.isSelected}
+                        key={i}
                         label={getDisplayName(contact)}
-                        onChange={this.toggleContact(contact.email)}
+                        onChange={this.toggleContact(contact)}
                     />
                 )
             );

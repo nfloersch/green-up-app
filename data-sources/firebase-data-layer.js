@@ -121,36 +121,6 @@ async function initialize(dispatch) {
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
-    // const teams = firebase.database().ref('teams/');
-    //
-    // teams.on('value', (snapshot) => {
-    //    dispatch(dataLayerActions.teamFetchSuccessful(snapshot.val()));
-    // });
-
-    // const trashDrops = firebase.database().ref('trashDrops/');
-    //
-    // await trashDrops.on('value', (snapshot) => {
-    //     dispatch(dataLayerActions.trashDropFetchSuccessful(snapshot.val()));
-    // });
-
-
-    /** end Listeners **/
-
-
-// await firebase.getCurrentUser(
-//     (user) => {
-//         if (!!user) {
-//             console.log('We are authenticated now!'); // eslint-disable-line
-//             dispatch(dataLayerActions.userAuthenticated(User.create(user)));
-//             setupMessageListener(user.uid, dispatch);
-//
-//         } else {
-//             console.log('We are not logged in'); // eslint-disable-line
-//             dispatch(dataLayerActions.userFailedAuthentication());
-//         }
-//     }
-// );
-
 }
 
 async function facebookAuth(token) {

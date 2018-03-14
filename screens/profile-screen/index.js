@@ -148,7 +148,6 @@ class Profile extends Component {
                 </KeyboardAvoidingView>
             </View>
         );
-
     }
 }
 

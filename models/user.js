@@ -1,6 +1,7 @@
 // @flow
 
 import {isDate} from '../libs/isDate';
+import md5 from 'md5-hash';
 
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
 
@@ -37,7 +38,7 @@ export class User {
         this.teams = args.teams || {};
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
-            : defaultAvatar;
+            : !args.email ? defaultAvatar : `https://www.gravatar.com/avatar/${md5(args.email.trim().toLowerCase())}?d=mm`;
     }
     static create(args) {
         return new User(args);
