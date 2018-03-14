@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
@@ -50,7 +50,8 @@ class Messages extends Component {
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
         teamsLoaded: PropTypes.bool,
-        messagesLoaded: PropTypes.bool
+        messagesLoaded: PropTypes.bool,
+        teams: PropTypes.object
     };
 
     static navigationOptions = {
@@ -128,28 +129,37 @@ class Messages extends Component {
             ));
             const myMessages = sortedKeys.map(key =>
                 (
-                    <View key={key}>
-                        <TouchableHighlight onPress={this.toMessageDetail(messages[key])}>
-                            <View style={[styles.message,
-                                messages[key].read
-                                    ? styles.read : styles.unread]}>
-                                <Text style={{
-                                    fontSize: 10,
-                                    textAlign: 'left'
-                                }}>{(this.props.teams[messages[key].teamId] || {}).name || ''} :</Text>
-                                <Text style={messages[key].read
-                                    ? styles.oldMsg : styles.newMsg}>
-                                    {messages[key].text.length > 80
-                                        ? `${messages[key].text.slice(0, 80)}...`
-                                        : messages[key].text}
-                                </Text>
-                                <Text style={{
-                                    fontSize: 10,
-                                    textAlign: 'right'
-                                }}>--{messages[key].sender.displayName || messages[key].sender.email}</Text>
+                    <TouchableHighlight key={key} onPress={this.toMessageDetail(messages[key])}>
+                        <View style={[styles.message,
+                            messages[key].read
+                                ? styles.read : styles.unread]}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Image
+                                    style={{width: 50, height: 50, marginRight: 10}}
+                                    source={{uri: messages[key].sender.photoURL}}
+                                />
+                                <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+                                    <Text style={{
+                                        fontSize: 10,
+                                        textAlign: 'left'
+                                    }}
+                                    >
+                                        {`${(this.props.teams[messages[key].teamId] || {}).name || ''} :`}
+                                    </Text>
+                                    <Text style={messages[key].read
+                                        ? styles.oldMsg : styles.newMsg}>
+                                        {messages[key].text.length > 80
+                                            ? `${messages[key].text.slice(0, 80)}...`
+                                            : messages[key].text}
+                                    </Text>
+                                    <Text style={{
+                                        fontSize: 10,
+                                        textAlign: 'right'
+                                    }}>--{messages[key].sender.displayName || messages[key].sender.email}</Text>
+                                </View>
                             </View>
-                        </TouchableHighlight>
-                    </View>
+                        </View>
+                    </TouchableHighlight>
                 )
             );
 
@@ -171,7 +181,7 @@ class Messages extends Component {
                                     <View>
                                         <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
                                         <Text>
-                                            {'\n'}{'Start the ball rolling by sending one to your team.'}
+                                            {'\n'}{'Kick things off by messaging your team.'}
                                         </Text>
                                     </View>
                                 )}
