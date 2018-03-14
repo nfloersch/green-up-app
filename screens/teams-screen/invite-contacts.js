@@ -114,11 +114,11 @@ class InviteContacts extends Component {
                     (Platform.OS === 'ios')
                         ? (
                             <View key={contact.email}>
-                            <IOSCheckBox
-                                checked={(selected.indexOf(contact.email) > -1)}
-                                label={getDisplayName(contact)}
-                                onChange={this.toggleContact(contact.email)}
-                            />
+                                <IOSCheckBox
+                                    checked={(selected.indexOf(contact.email) > -1)}
+                                    label={getDisplayName(contact)}
+                                    onChange={this.toggleContact(contact.email)}
+                                />
                             </View>
                         )
                         : (<TouchableHighlight key={contact.email} onPress={this.toggleContact(contact.email)}>
