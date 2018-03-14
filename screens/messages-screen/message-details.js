@@ -5,13 +5,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import * as actions from './actions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {};
+const myStyles = {messageHeader: {margin: 10}};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -35,29 +35,25 @@ class MessageDetails extends Component {
     render() {
         const message = this.props.messages[this.props.navigation.state.params.messageId];
         const teamId = message.teamId;
-        const team = Object.values(this.props.teams[teamId] || [])
+        const team = this.props.teams[teamId] || {};
         return (
-            <View style={styles.container}>
+            <View style={styles.frame}>
                 {!message
                     ? (<Text>{message || 'Oops, sorry.  We could not find that message'}</Text>)
                     : (
-                        <View style={{alignSelf: 'flex-start'}}>
-                          <Text style={styles.dataBlock}>
-                            <Text style={styles.label}>{'From: '}</Text>
-                            <Text style={styles.data}>
-                              {message.sender.displayName}
-                            </Text>
-                          </Text>
-                          <Text style={styles.dataBlock}>
-                            <Text style={styles.label}>{'Team: '}</Text>
-                            <Text style={styles.data}>
-                              {team.name}
-                            </Text>
-                          </Text>
-                          <Text style={styles.dataBlock}>
-                            <Text style={styles.label}>{'Message: '}</Text>
-                            <Text style={styles.data}>{message.text}</Text>
-                          </Text>
+                        <View style={{flex: 1}}>
+                            <View style={{
+                                borderBottomColor: '#CCC',
+                                borderBottomWidth: 1
+                            }}>
+                                <Text style={styles.messageHeader}>{`From : ${message.sender.displayName}`}</Text>
+                                <Text style={styles.messageHeader}>{`To: ${team.name}`}</Text>
+                            </View>
+                            <ScrollView style={{
+                                padding: 10
+                            }}>
+                                <Text style={styles.data}>{message.text}</Text>
+                            </ScrollView>
                         </View>
                     )
                 }
