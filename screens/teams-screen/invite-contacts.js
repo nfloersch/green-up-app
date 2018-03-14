@@ -123,19 +123,8 @@ class InviteContacts extends Component {
                         )
                         : (<TouchableHighlight key={contact.email} onPress={this.toggleContact(contact.email)}>
                             <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
-                                <CheckBox
-                                    style={{
-                                        height: 18,
-                                        width: 18,
-                                        borderColor: '#CCC',
-                                        borderWidth: 1,
-                                        borderStyle: 'solid',
-                                        marginRight: 5,
-                                        marginTop: 2
-                                    }}
-                                    value={(selected.indexOf(contact.email) > -1)}
-                                />
-                                <Text style={{fontSize: 20}}>{getDisplayName(contact)}</Text>
+                                <CheckBox value={(selected.indexOf(contact.email) > -1)}/>
+                                <Text style={{fontSize: 20, marginLeft: 10}}>{getDisplayName(contact)}</Text>
                             </View>
                         </TouchableHighlight>)
                 )
