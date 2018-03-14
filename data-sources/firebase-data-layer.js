@@ -82,13 +82,6 @@ function setupTrashDropListener(dispatch) {
     });
 }
 
-function setupTownDataListener(dispatch) {
-    const townData = firebase.database().ref('townData');
-    townData.on('value', (snapshot) => {
-        dispatch(dataLayerActions.townDataFetchSuccessful(snapshot.val()));
-    });
-}
-
 function setupInvitationListener(email, dispatch) {
     const db = firebase.database();
     const membershipId = email.toLowerCase().replace(/\./g, ':');
@@ -114,8 +107,12 @@ async function initialize(dispatch) {
                 setupProfileListener(user.uid, dispatch);
                 setupTeamListener(dispatch);
                 setupTrashDropListener(dispatch);
-                setupTownDataListener(dispatch);
                 setupInvitationListener(user.email, dispatch);
+                // Get Town Data
+                const townData = firebase.database().ref('townData');
+                townData.once('value', (snapshot) => {
+                    dispatch(dataLayerActions.townDataFetchSuccessful(snapshot.val()));
+                });
             } else {
                 console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
@@ -290,7 +287,7 @@ function updateProfile(profile: Object, teamMembers: Object) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     const profileUpdate = db.ref(`profiles/${profile.uid}`).set(newProfile);
     const teamUpdates = Object.keys(teamMembers).map(key => {
-        const oldTeamMember = teamMembers[key][membershipKey];
+        const oldTeamMember = (teamMembers[key] || {})[membershipKey] || {};
         const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
         return db.ref(`teamMembers/${key}/${membershipKey}`).set(newTeamMember);
     });

@@ -82,15 +82,17 @@ const mailTransport = nodemailer.createTransport({
 const APP_NAME = 'Green Up Vermont';
 
 // Sends a welcome email to the given user.
-function sendInvitationEmail(email, displayName) {
+function sendInvitationEmail(email, displayName, sender) {
     const mailOptions = {
         from: `${APP_NAME} <noreply@firebase.com>`,
         to: email
     };
-
+    const noNameText = 'A friend has invited you to participate in Green Up Day';
+    const withNameText = `Hey ${displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
+    const linkText = 'Download the official Green Up Day Vermont app from your app store';
     // The user subscribed to the newsletter.
     mailOptions.subject = `Welcome to ${APP_NAME}!`;
-    mailOptions.text = `Hey ${displayName || ''}! You've been invited to participate in Green Up Day.`;
+    mailOptions.text = `${!sender || !displayName ? noNameText : withNameText}\n${linkText}`;
     return mailTransport.sendMail(mailOptions).then(() => console.log('New welcome email sent to:', email));
 }
 
@@ -103,8 +105,8 @@ exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invit
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
     const email = teamMember.email.toLowerCase();
-
-    sendInvitationEmail(email, invitation.displayName);
+    const sender = invitation.sender.displayName;
+    sendInvitationEmail(email, invitation.displayName, sender);
 });
 
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
