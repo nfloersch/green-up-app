@@ -82,7 +82,7 @@ class TeamSearch extends Component {
             .filter(score => (score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
-        //eliminate dupes
+        // eliminate dupes
         const searchResults = Array.from(new Set(_searchResults));
         this.setState({searchResults, searchTerm});
     }
@@ -121,6 +121,7 @@ class TeamSearch extends Component {
                         placeholder={'Search by Team Name or City/Town'}
                         style={styles.textInput}
                         value={this.state.searchTerm}
+                        underlineColorAndroid={'transparent'}
                     />
                 </View>
                 <ScrollView style={styles.scrollview}>

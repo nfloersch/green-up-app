@@ -200,7 +200,9 @@ class TeamEditorDetails extends Component {
                             onChangeText={this.setTeamValue('name')}
                             placeholder={'Team Name'}
                             style={styles.textInput}
-                            value={selectedTeam.name}/>
+                            value={selectedTeam.name}
+                            underlineColorAndroid={'transparent'}
+                        />
                     </View>
 
                     <View style={{marginTop: 10}}>
@@ -238,7 +240,9 @@ class TeamEditorDetails extends Component {
                             onChangeText={this.setTeamValue('location')}
                             placeholder={'Location'}
                             style={styles.textInput}
-                            value={selectedTeam.location}/>
+                            value={selectedTeam.location}
+                            underlineColorAndroid={'transparent'}
+                        />
                     </View>
                     <View>
                         <Text style={styles.label}>Date</Text>
@@ -307,7 +311,9 @@ class TeamEditorDetails extends Component {
                             onChangeText={this.setTeamValue('notes')}
                             placeholder={'Notes'}
                             style={styles.textInput}
-                            value={selectedTeam.notes}/>
+                            value={selectedTeam.notes}
+                            underlineColorAndroid={'transparent'}
+                        />
                     </View>
 
 

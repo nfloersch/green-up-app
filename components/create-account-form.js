@@ -46,7 +46,9 @@ export default class CreateAccountForm extends Component {
                         placeholder='you@domain.com'
                         value={this.state.email}
                         onChangeText={this.onChangeState('email')}
-                        style={styles.textInput}/>
+                        style={styles.textInput}
+                        underlineColorAndroid={'transparent'}
+                    />
                 </View>
                 <View>
                     <Text style={styles.label}>Password</Text>
@@ -65,7 +67,9 @@ export default class CreateAccountForm extends Component {
                         placeholder={'Jane Doe'}
                         value={this.state.displayName}
                         onChangeText={this.onChangeState('displayName')}
-                        style={styles.textInput}/>
+                        style={styles.textInput}
+                        underlineColorAndroid={'transparent'}
+                    />
                 </View>
                 <View style={styles.button}>
                     <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Create Account'}/>

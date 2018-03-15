@@ -219,7 +219,9 @@ class NewTeam extends Component {
                                 onChangeText={this.setTeamValue('name')}
                                 placeholder={'Team Name'}
                                 style={styles.textInput}
-                                value={this.state.name}/>
+                                value={this.state.name}
+                                underlineColorAndroid={'transparent'}
+                            />
                         </View>
                         <View style={{marginTop: 10}}>
                             <SegmentedControls
@@ -256,7 +258,9 @@ class NewTeam extends Component {
                                 onChangeText={this.setTeamValue('location')}
                                 placeholder={'Location'}
                                 style={styles.textInput}
-                                value={this.state.location}/>
+                                value={this.state.location}
+                                underlineColorAndroid={'transparent'}
+                            />
                         </View>
 
                         <View>
@@ -329,7 +333,9 @@ class NewTeam extends Component {
                                 onChangeText={this.setTeamValue('notes')}
                                 placeholder={'Notes'}
                                 style={styles.textArea}
-                                value={this.state.notes}/>
+                                value={this.state.notes}
+                                underlineColorAndroid={'transparent'}
+                            />
                         </View>
 
                     </ScrollView>

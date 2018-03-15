@@ -124,6 +124,7 @@ class Profile extends Component {
                                 onChangeText={this._changeText('displayName')}
                                 placeholder={'Your name'}
                                 value={this.state.displayName}
+                                underlineColorAndroid={'transparent'}
                             />
                         </View>
                         <View>
@@ -137,6 +138,7 @@ class Profile extends Component {
                                 onChangeText={this._changeText('bio')}
                                 placeholder={'Maximum of 144 characters'}
                                 value={this.state.bio}
+                                underlineColorAndroid={'transparent'}
                             />
                         </View>
                         {

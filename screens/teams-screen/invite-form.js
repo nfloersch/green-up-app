@@ -81,6 +81,7 @@ class InviteForm extends Component {
                             placeholder='john@example.com'
                             value={this.state.email}
                             onChangeText={this.changeInvitee('email')}
+                            underlineColorAndroid={'transparent'}
                         />
                         <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
                         <Text style={styles.label}>
@@ -91,6 +92,7 @@ class InviteForm extends Component {
                             value={this.state.firstName}
                             onChangeText={this.changeInvitee('firstName')}
                             placeholder='First'
+                            underlineColorAndroid={'transparent'}
                         />
                         <Text style={styles.label}>
                             Last Name
@@ -100,6 +102,7 @@ class InviteForm extends Component {
                             value={this.state.lastName}
                             onChangeText={this.changeInvitee('lastName')}
                             placeholder='Last'
+                            underlineColorAndroid={'transparent'}
                         />
 
                         {

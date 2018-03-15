@@ -7,12 +7,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
-import {defaultStyles} from  '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
 };
 
-const combinedStyles = Object.assign({},defaultStyles,myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class ForgotPassword extends Component {
@@ -61,6 +61,7 @@ class ForgotPassword extends Component {
                         placeholder='you@domain.com'
                         onChangeText={this.onChangeState('email')}
                         style={styles.textInput}
+                        underlineColorAndroid={'transparent'}
                     />
                     <Button onPress={this.onButtonPress} title={'Reset Password'}/>
                 </View>
@@ -68,14 +69,10 @@ class ForgotPassword extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-   return {session: state.login.session};
-}
+const mapStateToProps = (state) => ({session: state.login.session});
 
-const mapDispatchToProps = (dispatch) => {
-    return {
+const mapDispatchToProps = (dispatch) => ({
         actions: bindActionCreators(actions, dispatch)
-    };
-}
+    });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

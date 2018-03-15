@@ -82,6 +82,7 @@ class TrashBagFinder extends Component {
                         placeholder={'Search by Team Name or City/Town'}
                         style={styles.textInput}
                         value={this.state.searchTerm}
+                        underlineColorAndroid={'transparent'}
                     />
                 </View>
                 <ScrollView>
