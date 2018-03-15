@@ -47,7 +47,9 @@ export default class LoginForm extends Component {
                         placeholder='you@domain.com'
                         value={this.state.email}
                         onChangeText={this.onChangeState('email')}
-                        style={styles.textInput}/>
+                        style={styles.textInput}
+                        underlineColorAndroid={'transparent'}
+                    />
                 </View>
                 <View>
                     <Text style={styles.label}>Password</Text>
@@ -58,7 +60,9 @@ export default class LoginForm extends Component {
                         secureTextEntry={true}
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
-                        style={styles.textInput}/>
+                        style={styles.textInput}
+                        underlineColorAndroid={'transparent'}
+                    />
                 </View>
                 <View style={styles.button}>
                     <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>

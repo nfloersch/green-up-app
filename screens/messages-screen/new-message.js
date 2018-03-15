@@ -158,6 +158,7 @@ class NewMessage extends Component {
                                 placeholder={'Message details'}
                                 value={this.state.text}
                                 style={styles.textArea}
+                                underlineColorAndroid={'transparent'}
                             />
                         </View>
                         {

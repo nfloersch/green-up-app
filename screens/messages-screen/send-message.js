@@ -82,6 +82,7 @@ class SendMessage extends Component {
                         placeholder={'message details'}
                         value={this.state.text}
                         style={{width: '100%'}}
+                        underlineColorAndroid={'transparent'}
                     />
                 </View>
                 <View style={styles.button}>
