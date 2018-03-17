@@ -194,6 +194,7 @@ class TrashMap extends Component {
         const town = this.props.location ? this._getTown(this.props.location) : '';
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
+        const trashDropOffLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].DropOffLocations), []).filter(l => l.DropOffLocationCoordinates);
         const initialMapLocation = this.props.location ? {
             latitude: Number(this.props.location.coords.latitude),
             longitude: Number(this.props.location.coords.longitude),
@@ -250,16 +251,15 @@ class TrashMap extends Component {
                                     }}
                                 />
                             ))}
-                            {this.state.showTrashDropLocations && townInfo.DropOffLocations &&
-                        townInfo.DropOffLocations.map((d, i) => d.DropOffLocationCoordinates && (
-                            <MapView.Marker
-                                key={`${town}DropOffLocation${i}`}
-                                image={require('../../assets/images/home-circle.png')}
-                                coordinate={d.DropOffLocationCoordinates}
-                                title='Drop Off Location'
-                                description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
-                            />
-                        ))}
+                            {this.state.showTrashDropLocations && trashDropOffLocations.map((d, i) => (
+                                <MapView.Marker
+                                    key={`${town}DropOffLocation${i}`}
+                                    image={require('../../assets/images/home-circle.png')}
+                                    coordinate={d.DropOffLocationCoordinates}
+                                    title='Drop Off Location'
+                                    description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
+                                />
+                            ))}
                         </MapView>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
