@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Text, View, TouchableHighlight, StyleSheet, Linking} from 'react-native';
+import {Text, View, TouchableHighlight, StyleSheet, Linking, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -13,8 +13,20 @@ import * as actions from '../login-screen/actions';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
-    menu: {
-        alignItems: 'center'
+    menuButton: {
+        width: '100%',
+        height: 40,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#EEE',
+        paddingTop: 8,
+        marginBottom: 10
+    },
+    menuButtonText: {
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign: 'center',
+        height: 40
     }
 };
 
@@ -38,54 +50,55 @@ class MenuScreen extends Component {
 
     render() {
         return (
-            <View style={[styles.container, styles.menu]}>
+            <View style={styles.frame}>
+                <ScrollView style={[styles.scroll, {paddingTop: 20}]}>
+                    <TouchableHighlight
+                        style={styles.menuButton}
+                        onPress={() => {
+                            Linking.openURL('https://www.razoo.com/organization/Vermont-Green-Up');
+                        }}
+                    >
+                        <View>
+                            <Text style={styles.menuButtonText}>Support Green Up Day</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.menuButton}
+                        onPress={() => this.props.navigation.navigate('About')}
+                    >
+                        <View>
+                            <Text style={styles.menuButtonText}>About Green Up Day</Text>
+                        </View>
+                    </TouchableHighlight>
 
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => {
-                        Linking.openURL('https://www.razoo.com/organization/Vermont-Green-Up');
-                    }}
-                >
-                    <View>
-                        <Text>Support Green Up Day</Text>
-                    </View>
-                </TouchableHighlight>
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => this.props.navigation.navigate('About')}
-                >
-                    <View>
-                        <Text>About Green Up Day</Text>
-                    </View>
-                </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.menuButton}
+                        onPress={() => this.props.navigation.navigate('TrashBagFinder')}
+                    >
+                        <View>
+                            <Text style={styles.menuButtonText}>Find Bags & Get Town Info</Text>
+                        </View>
+                    </TouchableHighlight>
 
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => this.props.navigation.navigate('TrashBagFinder')}
-                >
-                    <View>
-                        <Text>Trash Bag Finder</Text>
-                    </View>
-                </TouchableHighlight>
-
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={() => this.props.navigation.navigate('Profile')}
-                >
-                    <View>
-                        <Text>My Profile</Text>
-                    </View>
-                </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.menuButton}
+                        onPress={() => this.props.navigation.navigate('Profile')}
+                    >
+                        <View>
+                            <Text style={styles.menuButtonText}>My Profile</Text>
+                        </View>
+                    </TouchableHighlight>
 
 
-                <TouchableHighlight
-                    style={styles.button}
-                    onPress={this.props.actions.logout}
-                >
-                    <View>
-                        <Text>Log Out</Text>
-                    </View>
-                </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.menuButton}
+                        onPress={this.props.actions.logout}
+                    >
+                        <View>
+                            <Text style={styles.menuButtonText}>Log Out</Text>
+                        </View>
+                    </TouchableHighlight>
+                </ScrollView>
             </View>
         );
     }

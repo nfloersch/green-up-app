@@ -82,7 +82,7 @@ const aboutTP = 'Talking Points – a summary of the Green Up Day program, to be
     'so all seven Vermont Subaru dealers are official sites for bag pick up and drop ' +
     'off.';
 
-const myStyles = {};
+const myStyles = {aboutHeading: {...defaultStyles.heading , marginBottom: 5, marginTop: 10}};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -134,14 +134,14 @@ class About extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ScrollView>
+            <View style={styles.frame}>
+                <ScrollView style={styles.scroll}>
                     <View>
-                        <Text style={styles.heading}>About Green Up</Text>
+                        <Text style={styles.aboutHeading}>About Green Up</Text>
                         <Text>{aboutGreenUp}</Text>
                     </View>
                     <View>
-                        <Text style={styles.heading}>FAQ</Text>
+                        <Text style={styles.aboutHeading}>FAQ</Text>
                         <View>{
                             frequentlyAskedQuestions.map(
                                 (faq, i) => (

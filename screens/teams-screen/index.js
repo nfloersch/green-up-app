@@ -196,9 +196,7 @@ class MyTeams extends Component {
                     visible={this.state.openModal === 'NEW_TEAM'}
                     onRequestClose={() => {
                     }}>
-                    <View style={styles.container}>
-                        <NewTeam closeModal={_closeModal}/>
-                    </View>
+                    <NewTeam closeModal={_closeModal}/>
                 </Modal>
             </View>
         );

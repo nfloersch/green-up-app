@@ -176,6 +176,7 @@ export const defaultStyles = {
     textInput: {
         borderColor: '#000',
         borderWidth: 1,
+        backgroundColor: 'white',
         height: 40,
         padding: 5,
         textAlign: 'left',
