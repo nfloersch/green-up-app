@@ -14,6 +14,7 @@ import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import MapView from 'react-native-maps';
 import {TeamMember} from '../../models/team-member';
+import {getMemberIcon} from '../../libs/member-icons';
 
 const myStyles =
     {
@@ -47,7 +48,7 @@ const myStyles =
         },
         teamMember: {
             height: 30,
-            marginTop: 10
+            marginTop: 15
         }
     };
 
@@ -143,8 +144,7 @@ class TeamDetails extends Component {
     render() {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
-        const membershipId = currentUser.email.toLowerCase().replace(/\./g, ':');
-        const isTeamMember = Boolean(teamMembers[currentUser.uid] || teamMembers[membershipId]);
+        // const membershipId = currentUser.email.toLowerCase().replace(/\./g, ':');
         const icons = {
             [teamMemberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
             [teamMemberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
@@ -182,6 +182,8 @@ class TeamDetails extends Component {
         const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
         const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
+        const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
+
         const teamMemberList = (
             <View style={{width: '100%'}}>
                 <Text style={[styles.heading]}>
@@ -198,18 +200,22 @@ class TeamDetails extends Component {
                                 height: 52,
                                 marginTop: 5
                             }}>
-                                <TouchableHighlight onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
-                                    <View style={{flex: 1, flexDirection: 'row'}}>
-                                        <Image
-                                            style={{width: 50, height: 50, marginRight: 10}}
-                                            source={{uri: member.photoURL}}
-                                        />
-                                        <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                                            <Text
-                                                style={styles.teamMember}
-                                            >
-                                                {member.displayName || member.email}
-                                            </Text>
+                                <TouchableHighlight
+                                    onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
+                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                        <View>
+                                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                                <Image
+                                                    style={{width: 50, height: 50, marginRight: 10}}
+                                                    source={{uri: member.photoURL}}
+                                                />
+                                                <Text style={styles.teamMember}>
+                                                    {member.displayName || member.email}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            {getMemberIcon(member.memberStatus, {marginTop: 10, marginRight: 5})}
                                         </View>
                                     </View>
                                 </TouchableHighlight>

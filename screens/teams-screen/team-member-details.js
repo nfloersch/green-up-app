@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, Image, TouchableHighlight} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import {getMemberIcon} from '../../libs/member-icons';
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 import * as status from '../../constants/team-member-statuses';

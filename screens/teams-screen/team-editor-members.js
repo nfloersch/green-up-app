@@ -106,7 +106,7 @@ class TeamEditorMembers extends Component {
     getStatusText = status => {
         switch (status) {
             case 'ACCEPTED':
-                return 'is on your team';
+                return 'is on this team';
             case 'OWNER':
                 return 'owns this team';
             case 'INVITED':
@@ -114,7 +114,7 @@ class TeamEditorMembers extends Component {
             case 'NOT_INVITED':
                 return 'has not been invited';
             case 'REQUEST_TO_JOIN':
-                return 'is asking to join your team';
+                return 'is asking to join this team';
             default:
                 return '';
         }
