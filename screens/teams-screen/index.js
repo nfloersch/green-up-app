@@ -165,19 +165,23 @@ class MyTeams extends Component {
             ));
         return (
             <View style={styles.frame}>
-                <View style={{width: '100%', height: 60}}>
+                <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <Button
+                            <TouchableHighlight
+                                style={styles.button}
                                 onPress={() => {
                                     this.props.navigation.navigate('TeamSearch');
-                                }}
-                                title='Search Teams'/>
+                                }}>
+                                <Text style={styles.headerButton}>{'Search Teams'}</Text>
+                            </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                onPress={this.toNewTeamEditor}
-                                title='New Team'/>
+                            <TouchableHighlight
+                                style={styles.button}
+                                onPress={this.toNewTeamEditor}>
+                                <Text style={styles.headerButton}>{'New Team'}</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </View>

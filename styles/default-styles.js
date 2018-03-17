@@ -50,11 +50,12 @@ export const defaultStyles = {
     buttonBarButton: {
         width: '48%'
     },
+    buttonBarHeader: {width: '100%', height: 60},
     buttonRow: {
         width: '100%',
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
     },
 
     container: {
@@ -121,7 +122,11 @@ export const defaultStyles = {
         fontSize: 20
     },
     scroll: {
-        marginBottom: 10
+        marginBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderTopColor: '#AAA',
+        borderTopWidth: 1
     },
     searchResultsTitle: {
         fontSize: 20,
@@ -134,6 +139,11 @@ export const defaultStyles = {
         borderColor: '#000',
         padding: 5,
         backgroundColor: 'darkseagreen'
+    },
+    singleButtonHeader: {width: '100%', height: 60},
+    singleButtonHeaderHighlight: {
+        height: 60,
+        width: '100%'
     },
     suggestion: {
         paddingTop: 10,

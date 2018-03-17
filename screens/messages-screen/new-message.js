@@ -13,6 +13,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
+    TouchableHighlight,
     View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -108,19 +109,17 @@ class NewMessage extends Component {
         const teamValue = this.state.selectedTeamId || selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
         return (
             <View style={styles.frame}>
-                <View style={{width: '100%', height: 60}}>
+                <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                onPress={this.sendMessage}
-                                title='Send Message'
-                            />
+                            <TouchableHighlight style={styles.button} onPress={this.sendMessage}>
+                                <Text style={styles.headerButton}>{'Send Message'}</Text>
+                            </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                onPress={this.cancelMessage}
-                                title='Cancel'
-                            />
+                            <TouchableHighlight style={styles.button} onPress={this.cancelMessage}>
+                                <Text style={styles.headerButton}>{'Cancel'}</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </View>
@@ -131,7 +130,7 @@ class NewMessage extends Component {
                     <ScrollView style={styles.container}>
                         {
                             !selectedTeamId ? (
-                                <View>
+                                <View style={{marginBottom: 5}}>
                                     <Text style={styles.label}>Select Team to Message:</Text>
                                     <Picker
                                         style={styles.button}
@@ -142,7 +141,7 @@ class NewMessage extends Component {
                                     </Picker>
                                 </View>
                             ) : (
-                                <View>
+                                <View style={{marginBottom: 5}}>
                                     <Text style={styles.label}>Send a Message To</Text>
                                     <Text style={styles.largeText}>{teamName}</Text>
                                 </View>

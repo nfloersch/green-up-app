@@ -70,8 +70,14 @@ class TeamSearch extends Component {
             searchResults: []
         };
     }
+    componentWillMount() {
+        return this.onSearchTermChange(this.state.searchTerm);
+    }
+    componentWillReceiveProps() {
+        return this.onSearchTermChange(this.state.searchTerm);
+    }
 
-    onSearchTermChange(searchTerm) {
+    onSearchTermChange(searchTerm: string = '') {
         const teams = this.props.teams;
         const _searchResults = Object.keys(this.props.teams)
             .filter(key => teams[key].isPublic === true ||
@@ -80,7 +86,7 @@ class TeamSearch extends Component {
                 key,
                 score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
             }))
-            .filter(score => (score.score > 0))
+            .filter(score => (searchTerm.trim() === '' || score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
         // eliminate dupes
@@ -89,7 +95,7 @@ class TeamSearch extends Component {
     }
 
 
-    toTeamDetail(teamId) {
+    toTeamDetail(teamId: string) {
         return () => {
             const team = this.props.teams[teamId];
             this.props.actions.selectTeam(team);
@@ -100,51 +106,51 @@ class TeamSearch extends Component {
     render() {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
-            <View key={teamId} style={styles.searchResult}>
-                <TouchableHighlight
-                    key={teamId}
-                    onPress={this.toTeamDetail(teamId)}>
+            <TouchableHighlight
+                key={teamId}
+                onPress={this.toTeamDetail(teamId)}
+                style={styles.searchResult}
+            >
+                <View>
                     <Text style={[styles.searchResultsTitle, styles.heading]}>
                         {teams[teamId].name}
                     </Text>
-                </TouchableHighlight>
-                <Text style={styles.city}>
-                    {teams[teamId].town}
-                </Text>
-            </View>
+                    <Text style={styles.city}>
+                        {teams[teamId].town}
+                    </Text>
+                </View>
+            </TouchableHighlight>
         ));
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
                 behavior='padding'
             >
-                <View style={styles.container}>
-                    <View style={{marginTop: 10}}>
-                        <TextInput
-                            keyBoardType={'default'}
-                            onChangeText={this.onSearchTermChange}
-                            placeholder={'Search by Team Name or City/Town'}
-                            style={styles.textInput}
-                            value={this.state.searchTerm}
-                            underlineColorAndroid={'transparent'}
-                        />
-                    </View>
-                    <ScrollView style={styles.scrollview}>
-                        {searchResults}
-                    </ScrollView>
+                <View style={{marginTop: 10, marginBottom: 5, paddingLeft: 10, paddingRight: 10}}>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.onSearchTermChange}
+                        placeholder={'Search by Team Name or City/Town'}
+                        style={styles.textInput}
+                        value={this.state.searchTerm}
+                        underlineColorAndroid={'transparent'}
+                    />
                 </View>
-                {
-                    Platform.OS === 'ios'
-                        ? (<View style={defaultStyles.padForIOSKeyboard}/>)
-                        : null
-                }
+                <ScrollView style={styles.scroll}>
+                    {searchResults}
+                    {
+                        Platform.OS === 'ios'
+                            ? (<View style={defaultStyles.padForIOSKeyboard}/>)
+                            : null
+                    }
+                </ScrollView>
             </KeyboardAvoidingView>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    teams: state.teams.teams,
+    teams: state.teams.teams || {},
     currentUser: state.login.user
 });
 

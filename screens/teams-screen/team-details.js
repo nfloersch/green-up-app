@@ -216,7 +216,7 @@ class TeamDetails extends Component {
             switch (true) {
                 case memberStatus === teamMemberStatuses.INVITED:
                     return (
-                        <View style={{width: '100%', height: 60}}>
+                        <View style={styles.buttonBarHeader}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight

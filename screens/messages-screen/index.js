@@ -165,13 +165,13 @@ class Messages extends Component {
 
             return (myMessages.length > 0 || this.props.userHasTeams) ? (
                 <View style={styles.frame}>
-                    <View style={styles.button}>
-                        <Button
+                    <View style={styles.singleButtonHeader}>
+                        <TouchableHighlight style={styles.singleButtonHeaderHighlight}
                             onPress={() => {
                                 this.props.navigation.navigate('NewMessage');
-                            }}
-                            title='New Message'
-                        />
+                            }}>
+                            <Text style={styles.headerButton}>{'New Message'}</Text>
+                        </TouchableHighlight>
                     </View>
                     <ScrollView style={styles.container}>
                         <View>
