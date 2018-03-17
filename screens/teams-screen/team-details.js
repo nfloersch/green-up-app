@@ -64,7 +64,8 @@ class TeamDetails extends Component {
         navigation: PropTypes.object,
         selectedTeam: PropTypes.object,
         teamMembers: PropTypes.object,
-        teams: PropTypes.object
+        teams: PropTypes.object,
+        otherCleanAreas: PropTypes.array
     };
 
     static navigationOptions = {
@@ -358,6 +359,8 @@ class TeamDetails extends Component {
             }
         };
 
+        const otherTeamsLocationImage = require('../../assets/images/flag.png');
+
         return (
             <View style={styles.frame}>
                 {getStatusButtons()}
@@ -404,6 +407,13 @@ class TeamDetails extends Component {
                                     key={index}
                                     title={marker.title || 'clean area'}/>
                             ))}
+                            {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((a, i) =>
+                                (<MapView.Marker
+                                    key={i}
+                                    coordinate={a.coordinates}
+                                    image={otherTeamsLocationImage}
+                                    title={a.title}
+                                />))}
                         </MapView>
                     </View>
                     {isTeamMember ? teamMemberList : null}
@@ -420,7 +430,14 @@ const mapStateToProps = (state) => ({
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
     currentUser: TeamMember.create({...state.profile, ...state.login.user}),
-    teamMembers: state.teams.teamMembers
+    teamMembers: state.teams.teamMembers,
+    otherCleanAreas: Object.values(state.teams.teams)
+        .filter(team => team.id !== state.teams.selectedTeam.id)
+        .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
+            key: '',
+            coordinates: l.coordinates,
+            title: `Claiming this area for team: ${team.name}`
+        }))), [])
 });
 
 const mapDispatchToProps = (dispatch) => ({
