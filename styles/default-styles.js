@@ -57,7 +57,6 @@ export const defaultStyles = {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-
     container: {
         flex: 1,
         alignContent: 'space-around',
@@ -79,6 +78,19 @@ export const defaultStyles = {
     frame: {
         height: '100%',
         width: '100%'
+    },
+    goToButton: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#AAA',
+        height: 30,
+        margin: 5
+    },
+    goButtonText:{
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign: 'center',
+        height: 30
     },
     headerButton: {
         height: 60,

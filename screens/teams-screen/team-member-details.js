@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, Button} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableHighlight} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -24,7 +24,9 @@ class TeamMemberDetails extends Component {
         actions: PropTypes.object,
         navigation: PropTypes.object,
         profile: PropTypes.object,
-        teamMembers: PropTypes.object
+        teamMembers: PropTypes.object,
+        teams: PropTypes.object,
+        currentUserId: PropTypes.string
     };
 
     static navigationOptions = {
@@ -45,7 +47,6 @@ class TeamMemberDetails extends Component {
             this.setState(nextProps.profile);
         }
     }
-
 
     _updateTeamMember(teamId: string, member: Object) {
         return (newStatus: Object) => {
@@ -80,83 +81,106 @@ class TeamMemberDetails extends Component {
         const {membershipId, teamId} = this.props.navigation.state.params;
         const member = (this.props.teamMembers[teamId] || {})[membershipId];
         const avatar = (member || {}).photoURL;
-
+        const isOwner = ((this.props.teams[teamId] || {}).owner || {}).uid === this.props.currentUserId;
 
         function getButtons(teamMember: Object = {}) {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
-                    return (<View><Text style={styles.alertInfo}>You own this team</Text></View>);
+                    return null;
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View>
-                            <Text style={styles.alertInfo}>{teamMember.displayName || teamMember.email} wants to join
-                                your team</Text>
-                            <View>
-                                <Text>
-                                    {`About ${member.displayName || ''}: `}
-                                    {member.bio || ''}
-                                </Text>
-                                <View style={styles.button}>
-                                    <Button onPress={this._removeTeamMember(teamId, membershipId)} title={'Ignore'}/>
-                                </View>
-                                <View style={styles.button}>
-                                    <Button onPress={() => {
+                        <View style={styles.buttonBarHeader}>
+                            <View style={styles.buttonBar}>
+                                <View style={styles.buttonBarButton}>
+                                    <TouchableHighlight
+                                        style={styles.headerButton}
+                                        onPress={this._removeTeamMember(teamId, membershipId)}>
+                                        <Text>{'Ignore'}</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={styles.headerButton} onPress={() => {
                                         this._updateTeamMember(teamId, member)(status.ACCEPTED);
-                                    }} title={'Add To This Team'}/>
+                                    }}>
+                                        <Text>{'Add To This Team'}</Text>
+                                    </TouchableHighlight>
                                 </View>
                             </View>
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
+                        <View style={styles.singleButtonHeader}>
+                            <TouchableHighlight
+                                style={styles.singleButtonHeaderHighlight}
+                                onPress={this._removeTeamMember(teamId, member)}
+                            >
+                                <Text style={styles.headerButton}>{'Remove from Team'}</Text>
+                            </TouchableHighlight>
+                        </View>
+                    );
+                case status.INVITED :
+                    return (
+                        <View style={styles.singleButtonHeader}>
+                            <TouchableHighlight
+                                style={styles.singleButtonHeaderHighlight}
+                                onPress={this._revokeInvitation(teamId, membershipId)}
+                            >
+                                <Text style={styles.headerButton}>{'Revoke Invitation'}</Text>
+                            </TouchableHighlight>
+                        </View>
+                    );
+                default :
+                    return null;
+            }
+        }
+
+        function getStatus(teamMember: Object = {}) {
+            switch (teamMember.memberStatus) {
+                case status.OWNER :
+                    return (<View><Text style={styles.alertInfo}> {teamMember.displayName} is the owner of this team</Text></View>);
+                case status.REQUEST_TO_JOIN :
+                    return (
+                        <View>
+                            <Text style={styles.alertInfo}>{teamMember.displayName || teamMember.email} wants to join
+                                this team
+                            </Text>
+                        </View>
+                    );
+                case status.ACCEPTED :
+                    return (
                         <View>
                             <Text style={{textAlign: 'center'}}>{teamMember.displayName || teamMember.email} is a member
-                                of your team.</Text>
-                            <View style={styles.button}>
-                                <Button onPress={this._removeTeamMember(teamId, member)} title={'Remove from Team'}/>
-                            </View>
+                                of this team.</Text>
                         </View>
                     );
                 case status.INVITED :
                     return (
                         <View>
                             <Text>
-                                {`${teamMember.displayName || teamMember.email} has been invited to your team, but has yet to accept.`}
+                                {`${teamMember.displayName || teamMember.email} has been invited to this team, but has yet to accept.`}
                             </Text>
-                            <View style={styles.button}>
-                                <Button onPress={this._revokeInvitation(teamId, membershipId)}
-                                        title={'Revoke Invitation'}/>
-                            </View>
                         </View>
                     );
                 default :
-                    return (<Text>{teamMember.displayName || teamMember.email} is not a member of your team</Text>);
+                    return (<Text>{teamMember.displayName || teamMember.email} is not a member of this team</Text>);
             }
         }
 
         return (
-            <View style={styles.container}>
-                {
-                    (Boolean(member)) &&
-
-                    (
-                        <View>
-                            <View style={styles.profileHeader}>
-                                <Image
-                                    style={{width: 50, height: 50}}
-                                    source={{uri: avatar}}
-                                />
-                                <Text style={[styles.profileName, styles.heading]}>
-                                    {member.displayName || ''}
-                                </Text>
-                            </View>
-
-                            <View>
-                                {getButtons.bind(this)(member)}
-                            </View>
-                        </View>
-                    )
-                }
+            <View style={[styles.frame, {leftPadding: 10, rightPadding: 10}]}>
+                {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}
+                <View style={styles.profileHeader}>
+                    <Image
+                        style={{width: 50, height: 50}}
+                        source={{uri: avatar}}
+                    />
+                    <Text style={[styles.profileName, styles.heading]}>
+                        {member.displayName || ''}
+                    </Text>
+                </View>
+                <View>
+                    {getStatus.bind(this)(member)}
+                </View>
             </View>
         );
     }
@@ -164,7 +188,9 @@ class TeamMemberDetails extends Component {
 
 const mapStateToProps = state => {
     const teamMembers = state.teams.teamMembers || {};
-    return {teamMembers};
+    const teams = state.teams.teams || {};
+    const currentUserId = state.login.user.uid;
+    return {teamMembers, teams, currentUserId};
 };
 
 const mapDispatchToProps = dispatch => ({

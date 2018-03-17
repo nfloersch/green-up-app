@@ -167,9 +167,9 @@ class Messages extends Component {
                 <View style={styles.frame}>
                     <View style={styles.singleButtonHeader}>
                         <TouchableHighlight style={styles.singleButtonHeaderHighlight}
-                            onPress={() => {
-                                this.props.navigation.navigate('NewMessage');
-                            }}>
+                                            onPress={() => {
+                                                this.props.navigation.navigate('NewMessage');
+                                            }}>
                             <Text style={styles.headerButton}>{'New Message'}</Text>
                         </TouchableHighlight>
                     </View>
@@ -193,11 +193,13 @@ class Messages extends Component {
                     <Text style={styles.alertInfo}>
                         You don't have any teams to send messages to. Start your own team or join an existing one.
                     </Text>
-                    <Button
+                    <TouchableHighlight style={styles.goToButton}
                         onPress={() => {
                             this.props.navigation.navigate('Teams');
                         }}
-                        title='Go to my teams'
+                    >
+                        <Text>{'Go to my teams'}</Text>
+                    </TouchableHighlight>
                     />
                 </View>
             );

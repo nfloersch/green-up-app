@@ -231,7 +231,8 @@ class TeamDetails extends Component {
                                         style={styles.button}
                                         onPress={this._acceptInvitation(selectedTeam.id, currentUser)}>
                                         <Text style={styles.headerButton}>
-                                            {'Accept Invitation'}</Text>
+                                            {'Accept Invitation'}
+                                        </Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
@@ -250,12 +251,9 @@ class TeamDetails extends Component {
                     return null;
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
-                        <View style={{width: '100%', height: 60}}>
+                        <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={{
-                                    height: 60,
-                                    width: '100%'
-                                }}
+                                style={styles.singleButtonHeaderHighlight}
                                 onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}>
                                 <Text style={styles.headerButton}>
                                     {'Leave Team'}
@@ -265,12 +263,9 @@ class TeamDetails extends Component {
                     );
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
-                        <View style={{width: '100%', height: 60}}>
+                        <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={{
-                                    height: 60,
-                                    width: '100%'
-                                }}
+                                style={styles.singleButtonHeaderHighlight}
                                 onPress={this._removeRequest(selectedTeam.id, currentUser)}>
                                 <Text style={styles.headerButton}>
                                     {'Remove Request'}
@@ -280,15 +275,11 @@ class TeamDetails extends Component {
                     );
                 default :
                     return (
-                        <View style={{width: '100%', height: 60}}>
+                        <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={{
-                                    height: 60,
-                                    width: '100%'
-                                }}
+                                style={styles.singleButtonHeaderHighlight}
                                 onPress={this._askToJoin(selectedTeam, currentUser)}>
-                                <Text style={styles.headerButton}>
-                                    {'Ask to join this group'}</Text>
+                                <Text style={styles.headerButton}>{'Ask to join this team'}</Text>
                             </TouchableHighlight>
                         </View>
                     );
