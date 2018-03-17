@@ -133,6 +133,13 @@ class TeamDetails extends Component {
         };
     }
 
+
+    _toMemberDetails(teamId: string, membershipId: string) {
+        return () => {
+            this.props.navigation.navigate('TeamMemberDetails', {teamId, membershipId});
+        };
+    }
+
     render() {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
@@ -191,20 +198,21 @@ class TeamDetails extends Component {
                                 height: 52,
                                 marginTop: 5
                             }}>
-                                <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Image
-                                        style={{width: 50, height: 50, marginRight: 10}}
-                                        source={{uri: member.photoURL}}
-                                    />
-                                    <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                                        <Text
-                                            style={styles.teamMember}
-                                            key={i}
-                                        >
-                                            {member.displayName || member.email}
-                                        </Text>
+                                <TouchableHighlight onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
+                                    <View style={{flex: 1, flexDirection: 'row'}}>
+                                        <Image
+                                            style={{width: 50, height: 50, marginRight: 10}}
+                                            source={{uri: member.photoURL}}
+                                        />
+                                        <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+                                            <Text
+                                                style={styles.teamMember}
+                                            >
+                                                {member.displayName || member.email}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>
+                                </TouchableHighlight>
                             </View>
                         ))
                 }
