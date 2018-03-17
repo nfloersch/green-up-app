@@ -6,6 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
+    KeyboardAvoidingView, Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -113,21 +114,31 @@ class TeamSearch extends Component {
             </View>
         ));
         return (
-            <View style={styles.container}>
-                <View style={{marginTop: 10}}>
-                    <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.onSearchTermChange}
-                        placeholder={'Search by Team Name or City/Town'}
-                        style={styles.textInput}
-                        value={this.state.searchTerm}
-                        underlineColorAndroid={'transparent'}
-                    />
+            <KeyboardAvoidingView
+                style={defaultStyles.frame}
+                behavior='padding'
+            >
+                <View style={styles.container}>
+                    <View style={{marginTop: 10}}>
+                        <TextInput
+                            keyBoardType={'default'}
+                            onChangeText={this.onSearchTermChange}
+                            placeholder={'Search by Team Name or City/Town'}
+                            style={styles.textInput}
+                            value={this.state.searchTerm}
+                            underlineColorAndroid={'transparent'}
+                        />
+                    </View>
+                    <ScrollView style={styles.scrollview}>
+                        {searchResults}
+                    </ScrollView>
                 </View>
-                <ScrollView style={styles.scrollview}>
-                    {searchResults}
-                </ScrollView>
-            </View>
+                {
+                    Platform.OS === 'ios'
+                        ? (<View style={defaultStyles.padForIOSKeyboard}/>)
+                        : null
+                }
+            </KeyboardAvoidingView>
         );
     }
 }

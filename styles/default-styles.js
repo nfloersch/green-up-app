@@ -152,7 +152,5 @@ export const defaultStyles = {
         height: 40,
         padding: 5,
         textAlign: 'left',
-        lineHeight: 25,
-        underlineColorAndroid:'rgba(0,0,0,0)'
-    }
+        lineHeight: 25}
 };

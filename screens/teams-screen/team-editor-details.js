@@ -131,7 +131,10 @@ class TeamEditorDetails extends Component {
             'DANGER!',
             'Are you really, really sure you want to permanently delete this team?',
             [
-                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {
+                    text: 'No', onPress: () => {
+                    }, style: 'cancel'
+                },
                 {
                     text: 'Yes', onPress: () => {
                         this.props.screenProps.stacknav.goBack();
@@ -145,14 +148,14 @@ class TeamEditorDetails extends Component {
 
     setTeamValue = (key) => (value) => {
         this.props.actions.setSelectedTeamValue(key, value);
-    }
+    };
 
     findTown = query => {
         if (query === '') {
             return [];
         }
         return vermontTowns.filter(x => x.indexOf(query) > -1);
-    }
+    };
 
     render() {
         const isPublicOptions = [
@@ -173,9 +176,9 @@ class TeamEditorDetails extends Component {
         const startIsSelected = selectedTeam.start === null;
 
         // Autocomplete
-        const {query, town} = this.state;
+        const {query} = this.state;
         const towns = this.findTown(query);
-        const comp = (a, b) => { a.toLowerCase().trim() === b.toLowerCase().trim(); };
+        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
             <KeyboardAvoidingView
@@ -204,7 +207,6 @@ class TeamEditorDetails extends Component {
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
-
                     <View style={{marginTop: 10}}>
                         <SegmentedControls
                             options={isPublicOptions}
@@ -214,25 +216,25 @@ class TeamEditorDetails extends Component {
                             extractText={(option) => option.label}
                             testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
                     </View>
-
                     <View style={{zIndex: 1}}>
                         <Text style={styles.label}>Select Town/City</Text>
                         <Autocomplete
                             inputContainerStyle={{borderColor: '#000'}}
                             data={query.length > 0 &&
-                                comp(query, towns[0] || '') ? [] : towns}
+                            comp(query, towns[0] || '') ? [] : towns}
                             defaultValue={this.state.town || ''}
                             onChangeText={text => this.setState({query: text})}
                             renderItem={town => (
                                 <TouchableOpacity
                                     style={styles.suggestion}
-                                    onPress={() => { this.setState({query: '', town: town}); }}>
+                                    onPress={() => {
+                                        this.setState({query: '', town: town});
+                                    }}>
                                     <Text>{town}</Text>
                                 </TouchableOpacity>
                             )}
                         />
                     </View>
-
                     <View>
                         <Text style={styles.label}>Clean Up Site</Text>
                         <TextInput
@@ -267,7 +269,6 @@ class TeamEditorDetails extends Component {
                             />
                         </View>
                     </View>
-
                     <View>
                         <Text style={styles.label}>Start Time</Text>
                         <View>
@@ -285,7 +286,6 @@ class TeamEditorDetails extends Component {
                             />
                         </View>
                     </View>
-
                     <View>
                         <Text style={styles.label}>End Time</Text>
                         <View>
@@ -303,7 +303,6 @@ class TeamEditorDetails extends Component {
                             />
                         </View>
                     </View>
-
                     <View>
                         <Text style={styles.label}>Notes</Text>
                         <TextInput
@@ -315,8 +314,6 @@ class TeamEditorDetails extends Component {
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
-
-
                     <View style={[styles.button, styles.danger]}>
                         <Button
                             title='Delete Team'

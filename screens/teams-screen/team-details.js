@@ -5,7 +5,8 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, ScrollView, View, Button, Alert} from 'react-native';
+import {Image, KeyboardAvoidingView, StyleSheet, Text, ScrollView, View, Button, Alert, Platform} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -22,11 +23,29 @@ const myStyles = {
     },
     dataBlock: {
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        width: '100%'
     },
     memberStatusBanner: {
         paddingTop: 5,
         paddingBottom: 5
+    },
+    statusBar: {
+        height: 30,
+        width: '100%',
+        marginBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    statusMessage: {
+        height: 30,
+        paddingTop: 8,
+        marginLeft: 10,
+        fontSize: 14
+    },
+    teamMember: {
+        height: 30,
+        marginTop: 10
     }
 };
 
@@ -117,121 +136,263 @@ class TeamDetails extends Component {
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
         const membershipId = currentUser.email.toLowerCase().replace(/\./g, ':');
         const isTeamMember = Boolean(teamMembers[currentUser.uid] || teamMembers[membershipId]);
+        const icons = {
+            [teamMemberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
+            [teamMemberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
+            [teamMemberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
+            [teamMemberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
+        };
+        const iconColors = {
+            ACCEPTED: {
+                color: 'green',
+                height: 30,
+                width: 30
+            },
+            OWNER: {
+                color: 'blue',
+                height: 30,
+                width: 30
+            },
+            INVITED: {
+                color: 'orange',
+                height: 30,
+                width: 30
+            },
+            NOT_INVITED: {
+                color: 'red',
+                height: 30,
+                width: 40
+            },
+            REQUEST_TO_JOIN: {
+                color: 'purple',
+                height: 30,
+                width: 30
+            }
+        };
+        const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
+        const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
+        const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
+        const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
         const teamMemberList = (
-            <View>
+            <View style={{width: '100%'}}>
                 <Text style={[styles.heading]}>
                     {'Team Members'}
                 </Text>
                 {
-                    Object.values(teamMembers).map((member, i) => (<Text key={i}>{member.displayName || member.email}</Text>))
-                }
-            </View>);
+                    Object
+                        .values(teamMembers)
+                        .map((member, i) => (
+                            <View key={i} style={{
+                                borderStyle: 'solid',
+                                borderWidth: 1,
+                                width: '100%',
+                                height: 52,
+                                marginTop: 5
+                            }}>
+                                <View style={{flex: 1, flexDirection: 'row'}}>
+                                    <Image style={{width: 50, height: 50, marginRight: 10}}
+                                        source={{uri: member.photoURL}}/>
+                                    <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+                                        <Text style={styles.teamMember}
+                                            key={i}>{member.displayName || member.email}</Text>
+                                    </View>
+                                </View>
+                            </View>
 
-        const getMemberStatus = () => {
-            const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
-            const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
-            const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
-            const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
+                        ))
+                }
+            </View>
+        );
+
+
+        const getStatusButtons = () => {
             switch (true) {
                 case memberStatus === teamMemberStatuses.INVITED:
                     return (
-                        <View>
-                            <Button
-                                style={styles.button}
-                                onPress={this._acceptInvitation(selectedTeam.id, currentUser)}
-                                title='Accept Invitation'/>
-                            <Button
-                                style={styles.button}
-                                onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}
-                                title={'Decline Invitation'}/>
+                        <View style={{width: '100%', height: 60}}>
+                            <View style={styles.buttonBar}>
+                                <View style={styles.buttonBarButton}>
+                                    <Button
+                                        style={styles.button}
+                                        onPress={this._acceptInvitation(selectedTeam.id, currentUser)}
+                                        title='Accept Invitation'/>
+                                </View>
+                                <View style={styles.buttonBarButton}>
+
+                                    <Button
+                                        style={styles.button}
+                                        onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}
+                                        title={'Decline Invitation'}/>
+                                </View>
+                            </View>
                         </View>
                     );
                 case selectedTeam.owner.uid === currentUser.uid :
-                    return (<Text style={styles.alertInfo}>{'You own this team'}</Text>);
+                    return null;
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
-                        <View>
-                            <Text style={styles.alertInfo}>
-                                {'You are a member of this team.'}
-                            </Text>
-                            <Button
-                                style={styles.button}
-                                onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}
-                                title='Leave Team'
-                            />
+                        <View style={{width: '100%', height: 60}}>
+                            <View style={styles.buttonBar}>
+                                <View style={styles.buttonBarButton}>
+                                    <Button
+                                        style={styles.button}
+                                        onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}
+                                        title='Leave Team'
+                                    />
+                                </View>
+                            </View>
                         </View>
                     );
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
-                        <View>
-                            <Text style={styles.alertInfo}>
-                                {'Waiting on the Team Manager to approve your request'}
-                            </Text>
-                            <Button
-                                style={styles.button}
-                                onPress={this._removeRequest(selectedTeam.id, currentUser)}
-                                title='Remove Request'
-                            />
+                        <View style={{width: '100%', height: 60}}>
+                            <View style={styles.buttonBar}>
+                                <View style={styles.buttonBarButton}>
+                                    <Button
+                                        style={styles.button}
+                                        onPress={this._removeRequest(selectedTeam.id, currentUser)}
+                                        title='Remove Request'
+                                    />
+                                </View>
+                            </View>
                         </View>
                     );
                 default :
                     return (
-                        <Button
-                            style={styles.button}
-                            onPress={this._askToJoin(selectedTeam, currentUser)}
-                            title='Ask to join this group'/>
+                        <View style={{width: '100%', height: 60}}>
+                            <View style={styles.buttonBar}>
+                                <View style={styles.buttonBarButton}>
+                                    <Button
+                                        style={styles.button}
+                                        onPress={this._askToJoin(selectedTeam, currentUser)}
+                                        title='Ask to join this group'/>
+                                </View>
+                            </View>
+                        </View>
                     );
             }
         };
-        return (
-            <ScrollView contentContainerStyle={styles.container}>
-                <Text style={[styles.heading, styles.teamTitle]}>
-                    {selectedTeam.name}
-                </Text>
-                <View style={styles.memberStatusBanner}>
-                    {getMemberStatus()}
-                </View>
-                <View style={{alignSelf: 'flex-start'}}>
-                    <Text style={styles.dataBlock}>
-                        <Text style={styles.label}>{'Where: '}</Text>
-                        <Text style={styles.data}>{selectedTeam.location}, {selectedTeam.town}</Text>
-                    </Text>
-                    <Text style={styles.dataBlock}>
-                        <Text style={styles.label}>{'Owner: '}</Text>
-                        <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
-                    </Text>
-                    <Text style={styles.dataBlock}>
-                        <Text style={styles.label}>{'Start: '}</Text>
-                        <Text style={styles.data}>{selectedTeam.start}</Text>
-                    </Text>
-                    <Text style={styles.dataBlock}>
-                        <Text style={styles.label}>{'Ends: '}</Text>
-                        <Text style={styles.data}>{selectedTeam.end}</Text>
-                    </Text>
-                    <Text style={styles.dataBlock}>
-                        <Text style={styles.label}>{'Notes: '}</Text>
-                        <Text>{selectedTeam.notes}</Text>
-                    </Text>
-                    {this.props.locations && this.props.locations.length > 0 && (
-                        <View>
-                            <Text style={[styles.heading]}>
-                                {'Clean Up Location'}
-                            </Text>
-                            <MapView style={{alignSelf: 'stretch', height: '50%'}}
-                                initialRegion={this.state.initialMapLocation}
-                                onPress={this._handleMapClick}>
-                                {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
-                                    <MapView.Marker coordinate={marker.coordinates}
-                                        key={index}
-                                        title={marker.title || 'clean area'}
-                                    />))}
-                            </MapView>
-                        </View>
-                    )}
-                    {isTeamMember ? teamMemberList : null}
-                </View>
 
-            </ScrollView>
+        const getMemberStatus = () => {
+            switch (true) {
+                case memberStatus === teamMemberStatuses.INVITED:
+                    return (
+                        <View style={styles.statusBar}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Ionicons
+                                    name={icons[teamMemberStatuses.INVITED] ||
+                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                                    size={30}
+                                    style={iconColors[teamMemberStatuses.INVITED]}/>
+                                <Text style={styles.statusMessage}>
+                                    {'You have been invited to this team'}
+                                </Text>
+                            </View>
+                        </View>
+                    );
+                case selectedTeam.owner.uid === currentUser.uid :
+                    return (
+                        <View style={styles.statusBar}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+
+                                <Ionicons
+                                    name={icons[teamMemberStatuses.OWNER] ||
+                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                                    size={30}
+                                    style={iconColors[teamMemberStatuses.OWNER]}/>
+                                <Text style={styles.statusMessage}>
+                                    {'You are the owner of this team'}
+                                </Text>
+                            </View>
+                        </View>
+                    );
+                case memberStatus === teamMemberStatuses.ACCEPTED :
+                    return (
+                        <View style={styles.statusBar}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Ionicons
+                                    name={icons[teamMemberStatuses.ACCEPTED] ||
+                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                                    size={30}
+                                    style={iconColors[teamMemberStatuses.ACCEPTED]}/>
+                                <Text style={styles.statusMessage}>
+                                    {'You are a member of this team.'}
+                                </Text>
+                            </View>
+                        </View>)
+                    ;
+                case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
+                    return (
+                        <View style={styles.statusBar}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Ionicons
+                                    name={icons[teamMemberStatuses.REQUEST_TO_JOIN] ||
+                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
+                                    size={30}
+                                    style={iconColors[teamMemberStatuses.REQUEST_TO_JOIN]}/>
+                                <Text style={styles.statusMessage}>
+                                    {'Waiting on the team owner to approve your request'}
+                                </Text>
+                            </View>
+                        </View>
+                    );
+                default :
+                    return null;
+            }
+        };
+
+        return (
+            <View style={styles.frame}>
+                {getStatusButtons()}
+                <ScrollView style={{padding: 10, backgroundColor: '#FFF'}}>
+                    {getMemberStatus()}
+                    <View style={{width: '100%', marginBottom: 20}}>
+                        <Text style={[styles.heading, styles.teamTitle]}>
+                            {selectedTeam.name}
+                        </Text>
+                        <View style={{width: '100%'}}>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Where: '}</Text>
+                                <Text style={styles.data}>{selectedTeam.location}, {selectedTeam.town}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Owner: '}</Text>
+                                <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Start: '}</Text>
+                                <Text style={styles.data}>{selectedTeam.start}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Ends: '}</Text>
+                                <Text style={styles.data}>{selectedTeam.end}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Notes: '}</Text>
+                                <Text>{selectedTeam.notes}</Text>
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={{width: '100%'}}>
+                        <Text style={[styles.heading]}>
+                            {'Clean Up Location'}
+                        </Text>
+                        <MapView style={{height: 300, marginBottom: 20, marginTop: 5}}
+                            initialRegion={this.state.initialMapLocation}
+                            onPress={this._handleMapClick}>
+                            {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
+                                <MapView.Marker coordinate={marker.coordinates}
+                                    key={index}
+                                    title={marker.title || 'clean area'}
+                                />))}
+                        </MapView>
+                    </View>
+
+                    {isTeamMember ? teamMemberList : null}
+                    <View style={defaultStyles.padForIOSKeyboard}/>
+
+                </ScrollView>
+            </View>
         );
     }
 }

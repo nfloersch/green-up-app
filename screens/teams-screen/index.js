@@ -73,9 +73,7 @@ class MyTeams extends Component {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
-        // this.sendMessage = this.sendMessage.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
-        // this.onMessageTextChange = this.onMessageTextChange.bind(this);
         this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
@@ -85,20 +83,14 @@ class MyTeams extends Component {
 
     toTeamDetail(status, team) {
         return () => {
-            let nextScreen = 'TeamDetails';
-            switch (true) {
-                case status === TeamMember.memberStatuses.INVITED:
-                    nextScreen = 'TeamInvitationDetails';
-                    break;
-                case status === TeamMember.memberStatuses.OWNER:
-                    nextScreen = 'TeamEditor';
-                    break;
-                default:
-                    nextScreen = 'TeamDetails';
-                    break;
-            }
+            const nextScreen = {
+                [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
+                [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
+                [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
+                [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
+            };
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen, {status});
+            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
         };
     }
 
@@ -116,7 +108,6 @@ class MyTeams extends Component {
             [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
             [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
         };
-
         return icons[status || 'INVITED'];
     };
 
