@@ -182,7 +182,7 @@ class TeamMemberDetails extends Component {
                         source={{uri: avatar}}
                     />
                     <Text style={[styles.profileName, styles.heading]}>
-                        {member.displayName || ''}
+                        {`${member.displayName || member.email}`}
                     </Text>
                 </View>
                 <View>

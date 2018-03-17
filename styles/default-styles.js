@@ -138,7 +138,8 @@ export const defaultStyles = {
         paddingLeft: 10,
         paddingRight: 10,
         borderTopColor: '#AAA',
-        borderTopWidth: 1
+        borderTopWidth: 1,
+        backgroundColor: 'white'
     },
     searchResultsTitle: {
         fontSize: 20,

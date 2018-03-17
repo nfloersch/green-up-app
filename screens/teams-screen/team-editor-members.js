@@ -9,7 +9,7 @@ import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
-
+import {getMemberIcon} from '../../libs/member-icons';
 import Colors from '../../constants/Colors';
 import * as actions from './actions';
 import * as memberStatus from '../../constants/team-member-statuses';
@@ -57,8 +57,8 @@ class TeamEditorMembers extends Component {
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
         tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
-                size={24}
-                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+                      size={24}
+                      color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
             />)
     };
 
@@ -72,35 +72,6 @@ class TeamEditorMembers extends Component {
 
     inviteForm = () => {
         this.props.screenProps.stacknav.navigate('InviteForm');
-    };
-
-    getIconColor = status => {
-        switch (status) {
-            case 'ACCEPTED':
-                return {
-                    color: 'green'
-                };
-            case 'OWNER':
-                return {
-                    color: 'blue'
-                };
-            case 'INVITED':
-                return {
-                    color: 'orange'
-                };
-            case 'NOT_INVITED':
-                return {
-                    color: 'red'
-                };
-            case 'REQUEST_TO_JOIN':
-                return {
-                    color: 'purple'
-                };
-            default:
-                return {
-                    color: 'black'
-                };
-        }
     };
 
     getStatusText = status => {
@@ -128,23 +99,13 @@ class TeamEditorMembers extends Component {
 
 
     render() {
-        const icons = {
-            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
-            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
-            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
-        };
         const teamId = this.props.selectedTeam.id;
         const members = this.props.teamMembers[teamId] || {};
         const memberButtons = Object.keys(members).map(membershipId => (
             <View key={members[membershipId].uid || members[membershipId].email} style={styles.item}>
                 <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipId)}>
                     <View style={styles.member}>
-                        <Ionicons
-                            name={icons[members[membershipId].memberStatus] ||
-                            (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                            size={30}
-                            style={this.getIconColor(members[membershipId].memberStatus)}/>
+                        {getMemberIcon(members[membershipId].memberStatus)}
                         <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
                     </View>
                 </TouchableHighlight>
@@ -157,22 +118,29 @@ class TeamEditorMembers extends Component {
 
         return (
             <View style={styles.frame}>
-                <View style={{width: '100%', height: 60}}>
+                <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <Button
+                            <TouchableHighlight
                                 style={styles.button}
-                                onPress={this.inviteForm}
-                                title='Invite A Friend'/>
+                                onPress={this.inviteForm}>
+                                <Text style={styles.headerButton}>
+                                    {'Invite A Friend'}
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                onPress={this.inviteContacts}
-                                title='From Contacts'/>
+                            <TouchableHighlight
+                                style={styles.button}
+                                onPress={this.inviteContacts}>
+                                <Text style={styles.headerButton}>
+                                    {'From Contacts'}
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.scroll}>
                     {memberButtons}
                 </ScrollView>
             </View>
