@@ -98,9 +98,9 @@ class TeamMemberDetails extends Component {
                                         <Text>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                     <TouchableHighlight
-                                        style={styles.headerButton} onPress={() => {
-                                        this._updateTeamMember(teamId, member)(status.ACCEPTED);
-                                    }}>
+                                        style={styles.headerButton}
+                                        onPress={() => this._updateTeamMember(teamId, member)(status.ACCEPTED)}
+                                    >
                                         <Text>{'Add To This Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
@@ -137,20 +137,27 @@ class TeamMemberDetails extends Component {
         function getStatus(teamMember: Object = {}) {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
-                    return (<View><Text style={styles.alertInfo}> {teamMember.displayName} is the owner of this team</Text></View>);
+                    return (
+                        <View>
+                            <Text style={styles.alertInfo}>
+                                {`${teamMember.displayName || teamMember.email}`} is the owner of this team
+                            </Text>
+                        </View>
+                    );
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View>
-                            <Text style={styles.alertInfo}>{teamMember.displayName || teamMember.email} wants to join
-                                this team
+                            <Text style={styles.alertInfo}>
+                                {teamMember.displayName || teamMember.email} wants to join this team
                             </Text>
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
                         <View>
-                            <Text style={{textAlign: 'center'}}>{teamMember.displayName || teamMember.email} is a member
-                                of this team.</Text>
+                            <Text style={{textAlign: 'center'}}>
+                                {teamMember.displayName || teamMember.email} is a member of this team.
+                            </Text>
                         </View>
                     );
                 case status.INVITED :
@@ -167,7 +174,7 @@ class TeamMemberDetails extends Component {
         }
 
         return (
-            <View style={[styles.frame, {leftPadding: 10, rightPadding: 10}]}>
+            <View style={[styles.frame, {paddingLeft: 10, paddingRight: 10}]}>
                 {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}
                 <View style={styles.profileHeader}>
                     <Image
