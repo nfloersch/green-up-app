@@ -168,14 +168,16 @@ class TeamEditorMap extends Component {
                                 description={marker.description || 'tap to remove'}
                             />))}
 
-                        {this.props.otherCleanAreas.length > 0 && otherCleanAreas.map((a) =>
-                            (<MapView.Marker coordinate={a.coordinates}
+                        {this.props.otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
+                            (<MapView.Marker
+                                key={i}
+                                coordinate={a.coordinates}
                                 pinColor='blue'
                                 title={a.title}
                             />))}
                     </MapView>
                     <View style={styles.button}>
-                        <Button title={'remove last marker'}
+                        <Button title={'remove marker'}
                             onPress={this._removeLastMarker}
                         />
                     </View>
@@ -188,7 +190,11 @@ function mapStateToProps(state) {
     const locations = state.teams.locations;
     const otherCleanAreas = Object.values(state.teams.teams)
         .filter(team => team.id !== selectedTeam.id)
-        .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {key: '', coordinates: l.coordinates, title: `clean area for team: ${ team.name}`}))), []);
+        .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
+            key: '',
+            coordinates: l.coordinates,
+            title: `Claiming this area for team: ${team.name}`
+        }))), []);
     return {selectedTeam, locations, otherCleanAreas};
 }
 

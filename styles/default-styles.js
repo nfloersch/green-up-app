@@ -137,6 +137,7 @@ export const defaultStyles = {
         marginBottom: 10,
         paddingLeft: 10,
         paddingRight: 10,
+        paddingTop: 10,
         borderTopColor: '#AAA',
         borderTopWidth: 1,
         backgroundColor: 'white'

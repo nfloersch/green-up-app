@@ -131,14 +131,19 @@ class InviteContacts extends Component {
             );
 
         return (
-            <View style={styles.container}>
-                <View style={styles.button}>
-                    <Button
+            <View style={styles.frame}>
+                <View style={styles.singleButtonHeader}>
+                    <TouchableHighlight
+                        style={styles.singleButtonHeaderHighlight}
                         onPress={this.inviteToTeam}
-                        title='Invite To This Team'
-                    />
+                    >
+                        <Text style={styles.headerButton}>
+                            {'Invite to Team'}</Text>
+                    </TouchableHighlight>
                 </View>
-                <ScrollView keyboardShouldPersistTaps='never'>
+                <ScrollView
+                    style={styles.scroll}
+                    keyboardShouldPersistTaps='never'>
                     {myContacts}
                 </ScrollView>
             </View>

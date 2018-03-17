@@ -5,7 +5,17 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+    Alert,
+    TouchableHighlight,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+    ScrollView,
+    KeyboardAvoidingView,
+    Platform
+} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {email, isInTeam} from '../../libs/validators';
@@ -32,8 +42,15 @@ function _inviteToTeam() {
         displayName,
         memberStatus: TeamMember.memberStatuses.INVITED
     }));
-    this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
-    this.setState({firstName: '', lastName: '', email: ''});
+    const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
+    const emailIsInvalid = !email(this.state.email) || isInTeam(teamMembers, this.state.email);
+
+    if (emailIsInvalid) {
+        Alert.alert('Please enter a valid email address');
+    } else {
+        this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
+        this.setState({firstName: '', lastName: '', email: ''});
+    }
 }
 
 class InviteForm extends Component {
@@ -58,21 +75,22 @@ class InviteForm extends Component {
 
     render() {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
-        const emailIsInvalid = !email(this.state.email) || isInTeam(teamMembers, this.state.email);
         return (
-
             <View style={styles.frame}>
-                <View style={styles.button}>
-                    <Button
-                        disabled={emailIsInvalid}
+                <View style={styles.singleButtonHeader}>
+                    <TouchableHighlight
+                        style={styles.singleButtonHeaderHighlight}
                         onPress={this.inviteToTeam}
-                        title='Invite to Team'/>
+                    >
+                        <Text style={styles.headerButton}>
+                            {'Invite to Team'}</Text>
+                    </TouchableHighlight>
                 </View>
                 <KeyboardAvoidingView
                     style={styles.frame}
                     behavior='padding'
                 >
-                    <ScrollView style={styles.container}>
+                    <ScrollView style={styles.scroll}>
                         <Text style={styles.label}>
                             Invitee&apos;s Email
                         </Text>
