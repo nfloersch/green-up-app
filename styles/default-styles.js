@@ -40,10 +40,7 @@ export const defaultStyles = {
         overflow: 'hidden',
         textAlign: 'center'
     },
-    button: {
-        marginTop: 10,
-        marginBottom: 10
-    },
+    button: {},
     buttonBar: {
         width: '100%',
         flex: 1,
@@ -51,14 +48,13 @@ export const defaultStyles = {
         justifyContent: 'space-around'
     },
     buttonBarButton: {
-        width: '48%',
-        marginTop: 10
+        width: '48%'
     },
     buttonRow: {
         width: '100%',
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
 
     container: {
@@ -82,6 +78,13 @@ export const defaultStyles = {
     frame: {
         height: '100%',
         width: '100%'
+    },
+    headerButton: {
+        height: 60,
+        fontSize: 18,
+        color: '#007AFF',
+        paddingTop: 20,
+        textAlign: 'center'
     },
     heading: {
         fontWeight: 'bold',
@@ -152,5 +155,6 @@ export const defaultStyles = {
         height: 40,
         padding: 5,
         textAlign: 'left',
-        lineHeight: 25}
+        lineHeight: 25
+    }
 };

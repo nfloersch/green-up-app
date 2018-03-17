@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, KeyboardAvoidingView, StyleSheet, Text, ScrollView, View, Button, Alert, Platform} from 'react-native';
+import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, Platform} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -15,39 +15,41 @@ import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import MapView from 'react-native-maps';
 import {TeamMember} from '../../models/team-member';
 
-const myStyles = {
-    teamTitle: {
-        backgroundColor: 'darkseagreen',
-        paddingTop: 10,
-        paddingBottom: 10
-    },
-    dataBlock: {
-        marginTop: 10,
-        marginBottom: 10,
-        width: '100%'
-    },
-    memberStatusBanner: {
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-    statusBar: {
-        height: 30,
-        width: '100%',
-        marginBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
-    statusMessage: {
-        height: 30,
-        paddingTop: 8,
-        marginLeft: 10,
-        fontSize: 14
-    },
-    teamMember: {
-        height: 30,
-        marginTop: 10
-    }
-};
+const myStyles =
+    {
+
+        teamTitle: {
+            backgroundColor: 'darkseagreen',
+            paddingTop: 10,
+            paddingBottom: 10
+        },
+        dataBlock: {
+            marginTop: 10,
+            marginBottom: 10,
+            width: '100%'
+        },
+        memberStatusBanner: {
+            paddingTop: 5,
+            paddingBottom: 5
+        },
+        statusBar: {
+            height: 30,
+            width: '100%',
+            marginBottom: 10,
+            paddingLeft: 10,
+            paddingRight: 10
+        },
+        statusMessage: {
+            height: 30,
+            paddingTop: 8,
+            marginLeft: 10,
+            fontSize: 14
+        },
+        teamMember: {
+            height: 30,
+            marginTop: 10
+        }
+    };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -190,15 +192,20 @@ class TeamDetails extends Component {
                                 marginTop: 5
                             }}>
                                 <View style={{flex: 1, flexDirection: 'row'}}>
-                                    <Image style={{width: 50, height: 50, marginRight: 10}}
-                                        source={{uri: member.photoURL}}/>
+                                    <Image
+                                        style={{width: 50, height: 50, marginRight: 10}}
+                                        source={{uri: member.photoURL}}
+                                    />
                                     <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                                        <Text style={styles.teamMember}
-                                            key={i}>{member.displayName || member.email}</Text>
+                                        <Text
+                                            style={styles.teamMember}
+                                            key={i}
+                                        >
+                                            {member.displayName || member.email}
+                                        </Text>
                                     </View>
                                 </View>
                             </View>
-
                         ))
                 }
             </View>
@@ -212,17 +219,21 @@ class TeamDetails extends Component {
                         <View style={{width: '100%', height: 60}}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
-                                    <Button
+                                    <TouchableHighlight
                                         style={styles.button}
-                                        onPress={this._acceptInvitation(selectedTeam.id, currentUser)}
-                                        title='Accept Invitation'/>
+                                        onPress={this._acceptInvitation(selectedTeam.id, currentUser)}>
+                                        <Text style={styles.headerButton}>
+                                            {'Accept Invitation'}</Text>
+                                    </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
-
-                                    <Button
+                                    <TouchableHighlight
                                         style={styles.button}
-                                        onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}
-                                        title={'Decline Invitation'}/>
+                                        onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}>
+                                        <Text style={styles.headerButton}>
+                                            {'Decline Invitation'}
+                                        </Text>
+                                    </TouchableHighlight>
                                 </View>
                             </View>
                         </View>
@@ -232,42 +243,45 @@ class TeamDetails extends Component {
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
                         <View style={{width: '100%', height: 60}}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
-                                    <Button
-                                        style={styles.button}
-                                        onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}
-                                        title='Leave Team'
-                                    />
-                                </View>
-                            </View>
+                            <TouchableHighlight
+                                style={{
+                                    height: 60,
+                                    width: '100%'
+                                }}
+                                onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}>
+                                <Text style={styles.headerButton}>
+                                    {'Leave Team'}
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                     );
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
                         <View style={{width: '100%', height: 60}}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
-                                    <Button
-                                        style={styles.button}
-                                        onPress={this._removeRequest(selectedTeam.id, currentUser)}
-                                        title='Remove Request'
-                                    />
-                                </View>
-                            </View>
+                            <TouchableHighlight
+                                style={{
+                                    height: 60,
+                                    width: '100%'
+                                }}
+                                onPress={this._removeRequest(selectedTeam.id, currentUser)}>
+                                <Text style={styles.headerButton}>
+                                    {'Remove Request'}
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                     );
                 default :
                     return (
                         <View style={{width: '100%', height: 60}}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
-                                    <Button
-                                        style={styles.button}
-                                        onPress={this._askToJoin(selectedTeam, currentUser)}
-                                        title='Ask to join this group'/>
-                                </View>
-                            </View>
+                            <TouchableHighlight
+                                style={{
+                                    height: 60,
+                                    width: '100%'
+                                }}
+                                onPress={this._askToJoin(selectedTeam, currentUser)}>
+                                <Text style={styles.headerButton}>
+                                    {'Ask to join this group'}</Text>
+                            </TouchableHighlight>
                         </View>
                     );
             }
@@ -294,7 +308,6 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.statusBar}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-
                                 <Ionicons
                                     name={icons[teamMemberStatuses.OWNER] ||
                                     (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
@@ -319,8 +332,7 @@ class TeamDetails extends Component {
                                     {'You are a member of this team.'}
                                 </Text>
                             </View>
-                        </View>)
-                    ;
+                        </View>);
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
                         <View style={styles.statusBar}>
@@ -377,20 +389,20 @@ class TeamDetails extends Component {
                         <Text style={[styles.heading]}>
                             {'Clean Up Location'}
                         </Text>
-                        <MapView style={{height: 300, marginBottom: 20, marginTop: 5}}
+                        <MapView
+                            style={{height: 300, marginBottom: 20, marginTop: 5}}
                             initialRegion={this.state.initialMapLocation}
                             onPress={this._handleMapClick}>
                             {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
-                                <MapView.Marker coordinate={marker.coordinates}
+                                <MapView.Marker
+                                    coordinate={marker.coordinates}
                                     key={index}
-                                    title={marker.title || 'clean area'}
-                                />))}
+                                    title={marker.title || 'clean area'}/>
+                            ))}
                         </MapView>
                     </View>
-
                     {isTeamMember ? teamMemberList : null}
                     <View style={defaultStyles.padForIOSKeyboard}/>
-
                 </ScrollView>
             </View>
         );
