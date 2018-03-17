@@ -188,7 +188,10 @@ class NewTeam extends Component {
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
-            <View style={styles.frame}>
+            <KeyboardAvoidingView
+                style={styles.frame}
+                behavior='padding'
+            >
                 <View style={{width: '100%', height: 60, marginTop: 15, backgroundColor: '#EEEEEE'}}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
@@ -203,10 +206,7 @@ class NewTeam extends Component {
                         </View>
                     </View>
                 </View>
-                <KeyboardAvoidingView
-                    style={styles.frame}
-                    behavior='padding'
-                >
+
                     <ScrollView
                         automaticallyAdjustContentInsets={false}
                         scrollEventThrottle={200}
@@ -340,7 +340,6 @@ class NewTeam extends Component {
 
                     </ScrollView>
                 </KeyboardAvoidingView>
-            </View>
         );
     }
 }
