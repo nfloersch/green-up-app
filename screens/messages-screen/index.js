@@ -173,7 +173,7 @@ class Messages extends Component {
                             <Text style={styles.headerButton}>{'New Message'}</Text>
                         </TouchableHighlight>
                     </View>
-                    <ScrollView style={styles.container}>
+                    <ScrollView style={styles.scroll}>
                         <View>
                             {myMessages.length > 0
                                 ? myMessages

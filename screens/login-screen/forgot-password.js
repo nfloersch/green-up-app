@@ -2,19 +2,17 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {email} from '../../libs/validators';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {
-};
-
+const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 class ForgotPassword extends Component {
 
     static propTypes = {
@@ -40,8 +38,12 @@ class ForgotPassword extends Component {
     }
 
     onButtonPress() {
-        this.props.actions.resetPassword(this.state.email);
-        this.setState({passwordResetSent: true});
+        if(email(this.state.email)) {
+            this.props.actions.resetPassword(this.state.email);
+            this.setState({passwordResetSent: true});
+        } else {
+            Alert.alert('Please enter a valid email address');
+        }
     }
 
     render() {
@@ -72,7 +74,7 @@ class ForgotPassword extends Component {
 const mapStateToProps = (state) => ({session: state.login.session});
 
 const mapDispatchToProps = (dispatch) => ({
-        actions: bindActionCreators(actions, dispatch)
-    });
+    actions: bindActionCreators(actions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

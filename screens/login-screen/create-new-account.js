@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import {StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
 import CreateAccountForm from '../../components/create-account-form';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
@@ -28,10 +27,6 @@ class CreateNewAccount extends Component {
 
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
-    }
-
-    onButtonPress() {
     }
 
     render() {

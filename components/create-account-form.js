@@ -1,8 +1,8 @@
 // @flow
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-
+import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {email} from '../libs/validators';
 import {defaultStyles} from '../styles/default-styles';
 
 const myStyles = {};
@@ -33,7 +33,11 @@ export default class CreateAccountForm extends Component {
     }
 
     onButtonPress() {
-        this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
+        if (email(this.state.email)) {
+            this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
+        } else {
+            Alert.alert('Please enter a valid email address');
+        }
     }
 
     render() {

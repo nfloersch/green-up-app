@@ -185,7 +185,7 @@ class MyTeams extends Component {
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.scroll}>
                     <View>
                         {myTeams}
                     </View>

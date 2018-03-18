@@ -127,7 +127,7 @@ class NewMessage extends Component {
                     style={defaultStyles.frame}
                     behavior='padding'
                 >
-                    <ScrollView style={styles.container}>
+                    <ScrollView style={styles.scroll}>
                         {
                             !selectedTeamId ? (
                                 <View style={{marginBottom: 5}}>

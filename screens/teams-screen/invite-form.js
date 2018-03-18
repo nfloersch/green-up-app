@@ -22,7 +22,6 @@ import {email, isInTeam} from '../../libs/validators';
 
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
-// import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {};
