@@ -14,7 +14,6 @@ import {
     Image,
     TextInput,
     TouchableHighlight,
-    Button,
     Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -38,7 +37,8 @@ class Profile extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         profile: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        teamMembers: PropTypes.object
     };
 
     static navigationOptions = {
@@ -82,29 +82,26 @@ class Profile extends Component {
         const avatar = profile.photoURL;
 
         return (
-
             <View style={styles.frame}>
-                <View style={{width: '100%', height: 60}}>
+                <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                title='Save Profile'
-                                onPress={this._saveProfile}/>
+                            <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
+                                <Text style={styles.headerButton}>{'Save Profile'}</Text>
+                            </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <Button
-                                title='Cancel'
-                                onPress={this._cancel}/>
+                            <TouchableHighlight style={styles.button} onPress={this._cancel}>
+                                <Text style={styles.headerButton}>{'Cancel'}</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </View>
-
-
                 <KeyboardAvoidingView
                     style={defaultStyles.frame}
                     behavior='padding'
                 >
-                    <ScrollView style={styles.container}>
+                    <ScrollView style={styles.scroll}>
                         <View style={styles.profileHeader}>
                             <Image
                                 style={{width: 50, height: 50}}

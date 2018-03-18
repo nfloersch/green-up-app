@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, TouchableHighlight} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, Image, TouchableHighlight} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getMemberIcon} from '../../libs/member-icons';
@@ -14,7 +14,20 @@ import {TeamMember} from '../../models/team-member';
 import * as status from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
-const myStyles = {};
+const myStyles = {
+    statusBar: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#FFE',
+        marginBottom: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#FDFDFE'
+    },
+    statusBarText: {fontSize: 12, textAlign: 'left'}
+};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -92,16 +105,15 @@ class TeamMemberDetails extends Component {
                         <View style={styles.buttonBarHeader}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
-                                    <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={this._removeTeamMember(teamId, membershipId)}>
-                                        <Text>{'Ignore'}</Text>
+                                    <TouchableHighlight style={styles.button}
+                                                        onPress={this._removeTeamMember(teamId, membershipId)}>
+                                        <Text style={styles.headerButton}>{'Ignore'}</Text>
                                     </TouchableHighlight>
-                                    <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={() => this._updateTeamMember(teamId, member)(status.ACCEPTED)}
-                                    >
-                                        <Text>{'Add To This Team'}</Text>
+                                </View>
+                                <View style={styles.buttonBarButton}>
+                                    <TouchableHighlight style={styles.button}
+                                                        onPress={this._updateTeamMember(teamId, member)(status.ACCEPTED)}>
+                                        <Text style={styles.headerButton}>{'Add to Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -138,57 +150,70 @@ class TeamMemberDetails extends Component {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
                     return (
-                        <View>
-                            <Text style={styles.alertInfo}>
+                        <View style={styles.statusBar}>
+                            {getMemberIcon(status.OWNER)}
+                            <Text style={styles.statusBarText}>
                                 {`${teamMember.displayName || teamMember.email}`} is the owner of this team
                             </Text>
                         </View>
                     );
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View>
-                            <Text style={styles.alertInfo}>
+                        <View style={styles.statusBar}>
+                            {getMemberIcon(status.REQUEST_TO_JOIN)}
+                            <Text style={styles.statusBarText}>
                                 {teamMember.displayName || teamMember.email} wants to join this team
                             </Text>
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
-                        <View>
-                            <Text style={{textAlign: 'center'}}>
+                        <View style={styles.statusBar}>
+                            {getMemberIcon(status.ACCEPTED)}
+                            <Text style={styles.statusBarText}>
                                 {teamMember.displayName || teamMember.email} is a member of this team.
                             </Text>
                         </View>
                     );
                 case status.INVITED :
                     return (
-                        <View>
-                            <Text>
+                        <View style={styles.statusBar}>
+                            {getMemberIcon(status.INVITED)}
+                            <Text style={styles.statusBarText}>
                                 {`${teamMember.displayName || teamMember.email} has been invited to this team, but has yet to accept.`}
                             </Text>
                         </View>
                     );
                 default :
-                    return (<Text>{teamMember.displayName || teamMember.email} is not a member of this team</Text>);
+                    return (
+                        <View style={styles.statusBar}>
+                            {getMemberIcon(status.NOT_INVITED)}
+                            <Text style={styles.statusBarText}>
+                                {teamMember.displayName || teamMember.email} is not a member of this team
+                            </Text>
+                        </View>);
             }
         }
 
         return (
             <View style={[styles.frame, {paddingLeft: 10, paddingRight: 10}]}>
                 {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}
-                <View style={styles.profileHeader}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={{uri: avatar}}
-                    />
-                    <Text style={[styles.profileName, styles.heading]}>
-                        {`${member.displayName || member.email}`}
-                    </Text>
-                </View>
-                <View>
-                    {getStatus.bind(this)(member)}
-                </View>
+                <ScrollView style={styles.scroll}>
+                    <View style={styles.profileHeader}>
+                        <Image
+                            style={{width: 50, height: 50}}
+                            source={{uri: avatar}}
+                        />
+                        <Text style={[styles.profileName, styles.heading]}>
+                            {`${member.displayName || member.email}`}
+                        </Text>
+                    </View>
+                    <View>
+                        {getStatus.bind(this)(member)}
+                    </View>
+                </ScrollView>
             </View>
+
         );
     }
 }

@@ -15,6 +15,7 @@ import {
     View,
     Platform,
     ScrollView,
+    TouchableHighlight,
     TouchableOpacity
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -31,6 +32,17 @@ import Team from '../../models/team';
 import Colors from '../../constants/Colors';
 
 const myStyles = {
+    danger: {
+        borderWidth: 1,
+        borderColor: '#FAA',
+        marginTop: 10,
+        padding: 10
+    },
+    dangerText: {
+        color: 'red',
+        fontSize: 18,
+        textAlign: 'center'
+    },
     selected: {
         opacity: 0.5
     }
@@ -185,17 +197,25 @@ class TeamEditorDetails extends Component {
                 style={defaultStyles.frame}
                 behavior='padding'
             >
+
+                <View style={styles.singleButtonHeader}>
+                    <TouchableHighlight
+                        style={styles.singleButtonHeaderHighlight}
+                        onPress={this.saveTeam}
+                    >
+                        <Text style={styles.headerButton}>
+                            {'Save'}
+                        </Text>
+                    </TouchableHighlight>
+                </View>
+
+
                 <ScrollView
                     automaticallyAdjustContentInsets={false}
                     scrollEventThrottle={200}
-                    style={[styles.container, styles.scroll]}
+                    style={styles.scroll}
                     keyboardShouldPersistTaps={'always'}
                 >
-                    <View style={styles.button}>
-                        <Button
-                            title='Save'
-                            onPress={this.saveTeam}/>
-                    </View>
                     <View>
                         <Text style={styles.label}>Team Name</Text>
                         <TextInput
@@ -314,11 +334,15 @@ class TeamEditorDetails extends Component {
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
-                    <View style={[styles.button, styles.danger]}>
-                        <Button
-                            title='Delete Team'
+                    <View>
+                        <TouchableHighlight
+                            style={styles.danger}
                             onPress={this.deleteTeam}
-                        />
+                        >
+                            <Text style={styles.dangerText}>
+                                {'Delete Team'}
+                            </Text>
+                        </TouchableHighlight>
                     </View>
                     <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
