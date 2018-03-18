@@ -145,6 +145,8 @@ class TeamEditorMap extends Component {
     render() {
         const {locations, otherCleanAreas} = this.props;
 
+        const otherTeamsLocationImage = require('../../assets/images/flag.png');
+
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
@@ -153,10 +155,6 @@ class TeamEditorMap extends Component {
                     Tap on the marker text box to remove a marker.
                     Blue markers represent areas that other teams are cleaning up.
                     </Text>
-                    {!this.props.selectedTeam.id && (
-                        <Text>
-                        The markers will only be saved when you return to the details page and save the team details.
-                        </Text>)}
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
                         onPress={this._handleMapClick}>
@@ -168,11 +166,11 @@ class TeamEditorMap extends Component {
                                 description={marker.description || 'tap to remove'}
                             />))}
 
-                        {this.props.otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
+                        {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
                             (<MapView.Marker
                                 key={i}
                                 coordinate={a.coordinates}
-                                pinColor='blue'
+                                image={otherTeamsLocationImage}
                                 title={a.title}
                             />))}
                     </MapView>
