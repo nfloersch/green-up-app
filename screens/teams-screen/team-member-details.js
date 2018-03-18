@@ -55,7 +55,12 @@ class TeamMemberDetails extends Component {
     }
 
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Object) {
+        const {membershipId, teamId} = nextProps.navigation.state.params;
+        const member = (nextProps.teamMembers[teamId] || {})[membershipId];
+        if (!member) {
+            nextProps.navigation.goBack();
+        }
         if (JSON.stringify(nextProps.profile) !== JSON.stringify(this.props.profile)) {
             this.setState(nextProps.profile);
         }
@@ -69,7 +74,7 @@ class TeamMemberDetails extends Component {
         };
     }
 
-    _revokeInvitation(teamId, membershipId) {
+    _revokeInvitation(teamId: string, membershipId: string) {
         return () => {
             this.props.navigation.goBack();
             this.props.actions.revokeInvitation(teamId, membershipId);
@@ -92,7 +97,7 @@ class TeamMemberDetails extends Component {
 
     render() {
         const {membershipId, teamId} = this.props.navigation.state.params;
-        const member = (this.props.teamMembers[teamId] || {})[membershipId];
+        const member = (this.props.teamMembers[teamId] || {})[membershipId] || {};
         const avatar = (member || {}).photoURL;
         const isOwner = ((this.props.teams[teamId] || {}).owner || {}).uid === this.props.currentUserId;
 
@@ -106,7 +111,7 @@ class TeamMemberDetails extends Component {
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight style={styles.button}
-                                                        onPress={this._removeTeamMember(teamId, membershipId)}>
+                                                        onPress={this._removeTeamMember(teamId, member)}>
                                         <Text style={styles.headerButton}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
