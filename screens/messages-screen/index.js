@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, TouchableHighlight, View, Button, ScrollView} from 'react-native';
+import {Image, StyleSheet, Text, TouchableHighlight, View, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
@@ -143,9 +143,7 @@ class Messages extends Component {
                                         fontSize: 10,
                                         textAlign: 'left'
                                     }}
-                                    >
-                                        {`${(this.props.teams[messages[key].teamId] || {}).name || ''} :`}
-                                    </Text>
+                                    >{`${(this.props.teams[messages[key].teamId] || {}).name || ''} :`}</Text>
                                     <Text style={messages[key].read
                                         ? styles.oldMsg : styles.newMsg}>
                                         {messages[key].text.length > 80
@@ -155,7 +153,9 @@ class Messages extends Component {
                                     <Text style={{
                                         fontSize: 10,
                                         textAlign: 'right'
-                                    }}>--{messages[key].sender.displayName || messages[key].sender.email}</Text>
+                                    }}>
+                                        {`--${messages[key].sender.displayName || messages[key].sender.email}`}
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -166,10 +166,11 @@ class Messages extends Component {
             return (myMessages.length > 0 || this.props.userHasTeams) ? (
                 <View style={styles.frame}>
                     <View style={styles.singleButtonHeader}>
-                        <TouchableHighlight style={styles.singleButtonHeaderHighlight}
-                                            onPress={() => {
-                                                this.props.navigation.navigate('NewMessage');
-                                            }}>
+                        <TouchableHighlight
+                            style={styles.singleButtonHeaderHighlight}
+                            onPress={() => {
+                                this.props.navigation.navigate('NewMessage');
+                            }}>
                             <Text style={styles.headerButton}>{'New Message'}</Text>
                         </TouchableHighlight>
                     </View>
@@ -193,14 +194,14 @@ class Messages extends Component {
                     <Text style={styles.alertInfo}>
                         You don't have any teams to send messages to. Start your own team or join an existing one.
                     </Text>
-                    <TouchableHighlight style={styles.goToButton}
+                    <TouchableHighlight
+                        style={styles.goToButton}
                         onPress={() => {
                             this.props.navigation.navigate('Teams');
                         }}
                     >
                         <Text>{'Go to my teams'}</Text>
                     </TouchableHighlight>
-                    />
                 </View>
             );
         }

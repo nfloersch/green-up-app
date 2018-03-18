@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, TouchableHighlight, StyleSheet, Text, TextInput, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {email} from '../../libs/validators';
@@ -65,7 +65,7 @@ class ForgotPassword extends Component {
                         style={styles.textInput}
                         underlineColorAndroid={'transparent'}
                     />
-                    <Button onPress={this.onButtonPress} title={'Reset Password'}/>
+                    <TouchableHighlight onPress={this.onButtonPress}><Text>{'Reset Password'}</Text></TouchableHighlight>
                 </View>
             );
     }
