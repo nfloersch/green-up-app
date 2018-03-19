@@ -226,6 +226,9 @@ class TeamMemberDetails extends Component {
                     <View>
                         {getStatus.bind(this)(member, isOwner)}
                     </View>
+                    <View>
+                        <Text>{member.bio || ''}</Text>
+                    </View>
                 </ScrollView>
             </View>
 

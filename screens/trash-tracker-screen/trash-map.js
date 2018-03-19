@@ -297,16 +297,6 @@ class TrashMap extends Component {
                                         </TouchableHighlight>
                                     </View>)}
 
-                                    {
-                                        this.state.drop.uid && !this.state.drop.wasCollected && (
-                                            <View style={styles.buttonBarButton}>
-                                                <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
-                                                    <Text style={styles.headerButton}>{'Collect Trash'}</Text>
-                                                </TouchableHighlight>
-                                            </View>
-                                        )
-                                    }
-
 
                                     <View style={styles.buttonBarButton}>
                                         <TouchableHighlight style={styles.button} onPress={this.closeModal}>
@@ -357,6 +347,15 @@ class TrashMap extends Component {
                                         </View>
 
                                     </View>
+                                    {
+                                        this.state.drop.uid && !this.state.drop.wasCollected && (
+                                            <View style={styles.buttonBarButton}>
+                                                <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
+                                                    <Text style={styles.headerButton}>{'Collect Trash'}</Text>
+                                                </TouchableHighlight>
+                                            </View>
+                                        )
+                                    }
                                 </ScrollView>
                                 {
                                     Platform.OS === 'ios'

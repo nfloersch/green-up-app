@@ -436,7 +436,7 @@ const mapStateToProps = (state) => ({
     invitations: state.teams.invitations || {},
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
-    currentUser: TeamMember.create({...state.profile, ...state.login.user}),
+    currentUser: TeamMember.create({...state.login.user, ...state.profile}),
     teamMembers: state.teams.teamMembers,
     otherCleanAreas: Object.values(state.teams.teams)
         .filter(team => team.id !== state.teams.selectedTeam.id)
