@@ -127,17 +127,19 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
 });
 
 
-exports.onTeamMemberRemove = functions.database.ref('teamMembers/{pushId}/{membershipId}').onDelete((event) => {
+exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membershipId}').onDelete((event) => {
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
     const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
 
     const member = event.data.previous;
     if (member.exists()) {
-        const uid = member.uid;
-        removeInvitation(event.param.membershipId, event.params.pushId);
+        const uid = member.val().uid;
+        removeInvitation(event.params.membershipId, event.params.teamId);
+        console.log(JSON.stringify(member));
+        console.log('deleting user ' + uid + ' from team ' + event.params.teamId);
         if (Boolean(uid)) {
-            removeFromProfile(uid, event.params.pushId);
+            removeFromProfile(uid, event.params.teamId);
         }
     }
 });

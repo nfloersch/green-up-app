@@ -67,8 +67,11 @@ class TeamMemberDetails extends Component {
         }
     }
 
-    _updateTeamMember(teamId: string, member: Object) {
+    _updateTeamMember(teamId: string, member: Object, currentUserId) {
         return (newStatus: Object) => {
+            const messages = this.props.messages;
+            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === member.uid);
+            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
             const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
             this.props.navigation.goBack();
             this.props.actions.updateTeamMember(teamId, _member, newStatus);
@@ -123,7 +126,7 @@ class TeamMemberDetails extends Component {
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.button}
-                                        onPress={() => this._updateTeamMember(teamId, member)(status.ACCEPTED)}>
+                                        onPress={() => this._updateTeamMember(teamId, member, this.props.currentUserId)(status.ACCEPTED)}>
                                         <Text style={styles.headerButton}>{'Add to Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
@@ -157,7 +160,7 @@ class TeamMemberDetails extends Component {
             }
         }
 
-        function getStatus(teamMember: Object = {}) {
+        function getStatus(teamMember: Object = {}, isOwner: boolean) {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
                     return (
@@ -171,7 +174,7 @@ class TeamMemberDetails extends Component {
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View style={styles.statusBar}>
-                            {getMemberIcon(status.REQUEST_TO_JOIN)}
+                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, isOwner)}
                             <Text style={styles.statusBarText}>
                                 {teamMember.displayName || teamMember.email} wants to join this team
                             </Text>
@@ -221,7 +224,7 @@ class TeamMemberDetails extends Component {
                         </Text>
                     </View>
                     <View>
-                        {getStatus.bind(this)(member)}
+                        {getStatus.bind(this)(member, isOwner)}
                     </View>
                 </ScrollView>
             </View>

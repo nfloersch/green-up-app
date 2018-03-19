@@ -7,7 +7,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     Alert,
-    Button,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
@@ -24,7 +23,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 import {Ionicons} from '@expo/vector-icons';
-
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';

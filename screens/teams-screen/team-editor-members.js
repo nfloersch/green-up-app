@@ -5,14 +5,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button, StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform} from 'react-native';
+import {StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
 import Colors from '../../constants/Colors';
 import * as actions from './actions';
-import * as memberStatus from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
@@ -56,9 +55,10 @@ class TeamEditorMembers extends Component {
         tabBarLabel: 'Members',
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
         tabBarIcon: ({focused}) => (
-            <Ionicons name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
-                      size={24}
-                      color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            <Ionicons
+                name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
+                size={24}
+                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
             />)
     };
 
@@ -105,11 +105,12 @@ class TeamEditorMembers extends Component {
             <View key={members[membershipId].uid || members[membershipId].email} style={styles.item}>
                 <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipId)}>
                     <View style={styles.member}>
-                        {getMemberIcon(members[membershipId].memberStatus)}
+                        {getMemberIcon(members[membershipId].memberStatus), {}, true}
                         <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
                     </View>
                 </TouchableHighlight>
-                <Text style={styles.memberName}>
+                <Text
+                    style={styles.memberName}>
                     {(`${members[membershipId].displayName} ${this.getStatusText(members[membershipId].memberStatus)}`).trim()}
                 </Text>
             </View>
