@@ -137,13 +137,6 @@ class MyTeams extends Component {
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
                         <Text style={styles.teamName}>{teams[key].name}</Text>
-                        <View style={styles.teamIcon}>
-                            <Ionicons
-                                style={{color: this.getIconColor(key)}}
-                                name={this.toTeamIcon(key)}
-                                size={30}
-                            />
-                        </View>
                         <View style={styles.messageIcon}>
                             {
                                 canSendMessage(key)
@@ -159,6 +152,13 @@ class MyTeams extends Component {
                                     )
                                     : null
                             }
+                        </View>
+                        <View style={styles.teamIcon}>
+                            <Ionicons
+                                style={{color: this.getIconColor(key)}}
+                                name={this.toTeamIcon(key)}
+                                size={30}
+                            />
                         </View>
                     </View>
                 </TouchableHighlight>

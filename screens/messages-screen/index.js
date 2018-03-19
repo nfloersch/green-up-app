@@ -141,9 +141,10 @@ class Messages extends Component {
                                 <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
                                     <Text style={{
                                         fontSize: 10,
-                                        textAlign: 'left'
+                                        textAlign: 'left',
+                                        fontWeight: 'bold'
                                     }}
-                                    >{`${(this.props.teams[messages[key].teamId] || {}).name || ''} :`}</Text>
+                                    >{`${(this.props.teams[messages[key].teamId] || {}).name || ''}`.trim()}</Text>
                                     <Text style={messages[key].read
                                         ? styles.oldMsg : styles.newMsg}>
                                         {messages[key].text.length > 80
@@ -163,7 +164,7 @@ class Messages extends Component {
                 )
             );
 
-            return (myMessages.length > 0 || this.props.userHasTeams) ? (
+            return this.props.userHasTeams ? (
                 <View style={styles.frame}>
                     <View style={styles.singleButtonHeader}>
                         <TouchableHighlight
@@ -221,7 +222,7 @@ function mapStateToProps(state) {
         invitationsLoaded: state.messages.invitationsLoaded,
         messages: state.messages.messages || {},
         messagesLoaded: state.messages.loaded,
-        userHasTeams: Object.values(state.profile.teams || {}).length > 0,
+        userHasTeams: Object.values(state.teams.teamMembers || {}).length > 0,
         teamsLoaded: state.messages.teamsLoaded,
         teams: state.teams.teams
     };
