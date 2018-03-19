@@ -351,7 +351,7 @@ class TrashMap extends Component {
                                         this.state.drop.uid && !this.state.drop.wasCollected && (
                                             <View style={styles.buttonBarButton}>
                                                 <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
-                                                    <Text style={styles.headerButton}>{'Collect Trash'}</Text>
+                                                    <Text style={styles.menuButtonText}>{'Collect Trash'}</Text>
                                                 </TouchableHighlight>
                                             </View>
                                         )

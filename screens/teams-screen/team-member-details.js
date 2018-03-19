@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, ScrollView, Text, View, Image, TouchableHighlight} from 'react-native';
+import {Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getMemberIcon} from '../../libs/member-icons';
@@ -80,18 +80,52 @@ class TeamMemberDetails extends Component {
 
     _revokeInvitation(teamId: string, membershipId: string) {
         return () => {
-            this.props.navigation.goBack();
-            this.props.actions.revokeInvitation(teamId, membershipId);
+            Alert.alert(
+                'DANGER!',
+                'Are you sure you want to revoke this invitation?',
+                [
+                    {
+                        text: 'No', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {
+                        text: 'Yes', onPress: () => {
+                            this.props.navigation.goBack();
+                            this.props.actions.revokeInvitation(teamId, membershipId);
+                        }
+                    }
+                ],
+                {cancelable: true}
+            );
+
         };
     }
 
     _removeTeamMember(teamId: string, user: Object, currentUserId: string) {
         return () => {
-            const messages = this.props.messages;
-            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
-            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-            this.props.navigation.goBack();
-            return this.props.actions.removeTeamMember(teamId, user);
+
+
+            Alert.alert(
+                'DANGER!',
+                'Are you sure you want to remove this team member?',
+                [
+                    {
+                        text: 'No', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {
+                        text: 'Yes', onPress: () => {
+                            const messages = this.props.messages;
+                            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
+                            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
+                            this.props.navigation.goBack();
+                            return this.props.actions.removeTeamMember(teamId, user);
+                        }
+                    }
+                ],
+                {cancelable: true}
+            );
+
         };
     }
 
@@ -160,7 +194,7 @@ class TeamMemberDetails extends Component {
             }
         }
 
-        function getStatus(teamMember: Object = {}, isOwner: boolean) {
+        function getStatus(teamMember: Object = {}, _isOwner: boolean) {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
                     return (
@@ -174,7 +208,7 @@ class TeamMemberDetails extends Component {
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View style={styles.statusBar}>
-                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, isOwner)}
+                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, _isOwner)}
                             <Text style={styles.statusBarText}>
                                 {teamMember.displayName || teamMember.email} wants to join this team
                             </Text>
