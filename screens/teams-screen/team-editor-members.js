@@ -103,7 +103,7 @@ class TeamEditorMembers extends Component {
         const members = this.props.teamMembers[teamId] || {};
         const memberButtons = Object.keys(members).map(membershipId => (
             <View key={members[membershipId].uid || members[membershipId].email} style={styles.item}>
-                <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipIgit d)}>
+                <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipId)}>
                     <View style={styles.member}>
                         {getMemberIcon(members[membershipId].memberStatus, {}, true)}
                         <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
