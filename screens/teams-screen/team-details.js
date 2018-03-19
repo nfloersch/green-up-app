@@ -113,8 +113,15 @@ class TeamDetails extends Component {
             'DANGER!',
             'Are you really, really sure you want to leave this team?',
             [
-                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'Yes', onPress: () => this.props.actions.leaveTeam(teamId, user)}
+                {
+                    text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'
+                },
+                {
+                    text: 'Yes', onPress: () => {
+                        this.props.navigation.goBack();
+                        return this.props.actions.leaveTeam(teamId, user);
+                    }
+                }
             ],
             {cancelable: true}
         );
