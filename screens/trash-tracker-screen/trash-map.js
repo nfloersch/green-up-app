@@ -94,6 +94,10 @@ class TrashMap extends Component {
 
     constructor(props) {
         super(props);
+        this.closeModal = this.closeModal.bind(this);
+        this._toggleTag = this._toggleTag.bind(this);
+        this._getLocationAsync = this._getLocationAsync.bind(this);
+        this._getTown = this._getTown.bind(this);
         this.state = {
             drop: {
                 id: null,
@@ -222,7 +226,6 @@ class TrashMap extends Component {
                     )}
                     <ScrollView style={styles.scroll}>
                         <TownInformation townInfo={townInfo} town={town}/>
-
                         <MapView
                             initialRegion={initialMapLocation}
                             showsUserLocation={true}
@@ -283,23 +286,26 @@ class TrashMap extends Component {
                             this.closeModal();
                         }}>
                         <View style={styles.frame}>
-                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE'}]}>
+                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
                                 <View style={styles.buttonBar}>
-
                                     {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
                                     (<View style={styles.buttonBarButton}>
                                         <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
-                                            <Text
-                                                style={styles.headerButton}>{this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}</Text>
+                                            <Text style={styles.headerButton}>
+                                                {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
+                                            </Text>
                                         </TouchableHighlight>
                                     </View>)}
 
-                                    {this.state.drop.uid && !this.state.drop.wasCollected && (
-                                        <View style={styles.buttonBarButton}>
-                                            <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
-                                                <Text style={styles.headerButton}>{'Collect Trash'}</Text>
-                                            </TouchableHighlight>
-                                        </View>)}
+                                    {
+                                        this.state.drop.uid && !this.state.drop.wasCollected && (
+                                            <View style={styles.buttonBarButton}>
+                                                <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
+                                                    <Text style={styles.headerButton}>{'Collect Trash'}</Text>
+                                                </TouchableHighlight>
+                                            </View>
+                                        )
+                                    }
 
 
                                     <View style={styles.buttonBarButton}>
