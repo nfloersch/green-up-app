@@ -136,6 +136,13 @@ class MyTeams extends Component {
                                     : null
                             }
                         </View>
+                        <View style={styles.teamIcon}>
+                            <Ionicons
+                                style={{color: this.getIconColor(key)}}
+                                name={this.toTeamIcon(key)}
+                                size={30}
+                            />
+                        </View>
                     </View>
                 </TouchableHighlight>
             ));
