@@ -189,9 +189,7 @@ class NewTeam extends Component {
 
         // Making this prop platform-specific per the docs:
         // https://facebook.github.io/react-native/docs/keyboardavoidingview.html#behavior
-        const kbavProps = {
-          behavior: Platform.OS === 'ios' ? 'padding': undefined
-        };
+        const kbavProps = {behavior: Platform.OS === 'ios' ? 'padding' : undefined};
 
         return (
             <KeyboardAvoidingView

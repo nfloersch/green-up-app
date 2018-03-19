@@ -19,7 +19,6 @@ import {
     Switch,
     TextInput,
     Text,
-    Button,
     View, Platform
 } from 'react-native';
 
@@ -207,7 +206,8 @@ class TrashMap extends Component {
         } : null;
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
-            : initialMapLocation && (
+            : initialMapLocation &&
+            (
                 <View style={styles.frame}>
                     {townInfo.RoadsideDropOffAllowed === true && (
                         <View style={styles.singleButtonHeader}>
@@ -220,26 +220,9 @@ class TrashMap extends Component {
                             </TouchableHighlight>
                         </View>
                     )}
-                    <ScrollView style={styles.container}>
+                    <ScrollView style={styles.scroll}>
                         <TownInformation townInfo={townInfo} town={town}/>
-                        <View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Collected Trash</Text>
-                                <Switch value={this.state.showCollectedTrash}
-                                    onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-                            </View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Uncollected Trash</Text>
-                                <Switch value={this.state.showUncollectedTrash}
-                                    onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
-                            </View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Trash Drop Locations</Text>
-                                <Switch value={this.state.showTrashDropLocations}
-                                    onValueChange={(value) => this.setState({showTrashDropLocations: value})}
-                                />
-                            </View>
-                        </View>
+
                         <MapView
                             initialRegion={initialMapLocation}
                             showsUserLocation={true}
@@ -269,6 +252,27 @@ class TrashMap extends Component {
                                 />
                             ))}
                         </MapView>
+                        <View>
+                            <View style={styles.toggle}>
+                                <Text style={styles.label}>Show Collected Trash</Text>
+                                <Switch
+                                    value={this.state.showCollectedTrash}
+                                    onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+                            </View>
+                            <View style={styles.toggle}>
+                                <Text style={styles.label}>Show Uncollected Trash</Text>
+                                <Switch
+                                    value={this.state.showUncollectedTrash}
+                                    onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
+                            </View>
+                            <View style={styles.toggle}>
+                                <Text style={styles.label}>Show Trash Drop Locations</Text>
+                                <Switch
+                                    value={this.state.showTrashDropLocations}
+                                    onValueChange={(value) => this.setState({showTrashDropLocations: value})}
+                                />
+                            </View>
+                        </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
                     <Modal
@@ -279,29 +283,29 @@ class TrashMap extends Component {
                             this.closeModal();
                         }}>
                         <View style={styles.frame}>
-                            <View style={{width: '100%', height: 60, marginTop: 15, backgroundColor: '#EEEEEE'}}>
+                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE'}]}>
                                 <View style={styles.buttonBar}>
+
                                     {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
-                                (
-                                    <View style={styles.buttonBarButton}>
-                                        <Button
-                                            onPress={saveTrashDrop}
-                                            title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}/>
-                                    </View>
-                                )}
+                                    (<View style={styles.buttonBarButton}>
+                                        <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
+                                            <Text
+                                                style={styles.headerButton}>{this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}</Text>
+                                        </TouchableHighlight>
+                                    </View>)}
+
                                     {this.state.drop.uid && !this.state.drop.wasCollected && (
                                         <View style={styles.buttonBarButton}>
-                                            <Button
-                                                onPress={collectTrashDrop}
-                                                title='Collect Trash'/>
-                                        </View>
-                                    )}
+                                            <TouchableHighlight style={styles.button} onPress={collectTrashDrop}>
+                                                <Text style={styles.headerButton}>{'Collect Trash'}</Text>
+                                            </TouchableHighlight>
+                                        </View>)}
+
+
                                     <View style={styles.buttonBarButton}>
-                                        <Button
-                                            onPress={() => {
-                                                this.closeModal();
-                                            }}
-                                            title='Cancel'/>
+                                        <TouchableHighlight style={styles.button} onPress={this.closeModal}>
+                                            <Text style={styles.headerButton}>{'Cancel'}</Text>
+                                        </TouchableHighlight>
                                     </View>
 
                                 </View>
@@ -310,7 +314,7 @@ class TrashMap extends Component {
                                 style={defaultStyles.frame}
                                 behavior='padding'
                             >
-                                <ScrollView style={{marginTop: 22}}>
+                                <ScrollView style={styles.scroll}>
                                     <View style={styles.container}>
                                         <Text style={styles.label}>Number of Bags</Text>
                                         <TextInput
