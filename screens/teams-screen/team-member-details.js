@@ -35,6 +35,7 @@ const styles = StyleSheet.create(combinedStyles);
 class TeamMemberDetails extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        messages: PropTypes.object,
         navigation: PropTypes.object,
         profile: PropTypes.object,
         teamMembers: PropTypes.object,
@@ -81,10 +82,13 @@ class TeamMemberDetails extends Component {
         };
     }
 
-    _removeTeamMember(teamId: string, user: Object) {
+    _removeTeamMember(teamId: string, user: Object, currentUserId: string) {
         return () => {
+            const messages = this.props.messages;
+            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
+            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
             this.props.navigation.goBack();
-            this.props.actions.removeTeamMember(teamId, user);
+            return this.props.actions.removeTeamMember(teamId, user);
         };
     }
 
@@ -110,14 +114,16 @@ class TeamMemberDetails extends Component {
                         <View style={styles.buttonBarHeader}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
-                                    <TouchableHighlight style={styles.button}
-                                                        onPress={this._removeTeamMember(teamId, member)}>
+                                    <TouchableHighlight
+                                        style={styles.button}
+                                        onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}>
                                         <Text style={styles.headerButton}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
-                                    <TouchableHighlight style={styles.button}
-                                                        onPress={() => this._updateTeamMember(teamId, member)(status.ACCEPTED)}>
+                                    <TouchableHighlight
+                                        style={styles.button}
+                                        onPress={() => this._updateTeamMember(teamId, member)(status.ACCEPTED)}>
                                         <Text style={styles.headerButton}>{'Add to Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
@@ -129,7 +135,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
                                 style={styles.singleButtonHeaderHighlight}
-                                onPress={this._removeTeamMember(teamId, member)}
+                                onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}
                             >
                                 <Text style={styles.headerButton}>{'Remove from Team'}</Text>
                             </TouchableHighlight>
@@ -194,7 +200,8 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.NOT_INVITED)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName || teamMember.email} is not a member of this team
+                                {teamMember.displayName || teamMember.email || 'This person'} is not a member of this
+                                team
                             </Text>
                         </View>);
             }
@@ -210,7 +217,7 @@ class TeamMemberDetails extends Component {
                             source={{uri: avatar}}
                         />
                         <Text style={[styles.profileName, styles.heading]}>
-                            {`${member.displayName || member.email}`}
+                            {`${member.displayName || member.email || ''}`}
                         </Text>
                     </View>
                     <View>
@@ -224,10 +231,11 @@ class TeamMemberDetails extends Component {
 }
 
 const mapStateToProps = state => {
+    const messages = state.messages.messages || {};
     const teamMembers = state.teams.teamMembers || {};
     const teams = state.teams.teams || {};
     const currentUserId = state.login.user.uid;
-    return {teamMembers, teams, currentUserId};
+    return {messages, teamMembers, teams, currentUserId};
 };
 
 const mapDispatchToProps = dispatch => ({

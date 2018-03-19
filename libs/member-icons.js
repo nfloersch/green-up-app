@@ -17,9 +17,10 @@ export function getIconStyles(status: string) {
 
 const icons = {
     [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
-    [memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
+    [memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-person-outline' : 'md-person',
     [memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-    [memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
+    [memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star',
+    [memberStatuses.NOT_INVITED]: Platform.OS === 'ios' ? 'ios-close' : 'md-close'
 };
 
 

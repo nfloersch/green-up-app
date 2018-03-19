@@ -329,10 +329,17 @@ function revokeInvitation(teamId: string, membershipId: string) {
         .then(() => db.ref(`invitations/${_membershipId}/${teamId}`).remove());
 }
 
+function deleteMessage(userId: string, messageId: string) {
+    return firebase
+        .database()
+        .ref(`messages/${userId}/${messageId}`).remove();
+}
+
 export const firebaseDataLayer = {
     addTeamMember,
     createTeam,
     createUser,
+    deleteMessage,
     deleteTeam,
     dropTrash,
     facebookAuth,

@@ -117,9 +117,28 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
     const memberships = event.data.previous;
     if (memberships.exists()) {
         Object.keys(memberships.val()).forEach(key => {
+            const uid = memberships[key].uid;
             removeInvitation(key, event.params.pushId);
-            removeFromProfile(key, event.params.pushId);
+            if (Boolean(uid)) {
+                removeFromProfile(uid, event.params.pushId);
+            }
         });
+    }
+});
+
+
+exports.onTeamMemberRemove = functions.database.ref('teamMembers/{pushId}/{membershipId}').onDelete((event) => {
+    const db = admin.database();
+    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
+    const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
+
+    const member = event.data.previous;
+    if (member.exists()) {
+        const uid = member.uid;
+        removeInvitation(event.param.membershipId, event.params.pushId);
+        if (Boolean(uid)) {
+            removeFromProfile(uid, event.params.pushId);
+        }
     }
 });
 

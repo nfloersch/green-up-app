@@ -11,14 +11,15 @@ import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    Button,
     KeyboardAvoidingView,
+    TouchableHighlight,
     Modal,
     ScrollView,
     StyleSheet,
     Switch,
     TextInput,
     Text,
+    Button,
     View, Platform
 } from 'react-native';
 
@@ -50,26 +51,29 @@ class TownInformation extends React.Component {
     render() {
         const {townInfo, town} = this.props;
         return (
-            <View>
+            <View style={styles.statusBar}>
                 {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
-                    <Text style={styles.alertInfo}>
-                    Information about trash dropping is not available at this time for the town you're in.
+                    <Text style={styles.statusBarText}>
+                        {'Information about trash dropping is not available at this time for the town you\'re in.'}
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === true && (
-                    <Text style={styles.alertInfo}>
-                        <Text>You are in {town} and leaving trash bags on the roadside is allowed.</Text>
+                    <Text style={styles.statusBarText}>
+                        <Text>{`You are in ${town} and leaving trash bags on the roadside is allowed.`}</Text>
                     </Text>
                 )}
-                {townInfo.RoadsideDropOffAllowed === false &&
-                (<Text style={styles.alertInfo}>
-                    <Text>You are in {town} and leaving trash bags on the roadside is <Text
-                        style={{fontWeight: 'bold'}}>not</Text> allowed.
-                        Please bring collected trash to the designated drop off locations.</Text>
-                    {townInfo.DropOffLocations.map(d => (
-                        <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
-                    ))}
-                </Text>)}
+                {townInfo.RoadsideDropOffAllowed === false && (
+                    <Text style={styles.statusBarText}>
+                        <Text>{`You are in ${town} and leaving trash bags on the roadside is`}
+                            <Text style={{fontWeight: 'bold'}}>
+                                {' not'}
+                            </Text>
+                            {' allowed. \n Please bring collected trash to the designated drop off locations:'}
+                        </Text>
+                        {townInfo.DropOffLocations.map(d => (
+                            <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
+                        ))}
+                    </Text>)}
             </View>
         );
     }
@@ -206,14 +210,18 @@ class TrashMap extends Component {
             : initialMapLocation && (
                 <View style={styles.frame}>
                     {townInfo.RoadsideDropOffAllowed === true && (
-                        <View style={styles.button}>
-                            <Button
-                                onPress={goToTrashDrop}
-                                title='Create Trash Drop'/>
+                        <View style={styles.singleButtonHeader}>
+                            <TouchableHighlight
+                                style={styles.singleButtonHeaderHighlight}
+                                onPress={goToTrashDrop}>
+                                <Text style={styles.headerButton}>
+                                    {'Create Trash Drop'}
+                                </Text>
+                            </TouchableHighlight>
                         </View>
                     )}
                     <ScrollView style={styles.container}>
-                        <TownInformation townInfo={townInfo} town={town} />
+                        <TownInformation townInfo={townInfo} town={town}/>
                         <View>
                             <View style={styles.toggle}>
                                 <Text style={styles.label}>Show Collected Trash</Text>
@@ -274,13 +282,13 @@ class TrashMap extends Component {
                             <View style={{width: '100%', height: 60, marginTop: 15, backgroundColor: '#EEEEEE'}}>
                                 <View style={styles.buttonBar}>
                                     {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
-                            (
-                                <View style={styles.buttonBarButton}>
-                                    <Button
-                                        onPress={saveTrashDrop}
-                                        title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}/>
-                                </View>
-                            )}
+                                (
+                                    <View style={styles.buttonBarButton}>
+                                        <Button
+                                            onPress={saveTrashDrop}
+                                            title={this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}/>
+                                    </View>
+                                )}
                                     {this.state.drop.uid && !this.state.drop.wasCollected && (
                                         <View style={styles.buttonBarButton}>
                                             <Button

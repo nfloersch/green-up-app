@@ -145,3 +145,9 @@ export function leaveTeam(teamId: string, user: Object) {
         firebaseDataLayer.leaveTeam(teamId, user);
     };
 }
+
+export function deleteMessage(userId: string, messageId: string){
+    return async function () {
+        firebaseDataLayer.deleteMessage(userId, messageId);
+    };
+}

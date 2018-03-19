@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
+import {getMemberIcon} from '../../libs/member-icons';
 import {
-    Button,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -101,28 +101,8 @@ class MyTeams extends Component {
     toTeamIcon = (teamKey: string) => {
         const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
-        const memberStatus = TeamMember.memberStatuses;
-        const icons = {
-            [memberStatus.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
-            [memberStatus.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
-            [memberStatus.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [memberStatus.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
-        };
-        return icons[status || 'INVITED'];
-    };
-
-
-    getIconColor = (teamKey: string) => {
-        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
-        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
-        const iconColors = {
-            ACCEPTED: 'green',
-            OWNER: 'blue',
-            INVITED: 'orange',
-            NOT_INVITED: 'red',
-            REQUEST_TO_JOIN: 'purple'
-        };
-        return iconColors[status || 'INVITED'] || 'black';
+        //  const memberStatus = TeamMember.memberStatuses;
+        return getMemberIcon(status);
     };
 
     render() {
@@ -138,11 +118,7 @@ class MyTeams extends Component {
                     <View style={styles.row}>
                         <Text style={styles.teamName}>{teams[key].name}</Text>
                         <View style={styles.teamIcon}>
-                            <Ionicons
-                                style={{color: this.getIconColor(key)}}
-                                name={this.toTeamIcon(key)}
-                                size={30}
-                            />
+                            {this.toTeamIcon(key)}
                         </View>
                         <View style={styles.messageIcon}>
                             {
