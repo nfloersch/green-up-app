@@ -193,7 +193,7 @@ class Messages extends Component {
             ) : (
                 <View style={styles.container}>
                     <Text style={styles.alertInfo}>
-                        You don't have any teams to send messages to. Start your own team or join an existing one.
+                        You have no teams to send messages to. Start your own team or join an existing one.
                     </Text>
                     <TouchableHighlight
                         style={styles.goToButton}
