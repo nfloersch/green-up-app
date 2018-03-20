@@ -6,7 +6,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Button,
     KeyboardAvoidingView,
     Picker, Platform,
     ScrollView,
@@ -77,18 +76,17 @@ class NewMessage extends Component {
         this.setState({text});
     }
 
-    sendMessage() {
-        const teamId = this.props.selectedTeamId || this.state.selectedTeamId;
-        const recipients = Object.values(this.props.teamMembers[teamId] || []);
-        const message = Message.create(
+    sendMessage(teamId, message) {
+        const recipients = Object.values(this.props.teamMembers[teamId] || {});
+        const _message = Message.create(
             {
-                ...this.state,
+                text: message,
                 type: messageTypes.TEAM_MESSAGE,
                 sender: this.props.currentUser,
                 teamId
             }
         );
-        this.props.actions.sendMessage(message, recipients);
+        this.props.actions.sendMessage(_message, recipients);
         this.props.navigation.goBack();
     }
 
@@ -106,13 +104,13 @@ class NewMessage extends Component {
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
-        const teamValue = this.state.selectedTeamId || selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
+        const teamValue = selectedTeamId || this.state.selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this.sendMessage}>
+                            <TouchableHighlight style={styles.button} onPress={() => this.sendMessage(teamValue, this.state.text)}>
                                 <Text style={styles.headerButton}>{'Send Message'}</Text>
                             </TouchableHighlight>
                         </View>

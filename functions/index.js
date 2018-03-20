@@ -131,7 +131,7 @@ exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membe
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
     const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
-
+    const removeTeamMessages = (uid, teamId) => db.ref(`messages/${uid}/{messageId}/${teamId}`).then(data => db.ref(`messages/${uid}/${data.params.messageId}`).remove());
     const member = event.data.previous;
     if (member.exists()) {
         const uid = member.val().uid;
@@ -140,6 +140,7 @@ exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membe
         console.log('deleting user ' + uid + ' from team ' + event.params.teamId);
         if (Boolean(uid)) {
             removeFromProfile(uid, event.params.teamId);
+            removeTeamMessages(uid, event.params.teamId);
         }
     }
 });

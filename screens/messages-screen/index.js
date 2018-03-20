@@ -123,7 +123,7 @@ class Messages extends Component {
                 })
             ), {});
             const messages = Object.assign({}, this.props.messages, invitationMessages);
-            const messageKeys = Object.keys(messages || {});
+            const messageKeys = Object.keys(messages || {}).filter(key => Boolean(!messages[key].teamId || this.props.teams[messages[key].teamId]));
             const sortedKeys = messageKeys.sort((key1, key2) => (
                 messages[key2].created.valueOf() - messages[key1].created.valueOf()
             ));
