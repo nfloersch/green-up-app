@@ -33,7 +33,7 @@ class CreateNewAccount extends Component {
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
-                behavior='padding'
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <ScrollView style={styles.container}>
                     <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>

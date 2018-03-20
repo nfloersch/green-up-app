@@ -187,14 +187,10 @@ class NewTeam extends Component {
         const towns = this.findTown(query);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
-        // Making this prop platform-specific per the docs:
-        // https://facebook.github.io/react-native/docs/keyboardavoidingview.html#behavior
-        const kbavProps = {behavior: Platform.OS === 'ios' ? 'padding' : undefined};
-
         return (
             <KeyboardAvoidingView
                 style={[styles.frame, {paddingTop: 30}]}
-                {...kbavProps}
+                behavior ={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE'}]}>
                     <View style={styles.buttonBar}>

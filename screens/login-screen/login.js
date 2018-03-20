@@ -107,7 +107,7 @@ class Login extends Component {
         return (
             <KeyboardAvoidingView
                 style={styles.frame}
-                behavior='padding'
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <ScrollView style={styles.container}>
                     <View style={styles.logo}>

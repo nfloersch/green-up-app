@@ -193,7 +193,7 @@ class TeamEditorDetails extends Component {
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
-                behavior='padding'
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
 
                 <View style={styles.singleButtonHeader}>

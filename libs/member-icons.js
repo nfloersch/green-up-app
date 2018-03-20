@@ -8,8 +8,8 @@ const iconStyles = {
     OWNER: {height: 30, width: 30, color: 'blue'},
     INVITED: {height: 30, width: 30, color: 'orange'},
     NOT_INVITED: {height: 30, width: 30, color: 'red'},
-    REQUEST_TO_JOIN: {height: 30, width: 30, color: 'purple'},
-    IS_REQUESTING_TO_JOIN: {height: 30, width: 30, color: ''}
+    REQUEST_TO_JOIN: {height: 30, width: 30, color: '#4c162b'},
+    IS_REQUESTING_TO_JOIN: {height: 30, width: 30, color: '#4c162b'}
 };
 
 export function getIconStyles(status: string) {

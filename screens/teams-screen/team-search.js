@@ -124,7 +124,7 @@ class TeamSearch extends Component {
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
-                behavior='padding'
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <View style={{marginTop: 10, marginBottom: 5, paddingLeft: 10, paddingRight: 10}}>
                     <TextInput

@@ -87,7 +87,7 @@ class InviteForm extends Component {
                 </View>
                 <KeyboardAvoidingView
                     style={styles.frame}
-                    behavior='padding'
+                    behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
                         <Text style={styles.label}>

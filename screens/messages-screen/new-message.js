@@ -125,7 +125,7 @@ class NewMessage extends Component {
                 </View>
                 <KeyboardAvoidingView
                     style={defaultStyles.frame}
-                    behavior='padding'
+                    behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
                         {

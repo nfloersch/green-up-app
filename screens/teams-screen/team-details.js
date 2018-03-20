@@ -5,8 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, Platform} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -152,40 +151,6 @@ class TeamDetails extends Component {
     render() {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
-        // const membershipId = currentUser.email.toLowerCase().replace(/\./g, ':');
-        const icons = {
-            [teamMemberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
-            [teamMemberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-checkmark-circle-outline' : 'md-checkmark',
-            [teamMemberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-            [teamMemberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star'
-        };
-        const iconColors = {
-            ACCEPTED: {
-                color: 'green',
-                height: 30,
-                width: 30
-            },
-            OWNER: {
-                color: 'blue',
-                height: 30,
-                width: 30
-            },
-            INVITED: {
-                color: 'orange',
-                height: 30,
-                width: 30
-            },
-            NOT_INVITED: {
-                color: 'red',
-                height: 30,
-                width: 40
-            },
-            REQUEST_TO_JOIN: {
-                color: 'purple',
-                height: 30,
-                width: 30
-            }
-        };
         const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
         const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
@@ -201,33 +166,28 @@ class TeamDetails extends Component {
                     Object
                         .values(teamMembers)
                         .map((member, i) => (
-                            <View key={i} style={{
-                                borderStyle: 'solid',
-                                borderWidth: 1,
-                                width: '100%',
-                                height: 52,
-                                marginTop: 5
-                            }}>
-                                <TouchableHighlight
-                                    onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
-                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                                        <View>
-                                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                                <Image
-                                                    style={{width: 50, height: 50, marginRight: 10}}
-                                                    source={{uri: member.photoURL}}
-                                                />
-                                                <Text style={styles.teamMember}>
-                                                    {member.displayName || member.email}
-                                                </Text>
-                                            </View>
-                                        </View>
-                                        <View>
-                                            {getMemberIcon(member.memberStatus, {marginTop: 10, marginRight: 5})}
-                                        </View>
+                            <TouchableHighlight
+                                key={i} style={{
+                                    borderStyle: 'solid',
+                                    borderWidth: 1,
+                                    width: '100%',
+                                    height: 52,
+                                    marginTop: 5
+                                }}
+                                onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
+                                <View style={{flex: 1, flexDirection: 'row'}}>
+                                    <View style={{flex: 1, flexDirection: 'row'}}>
+                                        <Image
+                                            style={{width: 50, height: 50, marginRight: 10}}
+                                            source={{uri: member.photoURL}}
+                                        />
+                                        <Text style={styles.teamMember}>
+                                            {member.displayName || member.email}
+                                        </Text>
                                     </View>
-                                </TouchableHighlight>
-                            </View>
+                                    {getMemberIcon(member.memberStatus, {marginTop: 10, marginRight: 5})}
+                                </View>
+                            </TouchableHighlight>
                         ))
                 }
             </View>
@@ -306,11 +266,7 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.statusBar}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Ionicons
-                                    name={icons[teamMemberStatuses.INVITED] ||
-                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                                    size={30}
-                                    style={iconColors[teamMemberStatuses.INVITED]}/>
+                                {getMemberIcon(teamMemberStatuses.INVITED)}
                                 <Text style={styles.statusMessage}>
                                     {'You have been invited to this team'}
                                 </Text>
@@ -321,11 +277,7 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.statusBar}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Ionicons
-                                    name={icons[teamMemberStatuses.OWNER] ||
-                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                                    size={30}
-                                    style={iconColors[teamMemberStatuses.OWNER]}/>
+                                {getMemberIcon(teamMemberStatuses.OWNER)}
                                 <Text style={styles.statusMessage}>
                                     {'You are the owner of this team'}
                                 </Text>
@@ -336,11 +288,7 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.statusBar}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Ionicons
-                                    name={icons[teamMemberStatuses.ACCEPTED] ||
-                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                                    size={30}
-                                    style={iconColors[teamMemberStatuses.ACCEPTED]}/>
+                                {getMemberIcon(teamMemberStatuses.ACCEPTED)}
                                 <Text style={styles.statusMessage}>
                                     {'You are a member of this team.'}
                                 </Text>
@@ -350,11 +298,7 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.statusBar}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Ionicons
-                                    name={icons[teamMemberStatuses.REQUEST_TO_JOIN] ||
-                                    (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help')}
-                                    size={30}
-                                    style={iconColors[teamMemberStatuses.REQUEST_TO_JOIN]}/>
+                                {getMemberIcon(teamMemberStatuses.REQUEST_TO_JOIN)}
                                 <Text style={styles.statusMessage}>
                                     {'Waiting on the team owner to approve your request'}
                                 </Text>
