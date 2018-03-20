@@ -322,26 +322,33 @@ class TeamDetails extends Component {
                             {selectedTeam.name}
                         </Text>
                         <View style={{width: '100%'}}>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Where: '}</Text>
-                                <Text style={styles.data}>{selectedTeam.location}, {selectedTeam.town}</Text>
-                            </Text>
+
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Owner: '}</Text>
                                 <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
                             </Text>
                             <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Start: '}</Text>
+                                <Text style={styles.label}>{'Where: '}</Text>
+                                <Text style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.town || !selectedTeam.town ? '' : ','}${selectedTeam.town || ''}`}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Date: '}</Text>
+                                <Text style={styles.data}>{selectedTeam.date}</Text>
+                            </Text>
+                            <Text style={styles.dataBlock}>
+                                <Text style={styles.label}>{'Starts: '}</Text>
                                 <Text style={styles.data}>{selectedTeam.start}</Text>
                             </Text>
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Ends: '}</Text>
                                 <Text style={styles.data}>{selectedTeam.end}</Text>
                             </Text>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Notes: '}</Text>
-                                <Text>{selectedTeam.notes}</Text>
-                            </Text>
+                            {!selectedTeam.notes ? null
+                                : <Text style={styles.dataBlock}>
+                                    <Text style={styles.label}>{'Description: '}</Text>
+                                    <Text>{selectedTeam.notes}</Text>
+                                </Text>
+                            }
                         </View>
                     </View>
                     <View style={{width: '100%'}}>
