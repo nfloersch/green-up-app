@@ -353,7 +353,7 @@ class NewTeam extends Component {
 const mapStateToProps = (state) => {
     const profile = state.profile;
     const user = state.login.user;
-    const owner = TeamMember.create({...profile, ...user, memberStatus: statuses.OWNER});
+    const owner = TeamMember.create({...user,...profile, memberStatus: statuses.OWNER});
     const locations = state.teams.locations;
     return {locations, owner};
 };

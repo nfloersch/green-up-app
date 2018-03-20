@@ -329,7 +329,7 @@ class TeamDetails extends Component {
                             </Text>
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Where: '}</Text>
-                                <Text style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.town || !selectedTeam.town ? '' : ','}${selectedTeam.town || ''}`}</Text>
+                                <Text style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.location || !selectedTeam.town ? '' : ', '}${selectedTeam.town || ''}`}</Text>
                             </Text>
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Date: '}</Text>
