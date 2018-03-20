@@ -112,10 +112,18 @@ class TrashMap extends Component {
             errorMessage: null,
             showCollectedTrash: false,
             showUncollectedTrash: true,
-            showTrashDropLocations: true
+            showTrashDropLocations: true,
+            hackyHeight: 300
         };
     }
 
+    componentWillMount() {
+        // Hack to work around known issue where the my location button doesn't show
+        // https://github.com/react-community/react-native-maps/issues/1332
+        setTimeout(( ) => this.setState({hackyHeight: 301}), 500);
+        setTimeout(() => this.setState({hackyHeight: 300}), 1000);
+
+    }
     componentDidMount() {
         if (!this.props.location) {
             this._getLocationAsync();
@@ -231,9 +239,8 @@ class TrashMap extends Component {
                             initialRegion={initialMapLocation}
                             showsUserLocation={true}
                             showsMyLocationButton={true}
-                            followsUserLocation={true}
                             showsCompass={true}
-                            style={{alignSelf: 'stretch', height: 300}}>
+                            style={{alignSelf: 'stretch', height: this.state.hackyHeight}}>
                             {drops && drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true) || (this.state.showUncollectedTrash && !drop.wasCollected)).map(drop => (
                                 <MapView.Marker
                                     key={drop.uid}
