@@ -2,64 +2,6 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
-
-class TeamMember {
-    constructor(args) {
-        this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
-            ? args.uid || args.id || args._id
-            : null;
-        this.displayName = typeof args.displayName === 'string'
-            ? args.displayName
-            : null;
-        this.bio = typeof args.bio === 'string'
-            ? args.bio
-            : null;
-        this.email = typeof args.email === 'string'
-            ? args.email.toLowerCase()
-            : null;
-        this.photoURL = typeof args.photoURL === 'string'
-            ? args.photoURL
-            : defaultAvatar;
-        this.memberStatus = typeof args.memberStatus === 'string'
-            ? args.memberStatus
-            : 'NOT_INVITED';
-        this.invitationId = typeof args.invitationId === 'string'
-            ? args.invitationId
-            : null;
-    }
-
-    static create(args) {
-        return new TeamMember(args || {});
-    }
-}
-
-//
-// class Profile {
-//     constructor(args) {
-//         this.uid = typeof args.uid === 'string' || typeof args.id === 'string' || typeof args._id === 'string'
-//             ? args.uid || args.id || args._id
-//             : null;
-//         this.displayName = args.displayName || (args.params || {}).displayName || null;
-//         this.bio = typeof args.bio === 'string'
-//             ? args.bio
-//             : null;
-//         this.email = typeof args.email === 'string'
-//             ? args.email.toLowerCase()
-//             : null;
-//         this.photoURL = typeof args.photoURL === 'string'
-//             ? args.photoURL
-//             : defaultAvatar;
-//         this.created = (new Date()).toString();
-//         this.teams = args.teams || {};
-//     }
-//
-//     static create(args) {
-//         return new Profile(args || {});
-//     }
-// }
-
-
 const nodemailer = require('nodemailer');
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -131,13 +73,19 @@ exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membe
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
     const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
-    const removeTeamMessages = (uid, teamId) => db.ref(`messages/${uid}/{messageId}/${teamId}`).then(data => db.ref(`messages/${uid}/${data.params.messageId}`).remove());
+    const removeTeamMessages = (uid, teamId) => db.ref(`messages/${uid}`).once('value').then(snapshot => {
+        const data = snapshot.val();
+        const keys = Object.keys(data).filter(key => !!data[key].teamId && data[key].teamId === teamId);
+        return keys.map(key => {
+            console.log(`deleting message ${data[key].text}`);
+            return db.ref(`messages/${uid}/${key}`).remove();
+        });
+    });
     const member = event.data.previous;
     if (member.exists()) {
-        const uid = member.val().uid;
+        const uid = (member.val() || {}).uid;
         removeInvitation(event.params.membershipId, event.params.teamId);
-        console.log(JSON.stringify(member));
-        console.log('deleting user ' + uid + ' from team ' + event.params.teamId);
+        console.log(`deleting user ${uid } from team ${event.params.teamId}`);
         if (Boolean(uid)) {
             removeFromProfile(uid, event.params.teamId);
             removeTeamMessages(uid, event.params.teamId);

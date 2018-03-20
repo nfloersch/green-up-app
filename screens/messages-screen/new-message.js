@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import {User} from '../../models/user';
 import * as messageActions from './actions';
 import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
@@ -171,7 +171,7 @@ class NewMessage extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = state.login.user;
+    const currentUser = User.create({...state.login.user, ...state.profile});
     const myTeams = Object.keys((state.profile || {}).teams)
         .map(key => state.teams.teams[key]) // match id's to their teams
         .filter(team => Boolean(team)); // remove deleted teams, just in case
