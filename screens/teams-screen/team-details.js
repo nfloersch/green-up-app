@@ -6,12 +6,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert} from 'react-native';
+import {MapView} from 'expo';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
-import MapView from 'react-native-maps';
 import {TeamMember} from '../../models/team-member';
 import {getMemberIcon} from '../../libs/member-icons';
 

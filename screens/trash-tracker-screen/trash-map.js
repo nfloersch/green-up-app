@@ -19,7 +19,8 @@ import {
     Switch,
     TextInput,
     Text,
-    View, Platform
+    View,
+    Platform
 } from 'react-native';
 
 import * as turf from '@turf/helpers';

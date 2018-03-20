@@ -15,7 +15,7 @@ import {
 import {Ionicons} from '@expo/vector-icons';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import MapView from 'react-native-maps';
+import {MapView} from 'expo';
 import {Constants, Location, Permissions} from 'expo';
 
 import Colors from '../../constants/Colors';
