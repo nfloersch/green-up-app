@@ -27,33 +27,41 @@ const APP_NAME = 'Green Up Vermont';
 function sendInvitationEmailSendGrid(invitation) {
     sgMail.setApiKey(SENDGRID_API_KEY);
     sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
-    // const msg = {
-    //     to,
-    //     from: fromEmail,
-    //     subject,
-    //     text,
-    //     template_id: '29fc40d0-780c-40d7-9db2-777fffe1fe18'
-    // };
+
     const teamMember = invitation.teamMember;
+    const team = invitation.team || {};
     const to = teamMember.email.trim().toLowerCase();
     const toName = teamMember.displayName;
     const subject = 'You have been invited to Green Up Day';
     const sender = invitation.sender.displayName;
+    const from = 'app@greenupvermont.org';
+
+    // Build Text Body
     const noNameText = 'A friend has invited you to participate in Green Up Day';
     const withNameText = `Hey ${invitation.displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
-    const linkText = 'Download the official Green Up Day Vermont app from your app store';
-    const text = `${!sender || !invitation.displayName ? noNameText : withNameText}\n${linkText}`;
-    const html = `<div><p>${!sender || !invitation.displayName ? noNameText : withNameText}</p><p>${linkText}</p></div>`;
-    const from = 'app@greenupvermont.org';
+    const text = `${!sender || !invitation.displayName ? noNameText : withNameText}`;
+    const html = `<div><p>${!sender || !invitation.displayName ? noNameText : withNameText}</p></div>`;
+
+    // Build Team Info
+    const where = team.location ? `<p>Where : <strong>${team.location}</strong></p>` : '';
+    const date = team.date ? `<p>When : <strong>${team.date}</strong></p>` : '';
+    const start = team.start ? `<p>Start Time : <strong>${team.start}</strong></p>` : '';
+    const end = team.end ? `<p>End Time : <strong>${team.end}</strong></p>` : '';
+    const teamName = `<p>Team Name: <strong>${team.name}</strong></p>`;
+    const owner = team.owner.displayName ? `<p>Team Captain : <strong>${team.owner.displayName}</strong>` : '';
+    const town = team.town ? `<p>Town : <strong>${team.town}</strong></p>` : '';
+    const notes = team.notes ? `<p>Description : <strong>${team.notes}</strong></p>` : '';
+    const teaminfo = `${teamName}${owner}${date}${start}${end}${town}${where}${notes}`;
     const message = {
         to,
         from,
         subject,
-        text: noNameText,
+        text,
         html,
         templateId: '93b4cee5-a954-4704-ae0b-965196dc05b1',
-        substitutions: { name: sender, city: 'Burlington' }
+        substitutions: { teaminfo }
     };
+
     console.log(JSON.stringify(message));
     return sgMail.send(message);
 
