@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
-
+const sgMail = require('@sendgrid/mail');
 const nodemailer = require('nodemailer');
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -18,24 +18,35 @@ const mailTransport = nodemailer.createTransport({
         pass: gmailPassword
     }
 });
-
+const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.
 const APP_NAME = 'Green Up Vermont';
 
-// Sends a welcome email to the given user.
-function sendInvitationEmail(email, displayName, sender) {
-    const mailOptions = {
-        from: `${APP_NAME} <noreply@firebase.com>`,
-        to: email
+
+function sendInvitationEmailSendGrid(to, from, subject, text, html) {
+    sgMail.setApiKey(SENDGRID_API_KEY);
+    const msg = {
+        to,
+        from,
+        subject,
+        text,
+        html
     };
-    const noNameText = 'A friend has invited you to participate in Green Up Day';
-    const withNameText = `Hey ${displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
-    const linkText = 'Download the official Green Up Day Vermont app from your app store';
-    // The user subscribed to the newsletter.
-    mailOptions.subject = `Welcome to ${APP_NAME}!`;
-    mailOptions.text = `${!sender || !displayName ? noNameText : withNameText}\n${linkText}`;
-    return mailTransport.sendMail(mailOptions).then(() => console.log('New welcome email sent to:', email));
+    sgMail.send(msg);
+    console.log('New invitation sent to:', to);
+}
+
+
+// Sends a welcome email to the given user.
+function sendInvitationEmailGmail(to, from, subject, text) {
+    const mailOptions = {
+        from: `${APP_NAME} <${from}>`,
+        to,
+        subject,
+        text
+    };
+    return mailTransport.sendMail(mailOptions).then(() => console.log('New invitation sent to:', to));
 }
 
 /**
@@ -46,9 +57,17 @@ exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invit
 
     const invitation = event.data.val();
     const teamMember = invitation.teamMember;
-    const email = teamMember.email.toLowerCase();
+    const to = teamMember.email.toLowerCase();
+    const subject = `Welcome to ${APP_NAME}!`;
+    // Build Text
     const sender = invitation.sender.displayName;
-    sendInvitationEmail(email, invitation.displayName, sender);
+    const noNameText = 'A friend has invited you to participate in Green Up Day';
+    const withNameText = `Hey ${invitation.displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
+    const linkText = 'Download the official Green Up Day Vermont app from your app store';
+    const text = `${!sender || !invitation.displayName ? noNameText : withNameText}\n${linkText}`;
+    // Build HTML
+    const html = `<div><p>${!sender || !invitation.displayName ? noNameText : withNameText}</p><p>${linkText}</p></div>`;
+    sendInvitationEmailSendGrid(to, 'app@GreenUpVermont.org', subject, text, html);
 });
 
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
