@@ -32,19 +32,6 @@ const myStyles =
             paddingTop: 5,
             paddingBottom: 5
         },
-        statusBar: {
-            height: 30,
-            width: '100%',
-            marginBottom: 10,
-            paddingLeft: 10,
-            paddingRight: 10
-        },
-        statusMessage: {
-            height: 30,
-            paddingTop: 8,
-            marginLeft: 10,
-            fontSize: 14
-        },
         teamMember: {
             height: 30,
             marginTop: 15

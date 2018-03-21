@@ -54,7 +54,7 @@ class TownInformation extends React.Component {
             <View style={styles.statusBar}>
                 {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
                     <Text style={styles.statusBarText}>
-                        {'Information about trash dropping is not available at this time for the town you\'re in.'}
+                        {'Information about trash dropping is not available at this time for the town you are in.'}
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === true && (
@@ -120,10 +120,11 @@ class TrashMap extends Component {
     componentWillMount() {
         // Hack to work around known issue where the my location button doesn't show
         // https://github.com/react-community/react-native-maps/issues/1332
-        setTimeout(( ) => this.setState({hackyHeight: 301}), 500);
+        setTimeout(() => this.setState({hackyHeight: 301}), 500);
         setTimeout(() => this.setState({hackyHeight: 300}), 1000);
 
     }
+
     componentDidMount() {
         if (!this.props.location) {
             this._getLocationAsync();
@@ -218,6 +219,8 @@ class TrashMap extends Component {
             longitudeDelta: 0.0421
         } : null;
 
+
+        const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : initialMapLocation &&
             (
@@ -296,14 +299,19 @@ class TrashMap extends Component {
                         <View style={styles.frame}>
                             <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
                                 <View style={styles.buttonBar}>
-                                    {!this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid &&
-                                    (<View style={styles.buttonBarButton}>
-                                        <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
-                                            <Text style={styles.headerButton}>
-                                                {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
-                                            </Text>
-                                        </TouchableHighlight>
-                                    </View>)}
+                                    {
+                                        showFirstButton
+                                            ? (
+                                                <View style={styles.buttonBarButton}>
+                                                    <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
+                                                        <Text style={styles.headerButton}>
+                                                            {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                                </View>
+                                            )
+                                            : null
+                                    }
 
 
                                     <View style={styles.buttonBarButton}>
