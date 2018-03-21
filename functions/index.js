@@ -24,29 +24,51 @@ const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 const APP_NAME = 'Green Up Vermont';
 
 
-function sendInvitationEmailSendGrid(to, from, subject, text, html) {
+function sendInvitationEmailSendGrid(invitation) {
     sgMail.setApiKey(SENDGRID_API_KEY);
-    const msg = {
+    sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
+    // const msg = {
+    //     to,
+    //     from: fromEmail,
+    //     subject,
+    //     text,
+    //     template_id: '29fc40d0-780c-40d7-9db2-777fffe1fe18'
+    // };
+    const teamMember = invitation.teamMember;
+    const to = teamMember.email.trim().toLowerCase();
+    const toName = teamMember.displayName;
+    const subject = 'You have been invited to Green Up Day';
+    const sender = invitation.sender.displayName;
+    const noNameText = 'A friend has invited you to participate in Green Up Day';
+    const withNameText = `Hey ${invitation.displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
+    const linkText = 'Download the official Green Up Day Vermont app from your app store';
+    const text = `${!sender || !invitation.displayName ? noNameText : withNameText}\n${linkText}`;
+    const html = `<div><p>${!sender || !invitation.displayName ? noNameText : withNameText}</p><p>${linkText}</p></div>`;
+    const from = 'app@greenupvermont.org';
+    const message = {
         to,
         from,
         subject,
-        text,
-        html
+        text: noNameText,
+        html,
+        templateId: '93b4cee5-a954-4704-ae0b-965196dc05b1',
+        substitutions: { name: sender, city: 'Burlington' }
     };
-    sgMail.send(msg);
-    console.log('New invitation sent to:', to);
+    console.log(JSON.stringify(message));
+    return sgMail.send(message);
+
 }
 
 
 // Sends a welcome email to the given user.
-function sendInvitationEmailGmail(to, from, subject, text) {
+function sendInvitationEmailGmail(to, fromEmail, fromName, subject, text) {
     const mailOptions = {
-        from: `${APP_NAME} <${from}>`,
+        from: `${fromName} <${fromEmail}>`,
         to,
         subject,
         text
     };
-    return mailTransport.sendMail(mailOptions).then(() => console.log('New invitation sent to:', to));
+    return mailTransport.sendMail(mailOptions);
 }
 
 /**
@@ -54,20 +76,8 @@ function sendInvitationEmailGmail(to, from, subject, text) {
  * Sends a invitation email to an invited user.
  */
 exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invitationId}').onCreate((event) => {
-
     const invitation = event.data.val();
-    const teamMember = invitation.teamMember;
-    const to = teamMember.email.toLowerCase();
-    const subject = `Welcome to ${APP_NAME}!`;
-    // Build Text
-    const sender = invitation.sender.displayName;
-    const noNameText = 'A friend has invited you to participate in Green Up Day';
-    const withNameText = `Hey ${invitation.displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
-    const linkText = 'Download the official Green Up Day Vermont app from your app store';
-    const text = `${!sender || !invitation.displayName ? noNameText : withNameText}\n${linkText}`;
-    // Build HTML
-    const html = `<div><p>${!sender || !invitation.displayName ? noNameText : withNameText}</p><p>${linkText}</p></div>`;
-    sendInvitationEmailSendGrid(to, 'app@GreenUpVermont.org', subject, text, html);
+    return sendInvitationEmailSendGrid(invitation).then(x => console.log(`Email sent to: ${invitation.teamMember.displayName}`));
 });
 
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
@@ -79,12 +89,14 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
     if (memberships.exists()) {
         Object.keys(memberships.val()).forEach(key => {
             const uid = memberships[key].uid;
-            removeInvitation(key, event.params.pushId);
+
             if (Boolean(uid)) {
                 removeFromProfile(uid, event.params.pushId);
             }
+            return removeInvitation(key, event.params.pushId);
         });
     }
+    return Promise.reject(new Error('no team memberships to remove'))
 });
 
 
@@ -103,17 +115,17 @@ exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membe
     const member = event.data.previous;
     if (member.exists()) {
         const uid = (member.val() || {}).uid;
-        removeInvitation(event.params.membershipId, event.params.teamId);
-        console.log(`deleting user ${uid } from team ${event.params.teamId}`);
+        console.log(`removing user ${event.params.membershipId} from team ${event.params.teamId}`);
         if (Boolean(uid)) {
             removeFromProfile(uid, event.params.teamId);
             removeTeamMessages(uid, event.params.teamId);
         }
+        return removeInvitation(event.params.membershipId, event.params.teamId); // TODO : return all promises
     }
+    return Promise.reject(new Error('no team member to remove'))
 });
 
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
     response.send('Hello from Firebase!');
 });
-
