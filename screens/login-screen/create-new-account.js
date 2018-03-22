@@ -35,7 +35,7 @@ class CreateNewAccount extends Component {
                 style={defaultStyles.frame}
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.scroll}>
                     <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
                     {
                         Platform.OS === 'ios'

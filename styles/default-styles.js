@@ -1,4 +1,6 @@
 const alertFontSize = 12;
+const backgroundDark = '#55683a';
+const backgroundLight = 'white';
 
 export const defaultStyles = {
     alertInfo: {
@@ -57,7 +59,6 @@ export const defaultStyles = {
         color: 'white',
         fontSize: 18,
         textAlign: 'center'
-
     },
     buttonBar: {
         width: '100%',
@@ -77,12 +78,7 @@ export const defaultStyles = {
     },
     container: {
         flex: 1,
-        alignContent: 'space-around',
-        backgroundColor: 'white',
-        borderColor: 'white',
-        borderLeftWidth: 20,
-        borderRightWidth: 20,
-        borderTopWidth: 10
+        justifyContent: 'flex-start'
     },
     data: {
         fontWeight: 'bold'
@@ -94,7 +90,7 @@ export const defaultStyles = {
         padding: 5
     },
     frame: {
-        backgroundColor: '#55683a',
+        backgroundColor: backgroundDark,
         height: '100%',
         width: '100%'
     },
@@ -131,12 +127,16 @@ export const defaultStyles = {
         textShadowOffset: {width: 2, height: 2}
     },
     label: {
-        marginTop: 5
+        marginTop: 5,
+        color: 'white',
+        fontSize: 16
     },
     largeText: {
         marginTop: 5,
         fontSize: 20
     },
+    link: {width: '100%', margin: 5, padding: 5},
+    linkText: {fontSize: 16, color: 'white', textAlign: 'center'},
     padForIOSKeyboard: {height: 80},
     padForIOSKeyboardBig: {height: 150},
     profileHeader: {
@@ -159,7 +159,7 @@ export const defaultStyles = {
         paddingTop: 10,
         borderTopColor: '#AAA',
         borderTopWidth: 1,
-        backgroundColor: 'white'
+        backgroundColor: backgroundDark
     },
     searchResultsTitle: {
         fontSize: 20,
@@ -204,7 +204,7 @@ export const defaultStyles = {
         marginBottom: 10,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.6,
         shadowRadius: 1
     },
     textArea: {

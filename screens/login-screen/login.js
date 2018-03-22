@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, View, Alert,
+    Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Alert,
     Platform
 } from 'react-native';
 
@@ -21,39 +21,40 @@ const myStyles = {
     logo: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'darkseagreen',
-        marginBottom: 10
+        paddingBottom: 15
     },
-    linkText: {
-        textAlign: 'center',
-        color: '#333',
-        marginBottom: 5
+    logoText: {
+        fontSize: 36,
+        color: 'white'
     },
     socialLoginButton: {
         width: '100%',
         height: 40,
-        padding: 10,
-        marginTop: 5,
+        marginTop: 10,
+        marginBottom: 10,
         shadowColor: '#000',
-        shadowOffset: {width: 2, height: 2},
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        borderRadius: 2
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2, flex: 1, flexDirection: 'row'
     },
-    socialLogin: {
-        flexWrap: 'wrap'
+    socialLoginLogo: {
+        padding: 10,
+        width: 40,
+        alignSelf: 'flex-start'
     },
+    socialLogin: {flex: 1},
+
     socialLoginText: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#888',
-        marginLeft: 20
+        height: 40,
+        padding: 10,
+        color: 'white'
     },
+
     logos: {
         width: 20,
-        height: 20,
-        alignSelf: 'flex-start',
-        flexDirection: 'row'
+        height: 20
     }
 };
 
@@ -109,45 +110,62 @@ class Login extends Component {
                 style={styles.frame}
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
-                <ScrollView style={styles.container}>
+                <View style={styles.container}>
                     <View style={styles.logo}>
                         <Image source={logo} style={{height: 120, width: 120}}/>
+                        <Text style={styles.logoText}>Green Up Vermont</Text>
                     </View>
-                    <View style={{width: '100%'}}>
-                        <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
-                        <TouchableHighlight
-                            onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                            <Text style={styles.linkText}>I forgot my password</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
-                            <Text style={styles.linkText}>Create a new account</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
+                    <ScrollView style={[styles.scroll, {
+                        backgroundColor: 'rgba(255,255,255, 0.5)'
+                    }]}>
+
+                        <TouchableOpacity
                             style={styles.socialLoginButton}
                             onPress={this.googleLogin}>
-                            <View style={styles.socialLogin}>
+                            <View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>
                                 <Image source={googleLogo} style={styles.logos}/>
+                            </View>
+                            <View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>
                                 <Text style={styles.socialLoginText}>Log in with Google</Text>
                             </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={styles.socialLoginButton}
                             onPress={this.facebookLogin}>
-                            <View style={styles.socialLogin}>
-                                <Image source={facebookLogo} style={styles.logos}/>
-                                <Text style={styles.socialLoginText}>Log in with Facebook</Text>
+                            <View style={[styles.socialLoginLogo, {
+                                backgroundColor: '#415893'
+                            }]}>
+                                <Image style={styles.logos} source={facebookLogo}/>
                             </View>
-                        </TouchableHighlight>
-                    </View>
+                            <View style={[styles.socialLogin, {backgroundColor: '#2d3f67'}]}>
+                                <Text style={[styles.socialLoginText, {alignSelf: 'stretch'}]}>
+                                    Log in with Facebook
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
+                        <View style={{width: '100%'}}>
+                            <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+                            <TouchableHighlight
+                                style={styles.link}
+                                onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                                <Text style={styles.linkText}>I forgot my password</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                style={styles.link}
+                                onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
+                                <Text style={styles.linkText}>Create a new account</Text>
+                            </TouchableHighlight>
+                        </View>
 
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                            : null
-                    }
 
-                </ScrollView>
+                        {
+                            Platform.OS === 'ios'
+                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                                : null
+                        }
+                    </ScrollView>
+                </View>
             </KeyboardAvoidingView>
         );
     }

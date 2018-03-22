@@ -1,7 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {email} from '../libs/validators';
 import {defaultStyles} from '../styles/default-styles';
 
@@ -42,7 +42,7 @@ export default class LoginForm extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{marginBottom: 10}}>
                 <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
@@ -68,10 +68,10 @@ export default class LoginForm extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <View style={styles.button}>
-                    <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
-                </View>
-            </View>
+                     <TouchableOpacity style={styles.button} onPress={this.onButtonPress}>
+                        <Text style={styles.buttonText}>{this.props.buttonText || 'Login'}</Text>
+                    </TouchableOpacity>
+             </View>
         );
     }
 }

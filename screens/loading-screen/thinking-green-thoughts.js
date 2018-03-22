@@ -65,7 +65,7 @@ class ThinkingGreenThoughts extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.frame}>
                 <View style={styles.logo}>
                     <Image source={logo} style={{height: 120, width: 120}}/>
                 </View>

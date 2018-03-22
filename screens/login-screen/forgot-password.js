@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, TouchableHighlight, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, TouchableOpacity, TouchableHighlight, StyleSheet, Text, TextInput, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {email} from '../../libs/validators';
@@ -13,6 +13,7 @@ import {defaultStyles} from '../../styles/default-styles';
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
 class ForgotPassword extends Component {
 
     static propTypes = {
@@ -38,7 +39,7 @@ class ForgotPassword extends Component {
     }
 
     onButtonPress() {
-        if(email(this.state.email)) {
+        if (email(this.state.email)) {
             this.props.actions.resetPassword(this.state.email);
             this.setState({passwordResetSent: true});
         } else {
@@ -47,27 +48,45 @@ class ForgotPassword extends Component {
     }
 
     render() {
-        return this.state.passwordResetSent
-            ? (
-                <View style={styles.container}>
-                    <Text style={styles.label}>Check your email</Text>
+        return (
+            <View style={styles.frame}>
+                <View style={[styles.container, {
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingBottom: 20,
+                    paddingTop: '50%'
+                }]}>
+                    {this.state.passwordResetSent
+                        ? (
+                            <View style={[styles.container, {paddingTop: '30%'}]}>
+                                <Text style={[styles.text, {textAlign: 'center'}]}>Check your email</Text>
+                                <TouchableHighlight style={styles.link} onPress={() => this.props.navigation.goBack()}>
+                                    <Text style={styles.linkText}>{'< Back to Login'}</Text>
+                                </TouchableHighlight>
+                            </View>
+                        )
+                        : (
+                            <View style={styles.container}>
+                                <Text style={styles.label}>Email Address</Text>
+                                <TextInput
+                                    autoCorrect={false}
+                                    value={this.state.email}
+                                    keyBoardType='email-address'
+                                    placeholder='you@domain.com'
+                                    onChangeText={this.onChangeState('email')}
+                                    style={styles.textInput}
+                                    underlineColorAndroid={'transparent'}
+                                />
+                                <TouchableOpacity style={styles.button}
+                                                  onPress={this.onButtonPress}>
+                                    <Text style={styles.buttonText}>{'Reset Password'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }
                 </View>
-            )
-            : (
-                <View style={styles.container}>
-                    <Text style={styles.label}>Email Address</Text>
-                    <TextInput
-                        autoCorrect={false}
-                        value={this.state.email}
-                        keyBoardType='email-address'
-                        placeholder='you@domain.com'
-                        onChangeText={this.onChangeState('email')}
-                        style={styles.textInput}
-                        underlineColorAndroid={'transparent'}
-                    />
-                    <TouchableHighlight onPress={this.onButtonPress}><Text>{'Reset Password'}</Text></TouchableHighlight>
-                </View>
-            );
+            </View>
+        );
     }
 }
 

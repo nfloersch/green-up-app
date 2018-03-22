@@ -104,7 +104,7 @@ class LoadingScreen extends Component {
                 );
 
             default :
-                return this.props.user.email ? (<GetEmail/>) : (
+                return !this.props.user.email ? (<GetEmail/>) : (
                     <View style={styles.container}>
                         {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
                         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}

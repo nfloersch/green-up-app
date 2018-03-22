@@ -1,7 +1,7 @@
 // @flow
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, TouchableOpacity, StyleSheet, Text, TextInput, View} from 'react-native';
 import {email} from '../libs/validators';
 import {defaultStyles} from '../styles/default-styles';
 
@@ -75,9 +75,12 @@ export default class CreateAccountForm extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <View style={styles.button}>
-                    <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Create Account'}/>
-                </View>
+                <TouchableOpacity style={styles.button}
+                                  onPress={this.onButtonPress}>
+                    <Text style={styles.buttonText}>
+                        {this.props.buttonText || 'Create Account'}
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     }
