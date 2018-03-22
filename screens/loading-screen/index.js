@@ -14,6 +14,7 @@ import * as actions from './actions';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 import ThinkingGreenThoughts from './thinking-green-thoughts';
+import GetEmail from './get-email';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,6 +35,7 @@ class LoadingScreen extends Component {
         isLoggingInViaSSO: PropTypes.bool,
         actions: PropTypes.object,
         skipLoadingScreen: PropTypes.bool,
+        user: PropTypes.object,
         userIsLoggedIn: PropTypes.bool
     };
 
@@ -102,7 +104,7 @@ class LoadingScreen extends Component {
                 );
 
             default :
-                return (
+                return this.props.user.email ? (<GetEmail/>) : (
                     <View style={styles.container}>
                         {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
                         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}
@@ -110,7 +112,7 @@ class LoadingScreen extends Component {
                     </View>
                 );
         }
-    };
+    }
 
 }
 
@@ -118,9 +120,10 @@ function mapStateToProps(state) {
     return {
         isLoadingComplete: state.loading.isLoadingComplete,
         initialAuthChecked: state.login.initialAuthChecked,
-        isLoggingInViaSSO : state.login.isLoggingInViaSSO,
+        isLoggingInViaSSO: state.login.isLoggingInViaSSO,
         skipLoadingScreen: state.loading.skipLoadingScreen,
-        userIsLoggedIn: state.login.userIsLoggedIn
+        userIsLoggedIn: state.login.userIsLoggedIn,
+        user: state.login.user || {}
     };
 }
 

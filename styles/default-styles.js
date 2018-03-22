@@ -40,7 +40,25 @@ export const defaultStyles = {
         overflow: 'hidden',
         textAlign: 'center'
     },
-    button: {},
+    button: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#fa774e',
+        backgroundColor: '#fa774e',
+        padding: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center'
+
+    },
     buttonBar: {
         width: '100%',
         flex: 1,
@@ -76,6 +94,7 @@ export const defaultStyles = {
         padding: 5
     },
     frame: {
+        backgroundColor: '#55683a',
         height: '100%',
         width: '100%'
     },
@@ -86,7 +105,7 @@ export const defaultStyles = {
         height: 30,
         margin: 5
     },
-    goButtonText:{
+    goButtonText: {
         fontSize: 18,
         color: '#007AFF',
         textAlign: 'center',
@@ -178,6 +197,15 @@ export const defaultStyles = {
         paddingLeft: 5,
         borderColor: '#ABABAB',
         borderBottomWidth: 1
+    },
+    text: {
+        color: 'white',
+        fontSize: 18,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 1
     },
     textArea: {
         borderColor: '#000',
