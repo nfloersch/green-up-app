@@ -74,7 +74,6 @@ class TownInformation extends React.Component {
     }
 }
 
-
 class TrashMap extends Component {
     static propTypes = {
         navigation: PropTypes.object,
@@ -110,6 +109,7 @@ class TrashMap extends Component {
             showUncollectedTrash: true,
             showTrashDropLocations: true,
             showSupplyPickupLocations: true,
+            showMyUncollectedTrash: true,
             hackyHeight: 300
         };
     }
@@ -221,6 +221,7 @@ class TrashMap extends Component {
         const uncollectedTrashIcon = require('../../assets/images/delete-circle.png');
         const trashDropOffLocationIcon = require('../../assets/images/home-circle.png');
         const supplyPickupLocationIcon = require('../../assets/images/broom.png');
+        const myUncollectedTrashIcon = require('../../assets/images/delete-circle-light-green.png');
 
         const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
@@ -246,13 +247,39 @@ class TrashMap extends Component {
                             showsMyLocationButton={true}
                             showsCompass={true}
                             style={{alignSelf: 'stretch', height: this.state.hackyHeight}}>
-                            {drops && drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true) || (this.state.showUncollectedTrash && !drop.wasCollected)).map(drop => (
+                            {drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true)).map(drop => (
                                 <MapView.Marker
                                     key={drop.uid}
-                                    image={drop.wasCollected ? collectedTrashIcon : uncollectedTrashIcon}
+                                    image={collectedTrashIcon}
+                                    coordinate={drop.location}
+                                    title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                                    description={'Tap to view collected trash'}
+                                    onCalloutPress={() => {
+                                        this.setState({modalVisible: true, drop: drop});
+                                    }}
+                                />
+                            ))}
+
+                            {drops.filter(drop => (this.state.showMyUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
+                                <MapView.Marker
+                                    key={drop.uid}
+                                    image={myUncollectedTrashIcon}
                                     coordinate={drop.location}
                                     title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
                                     description={'Tap to view, edit or collect'}
+                                    onCalloutPress={() => {
+                                        this.setState({modalVisible: true, drop: drop});
+                                    }}
+                                />
+                            ))}
+
+                            {drops.filter(drop => (this.state.showUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
+                                <MapView.Marker
+                                    key={drop.uid}
+                                    image={uncollectedTrashIcon}
+                                    coordinate={drop.location}
+                                    title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                                    description={'Tap to view or collect'}
                                     onCalloutPress={() => {
                                         this.setState({modalVisible: true, drop: drop});
                                     }}
@@ -284,6 +311,12 @@ class TrashMap extends Component {
                                 onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
 
                             <Toggle
+                                icon={myUncollectedTrashIcon}
+                                label='Show My Uncollected Trash'
+                                value={this.state.showMyUncollectedTrash}
+                                onValueChange={(value) => this.setState({showMyUncollectedTrash: value})}/>
+
+                            <Toggle
                                 icon={uncollectedTrashIcon}
                                 label='Show Uncollected Trash'
                                 value={this.state.showUncollectedTrash}
@@ -300,6 +333,8 @@ class TrashMap extends Component {
                                 label='Show Supply Pickup Locations'
                                 value={this.state.showSupplyPickupLocations}
                                 onValueChange={(value) => this.setState({showSupplyPickupLocations: value})}/>
+
+
                         </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
