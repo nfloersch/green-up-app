@@ -16,7 +16,6 @@ import {
     Modal,
     ScrollView,
     StyleSheet,
-    Switch,
     TextInput,
     Text,
     View,
@@ -29,18 +28,14 @@ import booleanWithin from '@turf/boolean-within';
 import TrashDrop from '../../models/trash-drop';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import MultiLineMapCallout from '../../components/MultiLineMapCallout';
+import Toggle from '../../components/Toggle';
 
 const myStyles = {
-    toggle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10
-    }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 
 class TownInformation extends React.Component {
     static propTypes = {
@@ -79,6 +74,7 @@ class TownInformation extends React.Component {
     }
 }
 
+
 class TrashMap extends Component {
     static propTypes = {
         navigation: PropTypes.object,
@@ -113,6 +109,7 @@ class TrashMap extends Component {
             showCollectedTrash: false,
             showUncollectedTrash: true,
             showTrashDropLocations: true,
+            showSupplyPickupLocations: true,
             hackyHeight: 300
         };
     }
@@ -212,6 +209,7 @@ class TrashMap extends Component {
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
         const trashDropOffLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].DropOffLocations), []).filter(l => l.DropOffLocationCoordinates);
+        const supplyPickupLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].PickupLocations), []).filter(l => l.PickupLocationCoordinates);
         const initialMapLocation = this.props.location ? {
             latitude: Number(this.props.location.coords.latitude),
             longitude: Number(this.props.location.coords.longitude),
@@ -219,6 +217,10 @@ class TrashMap extends Component {
             longitudeDelta: 0.0421
         } : null;
 
+        const collectedTrashIcon = require('../../assets/images/checkbox-marked-circle.png');
+        const uncollectedTrashIcon = require('../../assets/images/delete-circle.png');
+        const trashDropOffLocationIcon = require('../../assets/images/home-circle.png');
+        const supplyPickupLocationIcon = require('../../assets/images/broom.png');
 
         const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
@@ -247,7 +249,7 @@ class TrashMap extends Component {
                             {drops && drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true) || (this.state.showUncollectedTrash && !drop.wasCollected)).map(drop => (
                                 <MapView.Marker
                                     key={drop.uid}
-                                    image={drop.wasCollected ? require('../../assets/images/checkbox-marked-circle.png') : require('../../assets/images/delete-circle.png')}
+                                    image={drop.wasCollected ? collectedTrashIcon : uncollectedTrashIcon}
                                     coordinate={drop.location}
                                     title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
                                     description={'Tap to view, edit or collect'}
@@ -259,33 +261,45 @@ class TrashMap extends Component {
                             {this.state.showTrashDropLocations && trashDropOffLocations.map((d, i) => (
                                 <MapView.Marker
                                     key={`${town}DropOffLocation${i}`}
-                                    image={require('../../assets/images/home-circle.png')}
-                                    coordinate={d.DropOffLocationCoordinates}
-                                    title='Drop Off Location'
-                                    description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
-                                />
+                                    image={trashDropOffLocationIcon}
+                                    coordinate={d.DropOffLocationCoordinates}>
+                                    <MultiLineMapCallout title='Drop Off Location' description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`} />
+                                </MapView.Marker>
+
+                            ))}
+                            {this.state.showSupplyPickupLocations && supplyPickupLocations.map((d, i) => (
+                                <MapView.Marker
+                                    key={`${town}SupplyPickupLocation${i}`}
+                                    image={supplyPickupLocationIcon}
+                                    coordinate={d.PickupLocationCoordinates} >
+                                    <MultiLineMapCallout title='Supply Pickup Location' description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`} />
+                                </MapView.Marker>
                             ))}
                         </MapView>
                         <View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Collected Trash</Text>
-                                <Switch
-                                    value={this.state.showCollectedTrash}
-                                    onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-                            </View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Uncollected Trash</Text>
-                                <Switch
-                                    value={this.state.showUncollectedTrash}
-                                    onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
-                            </View>
-                            <View style={styles.toggle}>
-                                <Text style={styles.label}>Show Trash Drop Locations</Text>
-                                <Switch
-                                    value={this.state.showTrashDropLocations}
-                                    onValueChange={(value) => this.setState({showTrashDropLocations: value})}
-                                />
-                            </View>
+                            <Toggle
+                                icon={collectedTrashIcon}
+                                label='Show Collected Trash'
+                                value={this.state.showCollectedTrash}
+                                onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
+
+                            <Toggle
+                                icon={uncollectedTrashIcon}
+                                label='Show Uncollected Trash'
+                                value={this.state.showUncollectedTrash}
+                                onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
+
+                            <Toggle
+                                icon={trashDropOffLocationIcon}
+                                label='Show Trash Drop Locations'
+                                value={this.state.showTrashDropLocations}
+                                onValueChange={(value) => this.setState({showTrashDropLocations: value})}/>
+
+                            <Toggle
+                                icon={supplyPickupLocationIcon}
+                                label='Show Supply Pickup Locations'
+                                value={this.state.showSupplyPickupLocations}
+                                onValueChange={(value) => this.setState({showSupplyPickupLocations: value})}/>
                         </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
