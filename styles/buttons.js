@@ -1,0 +1,93 @@
+import * as constants from './constants';
+
+export const buttons = {
+    button: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#fa774e',
+        backgroundColor: '#fa774e',
+        padding: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+    buttonBar: {
+        width: '100%',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    },
+    buttonBarButton: {
+        width: '48%'
+    },
+    buttonBarHeader: {width: '100%', height: 60, backgroundColor: constants.headerBackgroundColor},
+    buttonRow: {
+        width: '100%',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    goToButton: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#AAA',
+        height: 30,
+        margin: 5
+    },
+    goButtonText: {
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign: 'center',
+        height: 30
+    },
+    headerButton: {
+        height: 60,
+        paddingTop: 20
+    },
+    headerButtonText: {
+        fontSize: 18,
+        color: '#007AFF',
+        textAlign: 'center'
+    },
+    link: {
+        width: '100%',
+        margin: 5,
+        padding: 5
+    },
+    linkText: {
+        fontSize: 16,
+        color: 'white',
+        textAlign: 'center'
+    },
+    searchResultsTitle: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
+    },
+    searchResult: {
+        marginTop: 2,
+        marginBottom: 3,
+        borderWidth: 1,
+        borderColor: '#FFF',
+        padding: 10
+    },
+    singleButtonHeader: {
+        width: '100%',
+        height: 60,
+        backgroundColor: constants.headerBackgroundColor,
+        borderBottomWidth: 1,
+        borderColor: 'black'
+    },
+    singleButtonHeaderHighlight: {
+        height: 60,
+        width: '100%'
+    }
+};

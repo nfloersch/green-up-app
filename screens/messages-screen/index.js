@@ -5,13 +5,23 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleSheet, Text, TouchableHighlight, View, ScrollView} from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    ImageBackground,
+    TouchableOpacity,
+    View,
+    ScrollView
+} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {Message} from '../../models/message';
+import coveredBridge from '../../assets/images/covered-bridge.jpg';
 
 const myStyles = {
     message: {
@@ -129,7 +139,7 @@ class Messages extends Component {
             ));
             const myMessages = sortedKeys.map(key =>
                 (
-                    <TouchableHighlight key={key} onPress={this.toMessageDetail(messages[key])}>
+                    <TouchableOpacity key={key} onPress={this.toMessageDetail(messages[key])}>
                         <View style={[styles.message,
                             messages[key].read
                                 ? styles.read : styles.unread]}>
@@ -160,7 +170,7 @@ class Messages extends Component {
                                 </View>
                             </View>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 )
             );
 
@@ -168,41 +178,59 @@ class Messages extends Component {
                 <View style={styles.frame}>
                     <View style={styles.singleButtonHeader}>
                         <TouchableHighlight
-                            style={styles.singleButtonHeaderHighlight}
+                            style={styles.headerButton}
                             onPress={() => {
                                 this.props.navigation.navigate('NewMessage');
                             }}>
-                            <Text style={styles.headerButton}>{'New Message'}</Text>
+                            <Text style={styles.headerButtonText}>{'New Message'}</Text>
                         </TouchableHighlight>
                     </View>
-                    <ScrollView style={styles.scroll}>
-                        <View>
-                            {myMessages.length > 0
-                                ? myMessages
-                                : (
-                                    <View>
-                                        <Text style={styles.alertInfo}>Sorry, no messages yet.</Text>
-                                        <Text>
-                                            {'\n'}{'Kick things off by messaging your team.'}
-                                        </Text>
-                                    </View>
-                                )}
-                        </View>
-                    </ScrollView>
+                    {myMessages.length > 0
+                        ? (<ScrollView style={styles.scroll}>{myMessages}</ScrollView>)
+                        : (
+                            <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
+                                <View style={{
+                                    marginTop: '50%',
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    paddingTop: 50,
+                                    paddingBottom: 50,
+                                    backgroundColor: 'rgba(255,255,255, 0.85)'
+                                }}>
+                                    <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
+                                    <Text style={styles.textDark}>{'Kick things off by messaging your teammates.'}</Text>
+                                </View>
+                            </ImageBackground>
+                        )}
                 </View>
             ) : (
-                <View style={styles.container}>
-                    <Text style={styles.alertInfo}>
-                        You have no teams to send messages to. Start your own team or join an existing one.
-                    </Text>
-                    <TouchableHighlight
-                        style={styles.goToButton}
-                        onPress={() => {
-                            this.props.navigation.navigate('Teams');
-                        }}
-                    >
-                        <Text>{'Go to my teams'}</Text>
-                    </TouchableHighlight>
+                <View style={styles.frame}>
+
+                    <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
+                        <View style={{
+                            marginTop: '50%',
+                            paddingLeft: 20,
+                            paddingRight: 20,
+                            paddingTop: 50,
+                            paddingBottom: 50,
+                            backgroundColor: 'rgba(255,255,255, 0.85)'
+                        }}>
+                            <Text style={[styles.textDark, {textAlign: 'justify'}]}>
+                                {'All your messages will be listed here.'}
+                            </Text>
+                            <Text style={[styles.textDark, {textAlign: 'justify'}]}>
+                                {'Before you can send or receive messages you will need to join or create a team.'}
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {
+                                    this.props.navigation.navigate('Teams');
+                                }}
+                            >
+                                <Text style={styles.buttonText}>{'Go to "My Teams" >'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ImageBackground>
                 </View>
             );
         }

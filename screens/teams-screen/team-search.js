@@ -11,7 +11,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    TouchableHighlight,
+    TouchableOpacity,
     View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -70,9 +70,11 @@ class TeamSearch extends Component {
             searchResults: []
         };
     }
+
     componentWillMount() {
         return this.onSearchTermChange(this.state.searchTerm);
     }
+
     componentWillReceiveProps() {
         return this.onSearchTermChange(this.state.searchTerm);
     }
@@ -106,27 +108,32 @@ class TeamSearch extends Component {
     render() {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
-            <TouchableHighlight
+            <TouchableOpacity
                 key={teamId}
                 onPress={this.toTeamDetail(teamId)}
                 style={styles.searchResult}
             >
                 <View>
-                    <Text style={[styles.searchResultsTitle, styles.heading]}>
+                    <Text style={styles.teamSearchName}>
                         {teams[teamId].name}
                     </Text>
-                    <Text style={styles.city}>
-                        {teams[teamId].town}
-                    </Text>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={styles.teamSearchTown}>
+                            {teams[teamId].town}
+                        </Text>
+                        <Text style={styles.teamSearchOwner}>
+                            {teams[teamId].owner.displayName}
+                        </Text>
+                    </View>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         ));
         return (
             <KeyboardAvoidingView
                 style={defaultStyles.frame}
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
-                <View style={{marginTop: 10, marginBottom: 5, paddingLeft: 10, paddingRight: 10}}>
+                <View style={styles.searchHeader}>
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.onSearchTermChange}

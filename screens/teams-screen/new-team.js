@@ -190,20 +190,16 @@ class NewTeam extends Component {
         return (
             <KeyboardAvoidingView
                 style={[styles.frame, {paddingTop: 30}]}
-                behavior ={Platform.OS === 'ios' ? 'padding' : null}
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE'}]}>
+                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                     <View style={styles.buttonBar}>
-                        <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this._createTeam}>
-                                <Text style={styles.headerButton}>{'Save'}</Text>
-                            </TouchableHighlight>
-                        </View>
-                        <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this._cancel}>
-                                <Text style={styles.headerButton}>{'Cancel'}</Text>
-                            </TouchableHighlight>
-                        </View>
+                        <TouchableHighlight style={styles.headerButton} onPress={this._createTeam}>
+                            <Text style={styles.headerButtonText}>{'Save'}</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={styles.headerButton} onPress={this._cancel}>
+                            <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                        </TouchableHighlight>
                     </View>
                 </View>
                 <ScrollView
@@ -353,7 +349,7 @@ class NewTeam extends Component {
 const mapStateToProps = (state) => {
     const profile = state.profile;
     const user = state.login.user;
-    const owner = TeamMember.create({...user,...profile, memberStatus: statuses.OWNER});
+    const owner = TeamMember.create({...user, ...profile, memberStatus: statuses.OWNER});
     const locations = state.teams.locations;
     return {locations, owner};
 };

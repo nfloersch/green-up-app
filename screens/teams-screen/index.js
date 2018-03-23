@@ -7,10 +7,10 @@ import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
 import {
+    ImageBackground,
     StyleSheet,
     Text,
     TouchableHighlight,
-    ScrollView,
     Modal,
     View,
     Platform
@@ -22,16 +22,10 @@ import * as actions from './actions';
 import {User} from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamStatus from '../../constants/team-member-statuses';
+import teamwork from '../../assets/images/teamwork.jpeg';
+
 
 const myStyles = {
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        borderBottomWidth: 1,
-        borderBottomColor: '#888',
-        height: 50,
-        alignItems: 'center'
-    },
     teamIcon: {
         flex: 1,
         flexDirection: 'row',
@@ -51,6 +45,18 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
+
+// class TeamItem extends Component {
+//     static PropTypes = {
+//         navigate: PropTypes.func,
+//         team: PropTypes.object
+//     };
+//
+//     render() {
+//         return null;
+// }
+
 
 class MyTeams extends Component {
     static propTypes = {
@@ -116,7 +122,7 @@ class MyTeams extends Component {
             .map(key => (
                 <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
                     <View style={styles.row}>
-                        <Text style={styles.teamName}>{teams[key].name}</Text>
+                        <Text style={[styles.textDark, {fontSize: 14, paddingTop: 10}]}>{teams[key].name}</Text>
                         <View style={styles.messageIcon}>
                             {
                                 canSendMessage(key)
@@ -145,27 +151,47 @@ class MyTeams extends Component {
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight
-                                style={styles.button}
+                                style={styles.headerButton}
                                 onPress={() => {
                                     this.props.navigation.navigate('TeamSearch');
                                 }}>
-                                <Text style={styles.headerButton}>{'Search Teams'}</Text>
+                                <Text style={styles.headerButtonText}>{'Search Teams'}</Text>
                             </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight
-                                style={styles.button}
+                                style={styles.headerButton}
                                 onPress={this.toNewTeamEditor}>
-                                <Text style={styles.headerButton}>{'New Team'}</Text>
+                                <Text style={styles.headerButtonText}>{'New Team'}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.scroll}>
-                    <View>
-                        {myTeams}
-                    </View>
-                </ScrollView>
+                <View style={styles.container}>
+                    {myTeams.length === 0 ? (
+                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                            <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
+                                <View style={{
+                                    marginTop: '30%',
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    paddingTop: 50,
+                                    paddingBottom: 50,
+                                    backgroundColor: 'rgba(255,255,255, 0.85)'
+                                }}>
+                                    <Text style={[styles.textDark]}>
+                                        {'Green Up Day is all about community and teamwork.'}
+                                    </Text>
+                                    <Text style={[styles.textDark]}>
+                                        {'Search for teams in your area, or create a new one and invite some friends.'}
+                                    </Text>
+                                </View>
+                            </View>
+                        </ImageBackground>
+                    )
+                        : myTeams
+                    }
+                </View>
                 <Modal
                     animationType={'slide'}
                     transparent={false}

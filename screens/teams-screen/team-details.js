@@ -17,17 +17,6 @@ import {getMemberIcon} from '../../libs/member-icons';
 
 const myStyles =
     {
-
-        teamTitle: {
-            backgroundColor: 'darkseagreen',
-            paddingTop: 10,
-            paddingBottom: 10
-        },
-        dataBlock: {
-            marginTop: 10,
-            marginBottom: 10,
-            width: '100%'
-        },
         memberStatusBanner: {
             paddingTop: 5,
             paddingBottom: 5
@@ -128,7 +117,6 @@ class TeamDetails extends Component {
         };
     }
 
-
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
             this.props.navigation.navigate('TeamMemberDetails', {teamId, membershipId});
@@ -155,12 +143,12 @@ class TeamDetails extends Component {
                         .map((member, i) => (
                             <TouchableHighlight
                                 key={i} style={{
-                                    borderStyle: 'solid',
-                                    borderWidth: 1,
-                                    width: '100%',
-                                    height: 52,
-                                    marginTop: 5
-                                }}
+                                borderStyle: 'solid',
+                                borderWidth: 1,
+                                width: '100%',
+                                height: 52,
+                                marginTop: 5
+                            }}
                                 onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
                                 <View style={{flex: 1, flexDirection: 'row'}}>
                                     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -214,9 +202,9 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={() => this._leaveTeam(selectedTeam.id, currentUser)}>
-                                <Text style={styles.headerButton}>
+                                <Text style={styles.headerButtonText}>
                                     {'Leave Team'}
                                 </Text>
                             </TouchableHighlight>
@@ -226,9 +214,9 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={this._removeRequest(selectedTeam.id, currentUser)}>
-                                <Text style={styles.headerButton}>
+                                <Text style={styles.headerButtonText}>
                                     {'Remove Request'}
                                 </Text>
                             </TouchableHighlight>
@@ -238,9 +226,9 @@ class TeamDetails extends Component {
                     return (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={this._askToJoin(selectedTeam, currentUser)}>
-                                <Text style={styles.headerButton}>{'Ask to join this team'}</Text>
+                                <Text style={styles.headerButtonText}>{'Ask to join this team'}</Text>
                             </TouchableHighlight>
                         </View>
                     );
@@ -252,44 +240,36 @@ class TeamDetails extends Component {
                 case memberStatus === teamMemberStatuses.INVITED:
                     return (
                         <View style={styles.statusBar}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                {getMemberIcon(teamMemberStatuses.INVITED)}
-                                <Text style={styles.statusMessage}>
-                                    {'You have been invited to this team'}
-                                </Text>
-                            </View>
+                            {getMemberIcon(teamMemberStatuses.INVITED)}
+                            <Text style={styles.statusMessage}>
+                                {'You have been invited to this team'}
+                            </Text>
                         </View>
                     );
                 case selectedTeam.owner.uid === currentUser.uid :
                     return (
                         <View style={styles.statusBar}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                {getMemberIcon(teamMemberStatuses.OWNER)}
-                                <Text style={styles.statusMessage}>
-                                    {'You are the owner of this team'}
-                                </Text>
-                            </View>
+                            {getMemberIcon(teamMemberStatuses.OWNER)}
+                            <Text style={styles.statusMessage}>
+                                {'You are the owner of this team'}
+                            </Text>
                         </View>
                     );
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
                         <View style={styles.statusBar}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                {getMemberIcon(teamMemberStatuses.ACCEPTED)}
-                                <Text style={styles.statusMessage}>
-                                    {'You are a member of this team.'}
-                                </Text>
-                            </View>
+                            {getMemberIcon(teamMemberStatuses.ACCEPTED)}
+                            <Text style={styles.statusMessage}>
+                                {'You are a member of this team.'}
+                            </Text>
                         </View>);
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
                         <View style={styles.statusBar}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                {getMemberIcon(teamMemberStatuses.REQUEST_TO_JOIN)}
-                                <Text style={styles.statusMessage}>
-                                    {'Waiting on the team owner to approve your request'}
-                                </Text>
-                            </View>
+                            {getMemberIcon(teamMemberStatuses.REQUEST_TO_JOIN)}
+                            <Text style={styles.statusMessage}>
+                                {'Waiting on owner approval'}
+                            </Text>
                         </View>
                     );
                 default :
@@ -302,21 +282,21 @@ class TeamDetails extends Component {
         return (
             <View style={styles.frame}>
                 {getStatusButtons()}
-                <ScrollView style={{padding: 10, backgroundColor: '#FFF'}}>
+                <ScrollView style={styles.scroll}>
                     {getMemberStatus()}
-                    <View style={{width: '100%', marginBottom: 20}}>
-                        <Text style={[styles.heading, styles.teamTitle]}>
+                    <View style={styles.block}>
+                        <Text style={[styles.teamTitle]}>
                             {selectedTeam.name}
                         </Text>
                         <View style={{width: '100%'}}>
-
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Owner: '}</Text>
                                 <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
                             </Text>
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Where: '}</Text>
-                                <Text style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.location || !selectedTeam.town ? '' : ', '}${selectedTeam.town || ''}`}</Text>
+                                <Text
+                                    style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.location || !selectedTeam.town ? '' : ', '}${selectedTeam.town || ''}`}</Text>
                             </Text>
                             <Text style={styles.dataBlock}>
                                 <Text style={styles.label}>{'Date: '}</Text>
@@ -338,8 +318,8 @@ class TeamDetails extends Component {
                             }
                         </View>
                     </View>
-                    <View style={{width: '100%'}}>
-                        <Text style={[styles.heading]}>
+                    <View style={[styles.block, {borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)'}]}>
+                        <Text style={[styles.teamTitle]}>
                             {'Clean Up Location'}
                         </Text>
                         <MapView
@@ -361,7 +341,13 @@ class TeamDetails extends Component {
                                 />))}
                         </MapView>
                     </View>
-                    {isTeamMember ? teamMemberList : null}
+                    <View style={[styles.block, {
+                        borderTopWidth: 1,
+                        borderBottomWidth: 0,
+                        borderTopColor: 'rgba(255,255,255,0.2)'
+                    }]}>
+                        {isTeamMember ? teamMemberList : null}
+                    </View>
                     <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
             </View>
