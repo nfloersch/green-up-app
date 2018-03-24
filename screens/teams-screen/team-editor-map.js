@@ -21,6 +21,7 @@ import {Constants, Location, Permissions} from 'expo';
 import Colors from '../../constants/Colors';
 import {defaultStyles} from '../../styles/default-styles';
 import * as actions from './actions';
+import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
 const myStyles = {};
 
@@ -153,7 +154,7 @@ class TeamEditorMap extends Component {
                     <Text>
                     Place markers in the area you want your team to work on.
                     Tap on the marker text box to remove a marker.
-                    Blue markers represent areas that other teams are cleaning up.
+                    Green flags represent areas that other teams are cleaning up.
                     </Text>
                     <MapView style={{alignSelf: 'stretch', height: '50%'}}
                         initialRegion={this.state.initialMapLocation}
@@ -161,18 +162,20 @@ class TeamEditorMap extends Component {
                         {this.props.locations.length > 0 && locations.map((marker, index) => (
                             <MapView.Marker coordinate={marker.coordinates}
                                 key={`location${index}`}
-                                title={marker.title || 'clean area'}
-                                onCalloutPress={this._removeMarker(marker)}
-                                description={marker.description || 'tap to remove'}
-                            />))}
+                                onCalloutPress={this._removeMarker(marker)}>
+                                <MultiLineMapCallout title={marker.title || 'clean area'} description={marker.description || 'tap to remove'} />
+                            </MapView.Marker>
+                        ))}
 
                         {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
                             (<MapView.Marker
                                 key={i}
                                 coordinate={a.coordinates}
                                 image={otherTeamsLocationImage}
-                                title={a.title}
-                            />))}
+                                title={a.title}>
+                                <MultiLineMapCallout title={a.title} description={a.description} />
+                            </MapView.Marker>
+                            ))}
                     </MapView>
                     <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
                         <Text style={styles.buttonText}>{'remove marker'}</Text>
@@ -189,7 +192,8 @@ function mapStateToProps(state) {
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',
             coordinates: l.coordinates,
-            title: `Claiming this area for team: ${team.name}`
+            title: `${team.name}`,
+            description: 'claimed this area'
         }))), []);
     return {selectedTeam, locations, otherCleanAreas};
 }

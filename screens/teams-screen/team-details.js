@@ -14,6 +14,7 @@ import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import {TeamMember} from '../../models/team-member';
 import {getMemberIcon} from '../../libs/member-icons';
+import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
 const myStyles =
     {
@@ -329,16 +330,18 @@ class TeamDetails extends Component {
                             {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
                                 <MapView.Marker
                                     coordinate={marker.coordinates}
-                                    key={index}
-                                    title={marker.title || 'clean area'}/>
+                                    key={index}>
+                                    <MultiLineMapCallout title={marker.title || 'clean area'} description='' />
+                                </MapView.Marker>
                             ))}
                             {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((a, i) =>
                                 (<MapView.Marker
                                     key={i}
                                     coordinate={a.coordinates}
-                                    image={otherTeamsLocationImage}
-                                    title={a.title}
-                                />))}
+                                    image={otherTeamsLocationImage}>
+                                    <MultiLineMapCallout title={a.title} description={a.description} />
+                                </MapView.Marker>
+                                ))}
                         </MapView>
                     </View>
                     <View style={[styles.block, {
@@ -367,7 +370,8 @@ const mapStateToProps = (state) => ({
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',
             coordinates: l.coordinates,
-            title: `Claiming this area for team: ${team.name}`
+            title: `${team.name}`,
+            description: 'claimed this area'
         }))), [])
 });
 
