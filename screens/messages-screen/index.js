@@ -193,16 +193,17 @@ class Messages extends Component {
             ) : (
                 <View style={styles.container}>
                     <Text style={styles.alertInfo}>
-                        You have no teams to send messages to. Start your own team or join an existing one.
+                      You are currently not an active member of a team. Join a team or start your own.
                     </Text>
-                    <TouchableHighlight
-                        style={styles.goToButton}
-                        onPress={() => {
-                            this.props.navigation.navigate('Teams');
-                        }}
-                    >
-                        <Text>{'Go to my teams'}</Text>
-                    </TouchableHighlight>
+                    <View>
+                      <TouchableHighlight
+                          onPress={() => {
+                              this.props.navigation.navigate('Teams');
+                          }}
+                      >
+                          <Text style={styles.headerButton}>{'Go to My Teams'}</Text>
+                      </TouchableHighlight>
+                    </View>
                 </View>
             );
         }
@@ -216,16 +217,32 @@ class Messages extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        currentUser: state.login.user,
-        invitations: state.teams.invitations || {},
-        invitationsLoaded: state.messages.invitationsLoaded,
-        messages: state.messages.messages || {},
-        messagesLoaded: state.messages.loaded,
-        userHasTeams: Object.values(state.teams.teamMembers || {}).length > 0,
-        teamsLoaded: state.messages.teamsLoaded,
-        teams: state.teams.teams
-    };
+  let members = state.teams.teamMembers || {};
+  let canMessage = false;
+  const memKeys = Object.keys(members);
+
+  if (memKeys.length > 0){
+    memKeys.forEach( mem => {
+      if (members[mem]) {
+        const status = members[mem][Object.keys(members[mem])[0]].memberStatus;
+
+        if (status === 'OWNER' || status === 'ACCEPTED') {
+          canMessage = true;
+        }
+      }
+    });
+  }
+
+  return {
+      currentUser: state.login.user,
+      invitations: state.teams.invitations || {},
+      invitationsLoaded: state.messages.invitationsLoaded,
+      messages: state.messages.messages || {},
+      messagesLoaded: state.messages.loaded,
+      userHasTeams: canMessage,
+      teamsLoaded: state.messages.teamsLoaded,
+      teams: state.teams.teams
+  };
 }
 
 const mapDispatchToProps = (dispatch) => ({
