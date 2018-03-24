@@ -68,7 +68,7 @@ export default class LoginForm extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <View style={styles.button}>
+                <View style={{marginTop: 10, marginBottom: 10}}>
                     <Button onPress={this.onButtonPress} title={this.props.buttonText || 'Login'}/>
                 </View>
             </View>
