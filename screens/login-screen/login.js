@@ -8,7 +8,7 @@ import {
     Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Alert,
     Platform
 } from 'react-native';
-
+import * as constants from '../../styles/constants';
 import * as actions from './actions';
 import logo from '../../assets/images/green-up-logo.png';
 import facebookLogo from '../../assets/images/facebook-logo.png';
@@ -25,7 +25,11 @@ const myStyles = {
     },
     logoText: {
         fontSize: 36,
-        color: 'white'
+        color: 'white',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.6,
+        shadowRadius: 1
     },
     socialLoginButton: {
         width: '100%',
@@ -115,10 +119,7 @@ class Login extends Component {
                         <Image source={logo} style={{height: 120, width: 120}}/>
                         <Text style={styles.logoText}>Green Up Vermont</Text>
                     </View>
-                    <ScrollView style={[styles.scroll, {
-                        backgroundColor: 'rgba(255,255,255, 0.5)'
-                    }]}>
-
+                    <ScrollView style={styles.scroll}>
                         <TouchableOpacity
                             style={styles.socialLoginButton}
                             onPress={this.googleLogin}>

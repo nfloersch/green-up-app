@@ -42,10 +42,11 @@ export const text = {
     },
     data: {
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 2,
+        marginLeft: 5
     },
     label: {
-        marginTop: 5,
         color: '#DDD',
         fontSize: 16
     },
@@ -64,7 +65,7 @@ export const text = {
         shadowRadius: 1,
         height: 30,
         paddingTop: 8,
-        paddingLeft: 10,
+        paddingLeft: 10
     },
     teamSearchOwner: {
         textAlign: 'right',
@@ -112,6 +113,18 @@ export const text = {
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 0.6,
+        shadowRadius: 1
+    },
+    textBlock: {
+        padding: 5,
+        backgroundColor: 'white',
+        color: '#444',
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
         shadowRadius: 1
     },
     textDark: {

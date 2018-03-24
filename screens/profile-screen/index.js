@@ -87,12 +87,12 @@ class Profile extends Component {
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
-                                <Text style={styles.headerButton}>{'Save Profile'}</Text>
+                                <Text style={styles.headerButtonText}>{'Save Profile'}</Text>
                             </TouchableHighlight>
                         </View>
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight style={styles.button} onPress={this._cancel}>
-                                <Text style={styles.headerButton}>{'Cancel'}</Text>
+                                <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>

@@ -70,7 +70,7 @@ class ThinkingGreenThoughts extends Component {
                     <Image source={logo} style={{height: 120, width: 120}}/>
                 </View>
                 <View style={{width: '100%'}}>
-                    <Text style={styles.linkText}>{'Thinking green thoughts...'}</Text>
+                    <Text style={[styles.text, {textAlign: 'center'}]}>{'Thinking green thoughts...'}</Text>
                 </View>
             </ScrollView>
         );

@@ -231,9 +231,9 @@ class TrashMap extends Component {
                     {townInfo.RoadsideDropOffAllowed === true && (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={goToTrashDrop}>
-                                <Text style={styles.headerButton}>
+                                <Text style={styles.headerButtonText}>
                                     {'Create Trash Drop'}
                                 </Text>
                             </TouchableHighlight>
@@ -353,7 +353,7 @@ class TrashMap extends Component {
                                             ? (
                                                 <View style={styles.buttonBarButton}>
                                                     <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
-                                                        <Text style={styles.headerButton}>
+                                                        <Text style={styles.headerButtonText}>
                                                             {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
                                                         </Text>
                                                     </TouchableHighlight>
@@ -365,7 +365,7 @@ class TrashMap extends Component {
 
                                     <View style={styles.buttonBarButton}>
                                         <TouchableHighlight style={styles.button} onPress={this.closeModal}>
-                                            <Text style={styles.headerButton}>{'Cancel'}</Text>
+                                            <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                                         </TouchableHighlight>
                                     </View>
 

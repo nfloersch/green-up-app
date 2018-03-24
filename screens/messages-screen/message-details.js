@@ -53,15 +53,22 @@ class MessageDetails extends Component {
                                         source={{uri: message.sender.photoURL}}
                                     />
                                     <View>
-                                        <Text style={styles.messageHeader}>{`From : ${message.sender.displayName}`}</Text>
-                                        <Text style={styles.messageHeader}>{`To: ${team.name}`}</Text>
+                                        <Text style={{height: 30}}>
+                                            <Text style={styles.label}>{'From: '}</Text>
+                                            <Text style={styles.data}>{message.sender.displayName}</Text>
+                                        </Text>
+                                        <Text>
+                                            <Text style={styles.label}>{'To: '}</Text>
+                                            <Text style={styles.data}>{team.name}</Text>
+                                        </Text>
                                     </View>
                                 </View>
                             </View>
                             <ScrollView style={{
-                                padding: 10
+                                padding: 10,
+                                backgroundColor: '#EEE'
                             }}>
-                                <Text style={styles.data}>{message.text}</Text>
+                                <Text style={[styles.textDark, {fontSize: 14, paddingBottom: 10}]}>{message.text}</Text>
                             </ScrollView>
                         </View>
                     )

@@ -11,6 +11,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    TouchableOpacity,
     Modal,
     View,
     Platform
@@ -27,16 +28,12 @@ import teamwork from '../../assets/images/teamwork.jpeg';
 
 const myStyles = {
     teamIcon: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        height: 50, width: 50,
+        paddingRight: 10
     },
     messageIcon: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        height: 50, width: 50,
+        padding: 10
     },
     teamName: {
         flex: 4
@@ -108,7 +105,7 @@ class MyTeams extends Component {
         const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
         //  const memberStatus = TeamMember.memberStatuses;
-        return getMemberIcon(status);
+        return getMemberIcon(status, {height: 50, width: 50, padding: 10});
     };
 
     render() {
@@ -120,30 +117,28 @@ class MyTeams extends Component {
         const teamKeys = Object.keys((user.teams || {})).concat(Object.keys(this.props.invitations || {}));
         const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => (
-                <TouchableHighlight key={key} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
-                    <View style={styles.row}>
-                        <Text style={[styles.textDark, {fontSize: 14, paddingTop: 10}]}>{teams[key].name}</Text>
-                        <View style={styles.messageIcon}>
-                            {
-                                canSendMessage(key)
-                                    ? (
-                                        <TouchableHighlight onPress={() => {
-                                            this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                                        }}>
-                                            <Ionicons
-                                                name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                                size={30}
-                                            />
-                                        </TouchableHighlight>
-                                    )
-                                    : null
-                            }
-                        </View>
-                        <View style={styles.teamIcon}>
-                            {this.toTeamIcon(key)}
-                        </View>
-                    </View>
-                </TouchableHighlight>
+                <View key={key} style={styles.row}>
+                    <TouchableHighlight style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
+                        <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20}]}>{teams[key].name}</Text>
+                    </TouchableHighlight>
+                    {
+                        canSendMessage(key)
+                            ? (
+                                <TouchableOpacity style={styles.messageIcon} onPress={() => {
+                                    this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
+                                }}>
+                                    <Ionicons
+                                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                        size={30}
+                                    />
+                                </TouchableOpacity>
+                            )
+                            : null
+                    }
+                    <TouchableOpacity style={styles.teamIcon}>
+                        {this.toTeamIcon(key)}
+                    </TouchableOpacity>
+                </View>
             ));
         return (
             <View style={styles.frame}>

@@ -1,9 +1,10 @@
 export const controls = {
     textArea: {
-        borderColor: '#000',
+        borderColor: '#333',
         borderWidth: 1,
         padding: 5,
-        height: 250,
+        minHeight: 250,
+        backgroundColor: 'white',
         justifyContent: 'flex-start'
     },
     textInput: {
@@ -14,5 +15,6 @@ export const controls = {
         padding: 5,
         textAlign: 'left',
         lineHeight: 25
-    }
+    },
+    picker: {backgroundColor:'white', marginTop: 5}
 };

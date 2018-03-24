@@ -3,7 +3,8 @@ import {Platform} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
 
-import Colors from '../constants/Colors';
+// import Colors from '../constants/Colors';
+import * as colors from '../styles/constants';
 import MenuScreen from '../screens/menu-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
@@ -17,14 +18,10 @@ export default TabNavigator(
         },
         Teams: {
             screen: TeamsScreen
-
         },
         TrashTracker: {
             screen: TrashTrackerScreen
         },
-        // Support: {
-        //     screen: DonateScreen
-        // },
         Menu: {
             screen: MenuScreen
         }
@@ -62,7 +59,7 @@ export default TabNavigator(
                         name={iconName}
                         size={28}
                         style={{marginBottom: -3}}
-                        color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+                        color={focused ? colors.tabIconSelected : colors.tabIconDefault}
                     />
                 );
             }
@@ -72,14 +69,14 @@ export default TabNavigator(
         animationEnabled: true,
         swipeEnabled: false,
         tabBarOptions: {
-          activeTintColor: Colors.tabIconSelected,
-          inactiveTintColor: Colors.tabIconDefault,
-        labelStyle: {
-          fontSize: 10
-        },
-        style: {
-          backgroundColor: Colors.tabBarBackground
+            activeTintColor: colors.buttonColor,
+            inactiveTintColor: colors.tabIconDefault,
+            labelStyle: {
+                fontSize: 10
+            },
+            style: {
+                backgroundColor: colors.tabBarBackground
+            }
         }
     }
-  }
 );

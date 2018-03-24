@@ -109,29 +109,27 @@ class NewMessage extends Component {
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
-                        <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={() => this.sendMessage(teamValue, this.state.text)}>
-                                <Text style={styles.headerButton}>{'Send Message'}</Text>
-                            </TouchableHighlight>
-                        </View>
-                        <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this.cancelMessage}>
-                                <Text style={styles.headerButton}>{'Cancel'}</Text>
-                            </TouchableHighlight>
-                        </View>
+                        <TouchableHighlight
+                            style={styles.headerButton}
+                            onPress={() => this.sendMessage(teamValue, this.state.text)}>
+                            <Text style={styles.headerButtonText}>{'Send Message'}</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={styles.headerButton} onPress={this.cancelMessage}>
+                            <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                        </TouchableHighlight>
                     </View>
                 </View>
                 <KeyboardAvoidingView
                     style={defaultStyles.frame}
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
-                    <ScrollView style={styles.scroll}>
+                    <View style={{flex: 1, padding: 10}}>
                         {
                             !selectedTeamId ? (
                                 <View style={{marginBottom: 5}}>
                                     <Text style={styles.label}>Select Team to Message:</Text>
                                     <Picker
-                                        style={styles.button}
+                                        style={styles.picker}
                                         itemStyle={{height: 45}}
                                         selectedValue={teamValue}
                                         onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
@@ -145,25 +143,22 @@ class NewMessage extends Component {
                                 </View>
                             )
                         }
-                        <View>
-                            <TextInput
-                                keyBoardType={'default'}
-                                multiline={true}
-                                textAlignVertical='top'
-                                numberOfLines={20}
-                                onChangeText={this.changeText}
-                                placeholder={'Message details'}
-                                value={this.state.text}
-                                style={styles.textArea}
-                                underlineColorAndroid={'transparent'}
-                            />
-                        </View>
-                        {
-                            Platform.OS === 'ios'
-                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                                : null
-                        }
-                    </ScrollView>
+                        <TextInput
+                            keyBoardType={'default'}
+                            multiline={true}
+                            textAlignVertical='top'
+                            onChangeText={this.changeText}
+                            placeholder={'Message details'}
+                            value={this.state.text}
+                            style={[styles.textArea, {alignItem:'stretch'}]}
+                            underlineColorAndroid={'transparent'}
+                        />
+                    </View>
+                    {
+                        Platform.OS === 'ios'
+                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                            : null
+                    }
                 </KeyboardAvoidingView>
             </View>
         );

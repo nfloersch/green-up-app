@@ -16,11 +16,10 @@ const aboutGreenUp = 'Green Up Vermont is a nonprofit organization with 501(c) (
     '’s mission is to promote the stewardship of our state’s natural landscape and wa' +
     'terways and the livability of our communities by involving people in Green Up Da' +
     'y and raising public awareness about the benefits of a litter-free environment.';
-const aboutContacts = 'Green Up Vermont staff:\nMelinda Vieux, President\nMelanie Phelps, Operations Ma' +
+const contactUs = 'Green Up Vermont staff:\nMelinda Vieux, President\nMelanie Phelps, Operations Ma' +
     'nager \n\nContact Us:\n\tPhone:\n\t802-229-4586\n\t800-974-3259\n\tEmail: greenu' +
     'p@greenupvermont.org\n\n\tBy mail: Green Up Vermont\n\tP. O. Box 1191\n\tMontpel' +
-    'ier, VT 05601-1191\n\nVisit the Green Up Vermont Board of Directors page for det' +
-    'ailed information about our board.';
+    'ier, VT 05601-1191';
 const frequentlyAskedQuestions = [
     {
         q: 'What is Green Up Day?',
@@ -33,6 +32,10 @@ const frequentlyAskedQuestions = [
         q: 'When is Green Up Day? ',
         a: 'Green Up Day is the first Saturday in May.'
     }, {
+        q: 'How many people participate in Green Up Day?',
+        a: 'Over 22,000 people volunteer annually in picking up litter on Green Up Day. Over 50,000 bags of trash are collected annually.'
+    },
+    {
         q: 'When was the first Green Up Day?',
         a: 'The first Green Up Day was April 18, 1970. It was started by Governor Deane C. Davis. In 1979, Green Up be came a non-profit organization.'
     }, {
@@ -43,9 +46,6 @@ const frequentlyAskedQuestions = [
         a: 'Green Up Day happens all over the state and wouldn’t happen without the dedicated help of our coordinators. Each town has a coordinator that volunteers can contact to get their Green Up bags. To find your town’s' +
         ' coordinator, go to the How to Participate page.'
     }, {
-        q: 'How can I volunteer?',
-        a: 'You can go to the How to Participate page of our website to find your town coordinator. You will see the contact name, phone number and email for you town’s coordinator. You can contact them for information on where to pick up Green Up bags and for other events that your town may be putting on. There will also be details onwhere to pick up and drop off bags on that page, for your town.'
-    }, {
         q: 'What else happens on Green Up Day?',
         a: 'Many communities provide refreshments, breakfast, picnic lunch or BBQ, dinner and even live music and entertainment. Contact your town coordinator to see what the local traditions may be.'
     }, {
@@ -54,35 +54,10 @@ const frequentlyAskedQuestions = [
     }, {
         q: 'I am a teacher. How can my students gt involved?',
         a: 'You can have them participate in the annual poster and writing contests. Go to the Poster and Writing Contests page to learn more. On that page, there are also two activity books for grades K-2 which can be downloaded.'
-    }, {
-        q: 'How many people participate in Green Up Day?',
-        a: 'Over 22,000 people volunteer annually in picking up litter on Green Up Day. Over 50,000 bags of trash are collected annually.'
     }
 ];
-const aboutTP = 'Talking Points – a summary of the Green Up Day program, to be used in interviews' +
-    ' or when writing articles:\n\nWHAT is it? and HOW did it get started?\nA special' +
-    ' day when thousands of volunteers come out in their communities for a massive sp' +
-    'ring clean up of litter.  It is the largest statewide volunteer event in Vermont' +
-    ' with over 22,000 taking part. Launched in 1970 by Governor Deane Davis, four da' +
-    'ys before the first Earth Day, with the idea to “marshal an army of thousands of' +
-    ' volunteers to clean up litter from roadsides.”  There was a lot of roadside lit' +
-    'ter back then.  The Interstate Highway System was closed from nine to noon and t' +
-    'he clean up drew national media coverage.\n\nHOW has it CHANGED?\nIt is no longe' +
-    'r organized by a state agency. Instead, Green Up Vermont is a non-profit organiz' +
-    'ation responsible for carrying on this great annual tradition, providing over 50' +
-    ',000 Green Up bags every year!\n\nWHERE does it take place?\nEvery community in ' +
-    'Vermont has a Green Up Day. Roadsides, natural and public spaces, and waterways ' +
-    'throughout the entire state are the focus for the litter clean up.\n\nWHO takes ' +
-    'part?\nEveryone can take part – people of all ages and all walks of life. Lots o' +
-    'f families go out together to involve young children in learning about negative ' +
-    'effects of littering. Local community groups can help organize food and festivit' +
-    'ies for volunteers – some towns have a breakfast, many have a BBQ lunch.\n\nHOW ' +
-    'can people get involved?\nGo to the Green Up Vermont web site at Green Up Vermon' +
-    't, to find out who is their Town Coordinator and where to get Green Up bags.  Al' +
-    'so all seven Vermont Subaru dealers are official sites for bag pick up and drop ' +
-    'off.';
 
-const myStyles = {aboutHeading: {...defaultStyles.heading , marginBottom: 5, marginTop: 10}};
+const myStyles = {aboutHeading: {...defaultStyles.teamTitle, marginBottom: 0, paddingBottom: 5, marginTop: 10}};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -138,21 +113,30 @@ class About extends Component {
                 <ScrollView style={styles.scroll}>
                     <View>
                         <Text style={styles.aboutHeading}>About Green Up</Text>
-                        <Text>{aboutGreenUp}</Text>
+                        <View style={styles.infoBlock}>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>{aboutGreenUp}</Text>
+                        </View>
                     </View>
                     <View>
                         <Text style={styles.aboutHeading}>FAQ</Text>
                         <View>{
                             frequentlyAskedQuestions.map(
                                 (faq, i) => (
-                                    <View key={i}>
-                                        <Text style={{fontWeight: 'bold'}}>{faq.q}</Text>
-                                        <Text style={{marginBottom: 10}}>{faq.a}</Text>
+                                    <View key={i} style={styles.infoBlock}>
+                                        <Text style={[styles.textDark, {fontSize: 14}]}>{faq.q}</Text>
+                                        <Text style={[styles.textDark, {fontSize: 12}]}>{faq.a}</Text>
                                     </View>)
                             )
                         }
                         </View>
                     </View>
+                    <View>
+                        <Text style={styles.aboutHeading}>Contact Us</Text>
+                        <View style={styles.infoBlock}>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>{contactUs}</Text>
+                        </View>
+                    </View>
+                    <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
             </View>
         );

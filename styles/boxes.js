@@ -18,6 +18,12 @@ export const boxes = {
         width: '100%'
     },
     block: {paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%'},
+    infoBlock: {
+        marginBottom: 8, backgroundColor: '#EEE', padding: 10, borderWidth: 1, borderColor: '#FFF', shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2
+    },
     padForIOSKeyboard: {height: 80},
     padForIOSKeyboardBig: {height: 150},
     profileHeader: {
@@ -35,20 +41,20 @@ export const boxes = {
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
         borderBottomWidth: 1,
         borderTopWidth: 1,
         borderBottomColor: '#888',
         borderTopColor: '#FFF',
-        height: 50,
-        alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.7)',
+        height: 70,
+        backgroundColor: '#EEE',
+        alignItems: 'stretch',
         padding: 10
     },
     scroll: {
         marginBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 3,
+        paddingRight: 3,
         paddingTop: 10,
         backgroundColor: constants.backgroundDark
     },

@@ -134,10 +134,10 @@ class InviteContacts extends Component {
             <View style={styles.frame}>
                 <View style={styles.singleButtonHeader}>
                     <TouchableHighlight
-                        style={styles.singleButtonHeaderHighlight}
+                        style={styles.headerButton}
                         onPress={this.inviteToTeam}
                     >
-                        <Text style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>
                             {'Invite to Team'}</Text>
                     </TouchableHighlight>
                 </View>

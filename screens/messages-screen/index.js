@@ -32,11 +32,10 @@ const myStyles = {
         borderStyle: 'solid'
     },
     read: {
-        backgroundColor: '#EFEFEF'
+        backgroundColor: 'rgba(255,255,255,0.7)'
     },
     unread: {
-        borderTopColor: 'green',
-        borderTopWidth: 3
+        backgroundColor: '#FFF'
     },
     newMsg: {
         fontWeight: 'bold'

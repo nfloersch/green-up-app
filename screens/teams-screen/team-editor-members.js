@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, ScrollView, TouchableHighlight, View, Platform} from 'react-native';
+import {StyleSheet, Image, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -33,7 +33,8 @@ const myStyles = {
     item: {
         borderBottomWidth: 1,
         borderBottomColor: '#888',
-        marginBottom: 10
+        marginBottom: 0,
+        backgroundColor: '#EEE'
     }
 };
 
@@ -102,19 +103,20 @@ class TeamEditorMembers extends Component {
         const teamId = this.props.selectedTeam.id;
         const members = this.props.teamMembers[teamId] || {};
         const memberButtons = Object.keys(members).map(membershipId => (
-            <View key={members[membershipId].uid || members[membershipId].email} style={styles.item}>
-                <TouchableHighlight onPress={this._toMemberDetails(teamId, membershipId)}>
-                    <View style={styles.member}>
-                        {getMemberIcon(members[membershipId].memberStatus, {}, true)}
-                        <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
-                    </View>
-                </TouchableHighlight>
-                <Text
-                    style={styles.memberName}>
-                    {(`${members[membershipId].displayName} ${this.getStatusText(members[membershipId].memberStatus)}`).trim()}
-                </Text>
-            </View>
-
+            <TouchableOpacity
+                key={members[membershipId].uid || members[membershipId].email}
+                onPress={this._toMemberDetails(teamId, membershipId)}
+                style={styles.row}
+            >
+                <View style={styles.member}>
+                    <Image
+                        style={{width: 50, height: 50, marginRight: 10}}
+                        source={{uri: members[membershipId].photoURL}}
+                    />
+                    <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
+                    {getMemberIcon(members[membershipId].memberStatus, {}, true)}
+                </View>
+            </TouchableOpacity>
         ));
 
         return (
@@ -122,22 +124,22 @@ class TeamEditorMembers extends Component {
                 <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <TouchableHighlight
-                                style={styles.button}
+                            <TouchableOpacity
+                                style={styles.headerButton}
                                 onPress={this.inviteForm}>
-                                <Text style={styles.headerButton}>
+                                <Text style={styles.headerButtonText}>
                                     {'Invite A Friend'}
                                 </Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <TouchableHighlight
-                                style={styles.button}
+                            <TouchableOpacity
+                                style={styles.headerButton}
                                 onPress={this.inviteContacts}>
-                                <Text style={styles.headerButton}>
+                                <Text style={styles.headerButtonText}>
                                     {'From Contacts'}
                                 </Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

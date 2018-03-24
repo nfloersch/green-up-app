@@ -177,18 +177,18 @@ class TeamDetails extends Component {
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
-                                        style={styles.button}
+                                        style={styles.headerButton}
                                         onPress={this._acceptInvitation(selectedTeam.id, currentUser)}>
-                                        <Text style={styles.headerButton}>
+                                        <Text style={styles.headerButtonText}>
                                             {'Accept Invitation'}
                                         </Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
-                                        style={styles.button}
+                                        style={styles.headerButton}
                                         onPress={this._declineInvitation(selectedTeam.id, currentUser.email)}>
-                                        <Text style={styles.headerButton}>
+                                        <Text style={styles.headerButtonText}>
                                             {'Decline Invitation'}
                                         </Text>
                                     </TouchableHighlight>

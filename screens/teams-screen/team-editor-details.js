@@ -198,10 +198,10 @@ class TeamEditorDetails extends Component {
 
                 <View style={styles.singleButtonHeader}>
                     <TouchableHighlight
-                        style={styles.singleButtonHeaderHighlight}
+                        style={styles.headerButton}
                         onPress={this.saveTeam}
                     >
-                        <Text style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>
                             {'Save'}
                         </Text>
                     </TouchableHighlight>

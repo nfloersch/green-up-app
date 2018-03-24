@@ -4,8 +4,8 @@ export const buttons = {
     button: {
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#fa774e',
-        backgroundColor: '#fa774e',
+        borderColor: constants.buttonColor,
+        backgroundColor: constants.buttonColor,
         padding: 10,
         marginTop: 10,
         marginBottom: 10,

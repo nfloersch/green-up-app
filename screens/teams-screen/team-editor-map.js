@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Button,
+    TouchableOpacity,
     Platform,
     Text,
     View,
@@ -174,11 +174,9 @@ class TeamEditorMap extends Component {
                                 title={a.title}
                             />))}
                     </MapView>
-                    <View style={styles.button}>
-                        <Button title={'remove marker'}
-                            onPress={this._removeLastMarker}
-                        />
-                    </View>
+                    <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
+                        <Text style={styles.buttonText}>{'remove marker'}</Text>
+                    </TouchableOpacity>
                 </View>);
     }
 }

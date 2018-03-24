@@ -15,7 +15,7 @@ const newLineRegex = /\r?\n|\r/g;
 const myStyles = {
     location: {padding: 5, width: '100%'},
     town: {marginBottom: 20, borderWidth: 1, borderColor: '#EEE', padding: 5},
-    townName: {fontSize: 16, color: '#AAA', width: '100%'}
+    townName: {fontSize: 16, color: '#888', width: '100%'}
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -54,27 +54,29 @@ class TrashBagFinder extends Component {
         const towns = this.props.towns;
         const keys = this.state.searchResults.length === 0 ? Object.keys(towns) : this.state.searchResults;
         const locations = keys.map(key => (
-            <View key={key} style={styles.town}>
+            <View key={key} style={styles.infoBlock}>
                 <Text style={styles.townName}>{towns[key].Name}</Text>
                 {
                     ((towns[key].PickupLocations || []).length === 0)
                         ? (
                             <View style={styles.location}>
-                                <Text>{'No trash bag pickup locations in this town'}</Text>
+                                <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
+                                    {'No trash bag pickup locations in this town'}
+                                </Text>
                             </View>
                         )
                         : towns[key].PickupLocations.map((loc, i) => (
                             <View key={i} style={styles.location}>
                                 {Boolean(loc.PickupLocationName) ? (
-                                    <Text style={{marginBottom: 5, fontSize: 14}}>
+                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
                                         {loc.PickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                                 {Boolean(loc.PickupLocationAddress) ? (
-                                    <Text style={{marginBottom: 5, fontSize: 14}}>
+                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
                                         {loc.PickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                                 {Boolean(loc.PickupNotes) ? (
-                                    <Text style={{marginBottom: 0, fontSize: 14}}>
+                                    <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
                                         {loc.PickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                             </View>

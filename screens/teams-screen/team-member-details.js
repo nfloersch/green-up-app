@@ -154,14 +154,14 @@ class TeamMemberDetails extends Component {
                                     <TouchableHighlight
                                         style={styles.button}
                                         onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}>
-                                        <Text style={styles.headerButton}>{'Ignore'}</Text>
+                                        <Text style={styles.headerButtonText}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.button}
                                         onPress={() => this._updateTeamMember(teamId, member, this.props.currentUserId)(status.ACCEPTED)}>
-                                        <Text style={styles.headerButton}>{'Add to Team'}</Text>
+                                        <Text style={styles.headerButtonText}>{'Add to Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -171,10 +171,10 @@ class TeamMemberDetails extends Component {
                     return (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}
                             >
-                                <Text style={styles.headerButton}>{'Remove from Team'}</Text>
+                                <Text style={styles.headerButtonText}>{'Remove from Team'}</Text>
                             </TouchableHighlight>
                         </View>
                     );
@@ -182,10 +182,10 @@ class TeamMemberDetails extends Component {
                     return (
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
-                                style={styles.singleButtonHeaderHighlight}
+                                style={styles.headerButton}
                                 onPress={this._revokeInvitation(teamId, membershipId)}
                             >
-                                <Text style={styles.headerButton}>{'Revoke Invitation'}</Text>
+                                <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
                             </TouchableHighlight>
                         </View>
                     );
