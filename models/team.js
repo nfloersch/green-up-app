@@ -51,9 +51,6 @@ export default class Team {
         this.active = typeof args.active === 'boolean'
             ? args.active
             : true;
-        this.members = Array.isArray(args.members)
-            ? args.members.map((member) => TeamMember.create(member))
-            : [];
         this.locations = Array.isArray(args.locations)
             ? args.locations.map((location) => Location.create(location))
             : [];
