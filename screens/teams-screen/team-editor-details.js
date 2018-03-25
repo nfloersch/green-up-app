@@ -27,7 +27,7 @@ import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
-import Colors from '../../constants/Colors';
+import * as colors from '../../styles/constants';
 
 const myStyles = {
     danger: {
@@ -65,7 +65,7 @@ class TeamEditorDetails extends Component {
         tabBarIcon: ({focused}) => (<Ionicons
             name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
             size={24}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            color={focused ? colors.tabIconSelected : colors.tabIconDefault}
         />)
     };
 

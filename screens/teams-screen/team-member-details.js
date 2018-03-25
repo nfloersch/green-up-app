@@ -245,23 +245,25 @@ class TeamMemberDetails extends Component {
         }
 
         return (
-            <View style={[styles.frame, {paddingLeft: 10, paddingRight: 10}]}>
+            <View style={styles.frame}>
                 {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}
                 <ScrollView style={styles.scroll}>
-                    <View style={styles.profileHeader}>
-                        <Image
-                            style={{width: 50, height: 50}}
-                            source={{uri: avatar}}
-                        />
-                        <Text style={[styles.profileName, styles.heading]}>
-                            {`${member.displayName || member.email || ''}`}
-                        </Text>
-                    </View>
-                    <View>
-                        {getStatus.bind(this)(member, isOwner)}
-                    </View>
-                    <View>
-                        <Text>{member.bio || ''}</Text>
+                    <View style={styles.infoBlockContainer}>
+                        <View style={styles.profileHeader}>
+                            <Image
+                                style={{width: 50, height: 50}}
+                                source={{uri: avatar}}
+                            />
+                            <Text style={[styles.profileName, styles.heading]}>
+                                {`${member.displayName || member.email || ''}`}
+                            </Text>
+                        </View>
+                        <View>
+                            {getStatus.bind(this)(member, isOwner)}
+                        </View>
+                        <View>
+                            <Text>{member.bio || ''}</Text>
+                        </View>
                     </View>
                 </ScrollView>
             </View>

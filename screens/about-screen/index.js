@@ -11,6 +11,8 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import {User} from '../../models/user';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const aboutGreenUp = 'Green Up Vermont is a nonprofit organization with 501(c) (3) status.\n\nGreen Up' +
     '’s mission is to promote the stewardship of our state’s natural landscape and wa' +
@@ -144,7 +146,7 @@ class About extends Component {
 }
 
 const mapStateToProps = state => {
-    const currentUser = state.login.user;
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const profile = state.profile.profile;
     return {profile, currentUser};
 };

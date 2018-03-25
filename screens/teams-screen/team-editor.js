@@ -3,8 +3,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
-
-import Colors from '../../constants/Colors';
+import * as colors from '../../styles/constants';
 import TeamEditorDetails from './team-editor-details';
 import TeamEditorMap from './team-editor-map';
 import TeamEditorMembers from './team-editor-members';
@@ -33,7 +32,7 @@ export default class TeamEditor extends Component {
         }
         return 'NewTeam';
 
-    }
+    };
 
     render() {
         const {status} = this.props.navigation.state.params || '';
@@ -55,13 +54,13 @@ export default class TeamEditor extends Component {
             animationEnabled: true,
             swipeEnabled: false,
             tabBarOptions: {
-                activeTintColor: Colors.tabIconSelected,
-                inactiveTintColor: Colors.tabIconDefault,
+                activeTintColor: colors.buttonColor,
+                inactiveTintColor: colors.tabIconDefault,
                 labelStyle: {
                     fontSize: 10
                 },
                 style: {
-                    backgroundColor: Colors.tabBarBackground
+                    backgroundColor: colors.tabBarBackground
                 }
             },
             initialRouteName: this.setDefault(status)

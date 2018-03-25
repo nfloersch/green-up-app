@@ -22,6 +22,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {User} from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {
     aboutMeInput: {
@@ -153,9 +154,8 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-    const user = state.login.user;
     const profile = state.profile;
-    const currentUser = User.create(Object.assign({}, user, profile));
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teamMembers = state.teams.teamMembers;
     return {profile, currentUser, teamMembers};
 }

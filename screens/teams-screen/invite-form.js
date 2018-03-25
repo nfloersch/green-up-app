@@ -23,6 +23,8 @@ import {email, isInTeam} from '../../libs/validators';
 import * as actions from './actions';
 import {TeamMember} from '../../models/team-member';
 import {defaultStyles} from '../../styles/default-styles';
+import {User} from '../../models/user';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};
 
@@ -136,7 +138,7 @@ class InviteForm extends Component {
 
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
-    const currentUser = state.login.user;
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teamMembers = state.teams.teamMembers;
     return {teamMembers, currentUser, selectedTeam};
 };

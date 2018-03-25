@@ -25,6 +25,7 @@ import {User} from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamStatus from '../../constants/team-member-statuses';
 import teamwork from '../../assets/images/teamwork.jpeg';
+import {removeNulls} from '../../libs/remove-nulls';
 
 
 const myStyles = {
@@ -175,26 +176,26 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                                <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
-                                    <View style={{
-                                        marginTop: '20%',
-                                        paddingLeft: 20,
-                                        paddingRight: 20,
-                                        paddingTop: 50,
-                                        paddingBottom: 50,
-                                        backgroundColor: 'rgba(255,255,255, 0.85)'
-                                    }}>
-                                        <Text style={[styles.textDark]}>
-                                            {'Green Up Day is all about community and teamwork.'}
-                                        </Text>
-                                        <Text style={[styles.textDark]}>
-                                            {'Search for teams in your area, or create a new one and invite some friends.'}
-                                        </Text>
-                                    </View>
+                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                            <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
+                                <View style={{
+                                    marginTop: '20%',
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    paddingTop: 50,
+                                    paddingBottom: 50,
+                                    backgroundColor: 'rgba(255,255,255, 0.85)'
+                                }}>
+                                    <Text style={[styles.textDark]}>
+                                        {'Green Up Day is all about community and teamwork.'}
+                                    </Text>
+                                    <Text style={[styles.textDark]}>
+                                        {'Search for teams in your area, or create a new one and invite some friends.'}
+                                    </Text>
                                 </View>
-                            </ImageBackground>
-                        )
+                            </View>
+                        </ImageBackground>
+                    )
                         : (
                             <FlatList
                                 data={myTeams}
@@ -218,10 +219,8 @@ class MyTeams extends Component {
 }
 
 function mapStateToProps(state) {
-    const user = state.login.user;
-    const profile = state.profile;
     const invitations = state.teams.invitations;
-    const currentUser = User.create(Object.assign({}, user, profile));
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers || {};
     return {teams, currentUser, teamMembers, invitations};

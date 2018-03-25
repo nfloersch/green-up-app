@@ -10,6 +10,7 @@ import {
     Platform,
     Text,
     View,
+    ScrollView,
     StyleSheet
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
@@ -17,8 +18,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {MapView} from 'expo';
 import {Constants, Location, Permissions} from 'expo';
-
-import Colors from '../../constants/Colors';
+import * as colors from '../../styles/constants';
 import {defaultStyles} from '../../styles/default-styles';
 import * as actions from './actions';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
@@ -44,7 +44,7 @@ class TeamEditorMap extends Component {
         tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin'}
                 size={24}
-                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+                color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />)
     };
 
@@ -151,35 +151,39 @@ class TeamEditorMap extends Component {
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.container}>
-                    <Text>
-                    Place markers in the area you want your team to work on.
-                    Tap on the marker text box to remove a marker.
-                    Green flags represent areas that other teams are cleaning up.
-                    </Text>
-                    <MapView style={{alignSelf: 'stretch', height: '50%'}}
-                        initialRegion={this.state.initialMapLocation}
-                        onPress={this._handleMapClick}>
-                        {this.props.locations.length > 0 && locations.map((marker, index) => (
-                            <MapView.Marker coordinate={marker.coordinates}
-                                key={`location${index}`}
-                                onCalloutPress={this._removeMarker(marker)}>
-                                <MultiLineMapCallout title={marker.title || 'clean area'} description={marker.description || 'tap to remove'} />
-                            </MapView.Marker>
-                        ))}
-
-                        {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
-                            (<MapView.Marker
-                                key={i}
-                                coordinate={a.coordinates}
-                                image={otherTeamsLocationImage}
-                                title={a.title}>
-                                <MultiLineMapCallout title={a.title} description={a.description} />
-                            </MapView.Marker>
-                            ))}
-                    </MapView>
-                    <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
-                        <Text style={styles.buttonText}>{'remove marker'}</Text>
-                    </TouchableOpacity>
+                    <ScrollView style={styles.scroll}>
+                        <View style={styles.infoBlockContainer}>
+                            <Text style={styles.statusBar}>
+                            Place markers in the area you want your team to work on.
+                            Tap on the marker text box to remove a marker.
+                            Green flags represent areas that other teams are cleaning up.
+                            </Text>
+                            <MapView style={{alignSelf: 'stretch', height: '50%'}}
+                                initialRegion={this.state.initialMapLocation}
+                                onPress={this._handleMapClick}>
+                                {this.props.locations.length > 0 && locations.map((marker, index) => (
+                                    <MapView.Marker coordinate={marker.coordinates}
+                                        key={`location${index}`}
+                                        onCalloutPress={this._removeMarker(marker)}>
+                                        <MultiLineMapCallout title={marker.title || 'clean area'}
+                                            description={marker.description || 'tap to remove'}/>
+                                    </MapView.Marker>
+                                ))}
+                                {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
+                                    (<MapView.Marker
+                                        key={i}
+                                        coordinate={a.coordinates}
+                                        image={otherTeamsLocationImage}
+                                        title={a.title}>
+                                        <MultiLineMapCallout title={a.title} description={a.description}/>
+                                    </MapView.Marker>
+                                    ))}
+                            </MapView>
+                            <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
+                                <Text style={styles.buttonText}>{'remove marker'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </View>);
     }
 }

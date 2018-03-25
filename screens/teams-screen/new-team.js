@@ -31,6 +31,8 @@ import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
 import Colors from '../../constants/Colors';
+import {User} from '../../models/user';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {
     selected: {
@@ -348,8 +350,8 @@ class NewTeam extends Component {
 
 const mapStateToProps = (state) => {
     const profile = state.profile;
-    const user = state.login.user;
-    const owner = TeamMember.create({...user, ...profile, memberStatus: statuses.OWNER});
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
+    const owner = TeamMember.create({...currentUser, ...profile, memberStatus: statuses.OWNER});
     const locations = state.teams.locations;
     return {locations, owner};
 };

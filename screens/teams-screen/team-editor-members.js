@@ -5,12 +5,12 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Image, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, FlatList, Image, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
-import Colors from '../../constants/Colors';
+import * as colors from '../../styles/constants';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 
@@ -41,6 +41,39 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
+class MemberItem extends Component {
+    static propTypes = {
+        item: PropTypes.object
+    };
+
+
+    render() {
+        const item = this.props.item;
+        return (
+            <TouchableOpacity
+                key={item.key}
+                onPress={item.toDetail}
+                style={styles.row}
+            >
+                <View style={[styles.member, {flex: 1, flexDirection: 'row', justifyContent: 'space-between'}]}>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
+                        <Image
+                            style={{width: 50, height: 50, marginRight: 10}}
+                            source={{uri: item.photoURL}}
+                        />
+                        <Text style={[styles.memberEmail, {
+                            flex: 1,
+                            paddingTop: 12,
+                            alignItems: 'stretch'
+                        }]}>{item.email}</Text>
+                    </View>
+                    {getMemberIcon(item.memberStatus, {paddingTop: 10,height: 50, width: 50}, true)}
+                </View>
+            </TouchableOpacity>
+        );
+    }
+}
+
 
 class TeamEditorMembers extends Component {
     static propTypes = {
@@ -59,7 +92,7 @@ class TeamEditorMembers extends Component {
             <Ionicons
                 name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
                 size={24}
-                color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+                color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />)
     };
 
@@ -75,22 +108,22 @@ class TeamEditorMembers extends Component {
         this.props.screenProps.stacknav.navigate('InviteForm');
     };
 
-    getStatusText = status => {
-        switch (status) {
-            case 'ACCEPTED':
-                return 'is on this team';
-            case 'OWNER':
-                return 'owns this team';
-            case 'INVITED':
-                return 'has been invited';
-            case 'NOT_INVITED':
-                return 'has not been invited';
-            case 'REQUEST_TO_JOIN':
-                return 'is asking to join this team';
-            default:
-                return '';
-        }
-    };
+    // getStatusText = status => {
+    //     switch (status) {
+    //         case 'ACCEPTED':
+    //             return 'is on this team';
+    //         case 'OWNER':
+    //             return 'owns this team';
+    //         case 'INVITED':
+    //             return 'has been invited';
+    //         case 'NOT_INVITED':
+    //             return 'has not been invited';
+    //         case 'REQUEST_TO_JOIN':
+    //             return 'is asking to join this team';
+    //         default:
+    //             return '';
+    //     }
+    // };
 
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
@@ -102,22 +135,12 @@ class TeamEditorMembers extends Component {
     render() {
         const teamId = this.props.selectedTeam.id;
         const members = this.props.teamMembers[teamId] || {};
-        const memberButtons = Object.keys(members).map(membershipId => (
-            <TouchableOpacity
-                key={members[membershipId].uid || members[membershipId].email}
-                onPress={this._toMemberDetails(teamId, membershipId)}
-                style={styles.row}
-            >
-                <View style={styles.member}>
-                    <Image
-                        style={{width: 50, height: 50, marginRight: 10}}
-                        source={{uri: members[membershipId].photoURL}}
-                    />
-                    <Text style={styles.memberEmail}>{members[membershipId].email}</Text>
-                    {getMemberIcon(members[membershipId].memberStatus, {}, true)}
-                </View>
-            </TouchableOpacity>
-        ));
+        const memberButtons = Object.keys(members)
+            .map(membershipId => ({
+                key: members[membershipId].uid || members[membershipId].email,
+                ...members[membershipId],
+                toDetail: this._toMemberDetails(teamId, membershipId)
+            }));
 
         return (
             <View style={styles.frame}>
@@ -144,7 +167,9 @@ class TeamEditorMembers extends Component {
                     </View>
                 </View>
                 <ScrollView style={styles.scroll}>
-                    {memberButtons}
+                    <View style={styles.infoBlockContainer}>
+                        <FlatList data={memberButtons} renderItem={({item}) => (<MemberItem item={item}/>)}/>
+                    </View>
                 </ScrollView>
             </View>
         );

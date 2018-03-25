@@ -17,6 +17,8 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import {User} from '../../models/user';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {container: {marginTop: '50%', padding: 20}};
 
@@ -71,9 +73,8 @@ class GetEmail extends Component {
 }
 
 function mapStateToProps(state) {
-    const user = state.login.user;
-
-    return {user};
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
+    return {currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

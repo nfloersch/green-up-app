@@ -23,6 +23,7 @@ import {Message} from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
 import * as teamStatus from '../../constants/team-member-statuses';
+import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};
 
@@ -123,42 +124,44 @@ class NewMessage extends Component {
                     style={defaultStyles.frame}
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
-                    <View style={{flex: 1, padding: 10}}>
+                    <ScrollView style={styles.scroll}>
+                        <View style={styles.infoBlockContainer}>
+                            {
+                                !selectedTeamId ? (
+                                    <View style={{marginBottom: 5}}>
+                                        <Text style={styles.label}>Select Team to Message:</Text>
+                                        <Picker
+                                            style={styles.picker}
+                                            itemStyle={{height: 45}}
+                                            selectedValue={teamValue}
+                                            onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
+                                            {items}
+                                        </Picker>
+                                    </View>
+                                ) : (
+                                    <View style={{marginBottom: 5}}>
+                                        <Text style={styles.labelDark}>{'Send a Message To'}</Text>
+                                        <Text style={styles.largeText}>{teamName}</Text>
+                                    </View>
+                                )
+                            }
+                            <TextInput
+                                keyBoardType={'default'}
+                                multiline={true}
+                                textAlignVertical='top'
+                                onChangeText={this.changeText}
+                                placeholder={'Message details'}
+                                value={this.state.text}
+                                style={styles.textArea}
+                                underlineColorAndroid={'transparent'}
+                            />
+                        </View>
                         {
-                            !selectedTeamId ? (
-                                <View style={{marginBottom: 5}}>
-                                    <Text style={styles.label}>Select Team to Message:</Text>
-                                    <Picker
-                                        style={styles.picker}
-                                        itemStyle={{height: 45}}
-                                        selectedValue={teamValue}
-                                        onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
-                                        {items}
-                                    </Picker>
-                                </View>
-                            ) : (
-                                <View style={{marginBottom: 5}}>
-                                    <Text style={styles.label}>Send a Message To</Text>
-                                    <Text style={styles.largeText}>{teamName}</Text>
-                                </View>
-                            )
+                            Platform.OS === 'ios'
+                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                                : null
                         }
-                        <TextInput
-                            keyBoardType={'default'}
-                            multiline={true}
-                            textAlignVertical='top'
-                            onChangeText={this.changeText}
-                            placeholder={'Message details'}
-                            value={this.state.text}
-                            style={styles.textArea}
-                            underlineColorAndroid={'transparent'}
-                        />
-                    </View>
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                            : null
-                    }
+                    </ScrollView>
                 </KeyboardAvoidingView>
             </View>
         );
@@ -166,7 +169,7 @@ class NewMessage extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = User.create({...state.login.user, ...state.profile});
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const myTeams = Object.keys((state.profile || {}).teams)
         .map(key => state.teams.teams[key]) // match id's to their teams
         .filter(team => Boolean(team)); // remove deleted teams, just in case
