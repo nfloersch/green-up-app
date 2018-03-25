@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
 import {
+    FlatList,
     ImageBackground,
     StyleSheet,
     Text,
@@ -44,15 +45,39 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 
-// class TeamItem extends Component {
-//     static PropTypes = {
-//         navigate: PropTypes.func,
-//         team: PropTypes.object
-//     };
-//
-//     render() {
-//         return null;
-// }
+class TeamItem extends Component {
+    static propTypes = {
+        item: PropTypes.object
+    };
+
+    render() {
+        const item = this.props.item || {};
+        return (
+            <View key={item.key} style={styles.row}>
+                <TouchableHighlight
+                    style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}}
+                    onPress={item.goToTeam}>
+                    <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20}]}>{item.name}</Text>
+                </TouchableHighlight>
+                {
+                    item.canSendMessage
+                        ? (
+                            <TouchableOpacity style={styles.messageIcon} onPress={item.goToMessage}>
+                                <Ionicons
+                                    name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                    size={30}
+                                />
+                            </TouchableOpacity>
+                        )
+                        : null
+                }
+                <TouchableOpacity style={styles.teamIcon} onPress={item.goToTeam}>
+                    {item.toTeamIcon}
+                </TouchableOpacity>
+            </View>
+        );
+    }
+}
 
 
 class MyTeams extends Component {
@@ -116,30 +141,16 @@ class MyTeams extends Component {
         const canSendMessage = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
         const teamKeys = Object.keys((user.teams || {})).concat(Object.keys(this.props.invitations || {}));
         const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
-            .map(key => (
-                <View key={key} style={styles.row}>
-                    <TouchableHighlight style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}} onPress={this.toTeamDetail(user.teams[key], teams[key])}>
-                        <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20}]}>{teams[key].name}</Text>
-                    </TouchableHighlight>
-                    {
-                        canSendMessage(key)
-                            ? (
-                                <TouchableOpacity style={styles.messageIcon} onPress={() => {
-                                    this.props.navigation.navigate('NewMessage', {selectedTeamId: key});
-                                }}>
-                                    <Ionicons
-                                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                        size={30}
-                                    />
-                                </TouchableOpacity>
-                            )
-                            : null
-                    }
-                    <TouchableOpacity style={styles.teamIcon}>
-                        {this.toTeamIcon(key)}
-                    </TouchableOpacity>
-                </View>
-            ));
+            .map(key => ({
+                key,
+                toTeamIcon: this.toTeamIcon(key),
+                ...(teams[key] || {}),
+                goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
+                canSendMessage: canSendMessage(key),
+                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key})
+            }));
+
+
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>
@@ -184,7 +195,8 @@ class MyTeams extends Component {
                             </View>
                         </ImageBackground>
                     )
-                        : myTeams
+                        : (<FlatList data={myTeams} renderItem={({item}) => (<TeamItem item={item}/>)}
+                        />)
                     }
                 </View>
                 <Modal

@@ -243,16 +243,32 @@ class Messages extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        currentUser: state.login.user,
-        invitations: state.teams.invitations || {},
-        invitationsLoaded: state.messages.invitationsLoaded,
-        messages: state.messages.messages || {},
-        messagesLoaded: state.messages.loaded,
-        userHasTeams: Object.values(state.teams.teamMembers || {}).length > 0,
-        teamsLoaded: state.messages.teamsLoaded,
-        teams: state.teams.teams
-    };
+  let members = state.teams.teamMembers || {};
+  let canMessage = false;
+  const memKeys = Object.keys(members);
+
+  if (memKeys.length > 0){
+    memKeys.forEach( mem => {
+      if (members[mem]) {
+        const status = members[mem][Object.keys(members[mem])[0]].memberStatus;
+
+        if (status === 'OWNER' || status === 'ACCEPTED') {
+          canMessage = true;
+        }
+      }
+    });
+  }
+
+  return {
+      currentUser: state.login.user,
+      invitations: state.teams.invitations || {},
+      invitationsLoaded: state.messages.invitationsLoaded,
+      messages: state.messages.messages || {},
+      messagesLoaded: state.messages.loaded,
+      userHasTeams: canMessage,
+      teamsLoaded: state.messages.teamsLoaded,
+      teams: state.teams.teams
+  };
 }
 
 const mapDispatchToProps = (dispatch) => ({
