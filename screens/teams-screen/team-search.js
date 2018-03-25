@@ -19,6 +19,7 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import * as teamMemberStatuses from '../../constants/team-member-statuses';
 
 /**
  *
@@ -116,10 +117,21 @@ class TeamSearch extends Component {
     }
 
     onSearchTermChange(searchTerm: string = '') {
-        const teams = this.props.teams;
-        const _searchResults = Object.keys(this.props.teams)
+        const { teams, teamMembers, currentUser } = this.props;
+        const mkey = currentUser.email.toLowerCase().replace(/\./g, ':');
+        const teamsImOn = [];
+
+        // get all the teams the user is on
+        Object.keys(teamMembers).forEach( key => {
+          if((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
+             (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)) {
+            teamsImOn.push(key)
+          }
+        });
+
+        const _searchResults = Object.keys(teams)
             .filter(key => teams[key].isPublic === true ||
-                teams[key].members.find(m => m.uid === this.props.currentUser.uid))
+                					 teamsImOn.indexOf(key) > -1)
             .map(key => ({
                 key,
                 score: searchScore(searchTerm, [teams[key].name,
@@ -177,6 +189,7 @@ class TeamSearch extends Component {
 
 const mapStateToProps = (state) => ({
     teams: state.teams.teams || {},
+    teamMembers: state.teams.teamMembers || {},
     currentUser: state.login.user
 });
 
