@@ -10,7 +10,6 @@ import {
     Platform,
     Text,
     View,
-    ScrollView,
     StyleSheet
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
@@ -150,15 +149,15 @@ class TeamEditorMap extends Component {
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
-                <View style={defaultStyles.container}>
-                    <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlockContainer}>
-                            <Text style={styles.statusBar}>
-                            Place markers in the area you want your team to work on.
-                            Tap on the marker text box to remove a marker.
-                            Green flags represent areas that other teams are cleaning up.
-                            </Text>
-                            <MapView style={{alignSelf: 'stretch', height: '50%'}}
+                <View style={defaultStyles.frame}>
+                    <View style={[styles.infoBlockContainer, {height: '98%'}]}>
+                        <Text style={[styles.statusBar, {maxHeight: 80}]}>
+                        Place markers in the area you want your team to work on.
+                        Tap on the marker text box to remove a marker.
+                        Green flags represent areas that other teams are cleaning up.
+                        </Text>
+                        <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
+                            <MapView style={{flex: 1}}
                                 initialRegion={this.state.initialMapLocation}
                                 onPress={this._handleMapClick}>
                                 {this.props.locations.length > 0 && locations.map((marker, index) => (
@@ -179,12 +178,14 @@ class TeamEditorMap extends Component {
                                     </MapView.Marker>
                                     ))}
                             </MapView>
-                            <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
-                                <Text style={styles.buttonText}>{'remove marker'}</Text>
-                            </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                </View>);
+
+                        <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
+                            <Text style={styles.buttonText}>{'remove marker'}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
     }
 }
 

@@ -239,7 +239,7 @@ class TrashMap extends Component {
                         </View>
                     )}
                     <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlock}>
+                        <View style={styles.infoBlockContainer}>
                             <TownInformation townInfo={townInfo} town={town}/>
                             <MapView
                                 initialRegion={initialMapLocation}

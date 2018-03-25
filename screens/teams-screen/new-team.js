@@ -22,7 +22,6 @@ import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
-import {Ionicons} from '@expo/vector-icons';
 
 import * as actions from './actions';
 import {vermontTowns} from '../../libs/vermont-towns';
@@ -30,7 +29,6 @@ import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
-import Colors from '../../constants/Colors';
 import {User} from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
 
@@ -57,17 +55,6 @@ class NewTeam extends Component {
         closeModal: PropTypes.any, // TODO : this should be of type 'fun' but we get a prop warning.  Fix this hack. (JN)
         owner: PropTypes.object,
         locations: PropTypes.array
-    };
-
-    static navigationOptions = {
-        title: 'Team Details',
-        tabBarLabel: 'Details',
-        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({focused}) => (<Ionicons
-            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information'}
-            size={24}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-        />)
     };
 
     constructor(props) {
@@ -322,14 +309,14 @@ class NewTeam extends Component {
                             </View>
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={styles.labelDark}>Notes</Text>
+                            <Text style={styles.labelDark}>Team Description</Text>
                             <TextInput
                                 keyBoardType={'default'}
                                 multiline={true}
                                 numberOfLines={20}
                                 textAlignVertical='top'
                                 onChangeText={this.setTeamValue('notes')}
-                                placeholder={'Notes'}
+                                placeholder={'Tell us about your team'}
                                 style={styles.textArea}
                                 value={this.state.notes}
                                 underlineColorAndroid={'transparent'}
