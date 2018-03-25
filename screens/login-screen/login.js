@@ -34,11 +34,13 @@ const myStyles = {
         height: 40,
         padding: 10,
         marginTop: 5,
+        marginBottom: 5,
         shadowColor: '#000',
         shadowOffset: {width: 2, height: 2},
         shadowOpacity: 0.5,
         shadowRadius: 2,
-        borderRadius: 2
+        borderRadius: 2,
+        elevation: 1
     },
     socialLogin: {
         flexWrap: 'wrap'

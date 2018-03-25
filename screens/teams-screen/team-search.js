@@ -29,8 +29,9 @@ import {defaultStyles} from '../../styles/default-styles';
 function searchScore(term: string, searchableString: [string]) {
     const terms = term.trim().split(' ');
     const testTerm = terms[0].toLowerCase();
-    const score = searchableString.reduce((_score, interrogee) => (_score + (typeof interrogee === 'string' && interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0))
-        , 0);
+    const score = searchableString.reduce((_score, interrogee) =>
+          (_score + (typeof interrogee === 'string' &&
+                     interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
     return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(' '), searchableString);
 
 }
@@ -39,9 +40,14 @@ const myStyles = {
     scrollview: {
         marginTop: 10
     },
-    city: {
-        fontWeight: 'bold',
-        textAlign: 'center'
+    details: {
+        fontWeight: 'bold'
+    },
+    teamInfo: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      backgroundColor: '#EFEFEF',
+      padding: 3
     }
 };
 
@@ -83,9 +89,11 @@ class TeamSearch extends Component {
             .filter(key => teams[key].isPublic === true ||
                 teams[key].members.find(m => m.uid === this.props.currentUser.uid))
             .map(key => ({
-                key,
-                score: searchScore(searchTerm, [teams[key].name, teams[key].description, teams[key].town])
-            }))
+                  key,
+                  score: searchScore(searchTerm, [teams[key].name,
+                                                  teams[key].description,
+                                                  teams[key].town,
+                                                  teams[key].owner.displayName])}))
             .filter(score => (searchTerm.trim() === '' || score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
@@ -115,10 +123,22 @@ class TeamSearch extends Component {
                     <Text style={[styles.searchResultsTitle, styles.heading]}>
                         {teams[teamId].name}
                     </Text>
-                    <Text style={styles.city}>
+                <View style={styles.teamInfo}>
+                  <View style={{flex: 1}}>
+                    <Text>Owner: </Text>
+                    <Text style={styles.details}>
+                        {teams[teamId].owner.displayName}
+                    </Text>
+                  </View>
+
+                  <View style={{flex: 1}}>
+                    <Text>Town: </Text>
+                    <Text style={styles.details}>
                         {teams[teamId].town}
                     </Text>
+                  </View>
                 </View>
+              </View>
             </TouchableHighlight>
         ));
         return (
@@ -130,7 +150,7 @@ class TeamSearch extends Component {
                     <TextInput
                         keyBoardType={'default'}
                         onChangeText={this.onSearchTermChange}
-                        placeholder={'Search by Team Name or City/Town'}
+                        placeholder={'Team Name, Team Owner, or City/Town'}
                         style={styles.textInput}
                         value={this.state.searchTerm}
                         underlineColorAndroid={'transparent'}

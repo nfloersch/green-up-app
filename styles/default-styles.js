@@ -14,32 +14,6 @@ export const defaultStyles = {
         overflow: 'hidden',
         textAlign: 'center'
     },
-    alertSuccess: {
-        fontSize: alertFontSize,
-        color: '#155724',
-        backgroundColor: '#d4edda',
-        borderColor: '#c3e6cb',
-        padding: 3,
-        marginBottom: 5,
-        marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 5,
-        overflow: 'hidden',
-        textAlign: 'center'
-    },
-    alertDanger: {
-        fontSize: alertFontSize,
-        color: '#721c24',
-        backgroundColor: '#f8d7da',
-        borderColor: '#f5c6cb',
-        padding: 3,
-        marginBottom: 5,
-        marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 20,
-        overflow: 'hidden',
-        textAlign: 'center'
-    },
     button: {},
     buttonBar: {
         width: '100%',
@@ -79,19 +53,6 @@ export const defaultStyles = {
         height: '100%',
         width: '100%'
     },
-    goToButton: {
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: '#AAA',
-        height: 30,
-        margin: 5
-    },
-    goButtonText:{
-        fontSize: 18,
-        color: '#007AFF',
-        textAlign: 'center',
-        height: 30
-    },
     headerButton: {
         height: 60,
         fontSize: 18,
@@ -126,7 +87,8 @@ export const defaultStyles = {
         marginBottom: 10,
         borderWidth: 1,
         borderColor: '#000',
-        backgroundColor: 'darkseagreen'
+        backgroundColor: 'darkseagreen',
+        overflow: 'hidden'
     },
     profileName: {
         paddingLeft: 10,
