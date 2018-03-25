@@ -19,10 +19,37 @@ export const boxes = {
     },
     block: {paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%'},
     infoBlock: {
-        marginBottom: 8, backgroundColor: '#EEE', padding: 10, borderWidth: 1, borderColor: '#FFF', shadowColor: '#000',
+        paddingBottom: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCC',
+        backgroundColor: '#EEE',
+        padding: 10,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 0,
+        marginBottom: 1
+
+    },
+    infoBlockContainer: {
+        margin: 5,
+        shadowColor: '#000',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.6,
-        shadowRadius: 2
+        shadowRadius: 2,
+        padding: 10,
+        backgroundColor: '#EEE'
+    },
+    infoBlockHeader: {
+        color: '#444',
+        fontWeight: 'bold',
+        fontSize: 22,
+        textAlign: 'center',
+        padding: 10,
+        marginBottom: 0,
+        paddingBottom: 5,
+        marginTop: 10,
+        backgroundColor: '#EEE'
     },
     padForIOSKeyboard: {height: 80},
     padForIOSKeyboardBig: {height: 150},
@@ -43,13 +70,16 @@ export const boxes = {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         borderBottomWidth: 1,
-        borderTopWidth: 1,
-        borderBottomColor: '#888',
-        borderTopColor: '#FFF',
+        borderBottomColor: '#CCC',
         height: 70,
         backgroundColor: '#EEE',
         alignItems: 'stretch',
-        padding: 10
+        padding: 10,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 0,
+        marginBottom: 1
     },
     scroll: {
         marginBottom: 10,

@@ -1,3 +1,5 @@
+import {defaultStyles} from './default-styles';
+
 const alertFontSize = 12;
 
 export const text = {
@@ -46,6 +48,7 @@ export const text = {
         marginTop: 2,
         marginLeft: 5
     },
+
     label: {
         color: '#DDD',
         fontSize: 16

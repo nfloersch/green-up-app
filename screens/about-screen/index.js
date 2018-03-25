@@ -57,7 +57,7 @@ const frequentlyAskedQuestions = [
     }
 ];
 
-const myStyles = {aboutHeading: {...defaultStyles.teamTitle, marginBottom: 0, paddingBottom: 5, marginTop: 10}};
+const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -111,14 +111,14 @@ class About extends Component {
         return (
             <View style={styles.frame}>
                 <ScrollView style={styles.scroll}>
-                    <View>
-                        <Text style={styles.aboutHeading}>About Green Up</Text>
+                    <View style={styles.infoBlockContainer}>
+                        <Text style={styles.infoBlockHeader}>About Green Up</Text>
                         <View style={styles.infoBlock}>
                             <Text style={[styles.textDark, {fontSize: 12}]}>{aboutGreenUp}</Text>
                         </View>
                     </View>
-                    <View>
-                        <Text style={styles.aboutHeading}>FAQ</Text>
+                    <View style={styles.infoBlockContainer}>
+                        <Text style={styles.infoBlockHeader}>FAQ</Text>
                         <View>{
                             frequentlyAskedQuestions.map(
                                 (faq, i) => (
@@ -130,8 +130,8 @@ class About extends Component {
                         }
                         </View>
                     </View>
-                    <View>
-                        <Text style={styles.aboutHeading}>Contact Us</Text>
+                    <View style={styles.infoBlockContainer}>
+                        <Text style={styles.infoBlockHeader}>Contact Us</Text>
                         <View style={styles.infoBlock}>
                             <Text style={[styles.textDark, {fontSize: 12}]}>{contactUs}</Text>
                         </View>
@@ -149,10 +149,6 @@ const mapStateToProps = state => {
     return {profile, currentUser};
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-};
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators(actions, dispatch)});
 
 export default connect(mapStateToProps, mapDispatchToProps)(About);

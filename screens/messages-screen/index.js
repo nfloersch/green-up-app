@@ -13,7 +13,7 @@ import {
     ImageBackground,
     TouchableOpacity,
     View,
-    ScrollView
+    FlatList
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -32,10 +32,10 @@ const myStyles = {
         borderStyle: 'solid'
     },
     read: {
-        backgroundColor: 'rgba(255,255,255,0.7)'
+        backgroundColor: '#DDD'
     },
     unread: {
-        backgroundColor: '#FFF'
+        backgroundColor: '#EDEDED'
     },
     newMsg: {
         fontWeight: 'bold'
@@ -45,9 +45,52 @@ const myStyles = {
         alignItems: 'center'
     }
 };
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
+class MessageItem extends Component {
+    static propTypes = {
+        item: PropTypes.object
+    };
+
+
+    render() {
+        const item = this.props.item;
+        return (
+            <TouchableOpacity key={item.key} onPress={item.toDetail}>
+                <View style={[styles.row, item.read ? styles.read : styles.unread]}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Image
+                            style={{width: 50, height: 50, marginRight: 10}}
+                            source={{uri: item.sender.photoURL}}
+                        />
+                        <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+                            <Text style={{
+                                fontSize: 10,
+                                textAlign: 'left',
+                                fontWeight: 'bold'
+                            }}
+                            >{item.teamName}</Text>
+                            <Text style={[{height: 35}, item.read
+                                ? styles.oldMsg : styles.newMsg]}>
+                                {item.text.length > 80
+                                    ? `${item.text.slice(0, 80)}...`
+                                    : item.text}
+                            </Text>
+                            <Text style={{
+                                fontSize: 10,
+                                textAlign: 'right'
+                            }}>
+                                {`--${item.sender.displayName || item.sender.email}`}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+}
+
 
 class Messages extends Component {
     static propTypes = {
@@ -136,42 +179,12 @@ class Messages extends Component {
             const sortedKeys = messageKeys.sort((key1, key2) => (
                 messages[key2].created.valueOf() - messages[key1].created.valueOf()
             ));
-            const myMessages = sortedKeys.map(key =>
-                (
-                    <TouchableOpacity key={key} onPress={this.toMessageDetail(messages[key])}>
-                        <View style={[styles.message,
-                            messages[key].read
-                                ? styles.read : styles.unread]}>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Image
-                                    style={{width: 50, height: 50, marginRight: 10}}
-                                    source={{uri: messages[key].sender.photoURL}}
-                                />
-                                <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                                    <Text style={{
-                                        fontSize: 10,
-                                        textAlign: 'left',
-                                        fontWeight: 'bold'
-                                    }}
-                                    >{`${(this.props.teams[messages[key].teamId] || {}).name || ''}`.trim()}</Text>
-                                    <Text style={messages[key].read
-                                        ? styles.oldMsg : styles.newMsg}>
-                                        {messages[key].text.length > 80
-                                            ? `${messages[key].text.slice(0, 80)}...`
-                                            : messages[key].text}
-                                    </Text>
-                                    <Text style={{
-                                        fontSize: 10,
-                                        textAlign: 'right'
-                                    }}>
-                                        {`--${messages[key].sender.displayName || messages[key].sender.email}`}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                )
-            );
+            const myMessages = sortedKeys.map(key => ({
+                key,
+                toDetail: this.toMessageDetail(messages[key]),
+                teamName: ((this.props.teams[messages[key].teamId] || {}).name || '').trim(),
+                ...(messages[key] || {})
+            }));
 
             return this.props.userHasTeams ? (
                 <View style={styles.frame}>
@@ -185,7 +198,11 @@ class Messages extends Component {
                         </TouchableHighlight>
                     </View>
                     {myMessages.length > 0
-                        ? (<ScrollView style={styles.scroll}>{myMessages}</ScrollView>)
+                        ? (<FlatList
+                            data={myMessages}
+                            renderItem={({item}) => (<MessageItem item={item}/>)}
+                            style={styles.infoBlockContainer}
+                        />)
                         : (
                             <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
                                 <View style={{
@@ -197,14 +214,14 @@ class Messages extends Component {
                                     backgroundColor: 'rgba(255,255,255, 0.85)'
                                 }}>
                                     <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
-                                    <Text style={styles.textDark}>{'Kick things off by messaging your teammates.'}</Text>
+                                    <Text
+                                        style={styles.textDark}>{'Kick things off by messaging your teammates.'}</Text>
                                 </View>
                             </ImageBackground>
                         )}
                 </View>
             ) : (
                 <View style={styles.frame}>
-
                     <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
                         <View style={{
                             marginTop: '50%',
@@ -243,32 +260,32 @@ class Messages extends Component {
 }
 
 function mapStateToProps(state) {
-  let members = state.teams.teamMembers || {};
-  let canMessage = false;
-  const memKeys = Object.keys(members);
+    let members = state.teams.teamMembers || {};
+    let canMessage = false;
+    const memKeys = Object.keys(members);
 
-  if (memKeys.length > 0){
-    memKeys.forEach( mem => {
-      if (members[mem]) {
-        const status = members[mem][Object.keys(members[mem])[0]].memberStatus;
+    if (memKeys.length > 0) {
+        memKeys.forEach(mem => {
+            if (members[mem]) {
+                const status = members[mem][Object.keys(members[mem])[0]].memberStatus;
 
-        if (status === 'OWNER' || status === 'ACCEPTED') {
-          canMessage = true;
-        }
-      }
-    });
-  }
+                if (status === 'OWNER' || status === 'ACCEPTED') {
+                    canMessage = true;
+                }
+            }
+        });
+    }
 
-  return {
-      currentUser: state.login.user,
-      invitations: state.teams.invitations || {},
-      invitationsLoaded: state.messages.invitationsLoaded,
-      messages: state.messages.messages || {},
-      messagesLoaded: state.messages.loaded,
-      userHasTeams: canMessage,
-      teamsLoaded: state.messages.teamsLoaded,
-      teams: state.teams.teams
-  };
+    return {
+        currentUser: state.login.user,
+        invitations: state.teams.invitations || {},
+        invitationsLoaded: state.messages.invitationsLoaded,
+        messages: state.messages.messages || {},
+        messagesLoaded: state.messages.loaded,
+        userHasTeams: canMessage,
+        teamsLoaded: state.messages.teamsLoaded,
+        teams: state.teams.teams
+    };
 }
 
 const mapDispatchToProps = (dispatch) => ({

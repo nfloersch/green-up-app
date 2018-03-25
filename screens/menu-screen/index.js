@@ -35,7 +35,7 @@ class MenuScreen extends Component {
     render() {
         return (
             <View style={styles.frame}>
-                <ScrollView style={[styles.scroll, {paddingTop: 20}]}>
+                <ScrollView style={[styles.scroll, {paddingTop: 20, paddingLeft: 20, paddingRight: 20}]}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {

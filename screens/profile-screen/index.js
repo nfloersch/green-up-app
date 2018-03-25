@@ -13,7 +13,7 @@ import {
     View,
     Image,
     TextInput,
-    TouchableHighlight,
+    TouchableOpacity,
     Platform
 } from 'react-native';
 import {bindActionCreators} from 'redux';
@@ -86,14 +86,14 @@ class Profile extends Component {
                 <View style={styles.buttonBarHeader}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this._saveProfile}>
+                            <TouchableOpacity style={styles.headerButton} onPress={this._saveProfile}>
                                 <Text style={styles.headerButtonText}>{'Save Profile'}</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.buttonBarButton}>
-                            <TouchableHighlight style={styles.button} onPress={this._cancel}>
+                            <TouchableOpacity style={styles.headerButton} onPress={this._cancel}>
                                 <Text style={styles.headerButtonText}>{'Cancel'}</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

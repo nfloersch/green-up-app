@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
+import {StyleSheet, Text, View, FlatList, TextInput} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -20,6 +20,48 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
+
+class TownItem extends Component {
+    static propTypes = {
+        item: PropTypes.object
+    };
+
+    render() {
+        const item = this.props.item;
+        return (
+            <View key={item.key} style={styles.infoBlock}>
+                <Text style={styles.townName}>{item.Name}</Text>
+                {
+                    ((item.PickupLocations || []).length === 0)
+                        ? (
+                            <View style={styles.location}>
+                                <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
+                                    {'No trash bag pickup locations in this town'}
+                                </Text>
+                            </View>
+                        )
+                        : item.PickupLocations.map((loc, i) => (
+                            <View key={i} style={styles.location}>
+                                {Boolean(loc.PickupLocationName) ? (
+                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
+                                        {loc.PickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                    </Text>) : null}
+                                {Boolean(loc.PickupLocationAddress) ? (
+                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
+                                        {loc.PickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                    </Text>) : null}
+                                {Boolean(loc.PickupNotes) ? (
+                                    <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
+                                        {loc.PickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                    </Text>) : null}
+                            </View>
+                        ))
+                }
+            </View>
+        );
+    }
+}
 
 
 class TrashBagFinder extends Component {
@@ -43,48 +85,14 @@ class TrashBagFinder extends Component {
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;
-
         const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].Name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
         this.setState({searchResults, searchTerm});
     }
 
-
     render() {
-
         const towns = this.props.towns;
         const keys = this.state.searchResults.length === 0 ? Object.keys(towns) : this.state.searchResults;
-        const locations = keys.map(key => (
-            <View key={key} style={styles.infoBlock}>
-                <Text style={styles.townName}>{towns[key].Name}</Text>
-                {
-                    ((towns[key].PickupLocations || []).length === 0)
-                        ? (
-                            <View style={styles.location}>
-                                <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                    {'No trash bag pickup locations in this town'}
-                                </Text>
-                            </View>
-                        )
-                        : towns[key].PickupLocations.map((loc, i) => (
-                            <View key={i} style={styles.location}>
-                                {Boolean(loc.PickupLocationName) ? (
-                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.PickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
-                                    </Text>) : null}
-                                {Boolean(loc.PickupLocationAddress) ? (
-                                    <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.PickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
-                                    </Text>) : null}
-                                {Boolean(loc.PickupNotes) ? (
-                                    <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
-                                        {loc.PickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
-                                    </Text>) : null}
-                            </View>
-                        ))
-                }
-            </View>
-        ));
-
+        const locations = keys.map(key => ({key, ...(towns[key] || {})}));
 
         return (
             <View style={styles.frame}>
@@ -98,11 +106,10 @@ class TrashBagFinder extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <ScrollView style={styles.scroll}>
-                    <View>
-                        {locations}
-                    </View>
-                </ScrollView>
+                <FlatList
+                    style={styles.infoBlockContainer}
+                    data={locations}
+                    renderItem={({item}) => (<TownItem item={item}/>)}/>
             </View>
         );
     }

@@ -28,7 +28,13 @@ export const buttons = {
     buttonBarButton: {
         width: '48%'
     },
-    buttonBarHeader: {width: '100%', height: 60, backgroundColor: constants.headerBackgroundColor},
+    buttonBarHeader: {
+        width: '100%',
+        height: 60,
+        backgroundColor: constants.headerBackgroundColor,
+        borderBottomWidth: 1,
+        borderColor: 'black'
+    },
     buttonRow: {
         width: '100%',
         flex: 1,

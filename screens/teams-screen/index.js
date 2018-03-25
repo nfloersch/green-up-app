@@ -195,7 +195,10 @@ class MyTeams extends Component {
                             </View>
                         </ImageBackground>
                     )
-                        : (<FlatList data={myTeams} renderItem={({item}) => (<TeamItem item={item}/>)}
+                        : (<FlatList
+                            data={myTeams}
+                            renderItem={({item}) => (<TeamItem item={item}/>)}
+                            style={styles.infoBlockContainer}
                         />)
                     }
                 </View>

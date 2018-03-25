@@ -150,7 +150,7 @@ class NewMessage extends Component {
                             onChangeText={this.changeText}
                             placeholder={'Message details'}
                             value={this.state.text}
-                            style={[styles.textArea, {alignItem:'stretch'}]}
+                            style={styles.textArea}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
