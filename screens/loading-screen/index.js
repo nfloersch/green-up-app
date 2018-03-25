@@ -56,7 +56,9 @@ class LoadingScreen extends Component {
             require('../../assets/images/robot-prod.png'),
             require('../../assets/images/google-logo.jpg'),
             require('../../assets/images/facebook-logo.png'),
-            require('../../assets/images/green-up-logo.png')
+            require('../../assets/images/green-up-logo.png'),
+            require('../../assets/images/covered-bridge2.jpg'),
+            require('../../assets/images/teamwork.jpeg')
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar

@@ -178,7 +178,7 @@ class MyTeams extends Component {
                         <ImageBackground source={teamwork} style={styles.backgroundImage}>
                             <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
                                 <View style={{
-                                    marginTop: '30%',
+                                    marginTop: '20%',
                                     paddingLeft: 20,
                                     paddingRight: 20,
                                     paddingTop: 50,

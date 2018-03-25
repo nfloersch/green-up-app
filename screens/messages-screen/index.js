@@ -21,7 +21,7 @@ import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {Message} from '../../models/message';
-import coveredBridge from '../../assets/images/covered-bridge.jpg';
+import coveredBridge from '../../assets/images/covered-bridge2.jpg';
 
 const myStyles = {
     message: {
@@ -224,7 +224,7 @@ class Messages extends Component {
                 <View style={styles.frame}>
                     <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
                         <View style={{
-                            marginTop: '50%',
+                            marginTop: '20%',
                             paddingLeft: 20,
                             paddingRight: 20,
                             paddingTop: 50,

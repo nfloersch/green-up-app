@@ -66,11 +66,13 @@ class ThinkingGreenThoughts extends Component {
     render() {
         return (
             <ScrollView style={styles.frame}>
-                <View style={styles.logo}>
-                    <Image source={logo} style={{height: 120, width: 120}}/>
-                </View>
-                <View style={{width: '100%'}}>
-                    <Text style={[styles.text, {textAlign: 'center'}]}>{'Thinking green thoughts...'}</Text>
+                <View style={{paddingTop: 60}}>
+                    <View style={styles.logo}>
+                        <Image source={logo} style={{height: 120, width: 120}}/>
+                    </View>
+                    <View style={{width: '100%'}}>
+                        <Text style={[styles.text, {textAlign: 'center'}]}>{'Thinking green thoughts...'}</Text>
+                    </View>
                 </View>
             </ScrollView>
         );

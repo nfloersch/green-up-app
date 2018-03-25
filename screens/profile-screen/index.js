@@ -25,7 +25,7 @@ import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {
     aboutMeInput: {
-        height: 80
+        minHeight: 120
     }
 };
 
@@ -102,47 +102,49 @@ class Profile extends Component {
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
-                        <View style={styles.profileHeader}>
-                            <Image
-                                style={{width: 50, height: 50}}
-                                source={{uri: avatar}}
-                            />
-                            <Text style={[styles.profileName, styles.heading]}>
-                                {this.state.displayName || ''}
-                            </Text>
+                        <View style={{marginLeft: 10, marginRight: 10}}>
+                            <View style={styles.profileHeader}>
+                                <Image
+                                    style={{width: 50, height: 50}}
+                                    source={{uri: avatar}}
+                                />
+                                <Text style={[styles.profileName, styles.heading]}>
+                                    {this.state.displayName || ''}
+                                </Text>
+                            </View>
+                            <View style={{marginTop: 10}}>
+                                <Text style={styles.label}>{'My Name'}</Text>
+                                <TextInput
+                                    style={styles.textInput}
+                                    keyBoardType={'default'}
+                                    multiline={false}
+                                    numberOfLines={1}
+                                    onChangeText={this._changeText('displayName')}
+                                    placeholder={'Your name'}
+                                    value={this.state.displayName}
+                                    underlineColorAndroid={'transparent'}
+                                />
+                            </View>
+                            <View style={{marginTop: 20}}>
+                                <Text style={styles.label}>About Me</Text>
+                                <TextInput
+                                    style={[styles.textInput, styles.aboutMeInput]}
+                                    keyBoardType={'default'}
+                                    multiline={true}
+                                    numberOfLines={5}
+                                    maxLength={144}
+                                    onChangeText={this._changeText('bio')}
+                                    placeholder={'Maximum of 144 characters'}
+                                    value={this.state.bio}
+                                    underlineColorAndroid={'transparent'}
+                                />
+                            </View>
+                            {
+                                Platform.OS === 'ios'
+                                    ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                                    : null
+                            }
                         </View>
-                        <View>
-                            <Text style={styles.label}>{'My Name'}</Text>
-                            <TextInput
-                                style={styles.textInput}
-                                keyBoardType={'default'}
-                                multiline={false}
-                                numberOfLines={1}
-                                onChangeText={this._changeText('displayName')}
-                                placeholder={'Your name'}
-                                value={this.state.displayName}
-                                underlineColorAndroid={'transparent'}
-                            />
-                        </View>
-                        <View>
-                            <Text style={styles.label}>About Me</Text>
-                            <TextInput
-                                style={[styles.textInput, styles.aboutMeInput]}
-                                keyBoardType={'default'}
-                                multiline={true}
-                                numberOfLines={5}
-                                maxLength={144}
-                                onChangeText={this._changeText('bio')}
-                                placeholder={'Maximum of 144 characters'}
-                                value={this.state.bio}
-                                underlineColorAndroid={'transparent'}
-                            />
-                        </View>
-                        {
-                            Platform.OS === 'ios'
-                                ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                                : null
-                        }
                     </ScrollView>
                 </KeyboardAvoidingView>
             </View>

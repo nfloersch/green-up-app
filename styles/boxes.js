@@ -59,7 +59,7 @@ export const boxes = {
         marginBottom: 10,
         borderWidth: 1,
         borderColor: '#000',
-        backgroundColor: 'darkseagreen'
+        backgroundColor: '#EEE'
     },
     profileName: {
         paddingLeft: 10,
