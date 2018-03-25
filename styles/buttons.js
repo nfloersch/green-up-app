@@ -79,11 +79,16 @@ export const buttons = {
         margin: 10
     },
     searchResult: {
-        marginTop: 2,
-        marginBottom: 3,
-        borderWidth: 1,
-        borderColor: '#FFF',
-        padding: 10
+        marginBottom: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCC',
+        padding: 10,
+        backgroundColor: '#EEE',
+        shadowColor: '#FFF',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 0
+
     },
     singleButtonHeader: {
         width: '100%',

@@ -65,9 +65,9 @@ class MemberItem extends Component {
                             flex: 1,
                             paddingTop: 12,
                             alignItems: 'stretch'
-                        }]}>{item.email}</Text>
+                        }]}>{item.displayName || item.email || ''}</Text>
                     </View>
-                    {getMemberIcon(item.memberStatus, {paddingTop: 10,height: 50, width: 50}, true)}
+                    {getMemberIcon(item.memberStatus, {paddingTop: 10, height: 50, width: 50}, true)}
                 </View>
             </TouchableOpacity>
         );
@@ -108,22 +108,6 @@ class TeamEditorMembers extends Component {
         this.props.screenProps.stacknav.navigate('InviteForm');
     };
 
-    // getStatusText = status => {
-    //     switch (status) {
-    //         case 'ACCEPTED':
-    //             return 'is on this team';
-    //         case 'OWNER':
-    //             return 'owns this team';
-    //         case 'INVITED':
-    //             return 'has been invited';
-    //         case 'NOT_INVITED':
-    //             return 'has not been invited';
-    //         case 'REQUEST_TO_JOIN':
-    //             return 'is asking to join this team';
-    //         default:
-    //             return '';
-    //     }
-    // };
 
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {

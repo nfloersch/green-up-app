@@ -151,7 +151,7 @@ class TeamEditorMap extends Component {
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.frame}>
                     <View style={[styles.infoBlockContainer, {height: '98%'}]}>
-                        <Text style={[styles.statusBar, {maxHeight: 80}]}>
+                        <Text style={[styles.statusBar, {maxHeight: 85}]}>
                         Place markers in the area you want your team to work on.
                         Tap on the marker text box to remove a marker.
                         Green flags represent areas that other teams are cleaning up.

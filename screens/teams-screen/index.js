@@ -176,8 +176,7 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                            <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
+                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
                                 <View style={{
                                     marginTop: '20%',
                                     paddingLeft: 20,
@@ -193,9 +192,8 @@ class MyTeams extends Component {
                                         {'Search for teams in your area, or create a new one and invite some friends.'}
                                     </Text>
                                 </View>
-                            </View>
-                        </ImageBackground>
-                    )
+                            </ImageBackground>
+                        )
                         : (
                             <FlatList
                                 data={myTeams}

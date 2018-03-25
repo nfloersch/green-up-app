@@ -48,7 +48,16 @@ export const text = {
         marginTop: 2,
         marginLeft: 5
     },
-
+    dataDark: {
+        color: '#444',
+        fontWeight: 'bold',
+        marginTop: 2,
+        marginLeft: 5,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1
+    },
     label: {
         color: '#DDD',
         fontSize: 16
@@ -82,11 +91,12 @@ export const text = {
     },
     teamSearchOwner: {
         textAlign: 'right',
-        color: 'white',
+        color: '#444',
         fontSize: 12,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.6,
+        fontWeight: 'bold',
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
         shadowRadius: 1
     },
     teamSearchName: {
@@ -100,13 +110,14 @@ export const text = {
         shadowRadius: 1
     },
     teamSearchTown: {
-        textAlign: 'left',
-        color: 'white',
+        color: '#444',
         fontSize: 12,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.6,
-        shadowRadius: 1
+        fontWeight: 'bold',
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1,
+        textAlign: 'left'
     },
     teamTitle: {
         color: 'white',

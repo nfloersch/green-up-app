@@ -7,8 +7,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     KeyboardAvoidingView, Platform,
-    ScrollView,
     StyleSheet,
+    FlatList,
     Text,
     TextInput,
     TouchableOpacity,
@@ -30,8 +30,8 @@ function searchScore(term: string, searchableString: [string]) {
     const terms = term.trim().split(' ');
     const testTerm = terms[0].toLowerCase();
     const score = searchableString.reduce((_score, interrogee) =>
-          (_score + (typeof interrogee === 'string' &&
-                     interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
+        (_score + (typeof interrogee === 'string' &&
+        interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
     return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(' '), searchableString);
 
 }
@@ -44,15 +44,45 @@ const myStyles = {
         fontWeight: 'bold'
     },
     teamInfo: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      backgroundColor: '#EFEFEF',
-      padding: 3
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: '#EFEFEF',
+        padding: 3
     }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
+
+class SearchItem extends Component {
+    static propTypes = {item: PropTypes.object};
+
+    render() {
+        const item = this.props.item;
+        return (
+            <TouchableOpacity
+                key={item.teamId}
+                onPress={item.toDetail}
+                style={styles.searchResult}
+            >
+                <View>
+                    <Text style={[styles.textDark, {marginBottom: 0, textAlign: 'center'}]}>
+                        {item.team.name}
+                    </Text>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={styles.teamSearchTown}>
+                            {item.team.town}
+                        </Text>
+                        <Text style={styles.teamSearchOwner}>
+                            {item.team.owner.displayName}
+                        </Text>
+                    </View>
+                </View>
+            </TouchableOpacity>);
+    }
+}
+
 
 class TeamSearch extends Component {
     static propTypes = {
@@ -91,11 +121,12 @@ class TeamSearch extends Component {
             .filter(key => teams[key].isPublic === true ||
                 teams[key].members.find(m => m.uid === this.props.currentUser.uid))
             .map(key => ({
-                  key,
-                  score: searchScore(searchTerm, [teams[key].name,
-                                                  teams[key].description,
-                                                  teams[key].town,
-                                                  teams[key].owner.displayName])}))
+                key,
+                score: searchScore(searchTerm, [teams[key].name,
+                    teams[key].description,
+                    teams[key].town,
+                    teams[key].owner.displayName])
+            }))
             .filter(score => (searchTerm.trim() === '' || score.score > 0))
             .sort((score1, score2) => (score2.score - score1.score))
             .map(score => score.key);
@@ -116,25 +147,7 @@ class TeamSearch extends Component {
     render() {
         const teams = this.props.teams;
         const searchResults = this.state.searchResults.map(teamId => (
-            <TouchableOpacity
-                key={teamId}
-                onPress={this.toTeamDetail(teamId)}
-                style={styles.searchResult}
-            >
-                <View>
-                    <Text style={styles.teamSearchName}>
-                        {teams[teamId].name}
-                    </Text>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={styles.teamSearchTown}>
-                            {teams[teamId].town}
-                        </Text>
-                        <Text style={styles.teamSearchOwner}>
-                            {teams[teamId].owner.displayName}
-                        </Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
+            {key: teamId, teamId, toDetail: this.toTeamDetail(teamId), team: teams[teamId]}
         ));
         return (
             <KeyboardAvoidingView
@@ -151,14 +164,12 @@ class TeamSearch extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <ScrollView style={styles.scroll}>
-                    {searchResults}
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboard}/>)
-                            : null
-                    }
-                </ScrollView>
+                <FlatList data={searchResults} renderItem={({item}) => (<SearchItem item={item}/>)}/>
+                {
+                    Platform.OS === 'ios'
+                        ? (<View style={defaultStyles.padForIOSKeyboard}/>)
+                        : null
+                }
             </KeyboardAvoidingView>
         );
     }

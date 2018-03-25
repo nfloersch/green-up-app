@@ -14,7 +14,6 @@ import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import {TeamMember} from '../../models/team-member';
 import {getMemberIcon} from '../../libs/member-icons';
-import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
 const myStyles =
     {
@@ -135,7 +134,7 @@ class TeamDetails extends Component {
 
         const teamMemberList = (
             <View style={{width: '100%'}}>
-                <Text style={[styles.heading]}>
+                <Text style={[styles.textDark, {textAlign: 'center'}]}>
                     {'Team Members'}
                 </Text>
                 {
@@ -144,12 +143,13 @@ class TeamDetails extends Component {
                         .map((member, i) => (
                             <TouchableHighlight
                                 key={i} style={{
-                                borderStyle: 'solid',
-                                borderWidth: 1,
-                                width: '100%',
-                                height: 52,
-                                marginTop: 5
-                            }}
+                                    borderStyle: 'solid',
+                                    borderWidth: 1,
+                                    backgroundColor: 'white',
+                                    width: '100%',
+                                    height: 52,
+                                    marginTop: 5
+                                }}
                                 onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
                                 <View style={{flex: 1, flexDirection: 'row'}}>
                                     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -284,72 +284,72 @@ class TeamDetails extends Component {
             <View style={styles.frame}>
                 {getStatusButtons()}
                 <ScrollView style={styles.scroll}>
-                    {getMemberStatus()}
-                    <View style={styles.block}>
-                        <Text style={[styles.teamTitle]}>
-                            {selectedTeam.name}
-                        </Text>
-                        <View style={{width: '100%'}}>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Owner: '}</Text>
-                                <Text style={styles.data}>{selectedTeam.owner.displayName}</Text>
+                    <View style={styles.infoBlockContainer}>
+                        {getMemberStatus()}
+                        <View style={styles.block}>
+                            <Text style={[styles.textDark, {textAlign: 'center'}]}>
+                                {selectedTeam.name}
                             </Text>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Where: '}</Text>
-                                <Text
-                                    style={styles.data}>{`${selectedTeam.location || ''}${!selectedTeam.location || !selectedTeam.town ? '' : ', '}${selectedTeam.town || ''}`}</Text>
-                            </Text>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Date: '}</Text>
-                                <Text style={styles.data}>{selectedTeam.date}</Text>
-                            </Text>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Starts: '}</Text>
-                                <Text style={styles.data}>{selectedTeam.start}</Text>
-                            </Text>
-                            <Text style={styles.dataBlock}>
-                                <Text style={styles.label}>{'Ends: '}</Text>
-                                <Text style={styles.data}>{selectedTeam.end}</Text>
-                            </Text>
-                            {!selectedTeam.notes ? null
-                                : <Text style={styles.dataBlock}>
-                                    <Text style={styles.label}>{'Description: '}</Text>
-                                    <Text>{selectedTeam.notes}</Text>
+                            <View style={{width: '100%'}}>
+                                <Text style={styles.dataBlock}>
+                                    <Text style={styles.labelDark}>{'Owner: '}</Text>
+                                    <Text style={styles.dataDark}>{selectedTeam.owner.displayName}</Text>
                                 </Text>
-                            }
+                                <Text style={styles.dataBlock}>
+                                    <Text style={styles.labelDark}>{'Where: '}</Text>
+                                    <Text
+                                        style={styles.dataDark}>{`${selectedTeam.location || ''}${!selectedTeam.location || !selectedTeam.town ? '' : ', '}${selectedTeam.town || ''}`}</Text>
+                                </Text>
+                                <Text style={styles.dataBlock}>
+                                    <Text style={styles.labelDark}>{'Date: '}</Text>
+                                    <Text style={styles.dataDark}>{selectedTeam.date}</Text>
+                                </Text>
+                                <Text style={styles.dataBlock}>
+                                    <Text style={styles.labelDark}>{'Starts: '}</Text>
+                                    <Text style={styles.dataDark}>{selectedTeam.start}</Text>
+                                </Text>
+                                <Text style={styles.dataBlock}>
+                                    <Text style={styles.labelDark}>{'Ends: '}</Text>
+                                    <Text style={styles.dataDark}>{selectedTeam.end}</Text>
+                                </Text>
+                                {!selectedTeam.notes ? null
+                                    : <Text style={styles.dataBlock}>
+                                        <Text style={styles.labelDark}>{'Description: '}</Text>
+                                        <Text>{selectedTeam.notes}</Text>
+                                    </Text>
+                                }
+                            </View>
                         </View>
-                    </View>
-                    <View style={[styles.block, {borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)'}]}>
-                        <Text style={[styles.teamTitle]}>
-                            {'Clean Up Location'}
-                        </Text>
-                        <MapView
-                            style={{height: 300, marginBottom: 20, marginTop: 5}}
-                            initialRegion={this.state.initialMapLocation}
-                            onPress={this._handleMapClick}>
-                            {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
-                                <MapView.Marker
-                                    coordinate={marker.coordinates}
-                                    key={index}>
-                                    <MultiLineMapCallout title={marker.title || 'clean area'} description='' />
-                                </MapView.Marker>
-                            ))}
-                            {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((a, i) =>
-                                (<MapView.Marker
-                                    key={i}
-                                    coordinate={a.coordinates}
-                                    image={otherTeamsLocationImage}>
-                                    <MultiLineMapCallout title={a.title} description={a.description} />
-                                </MapView.Marker>
+                        <View style={[styles.block, {borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)'}]}>
+                            <Text style={[styles.textDark, {textAlign: 'center'}]}>
+                                {'Clean Up Location'}
+                            </Text>
+                            <MapView
+                                style={{height: 300, marginBottom: 20, marginTop: 5}}
+                                initialRegion={this.state.initialMapLocation}
+                                onPress={this._handleMapClick}>
+                                {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
+                                    <MapView.Marker
+                                        coordinate={marker.coordinates}
+                                        key={index}
+                                        title={marker.title || 'clean area'}/>
                                 ))}
-                        </MapView>
-                    </View>
-                    <View style={[styles.block, {
-                        borderTopWidth: 1,
-                        borderBottomWidth: 0,
-                        borderTopColor: 'rgba(255,255,255,0.2)'
-                    }]}>
-                        {isTeamMember ? teamMemberList : null}
+                                {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((a, i) =>
+                                    (<MapView.Marker
+                                        key={i}
+                                        coordinate={a.coordinates}
+                                        image={otherTeamsLocationImage}
+                                        title={a.title}
+                                    />))}
+                            </MapView>
+                        </View>
+                        <View style={[styles.block, {
+                            borderTopWidth: 1,
+                            borderBottomWidth: 0,
+                            borderTopColor: 'rgba(255,255,255,0.2)'
+                        }]}>
+                            {isTeamMember ? teamMemberList : null}
+                        </View>
                     </View>
                     <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
@@ -370,8 +370,7 @@ const mapStateToProps = (state) => ({
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',
             coordinates: l.coordinates,
-            title: `${team.name}`,
-            description: 'claimed this area'
+            title: `Claiming this area for team: ${team.name}`
         }))), [])
 });
 

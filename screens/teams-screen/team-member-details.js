@@ -261,8 +261,9 @@ class TeamMemberDetails extends Component {
                         <View>
                             {getStatus.bind(this)(member, isOwner)}
                         </View>
-                        <View>
-                            <Text>{member.bio || ''}</Text>
+                        <View style={{marginTop: 10}}>
+                            <Text style={styles.labelDark}>{`About ${member.displayName || ''}: `}</Text>
+                            <Text style={{marginTop: 5}}>{member.bio || ''}</Text>
                         </View>
                     </View>
                 </ScrollView>
