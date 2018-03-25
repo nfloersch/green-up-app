@@ -53,8 +53,18 @@ export const text = {
         color: '#DDD',
         fontSize: 16
     },
+
+    labelDark: {
+        color: '#333',
+        fontSize: 16,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1,
+        marginTop: 5
+    },
     largeText: {
-        marginTop: 5,
+        marginTop: 10,
         fontSize: 20
     },
     statusMessage: {

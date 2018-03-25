@@ -175,31 +175,33 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                            <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
-                                <View style={{
-                                    marginTop: '20%',
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 50,
-                                    paddingBottom: 50,
-                                    backgroundColor: 'rgba(255,255,255, 0.85)'
-                                }}>
-                                    <Text style={[styles.textDark]}>
-                                        {'Green Up Day is all about community and teamwork.'}
-                                    </Text>
-                                    <Text style={[styles.textDark]}>
-                                        {'Search for teams in your area, or create a new one and invite some friends.'}
-                                    </Text>
+                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                                <View style={[styles.container, {backgroundColor: 'rgba(155,155,155,0.5)'}]}>
+                                    <View style={{
+                                        marginTop: '20%',
+                                        paddingLeft: 20,
+                                        paddingRight: 20,
+                                        paddingTop: 50,
+                                        paddingBottom: 50,
+                                        backgroundColor: 'rgba(255,255,255, 0.85)'
+                                    }}>
+                                        <Text style={[styles.textDark]}>
+                                            {'Green Up Day is all about community and teamwork.'}
+                                        </Text>
+                                        <Text style={[styles.textDark]}>
+                                            {'Search for teams in your area, or create a new one and invite some friends.'}
+                                        </Text>
+                                    </View>
                                 </View>
-                            </View>
-                        </ImageBackground>
-                    )
-                        : (<FlatList
-                            data={myTeams}
-                            renderItem={({item}) => (<TeamItem item={item}/>)}
-                            style={styles.infoBlockContainer}
-                        />)
+                            </ImageBackground>
+                        )
+                        : (
+                            <FlatList
+                                data={myTeams}
+                                renderItem={({item}) => (<TeamItem item={item}/>)}
+                                style={styles.infoBlockContainer}
+                            />
+                        )
                     }
                 </View>
                 <Modal

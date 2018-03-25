@@ -95,13 +95,15 @@ export const boxes = {
         borderColor: 'black'
     },
     statusBar: {
-        height: 30,
+        height: 50,
         width: '100%',
         marginBottom: 10,
         flex: 1,
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
         backgroundColor: 'rgba(255,255,255,0.6)'
     },
     suggestion: {
