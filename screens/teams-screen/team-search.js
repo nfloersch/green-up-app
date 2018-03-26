@@ -89,6 +89,7 @@ class SearchItem extends Component {
 class TeamSearch extends Component {
     static propTypes = {
         actions: PropTypes.object,
+        teamMembers: PropTypes.object,
         teams: PropTypes.object,
         navigation: PropTypes.object,
         searchResults: PropTypes.array,
@@ -120,19 +121,26 @@ class TeamSearch extends Component {
     onSearchTermChange(searchTerm: string = '') {
         const {teams, teamMembers, currentUser} = this.props;
         const mkey = currentUser.email.toLowerCase().replace(/\./g, ':');
-        const teamsImOn = [];
-
         // get all the teams the user is on
-        Object.keys(teamMembers).forEach( key => {
-            if((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
-             (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)) {
-                teamsImOn.push(key);
-            }
-        });
+        const teamsImOn = Object.keys(teamMembers).filter(key =>
+            !!teamMembers[key] &&
+            (
+                (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
+                (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)
+            )
+        );
+
+        // // get all the teams the user is on
+        // Object.keys(teamMembers).forEach(key => {
+        //     if ((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
+        //         (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)) {
+        //         teamsImOn.push(key);
+        //     }
+        // });
 
         const _searchResults = Object.keys(teams)
             .filter(key => teams[key].isPublic === true ||
-                					 teamsImOn.indexOf(key) > -1)
+                teamsImOn.indexOf(key) > -1)
             .map(key => ({
                 key,
                 score: searchScore(searchTerm, [teams[key].name,
