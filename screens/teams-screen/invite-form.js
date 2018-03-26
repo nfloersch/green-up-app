@@ -92,38 +92,39 @@ class InviteForm extends Component {
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
-                        <Text style={styles.label}>
-                            Invitee&apos;s Email
-                        </Text>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder='john@example.com'
-                            value={this.state.email}
-                            onChangeText={this.changeInvitee('email')}
-                            underlineColorAndroid={'transparent'}
-                        />
-                        <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
-                        <Text style={styles.label}>
-                            First Name
-                        </Text>
-                        <TextInput
-                            style={styles.textInput}
-                            value={this.state.firstName}
-                            onChangeText={this.changeInvitee('firstName')}
-                            placeholder='First'
-                            underlineColorAndroid={'transparent'}
-                        />
-                        <Text style={styles.label}>
-                            Last Name
-                        </Text>
-                        <TextInput
-                            style={styles.textInput}
-                            value={this.state.lastName}
-                            onChangeText={this.changeInvitee('lastName')}
-                            placeholder='Last'
-                            underlineColorAndroid={'transparent'}
-                        />
-
+                        <View style={styles.infoBlockContainer}>
+                            <Text style={styles.labelDark}>
+                                Invitee&apos;s Email
+                            </Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder='john@example.com'
+                                value={this.state.email}
+                                onChangeText={this.changeInvitee('email')}
+                                underlineColorAndroid={'transparent'}
+                            />
+                            <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
+                            <Text style={styles.labelDark}>
+                                First Name
+                            </Text>
+                            <TextInput
+                                style={styles.textInput}
+                                value={this.state.firstName}
+                                onChangeText={this.changeInvitee('firstName')}
+                                placeholder='First'
+                                underlineColorAndroid={'transparent'}
+                            />
+                            <Text style={styles.labelDark}>
+                                Last Name
+                            </Text>
+                            <TextInput
+                                style={styles.textInput}
+                                value={this.state.lastName}
+                                onChangeText={this.changeInvitee('lastName')}
+                                placeholder='Last'
+                                underlineColorAndroid={'transparent'}
+                            />
+                        </View>
                         {
                             Platform.OS === 'ios'
                                 ? (<View style={defaultStyles.padForIOSKeyboard}/>)

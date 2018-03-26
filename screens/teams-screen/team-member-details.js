@@ -24,7 +24,8 @@ const myStyles = {
         marginBottom: 10,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#FDFDFE'
+        borderColor: '#FDFDFE',
+        width: '100%'
     },
     statusBarText: {fontSize: 12, textAlign: 'left'}
 };
@@ -201,7 +202,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.OWNER)}
                             <Text style={styles.statusBarText}>
-                                {`${teamMember.displayName || teamMember.email}`} is the owner of this team
+                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email}`} is the owner of this team
                             </Text>
                         </View>
                     );
@@ -210,7 +211,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.REQUEST_TO_JOIN, {}, _isOwner)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName || teamMember.email} wants to join this team
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to join this team
                             </Text>
                         </View>
                     );
@@ -219,7 +220,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.ACCEPTED)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName || teamMember.email} is a member of this team.
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} is a member of this team.
                             </Text>
                         </View>
                     );
@@ -228,7 +229,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.INVITED)}
                             <Text style={styles.statusBarText}>
-                                {`${teamMember.displayName || teamMember.email} has been invited to this team, but has yet to accept.`}
+                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email} has not yet accepted the invitation`}
                             </Text>
                         </View>
                     );
@@ -237,7 +238,7 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.NOT_INVITED)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName || teamMember.email || 'This person'} is not a member of this
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email || 'This person'} is not a member of this
                                 team
                             </Text>
                         </View>);
@@ -255,14 +256,14 @@ class TeamMemberDetails extends Component {
                                 source={{uri: avatar}}
                             />
                             <Text style={[styles.profileName, styles.heading]}>
-                                {`${member.displayName || member.email || ''}`}
+                                {`${member.displayName && member.displayName.trim() || member.email || ''}`}
                             </Text>
                         </View>
                         <View>
                             {getStatus.bind(this)(member, isOwner)}
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={styles.labelDark}>{`About ${member.displayName || ''}: `}</Text>
+                            <Text style={styles.labelDark}>{`About ${member.displayName && member.displayName.trim() || ''}: `}</Text>
                             <Text style={{marginTop: 5}}>{member.bio || ''}</Text>
                         </View>
                     </View>

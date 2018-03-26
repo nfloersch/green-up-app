@@ -21,8 +21,6 @@ import {TeamMember} from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 import * as validators from '../../libs/validators';
-import {User} from '../../models/user';
-import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};
 
@@ -146,7 +144,9 @@ class InviteContacts extends Component {
                 <ScrollView
                     style={styles.scroll}
                     keyboardShouldPersistTaps='never'>
-                    {myContacts}
+                    <View style={styles.infoBlockContainer}>
+                        {myContacts}
+                    </View>
                 </ScrollView>
             </View>
         );
@@ -155,7 +155,7 @@ class InviteContacts extends Component {
 
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
+    const currentUser = state.login.user;
     const teamMembers = state.teams.teamMembers;
     const contacts = state.teams.contacts;
     return {teamMembers, currentUser, selectedTeam, contacts};

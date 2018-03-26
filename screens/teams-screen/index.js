@@ -9,6 +9,7 @@ import {getMemberIcon} from '../../libs/member-icons';
 import {
     FlatList,
     ImageBackground,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -195,11 +196,15 @@ class MyTeams extends Component {
                             </ImageBackground>
                         )
                         : (
-                            <FlatList
-                                data={myTeams}
-                                renderItem={({item}) => (<TeamItem item={item}/>)}
-                                style={styles.infoBlockContainer}
-                            />
+                            <ScrollView style={styles.scroll}>
+                                <View style={styles.infoBlockContainer}>
+                                    <FlatList
+                                        data={myTeams}
+                                        renderItem={({item}) => (<TeamItem item={item}/>)}
+                                        style={styles.infoBlockContainer}
+                                    />
+                                </View>
+                            </ScrollView>
                         )
                     }
                 </View>

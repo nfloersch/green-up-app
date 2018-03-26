@@ -129,7 +129,7 @@ class NewMessage extends Component {
                             {
                                 !selectedTeamId ? (
                                     <View style={{marginBottom: 5}}>
-                                        <Text style={styles.label}>Select Team to Message:</Text>
+                                        <Text style={styles.labelDark}>Select Team to Message:</Text>
                                         <Picker
                                             style={styles.picker}
                                             itemStyle={{height: 45}}

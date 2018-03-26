@@ -65,7 +65,7 @@ class MemberItem extends Component {
                             flex: 1,
                             paddingTop: 12,
                             alignItems: 'stretch'
-                        }]}>{item.displayName || item.email || ''}</Text>
+                        }]}>{item.displayName && item.displayName.trim() || item.email || ''}</Text>
                     </View>
                     {getMemberIcon(item.memberStatus, {paddingTop: 10, height: 50, width: 50}, true)}
                 </View>

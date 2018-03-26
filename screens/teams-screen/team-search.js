@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     KeyboardAvoidingView, Platform,
+    ScrollView,
     StyleSheet,
     FlatList,
     Text,
@@ -117,16 +118,16 @@ class TeamSearch extends Component {
     }
 
     onSearchTermChange(searchTerm: string = '') {
-        const { teams, teamMembers, currentUser } = this.props;
+        const {teams, teamMembers, currentUser} = this.props;
         const mkey = currentUser.email.toLowerCase().replace(/\./g, ':');
         const teamsImOn = [];
 
         // get all the teams the user is on
         Object.keys(teamMembers).forEach( key => {
-          if((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
+            if((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
              (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)) {
-            teamsImOn.push(key)
-          }
+                teamsImOn.push(key);
+            }
         });
 
         const _searchResults = Object.keys(teams)
@@ -176,12 +177,12 @@ class TeamSearch extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <FlatList data={searchResults} renderItem={({item}) => (<SearchItem item={item}/>)}/>
-                {
-                    Platform.OS === 'ios'
-                        ? (<View style={defaultStyles.padForIOSKeyboard}/>)
-                        : null
-                }
+                <ScrollView style={styles.scroll}>
+                    <View style={styles.infoBlockContainer}>
+                        <FlatList data={searchResults} renderItem={({item}) => (<SearchItem item={item}/>)}/>
+                    </View>
+                </ScrollView>
+
             </KeyboardAvoidingView>
         );
     }

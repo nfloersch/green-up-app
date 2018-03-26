@@ -103,8 +103,8 @@ class Profile extends Component {
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
-                        <View style={{marginLeft: 10, marginRight: 10}}>
-                            <View style={styles.profileHeader}>
+                        <View style={styles.infoBlockContainer}>
+                            <View style={[styles.profileHeader, {backgroundColor: 'white'}]}>
                                 <Image
                                     style={{width: 50, height: 50}}
                                     source={{uri: avatar}}
@@ -114,7 +114,7 @@ class Profile extends Component {
                                 </Text>
                             </View>
                             <View style={{marginTop: 10}}>
-                                <Text style={styles.label}>{'My Name'}</Text>
+                                <Text style={styles.labelDark}>{'My Name'}</Text>
                                 <TextInput
                                     style={styles.textInput}
                                     keyBoardType={'default'}
@@ -127,7 +127,7 @@ class Profile extends Component {
                                 />
                             </View>
                             <View style={{marginTop: 20}}>
-                                <Text style={styles.label}>About Me</Text>
+                                <Text style={styles.labelDark}>About Me</Text>
                                 <TextInput
                                     style={[styles.textInput, styles.aboutMeInput]}
                                     keyBoardType={'default'}

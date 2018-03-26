@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, FlatList, TextInput} from 'react-native';
+import {StyleSheet, ScrollView, Text, View, FlatList, TextInput} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';
@@ -106,10 +106,14 @@ class TrashBagFinder extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <FlatList
-                    style={styles.infoBlockContainer}
-                    data={locations}
-                    renderItem={({item}) => (<TownItem item={item}/>)}/>
+                <ScrollView style={styles.scroll}>
+                    <View style={styles.infoBlockContainer}>
+                        <FlatList
+                            style={styles.infoBlockContainer}
+                            data={locations}
+                            renderItem={({item}) => (<TownItem item={item}/>)}/>
+                    </View>
+                </ScrollView>
             </View>
         );
     }

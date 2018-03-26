@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     Image,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -198,11 +199,17 @@ class Messages extends Component {
                         </TouchableHighlight>
                     </View>
                     {myMessages.length > 0
-                        ? (<FlatList
+                        ? (
+                            <ScrollView style={styles.scroll}>
+                                <View style={styles.infoBlockContainer}>
+                            <FlatList
                             data={myMessages}
                             renderItem={({item}) => (<MessageItem item={item}/>)}
                             style={styles.infoBlockContainer}
-                        />)
+                        />
+                                </View>
+                            </ScrollView>
+                                    )
                         : (
                             <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
                                 <View style={{
