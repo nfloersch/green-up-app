@@ -130,14 +130,6 @@ class TeamSearch extends Component {
             )
         );
 
-        // // get all the teams the user is on
-        // Object.keys(teamMembers).forEach(key => {
-        //     if ((teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
-        //         (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)) {
-        //         teamsImOn.push(key);
-        //     }
-        // });
-
         const _searchResults = Object.keys(teams)
             .filter(key => teams[key].isPublic === true ||
                 teamsImOn.indexOf(key) > -1)
