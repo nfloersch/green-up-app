@@ -52,7 +52,7 @@ class NewMessage extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
-            selectedTeamId: props.navigation.selectedTeamId || props.selectedTeamId || (props.myTeams[0] || {}).id,
+            selectedTeamId: props.navigation.selectedTeamId || props.selectedTeamId,
             title: '',
             text: ''
         };
@@ -97,15 +97,16 @@ class NewMessage extends Component {
 
     render() {
         const user = this.props.currentUser || {};
-        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId;
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
         const canSendMessage = (teamId: string) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        const messagableTeams = this.props.myTeams.filter(team => canSendMessage(team.id));
+        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId || ((messagableTeams || []).length === 1 && (messagableTeams[0] || {}).id);
         const teamName = ((this.props.myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
         const items = (this.props.myTeams || []).filter(team => canSendMessage(team.id))
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
-        const teamValue = selectedTeamId || this.state.selectedTeamId || ((this.props.myTeams || [])[0] || {}).id;
+        const teamValue = selectedTeamId || this.state.selectedTeamId || (messagableTeams[0] || {}).id;
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>
