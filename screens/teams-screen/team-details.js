@@ -61,7 +61,12 @@ class TeamDetails extends Component {
             longitude: Number(locations[0].coordinates.longitude),
             latitudeDelta: 0.01,
             longitudeDelta: 0.01
-        } : null;
+        } : {
+            latitude:43.5705016,
+            longitude: -72.6767611,
+            latitudeDelta: 3,
+            longitudeDelta: 3
+        };
 
         this.state = {
             hasAsked: false,
