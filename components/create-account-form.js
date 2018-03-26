@@ -42,7 +42,12 @@ export default class CreateAccountForm extends Component {
 
     render() {
         return (
-            <View>
+            <View style={[styles.container, {
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingBottom: 20,
+                paddingTop: '20%'
+            }]}>
                 <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
@@ -75,8 +80,9 @@ export default class CreateAccountForm extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                <TouchableOpacity style={styles.button}
-                                  onPress={this.onButtonPress}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={this.onButtonPress}>
                     <Text style={styles.buttonText}>
                         {this.props.buttonText || 'Create Account'}
                     </Text>

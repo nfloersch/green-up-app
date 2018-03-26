@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {
     KeyboardAvoidingView,
     TouchableHighlight,
+    TouchableOpacity,
     Modal,
     ScrollView,
     StyleSheet,
@@ -352,11 +353,11 @@ class TrashMap extends Component {
                                         showFirstButton
                                             ? (
                                                 <View style={styles.buttonBarButton}>
-                                                    <TouchableHighlight style={styles.button} onPress={saveTrashDrop}>
+                                                    <TouchableOpacity style={styles.headerButton} onPress={saveTrashDrop}>
                                                         <Text style={styles.headerButtonText}>
                                                             {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
                                                         </Text>
-                                                    </TouchableHighlight>
+                                                    </TouchableOpacity>
                                                 </View>
                                             )
                                             : null
@@ -364,9 +365,9 @@ class TrashMap extends Component {
 
 
                                     <View style={styles.buttonBarButton}>
-                                        <TouchableHighlight style={styles.button} onPress={this.closeModal}>
+                                        <TouchableOpacity style={styles.headerButton} onPress={this.closeModal}>
                                             <Text style={styles.headerButtonText}>{'Cancel'}</Text>
-                                        </TouchableHighlight>
+                                        </TouchableOpacity>
                                     </View>
 
                                 </View>
@@ -376,8 +377,8 @@ class TrashMap extends Component {
                                 behavior={Platform.OS === 'ios' ? 'padding' : null}
                             >
                                 <ScrollView style={styles.scroll}>
-                                    <View style={styles.container}>
-                                        <Text style={styles.label}>Number of Bags</Text>
+                                    <View style={styles.infoBlockContainer}>
+                                        <Text style={styles.labelDark}>Number of Bags</Text>
                                         <TextInput
                                             underlineColorAndroid='transparent'
                                             editable={!this.state.drop.wasCollected}
@@ -392,7 +393,7 @@ class TrashMap extends Component {
                                                 }
                                             })}
                                         />
-                                        <Text style={styles.label}>Other Items</Text>
+                                        <Text style={styles.labelDark}>Other Items</Text>
                                         <View style={styles.fieldset}>
                                             <CheckBox
                                                 editable={!this.state.drop.wasCollected}

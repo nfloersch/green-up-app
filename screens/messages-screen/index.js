@@ -58,7 +58,7 @@ class MessageItem extends Component {
         const item = this.props.item;
         return (
             <TouchableOpacity key={item.key} onPress={item.toDetail}>
-                <View style={[styles.row, item.read ? styles.read : styles.unread]}>
+                <View style={[styles.row, {height: 75},item.read ? styles.read : styles.unread]}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image
                             style={{width: 50, height: 50, marginRight: 10}}

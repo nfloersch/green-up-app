@@ -24,7 +24,7 @@ const myStyles = {
         paddingBottom: 15
     },
     logoText: {
-        fontSize: 36,
+        fontSize: 24,
         color: 'white',
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 1},
@@ -33,7 +33,7 @@ const myStyles = {
     },
     socialLoginButton: {
         width: '100%',
-        height: 40,
+        height: 44,
         marginTop: 10,
         marginBottom: 10,
         shadowColor: '#000',
@@ -42,8 +42,8 @@ const myStyles = {
         shadowRadius: 2, flex: 1, flexDirection: 'row'
     },
     socialLoginLogo: {
-        padding: 10,
-        width: 40,
+        padding: 12,
+        width: 44,
         alignSelf: 'flex-start'
     },
     socialLogin: {flex: 1},
@@ -52,7 +52,9 @@ const myStyles = {
         fontSize: 16,
         fontWeight: '700',
         height: 40,
-        padding: 10,
+        paddingRight: 10,
+        paddingLeft: 10,
+        paddingTop: 12,
         color: 'white'
     },
 
@@ -151,12 +153,12 @@ class Login extends Component {
                                 <TouchableHighlight
                                     style={styles.link}
                                     onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                                    <Text style={styles.linkText}>I forgot my password</Text>
+                                    <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight
                                     style={styles.link}
                                     onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
-                                    <Text style={styles.linkText}>Create a new account</Text>
+                                    <Text style={[styles.linkText, {fontSize: 16}]}>Create a new account</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>

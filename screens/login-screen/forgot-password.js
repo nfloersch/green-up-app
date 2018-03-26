@@ -54,7 +54,7 @@ class ForgotPassword extends Component {
                     paddingLeft: 20,
                     paddingRight: 20,
                     paddingBottom: 20,
-                    paddingTop: '50%'
+                    paddingTop: '20%'
                 }]}>
                     {this.state.passwordResetSent
                         ? (
