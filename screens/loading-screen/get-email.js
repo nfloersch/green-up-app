@@ -6,6 +6,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
+    Alert,
     StyleSheet,
     Text,
     View,
@@ -14,12 +15,11 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import {email} from '../../libs/validators';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {User} from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
-
 const myStyles = {container: {marginTop: '50%', padding: 20}};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -27,6 +27,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 class GetEmail extends Component {
     static propTypes = {
+        actions: PropTypes.object,
         user: PropTypes.object
     };
 
@@ -39,7 +40,11 @@ class GetEmail extends Component {
 
 
     _saveProfile() {
-        // this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)), this.props.teamMembers || {});
+        if(email(this.state.email)) {
+            this.props.actions.updateEmail(this.state.email.trim().toLowerCase());
+        } else {
+            Alert.alert('Please enter a valid email address');
+        }
     }
 
     _changeText(key) {
@@ -61,7 +66,6 @@ class GetEmail extends Component {
                         keyBoardType={'default'}
                         value={this.state.email}
                         onChangeText={this._changeText('email')}
-
                     />
                     <TouchableOpacity style={styles.button} onPress={this._saveProfile}>
                         <Text style={styles.buttonText}>Save</Text>
@@ -73,8 +77,8 @@ class GetEmail extends Component {
 }
 
 function mapStateToProps(state) {
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
-    return {currentUser};
+    const user = User.create({...state.login.user, ...removeNulls(state.profile)});
+    return {user};
 }
 
 function mapDispatchToProps(dispatch) {

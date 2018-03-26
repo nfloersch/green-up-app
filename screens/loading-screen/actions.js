@@ -23,3 +23,7 @@ export function initialize() {
 export function isLoggingInViaSSO(_isLoggingInViaSSO: Boolean) {
     return {type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO};
 }
+
+export function updateEmail(email) {
+    return {type: types.EMAIL_UPDATE, email};
+}

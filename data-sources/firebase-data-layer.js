@@ -84,7 +84,7 @@ function setupTrashDropListener(dispatch) {
 
 function setupInvitationListener(email, dispatch) {
     const db = firebase.database();
-    const membershipId = email.toLowerCase().replace(/\./g, ':');
+    const membershipId = (email || '').toLowerCase().replace(/\./g, ':');
     const invitations = db.ref(`invitations/${membershipId}`);
     invitations.on('value', (snapshot) => {
         dispatch(dataLayerActions.invitationFetchSuccessful(snapshot.val()));
@@ -335,6 +335,10 @@ function deleteMessage(userId: string, messageId: string) {
         .ref(`messages/${userId}/${messageId}`).remove();
 }
 
+function updateEmail(email: string) {
+    return firebase.auth().currentUser.updateEmail(email);
+}
+
 export const firebaseDataLayer = {
     addTeamMember,
     createTeam,
@@ -356,6 +360,7 @@ export const firebaseDataLayer = {
     saveTeam,
     sendUserMessage,
     sendGroupMessage,
+    updateEmail,
     updateMessage,
     updateProfile,
     updateTeamMember,
