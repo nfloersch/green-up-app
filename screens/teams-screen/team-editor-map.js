@@ -152,9 +152,8 @@ class TeamEditorMap extends Component {
                 <View style={defaultStyles.frame}>
                     <View style={[styles.infoBlockContainer, {height: '98%'}]}>
                         <Text style={[styles.statusBar, {maxHeight: 85}]}>
-                        Place markers in the area you want your team to work on.
-                        Tap on the marker text box to remove a marker.
-                        Green flags represent areas that other teams are cleaning up.
+                        Drop a pin where you want your team to work.
+                        Green flags are areas claimed by other teams.
                         </Text>
                         <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
                             <MapView style={{flex: 1}}
