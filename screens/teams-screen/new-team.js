@@ -252,9 +252,8 @@ class NewTeam extends Component {
                             />
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={styles.alertInfo}>
-                                May 5th is the official Green Up Day, but teams
-                                may choose to work up to one week before or after.
+                            <Text style={[styles.alertInfo,{textAlign:'left'}]}>
+                                Saturday, May 5th is Green Up Day, but your team can choose to work up to one week before or after.
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
                             <View>

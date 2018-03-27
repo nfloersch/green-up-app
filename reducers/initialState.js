@@ -20,6 +20,7 @@ export default {
         invitationsLoaded : false,
         teamsLoaded: false
     },
+    teamMembersLoaded: false,
     teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
     trashBagFinder: {townData: {}},
     trashTracker: {trashDrops: [], location: null},

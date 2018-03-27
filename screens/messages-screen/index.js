@@ -23,6 +23,7 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {Message} from '../../models/message';
 import coveredBridge from '../../assets/images/covered-bridge2.jpg';
+import ThinkingGreenThoughts from '../loading-screen/thinking-green-thoughts';
 
 const myStyles = {
     message: {
@@ -59,7 +60,7 @@ class MessageItem extends Component {
         const item = this.props.item;
         return (
             <TouchableOpacity key={item.key} onPress={item.toDetail}>
-                <View style={[styles.row, {height: 75},item.read ? styles.read : styles.unread]}>
+                <View style={[styles.row, {height: 75}, item.read ? styles.read : styles.unread]}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image
                             style={{width: 50, height: 50, marginRight: 10}}
@@ -102,6 +103,7 @@ class Messages extends Component {
         messages: PropTypes.object,
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
+        // teamMembersLoaded: PropTypes.bool,
         teamsLoaded: PropTypes.bool,
         messagesLoaded: PropTypes.bool,
         teams: PropTypes.object
@@ -202,14 +204,14 @@ class Messages extends Component {
                         ? (
                             <ScrollView style={styles.scroll}>
                                 <View style={styles.infoBlockContainer}>
-                            <FlatList
-                            data={myMessages}
-                            renderItem={({item}) => (<MessageItem item={item}/>)}
-                            style={styles.infoBlockContainer}
-                        />
+                                    <FlatList
+                                        data={myMessages}
+                                        renderItem={({item}) => (<MessageItem item={item}/>)}
+                                        style={styles.infoBlockContainer}
+                                    />
                                 </View>
                             </ScrollView>
-                                    )
+                        )
                         : (
                             <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
                                 <View style={{
@@ -222,7 +224,7 @@ class Messages extends Component {
                                 }}>
                                     <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
                                     <Text
-                                        style={styles.textDark}>{'Kick things off by messaging your teammates.'}</Text>
+                                        style={styles.textDark}>{'Try sending one to your teammates.'}</Text>
                                 </View>
                             </ImageBackground>
                         )}
@@ -259,15 +261,13 @@ class Messages extends Component {
         }
 
         return (
-            <View style={[styles.container, styles.loadingScreen]}>
-                <Text>Loading...</Text>
-            </View>
+            <ThinkingGreenThoughts/>
         );
     }
 }
 
 function mapStateToProps(state) {
-    let members = state.teams.teamMembers || {};
+    const members = state.teams.teamMembers || {};
     let canMessage = false;
     const memKeys = Object.keys(members);
 
@@ -291,6 +291,7 @@ function mapStateToProps(state) {
         messagesLoaded: state.messages.loaded,
         userHasTeams: canMessage,
         teamsLoaded: state.messages.teamsLoaded,
+        // teamMembersLoaded: state.teams.teamMembersLoaded,
         teams: state.teams.teams
     };
 }

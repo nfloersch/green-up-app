@@ -103,8 +103,8 @@ async function initialize(dispatch) {
                 console.log('We are authenticated now!'); // eslint-disable-line
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
                 dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
-                setupMessageListener(user.uid, dispatch);
                 setupProfileListener(user.uid, dispatch);
+                setupMessageListener(user.uid, dispatch);
                 setupTeamListener(dispatch);
                 setupTrashDropListener(dispatch);
                 setupInvitationListener(user.email, dispatch);

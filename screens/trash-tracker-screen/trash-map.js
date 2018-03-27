@@ -49,7 +49,7 @@ class TownInformation extends React.Component {
             <View style={styles.statusBar}>
                 {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
                     <Text style={styles.statusBarText}>
-                        {'Information about trash dropping is not available at this time for the town you are in.'}
+                        {'Sorry, we have no information on trash drops for your location.'}
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === true && (
@@ -234,7 +234,7 @@ class TrashMap extends Component {
                                 style={styles.headerButton}
                                 onPress={goToTrashDrop}>
                                 <Text style={styles.headerButtonText}>
-                                    {'Create Trash Drop'}
+                                    {'Drop A Trash Bag Here'}
                                 </Text>
                             </TouchableHighlight>
                         </View>
@@ -247,7 +247,7 @@ class TrashMap extends Component {
                                 showsUserLocation={true}
                                 showsMyLocationButton={true}
                                 showsCompass={true}
-                                style={{alignSelf: 'stretch', height: this.state.hackyHeight}}>
+                                style={{alignSelf: 'stretch', height: this.state.hackyHeight, borderWidth: 1, borderColor: '#AAA'}}>
                                 {drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true)).map(drop => (
                                     <MapView.Marker
                                         key={drop.uid}
@@ -292,7 +292,7 @@ class TrashMap extends Component {
                                         image={trashDropOffLocationIcon}
                                         coordinate={d.DropOffLocationCoordinates}>
                                         <MultiLineMapCallout title='Drop Off Location'
-                                                             description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}/>
+                                            description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}/>
                                     </MapView.Marker>
 
                                 ))}
@@ -302,39 +302,36 @@ class TrashMap extends Component {
                                         image={supplyPickupLocationIcon}
                                         coordinate={d.PickupLocationCoordinates}>
                                         <MultiLineMapCallout title='Supply Pickup Location'
-                                                             description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`}/>
+                                            description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`}/>
                                     </MapView.Marker>
                                 ))}
                             </MapView>
-                            <View>
-                                <Toggle
-                                    icon={collectedTrashIcon}
-                                    label='Show Collected Trash'
-                                    value={this.state.showCollectedTrash}
-                                    onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
-
+                            <View style={{marginTop: 20}}>
                                 <Toggle
                                     icon={myUncollectedTrashIcon}
-                                    label='Show My Uncollected Trash'
+                                    label='My Trash'
                                     value={this.state.showMyUncollectedTrash}
                                     onValueChange={(value) => this.setState({showMyUncollectedTrash: value})}/>
-
                                 <Toggle
                                     icon={uncollectedTrashIcon}
-                                    label='Show Uncollected Trash'
+                                    label='Uncollected Trash'
                                     value={this.state.showUncollectedTrash}
                                     onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
-
                                 <Toggle
                                     icon={trashDropOffLocationIcon}
-                                    label='Show Trash Drop Locations'
+                                    label='Trash Drop-Off Locations'
                                     value={this.state.showTrashDropLocations}
                                     onValueChange={(value) => this.setState({showTrashDropLocations: value})}/>
                                 <Toggle
                                     icon={supplyPickupLocationIcon}
-                                    label='Show Supply Pickup Locations'
+                                    label='Supply Pickup Locations'
                                     value={this.state.showSupplyPickupLocations}
                                     onValueChange={(value) => this.setState({showSupplyPickupLocations: value})}/>
+                                <Toggle
+                                    icon={collectedTrashIcon}
+                                    label='Collected Trash'
+                                    value={this.state.showCollectedTrash}
+                                    onValueChange={(value) => this.setState({showCollectedTrash: value})}/>
                             </View>
                         </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>

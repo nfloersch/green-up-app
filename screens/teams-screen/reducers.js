@@ -61,7 +61,8 @@ export function reducers(state = initialState.teams, action) {
         case types.TEAM_MEMBER_FETCH_SUCCESS : {
             return {
                 ...state,
-                teamMembers: {...state.teamMembers, [action.teamId]: action.membership}
+                teamMembers: {...state.teamMembers, [action.teamId]: action.membership},
+                teamMembersLoaded: true
             };
         }
 

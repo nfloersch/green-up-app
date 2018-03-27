@@ -95,7 +95,7 @@ export const boxes = {
         borderColor: 'black'
     },
     statusBar: {
-        height: 50,
+        height: 60,
         width: '100%',
         marginBottom: 10,
         flex: 1,
