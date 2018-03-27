@@ -55,7 +55,7 @@ class MenuScreen extends Component {
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('TrashBagFinder')}
                     >
-                        <Text style={styles.buttonText}>Find Bags & Get Town Info</Text>
+                        <Text style={styles.buttonText}>Town Info</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
