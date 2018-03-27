@@ -18,8 +18,8 @@ const aboutGreenUp = 'Green Up Vermont is a nonprofit organization with 501(c) (
     '’s mission is to promote the stewardship of our state’s natural landscape and wa' +
     'terways and the livability of our communities by involving people in Green Up Da' +
     'y and raising public awareness about the benefits of a litter-free environment.';
-const contactUs = 'Green Up Vermont staff:\nMelinda Vieux, President\nMelanie Phelps, Operations Ma' +
-    'nager \n\nContact Us:\n\tPhone:\n\t802-229-4586\n\t800-974-3259\n\tEmail: greenu' +
+const contactUs = 'Green Up Vermont staff:\nMelanie Phelps,\nOperations Manager / Interim President\n' +
+    '\n\nContact Us:\n\tPhone:\n\t802-229-4586\n\t800-974-3259\n\tEmail: greenu' +
     'p@greenupvermont.org\n\n\tBy mail: Green Up Vermont\n\tP. O. Box 1191\n\tMontpel' +
     'ier, VT 05601-1191';
 const frequentlyAskedQuestions = [
@@ -50,12 +50,6 @@ const frequentlyAskedQuestions = [
     }, {
         q: 'What else happens on Green Up Day?',
         a: 'Many communities provide refreshments, breakfast, picnic lunch or BBQ, dinner and even live music and entertainment. Contact your town coordinator to see what the local traditions may be.'
-    }, {
-        q: 'I am a girl or boy scout leader, or other community group leader. How do I get my kids involved in Green Up Day?',
-        a: 'Contact your town coordinator for information about the day’s events and how your group can make a difference.'
-    }, {
-        q: 'I am a teacher. How can my students gt involved?',
-        a: 'You can have them participate in the annual poster and writing contests. Go to the Poster and Writing Contests page to learn more. On that page, there are also two activity books for grades K-2 which can be downloaded.'
     }
 ];
 

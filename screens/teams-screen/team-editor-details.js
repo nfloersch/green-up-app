@@ -269,9 +269,8 @@ class TeamEditorDetails extends Component {
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Date</Text>
-                            <Text style={styles.alertInfo}>
-                                May 5th is the official Green Up Day, but teams
-                                may choose to work up to one week before or after.
+                            <Text style={[styles.alertInfo, {textAlign:'left', padding: 5}]}>
+                                May 5th is the official Green Up Day, but teams may choose to work up to one week before or after.
                             </Text>
                             <View>
                                 <TouchableOpacity onPress={this.showDatePicker}>
@@ -290,7 +289,7 @@ class TeamEditorDetails extends Component {
                                 />
                             </View>
                         </View>
-                        <View>
+                        <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Start Time</Text>
                             <View>
                                 <TouchableOpacity onPress={this.showStartDateTimePicker}>
