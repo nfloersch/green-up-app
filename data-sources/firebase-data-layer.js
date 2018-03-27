@@ -57,6 +57,10 @@ function setupProfileListener(userId, dispatch) {
 
         myTeamMemberListeners = newTeamMemberListeners;
 
+        if (addUs.length === 0) {
+            dispatch(dataLayerActions.noTeamsToLoad());
+        }
+
         addUs.forEach(id => {
             db.ref(`teamMembers/${id}`).on('value', (snapShot) => {
                 const _data = snapShot.val();

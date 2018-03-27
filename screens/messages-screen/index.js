@@ -33,14 +33,38 @@ const myStyles = {
         borderColor: '#888',
         borderStyle: 'solid'
     },
-    read: {
-        backgroundColor: '#DDD'
-    },
     unread: {
-        backgroundColor: '#EDEDED'
+        color: '#111',
+        fontSize: 12,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1
+    },
+    read: {
+        color: '#888',
+        fontSize: 12,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1
+    },
+    oldMsg:{
+        color: '#888',
+        fontSize: 16,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1
     },
     newMsg: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#111',
+        fontSize: 16,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 1
     },
     loadingScreen: {
         justifyContent: 'center',
@@ -60,29 +84,29 @@ class MessageItem extends Component {
         const item = this.props.item;
         return (
             <TouchableOpacity key={item.key} onPress={item.toDetail}>
-                <View style={[styles.row, {height: 75}, item.read ? styles.read : styles.unread]}>
+                <View style={[styles.row, {height: 85}]}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image
                             style={{width: 50, height: 50, marginRight: 10}}
                             source={{uri: item.sender.photoURL}}
                         />
                         <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                            <Text style={{
+                            <Text style={[item.read ? styles.read : styles.unread,{
                                 fontSize: 10,
                                 textAlign: 'left',
                                 fontWeight: 'bold'
-                            }}
+                            }]}
                             >{item.teamName}</Text>
-                            <Text style={[{height: 35}, item.read
+                            <Text style={[{height: 40}, item.read
                                 ? styles.oldMsg : styles.newMsg]}>
                                 {item.text.length > 80
                                     ? `${item.text.slice(0, 80)}...`
                                     : item.text}
                             </Text>
-                            <Text style={{
+                            <Text style={[item.read ? styles.read : styles.unread, {
                                 fontSize: 10,
                                 textAlign: 'right'
-                            }}>
+                            }]}>
                                 {`--${item.sender.displayName || item.sender.email}`}
                             </Text>
                         </View>
@@ -103,7 +127,7 @@ class Messages extends Component {
         messages: PropTypes.object,
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
-        // teamMembersLoaded: PropTypes.bool,
+        teamMembersLoaded: PropTypes.bool,
         teamsLoaded: PropTypes.bool,
         messagesLoaded: PropTypes.bool,
         teams: PropTypes.object
@@ -160,7 +184,7 @@ class Messages extends Component {
     }
 
     render() {
-        if (this.props.teamsLoaded && this.props.messagesLoaded && this.props.invitationsLoaded) {
+        if (this.props.teamMembersLoaded && this.props.teamsLoaded && this.props.messagesLoaded && this.props.invitationsLoaded) {
             const invitations = this.props.invitations;
             const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
                 Object.assign({}, obj, {
@@ -291,7 +315,7 @@ function mapStateToProps(state) {
         messagesLoaded: state.messages.loaded,
         userHasTeams: canMessage,
         teamsLoaded: state.messages.teamsLoaded,
-        // teamMembersLoaded: state.teams.teamMembersLoaded,
+        teamMembersLoaded: state.loading.teamMembersLoaded,
         teams: state.teams.teams
     };
 }

@@ -20,6 +20,16 @@ export function reducers(state = initialState.loading, action) {
                 skipLoadingScreen: true,
                 loadingError: action.error
             };
+        case types.NO_TEAMS_TO_LOAD:
+            return {
+                ...state,
+                teamMembersLoaded: true
+            };
+        case types.TEAM_MEMBER_FETCH_SUCCESS:
+            return {
+                ...state,
+                teamMembersLoaded: true
+            };
         default:
             return state;
     }

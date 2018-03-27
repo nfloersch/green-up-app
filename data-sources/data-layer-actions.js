@@ -60,3 +60,7 @@ export function townDataFetchSuccessful(townData: Object) {
 export function invitationFetchSuccessful(invitations: Object) {
     return {type: types.FETCH_INVITATIONS_SUCCESS, invitations};
 }
+
+export function noTeamsToLoad() {
+    return {type: types.NO_TEAMS_TO_LOAD};
+}
