@@ -63,7 +63,7 @@ class TownInformation extends React.Component {
                             <Text style={{fontWeight: 'bold'}}>
                                 {' not'}
                             </Text>
-                            {' allowed. \n Please bring collected trash to the designated drop off locations:'}
+                            {' allowed. Please bring collected trash to the designated drop off locations:'}
                         </Text>
                         {townInfo.DropOffLocations.map(d => (
                             <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>

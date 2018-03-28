@@ -103,7 +103,7 @@ class Profile extends Component {
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlockContainer}>
+                        <View style={[styles.infoBlockContainer, {height: 400}]}>
                             <View style={[styles.profileHeader, {backgroundColor: 'white'}]}>
                                 <Image
                                     style={{width: 50, height: 50}}
@@ -113,7 +113,7 @@ class Profile extends Component {
                                     {this.state.displayName || ''}
                                 </Text>
                             </View>
-                            <View style={{marginTop: 10}}>
+                            <View style={{marginTop: 20}}>
                                 <Text style={styles.labelDark}>{'My Name'}</Text>
                                 <TextInput
                                     style={styles.textInput}
@@ -132,6 +132,7 @@ class Profile extends Component {
                                     style={[styles.textInput, styles.aboutMeInput]}
                                     keyBoardType={'default'}
                                     multiline={true}
+                                    textAlignVertical='top'
                                     numberOfLines={5}
                                     maxLength={144}
                                     onChangeText={this._changeText('bio')}
@@ -140,13 +141,13 @@ class Profile extends Component {
                                     underlineColorAndroid={'transparent'}
                                 />
                             </View>
-                            {
-                                Platform.OS === 'ios'
-                                    ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                                    : null
-                            }
                         </View>
                     </ScrollView>
+                    {
+                        Platform.OS === 'ios'
+                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                            : null
+                    }
                 </KeyboardAvoidingView>
             </View>
         );
