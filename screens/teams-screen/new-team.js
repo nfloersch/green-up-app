@@ -152,7 +152,7 @@ class NewTeam extends Component {
         if (query === '') {
             return [];
         }
-        return vermontTowns.filter(x => x.indexOf(query) > -1);
+        return vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
     };
 
     render() {
@@ -226,9 +226,9 @@ class NewTeam extends Component {
                             <Autocomplete
                                 inputContainerStyle={{borderColor: '#000'}}
                                 data={query.length > 0 &&
-                                comp(query, towns[0] || '') ? [] : towns}
+                                      comp(query, towns[0] || '') ? [] : towns}
                                 defaultValue={this.state.town || ''}
-                                onChangeText={text => this.setState({query: text})}
+                                onChangeText={text => this.setState({query: text, town: text})}
                                 renderItem={town => (
                                     <TouchableOpacity
                                         style={styles.suggestion}
