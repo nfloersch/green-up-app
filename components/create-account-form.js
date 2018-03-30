@@ -28,7 +28,7 @@ export default class CreateAccountForm extends Component {
 
     onChangeState(stateKey) {
         return (value) => {
-            this.setState({[stateKey]: value});
+            this.setState({[stateKey]: stateKey === 'email' ? value.toLowerCase() : value});
         };
     }
 

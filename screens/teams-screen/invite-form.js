@@ -33,7 +33,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 function _changeInvitee(key) {
     return (value) => {
-        this.setState({[key]: value});
+        this.setState({[key]: key === 'email' ? value.toLowerCase() : value});
     };
 }
 
@@ -99,7 +99,7 @@ class InviteForm extends Component {
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='john@example.com'
-                                value={this.state.email}
+                                value={(this.state.email || '').toLowerCase()}
                                 onChangeText={this.changeInvitee('email')}
                                 underlineColorAndroid={'transparent'}
                             />

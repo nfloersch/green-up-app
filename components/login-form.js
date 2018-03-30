@@ -28,7 +28,7 @@ export default class LoginForm extends Component {
 
     onChangeState(stateKey) {
         return (value) => {
-            this.setState({[stateKey]: value});
+            this.setState({[stateKey]: stateKey === 'email' ? value.toLowerCase() : value});
         };
     }
 
@@ -68,10 +68,10 @@ export default class LoginForm extends Component {
                         underlineColorAndroid={'transparent'}
                     />
                 </View>
-                     <TouchableOpacity style={styles.button} onPress={this.onButtonPress}>
-                        <Text style={styles.buttonText}>{this.props.buttonText || 'Login'}</Text>
-                    </TouchableOpacity>
-             </View>
+                <TouchableOpacity style={styles.button} onPress={this.onButtonPress}>
+                    <Text style={styles.buttonText}>{this.props.buttonText || 'Login'}</Text>
+                </TouchableOpacity>
+            </View>
         );
     }
 }
