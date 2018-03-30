@@ -96,7 +96,6 @@ export function facebookLogin() {
                 });
             });
         } else {
-            console.log('facebook login failed');
             dispatch({
                 type: types.LOGIN_FAIL,
                 session: {
