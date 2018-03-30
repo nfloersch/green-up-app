@@ -59,10 +59,9 @@ function sendInvitationEmailSendGrid(invitation) {
         text,
         html,
         templateId: '93b4cee5-a954-4704-ae0b-965196dc05b1',
-        substitutions: { teaminfo }
+        substitutions: {teaminfo}
     };
 
-    console.log(JSON.stringify(message));
     return sgMail.send(message);
 
 }
@@ -85,7 +84,7 @@ function sendInvitationEmailGmail(to, fromEmail, fromName, subject, text) {
  */
 exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invitationId}').onCreate((event) => {
     const invitation = event.data.val();
-    return sendInvitationEmailSendGrid(invitation).then(x => console.log(`Email sent to: ${invitation.teamMember.displayName}`));
+    return sendInvitationEmailSendGrid(invitation);
 });
 
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
@@ -104,7 +103,7 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
             return removeInvitation(key, event.params.pushId);
         });
     }
-    return Promise.reject(new Error('no team memberships to remove'))
+    return Promise.reject(new Error('no team memberships to remove'));
 });
 
 
@@ -115,22 +114,18 @@ exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membe
     const removeTeamMessages = (uid, teamId) => db.ref(`messages/${uid}`).once('value').then(snapshot => {
         const data = snapshot.val();
         const keys = Object.keys(data).filter(key => !!data[key].teamId && data[key].teamId === teamId);
-        return keys.map(key => {
-            console.log(`deleting message ${data[key].text}`);
-            return db.ref(`messages/${uid}/${key}`).remove();
-        });
+        return keys.map(key => db.ref(`messages/${uid}/${key}`).remove());
     });
     const member = event.data.previous;
     if (member.exists()) {
         const uid = (member.val() || {}).uid;
-        console.log(`removing user ${event.params.membershipId} from team ${event.params.teamId}`);
         if (Boolean(uid)) {
             removeFromProfile(uid, event.params.teamId);
             removeTeamMessages(uid, event.params.teamId);
         }
         return removeInvitation(event.params.membershipId, event.params.teamId); // TODO : return all promises
     }
-    return Promise.reject(new Error('no team member to remove'))
+    return Promise.reject(new Error('no team member to remove'));
 });
 
 

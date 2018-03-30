@@ -11,7 +11,6 @@ export function addMessageSuccess(data) {
 
 export function sendMessage(message: Object, recipients: [Object]) {
     const _message = Message.create(message);
-    console.log(JSON.stringify(_message));
     const _recipients = recipients.filter(recipient => recipient.memberStatus === statuses.ACCEPTED || recipient.memberStatus === statuses.OWNER);
     return () => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
 }
@@ -22,16 +21,13 @@ export function readMessageSuccess(data) {
 
 export function readMessage(message, userID) {
     const _message = Object.assign({}, message, {read: true});
-    return (dispatch) => {
-        return firebaseDataLayer.updateMessage(_message, userID).then(res => {
-            dispatch(readMessage(res));
-        }).catch(error => {
-            console.log(error); //eslint-disable-line
-        });
-    };
+    return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
+        dispatch(readMessage(res));
+    }).catch(error => {
+    });
 }
 
-export function selectTeamById(teamId: string){
+export function selectTeamById(teamId: string) {
     return {type: types.SELECT_TEAM_BY_ID, teamId};
 }
 

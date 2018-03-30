@@ -14,7 +14,7 @@ import Profile from '../screens/profile-screen/';
 import About from '../screens/about-screen/';
 import TeamMemberDetails from '../screens/teams-screen/team-member-details';
 import TrashBagFinder from '../screens/trash-bag-finder-screen';
-import Privacy from "../screens/about-screen/privacy-screen";
+import Privacy from '../screens/about-screen/privacy-screen';
 
 const RootStackNavigator = StackNavigator(
     {
@@ -78,7 +78,6 @@ export default class RootNavigator extends React.Component {
     }
 
     _handleNotification = ({origin, data}) => {
-        console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
     };
 
     render() {

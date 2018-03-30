@@ -95,7 +95,7 @@ class TeamDetails extends Component {
             'Are you really, really sure you want to leave this team?',
             [
                 {
-                    text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'
+                    text: 'No', onPress: () => {}, style: 'cancel'
                 },
                 {
                     text: 'Yes', onPress: () => {

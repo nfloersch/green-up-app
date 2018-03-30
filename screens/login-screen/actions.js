@@ -34,7 +34,6 @@ export function createUser(email: string, password: string, displayName: string)
         dispatch({type: types.CREATING_USER});
         const _promise = firebaseDataLayer.createUser(email, password, displayName);
         return _promise.then((data) => {
-            console.log(data);
         }).catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});
         });
@@ -85,12 +84,10 @@ export function facebookLogin() {
             behavior: 'web', permissions: ['public_profile', 'email']
         });
         const {type, token} = facebook;
-        console.log(type);
         if (type === 'success') {
             // Get the user's name using Facebook's Graph API
             const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
             const userInfo = await response.json();
-            console.log(`facebook login successful for ${ userInfo.name}`);
 
             firebaseDataLayer.facebookAuth(token).catch((error) => {
                 dispatch({

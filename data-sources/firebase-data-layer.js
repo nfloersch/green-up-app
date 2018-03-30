@@ -96,7 +96,6 @@ function setupInvitationListener(email, dispatch) {
 }
 
 async function initialize(dispatch) {
-    console.log('Initializing Firebase');
 
     /** Setup Listeners **/
 
@@ -104,7 +103,6 @@ async function initialize(dispatch) {
         .auth()
         .onAuthStateChanged((user) => {
             if (!!user) {
-                console.log('We are authenticated now!'); // eslint-disable-line
                 dispatch(dataLayerActions.userAuthenticated(User.create(user)));
                 dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
                 setupProfileListener(user.uid, dispatch);
@@ -118,7 +116,6 @@ async function initialize(dispatch) {
                     dispatch(dataLayerActions.townDataFetchSuccessful(snapshot.val()));
                 });
             } else {
-                console.log('We failed auth'); // eslint-disable-line
                 dispatch(dataLayerActions.userFailedAuthentication());
             }
         });
@@ -221,7 +218,6 @@ function createUser(email: string, password: string, displayName: string) {
         })
         .catch((error) => {
             // Handle Errors here.
-            console.log(error.message); // eslint-disable-line
             throw error; // Rethrow so we can deal with error later too.
         });
 }
@@ -241,7 +237,6 @@ function loginWithEmailPassword(_email: string, password: string) {
             });
         })
         .catch(error => {
-            console.log(error.message); // eslint-disable-line
             throw error; // Rethrow so we can deal with error later too.
         });
 }

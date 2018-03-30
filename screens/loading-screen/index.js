@@ -77,12 +77,10 @@ class LoadingScreen extends Component {
     };
 
     _handleFinishLoading = () => {
-        console.log('LOADING COMPLETED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         this.props.actions.loadingCompleted();
     };
 
     render() {
-        console.log('rendering loading screen');
         switch (true) {
             case (!this.props.isLoadingComplete && !this.props.skipLoadingScreen):
                 return (

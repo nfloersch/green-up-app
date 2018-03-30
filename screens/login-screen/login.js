@@ -90,7 +90,7 @@ class Login extends Component {
                 '',
                 (nextProps.loginError.message || 'Login Failed'),
                 [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')}
+                    {text: 'OK', onPress: () => {}}
                 ],
                 {cancelable: false}
             );

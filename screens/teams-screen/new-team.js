@@ -91,7 +91,6 @@ class NewTeam extends Component {
     };
 
     _createTeam = () => {
-        console.log('CREATE TEAM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
         if (!team.name) {
             Alert.alert('Please give your team a name.');
@@ -252,7 +251,7 @@ class NewTeam extends Component {
                             />
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={[styles.alertInfo,{textAlign:'left'}]}>
+                            <Text style={[styles.alertInfo, {textAlign:'left'}]}>
                                 Saturday, May 5th is Green Up Day, but your team can choose to work up to one week before or after.
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
