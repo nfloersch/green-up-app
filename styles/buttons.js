@@ -88,7 +88,6 @@ export const buttons = {
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 1,
         shadowRadius: 0
-
     },
     singleButtonHeader: {
         width: '100%',

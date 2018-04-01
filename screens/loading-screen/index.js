@@ -111,9 +111,7 @@ class LoadingScreen extends Component {
                 //         <RootNavigation/>
                 //     </View>
                 return (
-                    <View style={styles.container}>
-                        {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
-                        {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}
+                    <View style={[styles.container, {padding: 0, margin: 0}]}>
                         <RootNavigation/>
                     </View>
                 );
