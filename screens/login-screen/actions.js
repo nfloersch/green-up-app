@@ -57,7 +57,8 @@ export function googleLogin() {
                 iosClientId: '439621369113-9iqssauvd4jnr3kqrl6it7sjdock5n53.apps.googleusercontent.com',
                 iosStandaloneAppClientId:'439621369113-o7buqq3g66656fhvj4d4t6be0cubgkjg.apps.googleusercontent.com',
                 scopes: ['profile', 'email'],
-                useBrowser: true
+                useBrowser: true,
+                behavior:'web'
             });
 
             if (result.type === 'success') {

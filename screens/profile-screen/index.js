@@ -143,11 +143,6 @@ class Profile extends Component {
                             </View>
                         </View>
                     </ScrollView>
-                    {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                            : null
-                    }
                 </KeyboardAvoidingView>
             </View>
         );
