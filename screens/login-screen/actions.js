@@ -33,8 +33,7 @@ export function createUser(email: string, password: string, displayName: string)
     return (dispatch: Object => *) => {
         dispatch({type: types.CREATING_USER});
         const _promise = firebaseDataLayer.createUser(email, password, displayName);
-        return _promise.then((data) => {
-        }).catch(error => {
+        return _promise.catch(error => {
             dispatch({type: types.CREATE_USER_FAIL, error});
         });
     };
@@ -54,7 +53,9 @@ export function googleLogin() {
         try {
             const result = await Expo.Google.logInAsync({
                 androidClientId: '439621369113-oe6f0lm8a5qds59019dfpjf5dnl364g0.apps.googleusercontent.com',
+                androidStandaloneAppClientId: '439621369113-qhjq9o6e5ile1e1grlcpm6i1ett9f834.apps.googleusercontent.com',
                 iosClientId: '439621369113-9iqssauvd4jnr3kqrl6it7sjdock5n53.apps.googleusercontent.com',
+                iosStandaloneAppClientId:'439621369113-o7buqq3g66656fhvj4d4t6be0cubgkjg.apps.googleusercontent.com',
                 scopes: ['profile', 'email'],
                 useBrowser: true
             });
@@ -86,8 +87,8 @@ export function facebookLogin() {
         const {type, token} = facebook;
         if (type === 'success') {
             // Get the user's name using Facebook's Graph API
-            const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
-            const userInfo = await response.json();
+            // const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
+            // const userInfo = await response.json();
 
             firebaseDataLayer.facebookAuth(token).catch((error) => {
                 dispatch({

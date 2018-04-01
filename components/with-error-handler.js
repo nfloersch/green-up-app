@@ -54,7 +54,7 @@ function _handleError(error: any) {
             hasError = false;
             errorMessage = '';
     }
-    console.warn(`ERROR: ${errorMessage}`);
+    // console.warn(`ERROR: ${errorMessage}`);
     this.setState({hasError, error: errorMessage});
 }
 

@@ -23,12 +23,18 @@ export default class CreateAccountForm extends Component {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onChangeState = this.onChangeState.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
         this.state = {email: '', password: '', displayName: ''};
+    }
+
+
+    onChangeEmail(value) {
+        this.setState({email: (value || '').trim()});
     }
 
     onChangeState(stateKey) {
         return (value) => {
-            this.setState({[stateKey]: stateKey === 'email' ? value.toLowerCase() : value});
+            this.setState({[stateKey]: value});
         };
     }
 
@@ -51,6 +57,7 @@ export default class CreateAccountForm extends Component {
                 <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
+                        autoCapitalize='none'
                         autoCorrect={false}
                         placeholder='you@domain.com'
                         value={this.state.email}
@@ -62,6 +69,7 @@ export default class CreateAccountForm extends Component {
                 <View>
                     <Text style={styles.label}>Password</Text>
                     <TextInput
+                        autoCapitalize='none'
                         autoCorrect={false}
                         placeholder={'*****'}
                         secureTextEntry={true}

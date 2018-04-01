@@ -3,6 +3,7 @@ import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
 import {TeamMember} from '../models/team-member';
 import * as types from '../constants/actionTypes';
+// import Expo from 'expo';
 
 // TODO : Fix these promise chains
 // Some of these functions have nested promises where some of the promised are ignored (Not returned)
@@ -146,6 +147,7 @@ async function facebookAuth(token) {
 }
 
 async function googleAuth(token) {
+
     // Build Firebase credential with the Google access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
     return firebase.auth().signInWithCredential(credential)

@@ -31,9 +31,13 @@ const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
+function _onChangeEmail(value){
+    this.setState({email: (value || '').trim()});
+}
+
 function _changeInvitee(key) {
     return (value) => {
-        this.setState({[key]: key === 'email' ? value.toLowerCase() : value});
+        this.setState({[key]: value});
     };
 }
 
@@ -70,6 +74,7 @@ class InviteForm extends Component {
         super(props);
         this.inviteToTeam = _inviteToTeam.bind(this);
         this.changeInvitee = _changeInvitee.bind(this);
+        this.onChangeEmail = _onChangeEmail.bind(this);
         this.state = {firstName: '', lastName: '', email: ''};
     }
 
@@ -99,8 +104,8 @@ class InviteForm extends Component {
                             <TextInput
                                 style={styles.textInput}
                                 placeholder='john@example.com'
-                                value={(this.state.email || '').toLowerCase()}
-                                onChangeText={this.changeInvitee('email')}
+                                value={this.state.email || ''}
+                                onChangeText={this.onChangeEmail}
                                 underlineColorAndroid={'transparent'}
                             />
                             <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>

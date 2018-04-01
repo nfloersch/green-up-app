@@ -72,7 +72,7 @@ class LoadingScreen extends Component {
     _handleLoadingError = error => {
         // In this case, you might want to report the error to your error
         // reporting service, for example Sentry
-        console.warn(error);
+        // console.warn(error);
         this.props.actions.loadingCompleted(false, error);
     };
 
