@@ -49,8 +49,7 @@ class CreateNewAccount extends Component {
                     }
                 </ScrollView>
             </KeyboardAvoidingView>
-        )
-            ;
+        );
     }
 }
 

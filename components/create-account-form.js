@@ -46,13 +46,11 @@ export default class CreateAccountForm extends Component {
 
     onButtonPress() {
         if (email(this.state.email)) {
-            this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName).catch(e => Alert.alert(e));
+            this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
         } else {
             Alert.alert('Please enter a valid email address');
         }
     }
-
-
 
     render() {
         return (

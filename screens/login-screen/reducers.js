@@ -6,6 +6,7 @@ export function reducers(state = initialState.login, action) {
         case types.LOGIN_SUCCESSFUL:
             return {
                 ...state,
+                createUserError: null,
                 userIsLoggedIn: true,
                 user: action.user,
                 initialAuthChecked: true,
@@ -16,6 +17,7 @@ export function reducers(state = initialState.login, action) {
             return {
                 ...state,
                 user: null,
+                createUserError: null,
                 userIsLoggedIn: false,
                 initialAuthChecked: true,
                 loginError: action.error,
@@ -26,13 +28,15 @@ export function reducers(state = initialState.login, action) {
         case types.CREATING_USER:
             return {
                 ...state,
-                creatingUser: true
+                creatingUser: true,
+                createUserError: null
             };
         case types.LOGOUT_FAIL:
             return initialState.login;
         case types.IS_LOGGING_IN_VIA_SSO:
             return {
                 ...state, initialAuthChecked: true,
+                createUserError: null,
                 isLoggingInViaSSO: action.isLoggingInViaSSO
             };
         case types.CREATE_USER_FAIL :
