@@ -33,9 +33,9 @@ export function reducers(state = initialState.login, action) {
             };
         case types.CREATE_USER_FAIL:
             return {
-              ...state,
-              loginError: action.error
-        }
+                ...state,
+                createUserError: action.error
+            };
         case types.LOGOUT_FAIL:
             return initialState.login;
         case types.IS_LOGGING_IN_VIA_SSO:
