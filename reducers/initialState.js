@@ -10,6 +10,7 @@ export default {
         userIsLoggedIn: false,
         initialAuthChecked: false,
         creatingUser: false,
+        createUserError: null,
         user: null,
         isLoggingInViaSSO: false
     },

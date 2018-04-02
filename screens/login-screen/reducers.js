@@ -35,6 +35,10 @@ export function reducers(state = initialState.login, action) {
                 ...state, initialAuthChecked: true,
                 isLoggingInViaSSO: action.isLoggingInViaSSO
             };
+        case types.CREATE_USER_FAIL :
+            return {
+                ...state, createUserError: action.error
+            };
         default:
             return state;
     }

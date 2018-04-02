@@ -18,6 +18,7 @@ class CreateNewAccount extends Component {
 
     static propTypes = {
         actions: PropTypes.object,
+        createUserError: PropTypes.string,
         navigation: PropTypes.object
     };
 
@@ -36,7 +37,11 @@ class CreateNewAccount extends Component {
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <ScrollView style={styles.scroll}>
-                    <CreateAccountForm buttonText='Create Account' onButtonPress={this.props.actions.createUser}/>
+                    <CreateAccountForm
+                        buttonText='Create Account'
+                        createUserError={this.props.createUserError}
+                        onButtonPress={this.props.actions.createUser}
+                    />
                     {
                         Platform.OS === 'ios'
                             ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
@@ -44,11 +49,12 @@ class CreateNewAccount extends Component {
                     }
                 </ScrollView>
             </KeyboardAvoidingView>
-        );
+        )
+            ;
     }
 }
 
-const mapStateToProps = (state) => ({session: state.login.session});
+const mapStateToProps = (state) => ({session: state.login.session, createUserError: state.login.createUserError});
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)

@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, ScrollView, Text, View, FlatList, TextInput, Platform} from 'react-native';
+import {StyleSheet, KeyboardAvoidingView, ScrollView, Text, View, FlatList, TextInput, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actions from './actions';

@@ -34,7 +34,7 @@ export function createUser(email: string, password: string, displayName: string)
         dispatch({type: types.CREATING_USER});
         const _promise = firebaseDataLayer.createUser(email, password, displayName);
         return _promise.catch(error => {
-            dispatch({type: types.CREATE_USER_FAIL, error});
+            dispatch({type: types.CREATE_USER_FAIL, error: error.message || 'Could not create acount.'});
         });
     };
 }

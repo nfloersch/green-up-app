@@ -16,6 +16,7 @@ export default class CreateAccountForm extends Component {
     };
     static propTypes = {
         buttonText: PropTypes.string,
+        createUserError: PropTypes.string,
         onButtonPress: PropTypes.func
     };
 
@@ -27,6 +28,11 @@ export default class CreateAccountForm extends Component {
         this.state = {email: '', password: '', displayName: ''};
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.createUserError){
+            Alert.alert(nextProps.createUserError);
+        }
+    }
 
     onChangeEmail(value) {
         this.setState({email: (value || '').trim()});
@@ -40,11 +46,13 @@ export default class CreateAccountForm extends Component {
 
     onButtonPress() {
         if (email(this.state.email)) {
-            this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
+            this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName).catch(e => Alert.alert(e));
         } else {
             Alert.alert('Please enter a valid email address');
         }
     }
+
+
 
     render() {
         return (
