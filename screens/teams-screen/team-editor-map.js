@@ -163,7 +163,8 @@ class TeamEditorMap extends Component {
                                     <MapView.Marker coordinate={marker.coordinates}
                                         key={`location${index}`}
                                         pinColor={'red'}
-                                        onCalloutPress={this._removeMarker(marker)}>
+                                        onCalloutPress={this._removeMarker(marker)}
+                                        stopPropagation={true}>
                                         <MultiLineMapCallout title={marker.title || 'clean area'}
                                             description={marker.description || 'tap to remove'}/>
                                     </MapView.Marker>
@@ -174,7 +175,8 @@ class TeamEditorMap extends Component {
                                         coordinate={a.coordinates}
                                         // image={otherTeamsLocationImage}
                                         pinColor={'yellow'}
-                                        title={a.title}>
+                                        title={a.title}
+                                        stopPropagation={true}>
                                         <MultiLineMapCallout title={a.title} description={a.description}/>
                                     </MapView.Marker>
                                     ))}
