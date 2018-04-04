@@ -63,7 +63,7 @@ class TeamDetails extends Component {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01
         } : {
-            latitude:43.5705016,
+            latitude: 43.5705016,
             longitude: -72.6767611,
             latitudeDelta: 3,
             longitudeDelta: 3
@@ -95,7 +95,8 @@ class TeamDetails extends Component {
             'Are you really, really sure you want to leave this team?',
             [
                 {
-                    text: 'No', onPress: () => {}, style: 'cancel'
+                    text: 'No', onPress: () => {
+                    }, style: 'cancel'
                 },
                 {
                     text: 'Yes', onPress: () => {
@@ -148,7 +149,8 @@ class TeamDetails extends Component {
                         .values(teamMembers)
                         .map((member, i) => (
                             <TouchableHighlight
-                                key={i} style={{
+                                key={i}
+                                style={{
                                     borderStyle: 'solid',
                                     borderWidth: 1,
                                     backgroundColor: 'white',
@@ -284,7 +286,29 @@ class TeamDetails extends Component {
             }
         };
 
-        const otherTeamsLocationImage = require('../../assets/images/flag.png');
+        // const otherTeamsLocationImage = require('../../assets/images/flag.png');
+
+        const areas = Array.isArray(this.props.otherCleanAreas) ? this.props.otherCleanAreas : [];
+
+
+        const otherTeamAreas = areas.map((a, i) =>
+            (
+                <MapView.Marker
+                    key={i + 1000}
+                    coordinate={a.coordinates}>
+                    <MultiLineMapCallout title={a.title || ''} description={a.description || ''}/>
+                </MapView.Marker>
+            )
+        );
+
+
+        const teamAreas = (this.props.locations || []).map((marker, index) => (
+            <MapView.Marker
+                coordinate={marker.coordinates}
+                key={index}>
+                <MultiLineMapCallout title={marker.title || 'clean area'} description={''}/>
+            </MapView.Marker>
+        )).concat(otherTeamAreas);
 
         return (
             <View style={styles.frame}>
@@ -334,21 +358,7 @@ class TeamDetails extends Component {
                                 style={{height: 300, marginBottom: 20, marginTop: 5}}
                                 initialRegion={this.state.initialMapLocation}
                                 onPress={this._handleMapClick}>
-                                {this.props.locations.length > 0 && this.props.locations.map((marker, index) => (
-                                    <MapView.Marker
-                                        coordinate={marker.coordinates}
-                                        key={index}>
-                                        <MultiLineMapCallout title={marker.title || 'clean area'} description={''} />
-                                    </MapView.Marker>
-                                ))}
-                                {this.props.otherCleanAreas.length > 0 && this.props.otherCleanAreas.map((a, i) =>
-                                    (<MapView.Marker
-                                        key={i}
-                                        coordinate={a.coordinates}
-                                        image={otherTeamsLocationImage}>
-                                        <MultiLineMapCallout title={a.title} description={a.description} />
-                                    </MapView.Marker>
-                                    ))}
+                                {teamAreas}
                             </MapView>
                         </View>
                         <View style={[styles.block, {

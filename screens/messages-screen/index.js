@@ -94,7 +94,8 @@ class MessageItem extends Component {
                             <Text style={[item.read ? styles.read : styles.unread,{
                                 fontSize: 10,
                                 textAlign: 'left',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold',
+                                height: 13
                             }]}
                             >{item.teamName}</Text>
                             <Text style={[{height: 40}, item.read

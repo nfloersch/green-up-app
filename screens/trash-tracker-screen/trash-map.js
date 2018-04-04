@@ -31,6 +31,12 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 import Toggle from '../../components/Toggle';
+import circleGray from '../../assets/images/circle-gray.png';
+import circleBlue from '../../assets/images/circle-blue.png';
+import circleRed from '../../assets/images/circle-red.png';
+import circleYellow from '../../assets/images/circle-yellow.png';
+import circleGreen from '../../assets/images/circle-green.png';
+import circlePurple from '../../assets/images/circle-purple.png';
 
 const myStyles = {};
 
@@ -49,7 +55,7 @@ class TownInformation extends React.Component {
             <View style={styles.statusBar}>
                 {typeof townInfo.RoadsideDropOffAllowed === 'undefined' && (
                     <Text style={styles.statusBarText}>
-                        {'Sorry, we have no information on trash drops for your location.'}
+                        {'Sorry, we have no information on trash drops for your location. '}
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === true && (
@@ -106,10 +112,10 @@ class TrashMap extends Component {
             modalVisible: false,
             errorMessage: null,
             showCollectedTrash: false,
-            showUncollectedTrash: true,
-            showTrashDropLocations: true,
-            showSupplyPickupLocations: true,
-            showMyUncollectedTrash: true,
+            showUncollectedTrash: false,
+            showTrashDropLocations: false,
+            showSupplyPickupLocations: false,
+            showMyUncollectedTrash: false,
             hackyHeight: 300
         };
     }
@@ -217,13 +223,87 @@ class TrashMap extends Component {
             longitudeDelta: 0.0421
         } : null;
 
-        const collectedTrashIcon = require('../../assets/images/checkbox-marked-circle.png');
-        const uncollectedTrashIcon = require('../../assets/images/delete-circle.png');
-        const trashDropOffLocationIcon = require('../../assets/images/home-circle.png');
-        const supplyPickupLocationIcon = require('../../assets/images/broom.png');
-        const myUncollectedTrashIcon = require('../../assets/images/delete-circle-light-green.png');
+        // const collectedTrashIcon = require('../../assets/images/checkbox-marked-circle.png');
+        // const uncollectedTrashIcon = require('../../assets/images/delete-circle.png');
+        // const trashDropOffLocationIcon = require('../../assets/images/home-circle.png');
+        // const supplyPickupLocationIcon = require('../../assets/images/broom.png');
+        // const myUncollectedTrashIcon = require('../../assets/images/delete-circle-light-green.png');
 
         const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
+
+
+        const collectedTrash = (drops || []).filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true)).map(drop => (
+            <MapView.Marker
+                key={drop.uid}
+                // image={collectedTrashIcon}
+                pinColor = {'gray'}
+                coordinate={drop.location}
+                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                description={'Tap to view collected trash'}
+                onCalloutPress={() => {
+                    this.setState({modalVisible: true, drop: drop});
+                }}
+            />
+        ));
+
+        const myTrash = (drops || []).filter(drop => (this.state.showMyUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
+            <MapView.Marker
+                key={drop.uid}
+                // image={myUncollectedTrashIcon}
+                pinColor={'yellow'}
+                coordinate={drop.location}
+                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                description={'Tap to view, edit or collect'}
+                onCalloutPress={() => {
+                    this.setState({modalVisible: true, drop: drop});
+                }}
+            />
+        ));
+
+        const unCollectedTrash = (drops || []).filter(drop => (this.state.showUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
+            <MapView.Marker
+                key={drop.uid}
+                // image={uncollectedTrashIcon}
+                pinColor={'red'}
+                coordinate={drop.location}
+                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                description={'Tap to view or collect'}
+                onCalloutPress={() => {
+                    this.setState({modalVisible: true, drop: drop});
+                }}
+            />
+        ));
+
+        const dropOffLocations = (this.state.showTrashDropLocations && trashDropOffLocations || []).map((d, i) => (
+            <MapView.Marker
+                key={`${town}DropOffLocation${i}`}
+                // image={trashDropOffLocationIcon}
+                pinColor={'blue'}
+                coordinate={d.DropOffLocationCoordinates}>
+                <MultiLineMapCallout
+                    title='Drop Off Location'
+                    description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
+                />
+            </MapView.Marker>
+        ));
+
+        const pickupLocations = (this.state.showSupplyPickupLocations && supplyPickupLocations || []).map((d, i) => (
+            <MapView.Marker
+                key={`supplyPickup${i}`}
+                // image={supplyPickupLocationIcon}
+                pinColor={'green'}
+                coordinate={d.PickupLocationCoordinates}>
+                <MultiLineMapCallout
+                    title='Supply Pickup Location'
+                    description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`}
+                />
+            </MapView.Marker>
+        ));
+
+
+        const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash);
+
+
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : initialMapLocation &&
             (
@@ -247,88 +327,38 @@ class TrashMap extends Component {
                                 showsUserLocation={true}
                                 showsMyLocationButton={true}
                                 showsCompass={true}
-                                style={{alignSelf: 'stretch', height: this.state.hackyHeight, borderWidth: 1, borderColor: '#AAA'}}>
-                                {drops.filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true)).map(drop => (
-                                    <MapView.Marker
-                                        key={drop.uid}
-                                        image={collectedTrashIcon}
-                                        coordinate={drop.location}
-                                        title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
-                                        description={'Tap to view collected trash'}
-                                        onCalloutPress={() => {
-                                            this.setState({modalVisible: true, drop: drop});
-                                        }}
-                                    />
-                                ))}
-
-                                {drops.filter(drop => (this.state.showMyUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
-                                    <MapView.Marker
-                                        key={drop.uid}
-                                        image={myUncollectedTrashIcon}
-                                        coordinate={drop.location}
-                                        title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
-                                        description={'Tap to view, edit or collect'}
-                                        onCalloutPress={() => {
-                                            this.setState({modalVisible: true, drop: drop});
-                                        }}
-                                    />
-                                ))}
-
-                                {drops.filter(drop => (this.state.showUncollectedTrash && !drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
-                                    <MapView.Marker
-                                        key={drop.uid}
-                                        image={uncollectedTrashIcon}
-                                        coordinate={drop.location}
-                                        title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
-                                        description={'Tap to view or collect'}
-                                        onCalloutPress={() => {
-                                            this.setState({modalVisible: true, drop: drop});
-                                        }}
-                                    />
-                                ))}
-                                {this.state.showTrashDropLocations && trashDropOffLocations.map((d, i) => (
-                                    <MapView.Marker
-                                        key={`${town}DropOffLocation${i}`}
-                                        image={trashDropOffLocationIcon}
-                                        coordinate={d.DropOffLocationCoordinates}>
-                                        <MultiLineMapCallout title='Drop Off Location'
-                                            description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}/>
-                                    </MapView.Marker>
-
-                                ))}
-                                {this.state.showSupplyPickupLocations && supplyPickupLocations.map((d, i) => (
-                                    <MapView.Marker
-                                        key={`${town}SupplyPickupLocation${i}`}
-                                        image={supplyPickupLocationIcon}
-                                        coordinate={d.PickupLocationCoordinates}>
-                                        <MultiLineMapCallout title='Supply Pickup Location'
-                                            description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`}/>
-                                    </MapView.Marker>
-                                ))}
+                                style={{
+                                    alignSelf: 'stretch',
+                                    height: this.state.hackyHeight,
+                                    borderWidth: 1,
+                                    borderColor: '#AAA'
+                                }}
+                            >
+                                {allMarkers}
                             </MapView>
                             <View style={{marginTop: 20}}>
                                 <Toggle
-                                    icon={myUncollectedTrashIcon}
+                                    icon={circleYellow}
                                     label='My Trash'
                                     value={this.state.showMyUncollectedTrash}
                                     onValueChange={(value) => this.setState({showMyUncollectedTrash: value})}/>
                                 <Toggle
-                                    icon={uncollectedTrashIcon}
+                                    icon={circleRed}
                                     label='Uncollected Trash'
                                     value={this.state.showUncollectedTrash}
                                     onValueChange={(value) => this.setState({showUncollectedTrash: value})}/>
                                 <Toggle
-                                    icon={trashDropOffLocationIcon}
+                                    icon={circleBlue}
                                     label='Trash Drop-Off Locations'
                                     value={this.state.showTrashDropLocations}
                                     onValueChange={(value) => this.setState({showTrashDropLocations: value})}/>
                                 <Toggle
-                                    icon={supplyPickupLocationIcon}
+                                    icon={circleGreen}
                                     label='Supply Pickup Locations'
                                     value={this.state.showSupplyPickupLocations}
                                     onValueChange={(value) => this.setState({showSupplyPickupLocations: value})}/>
                                 <Toggle
-                                    icon={collectedTrashIcon}
+                                    icon={circleGray}
                                     label='Collected Trash'
                                     value={this.state.showCollectedTrash}
                                     onValueChange={(value) => this.setState({showCollectedTrash: value})}/>

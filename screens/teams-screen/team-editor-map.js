@@ -145,7 +145,7 @@ class TeamEditorMap extends Component {
     render() {
         const {locations, otherCleanAreas} = this.props;
 
-        const otherTeamsLocationImage = require('../../assets/images/flag.png');
+        // const otherTeamsLocationImage = require('../../assets/images/flag.png');
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
@@ -162,6 +162,7 @@ class TeamEditorMap extends Component {
                                 {this.props.locations.length > 0 && locations.map((marker, index) => (
                                     <MapView.Marker coordinate={marker.coordinates}
                                         key={`location${index}`}
+                                        pinColor={'red'}
                                         onCalloutPress={this._removeMarker(marker)}>
                                         <MultiLineMapCallout title={marker.title || 'clean area'}
                                             description={marker.description || 'tap to remove'}/>
@@ -171,7 +172,8 @@ class TeamEditorMap extends Component {
                                     (<MapView.Marker
                                         key={i}
                                         coordinate={a.coordinates}
-                                        image={otherTeamsLocationImage}
+                                        // image={otherTeamsLocationImage}
+                                        pinColor={'yellow'}
                                         title={a.title}>
                                         <MultiLineMapCallout title={a.title} description={a.description}/>
                                     </MapView.Marker>

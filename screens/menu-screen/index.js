@@ -69,7 +69,7 @@ class MenuScreen extends Component {
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('Privacy')}
                     >
-                        <Text style={styles.buttonText}>Privacy</Text>
+                        <Text style={styles.buttonText}>Privacy & Terms</Text>
                     </TouchableOpacity>
 
 

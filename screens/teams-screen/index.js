@@ -59,7 +59,7 @@ class TeamItem extends Component {
                 <TouchableHighlight
                     style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}}
                     onPress={item.goToTeam}>
-                    <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20}]}>{item.name}</Text>
+                    <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20, height: 40}]}>{item.name}</Text>
                 </TouchableHighlight>
                 {
                     item.canSendMessage
@@ -177,24 +177,24 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                                <View style={{
-                                    marginTop: '20%',
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 50,
-                                    paddingBottom: 50,
-                                    backgroundColor: 'rgba(255,255,255, 0.85)'
-                                }}>
-                                    <Text style={[styles.textDark]}>
-                                        {'Green Up Day is all about community and teamwork.'}
-                                    </Text>
-                                    <Text style={[styles.textDark]}>
-                                        {'Search for teams in your area, or create a new one and invite some friends.'}
-                                    </Text>
-                                </View>
-                            </ImageBackground>
-                        )
+                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                            <View style={{
+                                marginTop: '20%',
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingTop: 50,
+                                paddingBottom: 50,
+                                backgroundColor: 'rgba(255,255,255, 0.85)'
+                            }}>
+                                <Text style={[styles.textDark]}>
+                                    {'Green Up Day is all about community and teamwork.'}
+                                </Text>
+                                <Text style={[styles.textDark]}>
+                                    {'Search for teams in your area, or create a new one and invite some friends.'}
+                                </Text>
+                            </View>
+                        </ImageBackground>
+                    )
                         : (
                             <ScrollView style={styles.scroll}>
                                 <View style={styles.infoBlockContainer}>

@@ -11,7 +11,7 @@ import LoginScreen from '../login-screen/';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
-import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 import ThinkingGreenThoughts from './thinking-green-thoughts';
 // import GetEmail from './get-email';
@@ -52,6 +52,13 @@ class LoadingScreen extends Component {
     _loadResourcesAsync = async () => Promise.all([
         this.props.actions.initialize(),
         Asset.loadAsync([
+            require('../../assets/images/circle-gray.png'),
+            require('../../assets/images/circle-blue.png'),
+            require('../../assets/images/circle-red.png'),
+            require('../../assets/images/circle-yellow.png'),
+            require('../../assets/images/circle-green.png'),
+            require('../../assets/images/circle-purple.png'),
+            require('../../assets/images/broom.png'),
             require('../../assets/images/robot-dev.png'),
             require('../../assets/images/robot-prod.png'),
             require('../../assets/images/google-logo.jpg'),

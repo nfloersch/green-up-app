@@ -81,6 +81,8 @@ export default class CreateAccountForm extends Component {
                         secureTextEntry={true}
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
+                        underlineColorAndroid={'transparent'}
+
                         style={styles.textInput}/>
                 </View>
                 <View>

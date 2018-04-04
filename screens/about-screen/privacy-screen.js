@@ -197,6 +197,159 @@ class Privacy extends Component {
                             </Text>
                         </View>
                     </View>
+
+                    <View style={styles.infoBlockContainer}>
+                        <Text style={styles.infoBlockHeader}>Terms and Conditions</Text>
+                        <View style={styles.infoBlock}>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                Effective Date: March, 29 2018
+                            </Text>
+
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Introduction
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                These Mobile Application Standard Terms and Conditions written on this page shall manage
+                                your use of this mobile application. These Terms will be applied fully and affect to
+                                your use of this Mobile Application. By using this Mobile Application, you agreed to
+                                accept all terms and conditions written in here. You must not use this Mobile
+                                Application if you disagree with any of these Mobile Application Standard Terms and
+                                Conditions.
+                                Minors or people below 18 years old are not allowed to use this Mobile Application.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Intellectual Property Rights
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                Other than the content you own, under these Terms, Green Up Vermont and/or its licensors
+                                own all the intellectual property rights and materials contained in this Mobile
+                                Application.
+                                You are granted limited license only for purposes of viewing the material contained on
+                                this Mobile Application.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Restrictions </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                You are specifically restricted from all of the following:
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+
+                                publishing any Mobile Application material in any other media;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                selling, sublicensing and/or otherwise commercializing any Mobile Application material;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                publicly performing and/or showing any Mobile Application material;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                using this Mobile Application in any way that is or may be damaging to this Mobile
+                                Application;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                using this Mobile Application in any way that impacts user access to this Mobile
+                                Application;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                using this Mobile Application contrary to applicable laws and regulations, or in any way
+                                may cause harm to the Mobile Application, or to any person or business entity;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                engaging in any data mining, data harvesting, data extracting or any other similar
+                                activity in relation to this Mobile Application;
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                using this Mobile Application to engage in any advertising or marketing.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                Certain areas of this Mobile Application are restricted from being access by you and
+                                Green Up Vermont may further restrict access by you to any areas of this Mobile
+                                Application, at any time, in absolute discretion. Any user ID and password you may have
+                                for this Mobile Application are confidential and you must maintain confidentiality as
+                                well.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Your Content
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                In these Mobile Application Standard Terms and Conditions, "Your Content" shall mean any
+                                audio, video text, images or other material you choose to display on this Mobile
+                                Application. By displaying Your Content, you grant Green Up Vermont a non-exclusive,
+                                worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish,
+                                translate and distribute it in any and all media.
+                                Your Content must be your own and must not be invading any third-partyâ€™s rights. Green
+                                Up Vermont reserves the right to remove any of Your Content from this Mobile Application
+                                at any time without notice.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                No warranties
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                This Mobile Application is provided "as is," with all faults, and Green Up Vermont
+                                express no representations or warranties, of any kind related to this Mobile Application
+                                or the materials contained on this Mobile Application. Also, nothing contained on this
+                                Mobile Application shall be interpreted as advising you.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Limitation of liability
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                In no event shall Green Up Vermont, nor any of its officers, directors and employees,
+                                shall be held liable for anything arising out of or in any way connected with your use
+                                of this Mobile Application whether such liability is under contract. Green Up Vermont,
+                                including its officers, directors and employees shall not be held liable for any
+                                indirect, consequential or special liability arising out of or in any way related to
+                                your use of this Mobile Application.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Indemnification
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                You hereby indemnify to the fullest extent Green Up Vermont from and against any and/or
+                                all liabilities, costs, demands, causes of action, damages and expenses arising in any
+                                way related to your breach of any of the provisions of these Terms.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Severability
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                If any provision of these Terms is found to be invalid under any applicable law, such
+                                provisions shall be deleted without affecting the remaining provisions herein.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Variation of Terms
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                Green Up Vermont is permitted to revise these Terms at any time as it sees fit, and by
+                                using this Mobile Application you are expected to review these Terms on a regular basis.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Assignment
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                The Green Up Vermont is allowed to assign, transfer, and subcontract its rights and/or
+                                obligations under these Terms without any notification. However, you are not allowed to
+                                assign, transfer, or subcontract any of your rights and/or obligations under these
+                                Terms.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Entire Agreement
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                These Terms constitute the entire agreement between Green Up Vermont and you in relation
+                                to your use of this Mobile Application, and supersede all prior agreements and
+                                understandings.
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 14}]}>
+                                Governing Law & Jurisdiction
+                            </Text>
+                            <Text style={[styles.textDark, {fontSize: 12}]}>
+                                These Terms will be governed by and interpreted in accordance with the laws of the State
+                                of Vermont, and you submit to the non-exclusive jurisdiction of the state and federal
+                                courts located in Vermont for the resolution of any disputes.
+                            </Text>
+                        </View>
+                    </View>
                     <View style={defaultStyles.padForIOSKeyboard}/>
                 </ScrollView>
             </View>
