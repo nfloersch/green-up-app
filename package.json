@@ -17,7 +17,8 @@
         "name": "John Need",
         "email": "john.need@gmail.com"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Audrey Dawson"
         },
         {

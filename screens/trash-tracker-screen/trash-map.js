@@ -454,9 +454,9 @@ class TrashMap extends Component {
                                     </View>
                                     {
                                         this.state.drop.uid && !this.state.drop.wasCollected && (
-                                            <View style={styles.buttonBarButton}>
+                                            <View style={{width: '100%', height: 60}}>
                                                 <TouchableHighlight
-                                                    style={styles.button}
+                                                    style={[styles.button, {width: '100%'}]}
                                                     onPress={collectTrashDrop}
                                                 >
                                                     <Text style={styles.menuButtonText}>{'Collect Trash'}</Text>
@@ -465,11 +465,6 @@ class TrashMap extends Component {
                                         )
                                     }
                                 </ScrollView>
-                                {
-                                    Platform.OS === 'ios'
-                                        ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
-                                        : null
-                                }
                             </KeyboardAvoidingView>
                         </View>
                     </Modal>
