@@ -47,28 +47,29 @@ class MessageDetails extends Component {
                                 borderBottomWidth: 1,
                                 height: 70
                             }}>
-                                <View style={{flex: 1, flexDirection: 'row', padding: 10}}>
+                                <View style={{flex: 1, flexDirection: 'row', padding: 10, backgroundColor: '#EEE'}}>
                                     <Image
                                         style={{width: 50, height: 50, marginRight: 10}}
                                         source={{uri: message.sender.photoURL}}
                                     />
                                     <View>
-                                        <Text style={{height: 30}}>
-                                            <Text style={styles.label}>{'From: '}</Text>
-                                            <Text style={styles.data}>{message.sender.displayName}</Text>
-                                        </Text>
-                                        <Text>
-                                            <Text style={styles.label}>{'To: '}</Text>
-                                            <Text style={styles.data}>{team.name}</Text>
-                                        </Text>
+                                        <View style={{height: 30, flex: 1, flexDirection: 'row'}}>
+                                            <Text style={{ color: '#555', fontSize: 16}}>{'From: '}</Text>
+                                            <Text style={[styles.textDark, {fontSize: 12,  height: 16, marginTop: 4}]}>{message.sender.displayName}</Text>
+                                        </View>
+                                        <View style={{height: 30, flex: 1, flexDirection: 'row' }}>
+                                        <Text style={{ color: '#555', fontSize: 16}}>{'To: '}</Text>
+                                            <Text style={[styles.textDark, {fontSize: 12, height: 16, marginTop: 4}]}>{team.name}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
                             <ScrollView style={{
-                                padding: 10,
-                                backgroundColor: '#EEE'
+                                padding: 10
                             }}>
+                               <View style={styles.infoBlockContainer}>
                                 <Text style={[styles.textDark, {fontSize: 14, paddingBottom: 10}]}>{message.text}</Text>
+                                </View>
                             </ScrollView>
                         </View>
                     )
