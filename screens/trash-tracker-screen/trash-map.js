@@ -324,7 +324,7 @@ class TrashMap extends Component {
                         showsCompass={true}
                         style={{
                             position: 'absolute',
-                            top: 0,
+                            top: 50,
                             left: 0,
                             right: 0,
                             bottom: 0,
@@ -459,7 +459,7 @@ class TrashMap extends Component {
                                                     style={[styles.button, {width: '100%'}]}
                                                     onPress={collectTrashDrop}
                                                 >
-                                                    <Text style={styles.menuButtonText}>{'Collect Trash'}</Text>
+                                                    <Text style={styles.buttonText}>{'Collect Trash'}</Text>
                                                 </TouchableHighlight>
                                             </View>
                                         )
