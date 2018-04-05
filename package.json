@@ -1,94 +1,93 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
-  "private": true,
-  "version": "1.0.2",
-  "keywords": [
-    "green up",
-    "vermont",
-    "code for america",
-    "code for btv",
-    "react native",
-    "redux",
-    "expo",
-    "javascript"
-  ],
-  "license": "SEE LICENSE IN LICENSE.md",
-  "author": {
-    "name": "John Need",
-    "email": "john.need@gmail.com"
-  },
-  "contributors": [
-    {
-      "name": "Audrey Dawson"
+    "main": "node_modules/expo/AppEntry.js",
+    "private": true,
+    "version": "1.0.2",
+    "keywords": [
+        "green up",
+        "vermont",
+        "code for america",
+        "code for btv",
+        "react native",
+        "redux",
+        "expo",
+        "javascript"
+    ],
+    "license": "SEE LICENSE IN LICENSE.md",
+    "author": {
+        "name": "John Need",
+        "email": "john.need@gmail.com"
     },
-    {
-      "name": "Sam Velesquez"
+    "contributors": [{
+            "name": "Audrey Dawson"
+        },
+        {
+            "name": "Sam Velesquez"
+        },
+        {
+            "name": "Smaranda Fournier"
+        },
+        {
+            "name": "Jeff Margolis"
+        },
+        {
+            "name": "Cameron Marcus"
+        },
+        {
+            "name": "Parker Franz"
+        },
+        {
+            "name": "Lea Ann Smith"
+        },
+        {
+            "name": "Luke Potasiewicz"
+        },
+        {
+            "name": "Ken Liu (Shek Kin)"
+        },
+        {
+            "name": "Kyle Beaulieu"
+        },
+        {
+            "name": "dmeskill"
+        }
+    ],
+    "scripts": {
+        "test": "node ./node_modules/jest/bin/jest.js --watchAll"
     },
-    {
-      "name": "Smaranda Fournier"
+    "jest": {
+        "preset": "jest-expo"
     },
-    {
-      "name": "Jeff Margolis"
+    "dependencies": {
+        "@expo/samples": "2.1.1",
+        "@expo/vector-icons": "^6.2.2",
+        "@sendgrid/mail": "^6.2.1",
+        "@turf/boolean-within": "^6.0.0",
+        "@turf/helpers": "^6.0.1",
+        "babel-eslint": "^8.2.1",
+        "eslint": "^4.16.0",
+        "eslint-plugin-babel": "^4.1.2",
+        "eslint-plugin-react": "^7.6.1",
+        "expo": "^26.0.0",
+        "firebase": "^4.9.0",
+        "md5-hash": "^1.0.1",
+        "prop-types": "^15.6.0",
+        "react": "16.3.0-alpha.1",
+        "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
+        "react-native-animatable": "^1.2.4",
+        "react-native-autocomplete-input": "^3.5.0",
+        "react-native-checkbox": "^2.0.0",
+        "react-native-cli": "^2.0.1",
+        "react-native-firebase": "^3.2.2",
+        "react-native-modal-datetime-picker": "^4.13.0",
+        "react-native-radio-buttons": "^1.0.0",
+        "react-native-swipe-gestures": "^1.0.2",
+        "react-navigation": "1.5.8",
+        "react-navigation-redux-helpers": "^1.0.0",
+        "react-redux": "^5.0.6",
+        "redux": "^3.7.2",
+        "redux-thunk": "^2.2.0"
     },
-    {
-      "name": "Cameron Marcus"
-    },
-    {
-      "name": "Parker Franz"
-    },
-    {
-      "name": "Lea Ann Smith"
-    },
-    {
-      "name": "Luke Potasiewicz"
-    },
-    {
-      "name": "Ken Liu (Shek Kin)"
-    },
-    {
-      "name": "Kyle Beaulieu"
-    },
-    {
-      "name": "dmeskill"
+    "devDependencies": {
+        "jest-expo": "^25.0.0"
     }
-  ],
-  "scripts": {
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
-  },
-  "jest": {
-    "preset": "jest-expo"
-  },
-  "dependencies": {
-    "@expo/samples": "2.1.1",
-    "@expo/vector-icons": "^6.2.2",
-    "@sendgrid/mail": "^6.2.1",
-    "@turf/boolean-within": "^6.0.0",
-    "@turf/helpers": "^6.0.1",
-    "babel-eslint": "^8.2.1",
-    "eslint": "^4.16.0",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-react": "^7.6.1",
-    "expo": "^25.0.0",
-    "firebase": "^4.9.0",
-    "md5-hash": "^1.0.1",
-    "prop-types": "^15.6.0",
-    "react": "16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
-    "react-native-animatable": "^1.2.4",
-    "react-native-autocomplete-input": "^3.5.0",
-    "react-native-checkbox": "^2.0.0",
-    "react-native-cli": "^2.0.1",
-    "react-native-firebase": "^3.2.2",
-    "react-native-modal-datetime-picker": "^4.13.0",
-    "react-native-radio-buttons": "^1.0.0",
-    "react-native-swipe-gestures": "^1.0.2",
-    "react-navigation": "^1.0.0-beta.27",
-    "react-navigation-redux-helpers": "^1.0.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
-  },
-  "devDependencies": {
-    "jest-expo": "^25.0.0"
-  }
 }
