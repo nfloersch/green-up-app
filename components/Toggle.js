@@ -12,16 +12,19 @@ const styles = {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10
+        marginBottom: 10,
+        height: 50
     },
     icon: {
-        height:20,
-        width: 20,
-        marginTop: 5
+        height: 40,
+        width: 40,
+        margin: 5
     },
     label: {
-        marginTop: 5,
-        marginLeft: 3
+        marginLeft: 3,
+        color: '#333',
+        fontSize: 18,
+        lineHeight: 50
     }
 };
 
@@ -31,20 +34,23 @@ export default class Toggle extends React.Component {
         label: PropTypes.string,
         value: PropTypes.bool,
         onValueChange: PropTypes.func
-    }
+    };
 
     render() {
         const {icon, label, value, onValueChange} = this.props;
 
-        return (<View style={styles.toggle}>
-            <View style={{justifyContent: 'flex-start', flex: 1, flexDirection: 'row'}}>
-                <Image style={styles.icon} source={icon} />
-                <Text style={styles.label}>{label}</Text>
+        return (
+            <View style={styles.toggle}>
+                <View style={{justifyContent: 'flex-start', flex: 1, flexDirection: 'row'}}>
+                    <Image style={styles.icon} source={icon}/>
+                    <Text style={styles.label}>{label}</Text>
+                </View>
+                <Switch
+                    style={{marginTop: 5, transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
+                    value={value}
+                    onValueChange={(v) => onValueChange(v)}
+                />
             </View>
-            <Switch
-                value={value}
-                onValueChange={(v) => onValueChange(v)}
-            />
-        </View>);
+        );
     }
 }

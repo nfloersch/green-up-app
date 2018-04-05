@@ -13,6 +13,12 @@ export function reducers(state = initialState.trashTracker, action) {
                 ...state,
                 location: action.location
             };
+
+        case types.TOGGLE_TRASH_DATA:
+            return {
+                ...state,
+                [action.toggle]: action.value
+            };
         default:
             return state;
     }

@@ -151,7 +151,7 @@ class TeamEditorMap extends Component {
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.frame}>
                     <View style={[styles.infoBlockContainer, {height: '98%'}]}>
-                        <Text style={[styles.statusBar, {maxHeight: 45}]}>
+                        <Text style={[styles.statusBar, {maxHeight: 60}]}>
                         Drop a pin where you want your team to work.
                         Green flags are areas claimed by other teams.
                         </Text>

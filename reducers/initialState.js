@@ -18,13 +18,21 @@ export default {
     messages: {
         messages: {},
         loaded: false,
-        invitationsLoaded : false,
+        invitationsLoaded: false,
         teamsLoaded: false
     },
     teamMembersLoaded: false,
     teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
     trashBagFinder: {townData: {}},
-    trashTracker: {trashDrops: [], location: null},
+    trashTracker: {
+        trashDrops: [],
+        location: null,
+        collectedTrashToggle: false,
+        supplyPickupToggle: false,
+        uncollectedTrashToggle: true,
+        trashDropOffToggle: true,
+        myTrashToggle: true
+    },
     teamSearchResults: [],
     selectedTeam: null
 };

@@ -19,3 +19,10 @@ export function locationUpdated(location) {
         dispatch({type:types.USER_LOCATION_UPDATED, location});
     };
 }
+
+
+export function toggleTrashData(toggle, value){
+    return (dispatch) => {
+        dispatch({type:types.TOGGLE_TRASH_DATA, toggle, value});
+    };
+}
