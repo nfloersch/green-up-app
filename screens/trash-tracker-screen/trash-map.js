@@ -246,7 +246,7 @@ class TrashMap extends Component {
                 onCalloutPress={() => {
                     this.setState({modalVisible: true, drop: drop});
                 }}
-            />
+                stopPropagation={true}/>
         ));
 
         const myTrash = (drops || []).filter(drop => (this.props.myTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
@@ -260,6 +260,7 @@ class TrashMap extends Component {
                 onCalloutPress={() => {
                     this.setState({modalVisible: true, drop: drop});
                 }}
+                stopPropagation={true}
             />
         ));
 
@@ -274,6 +275,7 @@ class TrashMap extends Component {
                 onCalloutPress={() => {
                     this.setState({modalVisible: true, drop: drop});
                 }}
+                stopPropagation={true}
             />
         ));
 
@@ -282,7 +284,8 @@ class TrashMap extends Component {
                 key={`${town}DropOffLocation${i}`}
                 // image={trashDropOffLocationIcon}
                 pinColor={'blue'}
-                coordinate={d.DropOffLocationCoordinates}>
+                coordinate={d.DropOffLocationCoordinates}
+                stopPropagation={true}>
                 <MultiLineMapCallout
                     title='Drop Off Location'
                     description={`${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}
@@ -295,7 +298,8 @@ class TrashMap extends Component {
                 key={`supplyPickup${i}`}
                 // image={supplyPickupLocationIcon}
                 pinColor={'green'}
-                coordinate={d.PickupLocationCoordinates}>
+                coordinate={d.PickupLocationCoordinates}
+                stopPropagation={true}>
                 <MultiLineMapCallout
                     title='Supply Pickup Location'
                     description={`${d.PickupLocationName}, ${d.PickupLocationAddress}`}
