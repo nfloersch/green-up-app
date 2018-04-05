@@ -369,7 +369,7 @@ class TrashMap extends Component {
                             }}>
                             <Ionicons
                                 name={Platform.OS === 'ios' ? 'ios-options-outline' : 'md-options'}
-                                size={40}
+                                size={42}
                                 color='#333'
                             />
                         </TouchableHighlight>
