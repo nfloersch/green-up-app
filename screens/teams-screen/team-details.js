@@ -295,7 +295,9 @@ class TeamDetails extends Component {
             (
                 <MapView.Marker
                     key={i + 1000}
-                    coordinate={a.coordinates}>
+                    coordinate={a.coordinates}
+                    pinColor={'yellow'}
+                    stopPropagation={true}>
                     <MultiLineMapCallout title={a.title || ''} description={a.description || ''}/>
                 </MapView.Marker>
             )
@@ -305,7 +307,8 @@ class TeamDetails extends Component {
         const teamAreas = (this.props.locations || []).map((marker, index) => (
             <MapView.Marker
                 coordinate={marker.coordinates}
-                key={index}>
+                key={index}
+                stopPropagation={true}>
                 <MultiLineMapCallout title={marker.title || 'clean area'} description={''}/>
             </MapView.Marker>
         )).concat(otherTeamAreas);
