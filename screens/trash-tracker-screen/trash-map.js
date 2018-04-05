@@ -61,7 +61,7 @@ class TownInformation extends React.Component {
                 )}
                 {townInfo.RoadsideDropOffAllowed === true && (
                     <Text style={styles.statusBarText}>
-                        <Text>{`You are in ${town} and leaving trash bags on the roadside is allowed.`}</Text>
+                        <Text>{`You are in ${town} and leaving trash bags on the roadside is allowed. (h1)`}</Text>
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === false && (
@@ -110,7 +110,7 @@ class TrashMap extends Component {
         this.state = {
             drop: {
                 id: null,
-                location: {},
+                location: null,
                 tags: [],
                 bagCount: 1,
                 wasCollected: false,
@@ -330,7 +330,7 @@ class TrashMap extends Component {
                             padding: 0
                         }}
                     >
-                        {allMarkers}
+                        {/* {allMarkers} */}
                     </MapView>
 
                     <View style={{
