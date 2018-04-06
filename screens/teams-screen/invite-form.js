@@ -102,6 +102,7 @@ class InviteForm extends Component {
                                 Invitee&apos;s Email
                             </Text>
                             <TextInput
+                                autoCapitalize='none'
                                 style={styles.textInput}
                                 placeholder='john@example.com'
                                 value={this.state.email || ''}

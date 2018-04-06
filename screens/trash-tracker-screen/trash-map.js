@@ -434,7 +434,7 @@ class TrashMap extends Component {
                                         <Text style={styles.labelDark}>Number of Bags</Text>
                                         <TextInput
                                             underlineColorAndroid='transparent'
-                                            editable={!this.state.drop.wasCollected}
+                                            editable={showFirstButton}
                                             value={this.state.drop.bagCount.toString()}
                                             keyboardType='numeric'
                                             placeholder='1'
@@ -449,17 +449,17 @@ class TrashMap extends Component {
                                         <Text style={styles.labelDark}>Other Items</Text>
                                         <View style={styles.fieldset}>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Needles/Bio-Waste'
                                                 checked={this.state.drop.tags.indexOf('bio-waste') > -1}
                                                 onChange={this._toggleTag('bio-waste')}/>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Tires'
                                                 checked={this.state.drop.tags.indexOf('tires') > -1}
                                                 onChange={this._toggleTag('tires')}/>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Large Object'
                                                 checked={this.state.drop.tags.indexOf('large') > -1}
                                                 onChange={this._toggleTag('large')}/>

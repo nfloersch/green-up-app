@@ -13,7 +13,7 @@ export const controls = {
         backgroundColor: 'white',
         height: 40,
         textAlign: 'left',
-        lineHeight: 25
+        padding: 5
     },
-    picker: {backgroundColor:'white', marginTop: 5}
+    picker: {backgroundColor: 'white', marginTop: 5}
 };
