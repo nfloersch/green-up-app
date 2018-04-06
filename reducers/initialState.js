@@ -31,7 +31,8 @@ export default {
         supplyPickupToggle: false,
         uncollectedTrashToggle: true,
         trashDropOffToggle: true,
-        myTrashToggle: true
+        myTrashToggle: true,
+        cleanAreasToggle: false
     },
     teamSearchResults: [],
     selectedTeam: null
