@@ -11,11 +11,12 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import Toggle from '../../components/Toggle';
-import circleGray from '../../assets/images/circle-gray.png';
+import circleTurquoise from '../../assets/images/circle-turquoise.png';
 import circleBlue from '../../assets/images/circle-blue.png';
 import circleRed from '../../assets/images/circle-red.png';
 import circleYellow from '../../assets/images/circle-yellow.png';
 import circleGreen from '../../assets/images/circle-green.png';
+import circleOrange from '../../assets/images/circle-orange.png';
 
 const myStyles = {toggle: {height: 50}};
 
@@ -33,7 +34,8 @@ class TrashToggles extends Component {
         uncollectedTrashToggle: PropTypes.bool,
         trashDropOffToggle: PropTypes.bool,
         myTrashToggle: PropTypes.bool,
-        collectedTrashToggle: PropTypes.bool
+        collectedTrashToggle: PropTypes.bool,
+        cleanAreasToggle: PropTypes.bool
     };
 
     constructor(props) {
@@ -80,10 +82,16 @@ class TrashToggles extends Component {
                         onValueChange={() => this.props.actions.toggleTrashData('supplyPickupToggle', !this.props.supplyPickupToggle)}/>
                     <Toggle
                         style={styles.toggle}
-                        icon={circleGray}
+                        icon={circleTurquoise}
                         label='Collected Trash'
                         value={this.props.collectedTrashToggle}
                         onValueChange={() => this.props.actions.toggleTrashData('collectedTrashToggle', !this.props.collectedTrashToggle)}/>
+                    <Toggle
+                        style={styles.toggle}
+                        icon={circleOrange}
+                        label='Team Cleaning Areas'
+                        value={this.props.cleanAreasToggle}
+                        onValueChange={() => this.props.actions.toggleTrashData('cleanAreasToggle', !this.props.cleanAreasToggle)}/>
                 </View>
             </View>
         );
@@ -96,7 +104,8 @@ function mapStateToProps(state) {
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;
     const trashDropOffToggle = state.trashTracker.trashDropOffToggle;
     const myTrashToggle = state.trashTracker.myTrashToggle;
-    return {collectedTrashToggle, supplyPickupToggle, uncollectedTrashToggle, trashDropOffToggle, myTrashToggle};
+    const cleanAreasToggle = state.trashTracker.cleanAreasToggle;
+    return {collectedTrashToggle, supplyPickupToggle, uncollectedTrashToggle, trashDropOffToggle, myTrashToggle, cleanAreasToggle};
 }
 
 function mapDispatchToProps(dispatch) {

@@ -93,7 +93,9 @@ class TrashMap extends Component {
         uncollectedTrashToggle: PropTypes.bool,
         trashDropOffToggle: PropTypes.bool,
         myTrashToggle: PropTypes.bool,
-        collectedTrashToggle: PropTypes.bool
+        collectedTrashToggle: PropTypes.bool,
+        cleanAreas: PropTypes.array,
+        cleanAreasToggle: PropTypes.bool
     };
 
     static navigationOptions = {
@@ -217,7 +219,7 @@ class TrashMap extends Component {
             this.setState({modalVisible: true});
         };
 
-        const {drops, townData} = this.props;
+        const {drops, townData, cleanAreas} = this.props;
 
         // by convention, we're importing town names as upper case, any characters different
         // than uppercase letters replaced with underscore
@@ -235,11 +237,11 @@ class TrashMap extends Component {
 
         const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
 
-        const collectedTrash = (drops || []).filter(drop => (this.state.showCollectedTrash && drop.wasCollected === true)).map(drop => (
+        const collectedTrash = (this.props.collectedTrashToggle && drops || []).filter(drop => drop.wasCollected === true).map(drop => (
             <MapView.Marker
                 key={drop.uid}
                 // image={collectedTrashIcon}
-                pinColor={'gray'}
+                pinColor={'turquoise'}
                 coordinate={drop.location}
                 title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
                 description={'Tap to view collected trash'}
@@ -264,7 +266,7 @@ class TrashMap extends Component {
             />
         ));
 
-        const unCollectedTrash = (drops || []).filter(drop => (this.props.uncollectedTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
+        const unCollectedTrash = (this.props.uncollectedTrashToggle && drops || []).filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
             <MapView.Marker
                 key={drop.uid}
                 // image={uncollectedTrashIcon}
@@ -307,8 +309,20 @@ class TrashMap extends Component {
             </MapView.Marker>
         ));
 
+        const cleanAreaMarkers = (this.props.cleanAreasToggle && cleanAreas || []).map((d, i) => (
+            <MapView.Marker
+                key={`cleanArea${i}`}
+                pinColor={'orange'}
+                coordinate={d.coordinates}
+                stopPropagation={true}>
+                <MultiLineMapCallout
+                    title={`${d.title}`}
+                    description={`${d.description}`} />
+            </MapView.Marker>
+        ));
 
-        const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash);
+
+        const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash).concat(cleanAreaMarkers);
 
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
@@ -486,12 +500,20 @@ function mapStateToProps(state) {
     const drops = Object.keys(state.trashTracker.trashDrops || {})
         .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
         .map(key => ({...state.trashTracker.trashDrops[key], uid: key}));
+    const cleanAreas = Object.values(state.teams.teams)
+        .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
+            key: '',
+            coordinates: l.coordinates,
+            title: `${team.name}`,
+            description: 'claimed this area'
+        }))), []);
     const townData = state.trashBagFinder.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;
     const trashDropOffToggle = state.trashTracker.trashDropOffToggle;
     const myTrashToggle = state.trashTracker.myTrashToggle;
+    const cleanAreasToggle = state.trashTracker.cleanAreasToggle;
     return {
         drops: drops,
         currentUser: state.login.user,
@@ -501,7 +523,9 @@ function mapStateToProps(state) {
         supplyPickupToggle,
         uncollectedTrashToggle,
         trashDropOffToggle,
-        myTrashToggle
+        myTrashToggle,
+        cleanAreas,
+        cleanAreasToggle
     };
 }
 

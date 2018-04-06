@@ -52,12 +52,13 @@ class LoadingScreen extends Component {
     _loadResourcesAsync = async () => Promise.all([
         this.props.actions.initialize(),
         Asset.loadAsync([
-            require('../../assets/images/circle-gray.png'),
+            require('../../assets/images/circle-turquoise.png'),
             require('../../assets/images/circle-blue.png'),
             require('../../assets/images/circle-red.png'),
             require('../../assets/images/circle-yellow.png'),
             require('../../assets/images/circle-green.png'),
             require('../../assets/images/circle-purple.png'),
+            require('../../assets/images/circle-orange.png'),
             require('../../assets/images/broom.png'),
             require('../../assets/images/robot-dev.png'),
             require('../../assets/images/robot-prod.png'),
