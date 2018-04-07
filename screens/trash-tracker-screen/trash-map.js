@@ -164,10 +164,12 @@ class TrashMap extends Component {
         }
     };
 
-    _toggleTag = (tag) => () => {
-        const hasTag = this.state.drop.tags.indexOf(tag) > -1;
-        const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
-        this.setState({drop: {...this.state.drop, tags}});
+    _toggleTag = (editable, tag) => () => {
+        if(editable) {
+            const hasTag = this.state.drop.tags.indexOf(tag) > -1;
+            const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
+            this.setState({drop: {...this.state.drop, tags}});
+        }
     };
 
     closeModal() {
@@ -452,17 +454,17 @@ class TrashMap extends Component {
                                                 editable={showFirstButton}
                                                 label='Needles/Bio-Waste'
                                                 checked={this.state.drop.tags.indexOf('bio-waste') > -1}
-                                                onChange={this._toggleTag('bio-waste')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'bio-waste')}/>
                                             <CheckBox
                                                 editable={showFirstButton}
                                                 label='Tires'
                                                 checked={this.state.drop.tags.indexOf('tires') > -1}
-                                                onChange={this._toggleTag('tires')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'tires')}/>
                                             <CheckBox
                                                 editable={showFirstButton}
                                                 label='Large Object'
                                                 checked={this.state.drop.tags.indexOf('large') > -1}
-                                                onChange={this._toggleTag('large')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'large')}/>
                                         </View>
 
                                     </View>

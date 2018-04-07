@@ -228,6 +228,7 @@ class NewTeam extends Component {
                                       comp(query, towns[0] || '') ? [] : towns}
                                 defaultValue={this.state.town || ''}
                                 onChangeText={text => this.setState({query: text, town: text})}
+                                underlineColorAndroid={'transparent'}
                                 renderItem={town => (
                                     <TouchableOpacity
                                         style={styles.suggestion}
