@@ -72,6 +72,14 @@ class MenuScreen extends Component {
                         <Text style={styles.buttonText}>Privacy & Terms</Text>
                     </TouchableOpacity>
 
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            Linking.openURL('https://goo.gl/forms/uKDWmHkMbQLgPE5n2');
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Feedback Form</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.button}
