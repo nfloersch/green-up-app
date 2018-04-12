@@ -6,12 +6,13 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Location, MapView, Permissions} from 'expo';
+import {IntentLauncherAndroid, Location, MapView, Permissions} from 'expo';
 import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
     KeyboardAvoidingView,
+    Linking,
     TouchableHighlight,
     TouchableOpacity,
     Modal,
@@ -155,12 +156,20 @@ class TrashMap extends Component {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
 
         if (status === 'granted') {
-            const location = await Location.getCurrentPositionAsync({});
-            this.props.actions.locationUpdated(location);
+            const locationProviderStatus = await Location.getProviderStatusAsync();
+            if(locationProviderStatus.locationServicesEnabled === false) {
+                this.setState({errorMessage: 'Access to the device location is required. Please make sure you have location services on and you grant access when requested.'});
+            } else {
+                const location = await Location.getCurrentPositionAsync({});
+                this.props.actions.locationUpdated(location);
 
-            Location.watchPositionAsync({timeInterval: 3000, distanceInterval: 20}, (l) => {
-                this.props.actions.locationUpdated(l);
-            });
+                Location.watchPositionAsync({timeInterval: 3000, distanceInterval: 20}, (l) => {
+                    this.setState({errorMessage: null});
+                    this.props.actions.locationUpdated(l);
+                });
+            }
+        } else {
+            this.setState({errorMessage: 'Access to the device location is required. Please make sure you have location services on and you grant access when requested.'});
         }
     };
 
@@ -326,13 +335,30 @@ class TrashMap extends Component {
 
         const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash).concat(cleanAreaMarkers);
 
+        const enableLocation = async () => {
+            if(Platform.OS === 'android') {
+                await IntentLauncherAndroid.startActivityAsync(
+                    IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS
+                );
+            }
 
-        return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
+            if(Platform.OS === 'ios') {
+                await Linking.openURL('app-settings:');
+            }
+
+            this._getLocationAsync();
+        };
+
+        return this.state.errorMessage
+            ? (<View>
+                <Text>{this.state.errorMessage}</Text>
+                <TouchableHighlight style={styles.link} onPress={enableLocation}>
+                    <Text style={[styles.linkText, {color: '#333333'}]}>{'Enable Location Services'}</Text>
+                </TouchableHighlight>
+            </View>)
             : initialMapLocation &&
             (
                 <View style={styles.frame}>
-
-
                     <MapView
                         initialRegion={initialMapLocation}
                         showsUserLocation={true}
