@@ -66,17 +66,19 @@ class TownInformation extends React.Component {
                     </Text>
                 )}
                 {townInfo.RoadsideDropOffAllowed === false && (
-                    <Text style={styles.statusBarText}>
+                    <View style={styles.statusBarText}>
                         <Text>{`You are in ${town} and leaving trash bags on the roadside is`}
                             <Text style={{fontWeight: 'bold'}}>
                                 {' not'}
                             </Text>
-                            {' allowed. Please bring collected trash to the designated drop off locations:'}
+                            <Text>
+                            {' allowed. Please take your trash to a designated drop off.'}
+                            </Text>
                         </Text>
-                        {townInfo.DropOffLocations.map(d => (
-                            <Text>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
+                        {townInfo.DropOffLocations.map((d, i) => (
+                            <Text key={i}>{`\n${d.DropOffLocationName}, ${d.DropOffLocationAddress}`}</Text>
                         ))}
-                    </Text>)}
+                    </View>)}
             </View>
         );
     }
