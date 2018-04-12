@@ -1,5 +1,7 @@
 
-![Alt](./assets/images/app.png "Green Up Vermont Logo")
+<p align="center">
+  <img width="300" height="300" src="./assets/images/app.png">
+</p>
 # Green Up Vermont
 ## A mobile app for Vermont's Green Up Day.
 Green Up Vermont is an official Code for America Project which you can read about [here](http://codeforbtv.org/projects/greenup-app).
