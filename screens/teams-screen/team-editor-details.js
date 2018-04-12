@@ -24,7 +24,7 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
-import {vermontTowns} from '../../libs/vermont-towns';
+// import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import * as colors from '../../styles/constants';
@@ -55,7 +55,8 @@ class TeamEditorDetails extends Component {
         navigation: PropTypes.any,
         selectedTeam: PropTypes.object,
         screenProps: PropTypes.object,
-        locations: PropTypes.array
+        locations: PropTypes.array,
+        vermontTowns: PropTypes.array
     };
 
     static navigationOptions = {
@@ -164,7 +165,7 @@ class TeamEditorDetails extends Component {
         if (query === '') {
             return [];
         }
-        return vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        return this.props.vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
     };
 
     render() {
@@ -358,7 +359,8 @@ class TeamEditorDetails extends Component {
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam || Team.create({});
     const locations = state.teams.locations;
-    return {selectedTeam, locations};
+    const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
+    return {selectedTeam, locations, vermontTowns};
 };
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});

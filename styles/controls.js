@@ -12,9 +12,8 @@ export const controls = {
         borderWidth: 1,
         backgroundColor: 'white',
         height: 40,
-        padding: 5,
         textAlign: 'left',
-        lineHeight: 25
+        padding: 5
     },
-    picker: {backgroundColor:'white', marginTop: 5}
+    picker: {backgroundColor: 'white', marginTop: 5}
 };

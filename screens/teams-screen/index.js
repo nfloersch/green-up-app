@@ -128,11 +128,15 @@ class MyTeams extends Component {
         this.setState({openModal: 'NEW_TEAM'});
     }
 
-    toTeamIcon = (teamKey: string) => {
+    toTeamIcon = (teamKey: string, isInvited: boolean) => {
         const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
         //  const memberStatus = TeamMember.memberStatuses;
-        return getMemberIcon(status, {height: 50, width: 50, padding: 10});
+        return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
+            height: 50,
+            width: 50,
+            padding: 10
+        });
     };
 
     render() {
@@ -141,7 +145,20 @@ class MyTeams extends Component {
         const user = this.props.currentUser;
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
         const canSendMessage = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
-        const teamKeys = Object.keys((user.teams || {})).concat(Object.keys(this.props.invitations || {}));
+        const teamKeys = Object.keys((user.teams || {}));
+        const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
+
+        const invitedTeams = invitedKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
+            .map(key => ({
+                key,
+                toTeamIcon: this.toTeamIcon(key, true),
+                ...(teams[key] || {}),
+                goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
+                canSendMessage: canSendMessage(key),
+                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key})
+            }));
+
+
         const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => ({
                 key,
@@ -150,7 +167,7 @@ class MyTeams extends Component {
                 goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
                 canSendMessage: canSendMessage(key),
                 goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key})
-            }));
+            })).concat(invitedTeams);
 
 
         return (

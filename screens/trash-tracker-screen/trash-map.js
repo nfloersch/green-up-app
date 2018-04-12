@@ -173,10 +173,12 @@ class TrashMap extends Component {
         }
     };
 
-    _toggleTag = (tag) => () => {
-        const hasTag = this.state.drop.tags.indexOf(tag) > -1;
-        const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
-        this.setState({drop: {...this.state.drop, tags}});
+    _toggleTag = (editable, tag) => () => {
+        if(editable) {
+            const hasTag = this.state.drop.tags.indexOf(tag) > -1;
+            const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
+            this.setState({drop: {...this.state.drop, tags}});
+        }
     };
 
     closeModal() {
@@ -399,7 +401,7 @@ class TrashMap extends Component {
                                         {'Drop A Trash Bag Here'}
                                     </Text>
                                 </TouchableHighlight>)
-                            : null}
+                            :  <View style={[styles.headerButton, {backgroundColor: '#EEE', paddingTop: 13, height: 50, flex: 1}]}/>}
                         <TouchableHighlight
                             style={{height: 50, width: 50, padding: 5, backgroundColor: 'rgba(255,255,255,0.8)'}}
                             onPress={() => {
@@ -460,7 +462,7 @@ class TrashMap extends Component {
                                         <Text style={styles.labelDark}>Number of Bags</Text>
                                         <TextInput
                                             underlineColorAndroid='transparent'
-                                            editable={!this.state.drop.wasCollected}
+                                            editable={showFirstButton}
                                             value={this.state.drop.bagCount.toString()}
                                             keyboardType='numeric'
                                             placeholder='1'
@@ -475,20 +477,20 @@ class TrashMap extends Component {
                                         <Text style={styles.labelDark}>Other Items</Text>
                                         <View style={styles.fieldset}>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Needles/Bio-Waste'
                                                 checked={this.state.drop.tags.indexOf('bio-waste') > -1}
-                                                onChange={this._toggleTag('bio-waste')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'bio-waste')}/>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Tires'
                                                 checked={this.state.drop.tags.indexOf('tires') > -1}
-                                                onChange={this._toggleTag('tires')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'tires')}/>
                                             <CheckBox
-                                                editable={!this.state.drop.wasCollected}
+                                                editable={showFirstButton}
                                                 label='Large Object'
                                                 checked={this.state.drop.tags.indexOf('large') > -1}
-                                                onChange={this._toggleTag('large')}/>
+                                                onChange={this._toggleTag(showFirstButton, 'large')}/>
                                         </View>
 
                                     </View>

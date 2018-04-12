@@ -24,7 +24,7 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 
 import * as actions from './actions';
-import {vermontTowns} from '../../libs/vermont-towns';
+// import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import {TeamMember} from '../../models/team-member';
@@ -54,7 +54,8 @@ class NewTeam extends Component {
         actions: PropTypes.object,
         closeModal: PropTypes.any, // TODO : this should be of type 'fun' but we get a prop warning.  Fix this hack. (JN)
         owner: PropTypes.object,
-        locations: PropTypes.array
+        locations: PropTypes.array,
+        vermontTowns: PropTypes.array
     };
 
     constructor(props) {
@@ -151,7 +152,7 @@ class NewTeam extends Component {
         if (query === '') {
             return [];
         }
-        return vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        return this.props.vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
     };
 
     render() {
@@ -228,6 +229,7 @@ class NewTeam extends Component {
                                       comp(query, towns[0] || '') ? [] : towns}
                                 defaultValue={this.state.town || ''}
                                 onChangeText={text => this.setState({query: text, town: text})}
+                                underlineColorAndroid={'transparent'}
                                 renderItem={town => (
                                     <TouchableOpacity
                                         style={styles.suggestion}
@@ -338,7 +340,9 @@ const mapStateToProps = (state) => {
     const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const owner = TeamMember.create({...currentUser, ...profile, memberStatus: statuses.OWNER});
     const locations = state.teams.locations;
-    return {locations, owner};
+    const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
+
+    return {locations, owner, vermontTowns};
 };
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
