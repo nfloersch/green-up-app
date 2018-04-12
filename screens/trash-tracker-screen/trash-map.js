@@ -375,7 +375,7 @@ class TrashMap extends Component {
                                         {'Drop A Trash Bag Here'}
                                     </Text>
                                 </TouchableHighlight>)
-                            : null}
+                            :  <View style={[styles.headerButton, {backgroundColor: '#EEE', paddingTop: 13, height: 50, flex: 1}]}/>}
                         <TouchableHighlight
                             style={{height: 50, width: 50, padding: 5, backgroundColor: 'rgba(255,255,255,0.8)'}}
                             onPress={() => {
