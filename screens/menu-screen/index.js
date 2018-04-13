@@ -3,14 +3,14 @@
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Text, View, TouchableOpacity, StyleSheet, Linking, ScrollView} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { Text, View, TouchableOpacity, StyleSheet, Linking, ScrollView } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import * as actions from '../login-screen/actions';
-import {defaultStyles} from '../../styles/default-styles';
+import { defaultStyles } from '../../styles/default-styles';
 
 const myStyles = {};
 
@@ -35,7 +35,7 @@ class MenuScreen extends Component {
     render() {
         return (
             <View style={styles.frame}>
-                <ScrollView style={[styles.scroll, {paddingTop: 20, paddingLeft: 20, paddingRight: 20}]}>
+                <ScrollView style={[styles.scroll, { paddingTop: 20, paddingLeft: 20, paddingRight: 20 }]}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
@@ -80,15 +80,15 @@ class MenuScreen extends Component {
                     >
                         <Text style={styles.buttonText}>Feedback Form</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                         style={styles.button}
                         onPress={this.props.actions.logout}
                     >
                         <Text style={styles.buttonText}>Log Out</Text>
                     </TouchableOpacity>
+                    <View style={{height: 20}}></View>
                 </ScrollView>
-            </View>
+            </View >
         );
     }
 }
