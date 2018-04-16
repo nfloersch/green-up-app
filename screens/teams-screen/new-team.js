@@ -3,7 +3,7 @@
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Alert,
@@ -17,21 +17,21 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import {SegmentedControls} from 'react-native-radio-buttons';
+import { SegmentedControls } from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
-
 import * as actions from './actions';
 // import {vermontTowns} from '../../libs/vermont-towns';
-import {defaultStyles} from '../../styles/default-styles';
+import { defaultStyles } from '../../styles/default-styles';
 import Team from '../../models/team';
-import {TeamMember} from '../../models/team-member';
+import { TeamMember } from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
-import {User} from '../../models/user';
-import {removeNulls} from '../../libs/remove-nulls';
-
+import { User } from '../../models/user';
+import { removeNulls } from '../../libs/remove-nulls';
+import { Constants, Location, Permissions, MapView } from 'expo';
+import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 const myStyles = {
     selected: {
         opacity: 0.5
@@ -40,13 +40,15 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-const freshState = (owner) => ({
-    ...Team.create({owner}),
+const freshState = (owner, initialMapLocation = null) => ({
+    ...Team.create({ owner }),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
     datePickerVisible: false,
     query: '',
-    town: ''
+    town: '',
+    locations: [],
+    initialMapLocation
 });
 
 class NewTeam extends Component {
@@ -54,37 +56,132 @@ class NewTeam extends Component {
         actions: PropTypes.object,
         closeModal: PropTypes.any, // TODO : this should be of type 'fun' but we get a prop warning.  Fix this hack. (JN)
         owner: PropTypes.object,
-        locations: PropTypes.array,
+        otherCleanAreas: PropTypes.array,
         vermontTowns: PropTypes.array
     };
 
     constructor(props) {
         super(props);
-        this.state = freshState(props.owner);
+        this._handleMapClick = this._handleMapClick.bind(this);
+        this._removeMarker = this._removeMarker.bind(this);
+        this._removeLastMarker = this._removeLastMarker.bind(this);
+        this._createTeam = this._createTeam.bind(this);
+        this._handleMapClick = this._handleMapClick.bind(this);
+        const { locations } = this.props;
+
+        // if there are pins on the map, set initial location where the first pin is, otherwise device location will be set on componentWillMount
+        const initialMapLocation = locations && locations.length > 0 ? {
+            latitude: Number(locations[0].coordinates.latitude),
+            longitude: Number(locations[0].coordinates.longitude),
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+        } : null;
+
+        this.state = freshState(props.owner, initialMapLocation);
     }
 
+
+
+    componentWillMount() {
+        if (this.state.initialMapLocation === null) {
+            if (Platform.OS === 'android' && !Constants.isDevice) {
+                this.setState({
+                    errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it again on your ' +
+                        'device!'
+                });
+            } else {
+                this._getLocationAsync()
+                    .then((location) => {
+                        this.setState({
+                            initialMapLocation: {
+                                latitude: Number(location.latitude),
+                                longitude: Number(location.longitude),
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            }
+                        });
+                    }, () => {
+                        // Fail gracefully and set initial location to the Vermont Green Up HQ in Montpelier
+                        this.setState({
+                            initialMapLocation: {
+                                latitude: 44.263278,
+                                longitude: -72.6534249,
+                                latitudeDelta: 0.1,
+                                longitudeDelta: 0.1
+                            }
+                        });
+                    });
+            }
+        }
+    }
+
+
+    _getLocationAsync = () => Permissions.askAsync(Permissions.LOCATION)
+        .then((locationPermission) => {
+            if (locationPermission.status !== 'granted') {
+                throw new Error('allow access to location for a more accurate map');
+            }
+
+            return Location.getCurrentPositionAsync({});
+        })
+        .then((location) => {
+            if (location) {
+                return {
+                    latitude: Number(location.coords.latitude),
+                    longitude: Number(location.coords.longitude)
+                };
+            }
+            throw new Error('location is not available');
+        });
+
+    _handleMapClick(e) {
+        this.setState({
+            locations: this.state.locations.concat({
+                title: 'Clean Area',
+                description: 'tap to remove',
+                coordinates: e.nativeEvent.coordinate
+            })
+        });
+    }
+
+    _removeMarker(marker) {
+        return () => {
+            const locations = this.state.locations.filter(_marker => (
+                marker.coordinates.latitude !== _marker.coordinates.latitude ||
+                marker.coordinates.longitude !== _marker.coordinates.longitude
+            ));
+            this.setState({locations});
+        };
+    }
+
+    _removeLastMarker() {
+        const locations = this.state.locations.slice(0, this.state.locations.length - 1);
+        this.setState({locations});
+    }
+
+
     showStartDateTimePicker = () => {
-        this.setState({startDateTimePickerVisible: true});
+        this.setState({ startDateTimePickerVisible: true });
     };
 
     showEndDateTimePicker = () => {
-        this.setState({endDateTimePickerVisible: true});
+        this.setState({ endDateTimePickerVisible: true });
     };
 
     showDatePicker = () => {
-        this.setState({datePickerVisible: true});
+        this.setState({ datePickerVisible: true });
     };
 
     hideStartDateTimePicker = () => {
-        this.setState({startDateTimePickerVisible: false});
+        this.setState({ startDateTimePickerVisible: false });
     };
 
     hideEndDateTimePicker = () => {
-        this.setState({endDateTimePickerVisible: false});
+        this.setState({ endDateTimePickerVisible: false });
     };
 
     hideDatePicker = () => {
-        this.setState({datePickerVisible: false});
+        this.setState({ datePickerVisible: false });
     };
 
     _cancel = () => {
@@ -92,7 +189,7 @@ class NewTeam extends Component {
     };
 
     _createTeam = () => {
-        const team = Team.create({...this.state, locations: this.props.locations, owner: this.props.owner});
+        const team = Team.create({ ...this.state, owner: this.props.owner });
         if (!team.name) {
             Alert.alert('Please give your team a name.');
         } else {
@@ -120,7 +217,7 @@ class NewTeam extends Component {
     };
 
     _handleStartDatePicked = date => {
-        let start = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
+        let start = date.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
         if (Platform.OS === 'android') {
             start = this.fixAndroidTime(start);
         }
@@ -130,7 +227,7 @@ class NewTeam extends Component {
 
 
     _handleEndDatePicked = date => {
-        let end = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
+        let end = date.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
         if (Platform.OS === 'android') {
             end = this.fixAndroidTime(end);
         }
@@ -140,12 +237,12 @@ class NewTeam extends Component {
 
 
     setSelectedOption = option => {
-        this.setState({isPublic: option.value});
+        this.setState({ isPublic: option.value });
     };
 
 
     setTeamValue = (key) => (value) => {
-        this.setState({[key]: value});
+        this.setState({ [key]: value });
     };
 
     findTown = query => {
@@ -172,16 +269,17 @@ class NewTeam extends Component {
         const startIsSelected = this.state.start === null;
 
         // Autocomplete
-        const {query} = this.state;
+        const { query } = this.state;
         const towns = this.findTown(query);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
-
+        const { otherCleanAreas } = this.props;
+        const { locations } = this.state;
         return (
             <KeyboardAvoidingView
-                style={[styles.frame, {paddingTop: 30}]}
+                style={[styles.frame, { paddingTop: 30 }]}
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
+                <View style={[styles.buttonBarHeader, { backgroundColor: '#EEE', marginTop: 10 }]}>
                     <View style={styles.buttonBar}>
                         <TouchableHighlight style={styles.headerButton} onPress={this._createTeam}>
                             <Text style={styles.headerButtonText}>{'Save'}</Text>
@@ -198,7 +296,7 @@ class NewTeam extends Component {
                     keyboardShouldPersistTaps={'always'}
                 >
                     <View style={styles.infoBlockContainer}>
-                        <View style={{marginTop: 10}}>
+                        <View style={{ marginTop: 10 }}>
                             <Text style={styles.labelDark}>Team Name</Text>
                             <TextInput
                                 keyBoardType={'default'}
@@ -209,8 +307,8 @@ class NewTeam extends Component {
                                 underlineColorAndroid={'transparent'}
                             />
                         </View>
-                        <View style={{marginTop: 10}}>
-                            <Text style={[styles.labelDark, {fontSize: 12}]}>Private groups can only be joined by
+                        <View style={{ marginTop: 10 }}>
+                            <Text style={[styles.labelDark, { fontSize: 12 }]}>Private groups can only be joined by
                                 invitation</Text>
 
                             <SegmentedControls
@@ -219,29 +317,29 @@ class NewTeam extends Component {
                                 selectedOption={this.state.isPublic}
                                 selectedTint={'#EFEFEF'} tint={'#666666'}
                                 extractText={(option) => option.label}
-                                testOptionEqual={(selectedValue, option) => selectedValue === option.value}/>
+                                testOptionEqual={(selectedValue, option) => selectedValue === option.value} />
                         </View>
-                        <View style={{zIndex: 1, marginTop: 10}}>
+                        <View style={{ zIndex: 1, marginTop: 10 }}>
                             <Text style={styles.labelDark}>Select Town/City</Text>
                             <Autocomplete
-                                inputContainerStyle={{borderColor: '#000'}}
+                                inputContainerStyle={{ borderColor: '#000' }}
                                 data={query.length > 0 &&
-                                      comp(query, towns[0] || '') ? [] : towns}
+                                    comp(query, towns[0] || '') ? [] : towns}
                                 defaultValue={this.state.town || ''}
-                                onChangeText={text => this.setState({query: text, town: text})}
+                                onChangeText={text => this.setState({ query: text, town: text })}
                                 underlineColorAndroid={'transparent'}
                                 renderItem={town => (
                                     <TouchableOpacity
                                         style={styles.suggestion}
                                         onPress={() => {
-                                            this.setState({query: '', town: town});
+                                            this.setState({ query: '', town: town });
                                         }}>
                                         <Text>{town}</Text>
                                     </TouchableOpacity>
                                 )}
                             />
                         </View>
-                        <View style={{marginTop: 10}}>
+                        <View style={{ marginTop: 10 }}>
                             <Text style={styles.labelDark}>Clean Up Site</Text>
                             <TextInput
                                 keyBoardType={'default'}
@@ -252,8 +350,8 @@ class NewTeam extends Component {
                                 underlineColorAndroid={'transparent'}
                             />
                         </View>
-                        <View style={{marginTop: 10}}>
-                            <Text style={[styles.alertInfo, {textAlign:'left'}]}>
+                        <View style={{ marginTop: 10 }}>
+                            <Text style={[styles.alertInfo, { textAlign: 'left' }]}>
                                 Saturday, May 5th is Green Up Day, but your team can choose to work up to one week before or after.
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
@@ -274,7 +372,7 @@ class NewTeam extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{marginTop: 10}}>
+                        <View style={{ marginTop: 10 }}>
                             <Text style={styles.labelDark}>Start Time</Text>
                             <View>
                                 <TouchableOpacity onPress={this.showStartDateTimePicker}>
@@ -291,7 +389,7 @@ class NewTeam extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{marginTop: 10}}>
+                        <View style={{ marginTop: 10 }}>
                             <Text style={styles.labelDark}>End Time</Text>
                             <View>
                                 <TouchableOpacity onPress={this.showEndDateTimePicker}>
@@ -308,7 +406,7 @@ class NewTeam extends Component {
                                 />
                             </View>
                         </View>
-                        <View style={{marginTop: 10}}>
+                        <View style={{ marginTop: 10 }}>
                             <Text style={styles.labelDark}>Team Description</Text>
                             <TextInput
                                 keyBoardType={'default'}
@@ -323,10 +421,46 @@ class NewTeam extends Component {
                             />
                         </View>
                     </View>
+                    <View style={[styles.infoBlockContainer, { height: 450 }]}>
+                        <Text style={[styles.statusBar, { maxHeight: 63 }]}>
+                            Place a marker where you want your team to work. Other markers are areas claimed by other teams.
+                        </Text>
+                        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'red' }}>
+                            <MapView style={{ flex: 1 }}
+                                initialRegion={this.state.initialMapLocation}
+                                onPress={this._handleMapClick}>
+                                {this.state.locations.length > 0 && this.state.locations.map((marker, index) => (
+                                    <MapView.Marker coordinate={marker.coordinates}
+                                        key={`location${index}`}
+                                        pinColor={'red'}
+                                        onCalloutPress={this._removeMarker(marker)}
+                                        stopPropagation={true}>
+                                        <MultiLineMapCallout title={marker.title || 'Clean Area'}
+                                            description={marker.description || 'Tap to remove'} />
+                                    </MapView.Marker>
+                                ))}
+                                {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
+                                    (<MapView.Marker
+                                        key={i}
+                                        coordinate={a.coordinates}
+                                        // image={otherTeamsLocationImage}
+                                        pinColor={'yellow'}
+                                        title={a.title}
+                                        stopPropagation={true}>
+                                        <MultiLineMapCallout title={a.title} description={a.description} />
+                                    </MapView.Marker>
+                                    ))}
+                            </MapView>
+                        </View>
+
+                        <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
+                            <Text style={styles.buttonText}>{'remove marker'}</Text>
+                        </TouchableOpacity>
+                    </View>
 
                     {
                         Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                            ? (<View style={defaultStyles.padForIOSKeyboardBig} />)
                             : null
                     }
                 </ScrollView>
@@ -337,14 +471,19 @@ class NewTeam extends Component {
 
 const mapStateToProps = (state) => {
     const profile = state.profile;
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
-    const owner = TeamMember.create({...currentUser, ...profile, memberStatus: statuses.OWNER});
-    const locations = state.teams.locations;
+    const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+    const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
+    const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
+        key: '',
+        coordinates: l.coordinates,
+        title: `${team.name}`,
+        description: 'claimed this area'
+    }))), []);
     const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
 
-    return {locations, owner, vermontTowns};
+    return { owner, otherCleanAreas, vermontTowns };
 };
 
-const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
