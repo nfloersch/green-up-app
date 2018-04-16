@@ -290,18 +290,18 @@ class TeamDetails extends Component {
 
         const areas = Array.isArray(this.props.otherCleanAreas) ? this.props.otherCleanAreas : [];
 
-
-        const otherTeamAreas = areas.map((a, i) =>
-            (
-                <MapView.Marker
-                    key={i + 1000}
-                    coordinate={a.coordinates}
-                    pinColor={'yellow'}
-                    stopPropagation={true}>
-                    <MultiLineMapCallout title={a.title || ''} description={a.description || ''}/>
-                </MapView.Marker>
-            )
-        );
+        // Turning this off because if an owner doesn't desginate a location these pins are confusing.
+        // const otherTeamAreas = areas.map((a, i) =>
+        //     (
+        //         <MapView.Marker
+        //             key={i + 1000}
+        //             coordinate={a.coordinates}
+        //             pinColor={'yellow'}
+        //             stopPropagation={true}>
+        //             <MultiLineMapCallout title={a.title || ''} description={a.description || ''}/>
+        //         </MapView.Marker>
+        //     )
+        // );
 
 
         const teamAreas = (this.props.locations || []).map((marker, index) => (
@@ -309,9 +309,9 @@ class TeamDetails extends Component {
                 coordinate={marker.coordinates}
                 key={index}
                 stopPropagation={true}>
-                <MultiLineMapCallout title={marker.title || 'clean area'} description={''}/>
+                <MultiLineMapCallout title={marker.title || 'Clean Area'} description={''}/>
             </MapView.Marker>
-        )).concat(otherTeamAreas);
+        ));// .concat(otherTeamAreas);
 
         return (
             <View style={styles.frame}>
@@ -363,6 +363,13 @@ class TeamDetails extends Component {
                                 onPress={this._handleMapClick}>
                                 {teamAreas}
                             </MapView>
+                            {
+                                (this.props.locations || []).length > 0 
+                                ? null 
+                                : ( <Text style={[styles.textDark, {fontSize: 14, textAlign: 'left'}]}>
+                                {'The team owner has yet to designate a clean up location.'}
+                            </Text>)
+                        }
                         </View>
                         <View style={[styles.block, {
                             borderTopWidth: 1,

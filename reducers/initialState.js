@@ -22,17 +22,17 @@ export default {
         teamsLoaded: false
     },
     teamMembersLoaded: false,
-    teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
-    trashBagFinder: {townData: {}},
+    teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
+    trashBagFinder: { townData: {} },
     trashTracker: {
         trashDrops: [],
         location: null,
         collectedTrashToggle: false,
-        supplyPickupToggle: false,
+        supplyPickupToggle: true,
         uncollectedTrashToggle: true,
         trashDropOffToggle: true,
         myTrashToggle: true,
-        cleanAreasToggle: false
+        cleanAreasToggle: true
     },
     teamSearchResults: [],
     selectedTeam: null
