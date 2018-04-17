@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/app.png">
+  <img alt="Green Up Vermont Logo" width="300" height="300" src="../assets/images/app.png">
 </p>
 <h1>Green Up Vermont</h1>
 <h2>A mobile app for Vermont's Green Up Day.</h2>
