@@ -133,7 +133,6 @@ class NewMessage extends Component {
                                         <Text style={styles.labelDark}>Select Team to Message:</Text>
                                         <Picker
                                             style={styles.picker}
-                                            itemStyle={{height: 45}}
                                             selectedValue={teamValue}
                                             onValueChange={(itemValue) => this.setState({selectedTeamId: itemValue})}>
                                             {items}
