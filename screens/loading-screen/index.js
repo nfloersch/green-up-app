@@ -14,7 +14,6 @@ import * as actions from './actions';
 import {StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
 import ThinkingGreenThoughts from './thinking-green-thoughts';
-// import GetEmail from './get-email';
 
 const styles = StyleSheet.create({
     container: {
@@ -112,12 +111,6 @@ class LoadingScreen extends Component {
                 );
 
             default :
-                // return !this.props.user.email ? (<GetEmail/>) : (
-                //     <View style={styles.container}>
-                //         {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
-                //         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay}/>}
-                //         <RootNavigation/>
-                //     </View>
                 return (
                     <View style={[styles.container, {padding: 0, margin: 0}]}>
                         <RootNavigation/>

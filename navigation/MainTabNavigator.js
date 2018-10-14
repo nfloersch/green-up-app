@@ -3,13 +3,11 @@ import {Platform} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {TabNavigator, TabBarBottom} from 'react-navigation';
 
-// import Colors from '../constants/Colors';
 import * as colors from '../styles/constants';
 import MenuScreen from '../screens/menu-screen';
 import TeamsScreen from '../screens/teams-screen/';
 import MessagesScreen from '../screens/messages-screen/';
 import TrashTrackerScreen from '../screens/trash-tracker-screen/';
-// import DonateScreen from '../screens/donate-screen/';
 
 export default TabNavigator(
     {
@@ -44,9 +42,6 @@ export default TabNavigator(
                     case 'TrashTracker':
                         iconName = Platform.OS === 'ios' ? `ios-pin${focused ? '' : '-outline'}` : 'md-pin';
                         break;
-                    // case 'Support' :
-                    //     iconName = Platform.OS === 'ios' ? `ios-happy${focused ? '' : '-outline'}` : 'md-happy';
-                    //     break;
                     case 'Menu' :
                         iconName = Platform.OS === 'ios' ? `ios-apps${focused ? '' : '-outline'}` : 'md-apps';
                         break;
