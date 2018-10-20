@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import * as actions from '../login-screen/actions';
 import { defaultStyles } from '../../styles/default-styles';
 
+import { Platform } from 'react-native';
+
 const myStyles = {};
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -82,6 +84,19 @@ class MenuScreen extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
+                        onPress={() => {
+                          if(Platform.OS == 'ios'){
+                            Linking.openURL(APP_STORE_LINK);
+                          }
+                          else{
+                            Linking.openURL(PLAY_STORE_LINK);
+                          }
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Rate this App</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
                         onPress={this.props.actions.logout}
                     >
                         <Text style={styles.buttonText}>Log Out</Text>
@@ -99,5 +114,8 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
 });
+
+const APP_STORE_LINK = 'itms://itunes.apple.com/us/app/green-up-vermont/id1364770239?mt=8';
+const PLAY_STORE_LINK = 'market://details?id=org.greenupvermont.app';
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);
