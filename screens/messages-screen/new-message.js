@@ -98,11 +98,11 @@ class NewMessage extends Component {
     render() {
         const user = this.props.currentUser || {};
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
-        const canSendMessage = (teamId: string) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
-        const messagableTeams = this.props.myTeams.filter(team => canSendMessage(team.id));
+        const isConfirmedMember = (teamId: string) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        const messagableTeams = this.props.myTeams.filter(team => isConfirmedMember(team.id));
         const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId || ((messagableTeams || []).length === 1 && (messagableTeams[0] || {}).id);
         const teamName = ((this.props.myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
-        const items = (this.props.myTeams || []).filter(team => canSendMessage(team.id))
+        const items = (this.props.myTeams || []).filter(team => isConfirmedMember(team.id))
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
