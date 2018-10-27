@@ -2,9 +2,8 @@
 
 import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
-// import {User} from '../../models/user';
-// import {AsyncStorage} from 'react-native';
 import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import {thirdPartyConfig} from '../../config/third-party-config'
 
 export function getCurrentUser() {
     return (dispatch: Object => *) => {
@@ -52,10 +51,10 @@ export function googleLogin() {
 
         try {
             const result = await Expo.Google.logInAsync({
-                androidClientId: '439621369113-oe6f0lm8a5qds59019dfpjf5dnl364g0.apps.googleusercontent.com',
-                androidStandaloneAppClientId: '439621369113-qhjq9o6e5ile1e1grlcpm6i1ett9f834.apps.googleusercontent.com',
-                iosClientId: '439621369113-9iqssauvd4jnr3kqrl6it7sjdock5n53.apps.googleusercontent.com',
-                iosStandaloneAppClientId:'439621369113-o7buqq3g66656fhvj4d4t6be0cubgkjg.apps.googleusercontent.com',
+                androidClientId: thirdPartyConfig.androidClientId,
+                androidStandaloneAppClientId: thirdPartyConfig.androidStandaloneAppClientId,
+                iosClientId: thirdPartyConfig.iosClientId,
+                iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
                 scopes: ['profile', 'email'],
                 useBrowser: true,
                 behavior:'web'
@@ -82,15 +81,11 @@ export function googleLogin() {
 
 export function facebookLogin() {
     return async function logIn(dispatch: Object => *) {
-        const facebook = await Expo.Facebook.logInWithReadPermissionsAsync('1345826968841458', {
+        const facebook = await Expo.Facebook.logInWithReadPermissionsAsync(thirdPartyConfig.facebookAppId, {
             behavior: 'web', permissions: ['public_profile', 'email']
         });
         const {type, token} = facebook;
         if (type === 'success') {
-            // Get the user's name using Facebook's Graph API
-            // const response = await fetch(`https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`);
-            // const userInfo = await response.json();
-
             firebaseDataLayer.facebookAuth(token).catch((error) => {
                 dispatch({
                     type: types.LOGIN_FAIL,
