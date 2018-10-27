@@ -38,9 +38,11 @@ For running in an emulator, install [Genymotion](https://www.genymotion.com/).
 
 Run the project in the root folder.
 
-```
-expo start
-```
+```npm run start``` 
+
+or 
+
+```expo start```
 
 ## Licensing
 

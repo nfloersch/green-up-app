@@ -53,7 +53,8 @@
         }
     ],
     "scripts": {
-        "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+        "test": "node ./node_modules/jest/bin/jest.js --watchAll",
+        "start": "expo start"
     },
     "jest": {
         "preset": "jest-expo"
