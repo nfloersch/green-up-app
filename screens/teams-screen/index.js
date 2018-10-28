@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
-import { getMemberIcon } from '../../libs/member-icons';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {Ionicons} from '@expo/vector-icons';
+import {getMemberIcon} from '../../libs/member-icons';
 import {
     FlatList,
     ImageBackground,
@@ -21,18 +21,18 @@ import {
 } from 'react-native';
 
 import NewTeam from './new-team';
-import { TeamMember } from '../../models/team-member';
+import {TeamMember} from '../../models/team-member';
 import * as actions from './actions';
-import { User } from '../../models/user';
-import { defaultStyles } from '../../styles/default-styles';
+import {User} from '../../models/user';
+import {defaultStyles} from '../../styles/default-styles';
 import * as teamStatus from '../../constants/team-member-statuses';
 import teamwork from '../../assets/images/teamwork.jpeg';
-import { removeNulls } from '../../libs/remove-nulls';
+import {removeNulls} from '../../libs/remove-nulls';
 
 
 const myStyles = {
     icon: {
-        height: 50, 
+        height: 50,
         width: 50,
         paddingTop: 10
     },
@@ -55,17 +55,17 @@ class TeamItem extends Component {
         return (
             <View key={item.key} style={styles.row}>
                 <TouchableHighlight
-                    style={{ flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10 }}
+                    style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}}
                     onPress={item.goToTeam}>
-                    <Text style={[styles.textDark, { fontSize: 14, paddingTop: 20, height: 40 }]}>{item.name}</Text>
+                    <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20, height: 40}]}>{item.name}</Text>
                 </TouchableHighlight>
                 {
                     item.isConfirmedMember
                         ? (
                             <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
-                                <Ionicons style={{paddingTop: 10}} 
-                                    name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                    size={30}
+                                <Ionicons style={{paddingTop: 10}}
+                                          name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                          size={30}
                                 />
                             </TouchableOpacity>
                         )
@@ -75,7 +75,7 @@ class TeamItem extends Component {
                     item.isConfirmedMember ? (
                         <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
                             <Ionicons name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
-                                size={30} style={{paddingTop: 10}} 
+                                      size={30} style={{paddingTop: 10}}
                             />
                         </TouchableOpacity>
                     ) : null
@@ -111,7 +111,7 @@ class MyTeams extends Component {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
-        this.state = { selectedTeamId: null, isModalVisible: false, messageText: '' };
+        this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
     toTeamSearch() {
@@ -127,12 +127,12 @@ class MyTeams extends Component {
                 [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
             };
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', { status });
+            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
         };
     }
 
     toNewTeamEditor() {
-        this.setState({ openModal: 'NEW_TEAM' });
+        this.setState({openModal: 'NEW_TEAM'});
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
@@ -164,7 +164,7 @@ class MyTeams extends Component {
                     message: message,
                     title: title,
                     // iOS only
-                    url: url,
+                    url: url
                 }, {
                     // Android Only
                     dialogTitle: 'Share Your Green Up Team Details',
@@ -177,19 +177,18 @@ class MyTeams extends Component {
                 })
                 .catch((error) => {
                     // Did not share
-                })
-        }
+                });
+        };
     };
 
     render() {
-        const _closeModal = () => this.setState({ openModal: 'none' });
+        const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
         const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
         const isConfirmedMember = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
         const teamKeys = Object.keys((user.teams || {}));
         const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
-
         const invitedTeams = invitedKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => ({
                 key,
@@ -197,7 +196,7 @@ class MyTeams extends Component {
                 ...(teams[key] || {}),
                 goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
                 isConfirmedMember: isConfirmedMember(key),
-                goToMessage: () => this.props.navigation.navigate('NewMessage', { selectedTeamId: key }),
+                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             }));
 
@@ -209,7 +208,7 @@ class MyTeams extends Component {
                 ...(teams[key] || {}),
                 goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
                 isConfirmedMember: isConfirmedMember(key),
-                goToMessage: () => this.props.navigation.navigate('NewMessage', { selectedTeamId: key }),
+                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             })).concat(invitedTeams);
 
@@ -238,30 +237,30 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                            <View style={{
-                                marginTop: '20%',
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                                paddingTop: 50,
-                                paddingBottom: 50,
-                                backgroundColor: 'rgba(255,255,255, 0.85)'
-                            }}>
-                                <Text style={[styles.textDark]}>
-                                    {'Green Up Day is all about community and teamwork.'}
-                                </Text>
-                                <Text style={[styles.textDark]}>
-                                    {'Search for teams in your area, or create a new one and invite some friends.'}
-                                </Text>
-                            </View>
-                        </ImageBackground>
-                    )
+                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                                <View style={{
+                                    marginTop: '20%',
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    paddingTop: 50,
+                                    paddingBottom: 50,
+                                    backgroundColor: 'rgba(255,255,255, 0.85)'
+                                }}>
+                                    <Text style={[styles.textDark]}>
+                                        {'Green Up Day is all about community and teamwork.'}
+                                    </Text>
+                                    <Text style={[styles.textDark]}>
+                                        {'Search for teams in your area, or create a new one and invite some friends.'}
+                                    </Text>
+                                </View>
+                            </ImageBackground>
+                        )
                         : (
                             <ScrollView style={styles.scroll}>
                                 <View style={styles.infoBlockContainer}>
                                     <FlatList
                                         data={myTeams}
-                                        renderItem={({ item }) => (<TeamItem item={item} />)}
+                                        renderItem={({item}) => (<TeamItem item={item}/>)}
                                         style={styles.infoBlockContainer}
                                     />
                                 </View>
@@ -275,7 +274,7 @@ class MyTeams extends Component {
                     visible={this.state.openModal === 'NEW_TEAM'}
                     onRequestClose={() => {
                     }}>
-                    <NewTeam closeModal={_closeModal} />
+                    <NewTeam closeModal={_closeModal}/>
                 </Modal>
             </View>
         );
@@ -284,10 +283,10 @@ class MyTeams extends Component {
 
 function mapStateToProps(state) {
     const invitations = state.teams.invitations;
-    const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teams = state.teams.teams;
     const teamMembers = state.teams.teamMembers || {};
-    return { teams, currentUser, teamMembers, invitations };
+    return {teams, currentUser, teamMembers, invitations};
 }
 
 function mapDispatchToProps(dispatch) {

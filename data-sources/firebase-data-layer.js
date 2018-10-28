@@ -105,7 +105,7 @@ function setupProfileListener(user, dispatch) {
                 addUs.forEach(key => {
                     myTeamMemberListeners[key] = db.collection('teamMembers')
                         .onSnapshot(snapShot => {
-                            if(snapShot.exists) {
+                            if (snapShot.exists) {
                                 dispatch(dataLayerActions.teamMemberFetchSuccessful(snapShot.data(), key));
                             }
                         });
@@ -119,15 +119,18 @@ function setupProfileListener(user, dispatch) {
 
 function setupTeamListener(dispatch) {
     db.collection('teams')
-        .onSnapshot(snapshot => {
-            const data = snapshot.exists ? snapshot.data() : {};
-            dispatch(dataLayerActions.teamFetchSuccessful(data));
+        .onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+            const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+            dispatch(dataLayerActions.teamFetchSuccessful(teams));
         });
 }
 
 function setupTrashDropListener(dispatch) {
-    db.collection('trashDrops').onSnapshot(snapshot => {
-        const data = snapshot.exists ? snapshot.data() : {};
+    db.collection('trashDrops').onSnapshot(querySnapshot => {
+        const data = [];
+        querySnapshot.forEach(doc => data.push(doc.data()));
         dispatch(dataLayerActions.trashDropFetchSuccessful(data));
     });
 }
