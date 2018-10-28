@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, View, Alert,
-    Platform
+    Image, ScrollView, StyleSheet, Text, View, Alert
 } from 'react-native';
 
 import * as actions from './actions';
@@ -56,7 +55,10 @@ class ThinkingGreenThoughts extends Component {
                 '',
                 (nextProps.loginError.message || 'Login Failed'),
                 [
-                    {text: 'OK', onPress: () => {}}
+                    {
+                        text: 'OK', onPress: () => {
+                        }
+                    }
                 ],
                 {cancelable: false}
             );

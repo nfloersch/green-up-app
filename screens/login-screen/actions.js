@@ -4,7 +4,7 @@ import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 // import {User} from '../../models/user';
 // import {AsyncStorage} from 'react-native';
-import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 
 export function getCurrentUser() {
     return (dispatch: Object => *) => {
@@ -112,7 +112,7 @@ export function facebookLogin() {
 export function resetPassword(emailAddress: string) {
     return (dispatch) => {
         firebaseDataLayer.resetPassword(emailAddress)
-            .then(() => dispatch({type: types.RESET_PASSSWORD_SUCCESS}))
+            .then(() => dispatch({type: types.RESET_PASSWORD_SUCCESS}))
             .catch(error => {
                 dispatch(
                     {

@@ -34,6 +34,10 @@ export function teamFetchSuccessful(_teams: Object) {
     return {type: types.FETCH_TEAMS_SUCCESS, teams};
 }
 
+export function townDataFetchFail() {
+    return {type: types.FETCH_TEAMS_FAIL};
+}
+
 export function trashDropFetchSuccessful(_trashDrops: Object) {
     const trashDrops = Object.keys(_trashDrops || {}).reduce((trashDropObj, key) => (Object.assign({}, trashDropObj, {[key]: TrashDrop.create(_trashDrops[key], key)})), {});
     return {type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops};
@@ -44,7 +48,7 @@ export function profileFetchSuccessful(profile: Object) {
 }
 
 
-export function teamMemberFetchSuccessful(membership:Object, teamId: string) {
+export function teamMemberFetchSuccessful(membership: Object, teamId: string) {
     return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
 }
 
@@ -63,4 +67,12 @@ export function invitationFetchSuccessful(invitations: Object) {
 
 export function noTeamsToLoad() {
     return {type: types.NO_TEAMS_TO_LOAD};
+}
+
+export function initilizationSuccessful() {
+    return {type: types.INITIALIZE_SUCCESS};
+}
+
+export function initilizationFail() {
+    return {type: types.INITIALIZE_FAIL};
 }

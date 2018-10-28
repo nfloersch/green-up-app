@@ -23,7 +23,6 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import {Message} from '../../models/message';
 import coveredBridge from '../../assets/images/covered-bridge2.jpg';
-import ThinkingGreenThoughts from '../loading-screen/thinking-green-thoughts';
 
 const myStyles = {
     message: {
@@ -49,7 +48,7 @@ const myStyles = {
         shadowOpacity: 1,
         shadowRadius: 1
     },
-    oldMsg:{
+    oldMsg: {
         color: '#888',
         fontSize: 16,
         shadowColor: '#FFF',
@@ -91,7 +90,7 @@ class MessageItem extends Component {
                             source={{uri: item.sender.photoURL}}
                         />
                         <View style={{flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-                            <Text style={[item.read ? styles.read : styles.unread,{
+                            <Text style={[item.read ? styles.read : styles.unread, {
                                 fontSize: 10,
                                 textAlign: 'left',
                                 fontWeight: 'bold',
@@ -185,108 +184,103 @@ class Messages extends Component {
     }
 
     render() {
-        if (this.props.teamMembersLoaded && this.props.teamsLoaded && this.props.messagesLoaded && this.props.invitationsLoaded) {
-            const invitations = this.props.invitations;
-            const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
-                Object.assign({}, obj, {
-                    [key]: Message.create(
-                        {
-                            uid: key,
-                            text: `${invitations[key].sender.displayName} has invited you to join team : ${invitations[key].team.name}`,
-                            sender: invitations[key].sender,
-                            teamId: key,
-                            read: false,
-                            active: true,
-                            type: messageTypes.INVITATION
-                        }
-                    )
-                })
-            ), {});
-            const messages = Object.assign({}, this.props.messages, invitationMessages);
-            const messageKeys = Object.keys(messages || {}).filter(key => Boolean(!messages[key].teamId || this.props.teams[messages[key].teamId]));
-            const sortedKeys = messageKeys.sort((key1, key2) => (
-                messages[key2].created.valueOf() - messages[key1].created.valueOf()
-            ));
-            const myMessages = sortedKeys.map(key => ({
-                key,
-                toDetail: this.toMessageDetail(messages[key]),
-                teamName: ((this.props.teams[messages[key].teamId] || {}).name || '').trim(),
-                ...(messages[key] || {})
-            }));
 
-            return this.props.userHasTeams ? (
-                <View style={styles.frame}>
-                    <View style={styles.singleButtonHeader}>
-                        <TouchableHighlight
-                            style={styles.headerButton}
-                            onPress={() => {
-                                this.props.navigation.navigate('NewMessage');
-                            }}>
-                            <Text style={styles.headerButtonText}>{'New Message'}</Text>
-                        </TouchableHighlight>
-                    </View>
-                    {myMessages.length > 0
-                        ? (
-                            <ScrollView style={styles.scroll}>
-                                <View style={styles.infoBlockContainer}>
-                                    <FlatList
-                                        data={myMessages}
-                                        renderItem={({item}) => (<MessageItem item={item}/>)}
-                                        style={styles.infoBlockContainer}
-                                    />
-                                </View>
-                            </ScrollView>
-                        )
-                        : (
-                            <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
-                                <View style={{
-                                    marginTop: '20%',
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 50,
-                                    paddingBottom: 50,
-                                    backgroundColor: 'rgba(255,255,255, 0.85)'
-                                }}>
-                                    <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
-                                    <Text
-                                        style={styles.textDark}>{'Try sending one to your teammates.'}</Text>
-                                </View>
-                            </ImageBackground>
-                        )}
-                </View>
-            ) : (
-                <View style={styles.frame}>
-                    <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
-                        <View style={{
-                            marginTop: '20%',
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingTop: 50,
-                            paddingBottom: 50,
-                            backgroundColor: 'rgba(255,255,255, 0.85)'
+        const invitations = this.props.invitations;
+        const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
+            Object.assign({}, obj, {
+                [key]: Message.create(
+                    {
+                        uid: key,
+                        text: `${invitations[key].sender.displayName} has invited you to join team : ${invitations[key].team.name}`,
+                        sender: invitations[key].sender,
+                        teamId: key,
+                        read: false,
+                        active: true,
+                        type: messageTypes.INVITATION
+                    }
+                )
+            })
+        ), {});
+        const messages = Object.assign({}, this.props.messages, invitationMessages);
+        const messageKeys = Object.keys(messages || {}).filter(key => Boolean(!messages[key].teamId || this.props.teams[messages[key].teamId]));
+        const sortedKeys = messageKeys.sort((key1, key2) => (
+            messages[key2].created.valueOf() - messages[key1].created.valueOf()
+        ));
+        const myMessages = sortedKeys.map(key => ({
+            key,
+            toDetail: this.toMessageDetail(messages[key]),
+            teamName: ((this.props.teams[messages[key].teamId] || {}).name || '').trim(),
+            ...(messages[key] || {})
+        }));
+
+        return this.props.userHasTeams ? (
+            <View style={styles.frame}>
+                <View style={styles.singleButtonHeader}>
+                    <TouchableHighlight
+                        style={styles.headerButton}
+                        onPress={() => {
+                            this.props.navigation.navigate('NewMessage');
                         }}>
-                            <Text style={[styles.textDark, {textAlign: 'justify'}]}>
-                                {'All your messages will be listed here.'}
-                            </Text>
-                            <Text style={[styles.textDark, {textAlign: 'justify'}]}>
-                                {'Before you can send or receive messages you will need to join or create a team.'}
-                            </Text>
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => {
-                                    this.props.navigation.navigate('Teams');
-                                }}
-                            >
-                                <Text style={styles.buttonText}>{'Go to "My Teams" >'}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ImageBackground>
+                        <Text style={styles.headerButtonText}>{'New Message'}</Text>
+                    </TouchableHighlight>
                 </View>
-            );
-        }
-
-        return (
-            <ThinkingGreenThoughts/>
+                {myMessages.length > 0
+                    ? (
+                        <ScrollView style={styles.scroll}>
+                            <View style={styles.infoBlockContainer}>
+                                <FlatList
+                                    data={myMessages}
+                                    renderItem={({item}) => (<MessageItem item={item}/>)}
+                                    style={styles.infoBlockContainer}
+                                />
+                            </View>
+                        </ScrollView>
+                    )
+                    : (
+                        <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
+                            <View style={{
+                                marginTop: '20%',
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingTop: 50,
+                                paddingBottom: 50,
+                                backgroundColor: 'rgba(255,255,255, 0.85)'
+                            }}>
+                                <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
+                                <Text
+                                    style={styles.textDark}>{'Try sending one to your teammates.'}</Text>
+                            </View>
+                        </ImageBackground>
+                    )}
+            </View>
+        ) : (
+            <View style={styles.frame}>
+                <ImageBackground source={coveredBridge} style={styles.backgroundImage}>
+                    <View style={{
+                        marginTop: '20%',
+                        paddingLeft: 20,
+                        paddingRight: 20,
+                        paddingTop: 50,
+                        paddingBottom: 50,
+                        backgroundColor: 'rgba(255,255,255, 0.85)'
+                    }}>
+                        <Text style={[styles.textDark, {textAlign: 'justify'}]}>
+                            {'All your messages will be listed here.'}
+                        </Text>
+                        <Text style={[styles.textDark, {textAlign: 'justify'}]}>
+                            {'Before you can send or receive messages you will need to join or create a team.'}
+                        </Text>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                this.props.navigation.navigate('Teams');
+                            }}
+                        >
+                            <Text style={styles.buttonText}>{'Go to "My Teams" >'}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ImageBackground>
+            </View>
         );
     }
 }

@@ -1,4 +1,4 @@
-import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import * as types from '../../constants/actionTypes';
 
 

@@ -69,10 +69,7 @@ class LoadingScreen extends Component {
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
-            ...Ionicons.font,
-            // We include SpaceMono because we use it in HomeScreen.js. Feel free
-            // to remove this if you are not using it in your app
-            'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf')
+            ...Ionicons.font
         })
     ]);
 
@@ -88,8 +85,9 @@ class LoadingScreen extends Component {
     };
 
     render() {
+        const {isLoadingComplete, skipLoadingScreen, userIsLoggedIn, isInitialized} = this.props;
         switch (true) {
-            case (!this.props.isLoadingComplete && !this.props.skipLoadingScreen):
+            case (!isLoadingComplete && !skipLoadingScreen):
                 return (
                     <AppLoading
                         startAsync={this._loadResourcesAsync}
@@ -97,19 +95,15 @@ class LoadingScreen extends Component {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-            case (this.props.isLoggingInViaSSO):
+
+            case (!isInitialized):
                 return (
                     <ThinkingGreenThoughts/>
                 );
-            case (!this.props.initialAuthChecked):
-                return (
-                    <ThinkingGreenThoughts/>
-                );
-            case (!this.props.userIsLoggedIn) :
+            case (!userIsLoggedIn) :
                 return (
                     <LoginScreen/>
                 );
-
             default :
                 return (
                     <View style={[styles.container, {padding: 0, margin: 0}]}>
@@ -128,6 +122,7 @@ function mapStateToProps(state) {
         isLoggingInViaSSO: state.login.isLoggingInViaSSO,
         skipLoadingScreen: state.loading.skipLoadingScreen,
         userIsLoggedIn: state.login.userIsLoggedIn,
+        isInitialized: state.loading.isInitialized,
         user: state.login.user || {}
     };
 }

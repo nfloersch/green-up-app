@@ -54,12 +54,20 @@ class MessageDetails extends Component {
                                     />
                                     <View>
                                         <View style={{height: 30, flex: 1, flexDirection: 'row'}}>
-                                            <Text style={{ color: '#555', fontSize: 16}}>{'From: '}</Text>
-                                            <Text style={[styles.textDark, {fontSize: 12,  height: 16, marginTop: 4}]}>{message.sender.displayName}</Text>
+                                            <Text style={{color: '#555', fontSize: 16}}>{'From: '}</Text>
+                                            <Text style={[styles.textDark, {
+                                                fontSize: 12,
+                                                height: 16,
+                                                marginTop: 4
+                                            }]}>{message.sender.displayName}</Text>
                                         </View>
-                                        <View style={{height: 30, flex: 1, flexDirection: 'row' }}>
-                                        <Text style={{ color: '#555', fontSize: 16}}>{'To: '}</Text>
-                                            <Text style={[styles.textDark, {fontSize: 12, height: 16, marginTop: 4}]}>{team.name}</Text>
+                                        <View style={{height: 30, flex: 1, flexDirection: 'row'}}>
+                                            <Text style={{color: '#555', fontSize: 16}}>{'To: '}</Text>
+                                            <Text style={[styles.textDark, {
+                                                fontSize: 12,
+                                                height: 16,
+                                                marginTop: 4
+                                            }]}>{team.name}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -67,8 +75,11 @@ class MessageDetails extends Component {
                             <ScrollView style={{
                                 padding: 10
                             }}>
-                               <View style={styles.infoBlockContainer}>
-                                <Text style={[styles.textDark, {fontSize: 14, paddingBottom: 10}]}>{message.text}</Text>
+                                <View style={styles.infoBlockContainer}>
+                                    <Text style={[styles.textDark, {
+                                        fontSize: 14,
+                                        paddingBottom: 10
+                                    }]}>{message.text}</Text>
                                 </View>
                             </ScrollView>
                         </View>

@@ -30,6 +30,17 @@ export function reducers(state = initialState.loading, action) {
                 ...state,
                 teamMembersLoaded: true
             };
+        case types.INITIALIZE_SUCCESS:
+            return {
+                ...state,
+                isInitialized: true
+            };
+        case types.INITIALIZE_FAIL:
+            return {
+                ...state,
+                isInitialized: false,
+                initializeError: 'Failed to initialize user'
+            };
         default:
             return state;
     }

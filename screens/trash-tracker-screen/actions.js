@@ -1,4 +1,4 @@
-import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import TrashDrop from '../../models/trash-drop';
 import * as types from '../../constants/actionTypes';
 

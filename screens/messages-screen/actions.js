@@ -1,7 +1,7 @@
 // @flow
 
 import * as types from '../../constants/actionTypes';
-import {firebaseDataLayer} from '../../data-sources/firebase-data-layer';
+import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {Message} from '../../models/message';
 import * as statuses from '../../constants/team-member-statuses';
 
