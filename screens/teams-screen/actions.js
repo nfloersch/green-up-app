@@ -92,8 +92,8 @@ export function saveTeam(team: Object) {
     };
 }
 
-export function createTeam(team: Object) {
-    return () => firebaseDataLayer.createTeam(team);
+export function createTeam(team: Object, user) {
+    return () => firebaseDataLayer.createTeam(team, user);
 }
 
 export function deleteTeam(teamId: string){

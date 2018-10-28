@@ -21,6 +21,40 @@ db.settings({
 let myTeamMemberListeners = {};
 
 
+/** *************** Profiles ***************  **/
+
+
+export function updateProfile(profile: Object, teamMembers: Object) {
+    const membershipKey = profile.email.toLowerCase().replace(/\./g, ':');
+    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
+    const profileUpdate = db.collection('profiles').doc(profile.uid).set(newProfile);
+    const teamUpdates = Object.keys(teamMembers).map(key => {
+        const oldTeamMember = (teamMembers[key] || {})[membershipKey] || {};
+        const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
+        return db.collection(`teamMembers/${key}/${membershipKey}`).set({...newTeamMember});
+    });
+    return Promise.all(teamUpdates.concat(profileUpdate));
+}
+
+
+function createProfile(user: User): Promise {
+    const now = new Date();
+    const newProfile = User.create(user);
+
+    return db.collection('profiles').doc(newProfile.uid).set({
+        ...newProfile,
+        created: now,
+        updated: now
+    })
+        .then(function (docRef) {
+            console.log('Document written with ID: ', docRef.id);
+        })
+        .catch(function (error) {
+            console.error('Error adding document: ', error);
+        });
+}
+
+
 /** *************** INITIALIZATION *************** **/
 
 
@@ -44,9 +78,10 @@ function stringifyDates(obj) {
 }
 
 function setupMessageListener(uid, dispatch) {
-    const messages = firebase.database().ref(`messages/${uid}`);
-    messages.on('value', (snapshot) => {
-        dispatch(dataLayerActions.messageFetchSuccessful(snapshot.val()));
+    return db.collection('messages').doc(uid).onSnapshot(snapshot => {
+        if (snapshot.exists) {
+            dispatch(dataLayerActions.messageFetchSuccessful(snapshot.data()));
+        }
     });
 }
 
@@ -58,19 +93,21 @@ function setupProfileListener(user, dispatch) {
                 const profile = doc.data();
                 dispatch(dataLayerActions.profileFetchSuccessful(profile));
                 const removeUs = Object.keys(myTeamMemberListeners).filter(key => !(key in profile.teams));
-                const addUs = Object.keys(profile.teams).filter(key => !(key in myTeamMemberListeners));
+                const addUs = Object.keys(profile.teams || {}).filter(key => !(key in myTeamMemberListeners));
                 // remove listeners for ex-team member list changes;
                 removeUs.forEach(key => {
                     // unsubscribe listener
                     myTeamMemberListeners[key]();
                     // remove listener from cache
-                    delete  myTeamMemberListeners[key];
+                    delete myTeamMemberListeners[key];
                 });
                 // Add listeners for new team member list changes
                 addUs.forEach(key => {
                     myTeamMemberListeners[key] = db.collection('teamMembers')
                         .onSnapshot(snapShot => {
-                            dispatch(dataLayerActions.teamMemberFetchSuccessful(snapShot.data, id));
+                            if(snapShot.exists) {
+                                dispatch(dataLayerActions.teamMemberFetchSuccessful(snapShot.data(), key));
+                            }
                         });
                 });
             } else {
@@ -132,41 +169,6 @@ function initializeUser(dispatch, user) {
  */
 export function initialize(dispatch: any => any) {
     firebase.auth().onAuthStateChanged(user => initializeUser(dispatch, user));
-}
-
-
-/** *************** Profiles ***************  **/
-
-
-export function updateProfile(profile: Object, teamMembers: Object) {
-    const db = firebase.database();
-    const membershipKey = profile.email.toLowerCase().replace(/\./g, ':');
-    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
-    const profileUpdate = db.ref(`profiles/${profile.uid}`).set(newProfile);
-    const teamUpdates = Object.keys(teamMembers).map(key => {
-        const oldTeamMember = (teamMembers[key] || {})[membershipKey] || {};
-        const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
-        return db.ref(`teamMembers/${key}/${membershipKey}`).set(newTeamMember);
-    });
-    return Promise.all(teamUpdates.concat(profileUpdate));
-}
-
-
-function createProfile(user: User): Promise {
-    const now = new Date();
-    const newProfile = User.create(user);
-
-    return db.collection('profiles').doc(newProfile.uid).set({
-        ...newProfile,
-        created: now,
-        updated: now
-    })
-        .then(function (docRef) {
-            console.log('Document written with ID: ', docRef.id);
-        })
-        .catch(function (error) {
-            console.error('Error adding document: ', error);
-        });
 }
 
 
@@ -255,10 +257,7 @@ export function updateEmail(email: string) {
 /** *************** MESSAGING *************** **/
 export function sendUserMessage(userId, message) {
     const _message = stringifyDates(message);
-    return firebase
-        .database()
-        .ref(`messages/${userId}`)
-        .push(_message);
+    return db.collection(`messages/${userId}`).add(_message);
 }
 
 export function sendGroupMessage(group, message) {
@@ -269,108 +268,87 @@ export function sendGroupMessage(group, message) {
 
 export function updateMessage(message: Object, userId: string) {
     const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
-    return firebase
-        .database()
-        .ref(`messages/${userId}/${message.uid}`).set(newMessage);
+    return db.collection(`messages/${userId}/${message.uid}`).set(newMessage);
 }
 
 export function deleteMessage(userId: string, messageId: string) {
-    return firebase
-        .database()
-        .ref(`messages/${userId}/${messageId}`).remove();
+    return db.collection(`messages/${userId}/${messageId}`).delete();
 }
 
 
 /** *************** TEAMS *************** **/
-export function saveTeam(team) {
-    const _id = team.uid || team.id;
-    const _team = {...team, uid: null};
-    return firebase.database().ref(`teams/${_id}`).set(_team);
-}
 
-export function createTeam(team: Object = {}) {
-    const db = firebase.database();
-    const ownerId = (team.owner || {}).email.toLowerCase().replace(/\./g, ':');
+export function createTeam(team: Object = {}, user: User = {}) {
     const uid = team.owner.uid;
-    return db.ref('teams').push(team).then((_team) => {
-        const teamId = _team.key;
-        db.ref(`teamMembers/${teamId}/${ownerId}`).set(team.owner).then(
+    return db.collection('teams').add({...team, owner: {...team.owner}}).then((docRef) => {
+        db.collection(`teamMembers/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}).then(
             () => {
-                db.ref(`profiles/${uid}/teams/${teamId}`).set('OWNER');
+                const teams = {...user.teams || {}, [docRef.id]: 'OWNER'};
+                db.collection('profiles').doc(uid).update({teams});
             });
     });
 }
 
+export function saveTeam(team) {
+    const _id = team.uid || team.id;
+    const _team = {...team, uid: null};
+    return db.collection('teams').doc(_id).set(_team);
+}
+
 export function deleteTeam(teamId: string) {
-    const db = firebase.database();
-    return db.ref(`teamMembers/${teamId}`).remove().then(() => {
-        db.ref(`teams/${teamId}`).remove();
+    return db.collection('teamMembers').doc(teamId).delete().then(() => {
+        db.collection('teams').doc(teamId).delete();
     });
 }
 
 export function saveLocations(locations: Object, teamId: string) {
-    return firebase.database().ref(`teams/${teamId}/locations`).set(locations);
+    return db.collection(`teams/${teamId}/locations`).set({...locations});
 }
 
 export function inviteTeamMember(invitation: Object) {
-    const db = firebase.database();
-    const membershipId = invitation.teamMember.email.toLowerCase().replace(/\./g, ':');
+    const membershipId = invitation.teamMember.email.toLowerCase();
     const teamId = invitation.team.id;
     return db
-        .ref(`invitations/${membershipId}/${teamId}`)
-        .set(invitation)
-        .then(db.ref(`teamMembers/${teamId}/${membershipId}`).set(invitation.teamMember));
+        .collection(`invitations/${membershipId}`)
+        .doc(teamId)
+        .set({...invitation})
+        .then(db.collection(`teamMembers/${teamId}`).doc(membershipId).set({...invitation.teamMember}));
 }
 
 export function addTeamMember(teamId: string, teamMember: Object) {
-    const db = firebase.database();
-    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).set('ACCEPTED')
-        .then(() => db.ref(`invitations/${membershipId}/${teamId}`).remove()
-            .then(() => db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember))
+    return db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).set('ACCEPTED')
+        .then(() => db.collection(`invitations/${teamMember.email.toLowerCase()}/${teamId}`).delete()
+            .then(() => db.collection(`teamMembers/${teamId}/${teamMember.uid}`).set({...teamMember}))
         );
 }
 
 export function updateTeamMember(teamId, teamMember) {
-    const db = firebase.database();
-    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${membershipId}`).set(teamMember);
+    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).set({...teamMember});
 }
 
 export function removeTeamMember(teamId: string, teamMember: Object) {
-    const db = firebase.database();
-    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${membershipId}`).remove();
+    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).delete();
 }
 
 export function leaveTeam(teamId: string, teamMember: Object) {
-    const db = firebase.database();
-    const membershipId = teamMember.email.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${membershipId}`).remove()
-        .then(() => db.ref(`profiles/${teamMember.uid}/teams/${teamId}`).remove());
+    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).delete()
+        .then(() => db.collection(`profiles/${teamMember.uid}/teams/${teamId}`).delete());
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
-    const db = firebase.database();
-    const _membershipId = membershipId.toLowerCase().replace(/\./g, ':');
-    return db.ref(`teamMembers/${teamId}/${_membershipId}`).remove()
-        .then(() => db.ref(`invitations/${_membershipId}/${teamId}`).remove());
+    const _membershipId = membershipId.toLowerCase();
+    return db.collection(`teamMembers/${teamId}/${_membershipId}`).delete()
+        .then(() => db.collection(`invitations/${_membershipId}/${teamId}`).delete());
 }
 
 
 /** *************** TRASH DROPS *************** **/
 
 export function dropTrash(trashDrop: Object) {
-    firebase
-        .database()
-        .ref('trashDrops/')
-        .push(trashDrop);
+    db.collection('trashDrops').add(trashDrop);
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    firebase
-        .database()
-        .ref(`trashDrops/${trashDrop.uid}`)
-        .set(trashDrop);
+    db.collection(`trashDrops/${trashDrop.uid}`).set(trashDrop);
 }
 
