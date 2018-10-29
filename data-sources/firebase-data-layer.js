@@ -103,11 +103,12 @@ function setupProfileListener(user, dispatch) {
                 });
                 // Add listeners for new team member list changes
                 addUs.forEach(key => {
-                    myTeamMemberListeners[key] = db.collection('teamMembers')
-                        .onSnapshot(snapShot => {
-                            if (snapShot.exists) {
-                                dispatch(dataLayerActions.teamMemberFetchSuccessful(snapShot.data(), key));
-                            }
+                    myTeamMemberListeners[key] = db.collection(`teamMembers/${key}/members`)
+                        .onSnapshot(querySnapshot => {
+                            const data = [];
+                            querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                            const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                            dispatch(dataLayerActions.teamMemberFetchSuccessful(members, key));
                         });
                 });
             } else {
