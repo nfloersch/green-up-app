@@ -24,13 +24,12 @@ let myTeamMemberListeners = {};
 
 
 export function updateProfile(profile: Object, teamMembers: Object) {
-    const membershipKey = profile.email.toLowerCase().replace(/\./g, ':');
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     const profileUpdate = db.collection('profiles').doc(profile.uid).set(newProfile);
     const teamUpdates = Object.keys(teamMembers).map(key => {
-        const oldTeamMember = (teamMembers[key] || {})[membershipKey] || {};
+        const oldTeamMember = (teamMembers[key] || {})[profile.uid] || {};
         const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
-        return db.collection(`teamMembers/${key}/${membershipKey}`).set({...newTeamMember});
+        return db.collection(`teamMembers/${key}/members`).doc(profile.uid).set({...newTeamMember});
     });
     return Promise.all(teamUpdates.concat(profileUpdate));
 }
