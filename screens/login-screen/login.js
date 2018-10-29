@@ -8,7 +8,6 @@ import {
     Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Alert,
     Platform
 } from 'react-native';
-// import * as constants from '../../styles/constants';
 import * as actions from './actions';
 import logo from '../../assets/images/green-up-logo.png';
 import facebookLogo from '../../assets/images/facebook-logo.png';
@@ -121,7 +120,6 @@ class Login extends Component {
                         <View style={{paddingLeft: 20, paddingRight: 20}}>
                             <View style={styles.logo}>
                                 <Image source={logo} style={{height: 120, width: 120}}/>
-                                <Text style={styles.logoText}>Green Up Vermont</Text>
                             </View>
                             <TouchableOpacity
                                 style={styles.socialLoginButton}

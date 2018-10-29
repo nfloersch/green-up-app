@@ -82,7 +82,7 @@ class LoadingScreen extends Component {
     };
 
     render() {
-        const {isLoadingComplete, skipLoadingScreen, userIsLoggedIn, isInitialized} = this.props;
+        const {isLoadingComplete, skipLoadingScreen, userIsLoggedIn, isInitialized, isLoggingInViaSSO} = this.props;
 
         switch (true) {
             case (!isLoadingComplete && !skipLoadingScreen):
@@ -93,7 +93,7 @@ class LoadingScreen extends Component {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-            case (userIsLoggedIn === false) :
+            case (userIsLoggedIn === false && !isLoggingInViaSSO) :
                 return (
                     <LoginScreen/>
                 );
