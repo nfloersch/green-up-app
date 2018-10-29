@@ -4,7 +4,7 @@ import {isDate} from '../libs/isDate';
 import {TeamMember} from './team-member';
 
 export class Invitation {
-    sender : string;
+    sender : Object;
     team : Object;
     teamMember: Object;
     created : Date;

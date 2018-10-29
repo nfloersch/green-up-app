@@ -168,7 +168,7 @@ function initializeUser(dispatch, user) {
 
 /**
  *
- * @param {function} dispatch - dispatch funciton
+ * @param {function} dispatch - dispatch function
  */
 export function initialize(dispatch: any => any) {
     firebase.auth().onAuthStateChanged(user => initializeUser(dispatch, user));
@@ -258,6 +258,7 @@ export function updateEmail(email: string) {
 
 
 /** *************** MESSAGING *************** **/
+
 export function sendUserMessage(userId, message) {
     const _message = stringifyDates(message);
     return db.collection(`messages/${userId}`).add(_message);
@@ -293,9 +294,8 @@ export function createTeam(team: Object = {}, user: User = {}) {
 }
 
 export function saveTeam(team) {
-    const _id = team.uid || team.id;
-    const _team = {...team, uid: null};
-    return db.collection('teams').doc(_id).set(_team);
+    const _team = {...team, owner: {...team.owner}};
+    return db.collection('teams').doc(team.id).set(_team);
 }
 
 export function deleteTeam(teamId: string) {
@@ -311,37 +311,41 @@ export function saveLocations(locations: Object, teamId: string) {
 export function inviteTeamMember(invitation: Object) {
     const membershipId = invitation.teamMember.email.toLowerCase();
     const teamId = invitation.team.id;
+    const sender = {...invitation.sender};
+    const team = {...invitation.team, owner: {...invitation.team.owner}};
+    const teamMember = {...invitation.teamMember};
+    const invite = {...invitation, teamMember, team, sender};
     return db
-        .collection(`invitations/${membershipId}`)
+        .collection(`invitations/${membershipId}/teams`)
         .doc(teamId)
-        .set({...invitation})
-        .then(db.collection(`teamMembers/${teamId}`).doc(membershipId).set({...invitation.teamMember}));
+        .set({...invite})
+        .then(db.collection(`teamMembers/${teamId}/members`).doc(membershipId).set({...invitation.teamMember}));
 }
 
 export function addTeamMember(teamId: string, teamMember: Object) {
     return db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).set('ACCEPTED')
         .then(() => db.collection(`invitations/${teamMember.email.toLowerCase()}/${teamId}`).delete()
-            .then(() => db.collection(`teamMembers/${teamId}/${teamMember.uid}`).set({...teamMember}))
+            .then(() => db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember}))
         );
 }
 
 export function updateTeamMember(teamId, teamMember) {
-    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).set({...teamMember});
+    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember});
 }
 
 export function removeTeamMember(teamId: string, teamMember: Object) {
-    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).delete();
+    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete();
 }
 
 export function leaveTeam(teamId: string, teamMember: Object) {
-    return db.collection(`teamMembers/${teamId}/${teamMember.uid}`).delete()
+    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete()
         .then(() => db.collection(`profiles/${teamMember.uid}/teams/${teamId}`).delete());
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
-    return db.collection(`teamMembers/${teamId}/${_membershipId}`).delete()
-        .then(() => db.collection(`invitations/${_membershipId}/${teamId}`).delete());
+    return db.collection(`teamMembers/${teamId}/members`).doc(_membershipId).delete()
+        .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
 }
 
 

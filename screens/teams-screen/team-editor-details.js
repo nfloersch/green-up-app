@@ -360,6 +360,7 @@ const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam || Team.create({});
     const locations = state.teams.locations;
     const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
+ debugger;
     return {selectedTeam, locations, vermontTowns};
 };
 

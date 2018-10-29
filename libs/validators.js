@@ -5,5 +5,5 @@ export function email(address) {
 
 export function isInTeam(teamMembers: Object, address: string) {
     const _email = address.toLowerCase().trim();
-    return Object.values(teamMembers).map(teamMember => teamMember.email.toLowerCase().trim()).indexOf(_email) > -1;
+    return Object.values(teamMembers || {}).map(teamMember => teamMember.email.toLowerCase().trim()).indexOf(_email) > -1;
 }
