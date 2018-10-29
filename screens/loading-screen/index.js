@@ -31,6 +31,7 @@ class LoadingScreen extends Component {
     static propTypes = {
         isLoadingComplete: PropTypes.bool,
         initialAuthChecked: PropTypes.bool,
+        isInitialized: PropTypes.bool,
         isLoggingInViaSSO: PropTypes.bool,
         actions: PropTypes.object,
         skipLoadingScreen: PropTypes.bool,
@@ -44,12 +45,7 @@ class LoadingScreen extends Component {
         this._handleLoadingError = this._handleLoadingError.bind(this);
     }
 
-    componentWillMount() {
-        this.props.actions.initialize();
-    }
-
     _loadResourcesAsync = async () => Promise.all([
-        this.props.actions.initialize(),
         Asset.loadAsync([
             require('../../assets/images/circle-turquoise.png'),
             require('../../assets/images/circle-blue.png'),
@@ -82,10 +78,12 @@ class LoadingScreen extends Component {
 
     _handleFinishLoading = () => {
         this.props.actions.loadingCompleted();
+        this.props.actions.initialize();
     };
 
     render() {
         const {isLoadingComplete, skipLoadingScreen, userIsLoggedIn, isInitialized} = this.props;
+
         switch (true) {
             case (!isLoadingComplete && !skipLoadingScreen):
                 return (
@@ -95,20 +93,19 @@ class LoadingScreen extends Component {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-
-            case (!isInitialized):
-                return (
-                    <ThinkingGreenThoughts/>
-                );
-            case (!userIsLoggedIn) :
+            case (userIsLoggedIn === false) :
                 return (
                     <LoginScreen/>
                 );
-            default :
+            case (isInitialized):
                 return (
                     <View style={[styles.container, {padding: 0, margin: 0}]}>
                         <RootNavigation/>
                     </View>
+                );
+            default :
+                return (
+                    <ThinkingGreenThoughts/>
                 );
         }
     }

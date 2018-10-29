@@ -2,8 +2,6 @@
 
 import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
-// import {User} from '../../models/user';
-// import {AsyncStorage} from 'react-native';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 
 export function getCurrentUser() {

@@ -20,7 +20,6 @@ db.settings({
 
 let myTeamMemberListeners = {};
 
-
 /** *************** Profiles ***************  **/
 
 

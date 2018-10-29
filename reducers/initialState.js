@@ -3,11 +3,12 @@ export default {
     loading: {
         isLoadingComplete: false,
         initialAuthChecked: false,
+        isInitialized: false,
         loadingError: null,
         skipLoadingScreen: false
     },
     login: {
-        userIsLoggedIn: false,
+        userIsLoggedIn: null,
         initialAuthChecked: false,
         creatingUser: false,
         createUserError: null,
