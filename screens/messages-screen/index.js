@@ -178,7 +178,7 @@ class Messages extends Component {
                     // mark message as read
                     this.props.actions.readMessage(message, userId);
                     // navigate to details screen
-                    this.props.navigation.navigate('MessageDetails', {messageId: message.uid});
+                    this.props.navigation.navigate('MessageDetails', {messageId: message.id});
                 };
         }
     }
@@ -301,7 +301,6 @@ function mapStateToProps(state) {
             }
         });
     }
-
     return {
         currentUser: state.login.user,
         invitations: state.teams.invitations || {},

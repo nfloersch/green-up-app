@@ -6,7 +6,7 @@ export function reducers(state = initialState.messages, action) {
         case types.NEW_MESSAGE:
             return {
                 ...state,
-                messages: Object.assign({}, state.messages, {[action.message.uid]: action.message})
+                messages: Object.assign({}, state.messages, {[action.message.id]: action.message})
             };
         case types.FETCH_MESSAGES_SUCCESS :
             return {

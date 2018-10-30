@@ -76,10 +76,12 @@ function stringifyDates(obj) {
 }
 
 function setupMessageListener(uid, dispatch) {
-    return db.collection('messages').doc(uid).onSnapshot(snapshot => {
-        if (snapshot.exists) {
-            dispatch(dataLayerActions.messageFetchSuccessful(snapshot.data()));
-        }
+    const ref = db.collection(`messages/${uid}/messages`);
+    return ref.onSnapshot(querySnapshot => {
+        const data = [];
+        querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+        const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
+        dispatch(dataLayerActions.messageFetchSuccessful(messages));
     });
 }
 
@@ -260,7 +262,7 @@ export function updateEmail(email: string) {
 
 export function sendUserMessage(userId, message) {
     const _message = stringifyDates(message);
-    return db.collection(`messages/${userId}`).add(_message);
+    return db.collection(`messages/${userId}/messages`).add(_message);
 }
 
 export function sendGroupMessage(group, message) {
@@ -270,12 +272,12 @@ export function sendGroupMessage(group, message) {
 }
 
 export function updateMessage(message: Object, userId: string) {
-    const newMessage = Object.assign({}, message, {created: message.created.toString()}); // TODO fix this hack right
-    return db.collection(`messages/${userId}/${message.uid}`).set(newMessage);
+    const newMessage = {...message, sender: {...message.sender}};
+    return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
 }
 
 export function deleteMessage(userId: string, messageId: string) {
-    return db.collection(`messages/${userId}/${messageId}`).delete();
+    return db.collection(`messages/${userId}/messages`).doc(messageId).delete();
 }
 
 
@@ -328,15 +330,15 @@ export function addTeamMember(teamId: string, teamMember: Object) {
         );
 }
 
-export function updateTeamMember(teamId, teamMember) {
+export function updateTeamMember(teamId: string, teamMember: TeamMember) {
     return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember});
 }
 
-export function removeTeamMember(teamId: string, teamMember: Object) {
+export function removeTeamMember(teamId: string, teamMember: TeamMember) {
     return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete();
 }
 
-export function leaveTeam(teamId: string, teamMember: Object) {
+export function leaveTeam(teamId: string, teamMember: TeamMember) {
     return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete()
         .then(() => db.collection(`profiles/${teamMember.uid}/teams/${teamId}`).delete());
 }

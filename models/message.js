@@ -5,7 +5,7 @@ import {isDate} from '../libs/isDate';
 import {TeamMember} from './team-member';
 
 export class Message {
-    uid: string;
+    id: string;
     text: string;
     sender: string;
     teamId: string;
@@ -16,8 +16,8 @@ export class Message {
     created: Date;
 
     constructor(args: Object) {
-        this.uid = typeof args.uid === 'string'
-            ? args.uid
+        this.id = typeof args.id === 'string'
+            ? args.id
             : null;
         this.text = typeof args.text === 'string'
             ? args.text
