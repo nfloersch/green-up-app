@@ -156,11 +156,12 @@ function initializeUser(dispatch, user) {
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
         // Get Town Data
-        db.collection('townData').get().then(
-            doc => {
-                const myDispatch = doc.exists ? dataLayerActions.townDataFetchSuccessful(doc.data()) : dataLayerActions.townDataFetchFail();
-                dispatch(myDispatch);
-            });
+        db.collection('towns').onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+            const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
+            dispatch(dataLayerActions.townDataFetchSuccessful(towns));
+        });
         dispatch(dataLayerActions.initilizationSuccessful());
     } else {
         dispatch(dataLayerActions.userFailedAuthentication());
@@ -353,10 +354,10 @@ export function revokeInvitation(teamId: string, membershipId: string) {
 /** *************** TRASH DROPS *************** **/
 
 export function dropTrash(trashDrop: Object) {
-    db.collection('trashDrops').add(trashDrop);
+    db.collection('trashDrops').add({...trashDrop, location: {...trashDrop.location}});
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    db.collection(`trashDrops/${trashDrop.uid}`).set(trashDrop);
+    db.collection('trashDrops').doc(trashDrop.uid).set({...trashDrop, location: {...trashDrop.location}});
 }
 

@@ -31,9 +31,9 @@ class TownItem extends Component {
         const item = this.props.item;
         return (
             <View key={item.key} style={styles.infoBlock}>
-                <Text style={styles.townName}>{item.Name}</Text>
+                <Text style={styles.townName}>{item.name}</Text>
                 {
-                    ((item.PickupLocations || []).length === 0)
+                    ((item.pickupLocations || []).length === 0)
                         ? (
                             <View style={styles.location}>
                                 <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
@@ -41,19 +41,19 @@ class TownItem extends Component {
                                 </Text>
                             </View>
                         )
-                        : item.PickupLocations.map((loc, i) => (
+                        : item.pickupLocations.map((loc, i) => (
                             <View key={i} style={styles.location}>
-                                {Boolean(loc.PickupLocationName) ? (
+                                {Boolean(loc.pickupLocationName) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.PickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.pickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.PickupLocationAddress) ? (
+                                {Boolean(loc.pickupLocationAddress) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.PickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.pickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.PickupNotes) ? (
+                                {Boolean(loc.pickupNotes) ? (
                                     <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
-                                        {loc.PickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.pickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                             </View>
                         ))

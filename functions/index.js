@@ -23,7 +23,6 @@ const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 // TODO: Change this to your app or company name to customize the email sent.
 const APP_NAME = 'Green Up Vermont';
 
-
 function sendInvitationEmailSendGrid(invitation) {
     sgMail.setApiKey(SENDGRID_API_KEY);
     sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
