@@ -7,3 +7,4 @@ export function isInTeam(teamMembers: Object, address: string) {
     const _email = address.toLowerCase().trim();
     return Object.values(teamMembers || {}).map(teamMember => teamMember.email.toLowerCase().trim()).indexOf(_email) > -1;
 }
+export const isValidDate = (param: any): boolean => ((param || 'invalid').toString() !== 'Invalid Date' && (param instanceof Date));

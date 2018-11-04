@@ -1,8 +1,8 @@
 // @flow
 
-import {isValidDate} from '../libs/validation-rules/validation-rules';
+import {isValidDate} from '../libs/validators';
 import Contact from './contact';
-import Coordinates from './coordinates';
+import {Coordinates} from './coordinates';
 
 export class TownLocation {
     address: ?string;
