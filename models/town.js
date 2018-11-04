@@ -5,14 +5,14 @@ import Contact from './contact';
 import {Coordinates} from './coordinates';
 
 export class TownLocation {
+
     address: ?string;
     name: ?string;
     notes: ?string;
     coordinates: ?Coordinates;
 
-
     constructor(args: ?Object) {
-        this.address = (args || {}).pickupLcoationAddress || '';
+        this.address = (args || {}).address || '';
         this.name = (args || {}).name || '';
         this.notes = (args || {}).notes || '';
         this.coordinates = Coordinates.create((args || {}).coordinates);
