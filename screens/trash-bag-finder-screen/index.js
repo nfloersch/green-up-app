@@ -43,17 +43,17 @@ class TownItem extends Component {
                         )
                         : item.pickupLocations.map((loc, i) => (
                             <View key={i} style={styles.location}>
-                                {Boolean(loc.pickupLocationName) ? (
+                                {Boolean(loc.name) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.pickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.name.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.pickupLocationAddress) ? (
+                                {Boolean(loc.address) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.pickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.address.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.pickupNotes) ? (
+                                {Boolean(loc.notes) ? (
                                     <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
-                                        {loc.pickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.notes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                             </View>
                         ))

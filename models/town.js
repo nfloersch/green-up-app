@@ -1,7 +1,6 @@
 // @flow
 
 import {isValidDate} from '../libs/validators';
-import Contact from './contact';
 import {Coordinates} from './coordinates';
 
 export class TownLocation {
@@ -16,10 +15,9 @@ export class TownLocation {
         this.name = (args || {}).name || '';
         this.notes = (args || {}).notes || '';
         this.coordinates = Coordinates.create((args || {}).coordinates);
-
     }
 
-    static create(args: Object = {}, id: ?string) {
+    static create(args: ?Object = {}, id: ?string) {
         const _args = {...args};
         if (Boolean(id)) {
             _args.id = id;
@@ -29,16 +27,18 @@ export class TownLocation {
 }
 
 export default class Town {
+
     id: ?string;
     name: ?string;
     description: ?string;
     notes: ?string;
-    dropoffLocations: ?Array<TownLocation>;
+    pickupInstructions: ?string;
+    dropOffInstructions: ?string;
+    dropOffLocations: ?Array<TownLocation>;
     pickupLocations: ?Array<TownLocation>;
-    roadsideDropoffAllowed: ?boolean;
+    roadsideDropOffAllowed: ?boolean;
     created: ?Date;
     updated: ?Date;
-    contact: ?Contact;
 
     constructor(args: Object = {}) {
         this.id = typeof args.id === 'string' ? args.id : null;
@@ -51,16 +51,17 @@ export default class Town {
         this.notes = typeof args.notes === 'string'
             ? args.notes
             : null;
-        this.dropoffLocations = (Array.isArray(args.dropoffLocations) ? args.dropoffLocations : []).map(loc => TownLocation.create(loc));
+        this.dropOffInstructions = args.dropOffInstructions || null;
+        this.pickupInstructions = args.pickupInstructions || null;
+        this.dropOffLocations = (Array.isArray(args.dropOffLocations) ? args.dropOffLocations : []).map(loc => TownLocation.create(loc));
         this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : []).map(loc => TownLocation.create(loc));
-        this.roadsideDropoffAllowed = typeof args.roadsideDropoffAllowed === 'boolean' ? args.roadsideDropoffAllowed : false;
+        this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === 'boolean' ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();
         this.updated = isValidDate(new Date(args.updated))
             ? new Date(args.updated)
             : new Date();
-        this.contact = Contact.create(args.contact);
     }
 
     static create(args: ?Object = {}, id: ?string) {
