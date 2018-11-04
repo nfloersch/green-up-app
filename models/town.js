@@ -63,11 +63,12 @@ export default class Town {
         this.contact = Contact.create(args.contact);
     }
 
-    static create(args: Object = {}, id: string) {
+    static create(args: ?Object = {}, id: ?string) {
+        const _args = {...args};
         if (Boolean(id)) {
-            args.id = id;
+            _args.id = id;
         }
-        return new Town(args);
+        return new Town(_args);
     }
 
 }
