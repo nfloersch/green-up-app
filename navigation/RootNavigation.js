@@ -13,7 +13,7 @@ import InviteForm from '../screens/teams-screen/invite-form';
 import Profile from '../screens/profile-screen/';
 import About from '../screens/about-screen/';
 import TeamMemberDetails from '../screens/teams-screen/team-member-details';
-import TrashBagFinder from '../screens/trash-bag-finder-screen';
+import TrashBagFinder from '../screens/towns-screen';
 import Privacy from '../screens/about-screen/privacy-screen';
 
 const RootStackNavigator = StackNavigator(

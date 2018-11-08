@@ -55,28 +55,28 @@ class TownInformation extends React.Component {
                 width: '100%',
                 backgroundColor: 'rgba(255,255,255, 0.8)'
             }}>
-                {typeof townInfo.roadsideDropoffAllowed === 'undefined' && (
+                {typeof townInfo.roadsideDropOffAllowed === 'undefined' && (
                     <Text style={styles.statusBarText}>
                         {'Sorry, we have no information on trash drops for your location. '}
                     </Text>
                 )}
-                {townInfo.roadsideDropoffAllowed === true && (
+                {townInfo.roadsideDropOffAllowed === true && (
                     <Text style={styles.statusBarText}>
                         <Text>{`You are in ${town} and leaving trash bags on the roadside is allowed.`}</Text>
                     </Text>
                 )}
-                {townInfo.roadsideDropoffAllowed === false && (
+                {townInfo.roadsideDropOffAllowed === false && (
                     <View style={styles.statusBarText}>
                         <Text>{`You are in ${town} and leaving trash bags on the roadside is`}
                             <Text style={{fontWeight: 'bold'}}>
                                 {' not'}
                             </Text>
                             <Text>
-                            {' allowed. Please take your trash to a designated drop off.'}
+                                {' allowed. Please take your trash to a designated drop off.'}
                             </Text>
                         </Text>
-                        {townInfo.dropoffLocations.map((d, i) => (
-                            <Text key={i}>{`\n${d.dropoffLocationName}, ${d.dropoffLocationAddress}`}</Text>
+                        {townInfo.dropOffLocations.map((d, i) => (
+                            <Text key={i}>{`\n${d.name}, ${d.address}`}</Text>
                         ))}
                     </View>)}
             </View>
@@ -94,7 +94,7 @@ class TrashMap extends Component {
         location: PropTypes.object,
         supplyPickupToggle: PropTypes.bool,
         uncollectedTrashToggle: PropTypes.bool,
-        trashDropoffToggle: PropTypes.bool,
+        trashDropOffToggle: PropTypes.bool,
         myTrashToggle: PropTypes.bool,
         collectedTrashToggle: PropTypes.bool,
         cleanAreas: PropTypes.array,
@@ -159,7 +159,7 @@ class TrashMap extends Component {
 
         if (status === 'granted') {
             const locationProviderStatus = await Location.getProviderStatusAsync();
-            if(locationProviderStatus.locationServicesEnabled === false) {
+            if (locationProviderStatus.locationServicesEnabled === false) {
                 this.setState({errorMessage: 'Access to the device location is required. Please make sure you have location services on and you grant access when requested.'});
             } else {
                 const location = await Location.getCurrentPositionAsync({});
@@ -176,7 +176,7 @@ class TrashMap extends Component {
     };
 
     _toggleTag = (editable, tag) => () => {
-        if(editable) {
+        if (editable) {
             const hasTag = this.state.drop.tags.indexOf(tag) > -1;
             const tags = hasTag ? this.state.drop.tags.filter(_tag => _tag !== tag) : this.state.drop.tags.concat(tag);
             this.setState({drop: {...this.state.drop, tags}});
@@ -239,7 +239,7 @@ class TrashMap extends Component {
         const town = this.props.location ? this._getTown(this.props.location) : '';
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
-        const trashDropoffLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].dropoffLocations), []).filter(l => l.dropoffLocationCoordinates);
+        const trashDropOffLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].dropOffLocations), []).filter(l => l.dropOffLocationCoordinates);
         const supplyPickupLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].pickupLocations), []).filter(l => l.pickupLocationCoordinates);
         const initialMapLocation = this.props.location ? {
             latitude: Number(this.props.location.coords.latitude),
@@ -294,16 +294,16 @@ class TrashMap extends Component {
             />
         ));
 
-        const dropoffLocations = (this.props.trashDropoffToggle && trashDropoffLocations || []).map((d, i) => (
+        const dropOffLocations = (this.props.trashDropOffToggle && trashDropOffLocations || []).map((d, i) => (
             <MapView.Marker
-                key={`${town}DropoffLocation${i}`}
-                // image={trashDropoffLocationIcon}
+                key={`${town}DropOffLocation${i}`}
+                // image={trashDropOffLocationIcon}
                 pinColor={'blue'}
-                coordinate={d.dropoffLocationCoordinates}
+                coordinate={d.coordinates}
                 stopPropagation={true}>
                 <MultiLineMapCallout
                     title='Drop Off Location'
-                    description={`${d.dropoffLocationName}, ${d.dropoffLocationAddress}`}
+                    description={`${d.name}, ${d.address}`}
                 />
             </MapView.Marker>
         ));
@@ -330,21 +330,21 @@ class TrashMap extends Component {
                 stopPropagation={true}>
                 <MultiLineMapCallout
                     title={`${d.title}`}
-                    description={`${d.description}`} />
+                    description={`${d.description}`}/>
             </MapView.Marker>
         ));
 
 
-        const allMarkers = pickupLocations.concat(dropoffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash).concat(cleanAreaMarkers);
+        const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash).concat(cleanAreaMarkers);
 
         const enableLocation = async () => {
-            if(Platform.OS === 'android') {
+            if (Platform.OS === 'android') {
                 await IntentLauncherAndroid.startActivityAsync(
                     IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS
                 );
             }
 
-            if(Platform.OS === 'ios') {
+            if (Platform.OS === 'ios') {
                 await Linking.openURL('app-settings:');
             }
 
@@ -390,20 +390,32 @@ class TrashMap extends Component {
                         flex: 1,
                         flexDirection: 'row',
                         padding: 0,
-                        justifyContent:'flex-end'
+                        justifyContent: 'flex-end'
                     }}>
 
 
-                        {townInfo.roadsideDropoffAllowed
+                        {townInfo.roadsideDropOffAllowed
                             ? (
                                 <TouchableHighlight
-                                    style={[styles.headerButton, {backgroundColor: '#EEE', paddingTop: 13, height: 50, flex: 1}]}
+                                    style={[styles.headerButton, {
+                                        backgroundColor: '#EEE',
+                                        paddingTop: 13,
+                                        height: 50,
+                                        flex: 1
+                                    }]}
                                     onPress={goToTrashDrop}>
                                     <Text style={styles.headerButtonText}>
                                         {'Drop A Trash Bag Here'}
                                     </Text>
-                                </TouchableHighlight>)
-                            :  <View style={[styles.headerButton, {backgroundColor: '#EEE', paddingTop: 13, height: 50, flex: 1}]}/>}
+                                </TouchableHighlight>
+                            )
+                            : (<View style={[styles.headerButton, {
+                                backgroundColor: '#EEE',
+                                paddingTop: 13,
+                                height: 50,
+                                flex: 1
+                            }]}/>)
+                        }
                         <TouchableHighlight
                             style={{height: 50, width: 50, padding: 5, backgroundColor: 'rgba(255,255,255,0.8)'}}
                             onPress={() => {
@@ -541,7 +553,7 @@ function mapStateToProps(state) {
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;
-    const trashDropoffToggle = state.trashTracker.trashDropoffToggle;
+    const trashDropOffToggle = state.trashTracker.trashDropOffToggle;
     const myTrashToggle = state.trashTracker.myTrashToggle;
     const cleanAreasToggle = state.trashTracker.cleanAreasToggle;
     return {
@@ -552,7 +564,7 @@ function mapStateToProps(state) {
         collectedTrashToggle,
         supplyPickupToggle,
         uncollectedTrashToggle,
-        trashDropoffToggle,
+        trashDropOffToggle,
         myTrashToggle,
         cleanAreas,
         cleanAreasToggle

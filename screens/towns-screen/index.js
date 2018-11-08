@@ -43,17 +43,17 @@ class TownItem extends Component {
                         )
                         : item.pickupLocations.map((loc, i) => (
                             <View key={i} style={styles.location}>
-                                {Boolean(loc.pickupLocationName) ? (
+                                {Boolean(loc.name) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.pickupLocationName.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.name.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.pickupLocationAddress) ? (
+                                {Boolean(loc.address) ? (
                                     <Text style={[styles.textDark, {marginBottom: 5, fontSize: 14}]}>
-                                        {loc.pickupLocationAddress.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.address.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
-                                {Boolean(loc.pickupNotes) ? (
+                                {Boolean(loc.notes) ? (
                                     <Text style={[styles.textDark, {marginBottom: 0, fontSize: 14}]}>
-                                        {loc.pickupNotes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
+                                        {loc.notes.replace(newLineRegex, ' ').replace(/\s\s/g, ' ')}
                                     </Text>) : null}
                             </View>
                         ))
@@ -64,7 +64,7 @@ class TownItem extends Component {
 }
 
 
-class TrashBagFinder extends Component {
+class TownInfo extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
@@ -85,7 +85,7 @@ class TrashBagFinder extends Component {
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;
-        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].Name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
+        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
         this.setState({searchResults, searchTerm});
     }
 
@@ -136,4 +136,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrashBagFinder);
+export default connect(mapStateToProps, mapDispatchToProps)(TownInfo);

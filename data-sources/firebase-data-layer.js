@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
 import {User} from '../models/user';
 import {TeamMember} from '../models/team-member';
+import Town from '../models/town';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
@@ -17,11 +18,9 @@ db.settings({
     timestampsInSnapshots: true
 });
 
-
 let myTeamMemberListeners = {};
 
 /** *************** Profiles ***************  **/
-
 
 export function updateProfile(profile: Object, teamMembers: Object) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
@@ -33,7 +32,6 @@ export function updateProfile(profile: Object, teamMembers: Object) {
     });
     return Promise.all(teamUpdates.concat(profileUpdate));
 }
-
 
 function createProfile(user: User): Promise {
     const now = new Date();
@@ -52,9 +50,7 @@ function createProfile(user: User): Promise {
         });
 }
 
-
 /** *************** INITIALIZATION *************** **/
-
 
 function returnType(entry) {
     switch (true) {
@@ -145,7 +141,6 @@ function setupInvitationListener(email, dispatch) {
         });
 }
 
-
 function initializeUser(dispatch, user) {
     if (Boolean(user)) {
         dispatch(dataLayerActions.userAuthenticated(User.create(user)));
@@ -158,7 +153,7 @@ function initializeUser(dispatch, user) {
         // Get Town Data
         db.collection('towns').onSnapshot(querySnapshot => {
             const data = [];
-            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+            querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
             const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
             dispatch(dataLayerActions.townDataFetchSuccessful(towns));
         });
@@ -175,7 +170,6 @@ function initializeUser(dispatch, user) {
 export function initialize(dispatch: any => any) {
     firebase.auth().onAuthStateChanged(user => initializeUser(dispatch, user));
 }
-
 
 /** *************** AUTHENTICATION *************** **/
 
@@ -258,7 +252,6 @@ export function updateEmail(email: string) {
     return firebase.auth().currentUser.updateEmail(email);
 }
 
-
 /** *************** MESSAGING *************** **/
 
 export function sendUserMessage(userId, message) {
@@ -281,9 +274,7 @@ export function deleteMessage(userId: string, messageId: string) {
     return db.collection(`messages/${userId}/messages`).doc(messageId).delete();
 }
 
-
 /** *************** TEAMS *************** **/
-
 export function createTeam(team: Object = {}, user: User = {}) {
     const uid = team.owner.uid;
     return db.collection('teams').add({...team, owner: {...team.owner}}).then((docRef) => {
