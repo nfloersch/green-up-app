@@ -64,7 +64,7 @@ class TownItem extends Component {
 }
 
 
-class TrashBagFinder extends Component {
+class TownInfo extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
@@ -85,7 +85,7 @@ class TrashBagFinder extends Component {
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;
-        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].Name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
+        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
         this.setState({searchResults, searchTerm});
     }
 
@@ -136,4 +136,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrashBagFinder);
+export default connect(mapStateToProps, mapDispatchToProps)(TownInfo);
