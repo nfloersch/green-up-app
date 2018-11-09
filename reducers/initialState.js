@@ -24,7 +24,7 @@ export default {
     },
     teamMembersLoaded: false,
     teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
-    trashBagFinder: { townData: {} },
+    towns: { townData: {} },
     trashTracker: {
         trashDrops: [],
         location: null,

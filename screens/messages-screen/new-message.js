@@ -17,9 +17,9 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import * as messageActions from './actions';
-import {Message} from '../../models/message';
+import Message from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
 import * as teamStatus from '../../constants/team-member-statuses';

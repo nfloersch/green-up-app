@@ -17,7 +17,7 @@ import {connect} from 'react-redux';
 import IOSCheckBox from 'react-native-checkbox';
 
 import * as actions from './actions';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 import * as validators from '../../libs/validators';

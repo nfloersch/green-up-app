@@ -10,7 +10,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getMemberIcon} from '../../libs/member-icons';
 import * as actions from './actions';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import * as status from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 

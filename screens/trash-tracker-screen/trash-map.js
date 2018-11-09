@@ -549,7 +549,7 @@ function mapStateToProps(state) {
             title: `${team.name}`,
             description: 'claimed this area'
         }))), []);
-    const townData = state.trashBagFinder.townData;
+    const townData = state.towns.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;

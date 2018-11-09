@@ -1,19 +1,19 @@
 // @flow
 
 import * as messageTypes from '../constants/message-types';
-import {isDate} from '../libs/isDate';
-import {TeamMember} from './team-member';
+import {isValidDate} from '../libs/validators';
+import TeamMember from './team-member';
 
-export class Message {
-    id: string;
-    text: string;
-    sender: string;
-    teamId: string;
-    read: boolean;
-    active: boolean;
-    link: string;
-    type: string;
-    created: Date;
+export default class Message {
+    id: ?string;
+    text: ?string;
+    sender: ?TeamMember;
+    teamId: ?string;
+    read: ?boolean;
+    active: ?boolean;
+    link: ?string;
+    type: ?string;
+    created: ?Date;
 
     constructor(args: Object) {
         this.id = typeof args.id === 'string'
@@ -40,13 +40,17 @@ export class Message {
         this.type = typeof args.type === 'string' && args.type in messageTypes
             ? args.type
             : null;
-        this.created = isDate(args.created)
+        this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();
     }
 
-    static create(args) {
-        return new Message(args || {});
+    static create(args: Object = {}, id: string) {
+        const _args = {...args};
+        if (Boolean(id)) {
+            _args.id = id;
+        }
+        return new Message(_args);
     }
 
     static messageTypes = messageTypes;

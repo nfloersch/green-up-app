@@ -1,4 +1,7 @@
 // @flow
+import Invitation from './invitation';
+import User from './user';
+
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -54,7 +57,11 @@ export default class Contact {
             : false;
     }
 
-    static create(args) {
-        return new Contact(args);
+    static create(args: ?Object, uid?: string) {
+        const _args = {...(args || {})};
+        if (Boolean(uid)) {
+            _args.uid = uid;
+        }
+        return new Contact(_args);
     }
 }

@@ -126,7 +126,7 @@ class TownInfo extends Component {
 }
 
 function mapStateToProps(state) {
-    const towns = state.trashBagFinder.townData;
+    const towns = state.towns.townData;
     return {towns};
 }
 

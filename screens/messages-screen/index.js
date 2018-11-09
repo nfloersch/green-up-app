@@ -21,7 +21,7 @@ import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
-import {Message} from '../../models/message';
+import Message from '../../models/message';
 import coveredBridge from '../../assets/images/covered-bridge2.jpg';
 
 const myStyles = {

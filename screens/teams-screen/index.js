@@ -21,9 +21,9 @@ import {
 } from 'react-native';
 
 import NewTeam from './new-team';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import * as actions from './actions';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamStatus from '../../constants/team-member-statuses';
 import teamwork from '../../assets/images/teamwork.jpeg';
@@ -64,8 +64,8 @@ class TeamItem extends Component {
                         ? (
                             <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
                                 <Ionicons style={{paddingTop: 10}}
-                                          name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                          size={30}
+                                    name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                                    size={30}
                                 />
                             </TouchableOpacity>
                         )
@@ -75,7 +75,7 @@ class TeamItem extends Component {
                     item.isConfirmedMember ? (
                         <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
                             <Ionicons name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
-                                      size={30} style={{paddingTop: 10}}
+                                size={30} style={{paddingTop: 10}}
                             />
                         </TouchableOpacity>
                     ) : null
@@ -146,39 +146,31 @@ class MyTeams extends Component {
         });
     };
 
-    shareTeamDetails = (team) => {
-        return () => {
-            const where = team.location ? `\nWhere : ${team.location}\n` : '';
-            const date = team.date ? `When: ${team.date}\n` : '';
-            const start = team.start ? `Start Time: ${team.start}\n` : '';
-            const end = team.end ? `End Time: ${team.end}\n` : '';
-            const owner = team.owner.displayName ? `Team Captain: ${team.owner.displayName}\n` : '';
-            const town = team.town ? `Town: ${team.town}\n` : '';
-            const notes = team.notes ? `Good to know: ${team.notes}\n` : '';
-            const message = `Join my team "${team.name}" for Green Up Day!\n \
+    shareTeamDetails = (team) => () => {
+        const where = team.location ? `\nWhere : ${team.location}\n` : '';
+        const date = team.date ? `When: ${team.date}\n` : '';
+        const start = team.start ? `Start Time: ${team.start}\n` : '';
+        const end = team.end ? `End Time: ${team.end}\n` : '';
+        const owner = team.owner.displayName ? `Team Captain: ${team.owner.displayName}\n` : '';
+        const town = team.town ? `Town: ${team.town}\n` : '';
+        const notes = team.notes ? `Good to know: ${team.notes}\n` : '';
+        const message = `Join my team "${team.name}" for Green Up Day!\n \
                 ${where}${town}${date}${start}${end}${notes}${owner}`;
-            const title = `I just joined ${team.name} for Green Up Day`;
-            const url = ``; // TODO: Put in team deep link once that's implemented
-            Share.share(
-                {
-                    message: message,
-                    title: title,
-                    // iOS only
-                    url: url
-                }, {
-                    // Android Only
-                    dialogTitle: 'Share Your Green Up Team Details',
-                    // iOS only
-                    subject: title,
-                    tintColor: 'green'
-                })
-                .then((result) => {
-                    // We can record the share action here if we want
-                })
-                .catch((error) => {
-                    // Did not share
-                });
-        };
+        const title = `I just joined ${team.name} for Green Up Day`;
+        const url = ''; // TODO: Put in team deep link once that's implemented
+        Share.share(
+            {
+                message: message,
+                title: title,
+                // iOS only
+                url: url
+            }, {
+                // Android Only
+                dialogTitle: 'Share Your Green Up Team Details',
+                // iOS only
+                subject: title,
+                tintColor: 'green'
+            });
     };
 
     render() {
@@ -237,24 +229,24 @@ class MyTeams extends Component {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                                <View style={{
-                                    marginTop: '20%',
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 50,
-                                    paddingBottom: 50,
-                                    backgroundColor: 'rgba(255,255,255, 0.85)'
-                                }}>
-                                    <Text style={[styles.textDark]}>
-                                        {'Green Up Day is all about community and teamwork.'}
-                                    </Text>
-                                    <Text style={[styles.textDark]}>
-                                        {'Search for teams in your area, or create a new one and invite some friends.'}
-                                    </Text>
-                                </View>
-                            </ImageBackground>
-                        )
+                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                            <View style={{
+                                marginTop: '20%',
+                                paddingLeft: 20,
+                                paddingRight: 20,
+                                paddingTop: 50,
+                                paddingBottom: 50,
+                                backgroundColor: 'rgba(255,255,255, 0.85)'
+                            }}>
+                                <Text style={[styles.textDark]}>
+                                    {'Green Up Day is all about community and teamwork.'}
+                                </Text>
+                                <Text style={[styles.textDark]}>
+                                    {'Search for teams in your area, or create a new one and invite some friends.'}
+                                </Text>
+                            </View>
+                        </ImageBackground>
+                    )
                         : (
                             <ScrollView style={styles.scroll}>
                                 <View style={styles.infoBlockContainer}>
