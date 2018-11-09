@@ -20,7 +20,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from './actions';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
 import {removeNulls} from '../../libs/remove-nulls';
 

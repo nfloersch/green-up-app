@@ -1,6 +1,6 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
-import {User} from '../../models/user';
+import User from '../../models/user';
 
 export function reducers(state = initialState.profile, action) {
     switch (action.type) {

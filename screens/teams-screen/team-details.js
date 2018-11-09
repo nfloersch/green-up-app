@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import {getMemberIcon} from '../../libs/member-icons';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
@@ -364,8 +364,8 @@ class TeamDetails extends Component {
                                 {teamAreas}
                             </MapView>
                             {
-                                (this.props.locations || []).length > 0 
-                                ? null 
+                                (this.props.locations || []).length > 0
+                                ? null
                                 : ( <Text style={[styles.textDark, {fontSize: 14, textAlign: 'left'}]}>
                                 {'The team owner has yet to designate a clean up location.'}
                             </Text>)

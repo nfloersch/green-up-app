@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 import Team from '../models/team';
 import TrashDrop from '../models/trash-drop';
-import {Message} from '../models/message';
+import Message from '../models/message';
 
 export function userAuthenticated(user) {
     return {type: types.LOGIN_SUCCESSFUL, user};

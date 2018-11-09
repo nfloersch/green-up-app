@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
 
 const aboutGreenUp = 'Green Up Vermont is a nonprofit organization with 501(c) (3) status.\n\nGreen Up' +

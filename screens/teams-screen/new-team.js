@@ -4,7 +4,7 @@
  * @flow
  */
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+
 import {
     Alert,
     TouchableHighlight,
@@ -23,15 +23,15 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 import * as actions from './actions';
-// import {vermontTowns} from '../../libs/vermont-towns';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import * as statuses from '../../constants/team-member-statuses';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
 import {Constants, Location, Permissions, MapView} from 'expo';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
+import {TownLocation} from '../../models/town';
 
 const myStyles = {
     selected: {
@@ -52,15 +52,19 @@ const freshState = (owner, initialMapLocation = null) => ({
     initialMapLocation
 });
 
-class NewTeam extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        closeModal: PropTypes.any, // TODO : this should be of type 'fun' but we get a prop warning.  Fix this hack. (JN)
-        currentUser: PropTypes.object,
-        owner: PropTypes.object,
-        otherCleanAreas: PropTypes.array,
-        vermontTowns: PropTypes.array
-    };
+
+type Props = {
+    actions: Object,
+    closeModal: any,
+    currentUser: User,
+    locations: Array<TownLocation>,
+    owner: User,
+    otherCleanAreas: Array<any>,
+    vermontTowns: Array<Object>
+};
+
+class NewTeam extends Component<Props> {
+
 
     constructor(props) {
         super(props);
@@ -236,11 +240,9 @@ class NewTeam extends Component {
         this.hideEndDateTimePicker();
     };
 
-
     setSelectedOption = option => {
         this.setState({isPublic: option.value});
     };
-
 
     setTeamValue = (key) => (value) => {
         this.setState({[key]: value});
@@ -274,7 +276,6 @@ class NewTeam extends Component {
         const towns = this.findTown(query);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
         const {otherCleanAreas} = this.props;
-        const {locations} = this.state;
         return (
             <KeyboardAvoidingView
                 style={[styles.frame, {paddingTop: 30}]}
@@ -353,7 +354,7 @@ class NewTeam extends Component {
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text style={[styles.alertInfo, {textAlign: 'left'}]}>
-                                Saturday, May 5th is Green Up Day, but your team can choose to work up to one week
+                                Saturday, May 5th, 2019 is Green Up Day, but your team can choose to work up to one week
                                 before or after.
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
@@ -365,9 +366,9 @@ class NewTeam extends Component {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date('5/5/2018')}
-                                    minimumDate={new Date('4/28/2018')}
-                                    maximumDate={new Date('5/13/2018')}
+                                    date={new Date('5/5/2019')} // TODO Make this date configurable
+                                    minimumDate={new Date('4/28/2019')}
+                                    maximumDate={new Date('5/13/2019')}
                                     isVisible={this.state.datePickerVisible}
                                     onConfirm={this._handleDatePicked}
                                     onCancel={this.hideDatePicker}
@@ -430,28 +431,28 @@ class NewTeam extends Component {
                         </Text>
                         <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
                             <MapView style={{flex: 1}}
-                                     initialRegion={this.state.initialMapLocation}
-                                     onPress={this._handleMapClick}>
+                                initialRegion={this.state.initialMapLocation}
+                                onPress={this._handleMapClick}>
                                 {this.state.locations.length > 0 && this.state.locations.map((marker, index) => (
                                     <MapView.Marker coordinate={marker.coordinates}
-                                                    key={`location${index}`}
-                                                    pinColor={'red'}
-                                                    onCalloutPress={this._removeMarker(marker)}
-                                                    stopPropagation={true}>
+                                        key={`location${index}`}
+                                        pinColor={'red'}
+                                        onCalloutPress={this._removeMarker(marker)}
+                                        stopPropagation={true}>
                                         <MultiLineMapCallout title={marker.title || 'Clean Area'}
-                                                             description={marker.description || 'Tap to remove'}/>
+                                            description={marker.description || 'Tap to remove'}/>
                                     </MapView.Marker>
                                 ))}
                                 {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
                                     (<MapView.Marker
-                                            key={i}
-                                            coordinate={a.coordinates}
-                                            // image={otherTeamsLocationImage}
-                                            pinColor={'yellow'}
-                                            title={a.title}
-                                            stopPropagation={true}>
-                                            <MultiLineMapCallout title={a.title} description={a.description}/>
-                                        </MapView.Marker>
+                                        key={i}
+                                        coordinate={a.coordinates}
+                                        // image={otherTeamsLocationImage}
+                                        pinColor={'yellow'}
+                                        title={a.title}
+                                        stopPropagation={true}>
+                                        <MultiLineMapCallout title={a.title} description={a.description}/>
+                                    </MapView.Marker>
                                     ))}
                             </MapView>
                         </View>
@@ -482,7 +483,7 @@ const mapStateToProps = (state) => {
         title: `${team.name}`,
         description: 'claimed this area'
     }))), []);
-    const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
+    const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
 
     return {owner, currentUser, otherCleanAreas, vermontTowns};
 };

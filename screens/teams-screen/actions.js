@@ -3,13 +3,13 @@
 import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
 import Expo from 'expo';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import {Invitation} from '../../models/invitation';
 import * as memberStatus from '../../constants/team-member-statuses';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {Alert} from 'react-native';
 import * as messageTypes from '../../constants/message-types';
-import {Message} from '../../models/message';
+import Message from '../../models/message';
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {

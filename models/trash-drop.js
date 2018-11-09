@@ -1,34 +1,38 @@
 // @flow
 
-import {Coordinates} from './coordinates';
-import {isDate} from '../libs/isDate';
+import Coordinates from './coordinates';
+import {isValidDate} from '../libs/validators';
 
 export default class TrashDrop {
-    uid: string;
-    bagCount: number;
-    status: string;
-    active: boolean;
-    tags: [string];
-    location: Coordinates;
-    created: Date;
-    wasCollected: boolean;
-    createdBy: object;
-    collectedBy: object;
+    id: ?string;
+    bagCount: ?number;
+    status: ?string;
+    active: ?boolean;
+    tags: ?Array<string>;
+    location: ?Coordinates;
+    created: ?Date;
+    wasCollected: ?boolean;
+    createdBy: ?Object;
+    collectedBy: ?Object;
 
     constructor(args: Object) {
-        this.uid = typeof args.uid === 'string' ? args.uid : null;
+        this.id = typeof args.id === 'string' ? args.id : null;
         this.bagCount = typeof args.bagCount === 'number' ? args.bagCount : null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];
         this.status = typeof args.status === 'string' ? args.status : null;
         this.active = typeof args.active === 'boolean' ? args.active : true;
         this.location = Coordinates.create(args.location);
-        this.created = isDate(args.created) ? new Date(args.created) : new Date();
+        this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : new Date();
         this.wasCollected = typeof args.wasCollected === 'boolean' ? args.wasCollected : false;
         this.createdBy = typeof args.createdBy === 'object' ? args.createdBy : null;
         this.collectedBy = typeof args.collectedBy === 'object' ? args.collectedBy : null;
     }
 
-    static create(args) {
-        return new TrashDrop(args || {});
+    static create(args: ?Object = {}, id?: string) {
+        const _args = {...args};
+        if (Boolean(id)) {
+            _args.id = id;
+        }
+        return new TrashDrop(_args);
     }
 }

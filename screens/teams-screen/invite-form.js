@@ -21,9 +21,9 @@ import {connect} from 'react-redux';
 import {email, isInTeam} from '../../libs/validators';
 
 import * as actions from './actions';
-import {TeamMember} from '../../models/team-member';
+import TeamMember from '../../models/team-member';
 import {defaultStyles} from '../../styles/default-styles';
-import {User} from '../../models/user';
+import User from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};

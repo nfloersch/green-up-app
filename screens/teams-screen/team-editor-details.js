@@ -271,7 +271,7 @@ class TeamEditorDetails extends Component {
                         <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Date</Text>
                             <Text style={[styles.alertInfo, {textAlign:'left', padding: 5}]}>
-                                May 5th is the official Green Up Day, but teams may choose to work up to one week before or after.
+                                Saturday, May 5th, 2019 is the official Green Up Day, but teams may choose to work up to one week before or after.
                             </Text>
                             <View>
                                 <TouchableOpacity onPress={this.showDatePicker}>
@@ -281,9 +281,9 @@ class TeamEditorDetails extends Component {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date('5/5/2018')}
-                                    minimumDate={new Date('4/28/2018')}
-                                    maximumDate={new Date('5/13/2018')}
+                                    date={new Date('5/5/2019')} // TODO : Make this date configurable
+                                    minimumDate={new Date('4/28/2019')}
+                                    maximumDate={new Date('5/13/2019')}
                                     isVisible={this.state.datePickerVisible}
                                     onConfirm={this._handleDatePicked}
                                     onCancel={this.hideDatePicker}
@@ -359,7 +359,7 @@ class TeamEditorDetails extends Component {
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam || Team.create({});
     const locations = state.teams.locations;
-    const vermontTowns = Object.keys(state.trashBagFinder.townData).map(key => state.trashBagFinder.townData[key].Name);
+    const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
     return {selectedTeam, locations, vermontTowns};
 };
 

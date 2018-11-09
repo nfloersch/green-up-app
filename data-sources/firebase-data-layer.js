@@ -1,8 +1,8 @@
 // @flow
 import firebase from 'firebase';
 import * as dataLayerActions from './data-layer-actions';
-import {User} from '../models/user';
-import {TeamMember} from '../models/team-member';
+import User from '../models/user';
+import TeamMember from '../models/team-member';
 import Town from '../models/town';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
@@ -18,7 +18,9 @@ db.settings({
     timestampsInSnapshots: true
 });
 
-let myTeamMemberListeners = {};
+const myTeamMemberListeners = {};
+
+const deconstruct = obj => JSON.parse(JSON.stringify(obj));
 
 /** *************** Profiles ***************  **/
 
@@ -42,10 +44,10 @@ function createProfile(user: User): Promise {
         created: now,
         updated: now
     })
-        .then(function (docRef) {
+        .then((docRef) => {
             console.log('Document written with ID: ', docRef.id);
         })
-        .catch(function (error) {
+        .catch((error) => {
             console.error('Error adding document: ', error);
         });
 }
@@ -200,7 +202,7 @@ export async function facebookAuth(token) {
                     if (!doc.exists) {
                         createProfile({uid, email, displayName, photoURL});
                     }
-                }).catch(function (error) {
+                }).catch((error) => {
                 console.log('Error getting document:', error);
             });
         });
@@ -217,7 +219,7 @@ export async function googleAuth(token) {
                     if (!doc.exists) {
                         createProfile({uid, email, displayName, photoURL});
                     }
-                }).catch(function (error) {
+                }).catch((error) => {
                 console.log('Error getting document:', error);
             });
         });
@@ -234,7 +236,7 @@ export function loginWithEmailPassword(_email: string, password: string) {
                     if (!doc.exists) {
                         createProfile({uid, email, displayName, photoURL});
                     }
-                }).catch(function (error) {
+                }).catch((error) => {
                 console.log('Error getting document:', error);
             });
         });
@@ -255,18 +257,18 @@ export function updateEmail(email: string) {
 /** *************** MESSAGING *************** **/
 
 export function sendUserMessage(userId, message) {
-    const _message = stringifyDates(message);
+    const _message = deconstruct(stringifyDates(message));
     return db.collection(`messages/${userId}/messages`).add(_message);
 }
 
 export function sendGroupMessage(group, message) {
     group.forEach((memberUID) => {
-        sendUserMessage(memberUID, message);
+        sendUserMessage(memberUID, deconstruct(message));
     });
 }
 
 export function updateMessage(message: Object, userId: string) {
-    const newMessage = {...message, sender: {...message.sender}};
+    const newMessage = deconstruct({...message, sender: {...message.sender}});
     return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
 }
 
@@ -277,7 +279,7 @@ export function deleteMessage(userId: string, messageId: string) {
 /** *************** TEAMS *************** **/
 export function createTeam(team: Object = {}, user: User = {}) {
     const uid = team.owner.uid;
-    return db.collection('teams').add({...team, owner: {...team.owner}}).then((docRef) => {
+    return db.collection('teams').add(deconstruct({...team, owner: {...team.owner}})).then((docRef) => {
         db.collection(`teamMembers/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}).then(
             () => {
                 const teams = {...user.teams || {}, [docRef.id]: 'OWNER'};
@@ -287,7 +289,7 @@ export function createTeam(team: Object = {}, user: User = {}) {
 }
 
 export function saveTeam(team) {
-    const _team = {...team, owner: {...team.owner}};
+    const _team = deconstruct({...team, owner: {...team.owner}});
     return db.collection('teams').doc(team.id).set(_team);
 }
 
@@ -298,7 +300,7 @@ export function deleteTeam(teamId: string) {
 }
 
 export function saveLocations(locations: Object, teamId: string) {
-    return db.collection(`teams/${teamId}/locations`).set({...locations});
+    return db.collection(`teams/${teamId}/locations`).set(deconstruct({...locations}));
 }
 
 export function inviteTeamMember(invitation: Object) {
@@ -312,18 +314,19 @@ export function inviteTeamMember(invitation: Object) {
         .collection(`invitations/${membershipId}/teams`)
         .doc(teamId)
         .set({...invite})
-        .then(db.collection(`teamMembers/${teamId}/members`).doc(membershipId).set({...invitation.teamMember}));
+        .then(db.collection(`teamMembers/${teamId}/members`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
 }
 
 export function addTeamMember(teamId: string, teamMember: Object) {
-    return db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).set('ACCEPTED')
-        .then(() => db.collection(`invitations/${teamMember.email.toLowerCase()}/${teamId}`).delete()
+    const teams = {...teamMember.teams, [teamId] : 'ACCEPTED'};
+    return db.collection('profiles').doc(teamMember.uid).update({teams})
+        .then(() => db.collection(`invitations/${teamMember.email.toLowerCase()}/teams`).doc(teamId).delete()
             .then(() => db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember}))
         );
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember});
+    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set(deconstruct({...teamMember}));
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
@@ -331,8 +334,11 @@ export function removeTeamMember(teamId: string, teamMember: TeamMember) {
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
+
+    const teams = {...teamMember.teams};
+    delete teams[teamId];
     return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete()
-        .then(() => db.collection(`profiles/${teamMember.uid}/teams/${teamId}`).delete());
+        .then(() => db.collection('profiles').doc(teamMember.uid).update({teams}));
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
@@ -341,14 +347,13 @@ export function revokeInvitation(teamId: string, membershipId: string) {
         .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
 }
 
-
 /** *************** TRASH DROPS *************** **/
 
 export function dropTrash(trashDrop: Object) {
-    db.collection('trashDrops').add({...trashDrop, location: {...trashDrop.location}});
+    db.collection('trashDrops').add(deconstruct({...trashDrop, location: {...trashDrop.location}}));
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    db.collection('trashDrops').doc(trashDrop.uid).set({...trashDrop, location: {...trashDrop.location}});
+    db.collection('trashDrops').doc(trashDrop.uid).set(deconstruct({...trashDrop, location: {...trashDrop.location}}));
 }
 

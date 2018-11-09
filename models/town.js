@@ -1,23 +1,24 @@
 // @flow
 
 import {isValidDate} from '../libs/validators';
-import {Coordinates} from './coordinates';
+import Coordinates from './coordinates';
 
 export class TownLocation {
-
     address: ?string;
     name: ?string;
     notes: ?string;
     coordinates: ?Coordinates;
+
 
     constructor(args: ?Object) {
         this.address = (args || {}).address || '';
         this.name = (args || {}).name || '';
         this.notes = (args || {}).notes || '';
         this.coordinates = Coordinates.create((args || {}).coordinates);
+
     }
 
-    static create(args: ?Object = {}, id: ?string) {
+    static create(args: Object = {}, id?: string) {
         const _args = {...args};
         if (Boolean(id)) {
             _args.id = id;
@@ -27,14 +28,13 @@ export class TownLocation {
 }
 
 export default class Town {
-
     id: ?string;
     name: ?string;
     description: ?string;
     notes: ?string;
-    pickupInstructions: ?string;
     dropOffInstructions: ?string;
     dropOffLocations: ?Array<TownLocation>;
+    pickupInstructions: ?string;
     pickupLocations: ?Array<TownLocation>;
     roadsideDropOffAllowed: ?boolean;
     created: ?Date;
@@ -64,7 +64,7 @@ export default class Town {
             : new Date();
     }
 
-    static create(args: ?Object = {}, id: ?string) {
+    static create(args: ?Object = {}, id?: string) {
         const _args = {...args};
         if (Boolean(id)) {
             _args.id = id;
