@@ -4,7 +4,7 @@ import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
 import Expo from 'expo';
 import TeamMember from '../../models/team-member';
-import {Invitation} from '../../models/invitation';
+import Invitation from '../../models/invitation';
 import * as memberStatus from '../../constants/team-member-statuses';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {Alert} from 'react-native';
@@ -96,7 +96,7 @@ export function createTeam(team: Object, user) {
     return () => firebaseDataLayer.createTeam(team, user);
 }
 
-export function deleteTeam(teamId: string){
+export function deleteTeam(teamId: string) {
     return () => firebaseDataLayer.deleteTeam(teamId);
 }
 
@@ -146,7 +146,7 @@ export function leaveTeam(teamId: string, user: Object) {
     };
 }
 
-export function deleteMessage(userId: string, messageId: string){
+export function deleteMessage(userId: string, messageId: string) {
     return async function () {
         firebaseDataLayer.deleteMessage(userId, messageId);
     };
