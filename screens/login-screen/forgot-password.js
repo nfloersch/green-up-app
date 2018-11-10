@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Alert, TouchableOpacity, TouchableHighlight, StyleSheet, Text, TextInput, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {email} from '../../libs/validators';
+import {isValidEmail} from '../../libs/validators';
 
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
@@ -39,7 +39,7 @@ class ForgotPassword extends Component {
     }
 
     onButtonPress() {
-        if (email(this.state.email)) {
+        if (isValidEmail(this.state.email)) {
             this.props.actions.resetPassword(this.state.email);
             this.setState({passwordResetSent: true});
         } else {
