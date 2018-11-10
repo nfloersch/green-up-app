@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {email, isInTeam} from '../../libs/validators';
+import {isValidEmail, isInTeam} from '../../libs/validators';
 
 import * as actions from './actions';
 import TeamMember from '../../models/team-member';
@@ -31,7 +31,7 @@ const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-function _onChangeEmail(value){
+function _onChangeEmail(value) {
     this.setState({email: (value || '').trim()});
 }
 
@@ -48,7 +48,7 @@ function _inviteToTeam() {
         memberStatus: TeamMember.memberStatuses.INVITED
     }));
     const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
-    const emailIsInvalid = !email(this.state.email) || isInTeam(teamMembers, this.state.email);
+    const emailIsInvalid = !isValidEmail(this.state.email) || isInTeam(teamMembers, this.state.email);
 
     if (emailIsInvalid) {
         Alert.alert('Please enter a valid email address');

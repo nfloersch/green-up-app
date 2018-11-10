@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Button,
     StyleSheet,
     View,
     ScrollView,
@@ -20,7 +19,7 @@ import * as actions from './actions';
 import TeamMember from '../../models/team-member';
 // import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
-import * as validators from '../../libs/validators';
+import {isValidEmail, isInTeam} from '../../libs/validators';
 
 const myStyles = {};
 
@@ -95,7 +94,7 @@ class InviteContacts extends Component {
     render() {
         const selected = this.state.selectedContacts || [];
         const myContacts = this.state.contacts
-            .filter(contact => validators.email(contact.email) && !validators.isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
+            .filter(contact => isValidEmail(contact.email) && !isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
             .sort((a, b) => {
                 switch (true) {
                     case(a.firstName < b.firstName):

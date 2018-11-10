@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {email} from '../libs/validators';
+import {isValidEmail} from '../libs/validators';
 import {defaultStyles} from '../styles/default-styles';
 
 const myStyles = {};
@@ -27,7 +27,7 @@ export default class LoginForm extends Component {
         this.state = {email: '', password: '', displayName: ''};
     }
 
-    onChangeEmail(value){
+    onChangeEmail(value) {
         this.setState({email: (value || '').trim()});
     }
 
@@ -38,7 +38,7 @@ export default class LoginForm extends Component {
     }
 
     onButtonPress() {
-        if(email(this.state.email)) {
+        if (isValidEmail(this.state.email)) {
             this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
         } else {
             Alert.alert('Please enter a valid email address');
@@ -51,7 +51,7 @@ export default class LoginForm extends Component {
                 <View>
                     <Text style={styles.label}>Email</Text>
                     <TextInput
-                        autoCapitalize = 'none'
+                        autoCapitalize='none'
                         keyBoardType='email-address'
                         autoCorrect={false}
                         placeholder='you@domain.com'
@@ -64,7 +64,7 @@ export default class LoginForm extends Component {
                 <View>
                     <Text style={styles.label}>Password</Text>
                     <TextInput
-                        autoCapitalize = 'none'
+                        autoCapitalize='none'
                         keyBoardType={'default'}
                         autoCorrect={false}
                         placeholder={'*****'}

@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Alert, TouchableOpacity, StyleSheet, Text, TextInput, View} from 'react-native';
-import {email} from '../libs/validators';
+import {isValidEmail} from '../libs/validators';
 import {defaultStyles} from '../styles/default-styles';
 
 const myStyles = {};
@@ -28,8 +28,8 @@ export default class CreateAccountForm extends Component {
         this.state = {email: '', password: '', displayName: ''};
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.createUserError){
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.createUserError) {
             Alert.alert(nextProps.createUserError);
         }
     }
@@ -45,7 +45,7 @@ export default class CreateAccountForm extends Component {
     }
 
     onButtonPress() {
-        if (email(this.state.email)) {
+        if (isValidEmail(this.state.email)) {
             this.props.onButtonPress(this.state.email, this.state.password, this.state.displayName);
         } else {
             Alert.alert('Please enter a valid email address');
