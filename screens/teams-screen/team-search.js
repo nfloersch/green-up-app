@@ -120,7 +120,7 @@ class TeamSearch extends Component {
 
     onSearchTermChange(searchTerm: string = '') {
         const {teams, teamMembers, currentUser} = this.props;
-        const mkey = currentUser.email.toLowerCase().replace(/\./g, ':');
+        const mkey = currentUser.uid;
         // get all the teams the user is on
         const teamsImOn = Object.keys(teamMembers).filter(key =>
             !!teamMembers[key] &&

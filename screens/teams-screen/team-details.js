@@ -133,7 +133,7 @@ class TeamDetails extends Component {
     render() {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
-        const memberKey = currentUser.email.toLowerCase().replace(/\./g, ':');
+        const memberKey = currentUser.uid;
         const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
         const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
@@ -158,7 +158,7 @@ class TeamDetails extends Component {
                                     height: 52,
                                     marginTop: 5
                                 }}
-                                onPress={this._toMemberDetails(selectedTeam.id, member.email.toLowerCase().replace(/\./g, ':'))}>
+                                onPress={this._toMemberDetails(selectedTeam.id, member.uid)}>
                                 <View style={{flex: 1, flexDirection: 'row'}}>
                                     <View style={{flex: 1, flexDirection: 'row'}}>
                                         <Image

@@ -134,6 +134,7 @@ function setupTrashDropListener(dispatch) {
     });
 }
 
+
 function setupInvitationListener(email, dispatch) {
     db.collection('invitations')
         .doc(email)
