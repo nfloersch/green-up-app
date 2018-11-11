@@ -136,7 +136,7 @@ class MyTeams extends Component {
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
-        const membershipId = this.props.currentUser.uid;
+        const membershipId = (this.props.currentUser.email || '').toLowerCase().trim();
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
         //  const memberStatus = TeamMember.memberStatuses;
         return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
