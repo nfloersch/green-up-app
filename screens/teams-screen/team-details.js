@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import * as teamMemberStatuses from '../../constants/team-member-statuses';
-import TeamMember from '../../models/team-member';
+import User from '../../models/user';
 import {getMemberIcon} from '../../libs/member-icons';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
@@ -286,23 +286,6 @@ class TeamDetails extends Component {
             }
         };
 
-        // const otherTeamsLocationImage = require('../../assets/images/flag.png');
-
-        const areas = Array.isArray(this.props.otherCleanAreas) ? this.props.otherCleanAreas : [];
-
-        // Turning this off because if an owner doesn't desginate a location these pins are confusing.
-        // const otherTeamAreas = areas.map((a, i) =>
-        //     (
-        //         <MapView.Marker
-        //             key={i + 1000}
-        //             coordinate={a.coordinates}
-        //             pinColor={'yellow'}
-        //             stopPropagation={true}>
-        //             <MultiLineMapCallout title={a.title || ''} description={a.description || ''}/>
-        //         </MapView.Marker>
-        //     )
-        // );
-
 
         const teamAreas = (this.props.locations || []).map((marker, index) => (
             <MapView.Marker
@@ -365,11 +348,11 @@ class TeamDetails extends Component {
                             </MapView>
                             {
                                 (this.props.locations || []).length > 0
-                                ? null
-                                : ( <Text style={[styles.textDark, {fontSize: 14, textAlign: 'left'}]}>
-                                {'The team owner has yet to designate a clean up location.'}
-                            </Text>)
-                        }
+                                    ? null
+                                    : (<Text style={[styles.textDark, {fontSize: 14, textAlign: 'left'}]}>
+                                        {'The team owner has yet to designate a clean up location.'}
+                                    </Text>)
+                            }
                         </View>
                         <View style={[styles.block, {
                             borderTopWidth: 1,
@@ -391,7 +374,7 @@ const mapStateToProps = (state) => ({
     invitations: state.teams.invitations || {},
     teams: state.teams.teams,
     selectedTeam: state.teams.selectedTeam,
-    currentUser: TeamMember.create({...state.login.user, ...state.profile}),
+    currentUser: User.create({...state.login.user, ...state.profile}),
     teamMembers: state.teams.teamMembers,
     otherCleanAreas: Object.values(state.teams.teams)
         .filter(team => team.id !== state.teams.selectedTeam.id)

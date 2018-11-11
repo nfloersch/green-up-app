@@ -61,8 +61,7 @@ export function askToJoinTeam(team: Object, user: Object) {
     const teamId = typeof team === 'string' ? team : team.id;
 
     return async function () {
-        const potentialTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.REQUEST_TO_JOIN}));
-        await firebaseDataLayer.addTeamMember(teamId, potentialTeamMember);
+        await firebaseDataLayer.addTeamMember(teamId, user, memberStatus.REQUEST_TO_JOIN);
         await firebaseDataLayer.sendUserMessage(team.owner.uid, message);
     };
 }

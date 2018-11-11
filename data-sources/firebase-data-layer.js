@@ -7,6 +7,7 @@ import Town from '../models/town';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
+import * as memberStatus from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -318,12 +319,17 @@ export function inviteTeamMember(invitation: Object) {
         .then(db.collection(`teamMembers/${teamId}/members`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
 }
 
-export function addTeamMember(teamId: string, teamMember: Object) {
-    const teams = {...teamMember.teams, [teamId] : 'ACCEPTED'};
-    return db.collection('profiles').doc(teamMember.uid).update({teams})
-        .then(() => db.collection(`invitations/${teamMember.email.toLowerCase()}/teams`).doc(teamId).delete()
-            .then(() => db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({...teamMember}))
-        );
+export function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED') {
+    const teams = {...user.teams, [teamId]: status};
+    const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
+    const deleteInvitation = db.collection(`invitations/${user.email.toLowerCase().trim()}/teams`).doc(teamId).delete();
+    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({teamMember:deconstruct(teamMember)});
+    const addTeamToProfile = db.collection('profiles').doc(user.uid).update({teams});
+    return Promise.all([deleteInvitation, addToTeam, addTeamToProfile])
+        .catch(error => {
+            // TODO: handle this exception in the UI
+            console.log(error);
+        });
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
@@ -335,7 +341,6 @@ export function removeTeamMember(teamId: string, teamMember: TeamMember) {
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
-
     const teams = {...teamMember.teams};
     delete teams[teamId];
     return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete()
