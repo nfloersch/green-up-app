@@ -24,7 +24,15 @@ export function reducers(state = initialState.login, action) {
                 creatingUser: false
             };
         case types.LOGOUT_SUCCESSFUL:
-            return initialState.login;
+            return {
+                ...state,
+                user: null,
+                createUserError: null,
+                userIsLoggedIn: false,
+                initialAuthChecked: true,
+                loginError: null,
+                creatingUser: false
+            };
         case types.CREATING_USER:
             return {
                 ...state,
