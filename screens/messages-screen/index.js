@@ -168,7 +168,7 @@ class Messages extends Component {
                 };
             case messageTypes.REQUEST_TO_JOIN :
                 return () => {
-                    const membershipId = message.sender.email.toLowerCase().replace(/\./g, ':');
+                    const membershipId = message.sender.email.uid;
                     const teamId = message.teamId;
                     this.props.actions.readMessage(message, userId);
                     this.props.navigation.navigate('TeamMemberDetails', {teamId, membershipId});

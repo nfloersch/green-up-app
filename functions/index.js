@@ -2,26 +2,26 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 const sgMail = require('@sendgrid/mail');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
 // 1. https://www.google.com/settings/security/lesssecureapps
 // 2. https://accounts.google.com/DisplayUnlockCaptcha
 // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
 // TODO: Configure the `gmail.email` and `gmail.password` Google Cloud environment variables.
-const gmailEmail = functions.config().gmail.email;
-const gmailPassword = functions.config().gmail.password;
-const mailTransport = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: gmailEmail,
-        pass: gmailPassword
-    }
-});
+// const gmailEmail = functions.config().gmail.email;
+// const gmailPassword = functions.config().gmail.password;
+// const mailTransport = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: gmailEmail,
+//         pass: gmailPassword
+//     }
+// });
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.
-const APP_NAME = 'Green Up Vermont';
+// const APP_NAME = 'Green Up Vermont';
 
 function sendInvitationEmailSendGrid(invitation) {
     sgMail.setApiKey(SENDGRID_API_KEY);
@@ -30,7 +30,7 @@ function sendInvitationEmailSendGrid(invitation) {
     const teamMember = invitation.teamMember;
     const team = invitation.team || {};
     const to = teamMember.email.trim().toLowerCase();
-    const toName = teamMember.displayName;
+    //  const toName = teamMember.displayName;
     const subject = 'You have been invited to Green Up Day';
     const sender = invitation.sender.displayName;
     const from = 'app@greenupvermont.org';
@@ -67,15 +67,15 @@ function sendInvitationEmailSendGrid(invitation) {
 
 
 // Sends a welcome email to the given user.
-function sendInvitationEmailGmail(to, fromEmail, fromName, subject, text) {
-    const mailOptions = {
-        from: `${fromName} <${fromEmail}>`,
-        to,
-        subject,
-        text
-    };
-    return mailTransport.sendMail(mailOptions);
-}
+// function sendInvitationEmailGmail(to, fromEmail, fromName, subject, text) {
+//     const mailOptions = {
+//         from: `${fromName} <${fromEmail}>`,
+//         to,
+//         subject,
+//         text
+//     };
+//     return mailTransport.sendMail(mailOptions);
+// }
 
 /**
  * User setup after an invitation create
@@ -86,6 +86,7 @@ exports.onInvitationCreate = functions.database.ref('invitations/{pushId}/{invit
     return sendInvitationEmailSendGrid(invitation);
 });
 
+// TODO: fix this to work with new Firestore DB
 exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((event) => {
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
@@ -105,7 +106,7 @@ exports.onTeamDelete = functions.database.ref('teamMembers/{pushId}').onDelete((
     return Promise.reject(new Error('no team memberships to remove'));
 });
 
-
+// TODO: fix this to work with new Firestore DB
 exports.onTeamMemberRemove = functions.database.ref('teamMembers/{teamId}/{membershipId}').onDelete((event) => {
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();

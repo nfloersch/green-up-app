@@ -136,7 +136,7 @@ class MyTeams extends Component {
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
-        const membershipId = ((this.props.currentUser || {}).email || '').toLowerCase().trim().replace(/\./g, ':');
+        const membershipId = this.props.currentUser.uid;
         const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
         //  const memberStatus = TeamMember.memberStatuses;
         return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
@@ -177,7 +177,7 @@ class MyTeams extends Component {
         const _closeModal = () => this.setState({openModal: 'none'});
         const teams = this.props.teams;
         const user = this.props.currentUser;
-        const membershipId = (user.email || '').toLowerCase().replace(/\./g, ':').trim();
+        const membershipId = (user.email || '').toLowerCase().trim();
         const isConfirmedMember = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
         const teamKeys = Object.keys((user.teams || {}));
         const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
