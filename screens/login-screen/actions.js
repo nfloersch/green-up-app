@@ -4,7 +4,7 @@ import * as types from '../../constants/actionTypes';
 import Expo from 'expo';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {thirdPartyConfig} from '../../config/third-party-config';
- 
+
 
 export function getCurrentUser() {
     return (dispatch: Object => *) => {

@@ -206,7 +206,7 @@ class TrashMap extends Component {
 
     render() {
         const saveTrashDrop = () => {
-            if (this.state.drop.uid) {
+            if (this.state.drop.id) {
                 this.props.actions.updateTrashDrop(this.state.drop);
             } else {
                 this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.props.location.coords})));
@@ -252,7 +252,7 @@ class TrashMap extends Component {
 
         const collectedTrash = (this.props.collectedTrashToggle && drops || []).filter(drop => drop.wasCollected === true).map(drop => (
             <MapView.Marker
-                key={drop.uid}
+                key={drop.id}
                 // image={collectedTrashIcon}
                 pinColor={'turquoise'}
                 coordinate={drop.location}
@@ -266,7 +266,7 @@ class TrashMap extends Component {
 
         const myTrash = (drops || []).filter(drop => (this.props.myTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
             <MapView.Marker
-                key={drop.uid}
+                key={drop.id}
                 // image={myUncollectedTrashIcon}
                 pinColor={'yellow'}
                 coordinate={drop.location}
@@ -281,7 +281,7 @@ class TrashMap extends Component {
 
         const unCollectedTrash = (this.props.uncollectedTrashToggle && drops || []).filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
             <MapView.Marker
-                key={drop.uid}
+                key={drop.id}
                 // image={uncollectedTrashIcon}
                 pinColor={'red'}
                 coordinate={drop.location}
@@ -451,7 +451,7 @@ class TrashMap extends Component {
                                                         onPress={saveTrashDrop}
                                                     >
                                                         <Text style={styles.headerButtonText}>
-                                                            {this.state.drop.uid ? 'Update This Spot' : 'Mark This Spot'}
+                                                            {this.state.drop.id ? 'Update This Spot' : 'Mark This Spot'}
                                                         </Text>
                                                     </TouchableOpacity>
                                                 </View>
@@ -509,7 +509,7 @@ class TrashMap extends Component {
 
                                     </View>
                                     {
-                                        this.state.drop.uid && !this.state.drop.wasCollected && (
+                                        this.state.drop.id && !this.state.drop.wasCollected && (
                                             <View style={{width: '100%', height: 60}}>
                                                 <TouchableHighlight
                                                     style={[styles.button, {width: '100%'}]}
@@ -541,7 +541,7 @@ class TrashMap extends Component {
 function mapStateToProps(state) {
     const drops = Object.keys(state.trashTracker.trashDrops || {})
         .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
-        .map(key => ({...state.trashTracker.trashDrops[key], uid: key}));
+        .map(key => ({...state.trashTracker.trashDrops[key], id: key}));
     const cleanAreas = Object.values(state.teams.teams)
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',

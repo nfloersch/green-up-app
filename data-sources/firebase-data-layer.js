@@ -7,7 +7,6 @@ import Town from '../models/town';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
-import * as memberStatus from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -20,6 +19,7 @@ db.settings({
 });
 
 const myTeamMemberListeners = {};
+const myListeners = {};
 
 const deconstruct = obj => JSON.parse(JSON.stringify(obj));
 
@@ -76,7 +76,7 @@ function stringifyDates(obj) {
 
 function setupMessageListener(uid, dispatch) {
     const ref = db.collection(`messages/${uid}/messages`);
-    return ref.onSnapshot(querySnapshot => {
+    myListeners.messageListener = ref.onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
         const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
@@ -86,7 +86,7 @@ function setupMessageListener(uid, dispatch) {
 
 function setupProfileListener(user, dispatch) {
     const {uid} = user;
-    db.collection('profiles').doc(uid)
+    myListeners.profileListener = db.collection('profiles').doc(uid)
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
@@ -118,7 +118,7 @@ function setupProfileListener(user, dispatch) {
 }
 
 function setupTeamListener(dispatch) {
-    db.collection('teams')
+    myListeners.teamListener = db.collection('teams')
         .onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
@@ -128,16 +128,15 @@ function setupTeamListener(dispatch) {
 }
 
 function setupTrashDropListener(dispatch) {
-    db.collection('trashDrops').onSnapshot(querySnapshot => {
+    myListeners.trashDropListener = db.collection('trashDrops').onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(doc.data()));
         dispatch(dataLayerActions.trashDropFetchSuccessful(data));
     });
 }
 
-
 function setupInvitationListener(email, dispatch) {
-    db.collection('invitations')
+    myListeners.invitationListener = db.collection('invitations')
         .doc(email)
         .onSnapshot(snapshot => {
             const data = snapshot.exists ? snapshot.data() : {};
@@ -145,26 +144,33 @@ function setupInvitationListener(email, dispatch) {
         });
 }
 
+// Get Town Data
+function setupTownListener(dispatch) {
+    myListeners.townListeners = db.collection('towns').onSnapshot(querySnapshot => {
+        const data = [];
+        querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
+        const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
+        dispatch(dataLayerActions.townDataFetchSuccessful(towns));
+    });
+}
+
 function initializeUser(dispatch, user) {
+
     if (Boolean(user)) {
-        dispatch(dataLayerActions.userAuthenticated(User.create(user)));
-        dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
         setupProfileListener(user, dispatch);
         setupMessageListener(user.uid, dispatch);
         setupTeamListener(dispatch);
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
-        // Get Town Data
-        db.collection('towns').onSnapshot(querySnapshot => {
-            const data = [];
-            querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
-            const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
-            dispatch(dataLayerActions.townDataFetchSuccessful(towns));
-        });
+        setupTownListener(dispatch);
+        dispatch(dataLayerActions.userAuthenticated(User.create(user)));
+        dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
         dispatch(dataLayerActions.initilizationSuccessful());
-    } else {
-        dispatch(dataLayerActions.userFailedAuthentication());
+        return;
     }
+    Object.values(myListeners).forEach(listener => listener());
+    Object.values(myTeamMemberListeners).forEach(listener => listener());
+    dispatch(dataLayerActions.userLoggedOut());
 }
 
 /**
@@ -279,6 +285,7 @@ export function deleteMessage(userId: string, messageId: string) {
 }
 
 /** *************** TEAMS *************** **/
+
 export function createTeam(team: Object = {}, user: User = {}) {
     const uid = team.owner.uid;
     return db.collection('teams').add(deconstruct({...team, owner: {...team.owner}})).then((docRef) => {
@@ -323,7 +330,7 @@ export function addTeamMember(teamId: string, user: Object, status?: string = 'A
     const teams = {...user.teams, [teamId]: status};
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const deleteInvitation = db.collection(`invitations/${user.email.toLowerCase().trim()}/teams`).doc(teamId).delete();
-    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({teamMember:deconstruct(teamMember)});
+    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({teamMember: deconstruct(teamMember)});
     const addTeamToProfile = db.collection('profiles').doc(user.uid).update({teams});
     return Promise.all([deleteInvitation, addToTeam, addTeamToProfile])
         .catch(error => {
