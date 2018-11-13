@@ -78,7 +78,6 @@ class MessageItem extends Component {
         item: PropTypes.object
     };
 
-
     render() {
         const item = this.props.item;
         return (
@@ -143,13 +142,6 @@ class Messages extends Component {
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this.toSendMessage = this.toSendMessage.bind(this);
     }
-
-    // Stopping the redirect for now, this is causing issue with some of the new code. (JN)
-    // componentWillUpdate(nextProps) {
-    // if (nextProps.teamsLoaded === true && nextProps.userHasTeams !== true) {
-    //     this.props.navigation.navigate('Teams');
-    // }
-    // }
 
     toSendMessage() {
         return () => {
