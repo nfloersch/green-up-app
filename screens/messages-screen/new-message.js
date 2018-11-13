@@ -18,7 +18,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import User from '../../models/user';
-import * as messageActions from './actions';
+import * as actions from './actions';
 import Message from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
@@ -78,7 +78,7 @@ class NewMessage extends Component {
     }
 
     sendMessage(teamId, message) {
-        const recipients = Object.values(this.props.teamMembers[teamId] || {});
+        // const recipients = Object.values(this.props.teamMembers[teamId] || {});
         const _message = Message.create(
             {
                 text: message,
@@ -87,7 +87,7 @@ class NewMessage extends Component {
                 teamId
             }
         );
-        this.props.actions.sendMessage(_message, recipients);
+        this.props.actions.sendTeamMessage(teamId, _message);
         this.props.navigation.goBack();
     }
 
@@ -183,7 +183,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(messageActions, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     };
 }
 

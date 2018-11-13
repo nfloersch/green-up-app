@@ -29,7 +29,6 @@ import * as teamStatus from '../../constants/team-member-statuses';
 import teamwork from '../../assets/images/teamwork.jpeg';
 import {removeNulls} from '../../libs/remove-nulls';
 
-
 const myStyles = {
     icon: {
         height: 50,
@@ -40,10 +39,8 @@ const myStyles = {
         flex: 4
     }
 };
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 
 class TeamItem extends Component {
     static propTypes = {
@@ -87,7 +84,6 @@ class TeamItem extends Component {
         );
     }
 }
-
 
 class MyTeams extends Component {
     static propTypes = {
@@ -137,8 +133,8 @@ class MyTeams extends Component {
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
         const membershipId = (this.props.currentUser.email || '').toLowerCase().trim();
-        const status = (((this.props.teamMembers || {})[teamKey] || {})[membershipId] || {}).memberStatus;
-        //  const memberStatus = TeamMember.memberStatuses;
+        const memberList = (this.props.teamMembers || {})[teamKey] || {};
+        const status = (memberList[this.props.currentUser.uid] || {}).memberStatus || (memberList[membershipId] || {}).memberStatus;
         return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
             height: 50,
             width: 50,
@@ -191,7 +187,6 @@ class MyTeams extends Component {
                 goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             }));
-
 
         const myTeams = teamKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
             .map(key => ({
