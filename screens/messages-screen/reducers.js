@@ -14,6 +14,8 @@ export function reducers(state = initialState.messages, action) {
                 messages: action.messages,
                 loaded: true
             };
+        case types.FETCH_TEAM_MESSAGES_SUCCESS:
+            return {...state, messages: {...state.messages, ...action.messages}};
         case types.FETCH_TEAMS_SUCCESS :
             return {
                 ...state,

@@ -84,6 +84,19 @@ function setupMessageListener(uid, dispatch) {
     });
 }
 
+
+function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
+    (teamIds || []).forEach(teamId => {
+        const ref = db.collection(`teams/${teamId}/messages`);
+        myListeners.messageListener = ref.onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+            const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
+            dispatch(dataLayerActions.teamMessageFetchSuccessful(messages));
+        });
+    });
+}
+
 function setupProfileListener(user, dispatch) {
     const {uid} = user;
     myListeners.profileListener = db.collection('profiles').doc(uid)
@@ -163,6 +176,7 @@ function initializeUser(dispatch, user) {
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
         setupTownListener(dispatch);
+        setupTeamMessageListener(Object.keys(user.teams || {}), dispatch);
         dispatch(dataLayerActions.userAuthenticated(User.create(user)));
         dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
         dispatch(dataLayerActions.initilizationSuccessful());
