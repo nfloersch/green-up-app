@@ -12,6 +12,13 @@ export function messageFetchSuccessful(messages) {
     return {type: types.FETCH_MESSAGES_SUCCESS, messages: myMessages};
 }
 
+
+export function teamMessageFetchSuccessful(messages) {
+    const myMessages = Object.keys(messages || {}).reduce((messageHash, key) => (Object.assign({}, messageHash, {[key]: Message.create(Object.assign({uid: key}, messages[key]))})), {});
+    return {type: types.FETCH_TEAM_MESSAGES_SUCCESS, messages: myMessages};
+}
+
+
 export function noCurrentUser() {
     return {type: types.NO_CURRENT_USER};
 }
