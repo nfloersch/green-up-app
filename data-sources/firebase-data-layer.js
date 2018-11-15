@@ -7,6 +7,7 @@ import Town from '../models/town';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
+import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -80,7 +81,7 @@ function setupMessageListener(uid, dispatch) {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
         const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
-        dispatch(dataLayerActions.messageFetchSuccessful(messages));
+        dispatch(dataLayerActions.messageFetchSuccessful({[uid]: messages}));
     });
 }
 
@@ -92,7 +93,7 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
             const data = [];
             querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
             const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
-            dispatch(dataLayerActions.teamMessageFetchSuccessful(messages));
+            dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
         });
     });
 }
@@ -103,7 +104,10 @@ function setupProfileListener(user, dispatch) {
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
+                const teamIds = Object.keys(profile.teams || {}).filter(key => profile.teams[key] === ACCEPTED || profile.teams[key] === OWNER);
+                setupTeamMessageListener(teamIds, dispatch);
                 dispatch(dataLayerActions.profileFetchSuccessful(profile));
+
                 const removeUs = Object.keys(myTeamMemberListeners).filter(key => !(key in profile.teams));
                 const addUs = Object.keys(profile.teams || {}).filter(key => !(key in myTeamMemberListeners));
                 // remove listeners for ex-team member list changes;
@@ -168,7 +172,6 @@ function setupTownListener(dispatch) {
 }
 
 function initializeUser(dispatch, user) {
-
     if (Boolean(user)) {
         setupProfileListener(user, dispatch);
         setupMessageListener(user.uid, dispatch);
@@ -176,7 +179,6 @@ function initializeUser(dispatch, user) {
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
         setupTownListener(dispatch);
-        setupTeamMessageListener(Object.keys(user.teams || {}), dispatch);
         dispatch(dataLayerActions.userAuthenticated(User.create(user)));
         dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
         dispatch(dataLayerActions.initilizationSuccessful());

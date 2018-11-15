@@ -116,7 +116,6 @@ class MessageItem extends Component {
     }
 }
 
-
 class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
@@ -281,7 +280,7 @@ function mapStateToProps(state) {
     const members = state.teams.teamMembers || {};
     let canMessage = false;
     const memKeys = Object.keys(members);
-
+    const messages = Object.values((state.messages || {}).messages ||{}).reduce((obj, queue) => ({...obj, ...queue}), {});
     if (memKeys.length > 0) {
         memKeys.forEach(mem => {
             if (members[mem]) {
@@ -293,11 +292,13 @@ function mapStateToProps(state) {
             }
         });
     }
+
+
     return {
         currentUser: state.login.user,
         invitations: state.teams.invitations || {},
         invitationsLoaded: state.messages.invitationsLoaded,
-        messages: state.messages.messages || {},
+        messages: messages,
         messagesLoaded: state.messages.loaded,
         userHasTeams: canMessage,
         teamsLoaded: state.messages.teamsLoaded,
