@@ -279,8 +279,8 @@ class Messages extends Component {
 function mapStateToProps(state) {
     const members = state.teams.teamMembers || {};
     let canMessage = false;
+    const messages = Object.values((state.messages || {}).messages || {}).reduce((obj, queue) => ({...obj, ...queue}), {});
     const memKeys = Object.keys(members);
-    const messages = Object.values((state.messages || {}).messages ||{}).reduce((obj, queue) => ({...obj, ...queue}), {});
     if (memKeys.length > 0) {
         memKeys.forEach(mem => {
             if (members[mem]) {

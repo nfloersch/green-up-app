@@ -92,7 +92,8 @@ class MessageDetails extends Component {
 
 function mapStateToProps(state) {
     const teams = state.teams.teams;
-    return {messages: state.messages.messages, teams: teams};
+    const messages = Object.values((state.messages || {}).messages || {}).reduce((obj, queue) => ({...obj, ...queue}), {});
+    return {messages, teams: teams};
 }
 
 function mapDispatchToProps(dispatch) {
