@@ -149,7 +149,7 @@ class Messages extends Component {
     }
 
     toMessageDetail(message) {
-        const userId = this.props.currentUser.uid;
+        const userId = (this.props.currentUser || {}).uid;
         switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
