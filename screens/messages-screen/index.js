@@ -21,7 +21,6 @@ import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
-import Message from '../../models/message';
 import coveredBridge from '../../assets/images/covered-bridge2.jpg';
 
 const myStyles = {
@@ -120,8 +119,6 @@ class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
-        invitations: PropTypes.object,
-        invitationsLoaded: PropTypes.bool,
         messages: PropTypes.object,
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
@@ -153,7 +150,6 @@ class Messages extends Component {
         switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
-                    // this.props.actions.readMessage(message, userId);
                     this.props.actions.selectTeamById(message.teamId);
                     this.props.navigation.navigate('TeamDetails');
                 };
@@ -175,24 +171,7 @@ class Messages extends Component {
     }
 
     render() {
-
-        const invitations = this.props.invitations;
-        const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
-            Object.assign({}, obj, {
-                [key]: Message.create(
-                    {
-                        uid: key,
-                        text: `${invitations[key].sender.displayName} has invited you to join team : ${invitations[key].team.name}`,
-                        sender: invitations[key].sender,
-                        teamId: key,
-                        read: false,
-                        active: true,
-                        type: messageTypes.INVITATION
-                    }
-                )
-            })
-        ), {});
-        const messages = Object.assign({}, this.props.messages, invitationMessages);
+        const messages = Object.assign({}, this.props.messages);
         const messageKeys = Object.keys(messages || {}).filter(key => Boolean(!messages[key].teamId || this.props.teams[messages[key].teamId]));
         const sortedKeys = messageKeys.sort((key1, key2) => (
             messages[key2].created.valueOf() - messages[key1].created.valueOf()
@@ -296,8 +275,6 @@ function mapStateToProps(state) {
 
     return {
         currentUser: state.login.user,
-        invitations: state.teams.invitations || {},
-        invitationsLoaded: state.messages.invitationsLoaded,
         messages: messages,
         messagesLoaded: state.messages.loaded,
         userHasTeams: canMessage,

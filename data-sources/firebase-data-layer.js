@@ -4,10 +4,13 @@ import * as dataLayerActions from './data-layer-actions';
 import User from '../models/user';
 import TeamMember from '../models/team-member';
 import Town from '../models/town';
+import Message from '../models/message';
+import Invitation from '../models/invitation';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
 import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
+import * as messageTypes from '../constants/message-types';
 
 firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore through Firebase
@@ -79,7 +82,7 @@ function setupMessageListener(uid, dispatch) {
     myListeners.messageListener = ref.onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
-        const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
+        const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
         dispatch(dataLayerActions.messageFetchSuccessful({[uid]: messages}));
     });
 }
@@ -91,7 +94,7 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
         myListeners.messageListener = ref.onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
-            const messages = data.reduce((obj, message) => ({...obj, [message.id]: message}), {});
+            const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
             dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
         });
     });
@@ -152,12 +155,29 @@ function setupTrashDropListener(dispatch) {
 }
 
 function setupInvitationListener(email, dispatch) {
-    myListeners.invitationListener = db.collection('invitations')
-        .doc(email)
-        .onSnapshot(snapshot => {
-            const data = snapshot.exists ? snapshot.data() : {};
-            dispatch(dataLayerActions.invitationFetchSuccessful(data));
-        });
+    const ref = db.collection(`/invitations/${email}/teams`);
+    myListeners.invitationListener = ref.onSnapshot(querySnapshot => {
+        const data = [];
+        querySnapshot.forEach(doc => data.push(Invitation.create({...doc.data(), id: doc.id})));
+        const invitations = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+        const messages = Object.values(data).reduce((obj, invite) => (
+            {
+                ...obj, [invite.id]: Message.create({
+                    id: invite.id,
+                    text: `${invite.sender.displayName} has invited you to join team : ${invite.team.name}`,
+                    sender: invite.sender,
+                    teamId: invite.team.id,
+                    read: false,
+                    active: true,
+                    link: null,
+                    type: messageTypes.INVITATION,
+                    created: invite.created
+                })
+            }
+        ), {});
+        dataLayerActions.invitationFetchSuccessful(dispatch, invitations);
+        dispatch(dataLayerActions.messageFetchSuccessful({invitations: messages}));
+    });
 }
 
 // Get Town Data
