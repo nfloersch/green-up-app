@@ -72,6 +72,13 @@ export function reducers(state = initialState.teams, action) {
                 invitations: action.invitations
             };
         }
+        case types.RESET:
+            return {
+                ...state,
+                teamMembers: initialState.teamMembers,
+                selectedTeam: initialState.selectedTeam,
+                teams: initialState.teams
+            };
         default:
             return state;
     }

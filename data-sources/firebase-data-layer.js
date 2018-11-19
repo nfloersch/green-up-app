@@ -21,42 +21,30 @@ db.settings({
     timestampsInSnapshots: true
 });
 
-const myTeamMemberListeners = {};
-const myListeners = {};
+let myListeners = {};
 
 const deconstruct = obj => JSON.parse(JSON.stringify(obj));
 
-/** *************** Profiles ***************  **/
 
-export function updateProfile(profile: Object, teamMembers: Object) {
-    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
-    const profileUpdate = db.collection('profiles').doc(profile.uid).set(newProfile);
-    const teamUpdates = Object.keys(teamMembers).map(key => {
-        const oldTeamMember = (teamMembers[key] || {})[profile.uid] || {};
-        const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
-        return db.collection(`teamMembers/${key}/members`).doc(profile.uid).set({...newTeamMember});
-    });
-    return Promise.all(teamUpdates.concat(profileUpdate));
-}
+const removeListener = (key: string): void => {
+    if (myListeners[key]) {
+        myListeners[key]();
+        delete myListeners[key];
+    }
+};
 
-function createProfile(user: User): Promise {
-    const now = new Date();
-    const newProfile = User.create(user);
+const addListener = (key: string, listener: any => any): void => {
+    removeListener(key);
+    if (key) {
+        myListeners[key] = listener;
+    }
+};
 
-    return db.collection('profiles').doc(newProfile.uid).set({
-        ...newProfile,
-        created: now,
-        updated: now
-    })
-        .then((docRef) => {
-            console.log('Document written with ID: ', docRef.id);
-        })
-        .catch((error) => {
-            console.error('Error adding document: ', error);
-        });
-}
+const removeAllListeners = () => {
+    Object.values(myListeners).forEach(listener => listener());
+    myListeners = {};
+};
 
-/** *************** INITIALIZATION *************** **/
 
 function returnType(entry) {
     switch (true) {
@@ -77,32 +65,127 @@ function stringifyDates(obj) {
     }), {});
 }
 
+
+/** *************** Profiles ***************  **/
+
+export function updateProfile(profile: Object, teamMembers: Object) {
+    const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
+    const profileUpdate = db.collection('profiles').doc(profile.uid).set(newProfile);
+    const teamUpdates = Object.keys(teamMembers).map(key => {
+        const oldTeamMember = (teamMembers[key] || {})[profile.uid] || {};
+        const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
+        return db.collection(`teamMembers/${key}/members`).doc(profile.uid).set({...newTeamMember});
+    });
+    return Promise.all(teamUpdates.concat(profileUpdate));
+}
+
+function createProfile(user: User, dispatch: any => void): Promise {
+    const now = new Date();
+    const newProfile = User.create(user);
+
+    return db.collection('profiles').doc(newProfile.uid).set({
+        ...newProfile,
+        created: now,
+        updated: now
+    }).catch((error) => {
+        dispatch(dataLayerActions.profileCreateFail(error));
+    });
+}
+
+/** *************** INITIALIZATION *************** **/
+
+function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
+    const ref = db.collection(`teamMembers/${teamId}/members`);
+    addListener(`teamMembers_${teamId}_members}`,
+        ref.onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+            const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+            dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
+        }));
+}
+
+function setupInvitationListener(email, dispatch) {
+    const ref = db.collection(`/invitations/${email}/teams`);
+    addListener(`invitations_${email}_teams`,
+        ref.onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(doc => {
+                data.push(Invitation.create({...doc.data(), id: doc.id}));
+            });
+            const invitations = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+            const messages = Object.values(data).reduce((obj, invite) => (
+                {
+                    ...obj, [invite.id]: Message.create({
+                        id: invite.id,
+                        text: `${invite.sender.displayName} has invited you to join team : ${invite.team.name}`,
+                        sender: invite.sender,
+                        teamId: invite.team.id,
+                        read: false,
+                        active: true,
+                        link: null,
+                        type: messageTypes.INVITATION,
+                        created: invite.created
+                    })
+                }
+            ), {});
+            // Add listeners for new team member list changes
+            Object.keys(invitations).forEach(key => {
+                setupInvitedTeamMemberListener(key, dispatch);
+            });
+            dispatch(dataLayerActions.messageFetchSuccessful({invitations: messages}));
+            dispatch(dataLayerActions.invitationFetchSuccessful(invitations));
+        })
+    );
+}
+
 function setupMessageListener(uid, dispatch) {
     const ref = db.collection(`messages/${uid}/messages`);
-    myListeners.messageListener = ref.onSnapshot(querySnapshot => {
+    addListener(`message_${uid}_messages`, ref.onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
         const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
         dispatch(dataLayerActions.messageFetchSuccessful({[uid]: messages}));
-    });
+    }));
 }
 
+function setupTeamListener(dispatch) {
+    addListener('teams', db.collection('teams')
+        .onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+            const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+            dispatch(dataLayerActions.teamFetchSuccessful(teams));
+        }));
+}
+
+function setupTeamMemberListener(teamId: string, dispatch: any => void): void {
+    addListener(`team_${teamId}_members`, db.collection(`teamMembers/${teamId}/members`)
+        .onSnapshot(querySnapshot => {
+            const data = [];
+            querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+            const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+            dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
+        }));
+}
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).forEach(teamId => {
         const ref = db.collection(`teams/${teamId}/messages`);
-        myListeners.messageListener = ref.onSnapshot(querySnapshot => {
-            const data = [];
-            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
-            const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
-            dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
-        });
+        addListener(`team_${teamId}_messages`, ref.onSnapshot(
+            querySnapshot => {
+                const data = [];
+                querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
+                const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
+                dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
+            }
+        ));
     });
 }
 
 function setupProfileListener(user, dispatch) {
     const {uid} = user;
-    myListeners.profileListener = db.collection('profiles').doc(uid)
+    addListener(`profiles_${uid}`, db.collection('profiles').doc(uid)
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
@@ -110,84 +193,33 @@ function setupProfileListener(user, dispatch) {
                 setupTeamMessageListener(teamIds, dispatch);
                 dispatch(dataLayerActions.profileFetchSuccessful(profile));
 
-                const removeUs = Object.keys(myTeamMemberListeners).filter(key => !(key in profile.teams));
-                const addUs = Object.keys(profile.teams || {}).filter(key => !(key in myTeamMemberListeners));
-                // remove listeners for ex-team member list changes;
-                removeUs.forEach(key => {
-                    // unsubscribe listener
-                    myTeamMemberListeners[key]();
-                    // remove listener from cache
-                    delete myTeamMemberListeners[key];
-                });
                 // Add listeners for new team member list changes
-                addUs.forEach(key => {
-                    myTeamMemberListeners[key] = db.collection(`teamMembers/${key}/members`)
-                        .onSnapshot(querySnapshot => {
-                            const data = [];
-                            querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
-                            const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
-                            dispatch(dataLayerActions.teamMemberFetchSuccessful(members, key));
-                        });
+                Object.keys(profile.teams || {}).forEach(key => {
+                    setupTeamMemberListener(key, dispatch);
                 });
             } else {
                 // just in case
-                createProfile(user);
+                createProfile(user, dispatch);
             }
-        });
-}
-
-function setupTeamListener(dispatch) {
-    myListeners.teamListener = db.collection('teams')
-        .onSnapshot(querySnapshot => {
-            const data = [];
-            querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
-            const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
-            dispatch(dataLayerActions.teamFetchSuccessful(teams));
-        });
+        }));
 }
 
 function setupTrashDropListener(dispatch) {
-    myListeners.trashDropListener = db.collection('trashDrops').onSnapshot(querySnapshot => {
+    addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(doc.data()));
         dispatch(dataLayerActions.trashDropFetchSuccessful(data));
-    });
-}
-
-function setupInvitationListener(email, dispatch) {
-    const ref = db.collection(`/invitations/${email}/teams`);
-    myListeners.invitationListener = ref.onSnapshot(querySnapshot => {
-        const data = [];
-        querySnapshot.forEach(doc => data.push(Invitation.create({...doc.data(), id: doc.id})));
-        const invitations = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
-        const messages = Object.values(data).reduce((obj, invite) => (
-            {
-                ...obj, [invite.id]: Message.create({
-                    id: invite.id,
-                    text: `${invite.sender.displayName} has invited you to join team : ${invite.team.name}`,
-                    sender: invite.sender,
-                    teamId: invite.team.id,
-                    read: false,
-                    active: true,
-                    link: null,
-                    type: messageTypes.INVITATION,
-                    created: invite.created
-                })
-            }
-        ), {});
-        dataLayerActions.invitationFetchSuccessful(dispatch, invitations);
-        dispatch(dataLayerActions.messageFetchSuccessful({invitations: messages}));
-    });
+    }));
 }
 
 // Get Town Data
 function setupTownListener(dispatch) {
-    myListeners.townListeners = db.collection('towns').onSnapshot(querySnapshot => {
+    addListener('towns', db.collection('towns').onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
         const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
         dispatch(dataLayerActions.townDataFetchSuccessful(towns));
-    });
+    }));
 }
 
 function initializeUser(dispatch, user) {
@@ -203,8 +235,7 @@ function initializeUser(dispatch, user) {
         dispatch(dataLayerActions.initilizationSuccessful());
         return;
     }
-    Object.values(myListeners).forEach(listener => listener());
-    Object.values(myTeamMemberListeners).forEach(listener => listener());
+    removeAllListeners();
     dispatch(dataLayerActions.userLoggedOut());
 }
 
@@ -289,7 +320,9 @@ export function resetPassword(emailAddress: string) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
-export function logout() {
+export function logout(dispatch) {
+    removeAllListeners();
+    dispatch(dataLayerActions.resetData());
     return firebase.auth().signOut();
 }
 

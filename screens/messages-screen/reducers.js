@@ -23,11 +23,8 @@ export function reducers(state = initialState.messages, action) {
                 ...state,
                 teamsLoaded: true
             };
-        case types.FETCH_INVITATIONS_SUCCESS:
-            return {
-                ...state,
-                invitationsLoaded: true
-            };
+        case types.RESET:
+            return {...state, messages: initialState.messages};
         default:
             return state;
     }

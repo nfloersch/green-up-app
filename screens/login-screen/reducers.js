@@ -44,17 +44,14 @@ export function reducers(state = initialState.login, action) {
                 ...state,
                 createUserError: action.error
             };
-        case types.LOGOUT_FAIL:
-            return initialState.login;
+        case types.RESET:
+            return {...state, login: initialState.login};
         case types.IS_LOGGING_IN_VIA_SSO:
             return {
-                ...state, initialAuthChecked: true,
+                ...state,
+                initialAuthChecked: true,
                 createUserError: null,
                 isLoggingInViaSSO: action.isLoggingInViaSSO
-            };
-        case types.CREATE_USER_FAIL :
-            return {
-                ...state, createUserError: action.error
             };
         default:
             return state;

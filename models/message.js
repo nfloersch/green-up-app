@@ -14,6 +14,7 @@ export default class Message {
     link: ?string;
     type: ?string;
     created: ?Date;
+    teamName: ?string;
 
     constructor(args: Object) {
         this.id = typeof args.id === 'string'
@@ -40,6 +41,7 @@ export default class Message {
         this.type = typeof args.type === 'string' && args.type in messageTypes
             ? args.type
             : null;
+        this.teamName = args.teamName || null;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();

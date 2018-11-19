@@ -15,16 +15,7 @@ export function getCurrentUser() {
 
 export function logout() {
     return (dispatch: Object => *) => {
-        firebaseDataLayer.logout()
-            .then((results) => {
-                dispatch({
-                    type: types.LOGOUT_SUCCESSFUL,
-                    results
-                });
-            })
-            .catch(err => {
-                dispatch({type: types.LOGOUT_FAIL, err});
-            });
+        firebaseDataLayer.logout(dispatch);
     };
 
 }
@@ -58,7 +49,7 @@ export function googleLogin() {
                 iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
                 scopes: ['profile', 'email'],
                 useBrowser: true,
-                behavior:'web'
+                behavior: 'web'
             });
 
             if (result.type === 'success') {

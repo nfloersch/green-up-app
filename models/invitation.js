@@ -5,8 +5,8 @@ import TeamMember from './team-member';
 
 export default class Invitation {
 
-
     constructor(args: Object) {
+        this.id = args.id || null;
         this.teamMember = typeof args.teamMember === 'object'
             ? args.teamMember
             : null;
@@ -21,10 +21,11 @@ export default class Invitation {
             : new Date();
     }
 
+    id: ?string;
     sender: ?Object;
     team: ?Object;
     teamMember: ?Object;
-    created: ?Date;
+    created: Date;
 
     static create(args: ?Object = {}, id?: string) {
         const _args = JSON.parse(JSON.stringify(args));
