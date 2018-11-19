@@ -370,7 +370,6 @@ class TeamDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-    debugger;
     const otherCleanAreas = Object.values(state.teams.teams)
         .filter(team => team.id !== state.teams.selectedTeam.id)
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
@@ -379,7 +378,6 @@ const mapStateToProps = (state) => {
             title: `${team.name}`,
             description: 'claimed this area'
         }))), []);
-    debugger;
     return ({
         locations: state.teams.locations,
         invitations: state.teams.invitations || {},
