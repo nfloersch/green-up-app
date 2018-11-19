@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 const sgMail = require('@sendgrid/mail');
+
 // const nodemailer = require('nodemailer');
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For Gmail, enable these:
@@ -18,6 +19,7 @@ const sgMail = require('@sendgrid/mail');
 //         pass: gmailPassword
 //     }
 // });
+
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.

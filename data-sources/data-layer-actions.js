@@ -8,8 +8,9 @@ export function userAuthenticated(user) {
 }
 
 export function messageFetchSuccessful(messages) {
-    const myMessages = Object.keys(messages || {}).reduce((messageHash, key) => (Object.assign({}, messageHash, {[key]: Message.create(Object.assign({uid: key}, messages[key]))})), {});
-    return {type: types.FETCH_MESSAGES_SUCCESS, messages: myMessages};
+    const _key = Object.keys(messages)[0];
+    const myMessages = Object.keys(messages[_key]).reduce((messageHash, key) => (Object.assign({}, messageHash, {[key]: Message.create(Object.assign({uid: key}, messages[_key][key]))})), {});
+    return {type: types.FETCH_MESSAGES_SUCCESS, messages: {[_key]: myMessages}};
 }
 
 export function noCurrentUser() {
@@ -38,6 +39,10 @@ export function townDataFetchFail() {
     return {type: types.FETCH_TEAMS_FAIL};
 }
 
+export function resetData() {
+    return {type: types.RESET};
+}
+
 export function trashDropFetchSuccessful(_trashDrops: Object) {
     const trashDrops = Object.keys(_trashDrops || {}).reduce((trashDropObj, key) => (Object.assign({}, trashDropObj, {[key]: TrashDrop.create(_trashDrops[key], key)})), {});
     return {type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops};
@@ -50,6 +55,10 @@ export function profileFetchSuccessful(profile: Object) {
 
 export function teamMemberFetchSuccessful(membership: Object, teamId: string) {
     return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
+}
+
+export function profileCreateFail(error: Object) {
+    return {type: types.UPDATE_PROFILE_FAIL, error};
 }
 
 export function profileFetchFail(error: Object) {

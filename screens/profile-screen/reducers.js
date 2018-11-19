@@ -15,6 +15,8 @@ export function reducers(state = initialState.profile, action) {
                 ...state,
                 ...User.create()
             };
+        case types.RESET:
+            return {...state, profile: initialState.profile};
         default:
             return state;
     }

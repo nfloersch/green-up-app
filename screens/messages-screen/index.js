@@ -20,8 +20,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as messageTypes from '../../constants/message-types';
 import * as actions from './actions';
-import {defaultStyles} from '../../styles/default-styles';
 import Message from '../../models/message';
+import {defaultStyles} from '../../styles/default-styles';
 import coveredBridge from '../../assets/images/covered-bridge2.jpg';
 
 const myStyles = {
@@ -73,15 +73,18 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class MessageItem extends Component {
-    static propTypes = {
-        item: PropTypes.object
-    };
+
+type TProps = {
+    item: Message,
+    toDetail: any => any
+}
+
+class MessageItem extends Component<TProps> {
 
     render() {
-        const item = this.props.item;
+        const {item, toDetail} = this.props;
         return (
-            <TouchableOpacity key={item.key} onPress={item.toDetail}>
+            <TouchableOpacity key={item.id} onPress={toDetail}>
                 <View style={[styles.row, {height: 85}]}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image
@@ -116,13 +119,10 @@ class MessageItem extends Component {
     }
 }
 
-
 class Messages extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
-        invitations: PropTypes.object,
-        invitationsLoaded: PropTypes.bool,
         messages: PropTypes.object,
         navigation: PropTypes.object,
         userHasTeams: PropTypes.bool,
@@ -150,11 +150,10 @@ class Messages extends Component {
     }
 
     toMessageDetail(message) {
-        const userId = this.props.currentUser.uid;
+        const userId = (this.props.currentUser || {}).uid;
         switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
-                    // this.props.actions.readMessage(message, userId);
                     this.props.actions.selectTeamById(message.teamId);
                     this.props.navigation.navigate('TeamDetails');
                 };
@@ -176,45 +175,24 @@ class Messages extends Component {
     }
 
     render() {
-
-        const invitations = this.props.invitations;
-        const invitationMessages = Object.keys(invitations).reduce((obj, key) => (
-            Object.assign({}, obj, {
-                [key]: Message.create(
-                    {
-                        uid: key,
-                        text: `${invitations[key].sender.displayName} has invited you to join team : ${invitations[key].team.name}`,
-                        sender: invitations[key].sender,
-                        teamId: key,
-                        read: false,
-                        active: true,
-                        type: messageTypes.INVITATION
-                    }
-                )
-            })
-        ), {});
-        const messages = Object.assign({}, this.props.messages, invitationMessages);
-        const messageKeys = Object.keys(messages || {}).filter(key => Boolean(!messages[key].teamId || this.props.teams[messages[key].teamId]));
-        const sortedKeys = messageKeys.sort((key1, key2) => (
-            messages[key2].created.valueOf() - messages[key1].created.valueOf()
-        ));
-        const myMessages = sortedKeys.map(key => ({
-            key,
-            toDetail: this.toMessageDetail(messages[key]),
-            teamName: ((this.props.teams[messages[key].teamId] || {}).name || '').trim(),
-            ...(messages[key] || {})
-        }));
-
-        return this.props.userHasTeams ? (
+        const myMessages = Object.values(this.props.messages).map(m => Message.create(m)).sort((a, b) => b.created.valueOf() - a.created.valueOf());
+        return this.props.userHasTeams || myMessages.length > 0 ? (
             <View style={styles.frame}>
                 <View style={styles.singleButtonHeader}>
-                    <TouchableHighlight
-                        style={styles.headerButton}
-                        onPress={() => {
-                            this.props.navigation.navigate('NewMessage');
-                        }}>
-                        <Text style={styles.headerButtonText}>{'New Message'}</Text>
-                    </TouchableHighlight>
+                    {
+                        this.props.userHasTeams
+                            ? (<TouchableHighlight
+                                style={styles.headerButton}
+                                onPress={() => {
+                                    this.props.navigation.navigate('NewMessage');
+                                }}>
+                                <Text style={styles.headerButtonText}>{'New Message'}</Text>
+                            </TouchableHighlight>)
+                            : (
+                                <View style={styles.headerButton}>
+                                    <Text style={styles.headerButtonText}>{'Join or create a team to send messages.'}</Text>
+                                </View>)
+                    }
                 </View>
                 {myMessages.length > 0
                     ? (
@@ -222,7 +200,8 @@ class Messages extends Component {
                             <View style={styles.infoBlockContainer}>
                                 <FlatList
                                     data={myMessages}
-                                    renderItem={({item}) => (<MessageItem item={item}/>)}
+                                    renderItem={({item}) => (
+                                        <MessageItem item={item} toDetail={this.toMessageDetail(item)}/>)}
                                     style={styles.infoBlockContainer}
                                 />
                             </View>
@@ -278,31 +257,22 @@ class Messages extends Component {
 }
 
 function mapStateToProps(state) {
-    const members = state.teams.teamMembers || {};
-    let canMessage = false;
-    const memKeys = Object.keys(members);
-
-    if (memKeys.length > 0) {
-        memKeys.forEach(mem => {
-            if (members[mem]) {
-                const status = members[mem][Object.keys(members[mem])[0]].memberStatus;
-
-                if (status === 'OWNER' || status === 'ACCEPTED') {
-                    canMessage = true;
-                }
-            }
-        });
-    }
+    const teams = state.teams.teams || {};
+    const mapMessagesToTeamNames = queue => Object.values(queue)
+        .map(message => Message.create({...message, teamName: (teams[message.teamId] || {}).name}))
+        .reduce((obj, message) => ({...obj, [message.id]: message}), {});
+    const teamMembers = Object.values(state.teams.teamMembers || {});
+    const messages = Object.values((state.messages || {}).messages || {}).reduce((obj, queue) => ({...obj, ...mapMessagesToTeamNames(queue)}), {});
+    const userHasTeams = teamMembers.reduce((arr, team) => arr.concat(Object.values(team)), [])
+        .reduce((result, member) => (result || member.memberStatus === 'OWNER' || member.status === 'ACCEPTED'), false);
     return {
         currentUser: state.login.user,
-        invitations: state.teams.invitations || {},
-        invitationsLoaded: state.messages.invitationsLoaded,
-        messages: state.messages.messages || {},
+        messages: messages,
         messagesLoaded: state.messages.loaded,
-        userHasTeams: canMessage,
+        userHasTeams: userHasTeams,
         teamsLoaded: state.messages.teamsLoaded,
         teamMembersLoaded: state.loading.teamMembersLoaded,
-        teams: state.teams.teams
+        teams: teams
     };
 }
 

@@ -1,18 +1,85 @@
-{
-  "rules": {
-    "users": {
-      "$uid": {
-        ".read": true,
-        ".write": "$uid === auth.uid"
-      }
-    },
-    "teams": {
-      ".read": true,
-      ".write": true
-    },
-    "trashDrops": {
-      ".read": true,
-      ".write": true
-    }
-  }
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  // True if the user is an admin
+  function isAdmin() {
+  return request.auth.uid != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+}
+
+// True if user owns the document
+function isOwner(userId){
+  return request.auth.uid == userId;
+}
+
+// True if user is logged in
+function isAuthed(){
+  return request.auth.uid != null
+}
+
+// True if user is active teamMember
+function isActiveTeamMember(teamId){
+  return get(/databases/$(database)/documents/teamMembers/$(teamId)/members/$(request.auth.uid)).data.memberStatus == 'ACTIVE' || get(/databases/$(database)/documents/teamMembers/$(teamId)/members/$(request.auth.uid)).data.memberStatus == 'OWNER';
+}
+
+//True if user is team owner
+function isTeamOwner(teamId){
+  return request.auth.uid == get(/databases/$(database)/documents/teams/$(teamId)).data.owner.uid;
+}
+
+match /invitations/{email} {
+  allow read: if isAuthed();
+  allow write: if isAuthed();
+  match /teams/{teamId} {
+  allow read:  if isAuthed();
+  allow write: if isAuthed();
+}
+}
+
+match /messages/{userId} {
+allow read : if isAuthed() && isOwner(userId) || isAdmin();
+allow write: if isAuthed();
+match /messages/{messageId} {
+allow read, delete, update: if isAuthed() && isOwner(userId) || resource.data.sender.uid == request.auth.uid || isAdmin();
+allow create: if isAuthed();
+}
+}
+
+match /profiles/{userId} {
+allow read: if isAuthed();
+allow write: if isOwner(userId) || isAdmin();
+}
+
+
+match /teamMembers/{teamId} {
+allow read: if isAuthed();
+allow write: if isAuthed() && isTeamOwner(teamId) || isAdmin;
+match /members/{uid} {
+allow read: if isAuthed();
+allow write: if isAuthed() || isTeamOwner(teamId) || isOwner(uid) || isAdmin();
+}
+}
+
+match /teams/{teamId} {
+allow read, create: if isAuthed();
+allow update, delete: if resource.data.owner.uid == request.auth.uid;
+match /messages/{messageId} {
+allow read, create: if isAuthed() && isActiveTeamMember(teamId) || isAdmin();
+allow delete, update: if isAuthed && resource.data.sender.uid == request.auth.uid || isAdmin();
+}
+}
+
+match /towns/{townId} {
+allow read;
+allow write: if isAdmin();
+}
+
+match /trashDrops/{dropId} {
+allow read;
+allow write: if isAuthed();
+}
+
+match /users/{userId} {
+allow read, write: if isAdmin();
+}
+}
 }

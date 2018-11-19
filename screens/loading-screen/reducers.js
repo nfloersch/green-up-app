@@ -3,6 +3,8 @@ import initialState from '../../reducers/initialState';
 
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
+        case types.RESET:
+            return {...state, loading: initialState.loading};
         case types.LOADING_COMPLETED:
             return {
                 ...state,

@@ -134,11 +134,11 @@ class TeamDetails extends Component {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
         const memberKey = currentUser.uid;
-        const membership = ((this.props.teamMembers || {})[selectedTeam.id] || {})[memberKey];
+        const inviteKey = currentUser.email.toLowerCase().trim();
+        const membership = teamMembers[memberKey] || teamMembers[inviteKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
         const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
         const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
-
         const teamMemberList = (
             <View style={{width: '100%'}}>
                 <Text style={[styles.textDark, {textAlign: 'center'}]}>
@@ -369,22 +369,26 @@ class TeamDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    locations: state.teams.locations,
-    invitations: state.teams.invitations || {},
-    teams: state.teams.teams,
-    selectedTeam: state.teams.selectedTeam,
-    currentUser: User.create({...state.login.user, ...state.profile}),
-    teamMembers: state.teams.teamMembers,
-    otherCleanAreas: Object.values(state.teams.teams)
+const mapStateToProps = (state) => {
+    const otherCleanAreas = Object.values(state.teams.teams)
         .filter(team => team.id !== state.teams.selectedTeam.id)
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',
             coordinates: l.coordinates,
             title: `${team.name}`,
             description: 'claimed this area'
-        }))), [])
-});
+        }))), []);
+    return ({
+        locations: state.teams.locations,
+        invitations: state.teams.invitations || {},
+        teams: state.teams.teams,
+        selectedTeam: state.teams.selectedTeam,
+        currentUser: User.create({...state.login.user, ...state.profile}),
+        teamMembers: state.teams.teamMembers,
+        otherCleanAreas
+    });
+};
+
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)

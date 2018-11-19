@@ -22,9 +22,10 @@ export default {
         invitationsLoaded: false,
         teamsLoaded: false
     },
+    teamMembers: {},
     teamMembersLoaded: false,
-    teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
-    towns: { townData: {} },
+    teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
+    towns: {townData: {}},
     trashTracker: {
         trashDrops: [],
         location: null,
