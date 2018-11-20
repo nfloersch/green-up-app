@@ -4,11 +4,16 @@ import initialState from '../../reducers/initialState';
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
         case types.RESET:
-            return {...state, loading: initialState.loading};
+            return {
+                ...state, initialAuthChecked: false,
+                userIsLoggedIn: false
+            };
         case types.LOADING_COMPLETED:
             return {
                 ...state,
-                isLoadingComplete: action.isLoadingComplete
+                isLoadingComplete: action.isLoadingComplete,
+                teamMembersLoaded: false,
+                loadingError: null
             };
         case types.INITIAL_AUTH_CHECKED:
             return {

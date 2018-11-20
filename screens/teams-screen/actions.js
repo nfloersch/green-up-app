@@ -108,7 +108,9 @@ export function removeTeamMember(teamId: string, teamMember: Object) {
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
-    return () => firebaseDataLayer.revokeInvitation(teamId, membershipId);
+    return (dispatch) => firebaseDataLayer.revokeInvitation(teamId, membershipId)
+        .then(dispatch({type: types.REVOKE_INVITATION_SUCCESS, data: {teamId, membershipId}}))
+        .catch(error => ({type: types.REVOKE_INVITATION_FAIL, data: {teamId, membershipId}, error}));
 }
 
 export function addTeamMember(teamId: string, member: TeamMember, status: string) {
