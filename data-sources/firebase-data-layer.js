@@ -399,12 +399,14 @@ export function inviteTeamMember(invitation: Object) {
 }
 
 export function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED') {
+    const email = user.email.toLowerCase().trim();
     const teams = {...user.teams, [teamId]: status};
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
-    const deleteInvitation = db.collection(`invitations/${user.email.toLowerCase().trim()}/teams`).doc(teamId).delete();
-    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set({teamMember: deconstruct(teamMember)});
+    const deleteInvitation = db.collection(`invitations/${email}/teams`).doc(teamId).delete();
+    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const delOldTeamMember = db.collection(`teamMembers/${teamId}/members`).doc(email).set({teamMember: deconstruct(teamMember)});
     const addTeamToProfile = db.collection('profiles').doc(user.uid).update({teams});
-    return Promise.all([deleteInvitation, addToTeam, addTeamToProfile])
+    return Promise.all([deleteInvitation, addToTeam, addTeamToProfile, delOldTeamMember])
         .catch(error => {
             // TODO: handle this exception in the UI
             console.log(error);

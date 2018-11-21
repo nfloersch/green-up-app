@@ -72,6 +72,13 @@ export function reducers(state = initialState.teams, action) {
                 invitations: action.invitations
             };
         }
+        case types.REVOKE_INVITATION_SUCCESS : {
+            // const {teamId, membershipId} = action.data;
+            // const invitations = JSON.parse(JSON.stringify(...state.invitations));
+            return {
+                ...state
+            };
+        }
         case types.RESET:
             return {
                 ...state,

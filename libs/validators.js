@@ -10,5 +10,5 @@ export const isValidDate = (param: any): boolean => ((param || 'invalid').toStri
 export const isValidHexColor = (value: string) => (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/).test(value);
 export function isInTeam(teamMembers: Object, address: string) {
     const _email = address.toLowerCase().trim();
-    return Object.values(teamMembers || {}).map(teamMember => teamMember.email.toLowerCase().trim()).indexOf(_email) > -1;
+    return Object.values(teamMembers || {}).map(teamMember => (teamMember.email || 'x').toLowerCase().trim()).indexOf(_email) > -1;
 }
