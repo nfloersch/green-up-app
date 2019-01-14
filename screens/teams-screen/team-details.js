@@ -139,7 +139,6 @@ class TeamDetails extends Component {
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
         const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
         const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
-        debugger;
         const teamMemberList = (
             <View style={{width: '100%'}}>
                 <Text style={[styles.textDark, {textAlign: 'center'}]}>

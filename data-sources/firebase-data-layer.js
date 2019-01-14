@@ -25,7 +25,6 @@ let myListeners = {};
 
 const deconstruct = obj => JSON.parse(JSON.stringify(obj));
 
-
 const removeListener = (key: string): void => {
     if (myListeners[key]) {
         myListeners[key]();
@@ -44,7 +43,6 @@ const removeAllListeners = () => {
     Object.values(myListeners).forEach(listener => listener());
     myListeners = {};
 };
-
 
 function returnType(entry) {
     switch (true) {
@@ -65,7 +63,6 @@ function stringifyDates(obj) {
     }), {});
 }
 
-
 /** *************** Profiles ***************  **/
 
 export function updateProfile(profile: Object, teamMembers: Object) {
@@ -74,7 +71,7 @@ export function updateProfile(profile: Object, teamMembers: Object) {
     const teamUpdates = Object.keys(teamMembers).map(key => {
         const oldTeamMember = (teamMembers[key] || {})[profile.uid] || {};
         const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
-        return db.collection(`teamMembers/${key}/members`).doc(profile.uid).set({...newTeamMember});
+        return db.collection(`teams/${key}/members`).doc(profile.uid).set({...newTeamMember});
     });
     return Promise.all(teamUpdates.concat(profileUpdate));
 }
@@ -95,7 +92,7 @@ function createProfile(user: User, dispatch: any => void): Promise {
 /** *************** INITIALIZATION *************** **/
 
 function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
-    const ref = db.collection(`teamMembers/${teamId}/members`);
+    const ref = db.collection(`teams/${teamId}/members`);
     addListener(`teamMembers_${teamId}_members}`,
         ref.onSnapshot(querySnapshot => {
             const data = [];
@@ -160,7 +157,7 @@ function setupTeamListener(dispatch) {
 }
 
 function setupTeamMemberListener(teamId: string, dispatch: any => void): void {
-    addListener(`team_${teamId}_members`, db.collection(`teamMembers/${teamId}/members`)
+    addListener(`team_${teamId}_members`, db.collection(`teams/${teamId}/members`)
         .onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
@@ -195,7 +192,7 @@ function setupProfileListener(user, dispatch) {
 
                 // Add listeners for new team member list changes
                 Object.keys(profile.teams || {}).forEach(key => {
-                    setupTeamMemberListener(key, dispatch);
+                   setupTeamMemberListener(key, dispatch);
                 });
             } else {
                 // just in case
@@ -361,7 +358,7 @@ export function deleteMessage(userId: string, messageId: string) {
 export function createTeam(team: Object = {}, user: User = {}) {
     const uid = team.owner.uid;
     return db.collection('teams').add(deconstruct({...team, owner: {...team.owner}})).then((docRef) => {
-        db.collection(`teamMembers/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}).then(
+        db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}).then(
             () => {
                 const teams = {...user.teams || {}, [docRef.id]: 'OWNER'};
                 db.collection('profiles').doc(uid).update({teams});
@@ -381,7 +378,7 @@ export function deleteTeam(teamId: string) {
 }
 
 export function saveLocations(locations: Object, teamId: string) {
-    return db.collection(`teams/${teamId}/locations`).set(deconstruct({...locations}));
+    return db.collection('teams').doc(teamId).update({locations:deconstruct({...locations})});
 }
 
 export function inviteTeamMember(invitation: Object) {
@@ -395,7 +392,7 @@ export function inviteTeamMember(invitation: Object) {
         .collection(`invitations/${membershipId}/teams`)
         .doc(teamId)
         .set({...invite})
-        .then(db.collection(`teamMembers/${teamId}/members`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
+        .then(db.collection(`teams/${teamId}/members`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
 }
 
 export function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED') {
@@ -403,8 +400,8 @@ export function addTeamMember(teamId: string, user: Object, status?: string = 'A
     const teams = {...user.teams, [teamId]: status};
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const deleteInvitation = db.collection(`invitations/${email}/teams`).doc(teamId).delete();
-    const addToTeam = db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
-    const delOldTeamMember = db.collection(`teamMembers/${teamId}/members`).doc(email).set({teamMember: deconstruct(teamMember)});
+    const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const delOldTeamMember = db.collection(`teams/${teamId}/members`).doc(email).set({teamMember: deconstruct(teamMember)});
     const addTeamToProfile = db.collection('profiles').doc(user.uid).update({teams});
     return Promise.all([deleteInvitation, addToTeam, addTeamToProfile, delOldTeamMember])
         .catch(error => {
@@ -414,23 +411,23 @@ export function addTeamMember(teamId: string, user: Object, status?: string = 'A
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).set(deconstruct({...teamMember}));
+    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct({...teamMember}));
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete();
+    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
     const teams = {...teamMember.teams};
     delete teams[teamId];
-    return db.collection(`teamMembers/${teamId}/members`).doc(teamMember.uid).delete()
+    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete()
         .then(() => db.collection('profiles').doc(teamMember.uid).update({teams}));
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
-    return db.collection(`teamMembers/${teamId}/members`).doc(_membershipId).delete()
+    return db.collection(`teams/${teamId}/members`).doc(_membershipId).delete()
         .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
 }
 
