@@ -192,7 +192,7 @@ function setupProfileListener(user, dispatch) {
 
                 // Add listeners for new team member list changes
                 Object.keys(profile.teams || {}).forEach(key => {
-                   setupTeamMemberListener(key, dispatch);
+                    setupTeamMemberListener(key, dispatch);
                 });
             } else {
                 // just in case
@@ -300,8 +300,8 @@ export function loginWithEmailPassword(_email: string, password: string) {
     return firebase
         .auth()
         .signInWithEmailAndPassword(_email, password)
-        .then(user => {
-            const {uid, email, displayName, photoURL} = user;
+        .then(userInfo => {
+            const {uid, email, displayName, photoURL} = userInfo.user;
             db.collection('profiles').doc(uid).get().then(
                 doc => {
                     if (!doc.exists) {
@@ -378,7 +378,7 @@ export function deleteTeam(teamId: string) {
 }
 
 export function saveLocations(locations: Object, teamId: string) {
-    return db.collection('teams').doc(teamId).update({locations:deconstruct({...locations})});
+    return db.collection('teams').doc(teamId).update({locations: deconstruct({...locations})});
 }
 
 export function inviteTeamMember(invitation: Object) {
