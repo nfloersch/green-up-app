@@ -38,8 +38,7 @@ class Profile extends Component {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
         profile: PropTypes.object,
-        navigation: PropTypes.object,
-        teamMembers: PropTypes.object
+        navigation: PropTypes.object
     };
 
     static navigationOptions = {
@@ -62,7 +61,7 @@ class Profile extends Component {
     }
 
     _saveProfile() {
-        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)), this.props.teamMembers || {});
+        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)));
         this.props.navigation.goBack();
     }
 
@@ -152,8 +151,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     const profile = state.profile;
     const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
-    const teamMembers = state.teams.teamMembers;
-    return {profile, currentUser, teamMembers};
+    return {profile, currentUser};
 }
 
 function mapDispatchToProps(dispatch) {

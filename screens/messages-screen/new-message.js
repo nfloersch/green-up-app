@@ -22,7 +22,6 @@ import * as actions from './actions';
 import Message from '../../models/message';
 import {defaultStyles} from '../../styles/default-styles';
 import * as messageTypes from '../../constants/message-types';
-import * as teamStatus from '../../constants/team-member-statuses';
 import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};
@@ -78,17 +77,17 @@ class NewMessage extends Component {
     }
 
     sendMessage(teamId, message) {
-        // const recipients = Object.values(this.props.teamMembers[teamId] || {});
+        const {navigation, actions, currentUser} = this.props; // eslint-disable-line no-shadow
         const _message = Message.create(
             {
                 text: message,
                 type: messageTypes.TEAM_MESSAGE,
-                sender: this.props.currentUser,
+                sender: currentUser,
                 teamId
             }
         );
-        this.props.actions.sendTeamMessage(teamId, _message);
-        this.props.navigation.goBack();
+        actions.sendTeamMessage(teamId, _message);
+        navigation.goBack();
     }
 
     cancelMessage() {
@@ -96,20 +95,14 @@ class NewMessage extends Component {
     }
 
     render() {
-        const {currentUser, teamMembers} = this.props;
-        // const membershipId = (currentUser.email || '').toLowerCase().trim();
-        const isConfirmedMember = (teamId: string) => {
-            const foo = [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((teamMembers[teamId] || {})[currentUser.uid] || {}).memberStatus) > -1;
-            return foo;
-        };
-        const messagableTeams = this.props.myTeams.filter(team => isConfirmedMember(team.id));
-        const selectedTeamId = (this.props.navigation.state.params || {}).selectedTeamId || ((messagableTeams || []).length === 1 && (messagableTeams[0] || {}).id);
-        const teamName = ((this.props.myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
-        const items = (this.props.myTeams || []).filter(team => isConfirmedMember(team.id))
+        const {myTeams, navigation} = this.props;
+        const selectedTeamId = (navigation.state.params || {}).selectedTeamId || ((myTeams || []).length === 1 && (myTeams[0] || {}).id) || null;
+        const teamName = ((myTeams || []).find(team => team.id === selectedTeamId) || {}).name || '';
+        const items = (myTeams || [])
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
-        const teamValue = selectedTeamId || this.state.selectedTeamId || (messagableTeams[0] || {}).id;
+        const teamValue = selectedTeamId || this.state.selectedTeamId || ({myTeams}[0] || {}).id;
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>

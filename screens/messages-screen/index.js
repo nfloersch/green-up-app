@@ -175,7 +175,7 @@ class Messages extends Component {
     }
 
     render() {
-        const myMessages = Object.values(this.props.messages).map(m => Message.create(m)).sort((a, b) => b.created.valueOf() - a.created.valueOf());
+        const myMessages = Object.entries(this.props.messages).map(entry => Message.create(entry[1], entry[0])).sort((a, b) => b.created.valueOf() - a.created.valueOf());
         return this.props.userHasTeams || myMessages.length > 0 ? (
             <View style={styles.frame}>
                 <View style={styles.singleButtonHeader}>
@@ -200,8 +200,11 @@ class Messages extends Component {
                             <View style={styles.infoBlockContainer}>
                                 <FlatList
                                     data={myMessages}
+                                    keyExtractor={item => item.id}
                                     renderItem={({item}) => (
-                                        <MessageItem item={item} toDetail={this.toMessageDetail(item)}/>)}
+                                        <MessageItem
+                                            item={item}
+                                            toDetail={this.toMessageDetail(item)}/>)}
                                     style={styles.infoBlockContainer}
                                 />
                             </View>
@@ -261,15 +264,15 @@ function mapStateToProps(state) {
     const mapMessagesToTeamNames = queue => Object.values(queue)
         .map(message => Message.create({...message, teamName: (teams[message.teamId] || {}).name}))
         .reduce((obj, message) => ({...obj, [message.id]: message}), {});
-    const teamMembers = Object.values(state.teams.teamMembers || {});
     const messages = Object.values((state.messages || {}).messages || {}).reduce((obj, queue) => ({...obj, ...mapMessagesToTeamNames(queue)}), {});
-    const userHasTeams = teamMembers.reduce((arr, team) => arr.concat(Object.values(team)), [])
-        .reduce((result, member) => (result || member.memberStatus === 'OWNER' || member.status === 'ACCEPTED'), false);
+    const userHasTeams = Object.keys((state.profile || {}).teams || {}).length > 0;
+    const userHasMessages = state.messages.length > 0;
     return {
         currentUser: state.login.user,
         messages: messages,
         messagesLoaded: state.messages.loaded,
-        userHasTeams: userHasTeams,
+        userHasTeams,
+        userHasMessages,
         teamsLoaded: state.messages.teamsLoaded,
         teamMembersLoaded: state.loading.teamMembersLoaded,
         teams: teams

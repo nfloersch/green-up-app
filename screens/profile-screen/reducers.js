@@ -15,6 +15,11 @@ export function reducers(state = initialState.profile, action) {
                 ...state,
                 ...User.create()
             };
+        case types.FETCH_MY_TEAMS_SUCCESS :
+            return {
+                ...state,
+                teams: action.myTeams
+            };
         case types.RESET:
             return {...state, profile: initialState.profile};
         default:
