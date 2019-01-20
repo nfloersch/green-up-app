@@ -374,14 +374,13 @@ export function deleteMessage(userId: string, messageId: string) {
 /** *************** TEAMS *************** **/
 
 export function createTeam(team: Object = {}, user: User = {}) {
-    const uid = team.owner.uid;
-    return db.collection('teams').add(deconstruct({...team, owner: {...team.owner}})).then((docRef) => {
-        db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}).then(
-            () => {
-                const teams = {...user.teams || {}, [docRef.id]: 'OWNER'};
-                db.collection('profiles').doc(uid).update({teams});
-            });
-    });
+    const {uid} = user;
+    const myTeam = deconstruct({...team, owner: {...user}});
+    return db.collection('teams').add(myTeam)
+        .then((docRef) => Promise.all([
+            db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
+            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
+        ]));
 }
 
 export function saveTeam(team) {
