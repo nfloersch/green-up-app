@@ -25,7 +25,6 @@ import TeamMember from '../../models/team-member';
 import * as actions from './actions';
 import User from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
-import * as teamStatus from '../../constants/team-member-statuses';
 import teamwork from '../../assets/images/teamwork.jpeg';
 import {removeNulls} from '../../libs/remove-nulls';
 
@@ -56,27 +55,23 @@ class TeamItem extends Component {
                     onPress={item.goToTeam}>
                     <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20, height: 40}]}>{item.name}</Text>
                 </TouchableHighlight>
-                {
-                    item.isConfirmedMember
-                        ? (
-                            <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
-                                <Ionicons style={{paddingTop: 10}}
-                                    name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
-                                    size={30}
-                                />
-                            </TouchableOpacity>
-                        )
-                        : null
-                }
-                {
-                    item.isConfirmedMember ? (
-                        <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
-                            <Ionicons name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
-                                size={30} style={{paddingTop: 10}}
-                            />
-                        </TouchableOpacity>
-                    ) : null
-                }
+
+                <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
+                    <Ionicons
+                        style={{paddingTop: 10}}
+                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                        size={30}
+                    />
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
+                    <Ionicons
+                        name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
+                        size={30} style={{paddingTop: 10}}
+                    />
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.icon} onPress={item.goToTeam}>
                     {item.toTeamIcon}
                 </TouchableOpacity>
@@ -85,17 +80,19 @@ class TeamItem extends Component {
     }
 }
 
-class MyTeams extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        handleError: PropTypes.func,
-        invitations: PropTypes.object,
-        navigation: PropTypes.object,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object,
-        toTeamDetails: PropTypes.func
-    };
+type Props = {
+    actions: Object,
+    user: Object,
+    handleError: any => any,
+    invitations: Object,
+    navigation: Object,
+    teamMembers: Object,
+    teams: Object,
+    teamStati: Object,
+    toTeamDetails: any => any
+};
+
+class MyTeams extends Component<Props> {
 
     static navigationOptions = {
         title: 'My Teams',
@@ -114,16 +111,20 @@ class MyTeams extends Component {
         this.props.navigation.navigate('TeamSearch');
     }
 
-    toTeamDetail(status, team) {
+    toTeamDetail(team, teamStatus) {
         return () => {
-            const nextScreen = {
-                [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
-                [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
-                [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
-                [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
-            };
+            const nextScreen = (status => {
+                switch (status) {
+                    case TeamMember.memberStatuses.INVITED:
+                        return 'TeamEditor';
+                    case TeamMember.memberStatuses.OWNER:
+                        return 'TeamInvitationDetails';
+                    default:
+                        return 'TeamDetails';
+                }
+            })(teamStatus);
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
+            this.props.navigation.navigate(nextScreen || 'TeamDetails', {teamStatus});
         };
     }
 
@@ -132,9 +133,9 @@ class MyTeams extends Component {
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
-        const membershipId = (this.props.currentUser.email || '').toLowerCase().trim();
+        const membershipId = (this.props.user.email || '').toLowerCase().trim();
         const memberList = (this.props.teamMembers || {})[teamKey] || {};
-        const status = (memberList[this.props.currentUser.uid] || {}).memberStatus || (memberList[membershipId] || {}).memberStatus;
+        const status = (memberList[this.props.user.uid] || {}).memberStatus || (memberList[membershipId] || {}).memberStatus;
         return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
             height: 50,
             width: 50,
@@ -171,10 +172,8 @@ class MyTeams extends Component {
 
     render() {
         const _closeModal = () => this.setState({openModal: 'none'});
-        const teams = this.props.teams;
-        const user = this.props.currentUser;
-        const membershipId = (user.email || '').toLowerCase().trim();
-        const isConfirmedMember = (teamId) => [teamStatus.OWNER, teamStatus.ACCEPTED].indexOf(((this.props.teamMembers[teamId] || {})[membershipId] || {}).memberStatus) > -1;
+        const {teams, teamStati, user} = this.props;
+        // const user = this.props.currentUser;
         const teamKeys = Object.keys((user.teams || {}));
         const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
         const invitedTeams = invitedKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
@@ -182,8 +181,7 @@ class MyTeams extends Component {
                 key,
                 toTeamIcon: this.toTeamIcon(key, true),
                 ...(teams[key] || {}),
-                goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
-                isConfirmedMember: isConfirmedMember(key),
+                goToTeam: this.toTeamDetail(teams[key], teamStati[key]),
                 goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             }));
@@ -193,8 +191,7 @@ class MyTeams extends Component {
                 key,
                 toTeamIcon: this.toTeamIcon(key),
                 ...(teams[key] || {}),
-                goToTeam: this.toTeamDetail(user.teams[key], teams[key]),
-                isConfirmedMember: isConfirmedMember(key),
+                goToTeam: this.toTeamDetail(teams[key], teamStati[key]),
                 goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             })).concat(invitedTeams);
@@ -225,18 +222,21 @@ class MyTeams extends Component {
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
                         <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                            <View style={{
-                                marginTop: '20%',
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                                paddingTop: 50,
-                                paddingBottom: 50,
-                                backgroundColor: 'rgba(255,255,255, 0.85)'
-                            }}>
-                                <Text style={[styles.textDark]}>
+                            <View
+                                style={{
+                                    marginTop: '20%',
+                                    paddingLeft: 20,
+                                    paddingRight: 20,
+                                    paddingTop: 50,
+                                    paddingBottom: 50,
+                                    backgroundColor: 'rgba(255,255,255, 0.85)'
+                                }}>
+                                <Text
+                                    style={[styles.textDark]}>
                                     {'Green Up Day is all about community and teamwork.'}
                                 </Text>
-                                <Text style={[styles.textDark]}>
+                                <Text
+                                    style={[styles.textDark]}>
                                     {'Search for teams in your area, or create a new one and invite some friends.'}
                                 </Text>
                             </View>
@@ -269,11 +269,27 @@ class MyTeams extends Component {
 }
 
 function mapStateToProps(state) {
+    const getStatus = (team: Object, invitations: Object, user: Object): string => {
+        switch (true) {
+            case team.owner.uid === user.uid :
+                return TeamMember.memberStatuses.OWNER;
+            case team :
+                return TeamMember.memberStatuses.ACCEPTED;
+            case Boolean(invitations.find(invite => invite.teamMember.uid === user.uid)) :
+                return TeamMember.memberStatuses.INVITED;
+            default:
+                return TeamMember.memberStatuses.NOT_INVITED;
+        }
+    };
     const invitations = state.teams.invitations;
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
-    const teams = state.teams.teams;
+    const user = User.create({...state.login.user, ...removeNulls(state.profile)});
+    const teams = state.teams.teams || {};
     const teamMembers = state.teams.teamMembers || {};
-    return {teams, currentUser, teamMembers, invitations};
+    const teamStati = Object.entries(teams).reduce((obj, entry) => ({
+        ...obj,
+        [entry[0]]: getStatus(entry[1], invitations, user)
+    }), {});
+    return {teams, user, teamMembers, invitations, teamStati};
 }
 
 function mapDispatchToProps(dispatch) {
