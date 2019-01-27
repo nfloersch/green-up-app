@@ -111,20 +111,18 @@ class MyTeams extends Component<Props> {
         this.props.navigation.navigate('TeamSearch');
     }
 
-    toTeamDetail(team, teamStatus) {
+    toTeamDetail(team, status) {
         return () => {
-            const nextScreen = (status => {
-                switch (status) {
-                    case TeamMember.memberStatuses.INVITED:
-                        return 'TeamEditor';
-                    case TeamMember.memberStatuses.OWNER:
-                        return 'TeamInvitationDetails';
-                    default:
-                        return 'TeamDetails';
-                }
-            })(teamStatus);
+
+            const nextScreen = {
+                [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
+                [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
+                [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
+                [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
+            };
+
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen || 'TeamDetails', {teamStatus});
+            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
         };
     }
 

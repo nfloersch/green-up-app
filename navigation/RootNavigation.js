@@ -43,7 +43,7 @@ const RootStackNavigator = StackNavigator(
         Privacy: {screen: Privacy},
         About: {screen: About},
         InviteForm: {screen: InviteForm},
-        TeamMemberDetails: {screen : TeamMemberDetails},
+        TeamMemberDetails: {screen: TeamMemberDetails},
         TrashBagFinder: {screen: TrashBagFinder}
     },
     {
@@ -51,7 +51,7 @@ const RootStackNavigator = StackNavigator(
             headerTitleStyle: {
                 fontWeight: 'normal',
                 margin: 0,
-                textAlign:'center'
+                textAlign: 'center'
             }
         })
     }
@@ -79,8 +79,7 @@ export default class RootNavigator extends React.Component {
         this._notificationSubscription = Notifications.addListener(this._handleNotification);
     }
 
-    _handleNotification = ({origin, data}) => {
-    };
+    _handleNotification = ({origin, data}) => {};
 
     render() {
         return <RootStackNavigator/>;

@@ -31,13 +31,11 @@ export default class TeamEditor extends Component {
             return 'TeamInvitationDetails';
         }
         return 'NewTeam';
-
     };
 
     render() {
         const {status} = this.props.navigation.state.params || '';
         const TeamEditorNav = TabNavigator({
-
             TeamInvitationDetails: {
                 screen: TeamEditorMembers
             },
