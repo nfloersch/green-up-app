@@ -1,11 +1,15 @@
 export default {
     about: {},
     loading: {
-        isLoadingComplete: false,
         initialAuthChecked: false,
         isInitialized: false,
         loadingError: null,
-        skipLoadingScreen: false
+        skipLoadingScreen: false,
+        setupMessagesListener: false,
+        setupTeamsListener: false,
+        setupMyTeamsListeners: false,
+        setupProfileListener: false,
+        setupInvitationsListener:false
     },
     login: {
         userIsLoggedIn: null,

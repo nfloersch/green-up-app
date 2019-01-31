@@ -11,10 +11,12 @@ import Invitation from '../models/invitation';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
-import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
+// import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
 import * as messageTypes from '../constants/message-types';
+import TrashDrop from '../models/trash-drop';
 
 firebase.initializeApp(firebaseConfig);
+
 // Initialize Cloud Firestore through Firebase
 const db = firebase.firestore();
 
@@ -35,16 +37,25 @@ const removeListener = (key: string): void => {
 };
 
 const addListener = (key: string, listener: any => any): void => {
-    removeListener(key);
-    if (key) {
-        myListeners[key] = listener;
+    if (!key) {
+        throw Error('Cannot add listener. Invalid listener key');
     }
+    removeListener(key);
+    myListeners[key] = listener;
 };
 
-const removeAllListeners = () => {
-    Object.values(myListeners).forEach(listener => listener());
-    myListeners = {};
-};
+const removeAllListeners = () => (
+    new Promise((resolve, reject) => {
+        try {
+            Object.values(myListeners).forEach(listener => listener());
+            myListeners = {};
+            resolve(true);
+        } catch (e) {
+            reject(e);
+        }
+    })
+);
+
 
 function returnType(entry) {
     switch (true) {
@@ -98,7 +109,7 @@ function createProfile(user: User, dispatch: any => void): Promise {
 
 function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
     const ref = db.collection(`teams/${teamId}/invitees`);
-    addListener(`teamMembers_${teamId}_invitees}`,
+    return addListener(`teamMembers_${teamId}_invitees}`,
         ref.onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
@@ -109,7 +120,7 @@ function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): 
 
 function setupInvitationListener(email, dispatch) {
     const ref = db.collection(`/invitations/${email}/teams`);
-    addListener(`invitations_${email}_teams`,
+    return addListener(`invitations_${email}_teams`,
         ref.onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => {
@@ -143,7 +154,7 @@ function setupInvitationListener(email, dispatch) {
 
 function setupMessageListener(uid, dispatch) {
     const ref = db.collection(`messages/${uid}/messages`);
-    addListener(`message_${uid}_messages`, ref.onSnapshot(querySnapshot => {
+    return addListener(`message_${uid}_messages`, ref.onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
         const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
@@ -152,7 +163,7 @@ function setupMessageListener(uid, dispatch) {
 }
 
 function setupTeamListener(dispatch) {
-    addListener('teams', db.collection('teams')
+    return addListener('teams', db.collection('teams')
         .onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
@@ -162,20 +173,21 @@ function setupTeamListener(dispatch) {
 }
 
 function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void): void {
-    (teamIds || []).forEach(teamId => (
+    return (teamIds || []).map(teamId => (
         addListener(`team_${teamId}_members`, db.collection(`teams/${teamId}/members`)
             .onSnapshot(querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
                 const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
                 dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
-            }))));
+            }))
+    ));
 }
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
-    (teamIds || []).forEach(teamId => {
+    (teamIds || []).map(teamId => {
         const ref = db.collection(`teams/${teamId}/messages`);
-        addListener(`team_${teamId}_messages`, ref.onSnapshot(
+        return addListener(`team_${teamId}_messages`, ref.onSnapshot(
             querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
@@ -188,12 +200,11 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
 
 function setupProfileListener(user, dispatch) {
     const {uid} = user;
-    addListener(`profiles_${uid}`, db.collection('profiles').doc(uid)
+    return addListener(`profiles_${uid}`, db.collection('profiles').doc(uid)
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
-                dispatch(dataLayerActions.profileFetchSuccessful(profile));
-
+                dispatch({type: types.FETCH_PROFILE_SUCCESS, profile});
             } else {
                 // just in case
                 createProfile(user, dispatch);
@@ -203,7 +214,7 @@ function setupProfileListener(user, dispatch) {
 
 function setupMyTeamsListener(user, dispatch) {
     const {uid} = user;
-    addListener('myTeams', db.collection(`profiles/${uid}/teams`)
+    return addListener('myTeams', db.collection(`profiles/${uid}/teams`)
         .onSnapshot(querySnapshot => {
             const data = [];
             const ids = [];
@@ -212,46 +223,51 @@ function setupMyTeamsListener(user, dispatch) {
                 ids.push(doc.id);
             });
             const myTeams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
-            dispatch(dataLayerActions.myTeamsFetchSuccessful(myTeams));
+            dispatch({type: types.FETCH_MY_TEAMS_SUCCESS, myTeams});
             setupTeamMessageListener(ids, dispatch);
             setupTeamMemberListener(ids, dispatch);
         }));
 }
 
 function setupTrashDropListener(dispatch) {
-    addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
+    return addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
         const data = [];
-        querySnapshot.forEach(doc => data.push(doc.data()));
-        dispatch(dataLayerActions.trashDropFetchSuccessful(data));
+        const ids = [];
+        querySnapshot.forEach(doc => {
+            data.push(doc.data());
+            ids.push(doc.id);
+        });
+        const trashDrops = data.reduce((obj, drop) => ({...obj, [drop.id]: drop}), {});
+        dispatch({type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops});
     }));
 }
 
 // Get Town Data
 function setupTownListener(dispatch) {
-    addListener('towns', db.collection('towns').onSnapshot(querySnapshot => {
+    return addListener('towns', db.collection('towns').onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
         const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
-        dispatch(dataLayerActions.townDataFetchSuccessful(towns));
+        setTimeout(() => dispatch({type: types.FETCH_TOWN_DATA_SUCCESS, towns}), 1);
     }));
 }
 
 function initializeUser(dispatch, user) {
+
     if (Boolean(user)) {
-        setupProfileListener(user, dispatch);
         setupMessageListener(user.uid, dispatch);
         setupTeamListener(dispatch);
         setupMyTeamsListener(user, dispatch);
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
         setupTownListener(dispatch);
+        setupProfileListener(user, dispatch);
         dispatch(dataLayerActions.userAuthenticated(User.create(user)));
         dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
-        dispatch(dataLayerActions.initilizationSuccessful());
-        return;
+    } else {
+        removeAllListeners();
+        dispatch(dataLayerActions.userLoggedOut());
     }
-    removeAllListeners();
-    dispatch(dataLayerActions.userLoggedOut());
 }
 
 /**

@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {reducers as about} from '../screens/about-screen/reducers';
 import {reducers as messages} from '../screens/messages-screen/reducers';
-import {reducers as loading} from '../screens/loading-screen/reducers';
+import {reducers as loading} from '../components/session/reducers';
 import {reducers as login} from '../screens/login-screen/reducers';
 import {reducers as teams} from '../screens/teams-screen/reducers';
 import {reducers as profile} from '../screens/profile-screen/reducers';

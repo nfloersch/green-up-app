@@ -77,7 +77,6 @@ export function profileFetchFail(error: Object): ActionType {
 }
 
 export function townDataFetchSuccessful(townData: Object): ActionType {
-
     return {type: types.FETCH_TOWN_DATA_SUCCESS, townData};
 }
 
