@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {AppLoading, Asset, Font} from 'expo';
-import LoginScreen from '../login-screen/';
+import LoginScreen from '../../screens/login-screen/index';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 
-class LoadingScreen extends Component {
+class Session extends Component {
     static propTypes = {
         isLoadingComplete: PropTypes.bool,
         initialAuthChecked: PropTypes.bool,
@@ -130,4 +130,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(Session);
