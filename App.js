@@ -5,7 +5,6 @@ import reducer from './reducers/';
 import thunk from 'redux-thunk';
 import Session from './components/session';
 import Splash from './components/splash';
-import {defaultStyles} from './styles/default-styles';
 import RootNavigator from './navigation/root-navigator';
 import AppInit from './components/app-init';
 import {StyleSheet, View} from 'react-native';

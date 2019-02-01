@@ -56,12 +56,21 @@ class Session extends Component<Props> {
 }
 
 function mapStateToProps(state) {
+    const {login, loading} = state;
+    const isInitialized = loading.setupMessagesListener;
+    Boolean(loading.setupMessagesListener &&
+        loading.setupTeamsListener &&
+        loading.setupMyTeamsListeners &&
+        loading.setupProfileListener &&
+        loading.setupInvitationsListener
+    );
+    const {initialAuthChecked, isLoggingInViaSSO, userIsLoggedIn, user} = login;
     return {
-        initialAuthChecked: state.login.initialAuthChecked,
-        isLoggingInViaSSO: state.login.isLoggingInViaSSO,
-        userIsLoggedIn: state.login.userIsLoggedIn,
-        isInitialized: state.loading.isInitialized,
-        user: state.login.user || {}
+        initialAuthChecked,
+        isLoggingInViaSSO,
+        userIsLoggedIn,
+        isInitialized,
+        user: user || {}
     };
 }
 

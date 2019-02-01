@@ -7,7 +7,7 @@ export function reducers(state = initialState.towns, action) {
         case types.FETCH_TOWN_DATA_SUCCESS :
             return {
                 ...state,
-                townData: Object.assign({}, action.townData)
+                townData: Object.assign({}, action.towns)
             };
         case types.FETCH_SUPPLY_LOCATIONS_FAIL :
             return {

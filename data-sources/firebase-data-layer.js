@@ -11,6 +11,7 @@ import Invitation from '../models/invitation';
 import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
+import {curry} from 'ramda';
 // import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
 import * as messageTypes from '../constants/message-types';
 import TrashDrop from '../models/trash-drop';
@@ -81,12 +82,6 @@ function stringifyDates(obj) {
 export function updateProfile(profile: Object, dispatch: any => any) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     const profileUpdate = db.collection('profiles').doc(profile.uid).update(newProfile);
-    // const teamUpdates = Object.keys(teamMembers).map(key => {
-    //     const oldTeamMember = (teamMembers[key] || {})[profile.uid] || {};
-    //     const newTeamMember = TeamMember.create({...oldTeamMember, ...newProfile});
-    //     return db.collection(`teams/${key}/members`).doc(profile.uid).set({...newTeamMember});
-    // });
-    // return Promise.all(teamUpdates.concat(profileUpdate));
     return profileUpdate.catch((error) => {
         dispatch(dataLayerActions.profileUpdateFail(error));
     });
@@ -109,7 +104,8 @@ function createProfile(user: User, dispatch: any => void): Promise {
 
 function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
     const ref = db.collection(`teams/${teamId}/invitees`);
-    return addListener(`teamMembers_${teamId}_invitees}`,
+
+    addListener(`teamMembers_${teamId}_invitees}`,
         ref.onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
@@ -120,7 +116,8 @@ function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): 
 
 function setupInvitationListener(email, dispatch) {
     const ref = db.collection(`/invitations/${email}/teams`);
-    return addListener(`invitations_${email}_teams`,
+
+    addListener(`invitations_${email}_teams`,
         ref.onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => {
@@ -154,7 +151,8 @@ function setupInvitationListener(email, dispatch) {
 
 function setupMessageListener(uid, dispatch) {
     const ref = db.collection(`messages/${uid}/messages`);
-    return addListener(`message_${uid}_messages`, ref.onSnapshot(querySnapshot => {
+
+    addListener(`message_${uid}_messages`, ref.onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
         const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
@@ -163,7 +161,8 @@ function setupMessageListener(uid, dispatch) {
 }
 
 function setupTeamListener(dispatch) {
-    return addListener('teams', db.collection('teams')
+
+    addListener('teams', db.collection('teams')
         .onSnapshot(querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
@@ -187,7 +186,8 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).map(teamId => {
         const ref = db.collection(`teams/${teamId}/messages`);
-        return addListener(`team_${teamId}_messages`, ref.onSnapshot(
+
+        addListener(`team_${teamId}_messages`, ref.onSnapshot(
             querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
@@ -200,7 +200,8 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
 
 function setupProfileListener(user, dispatch) {
     const {uid} = user;
-    return addListener(`profiles_${uid}`, db.collection('profiles').doc(uid)
+
+    addListener(`profiles_${uid}`, db.collection('profiles').doc(uid)
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
@@ -214,7 +215,8 @@ function setupProfileListener(user, dispatch) {
 
 function setupMyTeamsListener(user, dispatch) {
     const {uid} = user;
-    return addListener('myTeams', db.collection(`profiles/${uid}/teams`)
+
+    addListener('myTeams', db.collection(`profiles/${uid}/teams`)
         .onSnapshot(querySnapshot => {
             const data = [];
             const ids = [];
@@ -230,7 +232,8 @@ function setupMyTeamsListener(user, dispatch) {
 }
 
 function setupTrashDropListener(dispatch) {
-    return addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
+
+    addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
         const data = [];
         const ids = [];
         querySnapshot.forEach(doc => {
@@ -244,7 +247,7 @@ function setupTrashDropListener(dispatch) {
 
 // Get Town Data
 function setupTownListener(dispatch) {
-    return addListener('towns', db.collection('towns').onSnapshot(querySnapshot => {
+    addListener('towns', db.collection('towns').onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
         const towns = data.reduce((obj, town) => ({...obj, [town.id]: town}), {});
@@ -252,8 +255,9 @@ function setupTownListener(dispatch) {
     }));
 }
 
-function initializeUser(dispatch, user) {
 
+// Initialize or de-initialize a user
+const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
         setupMessageListener(user.uid, dispatch);
         setupTeamListener(dispatch);
@@ -268,14 +272,16 @@ function initializeUser(dispatch, user) {
         removeAllListeners();
         dispatch(dataLayerActions.userLoggedOut());
     }
-}
+});
+
 
 /**
- *
+ * Sets up a listener that initializes the user after login, or resets app state after a logout.
  * @param {function} dispatch - dispatch function
+ * @returns {void}
  */
 export function initialize(dispatch: any => any) {
-    firebase.auth().onAuthStateChanged(user => initializeUser(dispatch, user));
+    firebase.auth().onAuthStateChanged(user => initializeUser(dispatch)(user));
 }
 
 /** *************** AUTHENTICATION *************** **/

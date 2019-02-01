@@ -194,7 +194,6 @@ class MyTeams extends Component<Props> {
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             })).concat(invitedTeams);
 
-
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>

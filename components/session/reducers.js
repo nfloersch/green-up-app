@@ -1,37 +1,20 @@
 import * as types from '../../constants/actionTypes';
 import initialState from '../../reducers/initialState';
 
-const isInitialized = (state) => (
-    state.userIsLoggedIn &&
-    state.setupMessagesListener &&
-    state.setupTeamsListener &&
-    state.setupMyTeamsListeners &&
-    state.setupProfileListener &&
-    state.setupInvitationsListener
-);
-
-
 export function reducers(state = initialState.loading, action) {
-    let newState = {};
     switch (action.type) {
         case types.LOGIN_SUCCESSFUL :
-            newState = {...state, userIsLoggedIn: true};
-            return {...newState, isInitialized: isInitialized(newState)};
+            return {...state, userIsLoggedIn: true};
         case types.FETCH_MESSAGES_SUCCESS:
-            newState = {...state, setupMessaigesListener: true};
-            return {...newState, isInitialized: isInitialized(newState)};
+            return {...state, setupMessagesListener: true};
         case types.FETCH_TEAMS_SUCCESS :
-            newState = {...state, setupTeamsListener: true};
-            return {...newState, isInitialized: isInitialized(newState)};
+            return {...state, setupTeamsListener: true};
         case types.FETCH_PROFILE_SUCCESS :
-            newState = {...state, setupProfileListener: true};
-            return {...newState, isInitialized: isInitialized(newState)};
+            return {...state, setupProfileListener: true};
         case types.FETCH_INVITEES_SUCCESS :
-            newState = {...state, setupInvitationsListener: true};
-            return {...newState, isInitialized: isInitialized(newState)};
+            return {...state, setupInvitationsListener: true};
         case types.TEAM_MEMBER_FETCH_SUCCESS :
-            newState = {...state, setupMyTeamsListener: true};
-            return {...newState, teamMembersLoaded: true, isInitialized: isInitialized(newState)};
+            return {...state, setupMyTeamsListener: true};
         case types.RESET:
             return {
                 ...state,
