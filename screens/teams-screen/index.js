@@ -115,7 +115,7 @@ class MyTeams extends Component<Props> {
         return () => {
 
             const nextScreen = {
-                [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
+                [TeamMember.memberStatuses.INVITED]: 'TeamDetails',
                 [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
                 [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
                 [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
@@ -272,7 +272,8 @@ function mapStateToProps(state) {
                 return TeamMember.memberStatuses.OWNER;
             case team :
                 return TeamMember.memberStatuses.ACCEPTED;
-            case Boolean(invitations.find(invite => invite.teamMember.uid === user.uid)) :
+                // Match invitations on team and email
+            case Boolean(Object.entries(invitations).find(entry => entry[1].team.id == team.id && entry[1].teamMember.email === user.email)) :
                 return TeamMember.memberStatuses.INVITED;
             default:
                 return TeamMember.memberStatuses.NOT_INVITED;
