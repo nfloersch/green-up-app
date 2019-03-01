@@ -121,6 +121,7 @@ function setupInvitationListener(email, dispatch) {
             querySnapshot.forEach(doc => {
                 data.push(Invitation.create({...doc.data(), id: doc.id}));
             });
+            // this should be an array not an object
             const invitations = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
             const messages = Object.values(data).reduce((obj, invite) => (
                 {
