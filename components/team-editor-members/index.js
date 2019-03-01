@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, FlatList, Image, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -13,6 +13,8 @@ import {getMemberIcon} from '../../libs/member-icons';
 import * as colors from '../../styles/constants';
 import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
+import InviteContacts from '../invite-contacts';
+import InviteForm from '../invite-form';
 
 const myStyles = {
     member: {
@@ -43,7 +45,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 class MemberItem extends Component {
     static propTypes = {
-        item: PropTypes.object
+        item: Object
     };
 
 
@@ -75,14 +77,20 @@ class MemberItem extends Component {
 }
 
 
-class TeamEditorMembers extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object,
-        selectedTeam: PropTypes.object,
-        screenProps: PropTypes.object
-    };
+type Props = {
+    actions: Object,
+    teamMembers: Object,
+    teams: Object,
+    selectedTeam: Object,
+    screenProps: Object
+};
+
+type State = {
+    isModalVisible: boolean
+}
+
+class TeamEditorMembers extends Component<Props, State> {
+
 
     static navigationOptions = {
         title: 'Team Members',
@@ -98,23 +106,23 @@ class TeamEditorMembers extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {isModalVisible: false, modalContent: InviteForm}
     }
 
     inviteContacts = () => {
-        this.props.screenProps.stacknav.navigate('InviteContacts');
+        this.setState({isModalVisible: true, modalContent: InviteContacts});
     };
 
     inviteForm = () => {
-        this.props.screenProps.stacknav.navigate('InviteForm');
-    };
+        this.setState({isModalVisible: true, modalContent: InviteForm});
 
+    };
 
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
             this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
         };
     }
-
 
     render() {
         const teamId = this.props.selectedTeam.id;
@@ -155,6 +163,16 @@ class TeamEditorMembers extends Component {
                         <FlatList data={memberButtons} renderItem={({item}) => (<MemberItem item={item}/>)}/>
                     </View>
                 </ScrollView>
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.isModalVisible}>
+                    <View>
+                        <this.state.modalContent closeModal={() => {
+                                this.setState({isModalVisible: false});
+                            }}/>
+                    </View>
+                </Modal>
             </View>
         );
     }

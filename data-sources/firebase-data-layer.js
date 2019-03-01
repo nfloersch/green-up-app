@@ -22,9 +22,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // Disable deprecated features
-db.settings({
-    timestampsInSnapshots: true
-});
+db.settings({});
 
 let myListeners = {};
 

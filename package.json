@@ -1,102 +1,41 @@
 {
   "main": "node_modules/expo/AppEntry.js",
-  "private": true,
-  "version": "1.0.2",
-  "keywords": [
-    "green up",
-    "vermont",
-    "code for america",
-    "code for btv",
-    "react native",
-    "redux",
-    "expo",
-    "javascript"
-  ],
-  "license": "SEE LICENSE IN LICENSE.md",
-  "author": {
-    "name": "John Need",
-    "email": "john.need@gmail.com"
-  },
-  "contributors": [
-    {
-      "name": "Audrey Dawson"
-    },
-    {
-      "name": "Sam Velesquez"
-    },
-    {
-      "name": "Smaranda Fournier"
-    },
-    {
-      "name": "Jeff Margolis"
-    },
-    {
-      "name": "Cameron Marcus"
-    },
-    {
-      "name": "Parker Franz"
-    },
-    {
-      "name": "Lea Ann Smith"
-    },
-    {
-      "name": "Luke Potasiewicz"
-    },
-    {
-      "name": "Ken Liu (Shek Kin)"
-    },
-    {
-      "name": "Kyle Beaulieu"
-    },
-    {
-      "name": "dmeskill"
-    }
-  ],
   "scripts": {
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "start": "expo start"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
-    "@expo/vector-icons": "^6.2.2",
+    "@expo/vector-icons": "^9.0.0",
     "@sendgrid/mail": "^6.3.1",
-    "@turf/boolean-within": "^6.0.0",
+    "@turf/boolean-within": "^6.0.1",
     "@turf/helpers": "^6.1.4",
-    "babel-eslint": "^8.2.6",
-    "eslint": "^4.16.0",
-    "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-react": "^7.11.1",
-    "expo": "^26.1.1",
-    "firebase": "^5.5.5",
-    "firebase-app": "^0.0.1",
+    "expo": "^32.0.0",
+    "firebase": "^5.8.4",
     "md5-hash": "^1.0.1",
-    "prop-types": "^15.6.2",
-    "ramda": "^0.25.0",
+    "prop-types": "^15.7.2",
+    "ramda": "^0.26.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-redux": "^6.0.0",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "react-native-animatable": "^1.3.0",
-    "react-native-autocomplete-input": "^3.5.0",
+    "react-native-autocomplete-input": "^3.6.0",
     "react-native-checkbox": "^2.0.0",
-    "react-native-cli": "^2.0.1",
-    "react-native-firebase": "^3.2.2",
-    "react-native-modal-datetime-picker": "^4.13.0",
+    "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-radio-buttons": "^1.0.0",
-    "react-native-secure-storage": "^0.1.1",
-    "react-native-sensitive-info": "^5.2.6",
-    "react-native-swipe-gestures": "^1.0.2",
-    "react-navigation": "1.5.8",
-    "react-navigation-redux-helpers": "^1.1.2",
-    "redux-persist-expo-securestore": "^0.1.1",
-    "redux-persist-sensitive-storage": "^1.0.0"
+    "react-native-tab-view": "^2.0.0-alpha.4",
+    "react-navigation": "^3.0.9",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
     "jest-expo": "^32.0.0"
-  }
+  },
+  "private": true
 }

@@ -1,4 +1,3 @@
-import {defaultStyles} from './default-styles';
 
 const alertFontSize = 12;
 

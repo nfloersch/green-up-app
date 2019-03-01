@@ -16,7 +16,7 @@ const myStyles = {messageHeader: {margin: 5}};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class MessageDetails extends Component {
+class MessageDetailsScreen extends Component {
     static propTypes = {
         actions: PropTypes.object,
         messages: PropTypes.object,
@@ -102,4 +102,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageDetailsScreen);

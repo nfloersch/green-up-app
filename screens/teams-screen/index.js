@@ -19,7 +19,6 @@ import {
     View,
     Platform
 } from 'react-native';
-
 import NewTeam from './new-team';
 import TeamMember from '../../models/team-member';
 import * as actions from './actions';
@@ -27,6 +26,7 @@ import User from '../../models/user';
 import {defaultStyles} from '../../styles/default-styles';
 import teamwork from '../../assets/images/teamwork.jpeg';
 import {removeNulls} from '../../libs/remove-nulls';
+import TeamSearch from '../../components/team-search';
 
 const myStyles = {
     icon: {
@@ -59,15 +59,13 @@ class TeamItem extends Component {
                 <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
                     <Ionicons
                         style={{paddingTop: 10}}
-                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles-outline' : 'md-chatboxes')}
+                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatboxes')}
                         size={30}
                     />
                 </TouchableOpacity>
-
-
                 <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
                     <Ionicons
-                        name={Platform.OS === 'ios' ? 'ios-share-outline' : 'md-share'}
+                        name={Platform.OS === 'ios' ? 'ios-share' : 'md-share'}
                         size={30} style={{paddingTop: 10}}
                     />
                 </TouchableOpacity>
@@ -92,7 +90,7 @@ type Props = {
     toTeamDetails: any => any
 };
 
-class MyTeams extends Component<Props> {
+class TeamsScreen extends Component<Props> {
 
     static navigationOptions = {
         title: 'My Teams',
@@ -107,20 +105,18 @@ class MyTeams extends Component<Props> {
         this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
     }
 
-    toTeamSearch() {
-        this.props.navigation.navigate('TeamSearch');
+    toTeamSearch(): void {
+        this.setState({openModal: 'TEAM_SEARCH'});
     }
 
-    toTeamDetail(team, status) {
+    toTeamDetail(team: Object, status: string): () => void {
+        const nextScreen = {
+            [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
+            [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
+            [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
+            [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
+        };
         return () => {
-
-            const nextScreen = {
-                [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
-                [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
-                [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
-                [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
-            };
-
             this.props.actions.selectTeam(team);
             this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
         };
@@ -201,9 +197,7 @@ class MyTeams extends Component<Props> {
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight
                                 style={styles.headerButton}
-                                onPress={() => {
-                                    this.props.navigation.navigate('TeamSearch');
-                                }}>
+                                onPress={this.toTeamSearch}>
                                 <Text style={styles.headerButtonText}>{'Search Teams'}</Text>
                             </TouchableHighlight>
                         </View>
@@ -218,27 +212,27 @@ class MyTeams extends Component<Props> {
                 </View>
                 <View style={styles.container}>
                     {myTeams.length === 0 ? (
-                        <ImageBackground source={teamwork} style={styles.backgroundImage}>
-                            <View
-                                style={{
-                                    marginTop: '20%',
-                                    paddingLeft: 20,
-                                    paddingRight: 20,
-                                    paddingTop: 50,
-                                    paddingBottom: 50,
-                                    backgroundColor: 'rgba(255,255,255, 0.85)'
-                                }}>
-                                <Text
-                                    style={[styles.textDark]}>
-                                    {'Green Up Day is all about community and teamwork.'}
-                                </Text>
-                                <Text
-                                    style={[styles.textDark]}>
-                                    {'Search for teams in your area, or create a new one and invite some friends.'}
-                                </Text>
-                            </View>
-                        </ImageBackground>
-                    )
+                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                                <View
+                                    style={{
+                                        marginTop: '20%',
+                                        paddingLeft: 20,
+                                        paddingRight: 20,
+                                        paddingTop: 50,
+                                        paddingBottom: 50,
+                                        backgroundColor: 'rgba(255,255,255, 0.85)'
+                                    }}>
+                                    <Text
+                                        style={[styles.textDark]}>
+                                        {'Green Up Day is all about community and teamwork.'}
+                                    </Text>
+                                    <Text
+                                        style={[styles.textDark]}>
+                                        {'Search for teams in your area, or create a new one and invite some friends.'}
+                                    </Text>
+                                </View>
+                            </ImageBackground>
+                        )
                         : (
                             <ScrollView style={styles.scroll}>
                                 <View style={styles.infoBlockContainer}>
@@ -252,6 +246,15 @@ class MyTeams extends Component<Props> {
                         )
                     }
                 </View>
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.openModal === 'TEAM_SEARCH'}
+                    onRequestClose={() => {
+                    }}>
+                    <TeamSearch navigation={this.props.navigation}
+                                closeModal={_closeModal}/>
+                </Modal>
                 <Modal
                     animationType={'slide'}
                     transparent={false}
@@ -272,7 +275,7 @@ function mapStateToProps(state) {
                 return TeamMember.memberStatuses.OWNER;
             case team :
                 return TeamMember.memberStatuses.ACCEPTED;
-            case Boolean(invitations.find(invite => invite.teamMember.uid === user.uid)) :
+            case Boolean(Object.values(invitations).find(invite => invite.teamMember.uid === user.uid)) :
                 return TeamMember.memberStatuses.INVITED;
             default:
                 return TeamMember.memberStatuses.NOT_INVITED;
@@ -295,4 +298,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyTeams);
+export default connect(mapStateToProps, mapDispatchToProps)(TeamsScreen);

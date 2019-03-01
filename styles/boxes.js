@@ -12,6 +12,11 @@ export const boxes = {
         borderRadius: 5,
         padding: 5
     },
+    modalFrame:{
+        paddingTop: 60,
+        backgroundColor: constants.backgroundDark,
+        height: '100%',
+        width: '100%'},
     frame: {
         backgroundColor: constants.backgroundDark,
         height: '100%',

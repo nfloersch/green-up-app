@@ -29,7 +29,7 @@ const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class NewMessage extends Component {
+class NewMessageScreen extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
@@ -180,4 +180,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewMessage);
+export default connect(mapStateToProps, mapDispatchToProps)(NewMessageScreen);

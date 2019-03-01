@@ -73,7 +73,6 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-
 type TProps = {
     item: Message,
     toDetail: any => any
@@ -119,7 +118,7 @@ class MessageItem extends Component<TProps> {
     }
 }
 
-class Messages extends Component {
+class MessageSummariesScreen extends Component {
     static propTypes = {
         actions: PropTypes.object,
         currentUser: PropTypes.object,
@@ -145,7 +144,7 @@ class Messages extends Component {
 
     toSendMessage() {
         return () => {
-            this.props.navigation.navigate('SendMessage');
+            this.props.navigation.navigate('NewMessage');
         };
     }
 
@@ -283,4 +282,4 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Messages);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageSummariesScreen);

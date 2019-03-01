@@ -6,7 +6,6 @@
 import React, {Component, Fragment} from 'react';
 import {bindActionCreators} from 'redux';
 import LoginScreen from '../../screens/login-screen/index';
-// import RootNavigation from '../../navigation/RootNavigation';
 import * as actions from './actions';
 import {connect} from 'react-redux';
 
