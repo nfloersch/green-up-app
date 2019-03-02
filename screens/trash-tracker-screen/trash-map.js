@@ -1,9 +1,5 @@
-/**
- /**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {IntentLauncherAndroid, Location, MapView, Permissions} from 'expo';
@@ -424,7 +420,7 @@ class TrashMap extends Component {
                                 });
                             }}>
                             <Ionicons
-                                name={Platform.OS === 'ios' ? 'ios-options-outline' : 'md-options'}
+                                name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
                                 size={42}
                                 color='#333'
                             />

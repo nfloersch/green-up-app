@@ -17,17 +17,17 @@ export function getIconStyles(status: string) {
 }
 
 const icons = {
-    [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add-outline' : 'md-person-add',
-    [memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-person-outline' : 'md-person',
-    [memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail-outline' : 'md-mail',
-    [memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star-outline' : 'md-star',
+    [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === 'ios' ? 'ios-person-add' : 'md-person-add',
+    [memberStatuses.ACCEPTED]: Platform.OS === 'ios' ? 'ios-person' : 'md-person',
+    [memberStatuses.INVITED]: Platform.OS === 'ios' ? 'ios-mail' : 'md-mail',
+    [memberStatuses.OWNER]: Platform.OS === 'ios' ? 'ios-star' : 'md-star',
     [memberStatuses.NOT_INVITED]: Platform.OS === 'ios' ? 'ios-close' : 'md-close',
-    IS_REQUESTING_TO_JOIN: Platform.OS === 'ios' ? 'ios-clock-outline' : 'md-clock'
+    IS_REQUESTING_TO_JOIN: Platform.OS === 'ios' ? 'ios-clock' : 'md-clock'
 };
 
 
 export function getIconName(status: string) {
-    return icons[status] || (Platform.OS === 'ios' ? 'ios-help-outline' : 'md-help');
+    return icons[status] || (Platform.OS === 'ios' ? 'ios-help' : 'md-help');
 }
 
 export function getMemberIcon(memberStatus: string, style: Object = {}, isOwner: boolean) {
