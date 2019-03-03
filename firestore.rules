@@ -99,10 +99,10 @@ service cloud.firestore {
     match /admins/{userId} {
            allow read, write: if isAdmin();
     }
-    
-      match /settings/{id} {
+
+      match /eventInfo/{id} {
            allow read;
-					 allow write: if isAdmin();
+		   allow write: if isAdmin();
     }
   }
 }

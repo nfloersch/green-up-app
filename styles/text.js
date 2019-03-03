@@ -61,7 +61,6 @@ export const text = {
         color: '#DDD',
         fontSize: 16
     },
-
     labelDark: {
         color: '#333',
         fontSize: 16,
@@ -159,5 +158,16 @@ export const text = {
         shadowOffset: {width: 1, height: 1},
         shadowOpacity: 1,
         shadowRadius: 1
+    },
+    headerText:{
+        color: '#444',
+        fontWeight: 'bold',
+        fontSize: 22,
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 0,
+        paddingBottom: 5,
+        backgroundColor: '#EEE'
     }
 };

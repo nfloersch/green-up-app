@@ -12,9 +12,7 @@ import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
 import {curry} from 'ramda';
-// import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
 import * as messageTypes from '../constants/message-types';
-import TrashDrop from '../models/trash-drop';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -99,6 +97,23 @@ function createProfile(user: User, dispatch: any => void): Promise {
 }
 
 /** *************** INITIALIZATION *************** **/
+
+
+function fetchEventInfo(dispatch) {
+    db.collection('eventInfo').doc('eventSettings').get().then(
+        doc => {
+            if (!doc.exists) {
+                throw Error('Failed to retrieve event info');
+            }
+            dispatch({type: types.FETCH_EVENT_INFO_SUCCESS, data: doc.data()});
+
+        }).catch(
+        (error) => {
+            console.log('Error getting event info:', error);
+        }
+    );
+}
+
 
 function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
     const ref = db.collection(`teams/${teamId}/invitees`);
@@ -258,6 +273,7 @@ function setupTownListener(dispatch) {
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
+        fetchEventInfo(dispatch);
         setupMessageListener(user.uid, dispatch);
         setupTeamListener(dispatch);
         setupMyTeamsListener(user, dispatch);
