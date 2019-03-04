@@ -19,6 +19,7 @@ export function reducers(state = initialState.login, action) {
                 user: null,
                 createUserError: null,
                 userIsLoggedIn: false,
+                isLoggingInViaSSO: false,
                 initialAuthChecked: true,
                 loginError: action.error,
                 creatingUser: false
