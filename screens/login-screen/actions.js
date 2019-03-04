@@ -1,10 +1,9 @@
 // @flow
 
 import * as types from '../../constants/actionTypes';
-import Expo from 'expo';
+import Expo, {Google} from 'expo';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {thirdPartyConfig} from '../../config/third-party-config';
-
 
 export function getCurrentUser() {
     return (dispatch: Object => *) => {
@@ -12,12 +11,10 @@ export function getCurrentUser() {
     };
 }
 
-
 export function logout() {
     return (dispatch: Object => *) => {
         firebaseDataLayer.logout(dispatch);
     };
-
 }
 
 export function createUser(email: string, password: string, displayName: string) {
@@ -40,13 +37,13 @@ export function loginWithEmailPassword(email: string, password: string) {
 
 export function googleLogin() {
     return async function logIn(dispatch: Object => *) {
-
         try {
-            const result = await Expo.Google.logInAsync({
-                androidClientId: thirdPartyConfig.androidClientId,
-                androidStandaloneAppClientId: thirdPartyConfig.androidStandaloneAppClientId,
-                iosClientId: thirdPartyConfig.iosClientId,
-                iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
+            const result = await Google.logInAsync({
+                // clientId:'665584024414-6bsqe251ljj85tu58oodfefu01m4vgnh.apps.googleusercontent.com',
+                clientId: thirdPartyConfig.androidClientId,
+                // androidStandaloneAppClientId: thirdPartyConfig.androidStandaloneAppClientId,
+                // iosClientId: thirdPartyConfig.iosClientId,
+                // iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
                 scopes: ['profile', 'email'],
                 useBrowser: true,
                 behavior: 'web'
@@ -66,6 +63,7 @@ export function googleLogin() {
                 });
             }
         } catch (error) {
+            debugger;
             dispatch({type: types.LOGIN_FAIL, error});
         }
     };
