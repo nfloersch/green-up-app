@@ -90,7 +90,7 @@ class TeamEditorMembers extends Component {
         // Note: By default the icon is only shown on iOS. Search the showIcon option below.
         tabBarIcon: ({focused}) => (
             <Ionicons
-                name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
+                name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : ''}` : 'md-contacts'}
                 size={24}
                 color={focused ? colors.tabIconSelected : colors.tabIconDefault}
             />)

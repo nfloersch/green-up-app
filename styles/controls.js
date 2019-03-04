@@ -15,5 +15,6 @@ export const controls = {
         textAlign: 'left',
         padding: 5
     },
-    picker: {backgroundColor: 'white', marginTop: 5}
+    picker: {backgroundColor: 'white', marginTop: 5},
+    modalFrame: {}
 };

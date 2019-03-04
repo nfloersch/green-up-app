@@ -3,13 +3,14 @@
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
+import React from 'react';
 import Login from './login';
 import CreateNewAccount from './create-new-account';
 import ForgotPassword from './forgot-password';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-import {StackNavigator} from 'react-navigation';
 
-export default StackNavigator({
+const AppNavigator = createStackNavigator({
     Login: {
         screen: Login
     },
@@ -20,4 +21,6 @@ export default StackNavigator({
         screen: ForgotPassword
     }
 });
+
+export default createAppContainer(AppNavigator);
 

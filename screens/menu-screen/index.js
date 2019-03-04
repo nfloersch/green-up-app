@@ -52,10 +52,9 @@ class MenuScreen extends Component {
                     >
                         <Text style={styles.buttonText}>About Green Up Day</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => this.props.navigation.navigate('TrashBagFinder')}
+                        onPress={() => this.props.navigation.navigate('Towns')}
                     >
                         <Text style={styles.buttonText}>Town Info</Text>
                     </TouchableOpacity>
@@ -69,7 +68,7 @@ class MenuScreen extends Component {
 
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => this.props.navigation.navigate('Privacy')}
+                        onPress={() => this.props.navigation.navigate('Legal')}
                     >
                         <Text style={styles.buttonText}>Privacy & Terms</Text>
                     </TouchableOpacity>

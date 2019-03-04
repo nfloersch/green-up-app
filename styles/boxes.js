@@ -12,6 +12,11 @@ export const boxes = {
         borderRadius: 5,
         padding: 5
     },
+    modalFrame:{
+        paddingTop: 60,
+        backgroundColor: constants.backgroundDark,
+        height: '100%',
+        width: '100%'},
     frame: {
         backgroundColor: constants.backgroundDark,
         height: '100%',
@@ -29,7 +34,17 @@ export const boxes = {
         shadowOpacity: 1,
         shadowRadius: 0,
         marginBottom: 1
-
+    },
+    infoBlockNoDivider:{
+        paddingBottom: 8,
+        borderBottomWidth: 1,
+        backgroundColor: '#EEE',
+        padding: 10,
+        shadowColor: '#FFF',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 1,
+        shadowRadius: 0,
+        marginBottom: 1
     },
     infoBlockContainer: {
         margin: 5,

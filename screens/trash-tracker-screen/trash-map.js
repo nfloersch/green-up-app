@@ -1,9 +1,5 @@
-/**
- /**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {IntentLauncherAndroid, Location, MapView, Permissions} from 'expo';
@@ -197,7 +193,6 @@ class TrashMap extends Component {
         });
     }
 
-
     closeToggleModal() {
         this.setState({
             toggleModalVisible: false
@@ -239,8 +234,12 @@ class TrashMap extends Component {
         const town = this.props.location ? this._getTown(this.props.location) : '';
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
-        const trashDropOffLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].dropOffLocations), []).filter(l => l.dropOffLocationCoordinates);
-        const supplyPickupLocations = Object.getOwnPropertyNames(townData).reduce((acc, p) => acc.concat(townData[p].pickupLocations), []).filter(l => l.pickupLocationCoordinates);
+        const trashDropOffLocations = Object.values(townData).map(t => t.dropOffLocations)
+            .reduce((a, b) => ([...a, ...b]))
+            .filter(loc => loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude);
+        const supplyPickupLocations = Object.values(townData).map(t => t.pickupLocations)
+            .reduce((a, b) => ([...a, ...b]))
+            .filter(loc => loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude);
         const initialMapLocation = this.props.location ? {
             latitude: Number(this.props.location.coords.latitude),
             longitude: Number(this.props.location.coords.longitude),
@@ -279,63 +278,72 @@ class TrashMap extends Component {
             />
         ));
 
-        const unCollectedTrash = (this.props.uncollectedTrashToggle && drops || []).filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid)).map(drop => (
-            <MapView.Marker
-                key={drop.id}
-                // image={uncollectedTrashIcon}
-                pinColor={'red'}
-                coordinate={drop.location}
-                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
-                description={'Tap to view or collect'}
-                onCalloutPress={() => {
-                    this.setState({modalVisible: true, drop: drop});
-                }}
-                stopPropagation={true}
-            />
-        ));
-
-        const dropOffLocations = (this.props.trashDropOffToggle && trashDropOffLocations || []).map((d, i) => (
-            <MapView.Marker
-                key={`${town}DropOffLocation${i}`}
-                // image={trashDropOffLocationIcon}
-                pinColor={'blue'}
-                coordinate={d.coordinates}
-                stopPropagation={true}>
-                <MultiLineMapCallout
-                    title='Drop Off Location'
-                    description={`${d.name}, ${d.address}`}
+        const unCollectedTrash = (this.props.uncollectedTrashToggle && drops || [])
+            .filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid))
+            .map(drop => (
+                <MapView.Marker
+                    key={drop.id}
+                    // image={uncollectedTrashIcon}
+                    pinColor={'red'}
+                    coordinate={drop.location}
+                    title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? ' & other trash' : ''}`}
+                    description={'Tap to view or collect'}
+                    onCalloutPress={() => {
+                        this.setState({modalVisible: true, drop: drop});
+                    }}
+                    stopPropagation={true}
                 />
-            </MapView.Marker>
-        ));
+            ));
 
-        const pickupLocations = (this.props.supplyPickupToggle && supplyPickupLocations || []).map((d, i) => (
-            <MapView.Marker
-                key={`supplyPickup${i}`}
-                // image={supplyPickupLocationIcon}
-                pinColor={'green'}
-                coordinate={d.pickupLocationCoordinates}
-                stopPropagation={true}>
-                <MultiLineMapCallout
-                    title='Supply Pickup Location'
-                    description={`${d.pickupLocationName}, ${d.pickupLocationAddress}`}
-                />
-            </MapView.Marker>
-        ));
+        const dropOffLocations = (this.props.trashDropOffToggle && trashDropOffLocations || [])
+            .map((d, i) => (
+                <MapView.Marker
+                    key={`${town}DropOffLocation${i}`}
+                    // image={trashDropOffLocationIcon}
+                    pinColor={'blue'}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
+                    <MultiLineMapCallout
+                        title='Drop Off Location'
+                        description={`${d.name}, ${d.address}`}
+                    />
+                </MapView.Marker>
+            ));
 
-        const cleanAreaMarkers = (this.props.cleanAreasToggle && cleanAreas || []).map((d, i) => (
-            <MapView.Marker
-                key={`cleanArea${i}`}
-                pinColor={'orange'}
-                coordinate={d.coordinates}
-                stopPropagation={true}>
-                <MultiLineMapCallout
-                    title={`${d.title}`}
-                    description={`${d.description}`}/>
-            </MapView.Marker>
-        ));
+        const pickupLocations = (this.props.supplyPickupToggle && supplyPickupLocations || [])
+            .map((d, i) => (
+                <MapView.Marker
+                    key={`supplyPickup${i}`}
+                    // image={supplyPickupLocationIcon}
+                    pinColor={'green'}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
+                    <MultiLineMapCallout
+                        title='Supply Pickup Location'
+                        description={`${d.pickupLocationName}, ${d.pickupLocationAddress}`}
+                    />
+                </MapView.Marker>
+            ));
 
+        const cleanAreaMarkers = (this.props.cleanAreasToggle && cleanAreas || [])
+            .map((d, i) => (
+                <MapView.Marker
+                    key={`cleanArea${i}`}
+                    pinColor={'orange'}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
+                    <MultiLineMapCallout
+                        title={`${d.title}`}
+                        description={`${d.description}`}/>
+                </MapView.Marker>
+            ));
 
-        const allMarkers = pickupLocations.concat(dropOffLocations).concat(unCollectedTrash).concat(myTrash).concat(collectedTrash).concat(cleanAreaMarkers);
+        const allMarkers = pickupLocations
+            .concat(dropOffLocations)
+            .concat(unCollectedTrash)
+            .concat(myTrash)
+            .concat(collectedTrash)
+            .concat(cleanAreaMarkers);
 
         const enableLocation = async () => {
             if (Platform.OS === 'android') {
@@ -424,7 +432,7 @@ class TrashMap extends Component {
                                 });
                             }}>
                             <Ionicons
-                                name={Platform.OS === 'ios' ? 'ios-options-outline' : 'md-options'}
+                                name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
                                 size={42}
                                 color='#333'
                             />
@@ -539,9 +547,9 @@ class TrashMap extends Component {
 }
 
 function mapStateToProps(state) {
-    const drops = Object.keys(state.trashTracker.trashDrops || {})
-        .filter(key => !!(state.trashTracker.trashDrops[key].location && state.trashTracker.trashDrops[key].location.longitude && state.trashTracker.trashDrops[key].location.latitude))
-        .map(key => ({...state.trashTracker.trashDrops[key], id: key}));
+    const drops = (state.trashTracker.trashDrops || [])
+        .filter(drop => drop.location && drop.location.longitude && drop.location.latitude);
+
     const cleanAreas = Object.values(state.teams.teams)
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: '',

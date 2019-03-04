@@ -12,7 +12,6 @@ import * as types from '../constants/actionTypes';
 import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
 import {curry} from 'ramda';
-// import {ACCEPTED, OWNER} from '../constants/team-member-statuses';
 import * as messageTypes from '../constants/message-types';
 import TrashDrop from '../models/trash-drop';
 
@@ -22,9 +21,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // Disable deprecated features
-db.settings({
-    timestampsInSnapshots: true
-});
+db.settings({});
 
 let myListeners = {};
 
@@ -101,6 +98,23 @@ function createProfile(user: User, dispatch: any => void): Promise {
 }
 
 /** *************** INITIALIZATION *************** **/
+
+
+function fetchEventInfo(dispatch) {
+    db.collection('eventInfo').doc('eventSettings').get().then(
+        doc => {
+            if (!doc.exists) {
+                throw Error('Failed to retrieve event info');
+            }
+            dispatch({type: types.FETCH_EVENT_INFO_SUCCESS, data: doc.data()});
+
+        }).catch(
+        (error) => {
+            console.log('Error getting event info:', error);
+        }
+    );
+}
+
 
 function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
     const ref = db.collection(`teams/${teamId}/invitees`);
@@ -189,12 +203,15 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
         const ref = db.collection(`teams/${teamId}/messages`);
 
         addListener(`team_${teamId}_messages`, ref.onSnapshot(
-            querySnapshot => {
+            (querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
                 const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
                 dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
-            }
+            }),
+            ((error) => {
+                // TODO : Handle the error
+            })
         ));
     });
 }
@@ -233,15 +250,11 @@ function setupMyTeamsListener(user, dispatch) {
 }
 
 function setupTrashDropListener(dispatch) {
-
     addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
-        const data = [];
-        const ids = [];
+        const trashDrops = [];
         querySnapshot.forEach(doc => {
-            data.push(doc.data());
-            ids.push(doc.id);
+            trashDrops.push(TrashDrop.create(doc.data(), doc.id));
         });
-        const trashDrops = data.reduce((obj, drop) => ({...obj, [drop.id]: drop}), {});
         dispatch({type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops});
     }));
 }
@@ -260,6 +273,7 @@ function setupTownListener(dispatch) {
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
+        fetchEventInfo(dispatch);
         setupMessageListener(user.uid, dispatch);
         setupTeamListener(dispatch);
         setupMyTeamsListener(user, dispatch);
