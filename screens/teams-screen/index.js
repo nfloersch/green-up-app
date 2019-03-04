@@ -69,7 +69,6 @@ class TeamItem extends Component {
                         size={30} style={{paddingTop: 10}}
                     />
                 </TouchableOpacity>
-
                 <TouchableOpacity style={styles.icon} onPress={item.goToTeam}>
                     {item.toTeamIcon}
                 </TouchableOpacity>
@@ -110,24 +109,23 @@ class TeamsScreen extends Component<Props> {
     }
 
     toTeamDetail(team: Object, status: string): () => void {
-        const nextScreen = {
-            [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
-            [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
-            [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
-            [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
-        };
+        // const nextScreen = {
+        //     [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
+        //     [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
+        //     [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
+        //     [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
+        // };
         return () => {
 
-
-            const nextScreen = {
+            const _nextScreen = {
                 [TeamMember.memberStatuses.INVITED]: 'TeamDetails',
                 [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
                 [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
                 [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
             };
 
-             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(nextScreen[status] || 'TeamDetails', {status});
+            this.props.actions.selectTeam(team);
+            this.props.navigation.navigate(_nextScreen[status] || 'TeamDetails', {status});
         };
     }
 
@@ -136,14 +134,32 @@ class TeamsScreen extends Component<Props> {
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
-        const membershipId = (this.props.user.email || '').toLowerCase().trim();
         const memberList = (this.props.teamMembers || {})[teamKey] || {};
-        const status = (memberList[this.props.user.uid] || {}).memberStatus || (memberList[membershipId] || {}).memberStatus;
-        return getMemberIcon((!isInvited ? status : TeamMember.memberStatuses.INVITED), {
-            height: 50,
-            width: 50,
-            paddingTop: 10
-        });
+        const status = (memberList[this.props.user.uid] || {}).memberStatus;
+        // TODO : replace this hack.
+        switch (true) {
+            case isInvited: // We should check in the team invites here, not rely on the argument.
+                return getMemberIcon(TeamMember.memberStatuses.INVITED, {
+                    height: 50,
+                    width: 50,
+                    paddingTop: 10
+                });
+
+            case Boolean(status) : // This is okay
+                return getMemberIcon(status, {
+                    height: 50,
+                    width: 50,
+                    paddingTop: 10
+                });
+
+            default: // we should actually check to see if the user has requested to join
+                return getMemberIcon(TeamMember.memberStatuses.REQUEST_TO_JOIN, {
+                    height: 50,
+                    width: 50,
+                    paddingTop: 10
+                });
+
+        }
     };
 
     shareTeamDetails = (team) => () => {
@@ -220,7 +236,8 @@ class TeamsScreen extends Component<Props> {
                     </View>
                 </View>
                 <View style={styles.container}>
-                    {myTeams.length === 0 ? (
+                    {myTeams.length === 0
+                        ? (
                             <ImageBackground source={teamwork} style={styles.backgroundImage}>
                                 <View
                                     style={{
@@ -261,8 +278,7 @@ class TeamsScreen extends Component<Props> {
                     visible={this.state.openModal === 'TEAM_SEARCH'}
                     onRequestClose={() => {
                     }}>
-                    <TeamSearch navigation={this.props.navigation}
-                                closeModal={_closeModal}/>
+                    <TeamSearch closeModal={_closeModal} navigation={this.props.navigation}/>
                 </Modal>
                 <Modal
                     animationType={'slide'}
@@ -287,7 +303,7 @@ function mapStateToProps(state) {
 
             case Boolean(Object.values(invitations).find(invite => invite.teamMember.uid === user.uid)) :
                 // Match invitations on team and email
-            // case Boolean(Object.entries(invitations).find(entry => entry[1].team.id == team.id && entry[1].teamMember.email === user.email)) :
+                // case Boolean(Object.entries(invitations).find(entry => entry[1].team.id == team.id && entry[1].teamMember.email === user.email)) :
                 return TeamMember.memberStatuses.INVITED;
             default:
                 return TeamMember.memberStatuses.NOT_INVITED;
