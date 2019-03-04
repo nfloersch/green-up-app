@@ -13,6 +13,7 @@ import {firebaseConfig} from './firebase-config';
 import 'firebase/firestore';
 import {curry} from 'ramda';
 import * as messageTypes from '../constants/message-types';
+import TrashDrop from '../models/trash-drop';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -246,15 +247,11 @@ function setupMyTeamsListener(user, dispatch) {
 }
 
 function setupTrashDropListener(dispatch) {
-
     addListener('trashDrops', db.collection('trashDrops').onSnapshot(querySnapshot => {
-        const data = [];
-        const ids = [];
+        const trashDrops = [];
         querySnapshot.forEach(doc => {
-            data.push(doc.data());
-            ids.push(doc.id);
+            trashDrops.push(TrashDrop.create(doc.data(), doc.id));
         });
-        const trashDrops = data.reduce((obj, drop) => ({...obj, [drop.id]: drop}), {});
         dispatch({type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops});
     }));
 }
