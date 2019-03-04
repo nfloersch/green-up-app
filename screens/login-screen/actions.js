@@ -1,7 +1,7 @@
 // @flow
 
 import * as types from '../../constants/actionTypes';
-import Expo, {Google} from 'expo';
+import {Google, Facebook} from 'expo';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {thirdPartyConfig} from '../../config/third-party-config';
 
@@ -63,7 +63,6 @@ export function googleLogin() {
                 });
             }
         } catch (error) {
-            debugger;
             dispatch({type: types.LOGIN_FAIL, error});
         }
     };
@@ -71,7 +70,7 @@ export function googleLogin() {
 
 export function facebookLogin() {
     return async function logIn(dispatch: Object => *) {
-        const facebook = await Expo.Facebook.logInWithReadPermissionsAsync(thirdPartyConfig.facebookAppId, {
+        const facebook = await Facebook.logInWithReadPermissionsAsync(thirdPartyConfig.facebookAppId, {
             behavior: 'web', permissions: ['public_profile', 'email']
         });
         const {type, token} = facebook;

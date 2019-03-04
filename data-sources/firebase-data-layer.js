@@ -341,7 +341,6 @@ export function createUser(email: string, password: string, displayName: string)
 }
 
 export async function facebookAuth(token) {
-
     // Build Firebase credential with the Facebook access token.
     const credential = firebase
         .auth
