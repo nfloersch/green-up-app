@@ -203,12 +203,15 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
         const ref = db.collection(`teams/${teamId}/messages`);
 
         addListener(`team_${teamId}_messages`, ref.onSnapshot(
-            querySnapshot => {
+            (querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
                 const messages = data.reduce((obj, message) => ({...obj, [message.id]: Message.create(message)}), {});
                 dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
-            }
+            }),
+            ((error) => {
+                // TODO : Handle the error
+            })
         ));
     });
 }
