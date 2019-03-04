@@ -32,7 +32,6 @@ export function getIconName(status: string) {
 
 export function getMemberIcon(memberStatus: string, style: Object = {}, isOwner: boolean) {
     const status = memberStatus === memberStatuses.REQUEST_TO_JOIN && !isOwner ? 'IS_REQUESTING_TO_JOIN' : memberStatus;
-
     return (
         <Ionicons
             name={getIconName(status)}
