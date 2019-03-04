@@ -70,7 +70,7 @@ service cloud.firestore {
       allow read, create: if isAuthed();
 			allow delete, update: if resource.data.owner.uid == request.auth.uid  || isAdmin();
 			match /messages/{messageId} {
-       allow read, create: if true;
+       allow read, create:  if isAuthed() && isTeamMember(teamId);
        allow delete, update: if isAuthed() && isTeamMember(teamId) && resource.data.sender.uid == request.auth.uid || isAdmin();
       }
       match /members/{uid} {
@@ -87,12 +87,12 @@ service cloud.firestore {
     }
 
     match /towns/{townId} {
-         allow read;
+         allow read: if true;
          allow write: if isAdmin();
     }
 
    match /trashDrops/{dropId} {
-           allow read;
+           allow read: if true;
 					 allow write: if isAuthed();
     }
 
@@ -101,8 +101,8 @@ service cloud.firestore {
     }
 
       match /eventInfo/{id} {
-           allow read;
-		   allow write: if isAdmin();
+           allow read: if true;
+					 allow write: if isAdmin();
     }
   }
 }
