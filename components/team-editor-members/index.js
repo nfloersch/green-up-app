@@ -4,14 +4,11 @@
  * @flow
  */
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
 import * as colors from '../../styles/constants';
-import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import InviteContacts from '../invite-contacts';
 import InviteForm from '../invite-form';
@@ -48,7 +45,6 @@ class MemberItem extends Component {
         item: Object
     };
 
-
     render() {
         const item = this.props.item;
         return (
@@ -78,7 +74,6 @@ class MemberItem extends Component {
 
 
 type Props = {
-    actions: Object,
     teamMembers: Object,
     teams: Object,
     selectedTeam: Object,
@@ -106,7 +101,7 @@ class TeamEditorMembers extends Component<Props, State> {
 
     constructor(props) {
         super(props);
-        this.state = {isModalVisible: false, modalContent: InviteForm}
+        this.state = {isModalVisible: false, modalContent: InviteForm};
     }
 
     inviteContacts = () => {
@@ -169,8 +164,8 @@ class TeamEditorMembers extends Component<Props, State> {
                     visible={this.state.isModalVisible}>
                     <View>
                         <this.state.modalContent closeModal={() => {
-                                this.setState({isModalVisible: false});
-                            }}/>
+                            this.setState({isModalVisible: false});
+                        }}/>
                     </View>
                 </Modal>
             </View>
@@ -186,6 +181,4 @@ const mapStateToProps = (state) => (
     });
 
 
-const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);
+export default connect(mapStateToProps)(TeamEditorMembers);
