@@ -3,7 +3,7 @@
  * https://github.com/johnneed/GreenUpVermont
  * @flow
  */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     TouchableOpacity,
@@ -12,13 +12,13 @@ import {
     View,
     StyleSheet
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { MapView } from 'expo';
-import { Constants, Location, Permissions } from 'expo';
+import {Ionicons} from '@expo/vector-icons';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {MapView} from 'expo';
+import {Constants, Location, Permissions} from 'expo';
 import * as colors from '../../styles/constants';
-import { defaultStyles } from '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 import * as actions from './actions';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 
@@ -40,7 +40,7 @@ class TeamEditorMap extends Component {
         tabBarLabel: 'Map',
         // Note: By default the icon is only shown on iOS. Search the showIcon option
         // below.
-        tabBarIcon: ({ focused }) => (
+        tabBarIcon: ({focused}) => (
             <Ionicons name={Platform.OS === 'ios' ? `ios-pin${focused ? '' : ''}` : 'md-pin'}
                 size={24}
                 color={focused ? colors.tabIconSelected : colors.tabIconDefault}
@@ -53,7 +53,7 @@ class TeamEditorMap extends Component {
         this._removeMarker = this._removeMarker.bind(this);
         this._removeLastMarker = this._removeLastMarker.bind(this);
 
-        const { locations } = this.props;
+        const {locations} = this.props;
 
         // if there are pins on the map, set initial location where the first pin is, otherwise device location will be set on componentWillMount
         const initialMapLocation = locations && locations.length > 0 ? {
@@ -143,20 +143,20 @@ class TeamEditorMap extends Component {
     }
 
     render() {
-        const { locations, otherCleanAreas } = this.props;
+        const {locations, otherCleanAreas} = this.props;
 
         // const otherTeamsLocationImage = require('../../assets/images/flag.png');
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
                 <View style={defaultStyles.frame}>
-                    <View style={[styles.infoBlockContainer, { height: '98%' }]}>
-                        <Text style={[styles.statusBar, { maxHeight: 63 }]}>
+                    <View style={[styles.infoBlockContainer, {height: '98%'}]}>
+                        <Text style={[styles.statusBar, {maxHeight: 63}]}>
                             Place a marker where you want your team to work.
                             Other markers are areas claimed by other teams.
                         </Text>
-                        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'red' }}>
-                            <MapView style={{ flex: 1 }}
+                        <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
+                            <MapView style={{flex: 1}}
                                 initialRegion={this.state.initialMapLocation}
                                 onPress={this._handleMapClick}>
                                 {this.props.locations.length > 0 && locations.map((marker, index) => (
@@ -203,7 +203,7 @@ function mapStateToProps(state) {
             title: `${team.name}`,
             description: 'claimed this area'
         }))), []);
-    return { selectedTeam, locations, otherCleanAreas };
+    return {selectedTeam, locations, otherCleanAreas};
 }
 
 function mapDispatchToProps(dispatch) {

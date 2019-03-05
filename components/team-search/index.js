@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -86,16 +83,17 @@ class SearchItem extends Component {
     }
 }
 
+type Props = {
+    actions: Object,
+    closeModal: () => void;
+    teamMembers: Object,
+    teams:Object,
+    navigation: Object,
+    searchResults: Array<Object>,
+    currentUser: Object
+};
 
-class TeamSearch extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object,
-        navigation: PropTypes.object,
-        searchResults: PropTypes.array,
-        currentUser: PropTypes.object
-    };
+class TeamSearch extends Component<Props> {
 
     static navigationOptions = {
         title: 'Find a Team'

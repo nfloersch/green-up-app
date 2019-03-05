@@ -28,7 +28,7 @@ service cloud.firestore {
 
     // True if user is invited to the team.
     function isInvited(teamId){
-    	return exists(/databases/$(database)/documents/teams/$(teamId)/invitations/$(request.auth.email));
+    	return exists(/databases/$(database)/documents/invitations/$(request.auth.email.lower())/teams/$(teamId));
     }
 
     match /invitations/{email} {
