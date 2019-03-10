@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert} from 'react-native';

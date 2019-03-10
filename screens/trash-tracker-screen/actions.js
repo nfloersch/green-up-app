@@ -21,7 +21,7 @@ export function locationUpdated(location) {
 }
 
 
-export function toggleTrashData(toggle, value){
+export function toggleTrashData(toggle, value) {
     return (dispatch) => {
         dispatch({type:types.TOGGLE_TRASH_DATA, toggle, value});
     };

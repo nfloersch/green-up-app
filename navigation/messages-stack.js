@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React from 'react';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import NewMessageScreen from '../screens/new-message-screen';

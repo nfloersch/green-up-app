@@ -1,8 +1,4 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
 import React, {Component} from 'react';
 import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
 import {connect} from 'react-redux';

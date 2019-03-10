@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
@@ -30,10 +27,6 @@ class CreateTrashDrop extends Component {
         showFirstButton: PropTypes.bool
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
 
         const saveTrashDrop = () => {
@@ -42,6 +35,7 @@ class CreateTrashDrop extends Component {
             } else {
                 this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.props.drop, {location: this.props.location.coords})));
             }
+
 
             this.props.close();
         };

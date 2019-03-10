@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Image, Text, ScrollView, View} from 'react-native';
@@ -27,10 +24,6 @@ class MessageDetailsScreen extends Component {
     static navigationOptions = {
         title: 'Message Details'
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const message = this.props.messages[this.props.navigation.state.params.messageId];

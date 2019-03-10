@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 
 import {
@@ -210,7 +207,7 @@ class NewTeam extends Component<Props> {
         const hour = orig[0];
         const hourNum = parseInt(hour, 10);
         const ampm = hourNum > 11 ? 'PM' : 'AM';
-        const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour;
+        const hr = hour[0] === '0' ? hour[1] : hourNum > 12 ? hourNum - 12 : hour; // TODO: Refactor this nested ternary :-(
         return `${hr}:${orig[1]} ${ampm}`;
     };
 

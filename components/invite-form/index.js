@@ -1,10 +1,5 @@
-// @Flow
+// @flow
 
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
 import React, {Component} from 'react';
 import {
     Alert,
