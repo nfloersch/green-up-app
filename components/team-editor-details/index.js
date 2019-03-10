@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {
     Alert,
     KeyboardAvoidingView,
@@ -21,7 +20,7 @@ import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
-// import {vermontTowns} from '../../libs/vermont-towns';
+import moment from 'moment';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import * as colors from '../../styles/constants';
@@ -46,15 +45,17 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class TeamEditorDetails extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        navigation: PropTypes.any,
-        selectedTeam: PropTypes.object,
-        screenProps: PropTypes.object,
-        locations: PropTypes.array,
-        vermontTowns: PropTypes.array
-    };
+type Props = {
+    actions: Object,
+    eventSettings: Object,
+    navigation: Object,
+    selectedTeam: Object,
+    screenProps: Object,
+    locations: Array<Object>,
+    vermontTowns: Array<Object>
+};
+
+class TeamEditorDetails extends Component<Props> {
 
     static navigationOptions = {
         title: 'Team Details',
@@ -176,7 +177,7 @@ class TeamEditorDetails extends Component {
             }
         ];
 
-        const {selectedTeam} = this.props;
+        const {selectedTeam, eventSettings} = this.props;
 
         // DateTimePicker
         const dateIsSelected = selectedTeam.date === null;
@@ -240,7 +241,7 @@ class TeamEditorDetails extends Component {
                             <Autocomplete
                                 inputContainerStyle={{borderColor: '#000'}}
                                 data={query.length > 0 &&
-                                      comp(query, towns[0] || '') ? [] : towns}
+                                comp(query, towns[0] || '') ? [] : towns}
                                 defaultValue={this.state.town || ''}
                                 onChangeText={text => this.setState({query: text, town: text})}
                                 renderItem={town => (
@@ -267,8 +268,12 @@ class TeamEditorDetails extends Component {
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Date</Text>
-                            <Text style={[styles.alertInfo, {textAlign:'left', padding: 5}]}>
-                                Saturday, May 5th, 2019 is the official Green Up Day, but teams may choose to work up to one week before or after.
+                            <Text style={[styles.alertInfo, {textAlign: 'left', padding: 5}]}>
+
+                                {
+                                    `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
+                                    'but teams may choose to work up to one week before or after.'
+                                }
                             </Text>
                             <View>
                                 <TouchableOpacity onPress={this.showDatePicker}>
@@ -357,7 +362,8 @@ const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam || Team.create({});
     const locations = state.teams.locations;
     const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
-    return {selectedTeam, locations, vermontTowns};
+    const eventSettings = state.about || {};
+    return {selectedTeam, locations, vermontTowns, eventSettings};
 };
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
