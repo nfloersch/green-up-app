@@ -36,10 +36,10 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class MemberItem extends Component {
-    static propTypes = {
-        item: Object
-    };
+
+type MProps = {item: Object}
+
+class MemberItem extends Component<MProps> {
 
     render() {
         const item = this.props.item;
