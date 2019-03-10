@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import * as actions from './actions';
+import Anchor from '../../components/anchor'
 import {defaultStyles} from '../../styles/default-styles';
 
 const myStyles = {};
@@ -37,7 +38,8 @@ class About extends Component<Props> {
     }
 
     render() {
-        const {eventDescription, faqs, eventName, eventDate} = this.props;
+        const {eventDescription, faqs, eventName, eventDate, contactUs} = this.props;
+
         return (
             <View style={styles.frame}>
                 <ScrollView style={styles.scroll}>
@@ -65,6 +67,18 @@ class About extends Component<Props> {
                             }
                         </View>
                     </View>
+                    <View style={styles.infoBlockContainer}>
+                        <Text style={styles.infoBlockHeader}>Contact Us</Text>
+                        <View style={styles.infoBlock}>
+                            <Text style={[styles.textDark, {fontSize: 18}]}>{contactUs.fullName}</Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>Phone: <Anchor style={[styles.textDark, {fontSize: 16, textDecorationLine: 'underline'}]} href={"tel:" + contactUs.phoneNumber}>{contactUs.phoneNumber}</Anchor></Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>Email: <Anchor style={[styles.textDark, {fontSize: 16, textDecorationLine: 'underline'}]} href={"mailto:" + contactUs.email}>{contactUs.email}</Anchor></Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>By mail: </Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>{contactUs.fullName}</Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>{contactUs.addressLine1}</Text>
+                            <Text style={[styles.textDark, {fontSize: 16}]}>{contactUs.addressLine2}</Text>
+                        </View>
+                    </View>
                 </ScrollView>
             </View>
         );
@@ -76,7 +90,8 @@ const mapStateToProps = state => {
     const eventDescription = state.about.description || '';
     const faqs = state.about.faqs || [];
     const eventName = state.about.name;
-    return {eventDate, eventDescription, eventName, faqs};
+    const contactUs = state.about.contactUs;
+    return {eventDate, eventDescription, eventName, faqs, contactUs};
 
 };
 
