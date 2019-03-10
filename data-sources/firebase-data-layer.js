@@ -350,7 +350,7 @@ export async function facebookAuth(token) {
     // Sign in with credential from the Facebook user.
     return firebase
         .auth()
-        .signInAndRetrieveDataWithCredential(credential)
+        .signInWithCredential(credential)
         .then(user => {
             const {uid, email, displayName, photoURL} = user;
             db.collection('profiles').doc(uid).get().then(
@@ -367,7 +367,7 @@ export async function facebookAuth(token) {
 export async function googleAuth(token) {
     // Build Firebase credential with the Google access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
-    return firebase.auth().signInAndRetrieveDataWithCredential(credential)
+    return firebase.auth().signInWithCredential(credential)
         .then(user => {
             const {uid, email, displayName, photoURL} = user;
             db.collection('profiles').doc(uid).get().then(
