@@ -1,18 +1,15 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
-import React, { Component } from 'react';
+// @flow
+
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity, StyleSheet, Linking, ScrollView } from 'react-native';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {Text, View, TouchableOpacity, StyleSheet, Linking, ScrollView} from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import * as actions from '../login-screen/actions';
-import { defaultStyles } from '../../styles/default-styles';
+import {defaultStyles} from '../../styles/default-styles';
 
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 
 const myStyles = {};
 
@@ -30,14 +27,10 @@ class MenuScreen extends Component {
         title: 'Menu'
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <View style={styles.frame}>
-                <ScrollView style={[styles.scroll, { paddingTop: 20, paddingLeft: 20, paddingRight: 20 }]}>
+                <ScrollView style={[styles.scroll, {paddingTop: 20, paddingLeft: 20, paddingRight: 20}]}>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
@@ -84,12 +77,11 @@ class MenuScreen extends Component {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                          if(Platform.OS == 'ios'){
-                            Linking.openURL(APP_STORE_LINK);
-                          }
-                          else{
-                            Linking.openURL(PLAY_STORE_LINK);
-                          }
+                            if(Platform.OS === 'ios') {
+                                Linking.openURL(APP_STORE_LINK);
+                            } else{
+                                Linking.openURL(PLAY_STORE_LINK);
+                            }
                         }}
                     >
                         <Text style={styles.buttonText}>Rate this App</Text>
@@ -100,7 +92,7 @@ class MenuScreen extends Component {
                     >
                         <Text style={styles.buttonText}>Log Out</Text>
                     </TouchableOpacity>
-                    <View style={{height: 20}}></View>
+                    <View style={{height: 20}} />
                 </ScrollView>
             </View >
         );

@@ -27,7 +27,6 @@ export function readMessageSuccess(data) {
 
 export function readMessage(message, userID) {
     const _message = Object.assign({}, message, {read: true});
-    debugger;
     return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
         dispatch(readMessage(res));
     }).catch(error => {

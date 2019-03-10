@@ -1,7 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- */
+// @flow
+
 
 import React, {Component, Fragment} from 'react';
 import {bindActionCreators} from 'redux';

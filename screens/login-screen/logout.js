@@ -64,11 +64,8 @@ class ABienTot extends Component {
         drawerLabel: 'Logout',
         drawerIcon: () => (<MaterialCommunityIcons name='logout' size={24} color='green'/>)
     };
-    constructor(props) {
-        super(props);
-    }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.actions.logout();
     }
     render() {
@@ -78,13 +75,13 @@ class ABienTot extends Component {
                     height: 120,
                     width: 120
                 }}/>
-                 <Text style={styles.welcome}>Bye Bye</Text>
+                <Text style={styles.welcome}>Bye Bye</Text>
             </View>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {session: state.login.session};
 }
 function mapDispatchToProps(dispatch) {

@@ -17,7 +17,6 @@ import IOSCheckBox from 'react-native-checkbox';
 
 import * as actions from './actions';
 import TeamMember from '../../models/team-member';
-// import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 import {isValidEmail, isInTeam} from '../../libs/validators';
 

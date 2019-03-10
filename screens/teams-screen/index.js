@@ -109,12 +109,7 @@ class TeamsScreen extends Component<Props> {
     }
 
     toTeamDetail(team: Object, status: string): () => void {
-        // const nextScreen = {
-        //     [TeamMember.memberStatuses.INVITED]: 'TeamInvitationDetails',
-        //     [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
-        //     [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
-        //     [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
-        // };
+
         return () => {
 
             const _nextScreen = {
@@ -192,7 +187,6 @@ class TeamsScreen extends Component<Props> {
     render() {
         const _closeModal = () => this.setState({openModal: 'none'});
         const {teams, teamStati, user} = this.props;
-        // const user = this.props.currentUser;
         const teamKeys = Object.keys((user.teams || {}));
         const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
         const invitedTeams = invitedKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted

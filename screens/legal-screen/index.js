@@ -1,8 +1,5 @@
-/**
- * GreenUpVermont React Native App
- * https://github.com/johnneed/GreenUpVermont
- * @flow
- */
+// @flow
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
@@ -329,6 +326,4 @@ const mapStateToProps = state => {
     return {profile, currentUser};
 };
 
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LegalScreen);
+export default connect(mapStateToProps)(LegalScreen);

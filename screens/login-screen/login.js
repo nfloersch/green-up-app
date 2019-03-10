@@ -78,18 +78,16 @@ class Login extends Component {
         title: 'Log In'
     };
 
-    constructor(props) {
-        super(props);
-    }
-
-
     componentWillReceiveProps(nextProps) {
         if (!!nextProps.loginError) {
             Alert.alert(
                 '',
                 (nextProps.loginError.message || 'Login Failed'),
                 [
-                    {text: 'OK', onPress: () => {}}
+                    {
+                        text: 'OK', onPress: () => {
+                        }
+                    }
                 ],
                 {cancelable: false}
             );
