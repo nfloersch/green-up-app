@@ -71,10 +71,11 @@ function sendInvitationEmailSendGrid(invitation) {
  * User setup after an invitation create
  * Sends a invitation email to an invited user.
  */
-exports.onInvitationCreate = functions.firestore.document('invitations/{pushId}/{invitationId}').onCreate((event) => {
-    const invitation = event.data.val();
-    return sendInvitationEmailSendGrid(invitation);
-});
+exports.onInvitationCreate = functions.firestore.document('invitations/{pushId}/{invitationId}').onCreate(
+    (snap, context) => {
+        const invitation = snap.data();
+        return sendInvitationEmailSendGrid(invitation);
+    });
 
 exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDelete((event) => {
     const db = admin.database();
