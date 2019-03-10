@@ -19,19 +19,18 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 const sgMail = require('@sendgrid/mail');
 
-const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.
 const APP_NAME = 'Green Up Vermont';
 
 
-function sendInvitationEmailSendGrid(invitation) {
-    sgMail.setApiKey(SENDGRID_API_KEY);
+function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
+    sgMail.setApiKey(apiKey);
     sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
 
     const teamMember = invitation.teamMember;
     const team = invitation.team || {};
-    const to = teamMember.email.trim().toLowerCase();
+    const to = email;
     const toName = teamMember.displayName;
     const subject = 'You have been invited to Green Up Day';
     const sender = invitation.sender.displayName;
@@ -71,10 +70,14 @@ function sendInvitationEmailSendGrid(invitation) {
  * User setup after an invitation create
  * Sends a invitation email to an invited user.
  */
-exports.onInvitationCreate = functions.firestore.document('invitations/{pushId}/{invitationId}').onCreate(
+
+exports.onInvitationCreate = functions.firestore.document('invitations/{email}/teams/{teamId}').onCreate(
     (snap, context) => {
         const invitation = snap.data();
-        return sendInvitationEmailSendGrid(invitation);
+        const email = context.params.email;
+        const teamId = context.params.teamId;
+        const apiKey = functions.config().sendgrid.apikey;
+        return sendInvitationEmailSendGrid(apiKey, invitation, email, teamId);
     });
 
 exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDelete((event) => {
