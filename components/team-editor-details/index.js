@@ -132,7 +132,6 @@ class TeamEditorDetails extends Component<Props> {
         selectedTeam.locations = this.props.locations;
         selectedTeam.town = this.state.town;
         this.props.actions.saveTeam(selectedTeam, selectedTeam.id);
-        this.props.screenProps.stacknav.goBack();
     };
 
     deleteTeam = () => {

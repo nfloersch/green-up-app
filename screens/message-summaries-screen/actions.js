@@ -35,6 +35,7 @@ export function readMessage(message, userID) {
 }
 
 export function selectTeamById(teamId: string) {
+    debugger;
     return {type: types.SELECT_TEAM_BY_ID, teamId};
 }
 
