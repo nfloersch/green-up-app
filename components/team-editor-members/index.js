@@ -8,6 +8,8 @@ import * as colors from '../../styles/constants';
 import {defaultStyles} from '../../styles/default-styles';
 import InviteContacts from '../invite-contacts';
 import InviteForm from '../invite-form';
+import TeamMemberDetails from '../../components/team-member-details';
+
 
 const myStyles = {
     member: {
@@ -111,6 +113,7 @@ class TeamEditorMembers extends Component<Props, State> {
 
     _toMemberDetails(teamId: string, membershipId: string) {
         return () => {
+            debugger;
             this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
         };
     }
@@ -163,6 +166,7 @@ class TeamEditorMembers extends Component<Props, State> {
                             this.setState({isModalVisible: false});
                         }}/>
                     </View>
+                    <TeamMemberDetails/>
                 </Modal>
             </View>
         );

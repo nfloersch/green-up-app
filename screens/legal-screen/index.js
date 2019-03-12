@@ -1,22 +1,22 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
-
 import {defaultStyles} from '../../styles/default-styles';
 import User from '../../models/user';
 import {removeNulls} from '../../libs/remove-nulls';
 
 const styles = StyleSheet.create(defaultStyles);
 
-class LegalScreen extends Component {
-    static propTypes = {
-        currentUser: PropTypes.object,
-        profile: PropTypes.object,
-        navigation: PropTypes.object
-    };
+type Props = {
+    currentUser: Object,
+    profile: Object,
+    navigation: Object
+};
+
+class LegalScreen extends Component<Props> {
+
 
     static navigationOptions = {
         title: 'Privacy Policy'

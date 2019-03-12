@@ -145,8 +145,9 @@ class TeamEditorDetails extends Component<Props> {
                 },
                 {
                     text: 'Yes', onPress: () => {
-                        this.props.screenProps.stacknav.goBack();
+                        // this.props.screenProps.stacknav.goBack();
                         this.props.actions.deleteTeam(this.props.selectedTeam.id);
+                        // We should do something here?
                     }
                 }
             ],
