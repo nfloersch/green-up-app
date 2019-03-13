@@ -72,7 +72,7 @@ class MemberItem extends Component<MProps> {
 
 
 type Props = {
-    teamMembers: Object,
+    members: Object,
     team: Object,
     selectedTeam: Object,
     screenProps: Object
@@ -84,7 +84,6 @@ type State = {
 }
 
 class TeamEditorMembers extends Component<Props, State> {
-
 
     static navigationOptions = {
         title: 'Team Members',
@@ -186,6 +185,7 @@ class TeamEditorMembers extends Component<Props, State> {
 const mapStateToProps = (state) => {
     const team = state.teams.selectedTeam || {};
     const members = (state.teams.teamMembers || {})[team.id];
+    debugger;
     return ({team, members});
 };
 
