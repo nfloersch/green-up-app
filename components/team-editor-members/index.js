@@ -39,7 +39,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 
-type MProps = {item: Object}
+type MProps = { item: Object }
 
 class MemberItem extends Component<MProps> {
 
@@ -111,21 +111,22 @@ class TeamEditorMembers extends Component<Props, State> {
 
     };
 
-    _toMemberDetails(teamId: string, membershipId: string) {
+    _toMemberDetails(team: Object, member: Object) {
         return () => {
-            debugger;
-            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
+            this.setState({isModalVisible: true, team, selectedMember: member});
         };
     }
 
     render() {
-        const teamId = this.props.selectedTeam.id;
-        const members = this.props.teamMembers[teamId] || {};
+        const {selectedMember} = this.state;
+        const team = this.props.selectedTeam;
+        debugger;
+        const members = team.members || {};
         const memberButtons = Object.keys(members)
-            .map(membershipId => ({
-                key: members[membershipId].uid || members[membershipId].email,
-                ...members[membershipId],
-                toDetail: this._toMemberDetails(teamId, membershipId)
+            .map(member => ({
+                key: member.uid || member.email,
+                ...member,
+                toDetail: this._toMemberDetails(member)
             }));
 
         return (
@@ -159,6 +160,8 @@ class TeamEditorMembers extends Component<Props, State> {
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
+                    onRequestClose={() => {
+                    }}
                     transparent={false}
                     visible={this.state.isModalVisible}>
                     <View>
@@ -166,7 +169,11 @@ class TeamEditorMembers extends Component<Props, State> {
                             this.setState({isModalVisible: false});
                         }}/>
                     </View>
-                    <TeamMemberDetails/>
+                    <TeamMemberDetails
+                        closeModal={() => this.setState({isModalVisible: false})}
+                        team={team}
+                        member = {selectedMember}
+                    />
                 </Modal>
             </View>
         );

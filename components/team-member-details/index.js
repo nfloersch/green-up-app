@@ -28,8 +28,10 @@ const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
     actions: Object,
+    closeModal: ()=>void,
     messages: Object,
-    navigation: Object,
+    membershipId: string,
+    team: Object,
     profile: Object,
     teamMembers: Object,
     teams: Object,
@@ -47,25 +49,13 @@ export default class TeamMemberDetails extends Component<Props> {
         this.state = Object.assign({}, props.profile);
     }
 
-
-    componentWillReceiveProps(nextProps: Object) {
-        const {membershipId, teamId} = nextProps.navigation.state.params;
-        const member = (nextProps.teamMembers[teamId] || {})[membershipId];
-        if (!member) {
-            nextProps.navigation.goBack();
-        }
-        if (JSON.stringify(nextProps.profile) !== JSON.stringify(this.props.profile)) {
-            this.setState(nextProps.profile);
-        }
-    }
-
     _updateTeamMember(teamId: string, member: Object, currentUserId) {
         return (newStatus: Object) => {
             const messages = this.props.messages;
             const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === member.uid);
             messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
             const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
-            this.props.navigation.goBack();
+            this.props.closeModal();
             this.props.actions.updateTeamMember(teamId, _member, newStatus);
         };
     }
@@ -82,7 +72,7 @@ export default class TeamMemberDetails extends Component<Props> {
                     },
                     {
                         text: 'Yes', onPress: () => {
-                            this.props.navigation.goBack();
+                            this.props.closeModal();
                             this.props.actions.revokeInvitation(teamId, membershipId);
                         }
                     }
@@ -110,7 +100,7 @@ export default class TeamMemberDetails extends Component<Props> {
                             const messages = this.props.messages;
                             const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
                             messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-                            this.props.navigation.goBack();
+                            this.props.closeModal();
                             return this.props.actions.removeTeamMember(teamId, user);
                         }
                     }
@@ -122,20 +112,16 @@ export default class TeamMemberDetails extends Component<Props> {
     }
 
     _cancel() {
-        this.setState(this.props.profile, () => {
-            this.props.navigation.goBack();
-        });
+        this.props.closeModal();
     }
 
 
     render() {
-        const {membershipId, teamId} = this.props.navigation.state.params;
-        const member = (this.props.teamMembers[teamId] || {})[membershipId] || {};
-        const avatar = (member || {}).photoURL;
-        const isOwner = ((this.props.teams[teamId] || {}).owner || {}).uid === this.props.currentUserId;
+        const {team, member, membershipStatus} = this.props;
 
-        function getButtons(teamMember: Object = {}) {
-            switch (teamMember.memberStatus) {
+
+        function getButtons(teamStatus:string, teamId, teamMember) {
+            switch (teamStatus) {
                 case status.OWNER :
                     return null;
                 case status.REQUEST_TO_JOIN :
@@ -145,14 +131,14 @@ export default class TeamMemberDetails extends Component<Props> {
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}>
+                                        onPress={this._removeTeamMember()}>
                                         <Text style={styles.headerButtonText}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={() => this._updateTeamMember(teamId, member, this.props.currentUserId)(status.ACCEPTED)}>
+                                        onPress={() => this._updateTeamMember()}>
                                         <Text style={styles.headerButtonText}>{'Add to Team'}</Text>
                                     </TouchableHighlight>
                                 </View>
@@ -164,7 +150,7 @@ export default class TeamMemberDetails extends Component<Props> {
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
                                 style={styles.headerButton}
-                                onPress={this._removeTeamMember(teamId, member, this.props.currentUserId)}
+                                onPress={this._removeTeamMember()}
                             >
                                 <Text style={styles.headerButtonText}>{'Remove from Team'}</Text>
                             </TouchableHighlight>
@@ -175,7 +161,7 @@ export default class TeamMemberDetails extends Component<Props> {
                         <View style={styles.singleButtonHeader}>
                             <TouchableHighlight
                                 style={styles.headerButton}
-                                onPress={this._revokeInvitation(teamId, membershipId)}
+                                onPress={this._revokeInvitation()}
                             >
                                 <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
                             </TouchableHighlight>
@@ -186,8 +172,8 @@ export default class TeamMemberDetails extends Component<Props> {
             }
         }
 
-        function getStatus(teamMember: Object = {}, _isOwner: boolean) {
-            switch (teamMember.memberStatus) {
+        function getStatus(teamStatus: string) {
+            switch (membershipStatus) {
                 case status.OWNER :
                     return (
                         <View style={styles.statusBar}>
@@ -242,7 +228,7 @@ export default class TeamMemberDetails extends Component<Props> {
 
         return (
             <View style={styles.frame}>
-                {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}
+                {/*{isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}*/}
                 <ScrollView style={styles.scroll}>
                     <View style={styles.infoBlockContainer}>
                         <View style={styles.profileHeader}>
@@ -255,7 +241,7 @@ export default class TeamMemberDetails extends Component<Props> {
                             </Text>
                         </View>
                         <View>
-                            {getStatus.bind(this)(member, isOwner)}
+                            {/*{getStatus.bind(this)(member, isOwner)}*/}
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text
@@ -265,21 +251,6 @@ export default class TeamMemberDetails extends Component<Props> {
                     </View>
                 </ScrollView>
             </View>
-
         );
     }
 }
-
-// const mapStateToProps = state => {
-//     const messages = state.messages.messages || {};
-//     const teamMembers = state.teams.teamMembers || {};
-//     const teams = state.teams.teams || {};
-//     const currentUserId = state.login.user.uid;
-//     return {messages, teamMembers, teams, currentUserId};
-// };
-//
-// const mapDispatchToProps = dispatch => ({
-//     actions: bindActionCreators(actions, dispatch)
-// });
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberDetails);
