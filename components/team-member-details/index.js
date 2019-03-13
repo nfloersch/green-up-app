@@ -27,15 +27,13 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
-    actions: Object,
     closeModal: ()=>void,
     messages: Object,
     membershipId: string,
     team: Object,
     profile: Object,
     teamMembers: Object,
-    teams: Object,
-    currentUserId: string
+    teams: Object
 };
 
 
@@ -51,64 +49,64 @@ export default class TeamMemberDetails extends Component<Props> {
 
     _updateTeamMember(teamId: string, member: Object, currentUserId) {
         return (newStatus: Object) => {
-            const messages = this.props.messages;
-            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === member.uid);
-            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-            const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
-            this.props.closeModal();
-            this.props.actions.updateTeamMember(teamId, _member, newStatus);
+            // const messages = this.props.messages;
+            // const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === member.uid);
+            // messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
+            // const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
+            // this.props.closeModal();
+            // this.props.actions.updateTeamMember(teamId, _member, newStatus);
         };
     }
 
     _revokeInvitation(teamId: string, membershipId: string) {
         return () => {
-            Alert.alert(
-                'DANGER!',
-                'Are you sure you want to revoke this invitation?',
-                [
-                    {
-                        text: 'No', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {
-                        text: 'Yes', onPress: () => {
-                            this.props.closeModal();
-                            this.props.actions.revokeInvitation(teamId, membershipId);
-                        }
-                    }
-                ],
-                {cancelable: true}
-            );
-
-        };
+        //     Alert.alert(
+        //         'DANGER!',
+        //         'Are you sure you want to revoke this invitation?',
+        //         [
+        //             {
+        //                 text: 'No', onPress: () => {
+        //                 }, style: 'cancel'
+        //             },
+        //             {
+        //                 text: 'Yes', onPress: () => {
+        //                     this.props.closeModal();
+        //                     this.props.actions.revokeInvitation(teamId, membershipId);
+        //                 }
+        //             }
+        //         ],
+        //         {cancelable: true}
+        //     );
+        //
+        // };
     }
 
     _removeTeamMember(teamId: string, user: Object, currentUserId: string) {
         return () => {
-
-
-            Alert.alert(
-                'DANGER!',
-                'Are you sure you want to remove this team member?',
-                [
-                    {
-                        text: 'No', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {
-                        text: 'Yes', onPress: () => {
-                            const messages = this.props.messages;
-                            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
-                            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-                            this.props.closeModal();
-                            return this.props.actions.removeTeamMember(teamId, user);
-                        }
-                    }
-                ],
-                {cancelable: true}
-            );
-
-        };
+        //
+        //
+        //     Alert.alert(
+        //         'DANGER!',
+        //         'Are you sure you want to remove this team member?',
+        //         [
+        //             {
+        //                 text: 'No', onPress: () => {
+        //                 }, style: 'cancel'
+        //             },
+        //             {
+        //                 text: 'Yes', onPress: () => {
+        //                     const messages = this.props.messages;
+        //                     const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
+        //                     messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
+        //                     this.props.closeModal();
+        //                     return this.props.actions.removeTeamMember(teamId, user);
+        //                 }
+        //             }
+        //         ],
+        //         {cancelable: true}
+        //     );
+        //
+        // };
     }
 
     _cancel() {
@@ -234,7 +232,7 @@ export default class TeamMemberDetails extends Component<Props> {
                         <View style={styles.profileHeader}>
                             <Image
                                 style={{width: 50, height: 50}}
-                                source={{uri: avatar}}
+                                source={{uri: member.photoURL}}
                             />
                             <Text style={[styles.profileName, styles.heading]}>
                                 {`${member.displayName && member.displayName.trim() || member.email || ''}`}

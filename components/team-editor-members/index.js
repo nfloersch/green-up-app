@@ -73,13 +73,14 @@ class MemberItem extends Component<MProps> {
 
 type Props = {
     teamMembers: Object,
-    teams: Object,
+    team: Object,
     selectedTeam: Object,
     screenProps: Object
 };
 
 type State = {
-    isModalVisible: boolean
+    isModalVisible: boolean,
+    modalContent: Object
 }
 
 class TeamEditorMembers extends Component<Props, State> {
@@ -102,31 +103,41 @@ class TeamEditorMembers extends Component<Props, State> {
         this.state = {isModalVisible: false, modalContent: InviteForm};
     }
 
-    inviteContacts = () => {
-        this.setState({isModalVisible: true, modalContent: InviteContacts});
+    closeModal = () => {
+        this.setState({isModalVisible: false});
     };
 
-    inviteForm = () => {
-        this.setState({isModalVisible: true, modalContent: InviteForm});
-
+    inviteContacts = (team: Object) => () => {
+        this.setState({isModalVisible: true, modalContent: <InviteContacts closeModal={this.closeModal} team={team}/>});
     };
 
-    _toMemberDetails(team: Object, member: Object) {
+    inviteForm = (team: Object) => () => {
+        this.setState({isModalVisible: true, modalContent: <InviteForm closeModal={this.closeModal} team={team}/>});
+    };
+
+    toMemberDetails = (team: Object, member: Object) => {
+        const closeModal = this.closeModal;
         return () => {
-            this.setState({isModalVisible: true, team, selectedMember: member});
+            // this.setState(
+            //     {
+            //         isModalVisible: true,
+            //         modalContent: (
+            //             <TeamMemberDetails
+            //                 closeModal={closeModal}
+            //                 teamMember={member}
+            //             />
+            //         )
+            //     });
         };
-    }
+    };
 
     render() {
-        const {selectedMember} = this.state;
-        const team = this.props.selectedTeam;
-        debugger;
-        const members = team.members || {};
-        const memberButtons = Object.keys(members)
+        const {team, members} = this.props;
+        const memberButtons = Object.values(members)
             .map(member => ({
                 key: member.uid || member.email,
                 ...member,
-                toDetail: this._toMemberDetails(member)
+                toDetail: this.toMemberDetails(team, member)
             }));
 
         return (
@@ -160,32 +171,22 @@ class TeamEditorMembers extends Component<Props, State> {
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
-                    onRequestClose={() => {
-                    }}
+                    onRequestClose={() => {}}
                     transparent={false}
                     visible={this.state.isModalVisible}>
                     <View>
-                        <this.state.modalContent closeModal={() => {
-                            this.setState({isModalVisible: false});
-                        }}/>
+                        {this.state.modalContent}
                     </View>
-                    <TeamMemberDetails
-                        closeModal={() => this.setState({isModalVisible: false})}
-                        team={team}
-                        member = {selectedMember}
-                    />
                 </Modal>
             </View>
         );
     }
 }
 
-const mapStateToProps = (state) => (
-    {
-        teams: state.teams.teams,
-        selectedTeam: state.teams.selectedTeam,
-        teamMembers: state.teams.teamMembers
-    });
-
+const mapStateToProps = (state) => {
+    const team = state.teams.selectedTeam || {};
+    const members = (state.teams.teamMembers || {})[team.id];
+    return ({team, members});
+};
 
 export default connect(mapStateToProps)(TeamEditorMembers);
