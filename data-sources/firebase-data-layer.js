@@ -498,7 +498,9 @@ export function updateTeamMember(teamId: string, teamMember: TeamMember) {
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromProfile = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    return Promise.all([deleteFromTeam, deleteFromProfile]);
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
