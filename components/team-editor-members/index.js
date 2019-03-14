@@ -116,17 +116,18 @@ class TeamEditorMembers extends Component<Props, State> {
 
     toMemberDetails = (team: Object, member: Object) => {
         const closeModal = this.closeModal;
+        debugger;
         return () => {
-            // this.setState(
-            //     {
-            //         isModalVisible: true,
-            //         modalContent: (
-            //             <TeamMemberDetails
-            //                 closeModal={closeModal}
-            //                 teamMember={member}
-            //             />
-            //         )
-            //     });
+            this.setState(
+                {
+                    isModalVisible: true,
+                    modalContent: (
+                        <TeamMemberDetails
+                            closeModal={closeModal}
+                            teamMember={member}
+                        />
+                    )
+                });
         };
     };
 
@@ -185,7 +186,6 @@ class TeamEditorMembers extends Component<Props, State> {
 const mapStateToProps = (state) => {
     const team = state.teams.selectedTeam || {};
     const members = (state.teams.teamMembers || {})[team.id];
-    debugger;
     return ({team, members});
 };
 

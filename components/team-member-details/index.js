@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight} from 'react-native';
 import {getMemberIcon} from '../../libs/member-icons';
-import TeamMember from '../../models/team-member';
+// import TeamMember from '../../models/team-member';
 import * as status from '../../constants/team-member-statuses';
 import {defaultStyles} from '../../styles/default-styles';
 
@@ -32,7 +32,7 @@ type Props = {
     membershipId: string,
     team: Object,
     profile: Object,
-    teamMembers: Object,
+    teamMember: Object,
     teams: Object
 };
 
@@ -60,28 +60,29 @@ export default class TeamMemberDetails extends Component<Props> {
 
     _revokeInvitation(teamId: string, membershipId: string) {
         return () => {
-        //     Alert.alert(
-        //         'DANGER!',
-        //         'Are you sure you want to revoke this invitation?',
-        //         [
-        //             {
-        //                 text: 'No', onPress: () => {
-        //                 }, style: 'cancel'
-        //             },
-        //             {
-        //                 text: 'Yes', onPress: () => {
-        //                     this.props.closeModal();
-        //                     this.props.actions.revokeInvitation(teamId, membershipId);
-        //                 }
-        //             }
-        //         ],
-        //         {cancelable: true}
-        //     );
-        //
-        // };
+            //     Alert.alert(
+            //         'DANGER!',
+            //         'Are you sure you want to revoke this invitation?',
+            //         [
+            //             {
+            //                 text: 'No', onPress: () => {
+            //                 }, style: 'cancel'
+            //             },
+            //             {
+            //                 text: 'Yes', onPress: () => {
+            //                     this.props.closeModal();
+            //                     this.props.actions.revokeInvitation(teamId, membershipId);
+            //                 }
+            //             }
+            //         ],
+            //         {cancelable: true}
+            //     );
+            //
+            // };
+        };
     }
 
-    _removeTeamMember(teamId: string, user: Object, currentUserId: string) {
+    _removeTeamMember(teamId, user, currentUserId) {
         return () => {
         //
         //
@@ -106,7 +107,7 @@ export default class TeamMemberDetails extends Component<Props> {
         //         {cancelable: true}
         //     );
         //
-        // };
+        };
     }
 
     _cancel() {
@@ -115,7 +116,7 @@ export default class TeamMemberDetails extends Component<Props> {
 
 
     render() {
-        const {team, member, membershipStatus} = this.props;
+        const {team, teamMember, membershipStatus} = this.props;
 
 
         function getButtons(teamStatus:string, teamId, teamMember) {
@@ -170,7 +171,7 @@ export default class TeamMemberDetails extends Component<Props> {
             }
         }
 
-        function getStatus(teamStatus: string) {
+        function getStatus(teamMember: Object, teamStatus: string) {
             switch (membershipStatus) {
                 case status.OWNER :
                     return (
@@ -185,7 +186,7 @@ export default class TeamMemberDetails extends Component<Props> {
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View style={styles.statusBar}>
-                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, _isOwner)}
+                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, teamStatus === 'OWNER')}
                             <Text style={styles.statusBarText}>
                                 {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to
                                 join this team
@@ -226,25 +227,25 @@ export default class TeamMemberDetails extends Component<Props> {
 
         return (
             <View style={styles.frame}>
-                {/*{isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}*/}
+                {/* {isOwner ? getButtons.bind(this)(member) : (<View style={{height: 10}}/>)}*/}
                 <ScrollView style={styles.scroll}>
                     <View style={styles.infoBlockContainer}>
                         <View style={styles.profileHeader}>
                             <Image
                                 style={{width: 50, height: 50}}
-                                source={{uri: member.photoURL}}
+                                source={{uri: teamMember.photoURL}}
                             />
                             <Text style={[styles.profileName, styles.heading]}>
-                                {`${member.displayName && member.displayName.trim() || member.email || ''}`}
+                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email || ''}`}
                             </Text>
                         </View>
                         <View>
-                            {/*{getStatus.bind(this)(member, isOwner)}*/}
+                            {/* {getStatus.bind(this)(member, isOwner)}*/}
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text
-                                style={styles.labelDark}>{`About ${member.displayName && member.displayName.trim() || ''}: `}</Text>
-                            <Text style={{marginTop: 5}}>{member.bio || ''}</Text>
+                                style={styles.labelDark}>{`About ${teamMember.displayName && teamMember.displayName.trim() || ''}: `}</Text>
+                            <Text style={{marginTop: 5}}>{teamMember.bio || ''}</Text>
                         </View>
                     </View>
                 </ScrollView>

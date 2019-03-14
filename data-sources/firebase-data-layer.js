@@ -431,7 +431,6 @@ export function sendTeamMessage(teamId, message) {
 
 export function updateMessage(message: Object, userId: string) {
     const newMessage = deconstruct({...message, sender: {...message.sender}});
-    debugger;
     return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
 }
 
