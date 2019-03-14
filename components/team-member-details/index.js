@@ -28,10 +28,8 @@ const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
     closeModal: ()=>void,
-    messages: Object,
-    membershipId: string,
     team: Object,
-    profile: Object,
+    removeTeamMember: ()=>void,
     teamMember: Object,
     teams: Object
 };
@@ -44,7 +42,6 @@ export default class TeamMemberDetails extends Component<Props> {
         this._updateTeamMember = this._updateTeamMember.bind(this);
         this._removeTeamMember = this._removeTeamMember.bind(this);
         this._cancel = this._cancel.bind(this);
-        this.state = Object.assign({}, props.profile);
     }
 
     _updateTeamMember(teamId: string, member: Object, currentUserId) {
@@ -82,31 +79,25 @@ export default class TeamMemberDetails extends Component<Props> {
         };
     }
 
-    _removeTeamMember(teamId, user, currentUserId) {
+    _removeTeamMember() {
         return () => {
-            //
-            //
-            //     Alert.alert(
-            //         'DANGER!',
-            //         'Are you sure you want to remove this team member?',
-            //         [
-            //             {
-            //                 text: 'No', onPress: () => {
-            //                 }, style: 'cancel'
-            //             },
-            //             {
-            //                 text: 'Yes', onPress: () => {
-            //                     const messages = this.props.messages;
-            //                     const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === user.uid);
-            //                     messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-            //                     this.props.closeModal();
-            //                     return this.props.actions.removeTeamMember(teamId, user);
-            //                 }
-            //             }
-            //         ],
-            //         {cancelable: true}
-            //     );
-            //
+            Alert.alert(
+                'DANGER!',
+                'Are you sure you want to remove this team member?',
+                [
+                    {
+                        text: 'No', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {
+                        text: 'Yes', onPress: () => {
+                            this.props.closeModal();
+                            this.props.removeTeamMember();
+                        }
+                    }
+                ],
+                {cancelable: true}
+            );
         };
     }
 
@@ -117,7 +108,7 @@ export default class TeamMemberDetails extends Component<Props> {
     render() {
         const {team, teamMember, closeModal} = this.props;
 
-        const getButtons = (_team: Object, _teamMember: Object, closeModal: ()=> void) => {
+        const getButtons = (_team: Object, _teamMember: Object, _closeModal: ()=> void) => {
             switch (_teamMember.memberStatus) {
                 case status.REQUEST_TO_JOIN :
                     return (
@@ -141,7 +132,7 @@ export default class TeamMemberDetails extends Component<Props> {
                             <View style={styles.buttonBarButton}>
                                 <TouchableHighlight
                                     style={styles.headerButton}
-                                    onPress={closeModal}
+                                    onPress={_closeModal}
                                 >
                                     <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                                 </TouchableHighlight>
@@ -163,7 +154,7 @@ export default class TeamMemberDetails extends Component<Props> {
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={closeModal}
+                                        onPress={_closeModal}
                                     >
                                         <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                                     </TouchableHighlight>
@@ -184,7 +175,7 @@ export default class TeamMemberDetails extends Component<Props> {
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={closeModal}
+                                        onPress={_closeModal}
                                     >
                                         <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                                     </TouchableHighlight>
@@ -198,7 +189,7 @@ export default class TeamMemberDetails extends Component<Props> {
                             <View style={styles.buttonBarButton}>
                                 <TouchableHighlight
                                     style={styles.headerButton}
-                                    onPress={closeModal}
+                                    onPress={_closeModal}
                                 >
                                     <Text style={styles.headerButtonText}>{'Cancel'}</Text>
                                 </TouchableHighlight>
