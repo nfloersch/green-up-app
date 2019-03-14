@@ -116,7 +116,6 @@ class TeamEditorMembers extends Component<Props, State> {
 
     toMemberDetails = (team: Object, member: Object) => {
         const closeModal = this.closeModal;
-        debugger;
         return () => {
             this.setState(
                 {
