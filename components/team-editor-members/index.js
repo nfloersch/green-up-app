@@ -111,6 +111,8 @@ class TeamEditorMembers extends Component<Props, State> {
     toMemberDetails = (team: Object, member: Object) => {
         const closeModal = this.closeModal;
         const removeTeamMember = partial(this.props.actions.removeTeamMember, [team.id, member]);
+        const revokeInvitation = partial(this.props.actions.revokeInvitation, [(team.id, member.uid]);
+        const updateTeamMember = partial(this.props.actions.updateTeamMember, [team.id, member]);
         return () => {
             this.setState(
                 {
@@ -119,6 +121,8 @@ class TeamEditorMembers extends Component<Props, State> {
                         <TeamMemberDetails
                             closeModal={closeModal}
                             removeTeamMember={removeTeamMember}
+                            revokeInvitation={revokeInvitation}
+                            updateTeamMember = {updateTeamMember}
                             teamMember={member}
                         />
                     )

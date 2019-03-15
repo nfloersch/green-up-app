@@ -27,11 +27,13 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
-    closeModal: ()=>void,
+    closeModal: () => void,
     team: Object,
-    removeTeamMember: ()=>void,
+    revokeInvitation: () => void,
+    removeTeamMember: () => void,
     teamMember: Object,
-    teams: Object
+    teams: Object,
+    updateTeamMember: () => void,
 };
 
 
@@ -44,40 +46,36 @@ export default class TeamMemberDetails extends Component<Props> {
         this._cancel = this._cancel.bind(this);
     }
 
-    _updateTeamMember(teamId: string, member: Object, currentUserId) {
-        return (newStatus: Object) => {
-            // const messages = this.props.messages;
-            // const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === 'REQUEST_TO_JOIN' && messages[id].sender.uid === member.uid);
-            // messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-            // const _member = TeamMember.create(Object.assign({}, member, (newStatus ? {memberStatus: newStatus} : {})));
-            // this.props.closeModal();
-            // this.props.actions.updateTeamMember(teamId, _member, newStatus);
+    _updateTeamMember(newStatus) {
+        return () => {
+            this.props.closeModal();
+            this.props.updateTeamMember(newStatus);
         };
     }
 
-    _revokeInvitation(teamId: string, membershipId: string) {
+    _revokeInvitation() {
         return () => {
-            //     Alert.alert(
-            //         'DANGER!',
-            //         'Are you sure you want to revoke this invitation?',
-            //         [
-            //             {
-            //                 text: 'No', onPress: () => {
-            //                 }, style: 'cancel'
-            //             },
-            //             {
-            //                 text: 'Yes', onPress: () => {
-            //                     this.props.closeModal();
-            //                     this.props.actions.revokeInvitation(teamId, membershipId);
-            //                 }
-            //             }
-            //         ],
-            //         {cancelable: true}
-            //     );
-            //
-            // };
+            Alert.alert(
+                'DANGER!',
+                'Are you sure you want to revoke this invitation?',
+                [
+                    {
+                        text: 'No', onPress: () => {
+                        }, style: 'cancel'
+                    },
+                    {
+                        text: 'Yes', onPress: () => {
+                            this.props.closeModal();
+                            this.props.revokeInvitation();
+                        }
+                    }
+                ],
+                {cancelable: true}
+            );
+
         };
     }
+
 
     _removeTeamMember() {
         return () => {
@@ -108,7 +106,7 @@ export default class TeamMemberDetails extends Component<Props> {
     render() {
         const {team, teamMember, closeModal} = this.props;
 
-        const getButtons = (_team: Object, _teamMember: Object, _closeModal: ()=> void) => {
+        const getButtons = (_team: Object, _teamMember: Object, _closeModal: () => void) => {
             switch (_teamMember.memberStatus) {
                 case status.REQUEST_TO_JOIN :
                     return (
