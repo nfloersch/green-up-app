@@ -14,6 +14,7 @@ import 'firebase/firestore';
 import {curry} from 'ramda';
 import * as messageTypes from '../constants/message-types';
 import TrashDrop from '../models/trash-drop';
+import * as teamStatuses from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -515,6 +516,14 @@ export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
     return db.collection(`teams/${teamId}/members`).doc(_membershipId).delete()
         .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
+}
+
+export function addTeamReques(teamId: string, user: Object) {
+    const email = user.email.toLowerCase().trim();
+    const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: teamStatuses.REQUEST_TO_JOIN}));
+    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
+    return Promise.all([teamRequest, addTeamToProfile]).then(() => removeInvitation(teamId, email));
 }
 
 /** *************** TRASH DROPS *************** **/
