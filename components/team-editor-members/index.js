@@ -142,7 +142,7 @@ class TeamEditorMembers extends Component<Props, State> {
                         <View style={styles.buttonBarButton}>
                             <TouchableOpacity
                                 style={styles.headerButton}
-                                onPress={this.inviteForm}>
+                                onPress={this.inviteForm(team)}>
                                 <Text style={styles.headerButtonText}>
                                     {'Invite A Friend'}
                                 </Text>
@@ -151,7 +151,7 @@ class TeamEditorMembers extends Component<Props, State> {
                         <View style={styles.buttonBarButton}>
                             <TouchableOpacity
                                 style={styles.headerButton}
-                                onPress={this.inviteContacts}>
+                                onPress={this.inviteContacts(team)}>
                                 <Text style={styles.headerButtonText}>
                                     {'From Contacts'}
                                 </Text>
