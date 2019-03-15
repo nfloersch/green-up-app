@@ -416,6 +416,7 @@ export function updateEmail(email: string) {
 
 export function sendUserMessage(userId, message) {
     const _message = deconstruct(stringifyDates(message));
+    debugger;
     return db.collection(`messages/${userId}/messages`).add(_message);
 }
 
