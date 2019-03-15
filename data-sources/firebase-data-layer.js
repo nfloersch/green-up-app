@@ -417,7 +417,6 @@ export function updateEmail(email: string) {
 
 export function sendUserMessage(userId, message) {
     const _message = deconstruct(stringifyDates(message));
-    debugger;
     return db.collection(`messages/${userId}/messages`).add(_message);
 }
 
@@ -518,7 +517,7 @@ export function revokeInvitation(teamId: string, membershipId: string) {
         .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
 }
 
-export function addTeamReques(teamId: string, user: Object) {
+export function addTeamRequest(teamId: string, user: Object) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: teamStatuses.REQUEST_TO_JOIN}));
     const teamRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).set(deconstruct(teamMember));
