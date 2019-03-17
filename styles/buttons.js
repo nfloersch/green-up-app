@@ -28,6 +28,9 @@ export const buttons = {
     buttonBarButton: {
         width: '48%'
     },
+    threeButtonBarButton: {
+        width: '31%'
+    },
     buttonBarHeader: {
         width: '100%',
         height: 60,

@@ -20,7 +20,7 @@ const myStyles = {
         borderColor: '#FDFDFE',
         width: '100%'
     },
-    statusBarText: {fontSize: 12, textAlign: 'left'}
+    statusBarText: {fontSize: 12, textAlign: 'left'},
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -112,22 +112,22 @@ export default class TeamMemberDetails extends Component<Props> {
                     return (
                         <View style={styles.buttonBarHeader}>
                             <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
+                                <View style={styles.threeButtonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
                                         onPress={this._removeTeamMember()}>
                                         <Text style={styles.headerButtonText}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.buttonBarButton}>
+                                <View style={styles.threeButtonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
                                         onPress={() => this._updateTeamMember()}>
-                                        <Text style={styles.headerButtonText}>{'Add to Team'}</Text>
+                                        <Text style={styles.headerButtonText}>{'Add'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
-                            <View style={styles.buttonBarButton}>
+                            <View style={styles.threeButtonBarButton}>
                                 <TouchableHighlight
                                     style={styles.headerButton}
                                     onPress={_closeModal}

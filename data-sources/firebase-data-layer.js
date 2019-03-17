@@ -520,9 +520,18 @@ export function revokeInvitation(teamId: string, membershipId: string) {
 export function addTeamRequest(teamId: string, user: Object) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: teamStatuses.REQUEST_TO_JOIN}));
-    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).set(deconstruct(teamMember));
-    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
+    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(user.uid).set(deconstruct(teamMember));
+    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: false});
     return Promise.all([teamRequest, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+}
+
+
+export function removeTeamRequest(teamId: string, teamMember: TeamMember) {
+    const teams = {...teamMember.teams};
+    delete teams[teamId];
+    const delRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
+    const delFromProfile = db.collection(`profiles/${teamMember.uid}/teams/`).doc(teamId).delete();
+    return Promise.all([delRequest, delFromProfile]);
 }
 
 /** *************** TRASH DROPS *************** **/
