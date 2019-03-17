@@ -329,7 +329,6 @@ function setupTownListener(dispatch) {
 const initializeUser = curry((dispatch, user) => {
     authenticated_user = User.create(user)
 
-    console.log(authenticated_user)
     fetchEventInfo(dispatch);
     setupMessageListener(user.uid, dispatch);
     setupTeamListener(user, dispatch);
