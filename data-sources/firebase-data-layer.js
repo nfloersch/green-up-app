@@ -531,8 +531,9 @@ export function removeTeamMember(teamId: string, teamMember: TeamMember) {
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
     const teams = {...teamMember.teams};
     delete teams[teamId];
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete()
-        .then(() => db.collection('profiles').doc(teamMember.uid).update({teams}));
+    const removeMember = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const removeTeam = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    return Promise.all([removeMember, removeTeam]);
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {

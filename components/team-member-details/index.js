@@ -116,7 +116,7 @@ export default class TeamMemberDetails extends Component<Props> {
             switch (_teamMember.memberStatus) {
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View style={styles.buttonBarHeader}>
+                        <View style={styles.buttonBarHeaderModal}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
@@ -136,18 +136,18 @@ export default class TeamMemberDetails extends Component<Props> {
                                 </View>
                             </View>
                             {/*<View style={styles.buttonBarButton}>*/}
-                            {/*<TouchableHighlight*/}
-                            {/*style={styles.headerButton}*/}
-                            {/*onPress={_closeModal}*/}
-                            {/*>*/}
-                            {/*<Text style={styles.headerButtonText}>{'Cancel'}</Text>*/}
-                            {/*</TouchableHighlight>*/}
+                                {/*<TouchableHighlight*/}
+                                    {/*style={styles.headerButton}*/}
+                                    {/*onPress={_closeModal}*/}
+                                {/*>*/}
+                                    {/*<Text style={styles.headerButtonText}>{'Cancel'}</Text>*/}
+                                {/*</TouchableHighlight>*/}
                             {/*</View>*/}
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
-                        <View style={styles.buttonBarHeader}>
+                        <View style={styles.buttonBarHeaderModal}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
@@ -170,7 +170,7 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.INVITED :
                     return (
-                        <View style={styles.buttonBarHeader}>
+                        <View style={styles.buttonBarHeaderModal}>
                             <View style={styles.buttonBar}>
                                 <TouchableHighlight
                                     style={styles.headerButton}

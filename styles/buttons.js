@@ -23,7 +23,7 @@ export const buttons = {
         width: '100%',
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-around'
     },
     buttonBarButton: {
         flexGrow: 1,
@@ -34,8 +34,15 @@ export const buttons = {
         height: 60,
         backgroundColor: constants.headerBackgroundColor,
         borderBottomWidth: 1,
+        borderColor: 'black'
+    },
+    buttonBarHeaderModal: {
+        width: '100%',
+        height: 80,
+        backgroundColor: constants.headerBackgroundColor,
+        borderBottomWidth: 1,
         borderColor: 'black',
-        marginTop: 30
+        paddingTop: 20
     },
     buttonRow: {
         width: '100%',
