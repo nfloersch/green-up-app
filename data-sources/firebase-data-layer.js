@@ -194,7 +194,7 @@ function setupMessageListener(uid, dispatch) {
     ));
 }
 
-function setupTeamListener(dispatch) {
+function setupTeamListener(user: Object, dispatch: any => void) {
 
     addListener('teams', db.collection('teams')
         .onSnapshot(
@@ -203,6 +203,7 @@ function setupTeamListener(dispatch) {
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
                 const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
+                setupTeamRequestListener(user, data, dispatch);
             },
             ((error) => {
                 console.log(error);
@@ -228,6 +229,28 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
             ))
     ));
 }
+
+function setupTeamRequestListener(user, teams: Array<Object> = [], dispatch: any => void): void {
+    return (teams || [])
+        .filter(team => team.owner.uid === user.uid)
+        .map(team => team.id)
+        .map(teamId => (
+            addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
+                .onSnapshot(
+                    querySnapshot => {
+                        const data = [];
+                        querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                        const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                        dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
+                    },
+                    ((error) => {
+                        console.log(error);
+                        // TODO : Handle the error
+                    })
+                ))
+        ));
+}
+
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).map(teamId => {
@@ -307,7 +330,7 @@ const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
         fetchEventInfo(dispatch);
         setupMessageListener(user.uid, dispatch);
-        setupTeamListener(dispatch);
+        setupTeamListener(user, dispatch);
         setupMyTeamsListener(user, dispatch);
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);

@@ -65,7 +65,12 @@ export function reducers(state = initialState.teams, action) {
                 teamMembersLoaded: true
             };
         }
-
+        case types.TEAM_REQUEST_FETCH_SUCCESS : {
+            return {
+                ...state,
+                teamRequests: {...state.teamRequests, [action.teamId]: action.requests}
+            };
+        }
         case types.FETCH_INVITATIONS_SUCCESS : {
             return {
                 ...state,

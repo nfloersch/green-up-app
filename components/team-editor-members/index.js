@@ -74,6 +74,7 @@ class MemberItem extends Component<MProps> {
 type Props = {
     actions: Object,
     members: Object,
+    requests: Object,
     team: Object,
     selectedTeam: Object,
     screenProps: Object
@@ -122,7 +123,7 @@ class TeamEditorMembers extends Component<Props, State> {
                             closeModal={closeModal}
                             removeTeamMember={removeTeamMember}
                             revokeInvitation={revokeInvitation}
-                            updateTeamMember = {updateTeamMember}
+                            updateTeamMember={updateTeamMember}
                             teamMember={member}
                         />
                     )
@@ -131,8 +132,8 @@ class TeamEditorMembers extends Component<Props, State> {
     };
 
     render() {
-        const {team, members} = this.props;
-        const memberButtons = Object.values(members)
+        const {team, members, requests} = this.props;
+        const memberButtons = [].concat([], Object.values(requests), Object.values(members))
             .map(member => ({
                 key: member.uid || member.email,
                 ...member,
@@ -189,7 +190,8 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
     const team = state.teams.selectedTeam || {};
     const members = (state.teams.teamMembers || {})[team.id];
-    return ({team, members});
+    const requests = (state.teams.teamRequests || {})[team.id];
+    return ({team, members, requests});
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);

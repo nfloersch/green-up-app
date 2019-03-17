@@ -64,6 +64,10 @@ export function teamMemberFetchSuccessful(membership: Object, teamId: string): A
     return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
 }
 
+export function teamRequestFetchSuccessful(requests: Object, teamId: string): ActionType {
+    return {type: types.TEAM_REQUEST_FETCH_SUCCESS, requests, teamId};
+}
+
 export function profileCreateFail(error: Object): ActionType {
     return {type: types.UPDATE_PROFILE_FAIL, error};
 }
