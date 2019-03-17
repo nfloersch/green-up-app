@@ -327,31 +327,45 @@ function setupTownListener(dispatch) {
 
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
-    if (Boolean(user)) {
-        fetchEventInfo(dispatch);
-        setupMessageListener(user.uid, dispatch);
-        setupTeamListener(user, dispatch);
-        setupMyTeamsListener(user, dispatch);
-        setupTrashDropListener(dispatch);
-        setupInvitationListener(user.email, dispatch);
-        setupTownListener(dispatch);
-        setupProfileListener(user, dispatch);
-        dispatch(dataLayerActions.userAuthenticated(User.create(user)));
-        dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
-    } else {
-        removeAllListeners();
-        dispatch(dataLayerActions.userLoggedOut());
-    }
+    authenticated_user = User.create(user)
+
+    console.log(authenticated_user)
+    fetchEventInfo(dispatch);
+    setupMessageListener(user.uid, dispatch);
+    setupTeamListener(user, dispatch);
+    setupMyTeamsListener(user, dispatch);
+    setupTrashDropListener(dispatch);
+    setupInvitationListener(user.email, dispatch);
+    setupTownListener(dispatch);
+    setupProfileListener(user, dispatch);
+    dispatch(dataLayerActions.userAuthenticated(authenticated_user));
+    dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
 });
 
-
+const deinitializeUser = (dispatch) => {
+    removeAllListeners();
+    dispatch(dataLayerActions.userLoggedOut());
+}
 /**
  * Sets up a listener that initializes the user after login, or resets app state after a logout.
  * @param {function} dispatch - dispatch function
  * @returns {void}
  */
 export function initialize(dispatch: any => any) {
-    firebase.auth().onAuthStateChanged(user => initializeUser(dispatch)(user));
+    firebase.auth().onAuthStateChanged(user => {
+        if (Boolean(user)) {
+            db.collection('profiles').doc(user.uid).get().then(
+                doc => {
+                    if (doc.exists) {
+                        initializeUser(dispatch)(doc.data());
+                    }
+                }).catch((error) => {
+                console.log('Error getting document:', error);
+            });
+        } else {
+            deinitializeUser(dispatch);
+        }
+    });
 }
 
 /** *************** AUTHENTICATION *************** **/
