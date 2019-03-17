@@ -1,13 +1,15 @@
+// @flow
+
 import React from 'react';
 import {Text, View} from 'react-native';
 import {MapView} from 'expo';
-import PropTypes from 'prop-types';
 
-export default class MultiLineMapCallout extends React.Component {
-    static propTypes = {
-        title: PropTypes.string,
-        description: PropTypes.string
-    }
+type Props = {
+    title: String,
+    description: String
+}
+
+export default class MultiLineMapCallout extends React.Component<Props> {
 
     render() {
         const {title, description} = this.props;

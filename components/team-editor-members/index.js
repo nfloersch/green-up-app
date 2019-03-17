@@ -1,13 +1,15 @@
 // @flow
 import React, {Component} from 'react';
-import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
-import {Ionicons} from '@expo/vector-icons';
 import {getMemberIcon} from '../../libs/member-icons';
-import * as colors from '../../styles/constants';
 import {defaultStyles} from '../../styles/default-styles';
 import InviteContacts from '../invite-contacts';
 import InviteForm from '../invite-form';
+import TeamMemberDetails from '../../components/team-member-details';
+import {partial} from 'ramda';
+import {bindActionCreators} from 'redux';
+import * as actions from './actions';
 
 const myStyles = {
     member: {
@@ -37,7 +39,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 
-type MProps = {item: Object}
+type MProps = { item: Object }
 
 class MemberItem extends Component<MProps> {
 
@@ -70,29 +72,24 @@ class MemberItem extends Component<MProps> {
 
 
 type Props = {
-    teamMembers: Object,
-    teams: Object,
+    actions: Object,
+    members: Object,
+    requests: Object,
+    team: Object,
     selectedTeam: Object,
     screenProps: Object
 };
 
 type State = {
-    isModalVisible: boolean
+    isModalVisible: boolean,
+    modalContent: Object
 }
 
 class TeamEditorMembers extends Component<Props, State> {
 
-
     static navigationOptions = {
         title: 'Team Members',
-        tabBarLabel: 'Members',
-        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({focused}) => (
-            <Ionicons
-                name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : ''}` : 'md-contacts'}
-                size={24}
-                color={focused ? colors.tabIconSelected : colors.tabIconDefault}
-            />)
+        tabBarLabel: 'Members'
     };
 
     constructor(props) {
@@ -100,29 +97,49 @@ class TeamEditorMembers extends Component<Props, State> {
         this.state = {isModalVisible: false, modalContent: InviteForm};
     }
 
-    inviteContacts = () => {
-        this.setState({isModalVisible: true, modalContent: InviteContacts});
+    closeModal = () => {
+        this.setState({isModalVisible: false});
     };
 
-    inviteForm = () => {
-        this.setState({isModalVisible: true, modalContent: InviteForm});
-
+    inviteContacts = (team: Object) => () => {
+        this.setState({isModalVisible: true, modalContent: <InviteContacts closeModal={this.closeModal} team={team}/>});
     };
 
-    _toMemberDetails(teamId: string, membershipId: string) {
+    inviteForm = (team: Object) => () => {
+        this.setState({isModalVisible: true, modalContent: <InviteForm closeModal={this.closeModal} team={team}/>});
+    };
+
+    toMemberDetails = (team: Object, member: Object) => {
+        const closeModal = this.closeModal;
+        const removeTeamMember = partial(this.props.actions.removeTeamMember, [team.id, member]);
+        const revokeInvitation = partial(this.props.actions.revokeInvitation, [team.id, member.uid]);
+        const updateTeamMember = partial(this.props.actions.updateTeamMember, [team.id, member]);
+        const addTeamMember = partial(this.props.actions.addTeamMember, [team.id, member]);
         return () => {
-            this.props.screenProps.stacknav.navigate('TeamMemberDetails', {teamId, membershipId});
+            this.setState(
+                {
+                    isModalVisible: true,
+                    modalContent: (
+                        <TeamMemberDetails
+                            closeModal={closeModal}
+                            addTeamMember={addTeamMember}
+                            removeTeamMember={removeTeamMember}
+                            revokeInvitation={revokeInvitation}
+                            updateTeamMember={updateTeamMember}
+                            teamMember={member}
+                        />
+                    )
+                });
         };
-    }
+    };
 
     render() {
-        const teamId = this.props.selectedTeam.id;
-        const members = this.props.teamMembers[teamId] || {};
-        const memberButtons = Object.keys(members)
-            .map(membershipId => ({
-                key: members[membershipId].uid || members[membershipId].email,
-                ...members[membershipId],
-                toDetail: this._toMemberDetails(teamId, membershipId)
+        const {team, members, requests} = this.props;
+        const memberButtons = [].concat([], Object.values(requests), Object.values(members))
+            .map((member, i) => ({
+                key: i,
+                ...member,
+                toDetail: this.toMemberDetails(team, member)
             }));
 
         return (
@@ -132,7 +149,7 @@ class TeamEditorMembers extends Component<Props, State> {
                         <View style={styles.buttonBarButton}>
                             <TouchableOpacity
                                 style={styles.headerButton}
-                                onPress={this.inviteForm}>
+                                onPress={this.inviteForm(team)}>
                                 <Text style={styles.headerButtonText}>
                                     {'Invite A Friend'}
                                 </Text>
@@ -141,7 +158,7 @@ class TeamEditorMembers extends Component<Props, State> {
                         <View style={styles.buttonBarButton}>
                             <TouchableOpacity
                                 style={styles.headerButton}
-                                onPress={this.inviteContacts}>
+                                onPress={this.inviteContacts(team)}>
                                 <Text style={styles.headerButtonText}>
                                     {'From Contacts'}
                                 </Text>
@@ -156,12 +173,11 @@ class TeamEditorMembers extends Component<Props, State> {
                 </ScrollView>
                 <Modal
                     animationType={'slide'}
+                    onRequestClose={() => ('this function is required. Who knows why?')}
                     transparent={false}
                     visible={this.state.isModalVisible}>
                     <View>
-                        <this.state.modalContent closeModal={() => {
-                            this.setState({isModalVisible: false});
-                        }}/>
+                        {this.state.modalContent}
                     </View>
                 </Modal>
             </View>
@@ -169,12 +185,15 @@ class TeamEditorMembers extends Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => (
-    {
-        teams: state.teams.teams,
-        selectedTeam: state.teams.selectedTeam,
-        teamMembers: state.teams.teamMembers
-    });
+function mapDispatchToProps(dispatch) {
+    return {actions: bindActionCreators(actions, dispatch)};
+}
 
+const mapStateToProps = (state) => {
+    const team = state.teams.selectedTeam || {};
+    const members = (state.teams.teamMembers || {})[team.id];
+    const requests = (state.teams.teamRequests || {})[team.id];
+    return ({team, members, requests});
+};
 
-export default connect(mapStateToProps)(TeamEditorMembers);
+export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);

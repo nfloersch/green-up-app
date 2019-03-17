@@ -59,7 +59,10 @@ service cloud.firestore {
          allow read, write: if true;
       }
       match /teams/{teamId} {
-         allow read, write: if true;
+         allow read : if true;
+         allow delete : if  isOwner(userId) || isTeamOwner(teamId) || isAdmin();
+         allow create : if  isOwner(userId) || isTeamOwner(teamId) || isAdmin();
+         allow update : if  isOwner(userId) || isTeamOwner(teamId) || isAdmin();
       }
       match /messages/{messageId}  {
       	allow read, write: if true;

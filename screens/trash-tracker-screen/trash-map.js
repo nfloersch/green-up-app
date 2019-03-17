@@ -448,7 +448,7 @@ class TrashMap extends Component {
                             this.closeModal();
                         }}>
                         <View style={styles.frame}>
-                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+                            <View style={styles.buttonBarHeader}>
                                 <View style={styles.buttonBar}>
                                     {
                                         showFirstButton

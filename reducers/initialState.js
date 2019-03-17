@@ -28,6 +28,7 @@ export default {
     },
     teamMembers: {},
     teamMembersLoaded: false,
+    teamRequests: {},
     teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
     towns: {townData: {}},
     trashTracker: {

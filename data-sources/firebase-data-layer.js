@@ -14,6 +14,7 @@ import 'firebase/firestore';
 import {curry} from 'ramda';
 import * as messageTypes from '../constants/message-types';
 import TrashDrop from '../models/trash-drop';
+import * as teamStatuses from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -193,7 +194,7 @@ function setupMessageListener(uid, dispatch) {
     ));
 }
 
-function setupTeamListener(dispatch) {
+function setupTeamListener(user: Object, dispatch: any => void) {
 
     addListener('teams', db.collection('teams')
         .onSnapshot(
@@ -202,6 +203,7 @@ function setupTeamListener(dispatch) {
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
                 const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
+                setupTeamRequestListener(user, data, dispatch);
             },
             ((error) => {
                 console.log(error);
@@ -227,6 +229,28 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
             ))
     ));
 }
+
+function setupTeamRequestListener(user, teams: Array<Object> = [], dispatch: any => void): void {
+    return (teams || [])
+        .filter(team => team.owner.uid === user.uid)
+        .map(team => team.id)
+        .map(teamId => (
+            addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
+                .onSnapshot(
+                    querySnapshot => {
+                        const data = [];
+                        querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                        const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                        dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
+                    },
+                    ((error) => {
+                        console.log(error);
+                        // TODO : Handle the error
+                    })
+                ))
+        ));
+}
+
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).map(teamId => {
@@ -306,7 +330,7 @@ const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
         fetchEventInfo(dispatch);
         setupMessageListener(user.uid, dispatch);
-        setupTeamListener(dispatch);
+        setupTeamListener(user, dispatch);
         setupMyTeamsListener(user, dispatch);
         setupTrashDropListener(dispatch);
         setupInvitationListener(user.email, dispatch);
@@ -431,7 +455,6 @@ export function sendTeamMessage(teamId, message) {
 
 export function updateMessage(message: Object, userId: string) {
     const newMessage = deconstruct({...message, sender: {...message.sender}});
-    debugger;
     return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
 }
 
@@ -490,8 +513,9 @@ export function addTeamMember(teamId: string, user: Object, status?: string = 'A
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
     const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
-    return Promise.all([addToTeam, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+    return Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
@@ -499,7 +523,9 @@ export function updateTeamMember(teamId: string, teamMember: TeamMember) {
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromProfile = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    return Promise.all([deleteFromTeam, deleteFromProfile]);
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
@@ -513,6 +539,23 @@ export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
     return db.collection(`teams/${teamId}/members`).doc(_membershipId).delete()
         .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
+}
+
+export function addTeamRequest(teamId: string, user: Object) {
+    const email = user.email.toLowerCase().trim();
+    const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: teamStatuses.REQUEST_TO_JOIN}));
+    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(user.uid).set(deconstruct(teamMember));
+    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: false});
+    return Promise.all([teamRequest, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+}
+
+
+export function removeTeamRequest(teamId: string, teamMember: TeamMember) {
+    const teams = {...teamMember.teams};
+    delete teams[teamId];
+    const delRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
+    const delFromProfile = db.collection(`profiles/${teamMember.uid}/teams/`).doc(teamId).delete();
+    return Promise.all([delRequest, delFromProfile]);
 }
 
 /** *************** TRASH DROPS *************** **/

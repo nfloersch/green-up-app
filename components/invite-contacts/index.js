@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
@@ -17,7 +16,6 @@ import IOSCheckBox from 'react-native-checkbox';
 
 import * as actions from './actions';
 import TeamMember from '../../models/team-member';
-// import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 import {isValidEmail, isInTeam} from '../../libs/validators';
 
@@ -44,15 +42,18 @@ function _inviteToTeam() {
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
-class InviteContacts extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        contacts: PropTypes.arrayOf(PropTypes.object),
-        currentUser: PropTypes.object,
-        navigation: PropTypes.object,
-        selectedTeam: PropTypes.object,
-        teamMembers: PropTypes.object
-    };
+
+type Props = {
+    actions: {retrieveContacts: any => any},
+    closeModal: any => void,
+    contacts: Array<Object>,
+    currentUser: Object,
+    navigation: Object,
+    selectedTeam: Object,
+    teamMembers: Object
+};
+
+class InviteContacts extends Component<Props> {
 
     static navigationOptions = {
         title: 'Invite Contacts'
@@ -67,6 +68,7 @@ class InviteContacts extends Component {
         };
     }
 
+    // TODO: Refactor this deprecated lifecycle
     componentWillMount() {
         this.setState({
             contacts: this.props.contacts || []
@@ -77,6 +79,7 @@ class InviteContacts extends Component {
         this.props.actions.retrieveContacts();
     }
 
+    // TODO: Refactor this deprecated lifecycle
     componentWillReceiveProps(nextProps) {
         this.setState({
             contacts: nextProps.contacts || []
@@ -130,9 +133,6 @@ class InviteContacts extends Component {
             );
 
         return (
-
-
-
             <View style={styles.frame}>
                 <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
                     <View style={styles.buttonBar}>
@@ -146,8 +146,6 @@ class InviteContacts extends Component {
                                     {'Invite to Team'}</Text>
                             </TouchableHighlight>
                         </View>
-
-
 
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight

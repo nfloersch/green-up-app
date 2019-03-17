@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
@@ -66,13 +65,13 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class Login extends Component {
+type Props = {
+    actions: Object,
+    loginError: any,
+    navigation: Object
+};
 
-    static propTypes = {
-        actions: PropTypes.object,
-        loginError: PropTypes.any,
-        navigation: PropTypes.object
-    };
+class Login extends Component<Props> {
 
     static navigationOptions = {
         title: 'Log In'

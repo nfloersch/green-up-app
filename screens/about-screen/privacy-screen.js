@@ -1,65 +1,18 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-
-import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
-import User from '../../models/user';
-import {removeNulls} from '../../libs/remove-nulls';
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-
-class Privacy extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        profile: PropTypes.object,
-        navigation: PropTypes.object
-    };
+export default class Privacy extends Component<Props> {
 
     static navigationOptions = {
         title: 'Privacy Policy'
     };
-
-    constructor(props) {
-        super(props);
-        this._saveProfile = this._saveProfile.bind(this);
-        this._changeText = this._changeText.bind(this);
-        this._cancel = this._cancel.bind(this);
-        this.state = Object.assign({}, props.profile);
-    }
-
-
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.profile) !== JSON.stringify(this.props.profile)) {
-            this.setState(nextProps.profile);
-        }
-    }
-
-    _saveProfile() {
-        this.props.actions.saveProfile(this.state);
-    }
-
-    _cancel() {
-        this.setState(this.props.profile, () => {
-            this.props.navigation.goBack();
-        });
-    }
-
-    _changeText(key) {
-        return (text) => {
-            this.setState({[key]: text});
-        };
-    }
-
 
     render() {
         return (
@@ -353,13 +306,3 @@ class Privacy extends Component {
         );
     }
 }
-
-const mapStateToProps = state => {
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
-    const profile = state.profile.profile;
-    return {profile, currentUser};
-};
-
-const mapDispatchToProps = dispatch => ({actions: bindActionCreators(actions, dispatch)});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Privacy);

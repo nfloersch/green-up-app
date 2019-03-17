@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -41,10 +40,8 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class TeamItem extends Component {
-    static propTypes = {
-        item: PropTypes.object
-    };
+
+class TeamItem extends Component<{ item: Object }> {
 
     render() {
         const item = this.props.item || {};
