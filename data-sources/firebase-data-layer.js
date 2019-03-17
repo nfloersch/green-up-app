@@ -324,12 +324,10 @@ function setupTownListener(dispatch) {
     }));
 }
 
-
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
     authenticated_user = User.create(user)
 
-    fetchEventInfo(dispatch);
     setupMessageListener(user.uid, dispatch);
     setupTeamListener(user, dispatch);
     setupMyTeamsListener(user, dispatch);
@@ -352,6 +350,8 @@ const deinitializeUser = (dispatch) => {
  */
 export function initialize(dispatch: any => any) {
     firebase.auth().onAuthStateChanged(user => {
+        fetchEventInfo(dispatch);
+
         if (Boolean(user)) {
             db.collection('profiles').doc(user.uid).get().then(
                 doc => {
@@ -359,8 +359,8 @@ export function initialize(dispatch: any => any) {
                         initializeUser(dispatch)(doc.data());
                     }
                 }).catch((error) => {
-                console.log('Error getting document:', error);
-            });
+                    console.log('Error getting document:', error);
+                });
         } else {
             deinitializeUser(dispatch);
         }
