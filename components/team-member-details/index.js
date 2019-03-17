@@ -20,13 +20,14 @@ const myStyles = {
         borderColor: '#FDFDFE',
         width: '100%'
     },
-    statusBarText: {fontSize: 12, textAlign: 'left'},
+    statusBarText: {fontSize: 12, textAlign: 'left'}
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
+    addTeamMember: 90 => void,
     closeModal: () => void,
     team: Object,
     revokeInvitation: () => void,
@@ -43,63 +44,68 @@ export default class TeamMemberDetails extends Component<Props> {
         super(props);
         this._updateTeamMember = this._updateTeamMember.bind(this);
         this._removeTeamMember = this._removeTeamMember.bind(this);
+        this._addTeamMember = this._addTeamMember.bind(this);
+        this._revokeInvitation = this._revokeInvitation.bind(this);
         this._cancel = this._cancel.bind(this);
     }
 
     _updateTeamMember(newStatus) {
         return () => {
+            Alert.alert('foo');
             this.props.closeModal();
             this.props.updateTeamMember(newStatus);
         };
     }
 
-    _revokeInvitation() {
-        return () => {
-            Alert.alert(
-                'DANGER!',
-                'Are you sure you want to revoke this invitation?',
-                [
-                    {
-                        text: 'No', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {
-                        text: 'Yes', onPress: () => {
-                            this.props.closeModal();
-                            this.props.revokeInvitation();
-                        }
-                    }
-                ],
-                {cancelable: true}
-            );
+    _addTeamMember() {
+        this.props.closeModal();
+        this.props.addTeamMember();
+    }
 
-        };
+    _revokeInvitation() {
+        Alert.alert(
+            'DANGER!',
+            'Are you sure you want to revoke this invitation?',
+            [
+                {
+                    text: 'No', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: 'Yes', onPress: () => {
+                        this.props.closeModal();
+                        this.props.revokeInvitation();
+                    }
+                }
+            ],
+            {cancelable: true}
+        );
     }
 
 
     _removeTeamMember() {
-        return () => {
-            Alert.alert(
-                'DANGER!',
-                'Are you sure you want to remove this team member?',
-                [
-                    {
-                        text: 'No', onPress: () => {
-                        }, style: 'cancel'
-                    },
-                    {
-                        text: 'Yes', onPress: () => {
-                            this.props.closeModal();
-                            this.props.removeTeamMember();
-                        }
+        Alert.alert(
+            'DANGER!',
+            'Are you sure you want to remove this team member?',
+            [
+                {
+                    text: 'No', onPress: () => {
+                    }, style: 'cancel'
+                },
+                {
+                    text: 'Yes', onPress: () => {
+                        this.props.closeModal();
+                        this.props.removeTeamMember();
                     }
-                ],
-                {cancelable: true}
-            );
-        };
+                }
+            ],
+            {cancelable: true}
+        );
+
     }
 
     _cancel() {
+        Alert.alert('foo');
         this.props.closeModal();
     }
 
@@ -112,29 +118,31 @@ export default class TeamMemberDetails extends Component<Props> {
                     return (
                         <View style={styles.buttonBarHeader}>
                             <View style={styles.buttonBar}>
-                                <View style={styles.threeButtonBarButton}>
+                                <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={this._removeTeamMember()}>
+                                        onPress={this._removeTeamMember}>
                                         <Text style={styles.headerButtonText}>{'Ignore'}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.threeButtonBarButton}>
+                                <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={() => this._updateTeamMember()}>
+                                        onPress={() => {
+                                            this._addTeamMember();
+                                        }}>
                                         <Text style={styles.headerButtonText}>{'Add'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
-                            <View style={styles.threeButtonBarButton}>
-                                <TouchableHighlight
-                                    style={styles.headerButton}
-                                    onPress={_closeModal}
-                                >
-                                    <Text style={styles.headerButtonText}>{'Cancel'}</Text>
-                                </TouchableHighlight>
-                            </View>
+                            {/*<View style={styles.buttonBarButton}>*/}
+                            {/*<TouchableHighlight*/}
+                            {/*style={styles.headerButton}*/}
+                            {/*onPress={_closeModal}*/}
+                            {/*>*/}
+                            {/*<Text style={styles.headerButtonText}>{'Cancel'}</Text>*/}
+                            {/*</TouchableHighlight>*/}
+                            {/*</View>*/}
                         </View>
                     );
                 case status.ACCEPTED :
@@ -144,7 +152,7 @@ export default class TeamMemberDetails extends Component<Props> {
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
-                                        onPress={this._removeTeamMember()}
+                                        onPress={this._removeTeamMember}
                                     >
                                         <Text style={styles.headerButtonText}>{'Remove'}</Text>
                                     </TouchableHighlight>
@@ -166,7 +174,7 @@ export default class TeamMemberDetails extends Component<Props> {
                             <View style={styles.buttonBar}>
                                 <TouchableHighlight
                                     style={styles.headerButton}
-                                    onPress={this._revokeInvitation()}
+                                    onPress={this._revokeInvitation}
                                 >
                                     <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
                                 </TouchableHighlight>

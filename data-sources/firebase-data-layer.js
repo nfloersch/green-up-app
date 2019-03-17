@@ -513,8 +513,9 @@ export function addTeamMember(teamId: string, user: Object, status?: string = 'A
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
     const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
-    return Promise.all([addToTeam, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+    return Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {

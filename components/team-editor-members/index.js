@@ -114,6 +114,7 @@ class TeamEditorMembers extends Component<Props, State> {
         const removeTeamMember = partial(this.props.actions.removeTeamMember, [team.id, member]);
         const revokeInvitation = partial(this.props.actions.revokeInvitation, [team.id, member.uid]);
         const updateTeamMember = partial(this.props.actions.updateTeamMember, [team.id, member]);
+        const addTeamMember = partial(this.props.actions.addTeamMember, [team.id, member]);
         return () => {
             this.setState(
                 {
@@ -121,6 +122,7 @@ class TeamEditorMembers extends Component<Props, State> {
                     modalContent: (
                         <TeamMemberDetails
                             closeModal={closeModal}
+                            addTeamMember={addTeamMember}
                             removeTeamMember={removeTeamMember}
                             revokeInvitation={revokeInvitation}
                             updateTeamMember={updateTeamMember}
@@ -134,8 +136,8 @@ class TeamEditorMembers extends Component<Props, State> {
     render() {
         const {team, members, requests} = this.props;
         const memberButtons = [].concat([], Object.values(requests), Object.values(members))
-            .map(member => ({
-                key: member.uid || member.email,
+            .map((member, i) => ({
+                key: i,
                 ...member,
                 toDetail: this.toMemberDetails(team, member)
             }));
