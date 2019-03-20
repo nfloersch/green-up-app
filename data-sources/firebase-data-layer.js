@@ -480,9 +480,7 @@ export function saveTeam(team) {
 }
 
 export function deleteTeam(teamId: string) {
-    return db.collection('teamMembers').doc(teamId).delete().then(() => {
-        db.collection('teams').doc(teamId).delete();
-    });
+    db.collection('teams').doc(teamId).delete();
 }
 
 export function saveLocations(locations: Object, teamId: string) {

@@ -7,8 +7,8 @@ import TeamEditorDetails from '../../components/team-editor-details';
 import TeamEditorMap from '../../components/team-editor-map';
 import TeamEditorMembers from '../../components/team-editor-members';
 
-const Details = () => (
-    <TeamEditorDetails/>
+const Details = ({goBack}: { navigation: Object }) => (
+    <TeamEditorDetails goBack={goBack}/>
 );
 const Map = () => (
     <TeamEditorMap/>
@@ -17,6 +17,7 @@ const Map = () => (
 const Members = () => (
     <TeamEditorMembers/>
 );
+
 export default class TeamEditorScreen extends React.Component {
     state = {
         index: 0,
@@ -28,13 +29,14 @@ export default class TeamEditorScreen extends React.Component {
     };
 
     render() {
+        const goBack = this.props.navigation.goBack;
         return (
             <TabView
                 navigationState={this.state}
                 renderScene={
                     SceneMap( // eslint-disable-line new-cap, babel/new-cap
                         {
-                            first: Details,
+                            first: () => (<Details goBack={goBack}/>),
                             second: Members,
                             third: Map
                         }

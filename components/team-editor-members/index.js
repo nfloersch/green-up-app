@@ -137,7 +137,7 @@ class TeamEditorMembers extends Component<Props, State> {
         const {team, members, requests} = this.props;
         const memberButtons = [].concat([], Object.values(requests), Object.values(members))
             .map((member, i) => ({
-                key: i,
+                key: i.toString(),
                 ...member,
                 toDetail: this.toMemberDetails(team, member)
             }));
