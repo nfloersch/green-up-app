@@ -111,7 +111,7 @@ exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((
         return data;
     });
 
-    const xMessages = requests.get().then(querySnapshot => {
+    const xMessages = messages.get().then(querySnapshot => {
         let data = [];
         querySnapshot.forEach(doc => data.push(doc.delete()));
         return data;
