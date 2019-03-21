@@ -10,18 +10,24 @@
 
 
 const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send('Hello from Firebase!');
-});
+const admin = require('firebase-admin');
 
 const sgMail = require('@sendgrid/mail');
 
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.
 const APP_NAME = 'Green Up Vermont';
+
+const removeFromProfile = (uid, teamId) => {
+    const db = admin.database();
+    return db.ref(`profiles/${uid}/teams/${teamId}`).delete();
+};
+
+const removeInvitation = (membershipKey, teamId) => {
+    const db = admin.database();
+    return db.ref(`invitations/${membershipKey}/${teamId}`).delete();
+};
 
 
 function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
@@ -80,35 +86,38 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
         return sendInvitationEmailSendGrid(apiKey, invitation, email, teamId);
     });
 
-exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDelete((event) => {
+exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((snap, context) => {
     const db = admin.database();
-    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
-    const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
+    const members = db.ref(`teams/${teamId}/members`);
+    const requests = db.ref(`teams/${teamId}/requests`);
+    const invitations =  db.ref(`teams/${teamId}/invitations`);
 
-    const memberships = event.data.previous;
-    if (memberships.exists()) {
-        Object.keys(memberships.val()).forEach(key => {
-            const uid = memberships[key].uid;
-
-            if (uid) {
-                removeFromProfile(uid, event.params.pushId);
-            }
-            return removeInvitation(key, event.params.pushId);
-        });
-    }
-    return Promise.reject(new Error('no team memberships to remove'));
-});
-
-exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/members/{uid}').onDelete((event) => {
-    const db = admin.database();
-    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
-    const member = event.data.previous;
-    if (member.exists()) {
-        const uid = (member.val() || {}).uid;
-        if (uid) {
-            removeFromProfile(uid, event.params.teamId);
-            removeTeamMessages(uid, event.params.teamId);
+    documentRef.getCollections().then(collections => {
+        for (let collection of collections) {
+            console.log(`Found subcollection with id: ${collection.id}`);
         }
-    }
-    return Promise.reject(new Error('no team member to remove'));
+
+
+    const xMembers =  .delete();
+    const xInvites = db.ref(`teams/${teamId}/invitations`).delete();
+    const xRequests = db.ref(`teams/${teamId}/requests`).delete();
+
+
+    const allXs = [].concat(xMembers, xInvite, xRequests);
+    return Promise.all(allXs);
 });
+
+exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/members/{uid}').onDelete((snap, context) => {
+    return removeFromProfile(uid, teamId);
+});
+
+exports.onTeamRequestRemove = functions.firestore.document('teams/{teamId}/requests/{uid}').onDelete((snap, context) => {
+    return removeFromProfile(uid, teamId);
+});
+
+
+exports.onTeamInvitationRemove = functions.firestore.document('teams/{teamId}/invitations/{email}').onDelete((snap, context) => {
+    return removeInvitation(email, teamId);
+});
+
+admin.initializeApp(functions.config().firebase);
