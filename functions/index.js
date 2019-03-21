@@ -20,13 +20,11 @@ const sgMail = require('@sendgrid/mail');
 const APP_NAME = 'Green Up Vermont';
 
 const removeFromProfile = (uid, teamId) => {
-    const db = admin.database();
-    return db.ref(`profiles/${uid}/teams/${teamId}`).delete();
+    return functions.firestore.document(`profiles/${uid}/teams/${teamId}`).delete();
 };
 
 const removeInvitation = (membershipKey, teamId) => {
-    const db = admin.database();
-    return db.ref(`invitations/${membershipKey}/${teamId}`).delete();
+    return functions.firestore.document(`invitations/${membershipKey}/${teamId}`).delete();
 };
 
 
@@ -88,36 +86,42 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
 
 exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((snap, context) => {
     const db = admin.database();
-    const members = db.ref(`teams/${teamId}/members`);
-    const requests = db.ref(`teams/${teamId}/requests`);
-    const invitations =  db.ref(`teams/${teamId}/invitations`);
+    const members = db.collection(`teams/${context.params.teamId}/members`);
+    const requests = db.collection(`teams/${context.params.teamId}/requests`);
+    const invitations = db.collection(`teams/${context.params.teamId}/invitations`);
 
-    documentRef.getCollections().then(collections => {
-        for (let collection of collections) {
-            console.log(`Found subcollection with id: ${collection.id}`);
-        }
+    const xMembers = members.get().then(querySnapshot => {
+        let data = [];
+        querySnapshot.forEach(doc => data.push(doc.delete()));
+        return data;
+    });
 
+    const xRequests = requests.get().then(querySnapshot => {
+        let data = [];
+        querySnapshot.forEach(doc => data.push(doc.delete()));
+        return data;
+    });
 
-    const xMembers =  .delete();
-    const xInvites = db.ref(`teams/${teamId}/invitations`).delete();
-    const xRequests = db.ref(`teams/${teamId}/requests`).delete();
+    const xInvitations = invitations.get().then(querySnapshot => {
+        let data = [];
+        querySnapshot.forEach(doc => data.push(doc.delete()));
+        return data;
+    });
 
-
-    const allXs = [].concat(xMembers, xInvite, xRequests);
+    const allXs = [].concat(xMembers, xInvitations, xRequests);
     return Promise.all(allXs);
 });
 
 exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/members/{uid}').onDelete((snap, context) => {
-    return removeFromProfile(uid, teamId);
+    return removeFromProfile(context.params.uid, context.params.teamId);
 });
 
 exports.onTeamRequestRemove = functions.firestore.document('teams/{teamId}/requests/{uid}').onDelete((snap, context) => {
-    return removeFromProfile(uid, teamId);
+    return removeFromProfile(context.params.uid, context.params.teamId);
 });
 
-
 exports.onTeamInvitationRemove = functions.firestore.document('teams/{teamId}/invitations/{email}').onDelete((snap, context) => {
-    return removeInvitation(email, teamId);
+    return removeInvitation(context.params.email, context.params.teamId);
 });
 
 admin.initializeApp(functions.config().firebase);
