@@ -38,8 +38,10 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     const toName = teamMember.displayName;
     const subject = 'You have been invited to Green Up Day';
     const sender = invitation.sender.displayName;
-    const from = 'app@greenupvermont.org';
-
+    const from = {
+        name: 'Green Up Vermont',
+        email: 'app@greenupvermont.org',
+    };
     // Build Text Body
     const noNameText = 'A friend has invited you to participate in Green Up Day';
     const withNameText = `Hey ${invitation.displayName || ''}! ${sender} has invited you to participate in Green Up Day.`;
@@ -55,7 +57,7 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     const owner = team.owner.displayName ? `<p>Team Captain : <strong>${team.owner.displayName}</strong>` : '';
     const town = team.town ? `<p>Town : <strong>${team.town}</strong></p>` : '';
     const notes = team.notes ? `<p>Description : <strong>${team.notes}</strong></p>` : '';
-    const teaminfo = `${teamName}${owner}${date}${start}${end}${town}${where}${notes}`;
+    const teamInfo = `${teamName}${owner}${date}${start}${end}${town}${where}${notes}`;
     const message = {
         to,
         from,
@@ -63,7 +65,7 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
         text,
         html,
         templateId: '93b4cee5-a954-4704-ae0b-965196dc05b1',
-        substitutions: {teaminfo}
+        substitutions: {teaminfo: teamInfo}
     };
 
     return sgMail.send(message);
@@ -85,10 +87,11 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
     });
 
 exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((snap, context) => {
-    const db = admin.database();
+    const db = functions.firestore;
     const members = db.collection(`teams/${context.params.teamId}/members`);
     const requests = db.collection(`teams/${context.params.teamId}/requests`);
     const invitations = db.collection(`teams/${context.params.teamId}/invitations`);
+    const messages = db.collection(`teams/${context.params.teamId}/messages`);
 
     const xMembers = members.get().then(querySnapshot => {
         let data = [];
@@ -108,7 +111,14 @@ exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((
         return data;
     });
 
-    const allXs = [].concat(xMembers, xInvitations, xRequests);
+    const xMessages = requests.get().then(querySnapshot => {
+        let data = [];
+        querySnapshot.forEach(doc => data.push(doc.delete()));
+        return data;
+    });
+
+
+    const allXs = [].concat(xMembers, xInvitations, xRequests, xMessages);
     return Promise.all(allXs);
 });
 
