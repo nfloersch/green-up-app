@@ -47,12 +47,14 @@ class TeamItem extends Component<{ item: Object }> {
         const item = this.props.item || {};
         return (
             <View key={item.key} style={styles.row}>
+                <TouchableOpacity style={styles.icon} onPress={item.goToTeam}>
+                    {item.toTeamIcon}
+                </TouchableOpacity>
                 <TouchableHighlight
                     style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}}
                     onPress={item.goToTeam}>
                     <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20, height: 40}]}>{item.name}</Text>
                 </TouchableHighlight>
-
                 <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
                     <Ionicons
                         style={{paddingTop: 10}}
@@ -66,9 +68,7 @@ class TeamItem extends Component<{ item: Object }> {
                         size={30} style={{paddingTop: 10}}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} onPress={item.goToTeam}>
-                    {item.toTeamIcon}
-                </TouchableOpacity>
+
             </View>
         );
     }
