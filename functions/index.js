@@ -87,7 +87,7 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
     });
 
 exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((snap, context) => {
-    const db = functions.firestore;
+    const db = admin.firestore();
     const members = db.collection(`teams/${context.params.teamId}/members`);
     const requests = db.collection(`teams/${context.params.teamId}/requests`);
     const invitations = db.collection(`teams/${context.params.teamId}/invitations`);

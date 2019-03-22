@@ -33,11 +33,9 @@ class MenuScreen extends Component {
                 <ScrollView style={[styles.scroll, {paddingTop: 20, paddingLeft: 20, paddingRight: 20}]}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => {
-                            Linking.openURL('https://www.razoo.com/organization/Vermont-Green-Up');
-                        }}
+                        onPress={() => this.props.navigation.navigate('Towns')}
                     >
-                        <Text style={styles.buttonText}>Support Green Up Day</Text>
+                        <Text style={styles.buttonText}>Events, Supplies & Info</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
@@ -45,13 +43,6 @@ class MenuScreen extends Component {
                     >
                         <Text style={styles.buttonText}>About Green Up Day</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => this.props.navigation.navigate('Towns')}
-                    >
-                        <Text style={styles.buttonText}>Town Info</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('Profile')}
@@ -64,15 +55,6 @@ class MenuScreen extends Component {
                         onPress={() => this.props.navigation.navigate('Legal')}
                     >
                         <Text style={styles.buttonText}>Privacy & Terms</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                            Linking.openURL('https://goo.gl/forms/uKDWmHkMbQLgPE5n2');
-                        }}
-                    >
-                        <Text style={styles.buttonText}>Feedback Form</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
