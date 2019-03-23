@@ -351,7 +351,7 @@ class NewTeam extends Component<Props> {
                         </View>
                         <View style={{marginTop: 10}}>
                             <Text style={[styles.alertInfo, {textAlign: 'left'}]}>
-                                Saturday, May 5th, 2019 is Green Up Day, but your team can choose to work up to one week
+                                Saturday, May 4th, 2019 is Green Up Day, but your team can choose to work up to one week
                                 before or after.
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
