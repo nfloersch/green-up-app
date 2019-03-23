@@ -216,9 +216,7 @@ class MessageSummariesScreen extends Component {
                                 paddingBottom: 50,
                                 backgroundColor: 'rgba(255,255,255, 0.85)'
                             }}>
-                                <Text style={styles.textDark}>{'Sorry, no messages yet.'}</Text>
-                                <Text
-                                    style={styles.textDark}>{'Try sending one to your teammates.'}</Text>
+                                <Text style={[styles.textDark, {textAlign: 'center', height: 30}]}>{'Sorry, no messages yet.'}</Text>
                             </View>
                         </ImageBackground>
                     )}

@@ -232,7 +232,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
 
 function setupTeamRequestListener(user, teams: Array<Object> = [], dispatch: any => void): void {
     return (teams || [])
-        .filter(team => team.owner.uid === user.uid)
+        .filter(team => team.owner && team.owner.uid === user.uid)
         .map(team => team.id)
         .map(teamId => (
             addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
@@ -495,9 +495,7 @@ export function saveTeam(team) {
 }
 
 export function deleteTeam(teamId: string) {
-    return db.collection('teamMembers').doc(teamId).delete().then(() => {
-        db.collection('teams').doc(teamId).delete();
-    });
+    db.collection('teams').doc(teamId).delete();
 }
 
 export function saveLocations(locations: Object, teamId: string) {

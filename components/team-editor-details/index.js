@@ -18,12 +18,11 @@ import {connect} from 'react-redux';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
-import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
 import moment from 'moment';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
-import * as colors from '../../styles/constants';
+
 
 const myStyles = {
     danger: {
@@ -48,7 +47,7 @@ const styles = StyleSheet.create(combinedStyles);
 type Props = {
     actions: Object,
     eventSettings: Object,
-    navigation: Object,
+    goBack: () => void,
     selectedTeam: Object,
     screenProps: Object,
     locations: Array<Object>,
@@ -59,13 +58,7 @@ class TeamEditorDetails extends Component<Props> {
 
     static navigationOptions = {
         title: 'Team Details',
-        tabBarLabel: 'Details',
-        // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-        tabBarIcon: ({focused}) => (<Ionicons
-            name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : ''}` : 'md-information'}
-            size={24}
-            color={focused ? colors.tabIconSelected : colors.tabIconDefault}
-        />)
+        tabBarLabel: 'Details'
     };
 
     constructor(props) {
@@ -145,7 +138,7 @@ class TeamEditorDetails extends Component<Props> {
                 },
                 {
                     text: 'Yes', onPress: () => {
-                        // this.props.screenProps.stacknav.goBack();
+                        this.props.goBack();
                         this.props.actions.deleteTeam(this.props.selectedTeam.id);
                         // We should do something here?
                     }
