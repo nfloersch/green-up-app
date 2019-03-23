@@ -185,6 +185,11 @@ class TeamEditorDetails extends Component<Props> {
         const minDate = applyDateOffset(eventSettings.date, -5);
         const maxDate = applyDateOffset(eventSettings.date, 5);
 
+        console.log(eventSettings.date);
+        console.log(new Date(eventSettings.date));
+        console.log(minDate);
+        console.log(maxDate);
+
         // Autocomplete
         const {query} = this.state;
         const towns = this.findTown(query);

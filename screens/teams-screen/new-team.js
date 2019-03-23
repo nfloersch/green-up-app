@@ -263,7 +263,7 @@ class NewTeam extends Component<Props> {
         const endIsSelected = this.state.end === null;
         const startIsSelected = this.state.start === null;
         const {eventSettings} = this.props;
-        
+
         function applyDateOffset(date, days) {
             var result = new Date(date);
             result.setDate(result.getDate() + days);
