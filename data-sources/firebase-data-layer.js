@@ -357,6 +357,8 @@ export function initialize(dispatch: any => any) {
                 doc => {
                     if (doc.exists) {
                         initializeUser(dispatch)(doc.data());
+                    } else {
+                        initializeUser(dispatch)(user);
                     }
                 }).catch((error) => {
                     console.log('Error getting document:', error);
