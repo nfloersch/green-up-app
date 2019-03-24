@@ -364,7 +364,7 @@ class NewTeam extends Component<Props> {
                             />
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}
+                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}>
                                 {
                                     `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
                                     'but teams may choose to work up to one week before or after.'
@@ -444,28 +444,28 @@ class NewTeam extends Component<Props> {
                         </Text>
                         <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
                             <MapView style={{flex: 1}}
-                                initialRegion={this.state.initialMapLocation}
-                                onPress={this._handleMapClick}>
+                                     initialRegion={this.state.initialMapLocation}
+                                     onPress={this._handleMapClick}>
                                 {this.state.locations.length > 0 && this.state.locations.map((marker, index) => (
                                     <MapView.Marker coordinate={marker.coordinates}
-                                        key={`location${index}`}
-                                        pinColor={'red'}
-                                        onCalloutPress={this._removeMarker(marker)}
-                                        stopPropagation={true}>
+                                                    key={`location${index}`}
+                                                    pinColor={'red'}
+                                                    onCalloutPress={this._removeMarker(marker)}
+                                                    stopPropagation={true}>
                                         <MultiLineMapCallout title={marker.title || 'Clean Area'}
-                                            description={marker.description || 'Tap to remove'}/>
+                                                             description={marker.description || 'Tap to remove'}/>
                                     </MapView.Marker>
                                 ))}
                                 {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
                                     (<MapView.Marker
-                                        key={i}
-                                        coordinate={a.coordinates}
-                                        // image={otherTeamsLocationImage}
-                                        pinColor={'yellow'}
-                                        title={a.title}
-                                        stopPropagation={true}>
-                                        <MultiLineMapCallout title={a.title} description={a.description}/>
-                                    </MapView.Marker>
+                                            key={i}
+                                            coordinate={a.coordinates}
+                                            // image={otherTeamsLocationImage}
+                                            pinColor={'yellow'}
+                                            title={a.title}
+                                            stopPropagation={true}>
+                                            <MultiLineMapCallout title={a.title} description={a.description}/>
+                                        </MapView.Marker>
                                     ))}
                             </MapView>
                         </View>
