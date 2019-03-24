@@ -4,14 +4,14 @@ import React, {Component} from 'react';
 import {
     Alert,
     KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    View,
-    Platform,
-    ScrollView,
     TouchableHighlight,
-    TouchableOpacity
+    TouchableOpacity,
+    View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -22,7 +22,6 @@ import * as actions from './actions';
 import moment from 'moment';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
-
 
 const myStyles = {
     danger: {
@@ -177,6 +176,20 @@ class TeamEditorDetails extends Component<Props> {
         const endIsSelected = selectedTeam.end === null;
         const startIsSelected = selectedTeam.start === null;
 
+        function applyDateOffset(date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        const minDate = applyDateOffset(eventSettings.date, -5);
+        const maxDate = applyDateOffset(eventSettings.date, 5);
+
+        console.log(eventSettings.date);
+        console.log(new Date(eventSettings.date));
+        console.log(minDate);
+        console.log(maxDate);
+
         // Autocomplete
         const {query} = this.state;
         const towns = this.findTown(query);
@@ -262,7 +275,6 @@ class TeamEditorDetails extends Component<Props> {
                         <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Date</Text>
                             <Text style={[styles.alertInfo, {textAlign: 'left', padding: 5}]}>
-
                                 {
                                     `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
                                     'but teams may choose to work up to one week before or after.'
@@ -276,9 +288,9 @@ class TeamEditorDetails extends Component<Props> {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date('5/5/2019')} // TODO : Make this date configurable
-                                    minimumDate={new Date('4/28/2019')}
-                                    maximumDate={new Date('5/13/2019')}
+                                    date={new Date(eventSettings.date)}
+                                    minimumDate={minDate}
+                                    maximumDate={maxDate}
                                     isVisible={this.state.datePickerVisible}
                                     onConfirm={this._handleDatePicked}
                                     onCancel={this.hideDatePicker}
