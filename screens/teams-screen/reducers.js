@@ -74,7 +74,13 @@ export function reducers(state = initialState.teams, action) {
         case types.FETCH_INVITATIONS_SUCCESS : {
             return {
                 ...state,
-                invitations: action.invitations
+                myInvitations: action.invitations
+            };
+        }
+        case types.FETCH_INVITEES_SUCCESS : {
+            return {
+                ...state,
+                invitations: {...state.invitations, [action.teamId]: action.invitees}
             };
         }
         case types.REVOKE_INVITATION_SUCCESS : {
