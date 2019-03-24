@@ -355,7 +355,7 @@ class NewTeam extends Component<Props> {
                             />
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}>
+                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}
                                 {
                                     `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
                                     'but teams may choose to work up to one week before or after.'

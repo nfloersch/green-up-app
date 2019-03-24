@@ -564,5 +564,5 @@ export function dropTrash(trashDrop: Object) {
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    db.collection('trashDrops').doc(trashDrop.uid).set(deconstruct({...trashDrop, location: {...trashDrop.location}}));
+    db.collection('trashDrops').doc(trashDrop.id).set(deconstruct({...trashDrop, location: {...trashDrop.location}}));
 }
