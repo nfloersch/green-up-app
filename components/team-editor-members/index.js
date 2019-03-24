@@ -194,7 +194,6 @@ const mapStateToProps = (state) => {
     const members = (state.teams.teamMembers || {})[team.id] || {};
     const requests = (state.teams.teamRequests || {})[team.id] || {};
     const invitations = (state.teams.invitations || {})[team.id] || {};
-    debugger;
     return ({team, members, requests, invitations});
 };
 
