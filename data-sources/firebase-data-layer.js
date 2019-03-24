@@ -364,16 +364,7 @@ export function initialize(dispatch: any => any) {
         fetchEventInfo(dispatch);
 
         if (Boolean(user)) {
-            db.collection('profiles').doc(user.uid).get().then(
-                doc => {
-                    if (doc.exists) {
-                        initializeUser(dispatch)(doc.data());
-                    } else {
-                        initializeUser(dispatch)(user);
-                    }
-                }).catch((error) => {
-                    console.log('Error getting document:', error);
-                });
+            initializeUser(dispatch)(user);
         } else {
             deinitializeUser(dispatch);
         }

@@ -16,20 +16,9 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 class MarketingPermissionsScreen extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const { grantMarketingConsent } = props.currentUser;
-
-    if(grantMarketingConsent === true || grantMarketingConsent === false) {
-      this.props.navigation.navigate('Main');
-    }
-  }
-
   render() {
     const updateMarketingConsent = (grantMarketingConsent) => {
         this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, {grantMarketingConsent, marketingConsentUpdatedOn: new Date()})));
-        this.props.navigation.navigate('Main')
     }
 
     const {permissionText, noButtonText, yesButtonText} = this.props.marketingPermissions
@@ -37,11 +26,11 @@ class MarketingPermissionsScreen extends React.Component {
     return (
       <View>
           <Text style={[styles.headerText, {marginTop: 30}]}>{permissionText}</Text>
-          <TouchableOpacity style={styles.button} onPress={()=> updateMarketingConsent(true)}>
-            <Text>{yesButtonText}</Text>
+          <TouchableOpacity style={styles.headerButton} onPress={()=> updateMarketingConsent(true)}>
+            <Text style={styles.headerButtonText}>{yesButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={()=> updateMarketingConsent(false)}>
-            <Text>{noButtonText}</Text>
+          <TouchableOpacity style={styles.headerButton} onPress={()=> updateMarketingConsent(false)}>
+            <Text style={styles.headerButtonText}>{noButtonText}</Text>
           </TouchableOpacity>
       </View>
   );
