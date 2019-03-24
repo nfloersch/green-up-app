@@ -337,8 +337,7 @@ function setupTownListener(dispatch) {
 
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
-    authenticated_user = User.create(user)
-
+    fetchEventInfo(dispatch);
     setupMessageListener(user.uid, dispatch);
     setupTeamListener(user, dispatch);
     setupMyTeamsListener(user, dispatch);
@@ -346,7 +345,7 @@ const initializeUser = curry((dispatch, user) => {
     setupInvitationListener(user.email, dispatch);
     setupTownListener(dispatch);
     setupProfileListener(user, dispatch);
-    dispatch(dataLayerActions.userAuthenticated(authenticated_user));
+    dispatch(dataLayerActions.userAuthenticated(User.create(user)));
     dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
 });
 
@@ -361,8 +360,6 @@ const deinitializeUser = (dispatch) => {
  */
 export function initialize(dispatch: any => any) {
     firebase.auth().onAuthStateChanged(user => {
-        fetchEventInfo(dispatch);
-
         if (Boolean(user)) {
             initializeUser(dispatch)(user);
         } else {
