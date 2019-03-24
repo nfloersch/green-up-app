@@ -264,14 +264,23 @@ class NewTeam extends Component<Props> {
         const startIsSelected = this.state.start === null;
         const {eventSettings} = this.props;
 
+        function formatEventDate(date) {
+            const splitDate = date.slice(0, 10).split('-');
+            const result = new Date(
+                `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`
+            );
+            return result;
+        }
+
         function applyDateOffset(date, days) {
-            var result = new Date(date);
+            const result = new Date(date);
             result.setDate(result.getDate() + days);
             return result;
         }
 
-        const minDate = applyDateOffset(eventSettings.date, -5);
-        const maxDate = applyDateOffset(eventSettings.date, 5);
+        const eventDate = formatEventDate(eventSettings.date);
+        const minDate = applyDateOffset(eventDate, -6);
+        const maxDate = applyDateOffset(eventDate, 6);
 
         // Autocomplete
         const {query} = this.state;
@@ -370,7 +379,7 @@ class NewTeam extends Component<Props> {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date(eventSettings.date)}
+                                    date={eventDate}
                                     minimumDate={minDate}
                                     maximumDate={maxDate}
                                     isVisible={this.state.datePickerVisible}
