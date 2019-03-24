@@ -116,23 +116,24 @@ function fetchEventInfo(dispatch) {
     );
 }
 
-
-function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
-    const ref = db.collection(`teams/${teamId}/invitees`);
-
-    addListener(`teamMembers_${teamId}_invitees}`,
-        ref.onSnapshot(
-            querySnapshot => {
-                const data = [];
-                querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
-                const invitees = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
-                dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
-            },
-            ((error) => {
-                console.log(error);
-                // TODO : Handle the error
-            })
-        ));
+function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void): void {
+    return (teamIds || []).map(teamId => {
+        const ref = db.collection(`teams/${teamId}/invitations`);
+        addListener(`teamMembers_${teamId}_invitations}`,
+            ref.onSnapshot(
+                querySnapshot => {
+                    const data = [];
+                    querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                    const invitees = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                    dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
+                },
+                ((error) => {
+                    console.log('setupInvitedTeamMember Error');
+                    console.log(error);
+                    // TODO : Handle the error
+                })
+            ));
+    });
 }
 
 function setupInvitationListener(email, dispatch) {
@@ -162,6 +163,7 @@ function setupInvitationListener(email, dispatch) {
                         })
                     }
                 ), {});
+
                 // Add listeners for new team member list changes
                 // Object.keys(invitations).forEach(key => {
                 //     setupInvitedTeamMemberListener(key, dispatch);
@@ -170,6 +172,7 @@ function setupInvitationListener(email, dispatch) {
                 dispatch(dataLayerActions.invitationFetchSuccessful(invitations));
             },
             ((error) => {
+                console.log('setupInvitationListener Error');
                 console.log(error);
                 // TODO : Handle the error
             })
@@ -188,6 +191,7 @@ function setupMessageListener(uid, dispatch) {
             dispatch(dataLayerActions.messageFetchSuccessful({[uid]: messages}));
         },
         ((error) => {
+            console.log('setupMessageListener Error');
             console.log(error);
             // TODO : Handle the error
         })
@@ -195,7 +199,6 @@ function setupMessageListener(uid, dispatch) {
 }
 
 function setupTeamListener(user: Object, dispatch: any => void) {
-
     addListener('teams', db.collection('teams')
         .onSnapshot(
             querySnapshot => {
@@ -203,9 +206,9 @@ function setupTeamListener(user: Object, dispatch: any => void) {
                 querySnapshot.forEach(doc => data.push({...doc.data(), id: doc.id}));
                 const teams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
-                setupTeamRequestListener(user, data, dispatch);
             },
             ((error) => {
+                console.log('setupTeamListener Error');
                 console.log(error);
                 // TODO : Handle the error
             })
@@ -223,6 +226,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
                     dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
                 },
                 ((error) => {
+                    console.log('setupTeamMemberListener Error');
                     console.log(error);
                     // TODO : Handle the error
                 })
@@ -230,27 +234,22 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
     ));
 }
 
-function setupTeamRequestListener(user, teams: Array<Object> = [], dispatch: any => void): void {
-    return (teams || [])
-        .filter(team => team.owner && team.owner.uid === user.uid)
-        .map(team => team.id)
-        .map(teamId => (
-            addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
-                .onSnapshot(
-                    querySnapshot => {
-                        const data = [];
-                        querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
-                        const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
-                        dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
-                    },
-                    ((error) => {
-                        console.log(error);
-                        // TODO : Handle the error
-                    })
-                ))
-        ));
+function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void): void {
+    (teamIds || []).map(teamId => addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
+        .onSnapshot(
+            querySnapshot => {
+                const data = [];
+                querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
+            },
+            ((error) => {
+                console.log('setupTeamRequestListener Error');
+                console.log(error);
+                // TODO : Handle the error
+            })
+        )));
 }
-
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).map(teamId => {
@@ -264,6 +263,7 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
                 dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
             }),
             ((error) => {
+                console.log(`setupTeamMessageListener Error for team ${teamId}`);
                 console.log(error);
                 // TODO : Handle the error
             })
@@ -290,18 +290,29 @@ function setupMyTeamsListener(user, dispatch) {
     const {uid} = user;
 
     addListener('myTeams', db.collection(`profiles/${uid}/teams`)
-        .onSnapshot(querySnapshot => {
-            const data = [];
-            const ids = [];
-            querySnapshot.forEach(doc => {
-                data.push({...doc.data(), id: doc.id});
-                ids.push(doc.id);
-            });
-            const myTeams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
-            dispatch({type: types.FETCH_MY_TEAMS_SUCCESS, myTeams});
-            setupTeamMessageListener(ids, dispatch);
-            setupTeamMemberListener(ids, dispatch);
-        }));
+        .onSnapshot(
+            (querySnapshot => {
+                const data = [];
+                const ids = [];
+                querySnapshot.forEach(doc => {
+                    data.push({...doc.data(), id: doc.id});
+                    ids.push(doc.id);
+                });
+                const myTeams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+                dispatch({type: types.FETCH_MY_TEAMS_SUCCESS, myTeams});
+                setupTeamMessageListener(ids, dispatch);
+                setupTeamMemberListener(ids, dispatch);
+                // Add additional listeners for team owners
+                const ownedTeamIds = data.filter(team => team.id && team.owner && team.owner.uid === uid)
+                    .map(team => team.id);
+                setupInvitedTeamMemberListener(ownedTeamIds, dispatch);
+                setupTeamRequestListener(ownedTeamIds, dispatch);
+            }),
+            ((error) => {
+                console.log('setupMyTeamsListener error');
+                console.log(error);
+                // TODO : Handle the error
+            })));
 }
 
 function setupTrashDropListener(dispatch) {
@@ -324,7 +335,6 @@ function setupTownListener(dispatch) {
     }));
 }
 
-
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
     if (Boolean(user)) {
@@ -343,7 +353,6 @@ const initializeUser = curry((dispatch, user) => {
         dispatch(dataLayerActions.userLoggedOut());
     }
 });
-
 
 /**
  * Sets up a listener that initializes the user after login, or resets app state after a logout.
@@ -464,13 +473,13 @@ export function deleteMessage(userId: string, messageId: string) {
 
 /** *************** TEAMS *************** **/
 
-export function createTeam(team: Object = {}, user: User = {}) {
+export function createTeam(team: Object = {}, user: User = {}, dispatch: Object) {
     const {uid} = user;
     const myTeam = deconstruct({...team, owner: {...user}});
     return db.collection('teams').add(myTeam)
         .then((docRef) => Promise.all([
             db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
-            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
+            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true}),
         ]));
 }
 

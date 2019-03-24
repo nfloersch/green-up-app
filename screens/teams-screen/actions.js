@@ -40,7 +40,7 @@ export function retrieveContacts(_pageSize = 40) {
 }
 
 export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
-    return async function () {
+    return () => {
         teamMembers.forEach(teamMember => {
             const invitation = Invitation.create({team, sender: currentUser, teamMember});
             firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
@@ -74,7 +74,7 @@ export function acceptInvitation(teamId: string, user: Object) {
 }
 
 export function sendTeamMessage(teamMembers, message) {
-    return async function () {
+    return () => {
         const _teamMembers = Object.values(teamMembers).map(member => member.uid);
         firebaseDataLayer.sendGroupMessage(_teamMembers, message);
     };

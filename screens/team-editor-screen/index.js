@@ -7,18 +7,19 @@ import TeamEditorDetails from '../../components/team-editor-details';
 import TeamEditorMap from '../../components/team-editor-map';
 import TeamEditorMembers from '../../components/team-editor-members';
 
-const Details = ({goBack}: { navigation: Object }) => (
-    <TeamEditorDetails goBack={goBack}/>
-);
-const Map = () => (
-    <TeamEditorMap/>
-);
+const Details = ({goBack}: { goBack: () => void }) => (<TeamEditorDetails goBack={goBack}/>);
+
+const Map = () => (<TeamEditorMap/>);
 
 const Members = () => (
     <TeamEditorMembers/>
 );
 
-export default class TeamEditorScreen extends React.Component {
+
+type Props = { navigation: Object }
+type State = { index: number, routes: Array<{ key: string, title: string }> }
+
+export default class TeamEditorScreen extends React.Component<Props, State> {
     state = {
         index: 0,
         routes: [

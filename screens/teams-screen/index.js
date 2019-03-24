@@ -287,7 +287,7 @@ class TeamsScreen extends Component<Props> {
 function mapStateToProps(state) {
     const getStatus = (team: Object, invitations: Object, user: Object): string => {
         switch (true) {
-            case team.owner.uid === user.uid :
+            case team && team.owner && team.owner.uid === user.uid :
                 return TeamMember.memberStatuses.OWNER;
             case team :
                 return TeamMember.memberStatuses.ACCEPTED;
@@ -300,7 +300,7 @@ function mapStateToProps(state) {
                 return TeamMember.memberStatuses.NOT_INVITED;
         }
     };
-    const invitations = state.teams.invitations;
+    const invitations = state.teams.myInvitations || {};
     const user = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teams = state.teams.teams || {};
     const teamMembers = state.teams.teamMembers || {};

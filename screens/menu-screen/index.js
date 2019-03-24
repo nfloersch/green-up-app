@@ -2,14 +2,12 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Text, View, TouchableOpacity, StyleSheet, Linking, ScrollView} from 'react-native';
+import {Text, View, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as actions from '../login-screen/actions';
 import {defaultStyles} from '../../styles/default-styles';
-
-import {Platform} from 'react-native';
 
 const myStyles = {};
 
@@ -58,25 +56,13 @@ class MenuScreen extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => {
-                            if(Platform.OS === 'ios') {
-                                Linking.openURL(APP_STORE_LINK);
-                            } else{
-                                Linking.openURL(PLAY_STORE_LINK);
-                            }
-                        }}
-                    >
-                        <Text style={styles.buttonText}>Rate this App</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
                         onPress={this.props.actions.logout}
                     >
                         <Text style={styles.buttonText}>Log Out</Text>
                     </TouchableOpacity>
-                    <View style={{height: 20}} />
+                    <View style={{height: 20}}/>
                 </ScrollView>
-            </View >
+            </View>
         );
     }
 }
