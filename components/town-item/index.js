@@ -1,9 +1,28 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {defaultStyles} from '../../styles/default-styles';
+
+const newLineRegex = /\r?\n|\r/g;
+const myStyles = {
+    location: {
+        padding: 5,
+        width: '100%',
+        borderStyle: 'solid',
+        borderColor: '#BBB',
+        borderWidth: 1,
+        marginLeft: 2,
+        marginRight: 2
+    },
+
+    town: {marginBottom: 20, borderWidth: 1, borderColor: '#EEE', padding: 5},
+    townName: {fontSize: 24, color: '#666', width: '100%', marginBottom: 10}
+};
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 type Props = { item: Object };
 
-export class TownItem extends Component<Props> {
+export default class TownItem extends Component<Props> {
 
     render() {
         const item = this.props.item;

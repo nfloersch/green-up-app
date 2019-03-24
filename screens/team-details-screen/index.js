@@ -11,6 +11,7 @@ import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import User from '../../models/user';
 import {getMemberIcon} from '../../libs/member-icons';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
+import TownItem from '../../components/town-item';
 
 const myStyles =
     {
@@ -42,6 +43,7 @@ type Props = {
     selectedTeam: Object,
     teamMembers: Object,
     teams: Object,
+    town: Object,
     otherCleanAreas: Array<Object>
 };
 
@@ -138,7 +140,7 @@ class TeamDetailsScreen extends Component<Props> {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
         const memberKey = currentUser.uid;
-        const inviteKey = currentUser.email.toLowerCase().trim();
+        // const inviteKey = currentUser.email.toLowerCase().trim();
         // const membership = teamMembers[memberKey] || teamMembers[inviteKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
         // const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
@@ -184,9 +186,9 @@ class TeamDetailsScreen extends Component<Props> {
 
         const getTeamMemberStatus = () => {
             switch (true) {
-                case  (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
+                case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
                     return teamMemberStatuses.OWNER;
-                case  (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
+                case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
                     return teamMemberStatuses.ACCEPTED;
                 case hasInvitation:
                     return teamMemberStatuses.INVITED;
@@ -376,6 +378,14 @@ class TeamDetailsScreen extends Component<Props> {
                                     </Text>)
                             }
                         </View>
+                        {
+                            Boolean(this.props.town)
+                                ? (
+                                    <View style={styles.block}>
+                                        <TownItem item={this.props.town}/>
+                                    </View>)
+                                : null
+                        }
                         <View style={[styles.block, {
                             borderTopWidth: 1,
                             borderBottomWidth: 0,
@@ -400,6 +410,8 @@ const mapStateToProps = (state) => {
             title: `${team.name}`,
             description: 'claimed this area'
         }))), []);
+    const selectedTownName = ((state.teams.selectedTeam || {}).town || '').toLowerCase();
+    const town = Object.values((state.towns.townData || {})).find(_town => (_town.name || '').toLowerCase() === selectedTownName);
     return ({
         locations: state.teams.locations,
         invitations: state.teams.myInvitations || {},
@@ -407,6 +419,7 @@ const mapStateToProps = (state) => {
         selectedTeam: state.teams.selectedTeam,
         currentUser: User.create({...state.login.user, ...state.profile}),
         teamMembers: state.teams.teamMembers,
+        town,
         otherCleanAreas
     });
 };
