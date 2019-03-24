@@ -4,14 +4,14 @@ import React, {Component} from 'react';
 import {
     Alert,
     KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    View,
-    Platform,
-    ScrollView,
     TouchableHighlight,
-    TouchableOpacity
+    TouchableOpacity,
+    View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -22,7 +22,6 @@ import * as actions from './actions';
 import moment from 'moment';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
-
 
 const myStyles = {
     danger: {
@@ -177,6 +176,22 @@ class TeamEditorDetails extends Component<Props> {
         const endIsSelected = selectedTeam.end === null;
         const startIsSelected = selectedTeam.start === null;
 
+        function formatEventDate(date) {
+            const splitDate = date.slice(0, 10).split('-');
+            const result = new Date(`${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`);
+            return result;
+        }
+
+        function applyDateOffset(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        const eventDate = formatEventDate(eventSettings.date);
+        const minDate = applyDateOffset(eventDate, -6);
+        const maxDate = applyDateOffset(eventDate, 6);
+
         // Autocomplete
         const {query} = this.state;
         const towns = this.findTown(query);
@@ -262,7 +277,6 @@ class TeamEditorDetails extends Component<Props> {
                         <View style={{marginTop: 10}}>
                             <Text style={styles.labelDark}>Date</Text>
                             <Text style={[styles.alertInfo, {textAlign: 'left', padding: 5}]}>
-
                                 {
                                     `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
                                     'but teams may choose to work up to one week before or after.'
@@ -276,9 +290,9 @@ class TeamEditorDetails extends Component<Props> {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date('5/5/2019')} // TODO : Make this date configurable
-                                    minimumDate={new Date('4/28/2019')}
-                                    maximumDate={new Date('5/13/2019')}
+                                    date={eventDate}
+                                    minimumDate={minDate}
+                                    maximumDate={maxDate}
                                     isVisible={this.state.datePickerVisible}
                                     onConfirm={this._handleDatePicked}
                                     onCancel={this.hideDatePicker}

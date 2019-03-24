@@ -70,9 +70,9 @@ class MemberItem extends Component<MProps> {
     }
 }
 
-
 type Props = {
     actions: Object,
+    invitations: Object,
     members: Object,
     requests: Object,
     team: Object,
@@ -112,7 +112,7 @@ class TeamEditorMembers extends Component<Props, State> {
     toMemberDetails = (team: Object, member: Object) => {
         const closeModal = this.closeModal;
         const removeTeamMember = partial(this.props.actions.removeTeamMember, [team.id, member]);
-        const revokeInvitation = partial(this.props.actions.revokeInvitation, [team.id, member.uid]);
+        const revokeInvitation = partial(this.props.actions.revokeInvitation, [team.id, member.email]);
         const updateTeamMember = partial(this.props.actions.updateTeamMember, [team.id, member]);
         const addTeamMember = partial(this.props.actions.addTeamMember, [team.id, member]);
         return () => {
@@ -134,8 +134,8 @@ class TeamEditorMembers extends Component<Props, State> {
     };
 
     render() {
-        const {team, members, requests} = this.props;
-        const memberButtons = [].concat([], Object.values(requests), Object.values(members))
+        const {team, members, requests, invitations} = this.props;
+        const memberButtons = [].concat([], Object.values(requests), Object.values(members), Object.values(invitations))
             .map((member, i) => ({
                 key: i.toString(),
                 ...member,
@@ -191,9 +191,11 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state) => {
     const team = state.teams.selectedTeam || {};
-    const members = (state.teams.teamMembers || {})[team.id];
-    const requests = (state.teams.teamRequests || {})[team.id];
-    return ({team, members, requests});
+    const members = (state.teams.teamMembers || {})[team.id] || {};
+    const requests = (state.teams.teamRequests || {})[team.id] || {};
+    const invitations = (state.teams.invitations || {})[team.id] || {};
+    debugger;
+    return ({team, members, requests, invitations});
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);

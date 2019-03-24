@@ -402,7 +402,7 @@ const mapStateToProps = (state) => {
         }))), []);
     return ({
         locations: state.teams.locations,
-        invitations: state.teams.invitations || {},
+        invitations: state.teams.myInvitations || {},
         teams: state.teams.teams,
         selectedTeam: state.teams.selectedTeam,
         currentUser: User.create({...state.login.user, ...state.profile}),

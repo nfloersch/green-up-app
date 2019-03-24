@@ -1,18 +1,17 @@
 // @flow
 
 import React, {Component} from 'react';
-
 import {
     Alert,
-    TouchableHighlight,
     KeyboardAvoidingView,
+    Platform,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
-    View,
-    Platform,
-    ScrollView,
-    TouchableOpacity
+    TouchableHighlight,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -20,6 +19,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {SegmentedControls} from 'react-native-radio-buttons';
 import Autocomplete from 'react-native-autocomplete-input';
 import * as actions from './actions';
+import moment from 'moment';
 import {defaultStyles} from '../../styles/default-styles';
 import Team from '../../models/team';
 import TeamMember from '../../models/team-member';
@@ -49,11 +49,11 @@ const freshState = (owner, initialMapLocation = null) => ({
     initialMapLocation
 });
 
-
 type Props = {
     actions: Object,
     closeModal: any,
     currentUser: User,
+    eventSettings: Object,
     locations: Array<TownLocation>,
     owner: User,
     otherCleanAreas: Array<any>,
@@ -61,7 +61,6 @@ type Props = {
 };
 
 class NewTeam extends Component<Props> {
-
 
     constructor(props) {
         super(props);
@@ -82,7 +81,6 @@ class NewTeam extends Component<Props> {
 
         this.state = freshState(props.owner, initialMapLocation);
     }
-
 
     componentWillMount() {
         if (this.state.initialMapLocation === null) {
@@ -116,7 +114,6 @@ class NewTeam extends Component<Props> {
             }
         }
     }
-
 
     _getLocationAsync = () => Permissions.askAsync(Permissions.LOCATION)
         .then((locationPermission) => {
@@ -160,7 +157,6 @@ class NewTeam extends Component<Props> {
         const locations = this.state.locations.slice(0, this.state.locations.length - 1);
         this.setState({locations});
     }
-
 
     showStartDateTimePicker = () => {
         this.setState({startDateTimePickerVisible: true});
@@ -227,7 +223,6 @@ class NewTeam extends Component<Props> {
         this.hideStartDateTimePicker();
     };
 
-
     _handleEndDatePicked = date => {
         let end = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'});
         if (Platform.OS === 'android') {
@@ -267,6 +262,25 @@ class NewTeam extends Component<Props> {
         const dateIsSelected = this.state.date === null;
         const endIsSelected = this.state.end === null;
         const startIsSelected = this.state.start === null;
+        const {eventSettings} = this.props;
+
+        function formatEventDate(date) {
+            const splitDate = date.slice(0, 10).split('-');
+            const result = new Date(
+                `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`
+            );
+            return result;
+        }
+
+        function applyDateOffset(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        const eventDate = formatEventDate(eventSettings.date);
+        const minDate = applyDateOffset(eventDate, -6);
+        const maxDate = applyDateOffset(eventDate, 6);
 
         // Autocomplete
         const {query} = this.state;
@@ -350,9 +364,11 @@ class NewTeam extends Component<Props> {
                             />
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}>
-                                Saturday, May 5th, 2019 is Green Up Day, but your team can choose to work up to one week
-                                before or after.
+                            <Text style={[styles.alertInfo, {textAlign: 'left'}]}
+                                {
+                                    `${moment(eventSettings.date).utc().format('dddd, MMM Do YYYY')} is the next ${eventSettings.name}, ` +
+                                    'but teams may choose to work up to one week before or after.'
+                                }
                             </Text>
                             <Text style={styles.labelDark}>Date</Text>
                             <View>
@@ -363,9 +379,9 @@ class NewTeam extends Component<Props> {
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     mode='date'
-                                    date={new Date('5/5/2019')} // TODO Make this date configurable
-                                    minimumDate={new Date('4/28/2019')}
-                                    maximumDate={new Date('5/13/2019')}
+                                    date={eventDate}
+                                    minimumDate={minDate}
+                                    maximumDate={maxDate}
                                     isVisible={this.state.datePickerVisible}
                                     onConfirm={this._handleDatePicked}
                                     onCancel={this.hideDatePicker}
@@ -474,6 +490,7 @@ const mapStateToProps = (state) => {
     const profile = state.profile;
     const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
     const owner = TeamMember.create({...currentUser, ...profile, memberStatus: statuses.OWNER});
+    const eventSettings = state.about || {};
     const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
         key: '',
         coordinates: l.coordinates,
@@ -482,7 +499,7 @@ const mapStateToProps = (state) => {
     }))), []);
     const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
 
-    return {owner, currentUser, otherCleanAreas, vermontTowns};
+    return {owner, currentUser, otherCleanAreas, vermontTowns, eventSettings};
 };
 
 const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
