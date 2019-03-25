@@ -81,6 +81,7 @@ export function updateProfile(profile: Object, dispatch: any => any) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     const profileUpdate = db.collection('profiles').doc(profile.uid).update(newProfile);
     return profileUpdate.catch((error) => {
+        debugger;
         dispatch(dataLayerActions.profileUpdateFail(error));
     });
 }
