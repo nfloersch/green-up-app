@@ -10,6 +10,7 @@ import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {Alert} from 'react-native';
 import * as messageTypes from '../../constants/message-types';
 import Message from '../../models/message';
+import Team from '../../models/team';
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
@@ -92,7 +93,7 @@ export function saveTeam(team: Object) {
 }
 
 export function createTeam(team: Object, user) {
-    return () => firebaseDataLayer.createTeam(team, user);
+    return () => firebaseDataLayer.createTeam(Team.create(team), TeamMember.create(user));
 }
 
 export function deleteTeam(teamId: string) {

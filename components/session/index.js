@@ -15,6 +15,7 @@ type Props = {
     isInitialized: boolean,
     isLoggingInViaSSO: boolean,
     actions: { initialize: () => void },
+    marketingPermissionsGranted: boolean,
     splash: Object,
     user: Object,
     userIsLoggedIn: boolean
@@ -61,12 +62,10 @@ class Session extends Component<Props> {
 function mapStateToProps(state) {
     const {login, loading} = state;
     const isInitialized = loading.setupMessagesListener && loading.setupProfileListener;
-
     const {initialAuthChecked, isLoggingInViaSSO, userIsLoggedIn, user} = login;
-
-    const marketingPermissionsGranted = state.profile && 
-                                        typeof state.profile.grantMarketingConsent !== 'undefined' && 
-                                        state.profile.grantMarketingConsent !== null
+    const marketingPermissionsGranted = state.profile &&
+                                        typeof state.profile.grantMarketingConsent !== 'undefined' &&
+                                        state.profile.grantMarketingConsent !== null;
 
     return {
         initialAuthChecked,
