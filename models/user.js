@@ -15,6 +15,7 @@ export default class User {
     teams: ?Object;
     bio: ?string;
     created: ?Date;
+    grantMarketingConsent: ?Boolean;
 
     constructor(args: Object = {}) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
@@ -39,6 +40,10 @@ export default class User {
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
             : getGravatar(args.email);
+        this.grantMarketingConsent = typeof args.grantMarketingConsent === 'boolean' ?
+            args.grantMarketingConsent
+            : null;
+        this.marketingConsentUpdatedOn = args.marketingConsentUpdatedOn || null
     }
 
     static create(args: ?Object, uid?: string) {
