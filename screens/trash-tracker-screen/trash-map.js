@@ -320,7 +320,7 @@ class TrashMap extends Component {
                     stopPropagation={true}>
                     <MultiLineMapCallout
                         title='Supply Pickup Location'
-                        description={`${d.pickupLocationName}, ${d.pickupLocationAddress}`}
+                        description={`${d.name}, ${d.address}`}
                     />
                 </MapView.Marker>
             ));

@@ -280,6 +280,7 @@ class TeamsScreen extends Component<Props> {
                                     renderItem={({item}) => (<TeamItem item={item}/>)}
                                     style={{paddingLeft: 10, paddingBottom: 10, paddingRight: 10}}
                                 />
+                                <View style={{height: 60}} />
                             </ScrollView>
                         )
                     }
