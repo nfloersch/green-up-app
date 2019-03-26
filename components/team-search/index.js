@@ -64,10 +64,10 @@ class SearchItem extends Component {
             <TouchableOpacity
                 key={item.teamId}
                 onPress={item.toDetail}
-                style={styles.searchResult}
+                style={[styles.button]}
             >
-                <View>
-                    <Text style={[styles.textDark, {marginBottom: 0, textAlign: 'center'}]}>
+                <View styles={{flex: 1, justifyItems: 'center'}}>
+                    <Text style={[styles.teamTitle, {marginTop: 10, textAlign: 'center'}]}>
                         {item.team.name}
                     </Text>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -87,7 +87,7 @@ type Props = {
     actions: Object,
     closeModal: () => void;
     teamMembers: Object,
-    teams:Object,
+    teams: Object,
     navigation: Object,
     searchResults: Array<Object>,
     currentUser: Object
@@ -162,8 +162,11 @@ class TeamSearch extends Component<Props> {
             {key: teamId, teamId, toDetail: this.toTeamDetail(teamId), team: teams[teamId]}
         ));
         return (
-            <View style={styles.frame}>
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+            <KeyboardAvoidingView
+                style={[styles.frame, {paddingTop: 30}]}
+                behavior={Platform.OS === 'ios' ? 'padding' : null}
+            >
+                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight
@@ -175,28 +178,23 @@ class TeamSearch extends Component<Props> {
                         </View>
                     </View>
                 </View>
-
-                <KeyboardAvoidingView
-                    style={defaultStyles.frame}
-                    behavior={Platform.OS === 'ios' ? 'padding' : null}
-                >
-                    <View style={styles.searchHeader}>
-                        <TextInput
-                            keyBoardType={'default'}
-                            onChangeText={this.onSearchTermChange}
-                            placeholder={'Team Name, Team Owner, or City/Town'}
-                            style={styles.textInput}
-                            value={this.state.searchTerm}
-                            underlineColorAndroid={'transparent'}
-                        />
-                    </View>
-                    <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlockContainer}>
-                            <FlatList data={searchResults} renderItem={({item}) => (<SearchItem item={item}/>)}/>
-                        </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
+                <View style={styles.searchHeader}>
+                    <TextInput
+                        keyBoardType={'default'}
+                        onChangeText={this.onSearchTermChange}
+                        placeholder={'Team Name, Team Owner, or City/Town'}
+                        style={styles.textInput}
+                        value={this.state.searchTerm}
+                        underlineColorAndroid={'transparent'}
+                    />
+                </View>
+                <ScrollView style={[styles.scroll, {paddingLeft: 10, paddingRight: 10}]}>
+                    <FlatList
+                        data={searchResults}
+                        renderItem={({item}) => (<SearchItem item={item}/>)}
+                    />
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }

@@ -83,25 +83,16 @@ export const boxes = {
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        borderBottomWidth: 1,
-        borderBottomColor: '#CCC',
+        justifyContent: 'space-between',
         height: 70,
-        backgroundColor: '#EEE',
         alignItems: 'stretch',
-        padding: 10,
-        shadowColor: '#FFF',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 1,
-        shadowRadius: 0,
-        marginBottom: 1
+        marginBottom: 10
     },
     scroll: {
         marginBottom: 10,
-        paddingLeft: 3,
-        paddingRight: 3,
-        paddingTop: 10,
-        backgroundColor: constants.backgroundDark
+        paddingLeft: 1,
+        paddingRight: 1,
+        paddingTop: 10
     },
     searchHeader: {
         backgroundColor: constants.headerBackgroundColor,

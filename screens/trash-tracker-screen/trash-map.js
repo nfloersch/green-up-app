@@ -447,8 +447,8 @@ class TrashMap extends Component {
                         onRequestClose={() => {
                             this.closeModal();
                         }}>
-                        <View style={styles.frame}>
-                            <View style={styles.buttonBarHeader}>
+                        <View style={[styles.frame, {paddingTop: 30}]}>
+                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                                 <View style={styles.buttonBar}>
                                     {
                                         showFirstButton
