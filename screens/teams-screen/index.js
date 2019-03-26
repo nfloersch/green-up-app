@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -190,19 +190,18 @@ class TeamsScreen extends Component<Props> {
         const message = `Join my team "${team.name}" for Green Up Day!\n \
                 ${where}${town}${date}${start}${end}${notes}${owner}`;
         const title = `I just joined ${team.name} for Green Up Day`;
-        const url = ''; // TODO: Put in team deep link once that's implemented
+        // const url = ''; // TODO: Add team deep link once that's implemented
         Share.share(
             {
+                // content
                 message: message,
-                title: title,
-                // iOS only
-                url: url
+                title: title
+                // url: url // iOS only
             }, {
-                // Android Only
-                dialogTitle: 'Share Your Green Up Team Details',
-                // iOS only
-                subject: title,
-                tintColor: 'green'
+                // options
+                dialogTitle: 'Share Your Green Up Team Details', // Android Only
+                subject: title, // iOS only
+                tintColor: 'green' // iOS only
             });
     };
 
