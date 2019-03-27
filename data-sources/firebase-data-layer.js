@@ -479,14 +479,16 @@ export function deleteMessage(userId: string, messageId: string) {
 
 /** *************** TEAMS *************** **/
 
-export function createTeam(team: Object = {}, user: User = {}) {
+export async function createTeam(team: Object = {}, user: User = {}, dispatch) {
     const {uid} = user;
     const myTeam = deconstruct({...team, owner: {...user}});
-    return db.collection('teams').add(myTeam)
-        .then((docRef) => Promise.all([
-            db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
-            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
-        ]));
+    const docRef = await db.collection('teams').add(myTeam);
+    const memberships = await Promise.all([
+        db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
+        db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
+    ]);
+    const listeners = await Promise.all([setupTeamMemberListener([docRef.id], dispatch),
+        setupTeamMessageListener([docRef.id], dispatch)]);
 }
 
 export function saveTeam(team) {
