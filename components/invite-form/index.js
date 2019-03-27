@@ -82,19 +82,18 @@ class InviteForm extends Component<Props> {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
         return (
 
-            <View style={styles.frame}>
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+            <View style={[styles.frame, {paddingTop: 30}]}>
+                <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                     <View style={styles.buttonBar}>
 
-                                    <View style={styles.buttonBarButton}>
-                                        <TouchableHighlight
-                                            style={styles.headerButton}
-                                            onPress={this.inviteToTeam}
-                                        >
-                                            <Text style={styles.headerButtonText}>{'Invite to Team'}</Text>
-                                        </TouchableHighlight>
-                                    </View>
-
+                        <View style={styles.buttonBarButton}>
+                            <TouchableHighlight
+                                style={styles.headerButton}
+                                onPress={this.inviteToTeam}
+                            >
+                                <Text style={styles.headerButtonText}>{'Invite to Team'}</Text>
+                            </TouchableHighlight>
+                        </View>
 
 
                         <View style={styles.buttonBarButton}>
