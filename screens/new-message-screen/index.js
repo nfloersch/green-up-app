@@ -99,7 +99,7 @@ class NewMessageScreen extends Component {
             .map(team => (
                 <Picker.Item key={team.id} label={team.name} value={team.id}/>)
             );
-        const teamValue = selectedTeamId || this.state.selectedTeamId || ({myTeams}[0] || {}).id;
+        const teamValue = selectedTeamId || this.state.selectedTeamId || ((myTeams || [])[0] || {}).id;
         return (
             <View style={styles.frame}>
                 <View style={styles.buttonBarHeader}>

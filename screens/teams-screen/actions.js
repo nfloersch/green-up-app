@@ -68,11 +68,12 @@ export function askToJoinTeam(team: Object, user: Object) {
 }
 
 export function acceptInvitation(teamId: string, user: Object) {
-    return function () {
+    return (dispatch) => {
         const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
-        firebaseDataLayer.addTeamMember(teamId, newTeamMember);
+        return firebaseDataLayer.addTeamMember(teamId, newTeamMember, 'ACCEPTED', dispatch);
     };
 }
+
 
 export function sendTeamMessage(teamMembers, message) {
     return () => {
@@ -93,7 +94,7 @@ export function saveTeam(team: Object) {
 }
 
 export function createTeam(team: Object, user) {
-    return () => firebaseDataLayer.createTeam(Team.create(team), TeamMember.create(user));
+    return (dispatch) => firebaseDataLayer.createTeam(Team.create(team), TeamMember.create(user), dispatch);
 }
 
 export function deleteTeam(teamId: string) {
