@@ -68,11 +68,12 @@ export function askToJoinTeam(team: Object, user: Object) {
 }
 
 export function acceptInvitation(teamId: string, user: Object) {
-    return function () {
+    return (dispatch) => {
         const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
-        firebaseDataLayer.addTeamMember(teamId, newTeamMember);
+        return firebaseDataLayer.addTeamMember(teamId, newTeamMember, 'ACCEPTED', dispatch);
     };
 }
+
 
 export function sendTeamMessage(teamMembers, message) {
     return () => {

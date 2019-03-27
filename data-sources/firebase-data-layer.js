@@ -81,7 +81,6 @@ export function updateProfile(profile: Object, dispatch: any => any) {
     const newProfile = Object.assign({}, profile, {updated: (new Date()).toString()}); // TODO fix this hack right
     const profileUpdate = db.collection('profiles').doc(profile.uid).update(newProfile);
     return profileUpdate.catch((error) => {
-        debugger;
         dispatch(dataLayerActions.profileUpdateFail(error));
     });
 }
@@ -217,7 +216,7 @@ function setupTeamListener(user: Object, dispatch: any => void) {
 }
 
 function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void): void {
-    return (teamIds || []).map(teamId => (
+    return Promise.all((teamIds || []).map(teamId => (
         addListener(`team_${teamId}_members`, db.collection(`teams/${teamId}/members`)
             .onSnapshot(
                 querySnapshot => {
@@ -232,7 +231,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
                     // TODO : Handle the error
                 })
             ))
-    ));
+    )));
 }
 
 function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void): void {
@@ -253,7 +252,7 @@ function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void)
 }
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
-    (teamIds || []).map(teamId => {
+    return Promise.all((teamIds || []).map(teamId => {
         const ref = db.collection(`teams/${teamId}/messages`);
 
         addListener(`team_${teamId}_messages`, ref.onSnapshot(
@@ -269,7 +268,7 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
                 // TODO : Handle the error
             })
         ));
-    });
+    }));
 }
 
 function setupProfileListener(user, dispatch) {
@@ -353,13 +352,14 @@ const initializeUser = curry((dispatch, user) => {
 const deinitializeUser = (dispatch) => {
     removeAllListeners();
     dispatch(dataLayerActions.userLoggedOut());
-}
+};
+
 /**
  * Sets up a listener that initializes the user after login, or resets app state after a logout.
  * @param {function} dispatch - dispatch function
  * @returns {void}
  */
-export function initialize(dispatch: any => any) {
+export function initialize(dispatch: any => void) {
     firebase.auth().onAuthStateChanged(user => {
         if (Boolean(user)) {
             initializeUser(dispatch)(user);
@@ -441,7 +441,7 @@ export function resetPassword(emailAddress: string) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
-export function logout(dispatch) {
+export function logout(dispatch: any => void) {
     removeAllListeners();
     dispatch(dataLayerActions.resetData());
     return firebase.auth().signOut();
@@ -479,13 +479,13 @@ export function deleteMessage(userId: string, messageId: string) {
 
 /** *************** TEAMS *************** **/
 
-export function createTeam(team: Object = {}, user: User = {}, dispatch: Object) {
+export function createTeam(team: Object = {}, user: User = {}) {
     const {uid} = user;
     const myTeam = deconstruct({...team, owner: {...user}});
     return db.collection('teams').add(myTeam)
         .then((docRef) => Promise.all([
             db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
-            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true}),
+            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
         ]));
 }
 
@@ -522,13 +522,16 @@ export function removeInvitation(teamId, email) {
     return Promise.all([deleteInvitation, deleteTeamRecord]);
 }
 
-export function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED') {
+export async function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED', dispatch: any => void) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
     const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
     const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
-    return Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
+    const foo = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
+    const teamListener = setupTeamMemberListener([teamId], dispatch);
+    const teamMessageListener = setupTeamMessageListener([teamId], dispatch);
+    return foo;
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
