@@ -13,11 +13,13 @@ export default class MultiLineMapCallout extends React.Component<Props> {
 
     render() {
         const {title, description} = this.props;
-        return (<MapView.Callout>
-            <View>
-                <Text style={{fontWeight: 'bold'}}>{title}</Text>
-                <Text style={{minWidth: 100, maxWidth: 250}} numberOfLines={5}>{description}</Text>
-            </View>
-        </MapView.Callout>);
+        return (
+            <MapView.Callout>
+                <View>
+                    <Text style={{fontWeight: 'bold'}}>{title}</Text>
+                    <Text style={{minWidth: 100, maxWidth: 250}} numberOfLines={5}>{description}</Text>
+                </View>
+            </MapView.Callout>
+        );
     }
 }
