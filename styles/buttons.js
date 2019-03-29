@@ -38,11 +38,11 @@ export const buttons = {
     },
     buttonBarHeaderModal: {
         width: '100%',
-        height: 80,
+        height: 60,
         backgroundColor: constants.headerBackgroundColor,
         borderBottomWidth: 1,
         borderColor: 'black',
-        paddingTop: 20
+        paddingTop: 0
     },
     buttonRow: {
         width: '100%',

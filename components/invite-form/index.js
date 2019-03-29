@@ -101,7 +101,7 @@ class InviteForm extends Component<Props> {
                                 style={styles.headerButton}
                                 onPress={this.props.closeModal}
                             >
-                                <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                                <Text style={styles.headerButtonText}>{'Close'}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
