@@ -2,7 +2,7 @@
 
 import * as types from '../../constants/actionTypes';
 import Contact from '../../models/contact';
-import Expo from 'expo';
+import Expo, {Permissions, Contacts} from 'expo';
 import TeamMember from '../../models/team-member';
 import Invitation from '../../models/invitation';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
@@ -11,17 +11,12 @@ import {Alert} from 'react-native';
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
-        // Ask for permission to query contacts.
-        const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
-        if (permission.status !== 'granted') {
-            // Permission was denied...
-            dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
-        }
 
+        // recursively get all contacts
         async function getContactsAsync(pageSize, pageOffset = 0) {
-            const data = await Expo.Contacts.getContactsAsync({
+            const data = await Contacts.getContactsAsync({
                 fields: [
-                    Expo.Contacts.PHONE_NUMBERS, Expo.Contacts.EMAILS, Expo.Contacts.PHONETIC_FIRST_NAME, Expo.Contacts.PHONETIC_LAST_NAME
+                    Contacts.PHONE_NUMBERS, Contacts.EMAILS, Contacts.PHONETIC_FIRST_NAME, Contacts.PHONETIC_LAST_NAME
                 ],
                 pageSize,
                 pageOffset
@@ -33,7 +28,24 @@ export function retrieveContacts(_pageSize = 40) {
                 : contacts;
         }
 
-        getContactsAsync(_pageSize);
+        try {
+
+            const foo = Permissions.CONTACTS;
+            debugger;
+            // Ask for permission to query contacts.
+            const permission = await Permissions.askAsync(foo);
+            debugger;
+            if (permission.status !== 'granted') {
+                // Permission was denied...
+                dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
+            } else {
+                // we have permission lets start getting contacts
+                getContactsAsync(_pageSize);
+            }
+        } catch (error) {
+            debugger;
+            dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
+        }
     };
 }
 

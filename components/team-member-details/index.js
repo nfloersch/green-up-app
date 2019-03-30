@@ -116,7 +116,7 @@ export default class TeamMemberDetails extends Component<Props> {
             switch (_teamMember.memberStatus) {
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View style={styles.buttonBarHeaderModal}>
+                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
@@ -134,20 +134,20 @@ export default class TeamMemberDetails extends Component<Props> {
                                         <Text style={styles.headerButtonText}>{'Add'}</Text>
                                     </TouchableHighlight>
                                 </View>
+                                <View style={styles.buttonBarButton}>
+                                    <TouchableHighlight
+                                        style={styles.headerButton}
+                                        onPress={_closeModal}
+                                    >
+                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                    </TouchableHighlight>
+                                </View>
                             </View>
-                            {/*<View style={styles.buttonBarButton}>*/}
-                                {/*<TouchableHighlight*/}
-                                    {/*style={styles.headerButton}*/}
-                                    {/*onPress={_closeModal}*/}
-                                {/*>*/}
-                                    {/*<Text style={styles.headerButtonText}>{'Cancel'}</Text>*/}
-                                {/*</TouchableHighlight>*/}
-                            {/*</View>*/}
                         </View>
                     );
                 case status.ACCEPTED :
                     return (
-                        <View style={styles.buttonBarHeaderModal}>
+                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
                             <View style={styles.buttonBar}>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
@@ -162,7 +162,7 @@ export default class TeamMemberDetails extends Component<Props> {
                                         style={styles.headerButton}
                                         onPress={_closeModal}
                                     >
-                                        <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -170,20 +170,22 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.INVITED :
                     return (
-                        <View style={styles.buttonBarHeaderModal}>
+                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
                             <View style={styles.buttonBar}>
-                                <TouchableHighlight
-                                    style={styles.headerButton}
-                                    onPress={this._revokeInvitation}
-                                >
-                                    <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
-                                </TouchableHighlight>
+                                <View style={styles.buttonBarButton}>
+                                    <TouchableHighlight
+                                        style={styles.headerButton}
+                                        onPress={this._revokeInvitation}
+                                    >
+                                        <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
+                                    </TouchableHighlight>
+                                </View>
                                 <View style={styles.buttonBarButton}>
                                     <TouchableHighlight
                                         style={styles.headerButton}
                                         onPress={_closeModal}
                                     >
-                                        <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -191,13 +193,13 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 default :
                     return (
-                        <View style={styles.singleButtonHeader}>
+                        <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                             <View style={styles.buttonBarButton}>
                                 <TouchableHighlight
                                     style={styles.headerButton}
                                     onPress={_closeModal}
                                 >
-                                    <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                                    <Text style={styles.headerButtonText}>{'Close'}</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
@@ -262,7 +264,7 @@ export default class TeamMemberDetails extends Component<Props> {
         }
 
         return (
-            <View style={styles.frame}>
+            <View style={[styles.frame, {paddingTop: 30}]}>
                 {getButtons(team, teamMember, closeModal)}
                 <ScrollView style={styles.scroll}>
                     <View style={styles.infoBlockContainer}>

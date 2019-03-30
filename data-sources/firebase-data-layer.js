@@ -530,10 +530,12 @@ export async function addTeamMember(teamId: string, user: Object, status?: strin
     const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
     const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
     const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
-    const foo = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
-    const teamListener = setupTeamMemberListener([teamId], dispatch);
-    const teamMessageListener = setupTeamMessageListener([teamId], dispatch);
-    return foo;
+    const results = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
+    if (dispatch) {  // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
+        const teamListener = setupTeamMemberListener([teamId], dispatch);
+        const teamMessageListener = setupTeamMessageListener([teamId], dispatch);
+    }
+    return results;
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
