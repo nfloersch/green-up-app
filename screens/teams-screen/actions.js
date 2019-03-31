@@ -29,7 +29,7 @@ export function retrieveContacts(_pageSize = 40) {
                 pageSize,
                 pageOffset
             });
-            const contacts = data.data.map((contact) => (Contact.create(contact)));
+            const contacts = Array.from(new Set(data.data.map((contact) => (Contact.create(contact)))));
             dispatch({type: types.RETRIEVE_CONTACTS_SUCCESS, contacts});
             return (data.hasNextPage !== 0)
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))

@@ -506,16 +506,15 @@ export function saveLocations(locations: Object, teamId: string) {
 
 export function inviteTeamMember(invitation: Object) {
     const membershipId = invitation.teamMember.email.toLowerCase();
-    const teamId = invitation.team.id;
-    const sender = {...invitation.sender};
     const team = {...invitation.team, owner: {...invitation.team.owner}};
+    const sender = {...invitation.sender};
     const teamMember = {...invitation.teamMember};
     const invite = {...invitation, teamMember, team, sender};
     return db
         .collection(`invitations/${membershipId}/teams`)
-        .doc(teamId)
+        .doc(team.id)
         .set({...invite})
-        .then(db.collection(`teams/${teamId}/invitations`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
+        .then(db.collection(`teams/${team.id}/invitations`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
 }
 
 export function removeInvitation(teamId, email) {
@@ -558,8 +557,9 @@ export function leaveTeam(teamId: string, teamMember: TeamMember) {
 
 export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
-    return db.collection(`teams/${teamId}/members`).doc(_membershipId).delete()
-        .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
+    const teamListing = db.collection(`teams/${teamId}/invitations`).doc(_membershipId).delete();
+    const invite = db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete();
+    return Promise.all([teamListing, invite]);
 }
 
 export function addTeamRequest(teamId: string, user: Object) {

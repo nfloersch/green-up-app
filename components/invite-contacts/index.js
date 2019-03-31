@@ -27,7 +27,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 function getDisplayName(contact) {
     return (contact.firstName || contact.lastName)
-        ? (`${contact.firstName} ${contact.lastName}`).trim()
+        ? (`${contact.firstName} ${contact.lastName} (${contact.email})`).trim()
         : (contact.email);
 }
 
@@ -112,10 +112,10 @@ class InviteContacts extends Component<Props> {
                         return 0;
                 }
             }).map(
-                (contact) => (
+                (contact, i) => (
                     (Platform.OS === 'ios')
                         ? (
-                            <View key={contact.email}>
+                            <View key={i}>
                                 <IOSCheckBox
                                     checked={(selected.indexOf(contact.email) > -1)}
                                     label={getDisplayName(contact)}
@@ -123,7 +123,7 @@ class InviteContacts extends Component<Props> {
                                 />
                             </View>
                         )
-                        : (<TouchableHighlight key={contact.email} onPress={this.toggleContact(contact.email)}>
+                        : (<TouchableHighlight key={i} onPress={this.toggleContact(contact.email)}>
                             <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
                                 <CheckBox value={(selected.indexOf(contact.email) > -1)}/>
                                 <Text style={{fontSize: 20, marginLeft: 10}}>{getDisplayName(contact)}</Text>

@@ -31,10 +31,8 @@ export function retrieveContacts(_pageSize = 40) {
         try {
 
             const foo = Permissions.CONTACTS;
-            debugger;
             // Ask for permission to query contacts.
             const permission = await Permissions.askAsync(foo);
-            debugger;
             if (permission.status !== 'granted') {
                 // Permission was denied...
                 dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
@@ -43,7 +41,6 @@ export function retrieveContacts(_pageSize = 40) {
                 getContactsAsync(_pageSize);
             }
         } catch (error) {
-            debugger;
             dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
         }
     };
