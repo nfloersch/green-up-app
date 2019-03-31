@@ -4,16 +4,16 @@ import {Ionicons} from '@expo/vector-icons';
 import React from 'react';
 
 const iconStyles = {
-    ACCEPTED: {height: 30, width: 30, color: 'white'},
-    OWNER: {height: 30, width: 30, color: 'white'},
-    INVITED: {height: 30, width: 30, color: 'white'},
-    NOT_INVITED: {height: 30, width: 30, color: 'white'},
-    REQUEST_TO_JOIN: {height: 30, width: 30, color: 'white'},
-    IS_REQUESTING_TO_JOIN: {height: 30, width: 30, color: 'white'}
+    ACCEPTED: {height: 30, width: 30, color: '#007AFF'},
+    OWNER: {height: 30, width: 30, color: '#007AFF'},
+    INVITED: {height: 30, width: 30, color: '#007AFF'},
+    NOT_INVITED: {height: 30, width: 30, color: '#007AFF'},
+    REQUEST_TO_JOIN: {height: 30, width: 30, color: '#007AFF'},
+    IS_REQUESTING_TO_JOIN: {height: 30, width: 30, color: '#007AFF'}
 };
 
 export function getIconStyles(status: string) {
-    return iconStyles[status] || {height: 30, width: 30, color: 'white'};
+    return iconStyles[status] || {height: 30, width: 30, color: '#007AFF'};
 }
 
 const icons = {

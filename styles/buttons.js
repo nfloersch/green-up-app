@@ -19,6 +19,27 @@ export const buttons = {
         fontSize: 18,
         textAlign: 'center'
     },
+
+    altButton: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#DDD',
+        backgroundColor: '#EEE',
+        padding: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2
+    },
+    altButtonText: {
+        color: '#1E1E1E',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+
+
     buttonBar: {
         width: '100%',
         flex: 1,

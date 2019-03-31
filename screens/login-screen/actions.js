@@ -39,12 +39,10 @@ export function loginWithEmailPassword(email: string, password: string) {
 export function googleLogin() {
     return async function logIn(dispatch: Object => *) {
         try {
+            // Expo SDK 32 has a bug. Swap clientId logic if you are in dev or pushing a standalone app to TestFlight or App store
             const result = await Google.logInAsync({
-                // clientId:'665584024414-6bsqe251ljj85tu58oodfefu01m4vgnh.apps.googleusercontent.com',
-                clientId: Platform.OS === 'android' ? thirdPartyConfig.androidClientId : thirdPartyConfig.iosClientId,
-                // androidStandaloneAppClientId: thirdPartyConfig.androidStandaloneAppClientId,
-                // iosClientId: thirdPartyConfig.iosClientId,
-                // iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
+                clientId: Platform.OS === 'android' ? thirdPartyConfig.androidClientId : thirdPartyConfig.iosClientId, // use this line when pushing to app store.
+                // clientId: thirdPartyConfig.androidClientId,  // use this line when in development (using Expo App)
                 scopes: ['profile', 'email'],
                 useBrowser: true,
                 behavior: 'web'

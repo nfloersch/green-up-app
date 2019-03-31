@@ -64,17 +64,17 @@ class SearchItem extends Component {
             <TouchableOpacity
                 key={item.teamId}
                 onPress={item.toDetail}
-                style={[styles.button]}
+                style={[styles.altButton]}
             >
                 <View styles={{flex: 1, justifyItems: 'center'}}>
-                    <Text style={[styles.teamTitle, {marginTop: 10, textAlign: 'center'}]}>
+                    <Text style={[styles.teamTitle, {color: '#1E1E1E', marginTop: 5, textAlign: 'center'}]}>
                         {item.team.name}
                     </Text>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={styles.teamSearchTown}>
+                        <Text style={[styles.teamSearchTown, {color: '#1E1E1E'}]}>
                             {item.team.town}
                         </Text>
-                        <Text style={styles.teamSearchOwner}>
+                        <Text style={[styles.teamSearchOwner, {color: '#1E1E1E'}]}>
                             {item.team.owner.displayName}
                         </Text>
                     </View>

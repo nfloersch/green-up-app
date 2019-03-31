@@ -41,7 +41,7 @@ const myStyles = {
     iconButton: {
         width: 50,
         padding: 10,
-        height: 70
+        height: 70,
     },
     teamName: {
         flex: 4
@@ -57,7 +57,7 @@ class TeamItem extends Component<{ item: Object }> {
         return (
             <View key={item.key} style={[styles.buttonRow]}>
                 <TouchableHighlight
-                    style={[styles.button, {
+                    style={[styles.altButton, {
                         height: 60,
                         marginRight: 1,
                         padding: 10,
@@ -73,11 +73,14 @@ class TeamItem extends Component<{ item: Object }> {
                         alignItems: 'center'
                     }}>
                         {item.toTeamIcon}
-                        <Text style={[styles.buttonText]}>{item.name}</Text>
+                        <Text style={[styles.altButtonText]}>{item.name}</Text>
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    style={[styles.button, styles.iconButton, {marginLeft: 5, marginRight: 5}]}
+                    style={[styles.altButton, styles.iconButton, {
+                        height: 60,
+                        marginLeft: 1,
+                        marginRight: 1}]}
                     onPress={item.goToMessage}
                 >
                     <View style={{
@@ -86,14 +89,16 @@ class TeamItem extends Component<{ item: Object }> {
                         alignItems: 'center'
                     }}>
                         <Ionicons
-                            style={{color: 'white'}}
+                            style={{color: '#007AFF'}}
                             name={(Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatboxes')}
                             size={30}
                         />
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    style={[styles.button, styles.iconButton, {marginLeft: 5}]}
+                    style={[styles.altButton, styles.iconButton, {
+                        height: 60,
+                        marginLeft: 1}]}
                     onPress={item.shareTeamDetails}
                 >
                     <View style={{
@@ -102,7 +107,7 @@ class TeamItem extends Component<{ item: Object }> {
                         alignItems: 'center'
                     }}>
                         <Ionicons
-                            style={{color: 'white'}}
+                            style={{color: '#007AFF'}}
                             name={Platform.OS === 'ios' ? 'ios-share' : 'md-share'}
                             size={30}
                         />
