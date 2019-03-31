@@ -27,7 +27,7 @@ const myStyles = {
     logo: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 15
+        paddingBottom: 5
     },
     logoText: {
         fontSize: 24,
@@ -141,7 +141,7 @@ class Login extends Component<Props> {
                                     </TouchableHighlight>
                                 </View>
                             </KeyboardAvoidingView>
-                            <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
+                            <Text style={[styles.text, {textAlign: 'center', marginTop: 10}]}> - OR - </Text>
                             <TouchableOpacity
                                 style={styles.socialLoginButton}
                                 onPress={this.googleLogin}>

@@ -96,6 +96,7 @@ export const buttons = {
     link: {
         width: '100%',
         margin: 5,
+        marginTop: 1,
         padding: 5
     },
     linkText: {
