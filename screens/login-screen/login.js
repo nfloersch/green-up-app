@@ -4,7 +4,16 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import * as actions from './actions';
 import logo from '../../assets/images/green-up-logo.png';
@@ -58,6 +67,10 @@ const myStyles = {
     logos: {
         width: 20,
         height: 20
+    },
+    form: {
+        flex: 1,
+        justifyContent: 'space-between'
     }
 };
 
@@ -89,10 +102,7 @@ class Login extends Component<Props> {
 
     render() {
         return (
-            <KeyboardAvoidingView
-                style={styles.frame}
-                behavior={Platform.OS === 'ios' ? 'padding' : null}
-            >
+            <View style={styles.frame}>
                 {this.props.loginError
                     ? Alert.alert(
                         '',
@@ -112,6 +122,26 @@ class Login extends Component<Props> {
                             <View style={styles.logo}>
                                 <Image source={logo} style={{height: 120, width: 120}}/>
                             </View>
+
+                            <KeyboardAvoidingView
+                                style={styles.form}
+                                behavior={Platform.OS === 'ios' ? 'padding' : null}
+                            >
+                                <View style={{width: '100%'}}>
+                                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+                                    <TouchableHighlight
+                                        style={styles.link}
+                                        onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                                        <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={styles.link}
+                                        onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
+                                        <Text style={[styles.linkText, {fontSize: 16}]}>Create a new account</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </KeyboardAvoidingView>
+                            <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
                             <TouchableOpacity
                                 style={styles.socialLoginButton}
                                 onPress={this.googleLogin}>
@@ -136,25 +166,11 @@ class Login extends Component<Props> {
                                     </Text>
                                 </View>
                             </TouchableOpacity>
-                            <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
-                            <View style={{width: '100%'}}>
-                                <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
-                                <TouchableHighlight
-                                    style={styles.link}
-                                    onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                                    <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={styles.link}
-                                    onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
-                                    <Text style={[styles.linkText, {fontSize: 16}]}>Create a new account</Text>
-                                </TouchableHighlight>
-                            </View>
                         </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 }
