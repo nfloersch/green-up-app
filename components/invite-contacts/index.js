@@ -44,7 +44,7 @@ function _inviteToTeam() {
 
 
 type Props = {
-    actions: {retrieveContacts: any => any},
+    actions: { retrieveContacts: any => any },
     closeModal: any => void,
     contacts: Array<Object>,
     currentUser: Object,
@@ -99,14 +99,12 @@ class InviteContacts extends Component<Props> {
         const myContacts = this.state.contacts
             .filter(contact => isValidEmail(contact.email) && !isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
             .sort((a, b) => {
+                const bDisplay = (`${b.firstName}${b.lastName}${b.email}`).toLowerCase();
+                const aDisplay = (`${a.firstName}${a.lastName}${a.email}`).toLowerCase();
                 switch (true) {
-                    case(a.firstName < b.firstName):
+                    case(aDisplay < bDisplay):
                         return -1;
-                    case(a.firstName > b.firstName):
-                        return 1;
-                    case(a.lastName < b.lastName):
-                        return -1;
-                    case(a.lastName > b.lastName):
+                    case(aDisplay > bDisplay):
                         return 1;
                     default:
                         return 0;
