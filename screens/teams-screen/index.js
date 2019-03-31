@@ -58,8 +58,8 @@ class TeamItem extends Component<{ item: Object }> {
             <View key={item.key} style={[styles.buttonRow]}>
                 <TouchableHighlight
                     style={[styles.button, {
-                        height: 70,
-                        marginRight: 5,
+                        height: 60,
+                        marginRight: 1,
                         padding: 10,
                         flex: 1,
                         alignItems: 'flex-start'
