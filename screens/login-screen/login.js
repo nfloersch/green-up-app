@@ -142,16 +142,16 @@ class Login extends Component<Props> {
                                 </View>
                             </KeyboardAvoidingView>
                             <Text style={[styles.text, {textAlign: 'center', marginTop: 10}]}> - OR - </Text>
-                            <TouchableOpacity
-                                style={styles.socialLoginButton}
-                                onPress={this.googleLogin}>
-                                <View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>
-                                    <Image source={googleLogo} style={styles.logos}/>
-                                </View>
-                                <View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>
-                                    <Text style={styles.socialLoginText}>Log in with Google</Text>
-                                </View>
-                            </TouchableOpacity>
+                            {/*<TouchableOpacity*/}
+                                {/*style={styles.socialLoginButton}*/}
+                                {/*onPress={this.googleLogin}>*/}
+                                {/*<View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>*/}
+                                    {/*<Image source={googleLogo} style={styles.logos}/>*/}
+                                {/*</View>*/}
+                                {/*<View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>*/}
+                                    {/*<Text style={styles.socialLoginText}>Log in with Google</Text>*/}
+                                {/*</View>*/}
+                            {/*</TouchableOpacity>*/}
                             <TouchableOpacity
                                 style={styles.socialLoginButton}
                                 onPress={this.facebookLogin}>
