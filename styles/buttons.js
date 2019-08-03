@@ -19,6 +19,27 @@ export const buttons = {
         fontSize: 18,
         textAlign: 'center'
     },
+
+    altButton: {
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#DDD',
+        backgroundColor: '#EEE',
+        padding: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.6,
+        shadowRadius: 2
+    },
+    altButtonText: {
+        color: '#1E1E1E',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+
+
     buttonBar: {
         width: '100%',
         flex: 1,
@@ -26,7 +47,8 @@ export const buttons = {
         justifyContent: 'space-around'
     },
     buttonBarButton: {
-        width: '48%'
+        flexGrow: 1,
+        textAlign: 'center'
     },
     buttonBarHeader: {
         width: '100%',
@@ -34,6 +56,14 @@ export const buttons = {
         backgroundColor: constants.headerBackgroundColor,
         borderBottomWidth: 1,
         borderColor: 'black'
+    },
+    buttonBarHeaderModal: {
+        width: '100%',
+        height: 60,
+        backgroundColor: constants.headerBackgroundColor,
+        borderBottomWidth: 1,
+        borderColor: 'black',
+        paddingTop: 0
     },
     buttonRow: {
         width: '100%',
@@ -66,6 +96,7 @@ export const buttons = {
     link: {
         width: '100%',
         margin: 5,
+        marginTop: 1,
         padding: 5
     },
     linkText: {

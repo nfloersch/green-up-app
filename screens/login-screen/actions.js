@@ -4,6 +4,7 @@ import * as types from '../../constants/actionTypes';
 import {Google, Facebook} from 'expo';
 import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {thirdPartyConfig} from '../../config/third-party-config';
+import {Platform} from 'react-native';
 
 export function getCurrentUser() {
     return (dispatch: Object => *) => {
@@ -22,7 +23,7 @@ export function createUser(email: string, password: string, displayName: string)
         dispatch({type: types.CREATING_USER});
         const _promise = firebaseDataLayer.createUser(email, password, displayName);
         return _promise.catch(error => {
-            dispatch({type: types.CREATE_USER_FAIL, error: error.message || 'Could not create acount.'});
+            dispatch({type: types.CREATE_USER_FAIL, error: error.message || 'Could not create account.'});
         });
     };
 }
@@ -38,12 +39,10 @@ export function loginWithEmailPassword(email: string, password: string) {
 export function googleLogin() {
     return async function logIn(dispatch: Object => *) {
         try {
+            // Expo SDK 32 has a bug. Swap clientId logic if you are in dev or pushing a standalone app to TestFlight or App store
             const result = await Google.logInAsync({
-                // clientId:'665584024414-6bsqe251ljj85tu58oodfefu01m4vgnh.apps.googleusercontent.com',
-                clientId: thirdPartyConfig.androidClientId,
-                // androidStandaloneAppClientId: thirdPartyConfig.androidStandaloneAppClientId,
-                // iosClientId: thirdPartyConfig.iosClientId,
-                // iosStandaloneAppClientId: thirdPartyConfig.iosStandaloneAppClientId,
+                clientId: Platform.OS === 'android' ? thirdPartyConfig.androidClientId : thirdPartyConfig.iosClientId, // use this line when pushing to app store.
+                // clientId: thirdPartyConfig.androidClientId,  // use this line when in development (using Expo App)
                 scopes: ['profile', 'email'],
                 useBrowser: true,
                 behavior: 'web'

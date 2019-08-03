@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
@@ -14,7 +13,6 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    TouchableOpacity,
     Modal,
     View,
     Platform
@@ -29,10 +27,21 @@ import {removeNulls} from '../../libs/remove-nulls';
 import TeamSearch from '../../components/team-search';
 
 const myStyles = {
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 70,
+        alignItems: 'stretch',
+        marginBottom: 10
+    },
     icon: {
-        height: 50,
         width: 50,
-        paddingTop: 10
+        paddingTop: 0
+    },
+    iconButton: {
+        width: 50,
+        padding: 10,
+        height: 70,
     },
     teamName: {
         flex: 4
@@ -41,37 +50,70 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class TeamItem extends Component {
-    static propTypes = {
-        item: PropTypes.object
-    };
+class TeamItem extends Component<{ item: Object }> {
 
     render() {
         const item = this.props.item || {};
         return (
-            <View key={item.key} style={styles.row}>
+            <View key={item.key} style={[styles.buttonRow]}>
                 <TouchableHighlight
-                    style={{flex: 1, alignItems: 'stretch', height: 50, paddingLeft: 10}}
-                    onPress={item.goToTeam}>
-                    <Text style={[styles.textDark, {fontSize: 14, paddingTop: 20, height: 40}]}>{item.name}</Text>
+                    style={[styles.altButton, {
+                        height: 60,
+                        marginRight: 1,
+                        padding: 10,
+                        flex: 1,
+                        alignItems: 'flex-start'
+                    }]}
+                    onPress={item.goToTeam}
+                >
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        {item.toTeamIcon}
+                        <Text style={[styles.altButtonText]}>{item.name}</Text>
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={[styles.altButton, styles.iconButton, {
+                        height: 60,
+                        marginLeft: 1,
+                        marginRight: 1}]}
+                    onPress={item.goToMessage}
+                >
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Ionicons
+                            style={{color: '#007AFF'}}
+                            name={(Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatboxes')}
+                            size={30}
+                        />
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={[styles.altButton, styles.iconButton, {
+                        height: 60,
+                        marginLeft: 1}]}
+                    onPress={item.shareTeamDetails}
+                >
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Ionicons
+                            style={{color: '#007AFF'}}
+                            name={Platform.OS === 'ios' ? 'ios-share' : 'md-share'}
+                            size={30}
+                        />
+                    </View>
                 </TouchableHighlight>
 
-                <TouchableOpacity style={styles.icon} onPress={item.goToMessage}>
-                    <Ionicons
-                        style={{paddingTop: 10}}
-                        name={(Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatboxes')}
-                        size={30}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} onPress={item.shareTeamDetails}>
-                    <Ionicons
-                        name={Platform.OS === 'ios' ? 'ios-share' : 'md-share'}
-                        size={30} style={{paddingTop: 10}}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.icon} onPress={item.goToTeam}>
-                    {item.toTeamIcon}
-                </TouchableOpacity>
             </View>
         );
     }
@@ -134,26 +176,11 @@ class TeamsScreen extends Component<Props> {
         // TODO : replace this hack.
         switch (true) {
             case isInvited: // We should check in the team invites here, not rely on the argument.
-                return getMemberIcon(TeamMember.memberStatuses.INVITED, {
-                    height: 50,
-                    width: 50,
-                    paddingTop: 10
-                });
-
+                return getMemberIcon(TeamMember.memberStatuses.INVITED, {});
             case Boolean(status) : // This is okay
-                return getMemberIcon(status, {
-                    height: 50,
-                    width: 50,
-                    paddingTop: 10
-                });
-
+                return getMemberIcon(status, {});
             default: // we should actually check to see if the user has requested to join
-                return getMemberIcon(TeamMember.memberStatuses.REQUEST_TO_JOIN, {
-                    height: 50,
-                    width: 50,
-                    paddingTop: 10
-                });
-
+                return getMemberIcon(TeamMember.memberStatuses.REQUEST_TO_JOIN, {});
         }
     };
 
@@ -168,19 +195,18 @@ class TeamsScreen extends Component<Props> {
         const message = `Join my team "${team.name}" for Green Up Day!\n \
                 ${where}${town}${date}${start}${end}${notes}${owner}`;
         const title = `I just joined ${team.name} for Green Up Day`;
-        const url = ''; // TODO: Put in team deep link once that's implemented
+        // const url = ''; // TODO: Add team deep link once that's implemented
         Share.share(
             {
+                // content
                 message: message,
-                title: title,
-                // iOS only
-                url: url
+                title: title
+                // url: url // iOS only
             }, {
-                // Android Only
-                dialogTitle: 'Share Your Green Up Team Details',
-                // iOS only
-                subject: title,
-                tintColor: 'green'
+                // options
+                dialogTitle: 'Share Your Green Up Team Details', // Android Only
+                subject: title, // iOS only
+                tintColor: 'green' // iOS only
             });
     };
 
@@ -229,17 +255,16 @@ class TeamsScreen extends Component<Props> {
                         </View>
                     </View>
                 </View>
-                <View style={styles.container}>
+                <View style={styles.frame}>
                     {myTeams.length === 0
                         ? (
-                            <ImageBackground source={teamwork} style={styles.backgroundImage}>
+                            <ImageBackground source={teamwork} style={{flex: 1, justifyContent: 'center'}}>
                                 <View
                                     style={{
-                                        marginTop: '20%',
                                         paddingLeft: 20,
                                         paddingRight: 20,
-                                        paddingTop: 50,
-                                        paddingBottom: 50,
+                                        paddingTop: 20,
+                                        paddingBottom: 20,
                                         backgroundColor: 'rgba(255,255,255, 0.85)'
                                     }}>
                                     <Text
@@ -255,13 +280,12 @@ class TeamsScreen extends Component<Props> {
                         )
                         : (
                             <ScrollView style={styles.scroll}>
-                                <View style={styles.infoBlockContainer}>
-                                    <FlatList
-                                        data={myTeams}
-                                        renderItem={({item}) => (<TeamItem item={item}/>)}
-                                        style={styles.infoBlockContainer}
-                                    />
-                                </View>
+                                <FlatList
+                                    data={myTeams}
+                                    renderItem={({item}) => (<TeamItem item={item}/>)}
+                                    style={{paddingLeft: 10, paddingBottom: 10, paddingRight: 10}}
+                                />
+                                <View style={{height: 60}} />
                             </ScrollView>
                         )
                     }
@@ -290,7 +314,7 @@ class TeamsScreen extends Component<Props> {
 function mapStateToProps(state) {
     const getStatus = (team: Object, invitations: Object, user: Object): string => {
         switch (true) {
-            case team.owner.uid === user.uid :
+            case team && team.owner && team.owner.uid === user.uid :
                 return TeamMember.memberStatuses.OWNER;
             case team :
                 return TeamMember.memberStatuses.ACCEPTED;
@@ -303,7 +327,7 @@ function mapStateToProps(state) {
                 return TeamMember.memberStatuses.NOT_INVITED;
         }
     };
-    const invitations = state.teams.invitations;
+    const invitations = state.teams.myInvitations || {};
     const user = User.create({...state.login.user, ...removeNulls(state.profile)});
     const teams = state.teams.teams || {};
     const teamMembers = state.teams.teamMembers || {};

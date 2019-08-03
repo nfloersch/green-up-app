@@ -34,7 +34,6 @@ export function userFailedAuthentication(error: any): ActionType {
 
 export function teamFetchSuccessful(_teams: Object): ActionType {
     const teams = Object.keys(_teams || {}).reduce((teamObj, key) => (Object.assign({}, teamObj, {[key]: Team.create(_teams[key], key)})), {});
-
     return {type: types.FETCH_TEAMS_SUCCESS, teams};
 }
 
@@ -62,6 +61,10 @@ export function inviteesFetchSuccessful(invitees: Object, teamId: string): Actio
 
 export function teamMemberFetchSuccessful(membership: Object, teamId: string): ActionType {
     return {type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId};
+}
+
+export function teamRequestFetchSuccessful(requests: Object, teamId: string): ActionType {
+    return {type: types.TEAM_REQUEST_FETCH_SUCCESS, requests, teamId};
 }
 
 export function profileCreateFail(error: Object): ActionType {

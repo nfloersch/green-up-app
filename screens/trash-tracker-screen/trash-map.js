@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {IntentLauncherAndroid, Location, MapView, Permissions} from 'expo';
 import CheckBox from 'react-native-checkbox';
 import {bindActionCreators} from 'redux';
@@ -27,75 +26,29 @@ import * as actions from './actions';
 import {defaultStyles} from '../../styles/default-styles';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
 import {Ionicons} from '@expo/vector-icons';
+import TownInformation from '../../components/town-information';
+import offsetLocations from '../../libs/offset-locations';
 
-const myStyles = {};
+const styles = StyleSheet.create(defaultStyles);
 
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
-
-class TownInformation extends React.Component {
-    static propTypes = {
-        townInfo: PropTypes.object,
-        town: PropTypes.string
-    };
-
-    render() {
-        const {townInfo, town} = this.props;
-        return (
-            <View style={{
-                padding: 5,
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                height: 60,
-                width: '100%',
-                backgroundColor: 'rgba(255,255,255, 0.8)'
-            }}>
-                {typeof townInfo.roadsideDropOffAllowed === 'undefined' && (
-                    <Text style={styles.statusBarText}>
-                        {'Sorry, we have no information on trash drops for your location. '}
-                    </Text>
-                )}
-                {townInfo.roadsideDropOffAllowed === true && (
-                    <Text style={styles.statusBarText}>
-                        <Text>{`You are in ${town} and leaving trash bags on the roadside is allowed.`}</Text>
-                    </Text>
-                )}
-                {townInfo.roadsideDropOffAllowed === false && (
-                    <View style={styles.statusBarText}>
-                        <Text>{`You are in ${town} and leaving trash bags on the roadside is`}
-                            <Text style={{fontWeight: 'bold'}}>
-                                {' not'}
-                            </Text>
-                            <Text>
-                                {' allowed. Please take your trash to a designated drop off.'}
-                            </Text>
-                        </Text>
-                        {townInfo.dropOffLocations.map((d, i) => (
-                            <Text key={i}>{`\n${d.name}, ${d.address}`}</Text>
-                        ))}
-                    </View>)}
-            </View>
-        );
-    }
+type Props = {
+    navigation: Object,
+    actions: Object,
+    drops: PropTypes.array,
+    currentUser: Object,
+    townData: Object,
+    location: Object,
+    supplyPickupToggle: Boolean,
+    uncollectedTrashToggle: Boolean,
+    trashDropOffToggle: Boolean,
+    myTrashToggle: Boolean,
+    collectedTrashToggle: Boolean,
+    cleanAreas: PropTypes.array,
+    cleanAreasToggle: Boolean
 }
 
-class TrashMap extends Component {
-    static propTypes = {
-        navigation: PropTypes.object,
-        actions: PropTypes.object,
-        drops: PropTypes.array,
-        currentUser: PropTypes.object,
-        townData: PropTypes.object,
-        location: PropTypes.object,
-        supplyPickupToggle: PropTypes.bool,
-        uncollectedTrashToggle: PropTypes.bool,
-        trashDropOffToggle: PropTypes.bool,
-        myTrashToggle: PropTypes.bool,
-        collectedTrashToggle: PropTypes.bool,
-        cleanAreas: PropTypes.array,
-        cleanAreasToggle: PropTypes.bool
-    };
+
+class TrashMap extends Component<Props> {
 
     static navigationOptions = {
         title: 'Trash Tracker'
@@ -145,7 +98,6 @@ class TrashMap extends Component {
             const feature = turf.feature(f.geometry);
             return booleanWithin(currentLocation, feature);
         });
-
         return town ? town.properties.TOWNNAMEMC : '';
     }
 
@@ -200,11 +152,26 @@ class TrashMap extends Component {
     }
 
     render() {
+        const {
+            actions, // eslint-disable-line no-shadow
+            currentUser,
+            location,
+            drops,
+            townData,
+            cleanAreas,
+            collectedTrashToggle,
+            myTrashToggle,
+            uncollectedTrashToggle,
+            trashDropOffToggle,
+            supplyPickupToggle,
+            cleanAreasToggle
+        } = this.props;
+
         const saveTrashDrop = () => {
             if (this.state.drop.id) {
-                this.props.actions.updateTrashDrop(this.state.drop);
+                actions.updateTrashDrop(this.state.drop);
             } else {
-                this.props.actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: this.props.location.coords})));
+                actions.dropTrash(TrashDrop.create(Object.assign({}, this.state.drop, {location: location.coords})));
             }
 
             this.closeModal();
@@ -216,8 +183,8 @@ class TrashMap extends Component {
                     drop: Object.assign({}, this.state.drop, {
                         wasCollected: true,
                         collectedBy: {
-                            uid: this.props.currentUser.uid,
-                            email: this.props.currentUser.email
+                            uid:  currentUser.uid,
+                            email:  currentUser.email
                         }
                     })
                 }, saveTrashDrop);
@@ -227,11 +194,9 @@ class TrashMap extends Component {
             this.setState({modalVisible: true});
         };
 
-        const {drops, townData, cleanAreas} = this.props;
-
         // by convention, we're importing town names as upper case, any characters different
         // than uppercase letters replaced with underscore
-        const town = this.props.location ? this._getTown(this.props.location) : '';
+        const town = location ? this._getTown(location) : '';
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, '_');
         const townInfo = townData[encodedTownName] || {};
         const trashDropOffLocations = Object.values(townData).map(t => t.dropOffLocations)
@@ -240,16 +205,16 @@ class TrashMap extends Component {
         const supplyPickupLocations = Object.values(townData).map(t => t.pickupLocations)
             .reduce((a, b) => ([...a, ...b]))
             .filter(loc => loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude);
-        const initialMapLocation = this.props.location ? {
-            latitude: Number(this.props.location.coords.latitude),
-            longitude: Number(this.props.location.coords.longitude),
+        const initialMapLocation = location ? {
+            latitude: Number(location.coords.latitude),
+            longitude: Number(location.coords.longitude),
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         } : null;
 
-        const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === this.props.currentUser.uid;
+        const showFirstButton = !this.state.drop.wasCollected && this.state.drop.createdBy && this.state.drop.createdBy.uid === currentUser.uid;
 
-        const collectedTrash = (this.props.collectedTrashToggle && drops || []).filter(drop => drop.wasCollected === true).map(drop => (
+        const collectedTrash = (collectedTrashToggle ? drops : []).filter(drop => drop.wasCollected === true).map(drop => (
             <MapView.Marker
                 key={drop.id}
                 // image={collectedTrashIcon}
@@ -263,7 +228,7 @@ class TrashMap extends Component {
                 stopPropagation={true}/>
         ));
 
-        const myTrash = (drops || []).filter(drop => (this.props.myTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === this.props.currentUser.uid)).map(drop => (
+        const myTrash = (drops || []).filter(drop => (myTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === currentUser.uid)).map(drop => (
             <MapView.Marker
                 key={drop.id}
                 // image={myUncollectedTrashIcon}
@@ -278,8 +243,8 @@ class TrashMap extends Component {
             />
         ));
 
-        const unCollectedTrash = (this.props.uncollectedTrashToggle && drops || [])
-            .filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== this.props.currentUser.uid))
+        const unCollectedTrash = (uncollectedTrashToggle ? drops : [])
+            .filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== currentUser.uid))
             .map(drop => (
                 <MapView.Marker
                     key={drop.id}
@@ -295,7 +260,7 @@ class TrashMap extends Component {
                 />
             ));
 
-        const dropOffLocations = (this.props.trashDropOffToggle && trashDropOffLocations || [])
+        const dropOffLocations = offsetLocations((supplyPickupToggle ? supplyPickupLocations : []), trashDropOffToggle ? trashDropOffLocations : [])
             .map((d, i) => (
                 <MapView.Marker
                     key={`${town}DropOffLocation${i}`}
@@ -310,7 +275,7 @@ class TrashMap extends Component {
                 </MapView.Marker>
             ));
 
-        const pickupLocations = (this.props.supplyPickupToggle && supplyPickupLocations || [])
+        const pickupLocations = (supplyPickupToggle ? supplyPickupLocations : [])
             .map((d, i) => (
                 <MapView.Marker
                     key={`supplyPickup${i}`}
@@ -320,12 +285,12 @@ class TrashMap extends Component {
                     stopPropagation={true}>
                     <MultiLineMapCallout
                         title='Supply Pickup Location'
-                        description={`${d.pickupLocationName}, ${d.pickupLocationAddress}`}
+                        description={`${d.name}, ${d.address}`}
                     />
                 </MapView.Marker>
             ));
 
-        const cleanAreaMarkers = (this.props.cleanAreasToggle && cleanAreas || [])
+        const cleanAreaMarkers = (cleanAreasToggle ? cleanAreas : [])
             .map((d, i) => (
                 <MapView.Marker
                     key={`cleanArea${i}`}
@@ -447,8 +412,8 @@ class TrashMap extends Component {
                         onRequestClose={() => {
                             this.closeModal();
                         }}>
-                        <View style={styles.frame}>
-                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+                        <View style={[styles.frame, {paddingTop: 30}]}>
+                            <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                                 <View style={styles.buttonBar}>
                                     {
                                         showFirstButton

@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert} from 'react-native';
 import {MapView} from 'expo';
 import {bindActionCreators} from 'redux';
@@ -12,6 +11,7 @@ import * as teamMemberStatuses from '../../constants/team-member-statuses';
 import User from '../../models/user';
 import {getMemberIcon} from '../../libs/member-icons';
 import MultiLineMapCallout from '../../components/MultiLineMapCallout';
+import TownItem from '../../components/town-item';
 
 const myStyles =
     {
@@ -28,18 +28,27 @@ const myStyles =
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class TeamDetailsScreen extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        invitations: PropTypes.object,
-        locations: PropTypes.array,
-        navigation: PropTypes.object,
-        selectedTeam: PropTypes.object,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object,
-        otherCleanAreas: PropTypes.array
-    };
+type Props = {
+    actions: {
+        removeTeamRequest: any => void,
+        leaveTeam: any => void,
+        acceptInvitation: any => void,
+        revokeInvitation: any => void,
+        askToJoinTeam: any => void
+    },
+    currentUser: Object,
+    invitations: Object,
+    locations: Array<Object>,
+    navigation: Object,
+    selectedTeam: Object,
+    teamMembers: Object,
+    teams: Object,
+    town: Object,
+    otherCleanAreas: Array<Object>
+};
+
+class TeamDetailsScreen extends Component<Props> {
+
 
     static navigationOptions = {
         title: 'Team Details'
@@ -109,7 +118,7 @@ class TeamDetailsScreen extends Component {
     _removeRequest(teamId: string, user: Object) {
         return () => {
             this.props.navigation.goBack();
-            this.props.actions.leaveTeam(teamId, user);
+            this.props.actions.removeTeamRequest(teamId, user);
         };
     }
 
@@ -131,11 +140,11 @@ class TeamDetailsScreen extends Component {
         const {currentUser, selectedTeam} = this.props;
         const teamMembers = this.props.teamMembers[selectedTeam.id] || {};
         const memberKey = currentUser.uid;
-        const inviteKey = currentUser.email.toLowerCase().trim();
-        const membership = teamMembers[memberKey] || teamMembers[inviteKey];
+        // const inviteKey = currentUser.email.toLowerCase().trim();
+        // const membership = teamMembers[memberKey] || teamMembers[inviteKey];
         const hasInvitation = Boolean(this.props.invitations[selectedTeam.id]);
-        const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
-        const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
+        // const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
+        // const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
         const teamMemberList = (
             <View style={{width: '100%'}}>
                 <Text style={[styles.textDark, {textAlign: 'center'}]}>
@@ -174,6 +183,24 @@ class TeamDetailsScreen extends Component {
             </View>
         );
 
+
+        const getTeamMemberStatus = () => {
+            switch (true) {
+                case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
+                    return teamMemberStatuses.OWNER;
+                case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
+                    return teamMemberStatuses.ACCEPTED;
+                case hasInvitation:
+                    return teamMemberStatuses.INVITED;
+                case ((currentUser.teams || {})[selectedTeam.id] || {}).isMember === false :
+                    return teamMemberStatuses.REQUEST_TO_JOIN;
+                default:
+                    return teamMemberStatuses.NOT_INVITED;
+            }
+        };
+
+        const memberStatus = getTeamMemberStatus();
+        const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
 
         const getStatusButtons = () => {
             switch (true) {
@@ -351,6 +378,14 @@ class TeamDetailsScreen extends Component {
                                     </Text>)
                             }
                         </View>
+                        {
+                            Boolean(this.props.town)
+                                ? (
+                                    <View style={styles.block}>
+                                        <TownItem item={this.props.town}/>
+                                    </View>)
+                                : null
+                        }
                         <View style={[styles.block, {
                             borderTopWidth: 1,
                             borderBottomWidth: 0,
@@ -375,13 +410,16 @@ const mapStateToProps = (state) => {
             title: `${team.name}`,
             description: 'claimed this area'
         }))), []);
+    const selectedTownName = ((state.teams.selectedTeam || {}).town || '').toLowerCase();
+    const town = Object.values((state.towns.townData || {})).find(_town => (_town.name || '').toLowerCase() === selectedTownName);
     return ({
         locations: state.teams.locations,
-        invitations: state.teams.invitations || {},
+        invitations: state.teams.myInvitations || {},
         teams: state.teams.teams,
         selectedTeam: state.teams.selectedTeam,
         currentUser: User.create({...state.login.user, ...state.profile}),
         teamMembers: state.teams.teamMembers,
+        town,
         otherCleanAreas
     });
 };

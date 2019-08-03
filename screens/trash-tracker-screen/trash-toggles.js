@@ -41,8 +41,8 @@ class TrashToggles extends Component {
 
     render() {
         return (
-            <View style={styles.frame}>
-                <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+            <View style={[styles.frame, {paddingTop: 30}]}>
+                <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                     <View style={styles.buttonBar}>
                         <View style={styles.buttonBarButton}>
                             <TouchableOpacity style={styles.headerButton} onPress={this.props.close}>

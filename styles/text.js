@@ -1,4 +1,3 @@
-
 const alertFontSize = 12;
 
 export const text = {
@@ -108,23 +107,15 @@ export const text = {
         shadowRadius: 1
     },
     teamSearchTown: {
-        color: '#444',
+        color: 'white',
         fontSize: 12,
         fontWeight: 'bold',
-        shadowColor: '#FFF',
-        shadowOffset: {width: 1, height: 1},
-        shadowOpacity: 1,
-        shadowRadius: 1,
         textAlign: 'left'
     },
     teamTitle: {
         color: 'white',
         fontSize: 22,
-        marginBottom: 10,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.6,
-        shadowRadius: 1,
+        marginBottom: 0,
         textAlign: 'center',
         padding: 10
     },
@@ -132,10 +123,7 @@ export const text = {
         color: 'white',
         fontSize: 18,
         marginBottom: 10,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.6,
-        shadowRadius: 1
+        shadowColor: '#000'
     },
     textBlock: {
         padding: 5,
@@ -159,7 +147,7 @@ export const text = {
         shadowOpacity: 1,
         shadowRadius: 1
     },
-    headerText:{
+    headerText: {
         color: '#444',
         fontWeight: 'bold',
         fontSize: 22,

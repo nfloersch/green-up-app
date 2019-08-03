@@ -133,14 +133,13 @@ class TeamMemberDetails extends Component {
         });
     }
 
-
     render() {
         const {membershipId, teamId} = this.props.navigation.state.params;
         const member = (this.props.teamMembers[teamId] || {})[membershipId] || {};
         const avatar = (member || {}).photoURL;
         const isOwner = ((this.props.teams[teamId] || {}).owner || {}).uid === this.props.currentUserId;
 
-        function getButtons(teamMember: Object = {}) {
+        const getButtons = (teamMember: Object = {}) => {
             switch (teamMember.memberStatus) {
                 case status.OWNER :
                     return null;
@@ -190,7 +189,7 @@ class TeamMemberDetails extends Component {
                 default :
                     return null;
             }
-        }
+        };
 
         function getStatus(teamMember: Object = {}, _isOwner: boolean) {
             switch (teamMember.memberStatus) {
@@ -199,7 +198,8 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.OWNER)}
                             <Text style={styles.statusBarText}>
-                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email}`} is the owner of this team
+                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email}`} is
+                                the owner of this team
                             </Text>
                         </View>
                     );
@@ -208,7 +208,8 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.REQUEST_TO_JOIN, {}, _isOwner)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to join this team
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to
+                                join this team
                             </Text>
                         </View>
                     );
@@ -217,7 +218,8 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.ACCEPTED)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} is a member of this team.
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} is a
+                                member of this team.
                             </Text>
                         </View>
                     );
@@ -235,7 +237,8 @@ class TeamMemberDetails extends Component {
                         <View style={styles.statusBar}>
                             {getMemberIcon(status.NOT_INVITED)}
                             <Text style={styles.statusBarText}>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email || 'This person'} is not a member of this
+                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email || 'This person'} is
+                                not a member of this
                                 team
                             </Text>
                         </View>);
@@ -260,8 +263,9 @@ class TeamMemberDetails extends Component {
                             {getStatus.bind(this)(member, isOwner)}
                         </View>
                         <View style={{marginTop: 10}}>
-                            <Text style={styles.labelDark}>{`About ${member.displayName && member.displayName.trim() || ''}: `}</Text>
-                            <Text style={{marginTop: 5}}>{member.bio || ''}</Text>
+                            <Text
+                                style={styles.labelDark}>{`About ${member.displayName && member.displayName.trim() || ''}: `}</Text>
+                            <Text style={{marginTop: 5}}>{member.bio || 'This person has not completed a bio :-('}</Text>
                         </View>
                     </View>
                 </ScrollView>

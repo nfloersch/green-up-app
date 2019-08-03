@@ -67,7 +67,6 @@ export default class Team {
         this.members = Object.keys(args.members || {})
             .map(key => TeamMember.create({...args.members[key], uid: key}))
             .reduce((obj, member) => ({...obj, [member.uid || uuid()]: member}), {});
-
     }
 
     static create(args: Object = {}, id?: string) {

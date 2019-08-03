@@ -14,6 +14,7 @@ import 'firebase/firestore';
 import {curry} from 'ramda';
 import * as messageTypes from '../constants/message-types';
 import TrashDrop from '../models/trash-drop';
+import * as teamStatuses from '../constants/team-member-statuses';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -115,23 +116,24 @@ function fetchEventInfo(dispatch) {
     );
 }
 
-
-function setupInvitedTeamMemberListener(teamId: string, dispatch: any => void): void {
-    const ref = db.collection(`teams/${teamId}/invitees`);
-
-    addListener(`teamMembers_${teamId}_invitees}`,
-        ref.onSnapshot(
-            querySnapshot => {
-                const data = [];
-                querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
-                const invitees = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
-                dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
-            },
-            ((error) => {
-                console.log(error);
-                // TODO : Handle the error
-            })
-        ));
+function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void): void {
+    return (teamIds || []).map(teamId => {
+        const ref = db.collection(`teams/${teamId}/invitations`);
+        addListener(`teamMembers_${teamId}_invitations}`,
+            ref.onSnapshot(
+                querySnapshot => {
+                    const data = [];
+                    querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                    const invitees = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                    dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
+                },
+                ((error) => {
+                    console.log('setupInvitedTeamMember Error');
+                    console.log(error);
+                    // TODO : Handle the error
+                })
+            ));
+    });
 }
 
 function setupInvitationListener(email, dispatch) {
@@ -161,6 +163,7 @@ function setupInvitationListener(email, dispatch) {
                         })
                     }
                 ), {});
+
                 // Add listeners for new team member list changes
                 // Object.keys(invitations).forEach(key => {
                 //     setupInvitedTeamMemberListener(key, dispatch);
@@ -169,6 +172,7 @@ function setupInvitationListener(email, dispatch) {
                 dispatch(dataLayerActions.invitationFetchSuccessful(invitations));
             },
             ((error) => {
+                console.log('setupInvitationListener Error');
                 console.log(error);
                 // TODO : Handle the error
             })
@@ -187,14 +191,14 @@ function setupMessageListener(uid, dispatch) {
             dispatch(dataLayerActions.messageFetchSuccessful({[uid]: messages}));
         },
         ((error) => {
+            console.log('setupMessageListener Error');
             console.log(error);
             // TODO : Handle the error
         })
     ));
 }
 
-function setupTeamListener(dispatch) {
-
+function setupTeamListener(user: Object, dispatch: any => void) {
     addListener('teams', db.collection('teams')
         .onSnapshot(
             querySnapshot => {
@@ -204,6 +208,7 @@ function setupTeamListener(dispatch) {
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
             },
             ((error) => {
+                console.log('setupTeamListener Error');
                 console.log(error);
                 // TODO : Handle the error
             })
@@ -211,7 +216,7 @@ function setupTeamListener(dispatch) {
 }
 
 function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void): void {
-    return (teamIds || []).map(teamId => (
+    return Promise.all((teamIds || []).map(teamId => (
         addListener(`team_${teamId}_members`, db.collection(`teams/${teamId}/members`)
             .onSnapshot(
                 querySnapshot => {
@@ -221,15 +226,33 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
                     dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
                 },
                 ((error) => {
+                    console.log('setupTeamMemberListener Error');
                     console.log(error);
                     // TODO : Handle the error
                 })
             ))
-    ));
+    )));
+}
+
+function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void): void {
+    (teamIds || []).map(teamId => addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
+        .onSnapshot(
+            querySnapshot => {
+                const data = [];
+                querySnapshot.forEach(_doc => data.push({..._doc.data(), id: _doc.id}));
+                const members = data.reduce((obj, member) => ({...obj, [member.id]: member}), {});
+                dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
+            },
+            ((error) => {
+                console.log('setupTeamRequestListener Error');
+                console.log(error);
+                // TODO : Handle the error
+            })
+        )));
 }
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
-    (teamIds || []).map(teamId => {
+    return Promise.all((teamIds || []).map(teamId => {
         const ref = db.collection(`teams/${teamId}/messages`);
 
         addListener(`team_${teamId}_messages`, ref.onSnapshot(
@@ -240,11 +263,12 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
                 dispatch(dataLayerActions.messageFetchSuccessful({[teamId]: messages}));
             }),
             ((error) => {
+                console.log(`setupTeamMessageListener Error for team ${teamId}`);
                 console.log(error);
                 // TODO : Handle the error
             })
         ));
-    });
+    }));
 }
 
 function setupProfileListener(user, dispatch) {
@@ -266,18 +290,29 @@ function setupMyTeamsListener(user, dispatch) {
     const {uid} = user;
 
     addListener('myTeams', db.collection(`profiles/${uid}/teams`)
-        .onSnapshot(querySnapshot => {
-            const data = [];
-            const ids = [];
-            querySnapshot.forEach(doc => {
-                data.push({...doc.data(), id: doc.id});
-                ids.push(doc.id);
-            });
-            const myTeams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
-            dispatch({type: types.FETCH_MY_TEAMS_SUCCESS, myTeams});
-            setupTeamMessageListener(ids, dispatch);
-            setupTeamMemberListener(ids, dispatch);
-        }));
+        .onSnapshot(
+            (querySnapshot => {
+                const data = [];
+                const ids = [];
+                querySnapshot.forEach(doc => {
+                    data.push({...doc.data(), id: doc.id});
+                    ids.push(doc.id);
+                });
+                const myTeams = data.reduce((obj, team) => ({...obj, [team.id]: team}), {});
+                dispatch({type: types.FETCH_MY_TEAMS_SUCCESS, myTeams});
+                setupTeamMessageListener(ids, dispatch);
+                setupTeamMemberListener(ids, dispatch);
+                // Add additional listeners for team owners
+                const ownedTeamIds = data.filter(team => team.id && team.owner && team.owner.uid === uid)
+                    .map(team => team.id);
+                setupInvitedTeamMemberListener(ownedTeamIds, dispatch);
+                setupTeamRequestListener(ownedTeamIds, dispatch);
+            }),
+            ((error) => {
+                console.log('setupMyTeamsListener error');
+                console.log(error);
+                // TODO : Handle the error
+            })));
 }
 
 function setupTrashDropListener(dispatch) {
@@ -300,34 +335,38 @@ function setupTownListener(dispatch) {
     }));
 }
 
-
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch, user) => {
-    if (Boolean(user)) {
-        fetchEventInfo(dispatch);
-        setupMessageListener(user.uid, dispatch);
-        setupTeamListener(dispatch);
-        setupMyTeamsListener(user, dispatch);
-        setupTrashDropListener(dispatch);
-        setupInvitationListener(user.email, dispatch);
-        setupTownListener(dispatch);
-        setupProfileListener(user, dispatch);
-        dispatch(dataLayerActions.userAuthenticated(User.create(user)));
-        dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
-    } else {
-        removeAllListeners();
-        dispatch(dataLayerActions.userLoggedOut());
-    }
+    fetchEventInfo(dispatch);
+    setupMessageListener(user.uid, dispatch);
+    setupTeamListener(user, dispatch);
+    setupMyTeamsListener(user, dispatch);
+    setupTrashDropListener(dispatch);
+    setupInvitationListener(user.email, dispatch);
+    setupTownListener(dispatch);
+    setupProfileListener(user, dispatch);
+    dispatch(dataLayerActions.userAuthenticated(User.create(user)));
+    dispatch({type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false});
 });
 
+const deinitializeUser = (dispatch) => {
+    removeAllListeners();
+    dispatch(dataLayerActions.userLoggedOut());
+};
 
 /**
  * Sets up a listener that initializes the user after login, or resets app state after a logout.
  * @param {function} dispatch - dispatch function
  * @returns {void}
  */
-export function initialize(dispatch: any => any) {
-    firebase.auth().onAuthStateChanged(user => initializeUser(dispatch)(user));
+export function initialize(dispatch: any => void) {
+    firebase.auth().onAuthStateChanged(user => {
+        if (Boolean(user)) {
+            initializeUser(dispatch)(user);
+        } else {
+            deinitializeUser(dispatch);
+        }
+    });
 }
 
 /** *************** AUTHENTICATION *************** **/
@@ -350,9 +389,9 @@ export async function facebookAuth(token) {
     // Sign in with credential from the Facebook user.
     return firebase
         .auth()
-        .signInWithCredential(credential)
-        .then(user => {
-            const {uid, email, displayName, photoURL} = user;
+        .signInAndRetrieveDataWithCredential(credential)
+        .then(userInfo => {
+            const {uid, email, displayName, photoURL} = userInfo.user;
             db.collection('profiles').doc(uid).get().then(
                 doc => {
                     if (!doc.exists) {
@@ -367,9 +406,9 @@ export async function facebookAuth(token) {
 export async function googleAuth(token) {
     // Build Firebase credential with the Google access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
-    return firebase.auth().signInWithCredential(credential)
-        .then(user => {
-            const {uid, email, displayName, photoURL} = user;
+    return firebase.auth().signInAndRetrieveDataWithCredential(credential)
+        .then(userInfo => {
+            const {uid, email, displayName, photoURL} = userInfo.user;
             db.collection('profiles').doc(uid).get().then(
                 doc => {
                     if (!doc.exists) {
@@ -402,7 +441,7 @@ export function resetPassword(emailAddress: string) {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
-export function logout(dispatch) {
+export function logout(dispatch: any => void) {
     removeAllListeners();
     dispatch(dataLayerActions.resetData());
     return firebase.auth().signOut();
@@ -431,7 +470,6 @@ export function sendTeamMessage(teamId, message) {
 
 export function updateMessage(message: Object, userId: string) {
     const newMessage = deconstruct({...message, sender: {...message.sender}});
-    debugger;
     return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
 }
 
@@ -441,14 +479,16 @@ export function deleteMessage(userId: string, messageId: string) {
 
 /** *************** TEAMS *************** **/
 
-export function createTeam(team: Object = {}, user: User = {}) {
+export async function createTeam(team: Object = {}, user: User = {}, dispatch) {
     const {uid} = user;
     const myTeam = deconstruct({...team, owner: {...user}});
-    return db.collection('teams').add(myTeam)
-        .then((docRef) => Promise.all([
-            db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
-            db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
-        ]));
+    const docRef = await db.collection('teams').add(myTeam);
+    const memberships = await Promise.all([
+        db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({...team.owner}),
+        db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({...myTeam, isMember: true})
+    ]);
+    const listeners = await Promise.all([setupTeamMemberListener([docRef.id], dispatch),
+        setupTeamMessageListener([docRef.id], dispatch)]);
 }
 
 export function saveTeam(team) {
@@ -457,9 +497,7 @@ export function saveTeam(team) {
 }
 
 export function deleteTeam(teamId: string) {
-    return db.collection('teamMembers').doc(teamId).delete().then(() => {
-        db.collection('teams').doc(teamId).delete();
-    });
+    db.collection('teams').doc(teamId).delete();
 }
 
 export function saveLocations(locations: Object, teamId: string) {
@@ -468,16 +506,15 @@ export function saveLocations(locations: Object, teamId: string) {
 
 export function inviteTeamMember(invitation: Object) {
     const membershipId = invitation.teamMember.email.toLowerCase();
-    const teamId = invitation.team.id;
-    const sender = {...invitation.sender};
     const team = {...invitation.team, owner: {...invitation.team.owner}};
+    const sender = {...invitation.sender};
     const teamMember = {...invitation.teamMember};
     const invite = {...invitation, teamMember, team, sender};
     return db
         .collection(`invitations/${membershipId}/teams`)
-        .doc(teamId)
+        .doc(team.id)
         .set({...invite})
-        .then(db.collection(`teams/${teamId}/invitations`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
+        .then(db.collection(`teams/${team.id}/invitations`).doc(membershipId).set(deconstruct({...invitation.teamMember})));
 }
 
 export function removeInvitation(teamId, email) {
@@ -486,12 +523,18 @@ export function removeInvitation(teamId, email) {
     return Promise.all([deleteInvitation, deleteTeamRecord]);
 }
 
-export function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED') {
+export async function addTeamMember(teamId: string, user: Object, status?: string = 'ACCEPTED', dispatch: any => void) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: status}));
     const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
     const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: true});
-    return Promise.all([addToTeam, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+    const results = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
+    if (dispatch) {  // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
+        const teamListener = setupTeamMemberListener([teamId], dispatch);
+        const teamMessageListener = setupTeamMessageListener([teamId], dispatch);
+    }
+    return results;
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
@@ -499,20 +542,41 @@ export function updateTeamMember(teamId: string, teamMember: TeamMember) {
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const deleteFromProfile = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    return Promise.all([deleteFromTeam, deleteFromProfile]);
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
     const teams = {...teamMember.teams};
     delete teams[teamId];
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete()
-        .then(() => db.collection('profiles').doc(teamMember.uid).update({teams}));
+    const removeMember = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
+    const removeTeam = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    return Promise.all([removeMember, removeTeam]);
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
-    return db.collection(`teams/${teamId}/members`).doc(_membershipId).delete()
-        .then(() => db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete());
+    const teamListing = db.collection(`teams/${teamId}/invitations`).doc(_membershipId).delete();
+    const invite = db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete();
+    return Promise.all([teamListing, invite]);
+}
+
+export function addTeamRequest(teamId: string, user: Object) {
+    const email = user.email.toLowerCase().trim();
+    const teamMember = TeamMember.create(Object.assign({}, user, {memberStatus: teamStatuses.REQUEST_TO_JOIN}));
+    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(user.uid).set(deconstruct(teamMember));
+    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({isMember: false});
+    return Promise.all([teamRequest, addTeamToProfile]).then(() => removeInvitation(teamId, email));
+}
+
+
+export function removeTeamRequest(teamId: string, teamMember: TeamMember) {
+    const teams = {...teamMember.teams};
+    delete teams[teamId];
+    const delRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
+    const delFromProfile = db.collection(`profiles/${teamMember.uid}/teams/`).doc(teamId).delete();
+    return Promise.all([delRequest, delFromProfile]);
 }
 
 /** *************** TRASH DROPS *************** **/
@@ -522,5 +586,5 @@ export function dropTrash(trashDrop: Object) {
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    db.collection('trashDrops').doc(trashDrop.uid).set(deconstruct({...trashDrop, location: {...trashDrop.location}}));
+    db.collection('trashDrops').doc(trashDrop.id).set(deconstruct({...trashDrop, location: {...trashDrop.location}}));
 }

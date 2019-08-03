@@ -1,12 +1,19 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
-    Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Alert,
-    Platform
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import * as actions from './actions';
 import logo from '../../assets/images/green-up-logo.png';
@@ -20,7 +27,7 @@ const myStyles = {
     logo: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 15
+        paddingBottom: 5
     },
     logoText: {
         fontSize: 24,
@@ -45,8 +52,9 @@ const myStyles = {
         width: 44,
         alignSelf: 'flex-start'
     },
-    socialLogin: {flex: 1},
-
+    socialLogin: {
+        flex: 1
+    },
     socialLoginText: {
         fontSize: 16,
         fontWeight: '700',
@@ -56,45 +64,30 @@ const myStyles = {
         paddingTop: 12,
         color: 'white'
     },
-
     logos: {
         width: 20,
         height: 20
+    },
+    form: {
+        flex: 1,
+        justifyContent: 'space-between'
     }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class Login extends Component {
+type Props = {
+    actions: Object,
+    loginError: any,
+    navigation: Object
+};
 
-    static propTypes = {
-        actions: PropTypes.object,
-        loginError: PropTypes.any,
-        navigation: PropTypes.object
-    };
+class Login extends Component<Props> {
 
     static navigationOptions = {
         title: 'Log In'
     };
-
-    componentWillReceiveProps(nextProps) {
-        if (!!nextProps.loginError) {
-            Alert.alert(
-                '',
-                (nextProps.loginError.message || 'Login Failed'),
-                [
-                    {
-                        text: 'OK', onPress: () => {
-                        }
-                    }
-                ],
-                {cancelable: false}
-            );
-
-        }
-    }
-
 
     googleLogin = () => {
         this.props.actions.isLoggingInViaSSO(true);
@@ -109,26 +102,56 @@ class Login extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView
-                style={styles.frame}
-                behavior={Platform.OS === 'ios' ? 'padding' : null}
-            >
+            <View style={styles.frame}>
+                {this.props.loginError
+                    ? Alert.alert(
+                        '',
+                        (this.props.loginError.message || 'Login Failed'),
+                        [
+                            {
+                                text: 'OK', onPress: () => {
+                                }
+                            }
+                        ],
+                        {cancelable: false}
+                    ) : null
+                }
                 <View style={styles.container}>
                     <ScrollView style={styles.scroll}>
                         <View style={{paddingLeft: 20, paddingRight: 20}}>
                             <View style={styles.logo}>
                                 <Image source={logo} style={{height: 120, width: 120}}/>
                             </View>
-                            <TouchableOpacity
-                                style={styles.socialLoginButton}
-                                onPress={this.googleLogin}>
-                                <View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>
-                                    <Image source={googleLogo} style={styles.logos}/>
+
+                            <KeyboardAvoidingView
+                                style={styles.form}
+                                behavior={Platform.OS === 'ios' ? 'padding' : null}
+                            >
+                                <View style={{width: '100%'}}>
+                                    <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+                                    <TouchableHighlight
+                                        style={styles.link}
+                                        onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                                        <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight
+                                        style={styles.link}
+                                        onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
+                                        <Text style={[styles.linkText, {fontSize: 16}]}>Create a new account</Text>
+                                    </TouchableHighlight>
                                 </View>
-                                <View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>
-                                    <Text style={styles.socialLoginText}>Log in with Google</Text>
-                                </View>
-                            </TouchableOpacity>
+                            </KeyboardAvoidingView>
+                            <Text style={[styles.text, {textAlign: 'center', marginTop: 10}]}> - OR - </Text>
+                            {/*<TouchableOpacity*/}
+                                {/*style={styles.socialLoginButton}*/}
+                                {/*onPress={this.googleLogin}>*/}
+                                {/*<View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>*/}
+                                    {/*<Image source={googleLogo} style={styles.logos}/>*/}
+                                {/*</View>*/}
+                                {/*<View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>*/}
+                                    {/*<Text style={styles.socialLoginText}>Log in with Google</Text>*/}
+                                {/*</View>*/}
+                            {/*</TouchableOpacity>*/}
                             <TouchableOpacity
                                 style={styles.socialLoginButton}
                                 onPress={this.facebookLogin}>
@@ -143,25 +166,11 @@ class Login extends Component {
                                     </Text>
                                 </View>
                             </TouchableOpacity>
-                            <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
-                            <View style={{width: '100%'}}>
-                                <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
-                                <TouchableHighlight
-                                    style={styles.link}
-                                    onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                                    <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={styles.link}
-                                    onPress={() => this.props.navigation.navigate('CreateNewAccount')}>
-                                    <Text style={[styles.linkText, {fontSize: 16}]}>Create a new account</Text>
-                                </TouchableHighlight>
-                            </View>
                         </View>
                         <View style={defaultStyles.padForIOSKeyboard}/>
                     </ScrollView>
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 }

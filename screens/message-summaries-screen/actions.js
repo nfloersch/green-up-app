@@ -12,13 +12,13 @@ export function addMessageSuccess(data) {
 export function sendUserMessage(message: Object, recipients: [Object]) {
     const _message = Message.create(message);
     const _recipients = recipients.filter(recipient => recipient.memberStatus === statuses.ACCEPTED || recipient.memberStatus === statuses.OWNER);
-    return (dispatch) => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message, dispatch));
+    return () => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message));
 }
 
 
 export function sendTeamMessage(teamId: String, message: Object) {
     const _message = Message.create(message);
-    return (dispatch) => firebaseDataLayer.sendTeamMessage(teamId, _message, dispatch);
+    return () => firebaseDataLayer.sendTeamMessage(teamId, _message);
 }
 
 export function readMessageSuccess(data) {
@@ -27,15 +27,13 @@ export function readMessageSuccess(data) {
 
 export function readMessage(message, userID) {
     const _message = Object.assign({}, message, {read: true});
-    return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
-        dispatch(readMessage(res));
-    }).catch(error => {
-        console.log(error);
-    });
+    return () => firebaseDataLayer.updateMessage(_message, userID)
+        .catch(error => {
+            console.log(error);
+        });
 }
 
 export function selectTeamById(teamId: string) {
-    debugger;
     return {type: types.SELECT_TEAM_BY_ID, teamId};
 }
 

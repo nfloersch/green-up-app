@@ -6,6 +6,12 @@ import md5 from 'md5-hash';
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
 const getGravatar = (email: string) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${md5(email.trim().toLowerCase())}?d=mm`);
 
+
+class MyTeam {
+
+}
+
+
 export default class User {
     uid: ?string;
     displayName: ?string;
@@ -15,6 +21,7 @@ export default class User {
     teams: ?Object;
     bio: ?string;
     created: ?Date;
+    grantMarketingConsent: ?Boolean;
 
     constructor(args: Object = {}) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
@@ -39,6 +46,10 @@ export default class User {
         this.photoURL = typeof args.photoURL === 'string'
             ? args.photoURL
             : getGravatar(args.email);
+        this.grantMarketingConsent = typeof args.grantMarketingConsent === 'boolean'
+            ? args.grantMarketingConsent
+            : null;
+        this.marketingConsentUpdatedOn = args.marketingConsentUpdatedOn || null;
     }
 
     static create(args: ?Object, uid?: string) {

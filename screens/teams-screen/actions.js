@@ -10,6 +10,7 @@ import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
 import {Alert} from 'react-native';
 import * as messageTypes from '../../constants/message-types';
 import Message from '../../models/message';
+import Team from '../../models/team';
 
 export function retrieveContacts(_pageSize = 40) {
     return async function (dispatch) {
@@ -28,7 +29,7 @@ export function retrieveContacts(_pageSize = 40) {
                 pageSize,
                 pageOffset
             });
-            const contacts = data.data.map((contact) => (Contact.create(contact)));
+            const contacts = Array.from(new Set(data.data.map((contact) => (Contact.create(contact)))));
             dispatch({type: types.RETRIEVE_CONTACTS_SUCCESS, contacts});
             return (data.hasNextPage !== 0)
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))
@@ -40,7 +41,7 @@ export function retrieveContacts(_pageSize = 40) {
 }
 
 export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
-    return async function () {
+    return () => {
         teamMembers.forEach(teamMember => {
             const invitation = Invitation.create({team, sender: currentUser, teamMember});
             firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
@@ -61,20 +62,21 @@ export function askToJoinTeam(team: Object, user: Object) {
     const teamId = typeof team === 'string' ? team : team.id;
 
     return async function () {
-        await firebaseDataLayer.addTeamMember(teamId, user, memberStatus.REQUEST_TO_JOIN);
+        await firebaseDataLayer.addTeamRequest(teamId, user, memberStatus.REQUEST_TO_JOIN);
         await firebaseDataLayer.sendUserMessage(team.owner.uid, message);
     };
 }
 
 export function acceptInvitation(teamId: string, user: Object) {
-    return function () {
+    return (dispatch) => {
         const newTeamMember = TeamMember.create(Object.assign({}, user, {memberStatus: memberStatus.ACCEPTED}));
-        firebaseDataLayer.addTeamMember(teamId, newTeamMember);
+        return firebaseDataLayer.addTeamMember(teamId, newTeamMember, 'ACCEPTED', dispatch);
     };
 }
 
+
 export function sendTeamMessage(teamMembers, message) {
-    return async function () {
+    return () => {
         const _teamMembers = Object.values(teamMembers).map(member => member.uid);
         firebaseDataLayer.sendGroupMessage(_teamMembers, message);
     };
@@ -92,7 +94,7 @@ export function saveTeam(team: Object) {
 }
 
 export function createTeam(team: Object, user) {
-    return () => firebaseDataLayer.createTeam(team, user);
+    return (dispatch) => firebaseDataLayer.createTeam(Team.create(team), TeamMember.create(user), dispatch);
 }
 
 export function deleteTeam(teamId: string) {

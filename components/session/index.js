@@ -4,6 +4,8 @@
 import React, {Component, Fragment} from 'react';
 import {bindActionCreators} from 'redux';
 import LoginScreen from '../../screens/login-screen/index';
+import MarketingPermissionsScreen from '../../screens/marketing-permissions'
+
 import * as actions from './actions';
 import {connect} from 'react-redux';
 
@@ -13,6 +15,7 @@ type Props = {
     isInitialized: boolean,
     isLoggingInViaSSO: boolean,
     actions: { initialize: () => void },
+    marketingPermissionsGranted: boolean,
     splash: Object,
     user: Object,
     userIsLoggedIn: boolean
@@ -30,14 +33,18 @@ class Session extends Component<Props> {
     }
 
     render() {
-        const {userIsLoggedIn, isInitialized, isLoggingInViaSSO, splash, children} = this.props;
+        const {userIsLoggedIn, isInitialized, isLoggingInViaSSO, splash, children, marketingPermissionsGranted} = this.props;
 
         switch (true) {
             case (userIsLoggedIn === false && !isLoggingInViaSSO) :
                 return (
                     <LoginScreen/>
                 );
-            case (isInitialized):
+            case (isInitialized && !marketingPermissionsGranted):
+                return (
+                    <MarketingPermissionsScreen/>
+                )
+            case (isInitialized && marketingPermissionsGranted):
                 return (
                     <Fragment>
                         {children}
@@ -54,20 +61,19 @@ class Session extends Component<Props> {
 
 function mapStateToProps(state) {
     const {login, loading} = state;
-    const isInitialized = loading.setupMessagesListener;
-    Boolean(loading.setupMessagesListener &&
-        loading.setupTeamsListener &&
-        loading.setupMyTeamsListeners &&
-        loading.setupProfileListener &&
-        loading.setupInvitationsListener
-    );
+    const isInitialized = loading.setupMessagesListener && loading.setupProfileListener;
     const {initialAuthChecked, isLoggingInViaSSO, userIsLoggedIn, user} = login;
+    const marketingPermissionsGranted = state.profile &&
+                                        typeof state.profile.grantMarketingConsent !== 'undefined' &&
+                                        state.profile.grantMarketingConsent !== null;
+
     return {
         initialAuthChecked,
         isLoggingInViaSSO,
         userIsLoggedIn,
         isInitialized,
-        user: user || {}
+        user: user || {},
+        marketingPermissionsGranted
     };
 }
 

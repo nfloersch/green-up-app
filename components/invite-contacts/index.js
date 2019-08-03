@@ -1,7 +1,6 @@
 // @flow
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
@@ -17,7 +16,6 @@ import IOSCheckBox from 'react-native-checkbox';
 
 import * as actions from './actions';
 import TeamMember from '../../models/team-member';
-// import withErrorHandler from '../../components/with-error-handler';
 import {defaultStyles} from '../../styles/default-styles';
 import {isValidEmail, isInTeam} from '../../libs/validators';
 
@@ -29,7 +27,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 function getDisplayName(contact) {
     return (contact.firstName || contact.lastName)
-        ? (`${contact.firstName} ${contact.lastName}`).trim()
+        ? (`${contact.firstName} ${contact.lastName} (${contact.email})`).trim()
         : (contact.email);
 }
 
@@ -40,19 +38,22 @@ function _inviteToTeam() {
             displayName: `${contact.firstName} ${contact.lastName}`,
             memberStatus: TeamMember.memberStatuses.INVITED
         })));
-    this.props.navigation.goBack();
+    this.props.closeModal();
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
-class InviteContacts extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        contacts: PropTypes.arrayOf(PropTypes.object),
-        currentUser: PropTypes.object,
-        navigation: PropTypes.object,
-        selectedTeam: PropTypes.object,
-        teamMembers: PropTypes.object
-    };
+
+type Props = {
+    actions: { retrieveContacts: any => any },
+    closeModal: any => void,
+    contacts: Array<Object>,
+    currentUser: Object,
+    navigation: Object,
+    selectedTeam: Object,
+    teamMembers: Object
+};
+
+class InviteContacts extends Component<Props> {
 
     static navigationOptions = {
         title: 'Invite Contacts'
@@ -67,6 +68,7 @@ class InviteContacts extends Component {
         };
     }
 
+    // TODO: Refactor this deprecated lifecycle
     componentWillMount() {
         this.setState({
             contacts: this.props.contacts || []
@@ -77,6 +79,7 @@ class InviteContacts extends Component {
         this.props.actions.retrieveContacts();
     }
 
+    // TODO: Refactor this deprecated lifecycle
     componentWillReceiveProps(nextProps) {
         this.setState({
             contacts: nextProps.contacts || []
@@ -96,23 +99,21 @@ class InviteContacts extends Component {
         const myContacts = this.state.contacts
             .filter(contact => isValidEmail(contact.email) && !isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
             .sort((a, b) => {
+                const bDisplay = (`${b.firstName}${b.lastName}${b.email}`).toLowerCase();
+                const aDisplay = (`${a.firstName}${a.lastName}${a.email}`).toLowerCase();
                 switch (true) {
-                    case(a.firstName < b.firstName):
+                    case(aDisplay < bDisplay):
                         return -1;
-                    case(a.firstName > b.firstName):
-                        return 1;
-                    case(a.lastName < b.lastName):
-                        return -1;
-                    case(a.lastName > b.lastName):
+                    case(aDisplay > bDisplay):
                         return 1;
                     default:
                         return 0;
                 }
             }).map(
-                (contact) => (
+                (contact, i) => (
                     (Platform.OS === 'ios')
                         ? (
-                            <View key={contact.email}>
+                            <View key={i}>
                                 <IOSCheckBox
                                     checked={(selected.indexOf(contact.email) > -1)}
                                     label={getDisplayName(contact)}
@@ -120,7 +121,7 @@ class InviteContacts extends Component {
                                 />
                             </View>
                         )
-                        : (<TouchableHighlight key={contact.email} onPress={this.toggleContact(contact.email)}>
+                        : (<TouchableHighlight key={i} onPress={this.toggleContact(contact.email)}>
                             <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
                                 <CheckBox value={(selected.indexOf(contact.email) > -1)}/>
                                 <Text style={{fontSize: 20, marginLeft: 10}}>{getDisplayName(contact)}</Text>
@@ -130,11 +131,8 @@ class InviteContacts extends Component {
             );
 
         return (
-
-
-
-            <View style={styles.frame}>
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 30}]}>
+            <View style={[styles.frame, {paddingTop: 30}]}>
+                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
                     <View style={styles.buttonBar}>
 
                         <View style={styles.buttonBarButton}>
@@ -147,14 +145,12 @@ class InviteContacts extends Component {
                             </TouchableHighlight>
                         </View>
 
-
-
                         <View style={styles.buttonBarButton}>
                             <TouchableHighlight
                                 style={styles.headerButton}
                                 onPress={this.props.closeModal}
                             >
-                                <Text style={styles.headerButtonText}>{'Cancel'}</Text>
+                                <Text style={styles.headerButtonText}>{'Close'}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
