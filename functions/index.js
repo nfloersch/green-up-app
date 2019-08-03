@@ -1,3 +1,15 @@
+
+const firebaseHelper = require('firebase-functions-helper');
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+admin.initializeApp(functions.config().firebase);
+const db = admin.firestore();
+
+
 /**
  *  A SendGrid API key must be set using the firestore cli in the terminal by running:
  *
@@ -7,16 +19,6 @@
  *
  *       firebase deploy --only functions
  */
-
-
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
-
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send('Hello from Firebase!');
-});
-
 const sgMail = require('@sendgrid/mail');
 
 // Your company name to include in the emails
@@ -65,6 +67,13 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     return sgMail.send(message);
 }
 
+/**
+ * Test endpoint
+ */
+exports.helloWorld = functions.https.onRequest((request, response) => {
+    response.send('Hello from Firebase!');
+});
+
 
 /**
  * User setup after an invitation create
@@ -80,6 +89,9 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
         return sendInvitationEmailSendGrid(apiKey, invitation, email, teamId);
     });
 
+/**
+ * Clean up after team deletions
+ */
 exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDelete((event) => {
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
@@ -99,6 +111,9 @@ exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDe
     return Promise.reject(new Error('no team memberships to remove'));
 });
 
+/**
+ * Clean up after team member removal
+ */
 exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/members/{uid}').onDelete((event) => {
     const db = admin.database();
     const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
@@ -112,3 +127,44 @@ exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/member
     }
     return Promise.reject(new Error('no team member to remove'));
 });
+
+
+/**
+ * ReST API
+ */
+
+
+
+// Automatically allow cross-origin requests
+app.use(cors({origin: true}));
+
+app.get('/tenant/:id/workflow', (req, res) => {
+    res.end('Received GET request!');
+});
+
+// Retrieve Event
+app.get('/api/events/:id', (req, res) => {
+    try {
+        const eventId = req.params.id;
+        //const workflow = JSON.parse(req.body.workflow);
+        firebaseHelper.firestore.updateDocument(db, 'tenants', tenantId, {workflow: workflow});
+        res.send('huzzah');
+    } catch (error) {
+        res.end('error' + error);
+    }
+});
+
+// Add Event
+app.post('/api/events', (req, res) => {
+    try {
+        const event = JSON.parse(req.body.workflow);
+       // firebaseHelper.firestore.updateDocument(db, 'tenants', tenantId, {workflow: workflow});
+        res.send('huzzah');
+    } catch (error) {
+        res.send(error);
+    }
+});
+
+
+// Expose Express API as a single Cloud Function:
+exports.api = functions.https.onRequest(app);
