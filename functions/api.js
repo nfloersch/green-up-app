@@ -2,6 +2,7 @@
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const firebaseHelper = require('firebase-functions-helper');
 const express = require('express');
 const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: true});
@@ -29,7 +30,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
         console.log('Found "Authorization" header');
         // Read the ID Token from the Authorization header.
         idToken = req.headers.authorization.split('Bearer ')[1];
-    } else if(req.cookies) {
+    } else if (req.cookies) {
         console.log('Found "__session" cookie');
         // Read the ID Token from cookie.
         idToken = req.cookies.__session;
@@ -60,8 +61,15 @@ app.use(cookieParser);
 app.use(validateFirebaseIdToken);
 
 app.get('/hello', (req, res) => {
-    res.json({"greeting": `Hello ${req.user.email}`});
+    res.json({'greeting': `Hello ${req.user.email}`});
 });
 
+app.get('/towns', (req, res) => {
+    const db = admin.firestore();
+    firebaseHelper.firestore
+        .backup(db, 'towns')
+        .then(data => res.status(200).send(data))
+        .catch(error => res.status(400).send(`Cannot get towns: ${error}`));
+});
 
 exports.app = functions.https.onRequest(app);
