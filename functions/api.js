@@ -54,12 +54,14 @@ const validateFirebaseIdToken = async (req, res, next) => {
 
 app.use(cors);
 app.use(cookieParser);
-app.use(validateFirebaseIdToken);
-app.get('/api/hello', (req, res) => {
-    res.send(`Hello ${req.user.name}`);
-});
-
-// This HTTPS endpoint can only be accessed by your Firebase Users.
+// These HTTPS endpoints can only be accessed by your Firebase Users.
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
+app.use(validateFirebaseIdToken);
+
+app.get('/hello', (req, res) => {
+    res.json({"greeting": `Hello ${req.user.email}`});
+});
+
+
 exports.app = functions.https.onRequest(app);
