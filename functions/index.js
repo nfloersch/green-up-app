@@ -1,15 +1,3 @@
-
-const firebaseHelper = require('firebase-functions-helper');
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
-admin.initializeApp(functions.config().firebase);
-const db = admin.firestore();
-
-
 /**
  *  A SendGrid API key must be set using the firestore cli in the terminal by running:
  *
@@ -20,10 +8,11 @@ const db = admin.firestore();
  *       firebase deploy --only functions
  */
 
+const api = require('./api');
+
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
-
 
 const sgMail = require('@sendgrid/mail');
 
@@ -83,13 +72,6 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     return sgMail.send(message);
 }
 
-/**
- * Test endpoint
- */
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send('Hello from Firebase!');
-});
-
 
 /**
  * User setup after an invitation create
@@ -104,87 +86,6 @@ exports.onInvitationCreate = functions.firestore.document('invitations/{email}/t
         const apiKey = functions.config().sendgrid.apikey;
         return sendInvitationEmailSendGrid(apiKey, invitation, email, teamId);
     });
-
-
-/**
- * Clean up after team deletions
- */
-exports.onTeamDelete = functions.firestore.document('teamMembers/{teamId}').onDelete((event) => {
-    const db = admin.database();
-    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
-    const removeInvitation = (membershipKey, teamId) => db.ref(`invitations/${membershipKey}/${teamId}`).remove();
-
-    const memberships = event.data.previous;
-    if (memberships.exists()) {
-        Object.keys(memberships.val()).forEach(key => {
-            const uid = memberships[key].uid;
-
-            if (uid) {
-                removeFromProfile(uid, event.params.pushId);
-            }
-            return removeInvitation(key, event.params.pushId);
-        });
-    }
-    return Promise.reject(new Error('no team memberships to remove'));
-});
-
-/**
- * Clean up after team member removal
- */
-exports.onTeamMemberRemove = functions.firestore.document('teams/{teamId}/members/{uid}').onDelete((event) => {
-    const db = admin.database();
-    const removeFromProfile = (uid, teamId) => db.ref(`profiles/${uid}/teams/${teamId}`).remove();
-    const member = event.data.previous;
-    if (member.exists()) {
-        const uid = (member.val() || {}).uid;
-        if (uid) {
-            removeFromProfile(uid, event.params.teamId);
-            removeTeamMessages(uid, event.params.teamId);
-        }
-    }
-    return Promise.reject(new Error('no team member to remove'));
-});
-
-
-/**
- * ReST API
- */
-
-
-
-// Automatically allow cross-origin requests
-app.use(cors({origin: true}));
-
-app.get('/tenant/:id/workflow', (req, res) => {
-    res.end('Received GET request!');
-});
-
-// Retrieve Event
-app.get('/api/events/:id', (req, res) => {
-    try {
-        const eventId = req.params.id;
-        //const workflow = JSON.parse(req.body.workflow);
-        firebaseHelper.firestore.updateDocument(db, 'tenants', tenantId, {workflow: workflow});
-        res.send('huzzah');
-    } catch (error) {
-        res.end('error' + error);
-    }
-});
-
-// Add Event
-app.post('/api/events', (req, res) => {
-    try {
-        const event = JSON.parse(req.body.workflow);
-       // firebaseHelper.firestore.updateDocument(db, 'tenants', tenantId, {workflow: workflow});
-        res.send('huzzah');
-    } catch (error) {
-        res.send(error);
-    }
-});
-
-
-// Expose Express API as a single Cloud Function:
-exports.api = functions.https.onRequest(app);
 
 exports.onTeamDelete = functions.firestore.document('teams/{teamId}').onDelete((snap, context) => {
     const db = admin.firestore();
@@ -233,5 +134,7 @@ exports.onTeamRequestRemove = functions.firestore.document('teams/{teamId}/reque
 exports.onTeamInvitationRemove = functions.firestore.document('teams/{teamId}/invitations/{email}').onDelete((snap, context) => {
     return removeInvitation(context.params.email, context.params.teamId);
 });
+
+exports.api = api.app;
 
 admin.initializeApp(functions.config().firebase);
