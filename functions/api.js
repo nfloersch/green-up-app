@@ -7,6 +7,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: true});
 const app = express();
+const R = require('ramda');
+const bodyParser = require('body-parser');
+
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -59,17 +62,34 @@ app.use(cookieParser);
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
 app.use(validateFirebaseIdToken);
-
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.get('/hello', (req, res) => {
     res.json({'greeting': `Hello ${req.user.email}`});
 });
 
 app.get('/towns', (req, res) => {
     const db = admin.firestore();
+    const filterMe = data => R.filter(datum => (datum.name || '').toLowerCase().includes((req.query.name || '').toLowerCase()), data);
     firebaseHelper.firestore
         .backup(db, 'towns')
-        .then(data => res.status(200).send(data))
+        .then(data => res.status(200).send({towns: filterMe(data.towns)}))
         .catch(error => res.status(400).send(`Cannot get towns: ${error}`));
+});
+
+app.get('/towns/:id', (req, res) => {
+    const docRef = admin.firestore().collection('towns').doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            } else {
+                return res.status(400).send(`Cannot get town: ${req.params.id}`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot get town: ${error}`));
+
 });
 
 exports.app = functions.https.onRequest(app);
