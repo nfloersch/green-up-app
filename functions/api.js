@@ -92,4 +92,28 @@ app.get('/towns/:id', (req, res) => {
 
 });
 
+app.patch('/towns/:id', (req, res) => {
+    const blackListedFields = ['id', 'updated', 'created'];
+    const fieldsToMerge = R.compose(
+        R.fromPairs,
+        R.filter(entry => !blackListedFields.includes(entry[0])),
+        Object.entries)(req.body);
+    const docRef = admin.firestore().collection('towns').doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return docRef.set({...fieldsToMerge, updated: Date()}, {merge: true}).then(() => {
+                    return docRef.get()
+                        .then(doc => {
+                            return res.status(200).send(doc.data());
+                        });
+                });
+            } else {
+                return res.status(404).send(`Cannot find town: ${req.params.id}`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot update town: ${error}`));
+});
+
 exports.app = functions.https.onRequest(app);
