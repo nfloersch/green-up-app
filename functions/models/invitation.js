@@ -3,7 +3,7 @@ const TeamMember = require('/team-member');
 
 class Invitation {
 
-    constructor(args: Object) {
+    constructor(args) {
         this.id = args.id || null;
         this.teamMember = typeof args.teamMember === 'object'
             ? args.teamMember

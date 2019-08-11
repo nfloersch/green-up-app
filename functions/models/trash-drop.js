@@ -3,7 +3,7 @@ const validators = require('./validators');
 
 class TrashDrop {
 
-    constructor(args: Object) {
+    constructor(args) {
         this.id = validators.isString(args.id) ? args.id : null;
         this.bagCount = typeof args.bagCount === 'number' ? args.bagCount : null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === 'string') : [];

@@ -4,7 +4,7 @@ const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermon
 
 class TeamMember {
 
-    constructor(args: Object) {
+    constructor(args) {
         this.uid = isString(args.uid) || isString(args.id) || isString(args._id)
             ? args.uid || args.id || args._id
             : null;
