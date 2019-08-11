@@ -9,7 +9,7 @@ const cors = require('cors')({origin: true});
 const app = express();
 const R = require('ramda');
 const bodyParser = require('body-parser');
-
+const Town = require('./models/town');
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -89,7 +89,6 @@ app.get('/towns/:id', (req, res) => {
             }
         })
         .catch(error => res.status(400).send(`Cannot get town: ${error}`));
-
 });
 
 app.patch('/towns/:id', (req, res) => {
@@ -103,7 +102,8 @@ app.patch('/towns/:id', (req, res) => {
         .get()
         .then(doc => {
             if (doc.exists) {
-                return docRef.set({...fieldsToMerge, updated: Date()}, {merge: true}).then(() => {
+                const newTown = Town.create(Object.assign({}, doc.data(), fieldsToMerge, {updated: Date()}));
+                return docRef.set(newTown).then(() => {
                     return docRef.get()
                         .then(doc => {
                             return res.status(200).send(doc.data());
@@ -116,4 +116,4 @@ app.patch('/towns/:id', (req, res) => {
         .catch(error => res.status(400).send(`Cannot update town: ${error}`));
 });
 
-exports.app = functions.https.onRequest(app);
+module.exports.app = functions.https.onRequest(app);

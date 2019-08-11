@@ -1,5 +1,5 @@
 // @flow
-/* global require, exports */
+/* global require */
 
 const validators = require('./validators');
 
@@ -62,5 +62,4 @@ class Contact {
     }
 }
 
-
-exports.Contact = Contact;
+module.exports =  Contact;

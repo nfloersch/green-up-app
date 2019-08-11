@@ -21,4 +21,4 @@ class Coordinates {
     }
 }
 
-exports.Coordinates = Coordinates;
+module.exports =  Coordinates;

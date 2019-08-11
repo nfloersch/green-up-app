@@ -26,4 +26,4 @@ class Location {
     }
 }
 
-exports.Location = Location;
+module.exports =  Location;

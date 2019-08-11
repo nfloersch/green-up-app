@@ -37,4 +37,4 @@ class TrashDrop {
     }
 }
 
-exports.TrashDrop = TrashDrop;
+module.exports =  TrashDrop;

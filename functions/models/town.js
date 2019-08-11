@@ -67,8 +67,8 @@ class Town {
         if (id) {
             _args.id = id;
         }
-        return  JSON.parse(JSON.stringify(new Town(_args)));
+        return JSON.parse(JSON.stringify(new Town(_args)));
     }
 }
 
-exports.Town = Town;
+module.exports = Town;

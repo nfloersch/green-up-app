@@ -11,7 +11,7 @@ const isValidHexColor = (value: string) => (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
 const isValidPhone = (value: string = '') => value.replace(/[^0-9]/g, '').length === 7 || value.replace(/[^0-9]/g, '').length > 9;
 const isValidZIP = (value: string) => (/(^\d{5}$)|(^\d{5}-\d{4}$)/).test(value);
 
-exports = {
+module.exports = {
     isString,
     isRequired,
     isValidDate,

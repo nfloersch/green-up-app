@@ -36,4 +36,4 @@ class Invitation {
     }
 }
 
-exports.TeamMember = TeamMember;
+module.exports =  TeamMember;

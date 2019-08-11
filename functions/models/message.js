@@ -58,4 +58,4 @@ class Message {
     static messageTypes = constants.messageTypes;
 }
 
-exports.Message = Message;
+module.exports =  Message;
