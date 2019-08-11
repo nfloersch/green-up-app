@@ -45,7 +45,7 @@ class Contact {
             : false;
     }
 
-    static create(args, uid?) {
+    static create(args, uid) {
         const _args = {...(args || {})};
         if (uid) {
             _args.uid = uid;

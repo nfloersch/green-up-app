@@ -68,7 +68,7 @@ class Team {
             .reduce((obj, member) => ({...obj, [member.uid || uuid()]: member}), {});
     }
 
-    static create(args= {}, id?) {
+    static create(args= {}, id) {
         const _args = {...args};
         if (id) {
             _args.id = id;
