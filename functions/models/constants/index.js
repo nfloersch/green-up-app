@@ -1,6 +1,3 @@
-// @flow
-/* global require, exports */
-
 /** Team members statuses **/
 const REQUEST_TO_JOIN = 'REQUEST_TO_JOIN';
 const ACCEPTED = 'ACCEPTED';

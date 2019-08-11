@@ -1,19 +1,7 @@
-// @flow
-
 const Coordinates =require('./coordinates');
 const validators = require('./validators');
 
 class TrashDrop {
-    id: ?string;
-    bagCount: ?number;
-    status: ?string;
-    active: ?boolean;
-    tags: ?Array<string>;
-    location: ?Coordinates;
-    created: ?Date;
-    wasCollected: ?boolean;
-    createdBy: ?Object;
-    collectedBy: ?Object;
 
     constructor(args: Object) {
         this.id = validators.isString(args.id) ? args.id : null;
@@ -28,7 +16,7 @@ class TrashDrop {
         this.collectedBy = typeof args.collectedBy === 'object' ? args.collectedBy : null;
     }
 
-    static create(args: ?Object = {}, id?: string) {
+    static create(args = {}, id) {
         const _args = {...args};
         if (id) {
             _args.id = id;

@@ -1,6 +1,6 @@
 // @flow
 
-const validators = require('./validators');
+const {isValidDate} = require('./validators');
 const TeamMember = require('/team-member');
 
 class Invitation {
@@ -16,18 +16,12 @@ class Invitation {
         this.sender = typeof args.sender === 'object'
             ? TeamMember.create(args.sender)
             : null;
-        this.created = validators.isValidDate(new Date(args.created))
+        this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();
     }
 
-    id: ?string;
-    sender: ?Object;
-    team: ?Object;
-    teamMember: ?Object;
-    created: Date;
-
-    static create(args: ?Object = {}, id?: string) {
+    static create(args = {}, id) {
         const _args = JSON.parse(JSON.stringify(args));
         if (id) {
             _args.id = id;
@@ -36,4 +30,4 @@ class Invitation {
     }
 }
 
-module.exports =  TeamMember;
+module.exports = TeamMember;

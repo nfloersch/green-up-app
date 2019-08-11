@@ -1,23 +1,10 @@
-// @flow
-
 const validators = require('./validators');
 const md5 = require('md5-hash');
-
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
-const getGravatar = (email: string) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${md5(email.trim().toLowerCase())}?d=mm`);
+const getGravatar = (email) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${md5(email.trim().toLowerCase())}?d=mm`);
 
 class User {
-    uid: ?string;
-    displayName: ?string;
-    updated: ?Date;
-    email: ?string;
-    photoURL: ?string;
-    teams: ?Object;
-    bio: ?string;
-    created: ?Date;
-    grantMarketingConsent: ?Boolean;
-
-    constructor(args: Object = {}) {
+    constructor(args= {}) {
         this.uid = validators.isString(args.uid) || validators.isString(args.id)
             ? args.uid || args.id
             : null;
@@ -46,7 +33,7 @@ class User {
         this.marketingConsentUpdatedOn = args.marketingConsentUpdatedOn || null;
     }
 
-    static create(args: ?Object, uid?: string) {
+    static create(args, uid) {
         const _args = JSON.parse(JSON.stringify(args));
         if (uid) {
             _args.uid = uid;

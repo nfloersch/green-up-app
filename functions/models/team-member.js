@@ -1,18 +1,8 @@
-// @flow
-
 const isString = require('./validators').isString;
 const constants = require('./constants');
-
 const defaultAvatar = 'https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa';
 
 class TeamMember {
-    uid: ?string;
-    displayName: ?string;
-    bio: ?string;
-    email: ?string;
-    invitationId: ?string;
-    memberStatus: ?string;
-    photoURL: ?string;
 
     constructor(args: Object) {
         this.uid = isString(args.uid) || isString(args.id) || isString(args._id)
@@ -38,7 +28,7 @@ class TeamMember {
             : null;
     }
 
-    static create(args: ?Object = {}, uid?: string) {
+    static create(args = {}, uid) {
         const _args = {...args};
         if (uid) {
             _args.uid = uid;

@@ -1,5 +1,3 @@
-// @flow
-
 const {isString, isValidDate} = require('./validators');
 const Location = require('./location');
 const TeamMember = require('./team-member');
@@ -26,23 +24,7 @@ const getGreenUpDay = () => addDays(getGreenUpDayByYear(currentYear), 7) > new D
 const defaultDate = getGreenUpDay();
 
 class Team {
-    id: ?string;
-    name: ?string;
-    description: ?string;
-    notes: ?Array<string>;
-    town: ?string;
-    location: ?string;
-    date: ?string;
-    start: ?string;
-    end: ?string;
-    active: ?boolean;
-    members: ?Object;
-    locations: ?Array<Location>;
-    isPublic: boolean;
-    created: Date;
-    owner: TeamMember;
-
-    constructor(args: Object = {}) {
+    constructor(args= {}) {
         this.id = isString(args.id) ? args.id : null;
         this.name = isString(args.name)
             ? args.name
@@ -86,7 +68,7 @@ class Team {
             .reduce((obj, member) => ({...obj, [member.uid || uuid()]: member}), {});
     }
 
-    static create(args: Object = {}, id?: string) {
+    static create(args= {}, id?) {
         const _args = {...args};
         if (id) {
             _args.id = id;
