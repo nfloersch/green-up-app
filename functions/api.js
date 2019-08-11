@@ -68,12 +68,25 @@ app.get('/hello', (req, res) => {
     res.json({'greeting': `Hello ${req.user.email}`});
 });
 
-app.get('/towns', (req, res) => {
+app.get('/towns', async (req, res) => {
     const db = admin.firestore();
-    const filterMe = data => R.filter(datum => (datum.name || '').toLowerCase().includes((req.query.name || '').toLowerCase()), data);
+    const filterName = data => R.filter(datum => (datum.name || '').toLowerCase().includes((req.query.name || '').toLowerCase()), data);
+    const userPermissions = await db.collection('admins').doc(req.user.uid).get();
+    const isCoordinator = userPermissions.exists && (userPermissions.data().isCoordinator || userPermissions.data().isAdmin);
+    const permittedTowns = isCoordinator ? userPermissions.data().towns || [] : [];
+
+    const filterEditable = R.cond([
+        [editable => typeof editable === 'string' && editable.toLowerCase() === 'false', () => R.filter(town => !permittedTowns.includes(town.id))],
+        [editable => typeof editable === 'string' && editable.toLowerCase() === 'true', () => R.filter(town => permittedTowns.includes(town.id))],
+        [editable => editable === false, () => R.filter(town => !permittedTowns.includes(town.id))],
+        [editable => editable === true, () => R.filter(town => permittedTowns.includes(town.id))],
+        [R.T, () => R.filter(R.T)]
+    ]);
+    const filterAll = R.compose(filterName, filterEditable(req.query.editable));
+
     firebaseHelper.firestore
         .backup(db, 'towns')
-        .then(data => res.status(200).send({towns: filterMe(data.towns)}))
+        .then(data => res.status(200).send({towns: filterAll(data.towns)}))
         .catch(error => res.status(400).send(`Cannot get towns: ${error}`));
 });
 
