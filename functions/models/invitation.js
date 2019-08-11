@@ -1,5 +1,3 @@
-// @flow
-
 const {isValidDate} = require('./validators');
 const TeamMember = require('/team-member');
 
