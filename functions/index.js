@@ -8,6 +8,7 @@
  *       firebase deploy --only functions
  */
 
+const api = require('./api');
 
 const functions = require('firebase-functions');
 
@@ -133,5 +134,7 @@ exports.onTeamRequestRemove = functions.firestore.document('teams/{teamId}/reque
 exports.onTeamInvitationRemove = functions.firestore.document('teams/{teamId}/invitations/{email}').onDelete((snap, context) => {
     return removeInvitation(context.params.email, context.params.teamId);
 });
+
+exports.api = api.app;
 
 admin.initializeApp(functions.config().firebase);
