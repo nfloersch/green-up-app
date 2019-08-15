@@ -3,7 +3,7 @@ import React from "react";
 
 import { Text, Linking } from "react-native";
 
-type Props = { children: React.Node, href: string, onPress: any => void };
+type Props = { children: React.Node, href: string, onPress?: any => void };
 
 const Anchor = (props: Props) => {
     const { children, href, onPress, ...rest } = props;
