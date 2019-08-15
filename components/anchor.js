@@ -1,18 +1,24 @@
-import React from 'react';
+// @flow
+import React from "react";
 
-import {Text, Linking} from 'react-native';
+import { Text, Linking } from "react-native";
 
-export default class Anchor extends React.Component {
-    _handlePress = () => {
-      Linking.openURL(this.props.href);
-      this.props.onPress && this.props.onPress();
+type Props = { children: React.Node, href: string, onPress: any => void };
+
+const Anchor = (props: Props) => {
+    const { children, href, onPress, ...rest } = props;
+    const _handlePress = () => {
+        Linking.openURL(href);
+        if (onPress) {
+            onPress();
+        }
     };
-  
-    render() {
-      return (
-        <Text {...this.props} onPress={this._handlePress}>
-          {this.props.children}
+    return (
+        <Text { ...rest } onPress={ _handlePress }>
+            {children}
         </Text>
-      );
-    }
-  }
+    );
+};
+
+export default Anchor;
+

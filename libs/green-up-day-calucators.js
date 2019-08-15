@@ -1,16 +1,23 @@
 // @flow
 // Green Up Day is always the first Saturday in May
-export const getGreenUpDayByYear = year => {
+
+// Calculates the Green Up day for the provided year.
+export const getGreenUpDayByYear = (year: number): Date => {
     const mayFirst = new Date(`${year}-05-01T12:00:09.770Z`); // compensating for timezone
     const day = (`0${6 - mayFirst.getDay() + mayFirst.getDate()}`).slice(-2);
     return new Date(`${year}-05-${day}`);
 };
 
-const addDays = (date, days) => new Date(date).setDate(new Date(date).getDate() + days);
+const addDays = (date: Date, days: number): Date => new Date(date).setDate(new Date(date).getDate() + days);
 
-const currentYear = (new Date()).getYear() + 1900;
+const _today = new Date().toUTCString();
+type todayType = Date | string;
 
-// Return the current year's GreenUp Day if we are within 7 days
-export const getCurrentGreenUpDay = () => addDays(getGreenUpDayByYear(currentYear), 7) > new Date()
-    ? getGreenUpDayByYear(currentYear)
-    : getGreenUpDayByYear(currentYear + 1);
+// Calculate the current year's GreenUp Day if we are within 7 days
+export const getCurrentGreenUpDay = (today: todayType = _today) => {
+    const myToday = new Date(today);
+    const currentYear = myToday.getUTCFullYear();
+    return addDays(getGreenUpDayByYear(currentYear), 7) > myToday
+        ? getGreenUpDayByYear(currentYear)
+        : getGreenUpDayByYear(currentYear + 1);
+};
