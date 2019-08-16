@@ -9,7 +9,7 @@ cache:
     -
 before_script:
   - npm install -g npm@latest
-  - echo ${ENVIROMENT} >> .environment.js
+  - echo ${ENVIRONMENT} >> .environment.js
 script:
   - npx jest --ci
 jobs:
