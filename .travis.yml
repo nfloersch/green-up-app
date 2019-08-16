@@ -14,7 +14,7 @@ script:
 jobs:
   include:
     - stage: deploy
-      node_js: 10.15..3
+      node_js: 10.15.3
       script:
         - npm ci
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
