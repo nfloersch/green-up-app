@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
@@ -10,10 +9,8 @@ import Anchor from "../../components/anchor";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 
 type Props = {
     eventDescription: Object,

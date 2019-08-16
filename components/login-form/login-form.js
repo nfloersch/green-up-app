@@ -1,19 +1,20 @@
 // @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { isValidEmail } from "../libs/validators";
-import { defaultStyles } from "../styles/default-styles";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { isValidEmail } from "../../libs/validators";
+import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-export default class LoginForm extends Component {
+export class LoginForm extends Component {
+
     static navigationOptions = {
         title: "Green Up Vermont"
     };
+
     static propTypes = {
         buttonText: PropTypes.string,
         onButtonPress: PropTypes.func

@@ -1,12 +1,11 @@
 // @flow
-
-import * as types from '../../constants/actionTypes';
-import Contact from '../../models/contact';
-import Expo, {Permissions, Contacts} from 'expo';
-import TeamMember from '../../models/team-member';
-import Invitation from '../../models/invitation';
-import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
-import {Alert} from 'react-native';
+import * as types from "../../constants/action-types";
+import Contact from "../../models/contact";
+import { Permissions, Contacts } from "expo";
+import TeamMember from "../../models/team-member";
+import Invitation from "../../models/invitation";
+import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
+import { Alert } from "react-native";
 
 
 export function retrieveContacts(_pageSize = 40) {
@@ -22,7 +21,7 @@ export function retrieveContacts(_pageSize = 40) {
                 pageOffset
             });
             const contacts = data.data.map((contact) => (Contact.create(contact)));
-            dispatch({type: types.RETRIEVE_CONTACTS_SUCCESS, contacts});
+            dispatch({ type: types.RETRIEVE_CONTACTS_SUCCESS, contacts });
             return (data.hasNextPage !== 0)
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))
                 : contacts;
@@ -33,15 +32,15 @@ export function retrieveContacts(_pageSize = 40) {
             const foo = Permissions.CONTACTS;
             // Ask for permission to query contacts.
             const permission = await Permissions.askAsync(foo);
-            if (permission.status !== 'granted') {
+            if (permission.status !== "granted") {
                 // Permission was denied...
-                dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
+                dispatch({ type: types.RETRIEVE_CONTACTS_FAIL });
             } else {
                 // we have permission lets start getting contacts
                 getContactsAsync(_pageSize);
             }
         } catch (error) {
-            dispatch({type: types.RETRIEVE_CONTACTS_FAIL});
+            dispatch({ type: types.RETRIEVE_CONTACTS_FAIL });
         }
     };
 }
@@ -49,7 +48,7 @@ export function retrieveContacts(_pageSize = 40) {
 export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
     return async function () {
         teamMembers.forEach(teamMember => {
-            const invitation = Invitation.create({team, sender: currentUser, teamMember});
+            const invitation = Invitation.create({ team, sender: currentUser, teamMember });
             firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
                 Alert.alert(err);
                 throw err;

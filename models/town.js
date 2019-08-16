@@ -1,7 +1,6 @@
 // @flow
-
-import {isValidDate} from '../libs/validators';
-import Coordinates from './coordinates';
+import { isValidDate } from "../libs/validators";
+import Coordinates from "./coordinates";
 
 export class TownLocation {
     address: ?string;
@@ -11,15 +10,15 @@ export class TownLocation {
 
 
     constructor(args: ?Object) {
-        this.address = (args || {}).address || '';
-        this.name = (args || {}).name || '';
-        this.notes = (args || {}).notes || '';
+        this.address = (args || {}).address || "";
+        this.name = (args || {}).name || "";
+        this.notes = (args || {}).notes || "";
         this.coordinates = Coordinates.create((args || {}).coordinates);
 
     }
 
     static create(args: Object = {}, id?: string) {
-        const _args = {...args};
+        const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }
@@ -41,21 +40,21 @@ export default class Town {
     updated: ?Date;
 
     constructor(args: Object = {}) {
-        this.id = typeof args.id === 'string' ? args.id : null;
-        this.name = typeof args.name === 'string'
+        this.id = typeof args.id === "string" ? args.id : null;
+        this.name = typeof args.name === "string"
             ? args.name
             : null;
-        this.description = typeof args.description === 'string'
+        this.description = typeof args.description === "string"
             ? args.description
             : null;
-        this.notes = typeof args.notes === 'string'
+        this.notes = typeof args.notes === "string"
             ? args.notes
             : null;
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
         this.dropOffLocations = (Array.isArray(args.dropOffLocations) ? args.dropOffLocations : []).map(loc => TownLocation.create(loc));
         this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : []).map(loc => TownLocation.create(loc));
-        this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === 'boolean' ? args.roadsideDropOffAllowed : false;
+        this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();
@@ -65,7 +64,7 @@ export default class Town {
     }
 
     static create(args: ?Object = {}, id?: string) {
-        const _args = {...args};
+        const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }

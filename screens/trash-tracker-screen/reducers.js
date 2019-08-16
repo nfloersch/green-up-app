@@ -1,5 +1,5 @@
-import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+import * as types from "../../constants/action-types";
+import initialState from "../../reducers/initialState";
 
 export function reducers(state = initialState.trashTracker, action) {
     switch (action.type) {
@@ -19,7 +19,7 @@ export function reducers(state = initialState.trashTracker, action) {
                 [action.toggle]: action.value
             };
         case types.RESET:
-            return {...state, trashTracker: initialState.trashTracker};
+            return { ...state, trashTracker: initialState.trashTracker };
         default:
             return state;
     }

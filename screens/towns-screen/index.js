@@ -1,15 +1,13 @@
 // @flow
-
-import React, {Component} from 'react';
-import {StyleSheet, KeyboardAvoidingView, ScrollView, View, FlatList, TextInput, Platform} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import * as actions from './actions';
-import {defaultStyles} from '../../styles/default-styles';
-import TownItem from '../../components/town-item';
+import React, { Component } from "react";
+import { StyleSheet, KeyboardAvoidingView, ScrollView, View, FlatList, TextInput, Platform } from "react-native";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import * as actions from "./actions";
+import { defaultStyles } from "../../styles/default-styles";
+import TownItem from "../../components/town-item";
 
 const styles = StyleSheet.create(defaultStyles);
-
 
 type Props = {
     actions: Object,
@@ -22,50 +20,50 @@ type Props = {
 class TownInfo extends Component<Props> {
 
     static navigationOptions = {
-        title: 'Find Bags & Stuff'
+        title: "Find Bags & Stuff"
     };
 
     constructor(props) {
         super(props);
         this.onSearchTermChange = this.onSearchTermChange.bind(this);
-        this.state = {searchResults: [], searchTerm: ''};
+        this.state = { searchResults: [], searchTerm: "" };
     }
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;
-        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].name || '').toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
-        this.setState({searchResults, searchTerm: searchTerm.trim()});
+        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].name || "").toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
+        this.setState({ searchResults, searchTerm: searchTerm.trim() });
     }
 
     render() {
         const towns = this.props.towns;
         const keys = this.state.searchTerm ? this.state.searchResults : Object.keys(towns);
-        const locations = keys.map(key => ({key, ...(towns[key] || {})}));
+        const locations = keys.map(key => ({ key, ...(towns[key] || {}) }));
 
         return (
-            <View style={styles.frame}>
-                <View style={{margin: 10}}>
+            <View style={ styles.frame }>
+                <View style={ { margin: 10 } }>
                     <TextInput
-                        keyBoardType={'default'}
-                        onChangeText={this.onSearchTermChange}
-                        placeholder={'Search by City/Town'}
-                        style={styles.textInput}
-                        value={this.state.searchTerm}
-                        underlineColorAndroid={'transparent'}
+                        keyBoardType={ "default" }
+                        onChangeText={ this.onSearchTermChange }
+                        placeholder={ "Search by City/Town" }
+                        style={ styles.textInput }
+                        value={ this.state.searchTerm }
+                        underlineColorAndroid={ "transparent" }
                     />
                 </View>
                 <KeyboardAvoidingView
-                    style={defaultStyles.frame}
-                    behavior={Platform.OS === 'ios' ? 'padding' : null}
+                    style={ defaultStyles.frame }
+                    behavior={ Platform.OS === "ios" ? "padding" : null }
                 >
-                    <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlockContainer}>
+                    <ScrollView style={ styles.scroll }>
+                        <View style={ styles.infoBlockContainer }>
                             <FlatList
-                                style={styles.infoBlockContainer}
-                                data={locations}
-                                renderItem={({item}) => (<TownItem item={item}/>)}/>
+                                style={ styles.infoBlockContainer }
+                                data={ locations }
+                                renderItem={ ({ item }) => (<TownItem item={ item }/>) }/>
                         </View>
-                        <View style={defaultStyles.padForIOSKeyboard}/>
+                        <View style={ defaultStyles.padForIOSKeyboard }/>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </View>
@@ -75,7 +73,7 @@ class TownInfo extends Component<Props> {
 
 function mapStateToProps(state) {
     const towns = state.towns.townData;
-    return {towns};
+    return { towns };
 }
 
 function mapDispatchToProps(dispatch) {

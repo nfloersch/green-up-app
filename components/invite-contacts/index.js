@@ -1,6 +1,5 @@
 // @flow
-
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
     StyleSheet,
     View,
@@ -9,21 +8,18 @@ import {
     Text,
     CheckBox,
     Platform
-} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import IOSCheckBox from 'react-native-checkbox';
-
-import * as actions from './actions';
-import TeamMember from '../../models/team-member';
-import {defaultStyles} from '../../styles/default-styles';
-import {isValidEmail, isInTeam} from '../../libs/validators';
+} from "react-native";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import IOSCheckBox from "react-native-checkbox";
+import * as actions from "./actions";
+import TeamMember from "../../models/team-member";
+import { defaultStyles } from "../../styles/default-styles";
+import { isValidEmail, isInTeam } from "../../libs/validators";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 
 function getDisplayName(contact) {
     return (contact.firstName || contact.lastName)
@@ -42,7 +38,6 @@ function _inviteToTeam() {
     this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, teamMembers);
 }
 
-
 type Props = {
     actions: { retrieveContacts: any => any },
     closeModal: any => void,
@@ -56,7 +51,7 @@ type Props = {
 class InviteContacts extends Component<Props> {
 
     static navigationOptions = {
-        title: 'Invite Contacts'
+        title: "Invite Contacts"
     };
 
     constructor(props) {
@@ -90,7 +85,7 @@ class InviteContacts extends Component<Props> {
         return () => {
             const emails = this.state.selectedContacts || [];
             const newContacts = (emails.indexOf(email) > -1) ? emails.filter(_email => _email !== email) : emails.concat(email);
-            this.setState({selectedContacts: newContacts});
+            this.setState({ selectedContacts: newContacts });
         };
     }
 
@@ -111,55 +106,55 @@ class InviteContacts extends Component<Props> {
                 }
             }).map(
                 (contact, i) => (
-                    (Platform.OS === 'ios')
+                    (Platform.OS === "ios")
                         ? (
-                            <View key={i}>
+                            <View key={ i }>
                                 <IOSCheckBox
-                                    checked={(selected.indexOf(contact.email) > -1)}
-                                    label={getDisplayName(contact)}
-                                    onChange={this.toggleContact(contact.email)}
+                                    checked={ (selected.indexOf(contact.email) > -1) }
+                                    label={ getDisplayName(contact) }
+                                    onChange={ this.toggleContact(contact.email) }
                                 />
                             </View>
                         )
-                        : (<TouchableHighlight key={i} onPress={this.toggleContact(contact.email)}>
-                            <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
-                                <CheckBox value={(selected.indexOf(contact.email) > -1)}/>
-                                <Text style={{fontSize: 20, marginLeft: 10}}>{getDisplayName(contact)}</Text>
+                        : (<TouchableHighlight key={ i } onPress={ this.toggleContact(contact.email) }>
+                            <View style={ { flex: 1, flexDirection: "row", marginTop: 10 } }>
+                                <CheckBox value={ (selected.indexOf(contact.email) > -1) }/>
+                                <Text style={ { fontSize: 20, marginLeft: 10 } }>{getDisplayName(contact)}</Text>
                             </View>
                         </TouchableHighlight>)
                 )
             );
 
         return (
-            <View style={[styles.frame, {paddingTop: 30}]}>
-                <View style={[styles.buttonBarHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
-                    <View style={styles.buttonBar}>
+            <View style={ [styles.frame, { paddingTop: 30 }] }>
+                <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                    <View style={ styles.buttonBar }>
 
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.inviteToTeam}
+                                style={ styles.headerButton }
+                                onPress={ this.inviteToTeam }
                             >
-                                <Text style={styles.headerButtonText}>
-                                    {'Invite to Team'}</Text>
+                                <Text style={ styles.headerButtonText }>
+                                    {"Invite to Team"}</Text>
                             </TouchableHighlight>
                         </View>
 
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.props.closeModal}
+                                style={ styles.headerButton }
+                                onPress={ this.props.closeModal }
                             >
-                                <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                <Text style={ styles.headerButtonText }>{"Close"}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
                 </View>
 
                 <ScrollView
-                    style={styles.scroll}
-                    keyboardShouldPersistTaps='never'>
-                    <View style={styles.infoBlockContainer}>
+                    style={ styles.scroll }
+                    keyboardShouldPersistTaps="never">
+                    <View style={ styles.infoBlockContainer }>
                         {myContacts}
                     </View>
                 </ScrollView>
@@ -173,7 +168,7 @@ const mapStateToProps = (state) => {
     const currentUser = state.login.user;
     const teamMembers = state.teams.teamMembers;
     const contacts = state.teams.contacts;
-    return {teamMembers, currentUser, selectedTeam, contacts};
+    return { teamMembers, currentUser, selectedTeam, contacts };
 };
 
 const mapDispatchToProps = (dispatch) => ({

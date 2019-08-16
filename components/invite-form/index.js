@@ -1,6 +1,5 @@
 // @flow
-
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
     Alert,
     TouchableHighlight,
@@ -11,29 +10,28 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Platform
-} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {isValidEmail, isInTeam} from '../../libs/validators';
+} from "react-native";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { isValidEmail, isInTeam } from "../../libs/validators";
 
-import * as actions from './actions';
-import TeamMember from '../../models/team-member';
-import {defaultStyles} from '../../styles/default-styles';
-import User from '../../models/user';
-import {removeNulls} from '../../libs/remove-nulls';
+import * as actions from "./actions";
+import TeamMember from "../../models/team-member";
+import { defaultStyles } from "../../styles/default-styles";
+import User from "../../models/user";
+import { removeNulls } from "../../libs/remove-nulls";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 function _onChangeEmail(value) {
-    this.setState({email: (value || '').trim()});
+    this.setState({ email: (value || "").trim() });
 }
 
 function _changeInvitee(key) {
     return (value) => {
-        this.setState({[key]: value});
+        this.setState({ [key]: value });
     };
 }
 
@@ -47,10 +45,10 @@ function _inviteToTeam() {
     const emailIsInvalid = !isValidEmail(this.state.email) || isInTeam(teamMembers, this.state.email);
 
     if (emailIsInvalid) {
-        Alert.alert('Please enter a valid email address');
+        Alert.alert("Please enter a valid email address");
     } else {
         this.props.actions.inviteContacts(this.props.selectedTeam, this.props.currentUser, [teamMember]);
-        this.setState({firstName: '', lastName: '', email: ''});
+        this.setState({ firstName: "", lastName: "", email: "" });
     }
 }
 
@@ -66,7 +64,7 @@ type Props = {
 class InviteForm extends Component<Props> {
 
     static navigationOptions = {
-        title: 'Invite Team Members'
+        title: "Invite Team Members"
     };
 
     constructor(props) {
@@ -74,7 +72,7 @@ class InviteForm extends Component<Props> {
         this.inviteToTeam = _inviteToTeam.bind(this);
         this.changeInvitee = _changeInvitee.bind(this);
         this.onChangeEmail = _onChangeEmail.bind(this);
-        this.state = {firstName: '', lastName: '', email: ''};
+        this.state = { firstName: "", lastName: "", email: "" };
     }
 
 
@@ -82,8 +80,8 @@ class InviteForm extends Component<Props> {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
         return (
 
-            <View style={[styles.frame, {paddingTop: 30}]}>
-                <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
+            <View style={[styles.frame, { paddingTop: 30 }]}>
+                <View style={[styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }]}>
                     <View style={styles.buttonBar}>
 
                         <View style={styles.buttonBarButton}>
@@ -91,7 +89,7 @@ class InviteForm extends Component<Props> {
                                 style={styles.headerButton}
                                 onPress={this.inviteToTeam}
                             >
-                                <Text style={styles.headerButtonText}>{'Invite to Team'}</Text>
+                                <Text style={styles.headerButtonText}>{"Invite to Team"}</Text>
                             </TouchableHighlight>
                         </View>
 
@@ -101,7 +99,7 @@ class InviteForm extends Component<Props> {
                                 style={styles.headerButton}
                                 onPress={this.props.closeModal}
                             >
-                                <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                <Text style={styles.headerButtonText}>{"Close"}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
@@ -109,7 +107,7 @@ class InviteForm extends Component<Props> {
 
                 <KeyboardAvoidingView
                     style={styles.frame}
-                    behavior={Platform.OS === 'ios' ? 'padding' : null}
+                    behavior={Platform.OS === "ios" ? "padding" : null}
                 >
                     <ScrollView style={styles.scroll}>
                         <View style={styles.infoBlockContainer}>
@@ -117,23 +115,23 @@ class InviteForm extends Component<Props> {
                                 Invitee&apos;s Email
                             </Text>
                             <TextInput
-                                autoCapitalize='none'
+                                autoCapitalize="none"
                                 style={styles.textInput}
-                                placeholder='john@example.com'
-                                value={this.state.email || ''}
+                                placeholder="john@example.com"
+                                value={this.state.email || ""}
                                 onChangeText={this.onChangeEmail}
-                                underlineColorAndroid={'transparent'}
+                                underlineColorAndroid={"transparent"}
                             />
-                            <Text>{isInTeam(teamMembers, this.state.email) ? 'That person is already on the team' : ' '}</Text>
+                            <Text>{isInTeam(teamMembers, this.state.email) ? "That person is already on the team" : " "}</Text>
                             <Text style={styles.labelDark}>
                                 First Name
                             </Text>
                             <TextInput
                                 style={styles.textInput}
                                 value={this.state.firstName}
-                                onChangeText={this.changeInvitee('firstName')}
-                                placeholder='First'
-                                underlineColorAndroid={'transparent'}
+                                onChangeText={this.changeInvitee("firstName")}
+                                placeholder="First"
+                                underlineColorAndroid={"transparent"}
                             />
                             <Text style={styles.labelDark}>
                                 Last Name
@@ -141,13 +139,13 @@ class InviteForm extends Component<Props> {
                             <TextInput
                                 style={styles.textInput}
                                 value={this.state.lastName}
-                                onChangeText={this.changeInvitee('lastName')}
-                                placeholder='Last'
-                                underlineColorAndroid={'transparent'}
+                                onChangeText={this.changeInvitee("lastName")}
+                                placeholder="Last"
+                                underlineColorAndroid={"transparent"}
                             />
                         </View>
                         {
-                            Platform.OS === 'ios'
+                            Platform.OS === "ios"
                                 ? (<View style={defaultStyles.padForIOSKeyboard}/>)
                                 : null
                         }
@@ -160,9 +158,9 @@ class InviteForm extends Component<Props> {
 
 const mapStateToProps = (state) => {
     const selectedTeam = state.teams.selectedTeam;
-    const currentUser = User.create({...state.login.user, ...removeNulls(state.profile)});
+    const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const teamMembers = state.teams.teamMembers;
-    return {teamMembers, currentUser, selectedTeam};
+    return { teamMembers, currentUser, selectedTeam };
 };
 
 const mapDispatchToProps = (dispatch) => ({

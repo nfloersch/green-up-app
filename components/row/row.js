@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableHighlight, Platform } from "react-native";
 
 const styles = StyleSheet.create({
@@ -16,7 +16,14 @@ const styles = StyleSheet.create({
     }
 });
 
-function Row({ title, onPress, platform, testID }) {
+type Props = {
+    title: string,
+    onPress: any => void,
+    platform: any,
+    testID?: string
+};
+
+export const Row = ({ title, onPress, platform, testID }: Props) => {
     if (platform && platform !== Platform.OS) {
         return <View/>;
     }
@@ -32,13 +39,6 @@ function Row({ title, onPress, platform, testID }) {
             </View>
         </TouchableHighlight>
     );
-}
-
-Row.propTypes = {
-    title: PropTypes.string.isRequired,
-    onPress: PropTypes.func.isRequired,
-    platform: PropTypes.any,
-    testID: PropTypes.string
 };
 
 

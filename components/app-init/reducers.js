@@ -1,5 +1,6 @@
-import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+// @flow
+import * as types from "../../constants/action-types";
+import initialState from "../../reducers/initialState";
 
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
@@ -46,7 +47,7 @@ export function reducers(state = initialState.loading, action) {
             return {
                 ...state,
                 isInitialized: false,
-                initializeError: 'Failed to initialize user'
+                initializeError: "Failed to initialize user"
             };
         default:
             return state;

@@ -1,13 +1,11 @@
 // @flow
+import React, { Component, Fragment } from "react";
+import { bindActionCreators } from "redux";
+import LoginScreen from "../../screens/login-screen/index";
+import MarketingPermissionsScreen from "../../screens/marketing-permissions";
 
-
-import React, {Component, Fragment} from 'react';
-import {bindActionCreators} from 'redux';
-import LoginScreen from '../../screens/login-screen/index';
-import MarketingPermissionsScreen from '../../screens/marketing-permissions'
-
-import * as actions from './actions';
-import {connect} from 'react-redux';
+import * as actions from "./actions";
+import { connect } from "react-redux";
 
 type Props = {
     children: any,
@@ -33,7 +31,7 @@ class Session extends Component<Props> {
     }
 
     render() {
-        const {userIsLoggedIn, isInitialized, isLoggingInViaSSO, splash, children, marketingPermissionsGranted} = this.props;
+        const { userIsLoggedIn, isInitialized, isLoggingInViaSSO, splash, children, marketingPermissionsGranted } = this.props;
 
         switch (true) {
             case (userIsLoggedIn === false && !isLoggingInViaSSO) :
@@ -43,7 +41,7 @@ class Session extends Component<Props> {
             case (isInitialized && !marketingPermissionsGranted):
                 return (
                     <MarketingPermissionsScreen/>
-                )
+                );
             case (isInitialized && marketingPermissionsGranted):
                 return (
                     <Fragment>
@@ -60,12 +58,12 @@ class Session extends Component<Props> {
 }
 
 function mapStateToProps(state) {
-    const {login, loading} = state;
+    const { login, loading } = state;
     const isInitialized = loading.setupMessagesListener && loading.setupProfileListener;
-    const {initialAuthChecked, isLoggingInViaSSO, userIsLoggedIn, user} = login;
+    const { initialAuthChecked, isLoggingInViaSSO, userIsLoggedIn, user } = login;
     const marketingPermissionsGranted = state.profile &&
-                                        typeof state.profile.grantMarketingConsent !== 'undefined' &&
-                                        state.profile.grantMarketingConsent !== null;
+        typeof state.profile.grantMarketingConsent !== "undefined" &&
+        state.profile.grantMarketingConsent !== null;
 
     return {
         initialAuthChecked,

@@ -1,12 +1,10 @@
 // @flow
-
 import React, { Component } from "react";
 import { Alert, TouchableOpacity, StyleSheet, Text, TextInput, View } from "react-native";
-import { isValidEmail } from "../libs/validators";
-import { defaultStyles } from "../styles/default-styles";
+import { isValidEmail } from "../../libs/validators";
+import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
@@ -16,7 +14,7 @@ type Props = {
     onButtonPress: () => void
 };
 
-export default class CreateAccountForm extends Component<Props> {
+export class CreateAccountForm extends Component<Props> {
     static navigationOptions = {
         title: "Create New Account"
     };

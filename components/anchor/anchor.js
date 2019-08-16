@@ -1,11 +1,10 @@
 // @flow
 import React from "react";
-
 import { Text, Linking } from "react-native";
 
 type Props = { children: React.Node, href: string, onPress?: any => void };
 
-const Anchor = (props: Props) => {
+export const Anchor = (props: Props) => {
     const { children, href, onPress, ...rest } = props;
     const _handlePress = () => {
         Linking.openURL(href);
@@ -20,5 +19,5 @@ const Anchor = (props: Props) => {
     );
 };
 
-export default Anchor;
+
 
