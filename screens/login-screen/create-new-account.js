@@ -1,13 +1,13 @@
 // @flow
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import CreateAccountForm from '../../components/create-account-form';
-import * as actions from './actions';
-import {defaultStyles} from '../../styles/default-styles';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import CreateAccountForm from "../../components/create-account-form/create-account-form";
+import * as actions from "./actions";
+import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
 
@@ -23,7 +23,7 @@ class CreateNewAccount extends Component {
     };
 
     static navigationOptions = {
-        title: 'Create New Account'
+        title: "Create New Account"
     };
 
     constructor(props) {
@@ -33,18 +33,18 @@ class CreateNewAccount extends Component {
     render() {
         return (
             <KeyboardAvoidingView
-                style={defaultStyles.frame}
-                behavior={Platform.OS === 'ios' ? 'padding' : null}
+                style={ defaultStyles.frame }
+                behavior={ Platform.OS === "ios" ? "padding" : null }
             >
-                <ScrollView style={styles.scroll}>
+                <ScrollView style={ styles.scroll }>
                     <CreateAccountForm
-                        buttonText='Create Account'
-                        createUserError={this.props.createUserError}
-                        onButtonPress={this.props.actions.createUser}
+                        buttonText="Create Account"
+                        createUserError={ this.props.createUserError }
+                        onButtonPress={ this.props.actions.createUser }
                     />
                     {
-                        Platform.OS === 'ios'
-                            ? (<View style={defaultStyles.padForIOSKeyboardBig}/>)
+                        Platform.OS === "ios"
+                            ? (<View style={ defaultStyles.padForIOSKeyboardBig }/>)
                             : null
                     }
                 </ScrollView>
@@ -53,7 +53,7 @@ class CreateNewAccount extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({session: state.login.session, createUserError: state.login.createUserError});
+const mapStateToProps = (state) => ({ session: state.login.session, createUserError: state.login.createUserError });
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)

@@ -1,7 +1,6 @@
 // @flow
-
-import * as types from '../../constants/actionTypes';
+import * as types from "../../constants/action-types";
 
 export function selectTeam(team: Object) {
-    return {type: types.SELECT_TEAM, team};
+    return { type: types.SELECT_TEAM, team };
 }

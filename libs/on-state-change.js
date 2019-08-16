@@ -1,3 +1,4 @@
+// @flow
 export default function onChangeState(stateKey) {
     return (value) => {
         const newState = {};

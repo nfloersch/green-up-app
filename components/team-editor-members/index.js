@@ -1,21 +1,21 @@
 // @flow
-import React, {Component} from 'react';
-import {StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View} from 'react-native';
-import {connect} from 'react-redux';
-import {getMemberIcon} from '../../libs/member-icons';
-import {defaultStyles} from '../../styles/default-styles';
-import InviteContacts from '../invite-contacts';
-import InviteForm from '../invite-form';
-import TeamMemberDetails from '../../components/team-member-details';
-import {partial} from 'ramda';
-import {bindActionCreators} from 'redux';
-import * as actions from './actions';
+import React, { Component } from "react";
+import { StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View } from "react-native";
+import { connect } from "react-redux";
+import { getMemberIcon } from "../../libs/member-icons";
+import { defaultStyles } from "../../styles/default-styles";
+import InviteContacts from "../invite-contacts";
+import InviteForm from "../invite-form";
+import TeamMemberDetails from "../../components/team-member-details";
+import { partial } from "ramda";
+import { bindActionCreators } from "redux";
+import * as actions from "./actions";
 
 const myStyles = {
     member: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start'
+        flexDirection: "row",
+        justifyContent: "flex-start"
     },
     memberEmail: {
         marginLeft: 10,
@@ -29,9 +29,9 @@ const myStyles = {
     },
     item: {
         borderBottomWidth: 1,
-        borderBottomColor: '#888',
+        borderBottomColor: "#888",
         marginBottom: 0,
-        backgroundColor: '#EEE'
+        backgroundColor: "#EEE"
     }
 };
 
@@ -47,23 +47,23 @@ class MemberItem extends Component<MProps> {
         const item = this.props.item;
         return (
             <TouchableOpacity
-                key={item.key}
-                onPress={item.toDetail}
-                style={styles.row}
+                key={ item.key }
+                onPress={ item.toDetail }
+                style={ styles.row }
             >
-                <View style={[styles.member, {flex: 1, flexDirection: 'row', justifyContent: 'space-between'}]}>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
+                <View style={ [styles.member, { flex: 1, flexDirection: "row", justifyContent: "space-between" }] }>
+                    <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
                         <Image
-                            style={{width: 50, height: 50, marginRight: 10}}
-                            source={{uri: item.photoURL}}
+                            style={ { width: 50, height: 50, marginRight: 10 } }
+                            source={ { uri: item.photoURL } }
                         />
-                        <Text style={[styles.memberEmail, {
+                        <Text style={ [styles.memberEmail, {
                             flex: 1,
                             paddingTop: 12,
-                            alignItems: 'stretch'
-                        }]}>{item.displayName && item.displayName.trim() || item.email || ''}</Text>
+                            alignItems: "stretch"
+                        }] }>{item.displayName && item.displayName.trim() || item.email || ""}</Text>
                     </View>
-                    {getMemberIcon(item.memberStatus, {paddingTop: 10, height: 50, width: 50}, true)}
+                    {getMemberIcon(item.memberStatus, { paddingTop: 10, height: 50, width: 50 }, true)}
                 </View>
             </TouchableOpacity>
         );
@@ -88,25 +88,28 @@ type State = {
 class TeamEditorMembers extends Component<Props, State> {
 
     static navigationOptions = {
-        title: 'Team Members',
-        tabBarLabel: 'Members'
+        title: "Team Members",
+        tabBarLabel: "Members"
     };
 
     constructor(props) {
         super(props);
-        this.state = {isModalVisible: false, modalContent: InviteForm};
+        this.state = { isModalVisible: false, modalContent: InviteForm };
     }
 
     closeModal = () => {
-        this.setState({isModalVisible: false});
+        this.setState({ isModalVisible: false });
     };
 
     inviteContacts = (team: Object) => () => {
-        this.setState({isModalVisible: true, modalContent: <InviteContacts closeModal={this.closeModal} team={team}/>});
+        this.setState({
+            isModalVisible: true,
+            modalContent: <InviteContacts closeModal={ this.closeModal } team={ team }/>
+        });
     };
 
     inviteForm = (team: Object) => () => {
-        this.setState({isModalVisible: true, modalContent: <InviteForm closeModal={this.closeModal} team={team}/>});
+        this.setState({ isModalVisible: true, modalContent: <InviteForm closeModal={ this.closeModal } team={ team }/> });
     };
 
     toMemberDetails = (team: Object, member: Object) => {
@@ -121,12 +124,12 @@ class TeamEditorMembers extends Component<Props, State> {
                     isModalVisible: true,
                     modalContent: (
                         <TeamMemberDetails
-                            closeModal={closeModal}
-                            addTeamMember={addTeamMember}
-                            removeTeamMember={removeTeamMember}
-                            revokeInvitation={revokeInvitation}
-                            updateTeamMember={updateTeamMember}
-                            teamMember={member}
+                            closeModal={ closeModal }
+                            addTeamMember={ addTeamMember }
+                            removeTeamMember={ removeTeamMember }
+                            revokeInvitation={ revokeInvitation }
+                            updateTeamMember={ updateTeamMember }
+                            teamMember={ member }
                         />
                     )
                 });
@@ -134,7 +137,7 @@ class TeamEditorMembers extends Component<Props, State> {
     };
 
     render() {
-        const {team, members, requests, invitations} = this.props;
+        const { team, members, requests, invitations } = this.props;
         const memberButtons = [].concat([], Object.values(requests), Object.values(members), Object.values(invitations))
             .map((member, i) => ({
                 key: i.toString(),
@@ -143,39 +146,39 @@ class TeamEditorMembers extends Component<Props, State> {
             }));
 
         return (
-            <View style={styles.frame}>
-                <View style={styles.buttonBarHeader}>
-                    <View style={styles.buttonBar}>
-                        <View style={styles.buttonBarButton}>
+            <View style={ styles.frame }>
+                <View style={ styles.buttonBarHeader }>
+                    <View style={ styles.buttonBar }>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableOpacity
-                                style={styles.headerButton}
-                                onPress={this.inviteForm(team)}>
-                                <Text style={styles.headerButtonText}>
-                                    {'Invite A Friend'}
+                                style={ styles.headerButton }
+                                onPress={ this.inviteForm(team) }>
+                                <Text style={ styles.headerButtonText }>
+                                    {"Invite A Friend"}
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableOpacity
-                                style={styles.headerButton}
-                                onPress={this.inviteContacts(team)}>
-                                <Text style={styles.headerButtonText}>
-                                    {'From Contacts'}
+                                style={ styles.headerButton }
+                                onPress={ this.inviteContacts(team) }>
+                                <Text style={ styles.headerButtonText }>
+                                    {"From Contacts"}
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.scroll}>
-                    <View style={styles.infoBlockContainer}>
-                        <FlatList data={memberButtons} renderItem={({item}) => (<MemberItem item={item}/>)}/>
+                <ScrollView style={ styles.scroll }>
+                    <View style={ styles.infoBlockContainer }>
+                        <FlatList data={ memberButtons } renderItem={ ({ item }) => (<MemberItem item={ item }/>) }/>
                     </View>
                 </ScrollView>
                 <Modal
-                    animationType={'slide'}
-                    onRequestClose={() => ('this function is required. Who knows why?')}
-                    transparent={false}
-                    visible={this.state.isModalVisible}>
+                    animationType={ "slide" }
+                    onRequestClose={ () => ("this function is required. Who knows why?") }
+                    transparent={ false }
+                    visible={ this.state.isModalVisible }>
                     <View>
                         {this.state.modalContent}
                     </View>
@@ -186,7 +189,7 @@ class TeamEditorMembers extends Component<Props, State> {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators(actions, dispatch)};
+    return { actions: bindActionCreators(actions, dispatch) };
 }
 
 const mapStateToProps = (state) => {
@@ -194,7 +197,7 @@ const mapStateToProps = (state) => {
     const members = (state.teams.teamMembers || {})[team.id] || {};
     const requests = (state.teams.teamRequests || {})[team.id] || {};
     const invitations = (state.teams.invitations || {})[team.id] || {};
-    return ({team, members, requests, invitations});
+    return ({ team, members, requests, invitations });
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);

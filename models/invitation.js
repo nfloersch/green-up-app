@@ -1,19 +1,18 @@
 // @flow
-
-import {isValidDate} from '../libs/validators';
-import TeamMember from './team-member';
+import { isValidDate } from "../libs/validators";
+import TeamMember from "./team-member";
 
 export default class Invitation {
 
     constructor(args: Object) {
         this.id = args.id || null;
-        this.teamMember = typeof args.teamMember === 'object'
+        this.teamMember = typeof args.teamMember === "object"
             ? args.teamMember
             : null;
-        this.team = typeof args.team === 'object'
+        this.team = typeof args.team === "object"
             ? args.team
             : null;
-        this.sender = typeof args.sender === 'object'
+        this.sender = typeof args.sender === "object"
             ? TeamMember.create(args.sender)
             : null;
         this.created = isValidDate(new Date(args.created))

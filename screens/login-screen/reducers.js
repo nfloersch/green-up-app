@@ -1,5 +1,5 @@
-import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+import * as types from "../../constants/action-types";
+import initialState from "../../reducers/initialState";
 
 export function reducers(state = initialState.login, action) {
     switch (action.type) {
@@ -46,14 +46,14 @@ export function reducers(state = initialState.login, action) {
                 createUserError: action.error
             };
         case types.RESET:
-            return {...state,
+            return { ...state,
                 user: null,
                 createUserError: null,
                 userIsLoggedIn: false,
                 initialAuthChecked: true,
                 isLoggingInViaSSO: false,
                 loginError: null,
-                creatingUser: false};
+                creatingUser: false };
         case types.IS_LOGGING_IN_VIA_SSO:
             return {
                 ...state,

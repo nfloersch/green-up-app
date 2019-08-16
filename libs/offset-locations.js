@@ -14,7 +14,7 @@ export default function offsetLocations(staticLocations: Array<Object>, location
         if (isDupe(staticLocations, loc)) {
             const foo = {
                 ...loc,
-                coordinates: {latitude: loc.coordinates.latitude + 0.001, longitude: loc.coordinates.longitude + 0.001}
+                coordinates: { latitude: loc.coordinates.latitude + 0.001, longitude: loc.coordinates.longitude + 0.001 }
             };
             return foo;
         }
