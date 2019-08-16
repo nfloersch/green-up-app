@@ -9,15 +9,14 @@ cache:
 before_script:
   - npm install -g npm@latest
 script:
-  - npm ci
   - npx jest --ci
 jobs:
   include:
     - stage: deploy
       node_js: 10.15.3
       script:
-        - npm install
-        - npm ci
+        - yarn install
+        - jest
         - npm install -g expo-cli
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive
