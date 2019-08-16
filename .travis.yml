@@ -2,7 +2,7 @@
 language: node_js
 node_js:
   - node
-  - 10.15.3
+  - lts/10.15.3
 cache:
   directories:
     - ~/.npm
