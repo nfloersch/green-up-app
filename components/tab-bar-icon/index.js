@@ -1,4 +1,4 @@
 // @flow
-import { TabBarIcon} from "./tab-bar-icon";
+import { TabBarIcon } from "./tab-bar-icon";
 
 export default TabBarIcon;
