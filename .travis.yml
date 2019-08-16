@@ -6,8 +6,10 @@ cache:
   directories:
     - ~/.npm
     - .jest
+    -
 before_script:
   - npm install -g npm@latest
+  - echo ${ENVIROMENT} >> .environment.js
 script:
   - npx jest --ci
 jobs:
