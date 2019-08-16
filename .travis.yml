@@ -17,7 +17,6 @@ jobs:
       node_js: 10.15.3
       script:
         - yarn install
-        - jest
         - npm install -g expo-cli
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive
