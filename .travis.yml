@@ -8,7 +8,8 @@ cache:
     - .jest
 before_script:
   - npm install -g npm@latest
-  - echo "export const firebaseConfig = {apiKey:${FIREBASE_API_KEY},authDomain:${FIREBASE_AUTH_DOMAIN},databaseURL:${FIREBASE_DATABASE_URL},projectId:${FIREBASE_PROJECT_ID},storageBucket:${FIREBASE_STORAGE_BUCKET},messagingSenderId:${FIREBASE_MESSAGING_SENDER_ID}}" > ./data-sources/firebase-config.js
+  - npm install -g expo-cli
+  - echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
 script:
   - npx jest --ci
 jobs:
@@ -17,6 +18,6 @@ jobs:
       node_js: 10.15.3
       script:
         - yarn install
-        - npm install -g expo-cli
+        - echo "export const firebaseConfig = {apiKey:${FIREBASE_API_KEY},authDomain:${FIREBASE_AUTH_DOMAIN},databaseURL:${FIREBASE_DATABASE_URL},projectId:${FIREBASE_PROJECT_ID},storageBucket:${FIREBASE_STORAGE_BUCKET},messagingSenderId:${FIREBASE_MESSAGING_SENDER_ID}}" > ./data-sources/firebase-config.js
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive
