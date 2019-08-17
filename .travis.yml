@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - 10.15.3
+  - 10.16.3
 cache:
   directories:
     - ~/.npm
@@ -14,10 +14,10 @@ script:
 jobs:
   include:
     - stage: deploy
-      node_js: 10.15.3
+      node_js: 10.16.3
       script:
         - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
         - yarn install
-        - node deploy.js
+        - node write-config.js
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive

@@ -28,7 +28,6 @@ const removeInvitation = (membershipKey, teamId) => {
     return functions.firestore.document(`invitations/${membershipKey}/${teamId}`).delete();
 };
 
-
 function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     sgMail.setApiKey(apiKey);
     sgMail.setSubstitutionWrappers('{{', '}}'); // Configure the substitution tag wrappers globally
