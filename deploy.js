@@ -1,11 +1,17 @@
 const fs = require("fs");
-const apiKey = proccess.env.FIREBASE_API_KEY;
 
-const authDomain = proccess.env.FIREBASE_API_KEY;
-const databaseURL = proccess.env.FIREBASE_API_KEY;
-const projectId = proccess.env.FIREBASE_API_KEY;
-const storageBucket = proccess.env.FIREBASE_API_KEY;
-const messagingSenderId = proccess.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const apiKey = process.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const authDomain = process.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const databaseURL = process.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const projectId = process.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const storageBucket = process.env.FIREBASE_API_KEY;
+// eslint-disable-next-line no-process-env
+const messagingSenderId = process.env.FIREBASE_API_KEY;
 
 const firebaseConfig = {
     apiKey,
