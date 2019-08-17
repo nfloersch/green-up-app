@@ -19,5 +19,6 @@ jobs:
         - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
         - yarn install
         - echo "export const firebaseConfig = {apiKey:$FIREBASE_API_KEY,authDomain:$FIREBASE_AUTH_DOMAIN,databaseURL:$FIREBASE_DATABASE_URL,projectId:$FIREBASE_PROJECT_ID,storageBucket:$FIREBASE_STORAGE_BUCKET,messagingSenderId:$FIREBASE_MESSAGING_SENDER_ID}" > ./data-sources/firebase-config.js
+        - echo "export const firebaseConfig = {apiKey:$FIREBASE_API_KEY,authDomain:$FIREBASE_AUTH_DOMAIN,databaseURL:$FIREBASE_DATABASE_URL,projectId:$FIREBASE_PROJECT_ID,storageBucket:$FIREBASE_STORAGE_BUCKET,messagingSenderId:$FIREBASE_MESSAGING_SENDER_ID}"
         - npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
         - npx expo publish --non-interactive
