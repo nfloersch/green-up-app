@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
 });
 
-const APP_STORE_LINK = "itms://itunes.apple.com/us/app/green-up-vermont/id1364770239?mt=8";
-const PLAY_STORE_LINK = "market://details?id=org.greenupvermont.app";
+// const APP_STORE_LINK = "itms://itunes.apple.com/us/app/green-up-vermont/id1364770239?mt=8";
+// const PLAY_STORE_LINK = "market://details?id=org.greenupvermont.app";
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);

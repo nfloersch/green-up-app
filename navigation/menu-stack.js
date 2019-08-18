@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import AboutScreen from "../screens/about-screen";
 import MenuScreen from "../screens/menu-screen";

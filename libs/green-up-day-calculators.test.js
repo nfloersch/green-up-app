@@ -1,5 +1,5 @@
 /* global describe expect it jest */
-import React from "react";
+
 import { getCurrentGreenUpDay, getGreenUpDayByYear } from "./green-up-day-calucators";
 
 describe("getCurrentGreenUpDay", () => {
