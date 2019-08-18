@@ -1,5 +1,6 @@
-import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
-import * as types from '../../constants/actionTypes';
+// @flow
+import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
+import * as types from "../../constants/action-types";
 
 
 export function getCurrentUser() {
@@ -9,11 +10,11 @@ export function getCurrentUser() {
 }
 
 export function loadingFailed(error) {
-    return {type: types.LOADING_FAILED, isLoadingComplete: true, error: error};
+    return { type: types.LOADING_FAILED, isLoadingComplete: true, error: error };
 }
 
 export function loadingCompleted() {
-    return {type: types.LOADING_COMPLETED, isLoadingComplete: true};
+    return { type: types.LOADING_COMPLETED, isLoadingComplete: true };
 }
 
 export function initialize() {
@@ -21,9 +22,9 @@ export function initialize() {
 }
 
 export function isLoggingInViaSSO(_isLoggingInViaSSO: Boolean) {
-    return {type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO};
+    return { type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO };
 }
 
 export function updateEmail(email) {
-    return {type: types.EMAIL_UPDATE, email};
+    return { type: types.EMAIL_UPDATE, email };
 }

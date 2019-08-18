@@ -1,5 +1,5 @@
-import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+import * as types from "../../constants/action-types";
+import initialState from "../../reducers/initialState";
 
 const deconstruct = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -9,12 +9,12 @@ export function reducers(state = initialState.messages, action) {
         case types.NEW_MESSAGE:
             return {
                 ...state,
-                messages: Object.assign({}, state.messages, {[action.message.id]: action.message})
+                messages: Object.assign({}, state.messages, { [action.message.id]: action.message })
             };
         case types.FETCH_MESSAGES_SUCCESS :
             newState = {
                 ...state,
-                messages: {...state.messages, ...deconstruct(action.messages)},
+                messages: { ...state.messages, ...deconstruct(action.messages) },
                 loaded: true
             };
             return newState;
@@ -24,7 +24,7 @@ export function reducers(state = initialState.messages, action) {
                 teamsLoaded: true
             };
         case types.RESET:
-            return {...state, messages: initialState.messages};
+            return { ...state, messages: initialState.messages };
         default:
             return state;
     }

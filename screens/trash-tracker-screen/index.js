@@ -1,7 +1,7 @@
-
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import TrashMap from './trash-map';
+// @flow
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import TrashMap from "./trash-map";
 
 export default class TrashTracker extends Component {
     static propTypes = {
@@ -11,8 +11,8 @@ export default class TrashTracker extends Component {
     };
 
     static navigationOptions = {
-        title: 'Trash Tracker',
-        tabBarLabel: 'Trash'
+        title: "Trash Tracker",
+        tabBarLabel: "Trash"
     };
 
     render() {

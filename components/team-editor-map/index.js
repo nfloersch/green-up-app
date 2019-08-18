@@ -1,23 +1,22 @@
 // @flow
-
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
     TouchableOpacity,
     Platform,
     Text,
     View,
     StyleSheet
-} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {MapView} from 'expo';
-import {Constants, Location, Permissions} from 'expo';
-import * as colors from '../../styles/constants';
-import {defaultStyles} from '../../styles/default-styles';
-import * as actions from './actions';
-import MultiLineMapCallout from '../../components/MultiLineMapCallout';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { MapView } from "expo";
+import { Constants, Location, Permissions } from "expo";
+import * as colors from "../../styles/constants";
+import { defaultStyles } from "../../styles/default-styles";
+import * as actions from "./actions";
+import MultiLineMapCallout from "../multi-line-map-callout";
 
 const myStyles = {};
 
@@ -33,14 +32,14 @@ class TeamEditorMap extends Component {
     };
 
     static navigationOptions = {
-        title: 'Team Map',
-        tabBarLabel: 'Map',
+        title: "Team Map",
+        tabBarLabel: "Map",
         // Note: By default the icon is only shown on iOS. Search the showIcon option
         // below.
-        tabBarIcon: ({focused}) => (
-            <Ionicons name={Platform.OS === 'ios' ? `ios-pin${focused ? '' : ''}` : 'md-pin'}
-                size={24}
-                color={focused ? colors.tabIconSelected : colors.tabIconDefault}
+        tabBarIcon: ({ focused }) => (
+            <Ionicons name={ Platform.OS === "ios" ? `ios-pin${focused ? "" : ""}` : "md-pin" }
+                size={ 24 }
+                color={ focused ? colors.tabIconSelected : colors.tabIconDefault }
             />)
     };
 
@@ -50,7 +49,7 @@ class TeamEditorMap extends Component {
         this._removeMarker = this._removeMarker.bind(this);
         this._removeLastMarker = this._removeLastMarker.bind(this);
 
-        const {locations} = this.props;
+        const { locations } = this.props;
 
         // if there are pins on the map, set initial location where the first pin is, otherwise device location will be set on componentWillMount
         const initialMapLocation = locations && locations.length > 0 ? {
@@ -67,10 +66,10 @@ class TeamEditorMap extends Component {
 
     componentWillMount() {
         if (this.state.initialMapLocation === null) {
-            if (Platform.OS === 'android' && !Constants.isDevice) {
+            if (Platform.OS === "android" && !Constants.isDevice) {
                 this.setState({
-                    errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it again on your ' +
-                        'device!'
+                    errorMessage: "Oops, this will not work on Sketch in an Android emulator. Try it again on your " +
+                        "device!"
                 });
             } else {
                 this._getLocationAsync()
@@ -100,8 +99,8 @@ class TeamEditorMap extends Component {
 
     _getLocationAsync = () => Permissions.askAsync(Permissions.LOCATION)
         .then((locationPermission) => {
-            if (locationPermission.status !== 'granted') {
-                throw new Error('allow access to location for a more accurate map');
+            if (locationPermission.status !== "granted") {
+                throw new Error("allow access to location for a more accurate map");
             }
 
             return Location.getCurrentPositionAsync({});
@@ -113,13 +112,13 @@ class TeamEditorMap extends Component {
                     longitude: Number(location.coords.longitude)
                 };
             }
-            throw new Error('location is not available');
+            throw new Error("location is not available");
         });
 
     _handleMapClick(e) {
         this.props.actions.saveLocations(this.props.locations.concat({
-            title: 'clean area',
-            description: 'tap to remove',
+            title: "clean area",
+            description: "tap to remove",
             coordinates: e.nativeEvent.coordinate
         }), this.props.selectedTeam);
     }
@@ -140,48 +139,48 @@ class TeamEditorMap extends Component {
     }
 
     render() {
-        const {locations, otherCleanAreas} = this.props;
+        const { locations, otherCleanAreas } = this.props;
 
         // const otherTeamsLocationImage = require('../../assets/images/flag.png');
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
-                <View style={defaultStyles.frame}>
-                    <View style={[styles.infoBlockContainer, {height: '98%'}]}>
-                        <Text style={[styles.statusBar, {maxHeight: 63}]}>
-                            Place a marker where you want your team to work.
-                            Other markers are areas claimed by other teams.
+                <View style={ defaultStyles.frame }>
+                    <View style={ [styles.infoBlockContainer, { height: "98%" }] }>
+                        <Text style={ [styles.statusBar, { maxHeight: 63 }] }>
+                        Place a marker where you want your team to work.
+                        Other markers are areas claimed by other teams.
                         </Text>
-                        <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'red'}}>
-                            <MapView style={{flex: 1}}
-                                initialRegion={this.state.initialMapLocation}
-                                onPress={this._handleMapClick}>
+                        <View style={ { flex: 1, flexDirection: "row", backgroundColor: "red" } }>
+                            <MapView style={ { flex: 1 } }
+                                initialRegion={ this.state.initialMapLocation }
+                                onPress={ this._handleMapClick }>
                                 {this.props.locations.length > 0 && locations.map((marker, index) => (
-                                    <MapView.Marker coordinate={marker.coordinates}
-                                        key={`location${index}`}
-                                        pinColor={'red'}
-                                        onCalloutPress={this._removeMarker(marker)}
-                                        stopPropagation={true}>
-                                        <MultiLineMapCallout title={marker.title || 'Clean Area'}
-                                            description={marker.description || 'Tap to remove'} />
+                                    <MapView.Marker coordinate={ marker.coordinates }
+                                        key={ `location${index}` }
+                                        pinColor={ "red" }
+                                        onCalloutPress={ this._removeMarker(marker) }
+                                        stopPropagation={ true }>
+                                        <MultiLineMapCallout title={ marker.title || "Clean Area" }
+                                            description={ marker.description || "Tap to remove" }/>
                                     </MapView.Marker>
                                 ))}
                                 {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
                                     (<MapView.Marker
-                                        key={i}
-                                        coordinate={a.coordinates}
+                                        key={ i }
+                                        coordinate={ a.coordinates }
                                         // image={otherTeamsLocationImage}
-                                        pinColor={'yellow'}
-                                        title={a.title}
-                                        stopPropagation={true}>
-                                        <MultiLineMapCallout title={a.title} description={a.description} />
+                                        pinColor={ "yellow" }
+                                        title={ a.title }
+                                        stopPropagation={ true }>
+                                        <MultiLineMapCallout title={ a.title } description={ a.description }/>
                                     </MapView.Marker>
                                     ))}
                             </MapView>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
-                            <Text style={styles.buttonText}>{'Remove marker'}</Text>
+                        <TouchableOpacity style={ styles.button } onPress={ this._removeLastMarker }>
+                            <Text style={ styles.buttonText }>{"Remove marker"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -195,12 +194,12 @@ function mapStateToProps(state) {
     const otherCleanAreas = Object.values(state.teams.teams)
         .filter(team => team.id !== selectedTeam.id)
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
-            key: '',
+            key: "",
             coordinates: l.coordinates,
             title: `${team.name}`,
-            description: 'claimed this area'
+            description: "claimed this area"
         }))), []);
-    return {selectedTeam, locations, otherCleanAreas};
+    return { selectedTeam, locations, otherCleanAreas };
 }
 
 function mapDispatchToProps(dispatch) {

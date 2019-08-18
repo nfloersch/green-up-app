@@ -1,3 +1,4 @@
+// @flow
 export default {
     about: {},
     loading: {
@@ -29,8 +30,8 @@ export default {
     teamMembers: {},
     teamMembersLoaded: false,
     teamRequests: {},
-    teams: {teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: []},
-    towns: {townData: {}},
+    teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
+    towns: { townData: {} },
     trashTracker: {
         trashDrops: [],
         location: null,

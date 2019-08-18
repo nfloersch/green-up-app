@@ -1,10 +1,9 @@
 // @flow
-
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {Ionicons} from '@expo/vector-icons';
-import {getMemberIcon} from '../../libs/member-icons';
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import { getMemberIcon } from "../../libs/member-icons";
 import {
     FlatList,
     ImageBackground,
@@ -16,22 +15,22 @@ import {
     Modal,
     View,
     Platform
-} from 'react-native';
-import NewTeam from './new-team';
-import TeamMember from '../../models/team-member';
-import * as actions from './actions';
-import User from '../../models/user';
-import {defaultStyles} from '../../styles/default-styles';
-import teamwork from '../../assets/images/teamwork.jpeg';
-import {removeNulls} from '../../libs/remove-nulls';
-import TeamSearch from '../../components/team-search';
+} from "react-native";
+import NewTeam from "./new-team";
+import TeamMember from "../../models/team-member";
+import * as actions from "./actions";
+import User from "../../models/user";
+import { defaultStyles } from "../../styles/default-styles";
+import teamwork from "../../assets/images/teamwork.jpeg";
+import { removeNulls } from "../../libs/remove-nulls";
+import TeamSearch from "../../components/team-search";
 
 const myStyles = {
     buttonRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
         height: 70,
-        alignItems: 'stretch',
+        alignItems: "stretch",
         marginBottom: 10
     },
     icon: {
@@ -41,7 +40,7 @@ const myStyles = {
     iconButton: {
         width: 50,
         padding: 10,
-        height: 70,
+        height: 70
     },
     teamName: {
         flex: 4
@@ -55,61 +54,61 @@ class TeamItem extends Component<{ item: Object }> {
     render() {
         const item = this.props.item || {};
         return (
-            <View key={item.key} style={[styles.buttonRow]}>
+            <View key={ item.key } style={ [styles.buttonRow] }>
                 <TouchableHighlight
-                    style={[styles.altButton, {
+                    style={ [styles.altButton, {
                         height: 60,
                         marginRight: 1,
                         padding: 10,
                         flex: 1,
-                        alignItems: 'flex-start'
-                    }]}
-                    onPress={item.goToTeam}
+                        alignItems: "flex-start"
+                    }] }
+                    onPress={ item.goToTeam }
                 >
-                    <View style={{
+                    <View style={ {
                         flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    } }>
                         {item.toTeamIcon}
-                        <Text style={[styles.altButtonText]}>{item.name}</Text>
+                        <Text style={ [styles.altButtonText] }>{item.name}</Text>
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    style={[styles.altButton, styles.iconButton, {
+                    style={ [styles.altButton, styles.iconButton, {
                         height: 60,
                         marginLeft: 1,
-                        marginRight: 1}]}
-                    onPress={item.goToMessage}
+                        marginRight: 1 }] }
+                    onPress={ item.goToMessage }
                 >
-                    <View style={{
+                    <View style={ {
                         flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
+                        justifyContent: "center",
+                        alignItems: "center"
+                    } }>
                         <Ionicons
-                            style={{color: '#007AFF'}}
-                            name={(Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatboxes')}
-                            size={30}
+                            style={ { color: "#007AFF" } }
+                            name={ (Platform.OS === "ios" ? "ios-chatbubbles" : "md-chatboxes") }
+                            size={ 30 }
                         />
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    style={[styles.altButton, styles.iconButton, {
+                    style={ [styles.altButton, styles.iconButton, {
                         height: 60,
-                        marginLeft: 1}]}
-                    onPress={item.shareTeamDetails}
+                        marginLeft: 1 }] }
+                    onPress={ item.shareTeamDetails }
                 >
-                    <View style={{
+                    <View style={ {
                         flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
+                        justifyContent: "center",
+                        alignItems: "center"
+                    } }>
                         <Ionicons
-                            style={{color: '#007AFF'}}
-                            name={Platform.OS === 'ios' ? 'ios-share' : 'md-share'}
-                            size={30}
+                            style={ { color: "#007AFF" } }
+                            name={ Platform.OS === "ios" ? "ios-share" : "md-share" }
+                            size={ 30 }
                         />
                     </View>
                 </TouchableHighlight>
@@ -134,8 +133,8 @@ type Props = {
 class TeamsScreen extends Component<Props> {
 
     static navigationOptions = {
-        title: 'My Teams',
-        tabBarLabel: 'Teams'
+        title: "My Teams",
+        tabBarLabel: "Teams"
     };
 
     constructor(props) {
@@ -143,11 +142,11 @@ class TeamsScreen extends Component<Props> {
         this.toTeamDetail = this.toTeamDetail.bind(this);
         this.toTeamSearch = this.toTeamSearch.bind(this);
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
-        this.state = {selectedTeamId: null, isModalVisible: false, messageText: ''};
+        this.state = { selectedTeamId: null, isModalVisible: false, messageText: "" };
     }
 
     toTeamSearch(): void {
-        this.setState({openModal: 'TEAM_SEARCH'});
+        this.setState({ openModal: "TEAM_SEARCH" });
     }
 
     toTeamDetail(team: Object, status: string): () => void {
@@ -155,19 +154,19 @@ class TeamsScreen extends Component<Props> {
         return () => {
 
             const _nextScreen = {
-                [TeamMember.memberStatuses.INVITED]: 'TeamDetails',
-                [TeamMember.memberStatuses.OWNER]: 'TeamEditor',
-                [TeamMember.memberStatuses.NOT_INVITED]: 'TeamDetails',
-                [TeamMember.memberStatuses.ACCEPTED]: 'TeamDetails'
+                [TeamMember.memberStatuses.INVITED]: "TeamDetails",
+                [TeamMember.memberStatuses.OWNER]: "TeamEditor",
+                [TeamMember.memberStatuses.NOT_INVITED]: "TeamDetails",
+                [TeamMember.memberStatuses.ACCEPTED]: "TeamDetails"
             };
 
             this.props.actions.selectTeam(team);
-            this.props.navigation.navigate(_nextScreen[status] || 'TeamDetails', {status});
+            this.props.navigation.navigate(_nextScreen[status] || "TeamDetails", { status });
         };
     }
 
     toNewTeamEditor() {
-        this.setState({openModal: 'NEW_TEAM'});
+        this.setState({ openModal: "NEW_TEAM" });
     }
 
     toTeamIcon = (teamKey: string, isInvited: boolean) => {
@@ -185,13 +184,13 @@ class TeamsScreen extends Component<Props> {
     };
 
     shareTeamDetails = (team) => () => {
-        const where = team.location ? `\nWhere : ${team.location}\n` : '';
-        const date = team.date ? `When: ${team.date}\n` : '';
-        const start = team.start ? `Start Time: ${team.start}\n` : '';
-        const end = team.end ? `End Time: ${team.end}\n` : '';
-        const owner = team.owner.displayName ? `Team Captain: ${team.owner.displayName}\n` : '';
-        const town = team.town ? `Town: ${team.town}\n` : '';
-        const notes = team.notes ? `Good to know: ${team.notes}\n` : '';
+        const where = team.location ? `\nWhere : ${team.location}\n` : "";
+        const date = team.date ? `When: ${team.date}\n` : "";
+        const start = team.start ? `Start Time: ${team.start}\n` : "";
+        const end = team.end ? `End Time: ${team.end}\n` : "";
+        const owner = team.owner.displayName ? `Team Captain: ${team.owner.displayName}\n` : "";
+        const town = team.town ? `Town: ${team.town}\n` : "";
+        const notes = team.notes ? `Good to know: ${team.notes}\n` : "";
         const message = `Join my team "${team.name}" for Green Up Day!\n \
                 ${where}${town}${date}${start}${end}${notes}${owner}`;
         const title = `I just joined ${team.name} for Green Up Day`;
@@ -204,15 +203,15 @@ class TeamsScreen extends Component<Props> {
                 // url: url // iOS only
             }, {
                 // options
-                dialogTitle: 'Share Your Green Up Team Details', // Android Only
+                dialogTitle: "Share Your Green Up Team Details", // Android Only
                 subject: title, // iOS only
-                tintColor: 'green' // iOS only
+                tintColor: "green" // iOS only
             });
     };
 
     render() {
-        const _closeModal = () => this.setState({openModal: 'none'});
-        const {teams, teamStati, user} = this.props;
+        const _closeModal = () => this.setState({ openModal: "none" });
+        const { teams, teamStati, user } = this.props;
         const teamKeys = Object.keys((user.teams || {}));
         const invitedKeys = (Object.keys(this.props.invitations || {})).filter(key => teamKeys.indexOf(key) === -1);
         const invitedTeams = invitedKeys.filter(key => Boolean(teams[key])) // avoid null exceptions if team was deleted
@@ -221,7 +220,7 @@ class TeamsScreen extends Component<Props> {
                 toTeamIcon: this.toTeamIcon(key, true),
                 ...(teams[key] || {}),
                 goToTeam: this.toTeamDetail(teams[key], teamStati[key]),
-                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
+                goToMessage: () => this.props.navigation.navigate("NewMessage", { selectedTeamId: key }),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             }));
 
@@ -231,80 +230,80 @@ class TeamsScreen extends Component<Props> {
                 toTeamIcon: this.toTeamIcon(key),
                 ...(teams[key] || {}),
                 goToTeam: this.toTeamDetail(teams[key], teamStati[key]),
-                goToMessage: () => this.props.navigation.navigate('NewMessage', {selectedTeamId: key}),
+                goToMessage: () => this.props.navigation.navigate("NewMessage", { selectedTeamId: key }),
                 shareTeamDetails: this.shareTeamDetails(teams[key])
             })).concat(invitedTeams);
 
         return (
-            <View style={styles.frame}>
-                <View style={styles.buttonBarHeader}>
-                    <View style={styles.buttonBar}>
-                        <View style={styles.buttonBarButton}>
+            <View style={ styles.frame }>
+                <View style={ styles.buttonBarHeader }>
+                    <View style={ styles.buttonBar }>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.toTeamSearch}>
-                                <Text style={styles.headerButtonText}>{'Search Teams'}</Text>
+                                style={ styles.headerButton }
+                                onPress={ this.toTeamSearch }>
+                                <Text style={ styles.headerButtonText }>{"Search Teams"}</Text>
                             </TouchableHighlight>
                         </View>
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.toNewTeamEditor}>
-                                <Text style={styles.headerButtonText}>{'New Team'}</Text>
+                                style={ styles.headerButton }
+                                onPress={ this.toNewTeamEditor }>
+                                <Text style={ styles.headerButtonText }>{"New Team"}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
                 </View>
-                <View style={styles.frame}>
+                <View style={ styles.frame }>
                     {myTeams.length === 0
                         ? (
-                            <ImageBackground source={teamwork} style={{flex: 1, justifyContent: 'center'}}>
+                            <ImageBackground source={ teamwork } style={ { flex: 1, justifyContent: "center" } }>
                                 <View
-                                    style={{
+                                    style={ {
                                         paddingLeft: 20,
                                         paddingRight: 20,
                                         paddingTop: 20,
                                         paddingBottom: 20,
-                                        backgroundColor: 'rgba(255,255,255, 0.85)'
-                                    }}>
+                                        backgroundColor: "rgba(255,255,255, 0.85)"
+                                    } }>
                                     <Text
-                                        style={[styles.textDark]}>
-                                        {'Green Up Day is all about community and teamwork.'}
+                                        style={ [styles.textDark] }>
+                                        {"Green Up Day is all about community and teamwork."}
                                     </Text>
                                     <Text
-                                        style={[styles.textDark]}>
-                                        {'Search for teams in your area, or create a new one and invite some friends.'}
+                                        style={ [styles.textDark] }>
+                                        {"Search for teams in your area, or create a new one and invite some friends."}
                                     </Text>
                                 </View>
                             </ImageBackground>
                         )
                         : (
-                            <ScrollView style={styles.scroll}>
+                            <ScrollView style={ styles.scroll }>
                                 <FlatList
-                                    data={myTeams}
-                                    renderItem={({item}) => (<TeamItem item={item}/>)}
-                                    style={{paddingLeft: 10, paddingBottom: 10, paddingRight: 10}}
+                                    data={ myTeams }
+                                    renderItem={ ({ item }) => (<TeamItem item={ item }/>) }
+                                    style={ { paddingLeft: 10, paddingBottom: 10, paddingRight: 10 } }
                                 />
-                                <View style={{height: 60}} />
+                                <View style={ { height: 60 } } />
                             </ScrollView>
                         )
                     }
                 </View>
                 <Modal
-                    animationType={'slide'}
-                    transparent={false}
-                    visible={this.state.openModal === 'TEAM_SEARCH'}
-                    onRequestClose={() => {
-                    }}>
-                    <TeamSearch closeModal={_closeModal} navigation={this.props.navigation}/>
+                    animationType={ "slide" }
+                    transparent={ false }
+                    visible={ this.state.openModal === "TEAM_SEARCH" }
+                    onRequestClose={ () => {
+                    } }>
+                    <TeamSearch closeModal={ _closeModal } navigation={ this.props.navigation }/>
                 </Modal>
                 <Modal
-                    animationType={'slide'}
-                    transparent={false}
-                    visible={this.state.openModal === 'NEW_TEAM'}
-                    onRequestClose={() => {
-                    }}>
-                    <NewTeam closeModal={_closeModal}/>
+                    animationType={ "slide" }
+                    transparent={ false }
+                    visible={ this.state.openModal === "NEW_TEAM" }
+                    onRequestClose={ () => {
+                    } }>
+                    <NewTeam closeModal={ _closeModal }/>
                 </Modal>
             </View>
         );
@@ -328,14 +327,14 @@ function mapStateToProps(state) {
         }
     };
     const invitations = state.teams.myInvitations || {};
-    const user = User.create({...state.login.user, ...removeNulls(state.profile)});
+    const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const teams = state.teams.teams || {};
     const teamMembers = state.teams.teamMembers || {};
     const teamStati = Object.entries(teams).reduce((obj, entry) => ({
         ...obj,
         [entry[0]]: getStatus(entry[1], invitations, user)
     }), {});
-    return {teams, user, teamMembers, invitations, teamStati};
+    return { teams, user, teamMembers, invitations, teamStati };
 }
 
 function mapDispatchToProps(dispatch) {

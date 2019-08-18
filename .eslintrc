@@ -139,7 +139,7 @@
     "id-length": 0, //this option enforces minimum and space-after-keywordsimum identifier lengths (variable names, property names etc.)
     "id-match": 1, //require identifiers to match the provided regular expression
     "indent": [2,4,{"SwitchCase": 1, "VariableDeclarator": {"var": 0, "let": 0, "const": 0}}], //specify tab or space width for your code (fixable)
-    "jsx-quotes": [2,"prefer-single"], //specify whether double or single quotes should be used in JSX attributes
+    "jsx-quotes": [2,"prefer-double"], //specify whether double or single quotes should be used in JSX attributes
     "key-spacing": [0, { "beforeColon": true, "afterColon": true }], //enforce spacing between keys and values in object literal properties
     "linebreak-style": [0, "unix"], //disallow mixed 'LF' and 'CRLF' as linebreaks
     "lines-around-comment": 1, //enforce empty lines around comments
@@ -162,13 +162,13 @@
     "no-trailing-spaces": 1, //disallow trailing whitespace at the end of lines (fixable)
     "no-underscore-dangle": 0, //disallow dangling underscores in identifiers
     "no-unneeded-ternary": 1, //disallow the use of ternary operators when a simpler alternative exists
-    "object-curly-spacing": [2, "never"], //require or disallow padding inside curly braces (fixable)
+    "object-curly-spacing": [2, "always"], //require or disallow padding inside curly braces (fixable)
     "one-var": [1, "never"], //require or disallow one variable declaration per function
     "operator-assignment": [1, "always"], //require assignment operator shorthand where possible or prohibit it entirely
     "operator-linebreak": 1, //enforce operators to be placed before or after line breaks
     "padded-blocks":  [0, "never"], //enforce padding within blocks
     "quote-props": [1, "as-needed"], //require quotes around object literal property names
-    "quotes": [2,"single"], //specify whether backticks, double or single quotes should be used (fixable)
+    "quotes": [2,"double"], //specify whether backticks, double or single quotes should be used (fixable)
     "require-jsdoc": 0, //Require JSDoc comment
     "semi-spacing": [2, { "before": false, "after": true }], //enforce spacing before and after semicolons
     "semi": 2, //require or disallow use of semicolons instead of ASI (fixable)
@@ -212,7 +212,7 @@
 
     /* Babel */
     "babel/generator-star-spacing":[1, "after"], // Handles async/await functions correctly
-    "babel/object-curly-spacing": [2, "never"], // doesn't complain about export x from "mod"; or export * as x from "mod";
+    "babel/object-curly-spacing": [2, "always"], // doesn't complain about export x from "mod"; or export * as x from "mod";
     "babel/object-shorthand": [0, "always"], // doesn't fail when using object spread (...obj)
     "babel/arrow-parens": 0, // Handles async functions correctly
 
@@ -221,7 +221,7 @@
     "react/forbid-prop-types": 0, // Forbid certain propTypes
     "react/jsx-boolean-value": [2, "always"], // Enforce boolean attributes notation in JSX
     "react/jsx-closing-bracket-location": 0, // Validate closing bracket location in JSX
-    "react/jsx-curly-spacing": [2, "never"], // Enforce or disallow spaces inside of curly braces in JSX attributes
+    "react/jsx-curly-spacing": [2, "always"], // Enforce or disallow spaces inside of curly braces in JSX attributes
     "react/jsx-indent-props": 0, // Validate props indentation in JSX
     "react/jsx-max-props-per-line": [0, { "maximum": 3 }], // Limit maximum of props on a single line in JSX
     "react/jsx-no-bind": [0,{

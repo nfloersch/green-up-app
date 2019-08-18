@@ -1,20 +1,21 @@
-import * as types from '../../constants/actionTypes';
-import initialState from '../../reducers/initialState';
+// @flow
+import * as types from "../../constants/action-types";
+import initialState from "../../reducers/initialState";
 
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
         case types.LOGIN_SUCCESSFUL :
-            return {...state, userIsLoggedIn: true};
+            return { ...state, userIsLoggedIn: true };
         case types.FETCH_MESSAGES_SUCCESS:
-            return {...state, setupMessagesListener: true};
+            return { ...state, setupMessagesListener: true };
         case types.FETCH_TEAMS_SUCCESS :
-            return {...state, setupTeamsListener: true};
+            return { ...state, setupTeamsListener: true };
         case types.FETCH_PROFILE_SUCCESS :
-            return {...state, setupProfileListener: true};
+            return { ...state, setupProfileListener: true };
         case types.FETCH_INVITEES_SUCCESS :
-            return {...state, setupInvitationsListener: true};
+            return { ...state, setupInvitationsListener: true };
         case types.TEAM_MEMBER_FETCH_SUCCESS :
-            return {...state, setupMyTeamsListener: true};
+            return { ...state, setupMyTeamsListener: true };
         case types.RESET:
             return {
                 ...state,
@@ -50,7 +51,7 @@ export function reducers(state = initialState.loading, action) {
             return {
                 ...state,
                 isInitialized: false,
-                initializeError: 'Failed to initialize user'
+                initializeError: "Failed to initialize user"
             };
         default:
             return state;

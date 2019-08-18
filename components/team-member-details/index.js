@@ -1,26 +1,24 @@
 // @flow
-
-import React, {Component} from 'react';
-import {Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight} from 'react-native';
-import {getMemberIcon} from '../../libs/member-icons';
-// import TeamMember from '../../models/team-member';
-import * as status from '../../constants/team-member-statuses';
-import {defaultStyles} from '../../styles/default-styles';
+import React, { Component } from "react";
+import { Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
+import { getMemberIcon } from "../../libs/member-icons";
+import * as status from "../../constants/team-member-statuses";
+import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {
     statusBar: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#FFE',
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: "#FFE",
         marginBottom: 10,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#FDFDFE',
-        width: '100%'
+        borderColor: "#FDFDFE",
+        width: "100%"
     },
-    statusBarText: {fontSize: 12, textAlign: 'left'}
+    statusBarText: { fontSize: 12, textAlign: "left" }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -29,11 +27,11 @@ const styles = StyleSheet.create(combinedStyles);
 type Props = {
     addTeamMember: 90 => void,
     closeModal: () => void,
-    team: Object,
+    team?: Object,
     revokeInvitation: () => void,
     removeTeamMember: () => void,
     teamMember: Object,
-    teams: Object,
+    teams?: Object,
     updateTeamMember: () => void,
 };
 
@@ -51,7 +49,7 @@ export default class TeamMemberDetails extends Component<Props> {
 
     _updateTeamMember(newStatus) {
         return () => {
-            Alert.alert('foo');
+            Alert.alert("foo");
             this.props.closeModal();
             this.props.updateTeamMember(newStatus);
         };
@@ -64,82 +62,82 @@ export default class TeamMemberDetails extends Component<Props> {
 
     _revokeInvitation() {
         Alert.alert(
-            'DANGER!',
-            'Are you sure you want to revoke this invitation?',
+            "DANGER!",
+            "Are you sure you want to revoke this invitation?",
             [
                 {
-                    text: 'No', onPress: () => {
-                    }, style: 'cancel'
+                    text: "No", onPress: () => {
+                    }, style: "cancel"
                 },
                 {
-                    text: 'Yes', onPress: () => {
+                    text: "Yes", onPress: () => {
                         this.props.closeModal();
                         this.props.revokeInvitation();
                     }
                 }
             ],
-            {cancelable: true}
+            { cancelable: true }
         );
     }
 
 
     _removeTeamMember() {
         Alert.alert(
-            'DANGER!',
-            'Are you sure you want to remove this team member?',
+            "DANGER!",
+            "Are you sure you want to remove this team member?",
             [
                 {
-                    text: 'No', onPress: () => {
-                    }, style: 'cancel'
+                    text: "No", onPress: () => {
+                    }, style: "cancel"
                 },
                 {
-                    text: 'Yes', onPress: () => {
+                    text: "Yes", onPress: () => {
                         this.props.closeModal();
                         this.props.removeTeamMember();
                     }
                 }
             ],
-            {cancelable: true}
+            { cancelable: true }
         );
 
     }
 
     _cancel() {
-        Alert.alert('foo');
+        Alert.alert("foo");
         this.props.closeModal();
     }
 
     render() {
-        const {team, teamMember, closeModal} = this.props;
+        const { team, teamMember, closeModal } = this.props;
 
         const getButtons = (_team: Object, _teamMember: Object, _closeModal: () => void) => {
             switch (_teamMember.memberStatus) {
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
+                        <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                            <View style={ styles.buttonBar }>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={this._removeTeamMember}>
-                                        <Text style={styles.headerButtonText}>{'Ignore'}</Text>
+                                        style={ styles.headerButton }
+                                        onPress={ this._removeTeamMember }>
+                                        <Text style={ styles.headerButtonText }>{"Ignore"}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.buttonBarButton}>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={() => {
+                                        style={ styles.headerButton }
+                                        onPress={ () => {
                                             this._addTeamMember();
-                                        }}>
-                                        <Text style={styles.headerButtonText}>{'Add'}</Text>
+                                        } }>
+                                        <Text style={ styles.headerButtonText }>{"Add"}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.buttonBarButton}>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={_closeModal}
+                                        style={ styles.headerButton }
+                                        onPress={ _closeModal }
                                     >
-                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                        <Text style={ styles.headerButtonText }>{"Close"}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -147,22 +145,22 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.ACCEPTED :
                     return (
-                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
+                        <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                            <View style={ styles.buttonBar }>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={this._removeTeamMember}
+                                        style={ styles.headerButton }
+                                        onPress={ this._removeTeamMember }
                                     >
-                                        <Text style={styles.headerButtonText}>{'Remove'}</Text>
+                                        <Text style={ styles.headerButtonText }>{"Remove"}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.buttonBarButton}>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={_closeModal}
+                                        style={ styles.headerButton }
+                                        onPress={ _closeModal }
                                     >
-                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                        <Text style={ styles.headerButtonText }>{"Close"}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -170,22 +168,22 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.INVITED :
                     return (
-                        <View style={[styles.buttonBarHeaderModal, {backgroundColor: '#EEE', marginTop: 10}]}>
-                            <View style={styles.buttonBar}>
-                                <View style={styles.buttonBarButton}>
+                        <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                            <View style={ styles.buttonBar }>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={this._revokeInvitation}
+                                        style={ styles.headerButton }
+                                        onPress={ this._revokeInvitation }
                                     >
-                                        <Text style={styles.headerButtonText}>{'Revoke Invitation'}</Text>
+                                        <Text style={ styles.headerButtonText }>{"Revoke Invitation"}</Text>
                                     </TouchableHighlight>
                                 </View>
-                                <View style={styles.buttonBarButton}>
+                                <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
-                                        style={styles.headerButton}
-                                        onPress={_closeModal}
+                                        style={ styles.headerButton }
+                                        onPress={ _closeModal }
                                     >
-                                        <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                        <Text style={ styles.headerButtonText }>{"Close"}</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -193,13 +191,13 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 default :
                     return (
-                        <View style={[styles.singleButtonHeader, {backgroundColor: '#EEE', marginTop: 10}]}>
-                            <View style={styles.buttonBarButton}>
+                        <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                            <View style={ styles.buttonBarButton }>
                                 <TouchableHighlight
-                                    style={styles.headerButton}
-                                    onPress={_closeModal}
+                                    style={ styles.headerButton }
+                                    onPress={ _closeModal }
                                 >
-                                    <Text style={styles.headerButtonText}>{'Close'}</Text>
+                                    <Text style={ styles.headerButtonText }>{"Close"}</Text>
                                 </TouchableHighlight>
                             </View>
                         </View>
@@ -211,9 +209,9 @@ export default class TeamMemberDetails extends Component<Props> {
             switch (_teamMember.memberStatus) {
                 case status.OWNER :
                     return (
-                        <View style={styles.statusBar}>
+                        <View style={ styles.statusBar }>
                             {getMemberIcon(status.OWNER)}
-                            <Text style={styles.statusBarText}>
+                            <Text style={ styles.statusBarText }>
                                 {`${_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email}`} is
                                 the owner of this team
                             </Text>
@@ -221,9 +219,9 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.REQUEST_TO_JOIN :
                     return (
-                        <View style={styles.statusBar}>
+                        <View style={ styles.statusBar }>
                             {getMemberIcon(status.REQUEST_TO_JOIN, {}, _teamMember.memberStatus === status.OWNER)}
-                            <Text style={styles.statusBarText}>
+                            <Text style={ styles.statusBarText }>
                                 {_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email} wants
                                 to
                                 join this team
@@ -232,9 +230,9 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.ACCEPTED :
                     return (
-                        <View style={styles.statusBar}>
+                        <View style={ styles.statusBar }>
                             {getMemberIcon(status.ACCEPTED)}
-                            <Text style={styles.statusBarText}>
+                            <Text style={ styles.statusBarText }>
                                 {_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email} is a
                                 member of this team.
                             </Text>
@@ -242,9 +240,9 @@ export default class TeamMemberDetails extends Component<Props> {
                     );
                 case status.INVITED :
                     return (
-                        <View style={styles.statusBar}>
+                        <View style={ styles.statusBar }>
                             {getMemberIcon(status.INVITED)}
-                            <Text style={styles.statusBarText}>
+                            <Text style={ styles.statusBarText }>
                                 {`${_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email} has not yet accepted the invitation`}
                             </Text>
                         </View>
@@ -252,10 +250,10 @@ export default class TeamMemberDetails extends Component<Props> {
 
                 default :
                     return (
-                        <View style={styles.statusBar}>
+                        <View style={ styles.statusBar }>
                             {getMemberIcon(status.NOT_INVITED)}
-                            <Text style={styles.statusBarText}>
-                                {_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email || 'This person'} is
+                            <Text style={ styles.statusBarText }>
+                                {_teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email || "This person"} is
                                 not a member of this
                                 team
                             </Text>
@@ -264,26 +262,26 @@ export default class TeamMemberDetails extends Component<Props> {
         }
 
         return (
-            <View style={[styles.frame, {paddingTop: 30}]}>
+            <View style={ [styles.frame, { paddingTop: 30 }] }>
                 {getButtons(team, teamMember, closeModal)}
-                <ScrollView style={styles.scroll}>
-                    <View style={styles.infoBlockContainer}>
-                        <View style={styles.profileHeader}>
+                <ScrollView style={ styles.scroll }>
+                    <View style={ styles.infoBlockContainer }>
+                        <View style={ styles.profileHeader }>
                             <Image
-                                style={{width: 50, height: 50}}
-                                source={{uri: teamMember.photoURL}}
+                                style={ { width: 50, height: 50 } }
+                                source={ { uri: teamMember.photoURL } }
                             />
-                            <Text style={[styles.profileName, styles.heading]}>
-                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email || ''}`}
+                            <Text style={ [styles.profileName, styles.heading] }>
+                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email || ""}`}
                             </Text>
                         </View>
                         <View>
                             {getStatus(teamMember)}
                         </View>
-                        <View style={{marginTop: 10}}>
+                        <View style={ { marginTop: 10 } }>
                             <Text
-                                style={styles.labelDark}>{`About ${teamMember.displayName && teamMember.displayName.trim() || ''}: `}</Text>
-                            <Text style={{marginTop: 5}}>{teamMember.bio || ''}</Text>
+                                style={ styles.labelDark }>{`About ${teamMember.displayName && teamMember.displayName.trim() || ""}: `}</Text>
+                            <Text style={ { marginTop: 5 } }>{teamMember.bio || ""}</Text>
                         </View>
                     </View>
                 </ScrollView>

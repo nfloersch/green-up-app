@@ -1,12 +1,11 @@
 // @flow
-
-import * as types from '../../constants/actionTypes';
-import * as firebaseDataLayer from '../../data-sources/firebase-data-layer';
-import Message from '../../models/message';
-import * as statuses from '../../constants/team-member-statuses';
+import * as types from "../../constants/action-types";
+import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
+import Message from "../../models/message";
+import * as statuses from "../../constants/team-member-statuses";
 
 export function addMessageSuccess(data) {
-    return {type: types.NEW_MESSAGE, data};
+    return { type: types.NEW_MESSAGE, data };
 }
 
 export function sendUserMessage(message: Object, recipients: [Object]) {
@@ -22,11 +21,11 @@ export function sendTeamMessage(teamId: String, message: Object) {
 }
 
 export function readMessageSuccess(data) {
-    return {type: types.READ_MESSAGE, data};
+    return { type: types.READ_MESSAGE, data };
 }
 
 export function readMessage(message, userID) {
-    const _message = Object.assign({}, message, {read: true});
+    const _message = Object.assign({}, message, { read: true });
     return () => firebaseDataLayer.updateMessage(_message, userID)
         .catch(error => {
             console.log(error);
@@ -34,6 +33,6 @@ export function readMessage(message, userID) {
 }
 
 export function selectTeamById(teamId: string) {
-    return {type: types.SELECT_TEAM_BY_ID, teamId};
+    return { type: types.SELECT_TEAM_BY_ID, teamId };
 }
 
