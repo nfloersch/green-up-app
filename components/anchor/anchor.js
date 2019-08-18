@@ -18,6 +18,3 @@ export const Anchor = (props: Props) => {
         </Text>
     );
 };
-
-
-

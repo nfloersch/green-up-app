@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from "react";
-import { IntentLauncherAndroid, Location, MapView, Permissions } from "expo";
+import { IntentLauncherAndroid } from "expo";
+import Location from "expo-location";
+import MapView from "react-native-maps";
+import Permissions from "expo-permissions";
 import CheckBox from "react-native-checkbox";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
