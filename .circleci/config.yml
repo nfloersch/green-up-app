@@ -35,6 +35,6 @@ jobs:
 
       # lint the code
       - run: yarn lint
-        -
+
       # run tests!
       - run: yarn test-ci
