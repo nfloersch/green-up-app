@@ -24,7 +24,7 @@ Clone this repository
 ```
 git clone https://github.com/codeforbtv/green-up-app.git
 ```
-Run ```npm install``` in the root folder. Depending on your system, you may need to run it as sudo.
+Run ```yarn install``` in the root folder. Depending on your system, you may need to run it as sudo.
 
 Create the firebase-config.js file and make sure you have the correct configuration in there. Ask around in the #green-up Slack channel about what these are.
 
