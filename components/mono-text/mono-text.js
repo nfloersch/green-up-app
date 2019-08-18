@@ -1,11 +1,9 @@
-/* global it jest describe expect */
-import "react-native";
 import React from "react";
-import MonoText from "./index";
-import renderer from "react-test-renderer";
+import { Text } from "react-native";
 
-it("renders correctly", () => {
-    const tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
+type Props = { style: Object, children: string }
 
-    expect(tree).toMatchSnapshot();
-});
+export const MonoText = (props: Props) => {
+    const { style, children, ...passThroughProps } = props;
+    return (<Text { ...passThroughProps } style={ [style, { fontFamily: "space-mono" }] }>{children}</Text>);
+};

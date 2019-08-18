@@ -1,4 +1,4 @@
 // @flow
-import { MonoText } from "./mono-text.test";
+import { MonoText } from "./mono-text";
 
 export default MonoText;
