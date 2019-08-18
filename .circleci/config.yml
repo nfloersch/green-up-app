@@ -34,7 +34,24 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # lint the code
-      - run: yarn lint
+      - run:
+          name: Code Linting
+          command: yarn lint
 
       # run tests!
-      - run: yarn test-ci
+      - run:
+          name: Unit Testing
+          command: yarn test-ci
+
+      # Config Firebase
+      - run:
+          name: Configure Firebase
+          command: node write-firebase-config.js
+
+      - run:
+          name: Login into Expo
+          command: npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+
+      - run:
+          name: Publish to Expo
+          command: npx expo publish --non-interactive --max-workers 1 --release-channel $EXPO_RELEASE_CHANNEL
