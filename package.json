@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll --coverage",
-    "test-ci": "node ./node_modules/jest/bin/jest.js"
+    "test-ci": "node ./node_modules/jest/bin/jest.js",
+    "lint": "eslint ./"
   },
   "jest": {
     "preset": "jest-expo",
@@ -22,7 +23,7 @@
     ]
   },
   "engines": {
-    "node": "10.15.3"
+    "node": "10.16.3"
   },
   "dependencies": {
     "@expo/samples": "3.0.3",
@@ -68,6 +69,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "expo-cli": "^3.0.9",
+    "firebase-tools": "^7.2.2",
     "jest-expo": "^34.0.0"
   },
   "private": true

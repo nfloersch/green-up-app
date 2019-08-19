@@ -1,4 +1,4 @@
-const {isString, isValidDate} = require('./validators');
+const { isString, isValidDate } = require('./validators');
 const Location = require('./location');
 const TeamMember = require('./team-member');
 const uuid = require('uuid');
@@ -64,12 +64,12 @@ class Team {
             : new Date();
         this.owner = TeamMember.create(args.owner);
         this.members = Object.keys(args.members || {})
-            .map(key => TeamMember.create({...args.members[key], uid: key}))
-            .reduce((obj, member) => ({...obj, [member.uid || uuid()]: member}), {});
+            .map(key => TeamMember.create({ ...args.members[key], uid: key }))
+            .reduce((obj, member) => ({ ...obj, [member.uid || uuid()]: member }), {});
     }
 
     static create(args= {}, id) {
-        const _args = {...args};
+        const _args = { ...args };
         if (id) {
             _args.id = id;
         }

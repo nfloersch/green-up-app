@@ -3,9 +3,10 @@ import { isValidDate } from "../libs/validators";
 import Location from "./location";
 import TeamMember from "./team-member";
 import uuid from "uuid";
+import { getCurrentGreenUpDay } from "../libs/green-up-day-calucators";
+import moment from "moment";
 
-// TODO : Make this default date configurable on Firebase.
-const defaultDate = "Sat May 04 2019";
+const defaultDate = moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY");
 
 export default class Team {
     id: ?string;

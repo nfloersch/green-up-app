@@ -1,5 +1,5 @@
 const Coordinates = require('./coordinates');
-const {isString, isValidDate} = require('./validators');
+const { isString, isValidDate } = require('./validators');
 
 class Location {
     constructor(args = {}) {

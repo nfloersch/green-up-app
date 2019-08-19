@@ -80,73 +80,73 @@ class InviteForm extends Component<Props> {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
         return (
 
-            <View style={[styles.frame, { paddingTop: 30 }]}>
-                <View style={[styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }]}>
-                    <View style={styles.buttonBar}>
+            <View style={ [styles.frame, { paddingTop: 30 }] }>
+                <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
+                    <View style={ styles.buttonBar }>
 
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.inviteToTeam}
+                                style={ styles.headerButton }
+                                onPress={ this.inviteToTeam }
                             >
-                                <Text style={styles.headerButtonText}>{"Invite to Team"}</Text>
+                                <Text style={ styles.headerButtonText }>{"Invite to Team"}</Text>
                             </TouchableHighlight>
                         </View>
 
 
-                        <View style={styles.buttonBarButton}>
+                        <View style={ styles.buttonBarButton }>
                             <TouchableHighlight
-                                style={styles.headerButton}
-                                onPress={this.props.closeModal}
+                                style={ styles.headerButton }
+                                onPress={ this.props.closeModal }
                             >
-                                <Text style={styles.headerButtonText}>{"Close"}</Text>
+                                <Text style={ styles.headerButtonText }>{"Close"}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
                 </View>
 
                 <KeyboardAvoidingView
-                    style={styles.frame}
-                    behavior={Platform.OS === "ios" ? "padding" : null}
+                    style={ styles.frame }
+                    behavior={ Platform.OS === "ios" ? "padding" : null }
                 >
-                    <ScrollView style={styles.scroll}>
-                        <View style={styles.infoBlockContainer}>
-                            <Text style={styles.labelDark}>
+                    <ScrollView style={ styles.scroll }>
+                        <View style={ styles.infoBlockContainer }>
+                            <Text style={ styles.labelDark }>
                                 Invitee&apos;s Email
                             </Text>
                             <TextInput
                                 autoCapitalize="none"
-                                style={styles.textInput}
+                                style={ styles.textInput }
                                 placeholder="john@example.com"
-                                value={this.state.email || ""}
-                                onChangeText={this.onChangeEmail}
-                                underlineColorAndroid={"transparent"}
+                                value={ this.state.email || "" }
+                                onChangeText={ this.onChangeEmail }
+                                underlineColorAndroid={ "transparent" }
                             />
                             <Text>{isInTeam(teamMembers, this.state.email) ? "That person is already on the team" : " "}</Text>
-                            <Text style={styles.labelDark}>
+                            <Text style={ styles.labelDark }>
                                 First Name
                             </Text>
                             <TextInput
-                                style={styles.textInput}
-                                value={this.state.firstName}
-                                onChangeText={this.changeInvitee("firstName")}
+                                style={ styles.textInput }
+                                value={ this.state.firstName }
+                                onChangeText={ this.changeInvitee("firstName") }
                                 placeholder="First"
-                                underlineColorAndroid={"transparent"}
+                                underlineColorAndroid={ "transparent" }
                             />
-                            <Text style={styles.labelDark}>
+                            <Text style={ styles.labelDark }>
                                 Last Name
                             </Text>
                             <TextInput
-                                style={styles.textInput}
-                                value={this.state.lastName}
-                                onChangeText={this.changeInvitee("lastName")}
+                                style={ styles.textInput }
+                                value={ this.state.lastName }
+                                onChangeText={ this.changeInvitee("lastName") }
                                 placeholder="Last"
-                                underlineColorAndroid={"transparent"}
+                                underlineColorAndroid={ "transparent" }
                             />
                         </View>
                         {
                             Platform.OS === "ios"
-                                ? (<View style={defaultStyles.padForIOSKeyboard}/>)
+                                ? (<View style={ defaultStyles.padForIOSKeyboard }/>)
                                 : null
                         }
                     </ScrollView>

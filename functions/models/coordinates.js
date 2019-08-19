@@ -9,7 +9,7 @@ class Coordinates {
     }
 
     static create(args = {}, id) {
-        const _args = {...args};
+        const _args = { ...args };
         if (id) {
             _args.id = id;
         }

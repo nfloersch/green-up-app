@@ -5,6 +5,10 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - master
+
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16.3
@@ -26,12 +30,62 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: Install Yarn
+          command: yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      # lint the code
+      - run:
+          name: Code Linting
+          command: yarn lint
+
       # run tests!
-      - run: yarn test-ci
+      - run:
+          name: Unit Testing
+          command: yarn test-ci
+
+      # Config Firebase
+      - run:
+          name: Configure App to Use QA DB
+          command: node write-firebase-config.js
+
+      - run:
+          name: Install Firebase Function Deps
+          command: cd functions && npm install
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Storage Rules
+          command: ./node_modules/.bin/firebase deploy -P dev --only storage --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firestore Security Rules
+          command: ./node_modules/.bin/firebase deploy -P dev --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Storage Rules
+          command: ./node_modules/.bin/firebase deploy -P qa --only storage --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firestore Security Rules
+          command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Login into Expo
+          command: npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+
+      - run:
+          name: Publish to Expo
+          command: npx expo publish --non-interactive --max-workers 1 --release-channel $EXPO_RELEASE_CHANNEL
