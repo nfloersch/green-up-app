@@ -17,10 +17,6 @@ export const Anchor = (props: Props) => {
             {children}
         </Text>
     );
-<<<<<<< HEAD
-};
-=======
 };
 
 
->>>>>>> b3a5b2dbdda71d07e93f36f82bde97aebcd9b114
