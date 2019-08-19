@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 const firebaseHelper = require('firebase-functions-helper');
 const express = require('express');
 const cookieParser = require('cookie-parser')();
-const cors = require('cors')({origin: true});
+const cors = require('cors')({ origin: true });
 const app = express();
 const R = require('ramda');
 const bodyParser = require('body-parser');
@@ -62,10 +62,10 @@ app.use(cookieParser);
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
 app.use(validateFirebaseIdToken);
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/hello', (req, res) => {
-    res.json({'greeting': `Hello ${req.user.email}`});
+    res.json({ 'greeting': `Hello ${req.user.email}` });
 });
 
 app.get('/towns', async (req, res) => {
@@ -86,7 +86,7 @@ app.get('/towns', async (req, res) => {
 
     firebaseHelper.firestore
         .backup(db, 'towns')
-        .then(data => res.status(200).send({towns: filterAll(data.towns)}))
+        .then(data => res.status(200).send({ towns: filterAll(data.towns) }))
         .catch(error => res.status(400).send(`Cannot get towns: ${error}`));
 });
 
@@ -115,7 +115,7 @@ app.patch('/towns/:id', (req, res) => {
         .get()
         .then(doc => {
             if (doc.exists) {
-                const newTown = Town.create(Object.assign({}, doc.data(), fieldsToMerge, {updated: Date()}));
+                const newTown = Town.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
                 return docRef.set(newTown).then(() => {
                     return docRef.get()
                         .then(doc => {

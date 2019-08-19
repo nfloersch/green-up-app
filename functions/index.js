@@ -65,7 +65,7 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
         text,
         html,
         templateId: '93b4cee5-a954-4704-ae0b-965196dc05b1',
-        substitutions: {teaminfo: teamInfo}
+        substitutions: { teaminfo: teamInfo }
     };
 
     return sgMail.send(message);

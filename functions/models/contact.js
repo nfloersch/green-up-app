@@ -1,6 +1,6 @@
 /* global require */
 
-const {isString, isValidEmail} = require('./validators');
+const { isString, isValidEmail } = require('./validators');
 
 function getEmail(emails) {
     const myEmail = emails.filter(email => Boolean(email) && isValidEmail(email.email)).map(email => email.email)[0] || null;
@@ -46,7 +46,7 @@ class Contact {
     }
 
     static create(args, uid) {
-        const _args = {...(args || {})};
+        const _args = { ...(args || {}) };
         if (uid) {
             _args.uid = uid;
         }

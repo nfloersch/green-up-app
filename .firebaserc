@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "greenupvermont-de02b"
+    "default": "greenupvermont-dev",
+    "qa": "greenupvermont-qa",
+    "dev": "greenupvermont-dev",
+    "prod": "greenupvermont-de02b"
   }
 }

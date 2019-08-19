@@ -12,6 +12,8 @@ const projectId = process.env.FIREBASE_PROJECT_ID;
 const storageBucket = process.env.FIREBASE_STORAGE_BUCKET;
 // eslint-disable-next-line no-process-env
 const messagingSenderId = process.env.FIREBASE_MESSAGING_SENDER_ID;
+// eslint-disable-next-line no-process-env
+const appId = process.env.FIREBASE_APP_ID;
 
 const firebaseConfig = {
     apiKey,
@@ -19,7 +21,8 @@ const firebaseConfig = {
     databaseURL,
     projectId,
     storageBucket,
-    messagingSenderId
+    messagingSenderId,
+    appId
 };
 
 const fileContents = `export const firebaseConfig = ${JSON.stringify(firebaseConfig)};`;

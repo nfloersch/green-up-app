@@ -1,4 +1,4 @@
-const {isValidDate} = require('./validators');
+const { isValidDate } = require('./validators');
 const TeamMember = require('/team-member');
 
 class Invitation {
