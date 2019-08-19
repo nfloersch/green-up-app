@@ -54,7 +54,7 @@ jobs:
           name: Configure Firebase
           command: node write-firebase-config.js
 
-      -run:
+      - run:
           name: Install Firebase Functions
           command: cd functions && npm install
 
