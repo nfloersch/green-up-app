@@ -8,7 +8,7 @@ jobs:
     branches:
       only:
         - master
-        - release
+
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16.3
@@ -51,11 +51,11 @@ jobs:
 
       # Config Firebase
       - run:
-          name: Configure Firebase
+          name: Configure App to Use QA DB
           command: node write-firebase-config.js
 
       - run:
-          name: Install Firebase Functions
+          name: Install Firebase Function Deps
           command: cd functions && npm install
 
       - run:
