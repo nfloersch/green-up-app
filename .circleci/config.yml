@@ -4,11 +4,11 @@
 #
 version: 2
 jobs:
-   branches:
-     only:
-        - master # list of branches to build
-
   build:
+    branches:
+      only:
+        - master
+        - release
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16.3
