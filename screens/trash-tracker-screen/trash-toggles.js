@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actions from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import Toggle from "../../components/toggle/toggle";
+import Toggle from "../../components/toggle";
 import circleTurquoise from "../../assets/images/circle-turquoise.png";
 import circleBlue from "../../assets/images/circle-blue.png";
 import circleRed from "../../assets/images/circle-red.png";
@@ -31,10 +31,6 @@ class TrashToggles extends Component {
         collectedTrashToggle: PropTypes.bool,
         cleanAreasToggle: PropTypes.bool
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -93,13 +89,15 @@ class TrashToggles extends Component {
 }
 
 function mapStateToProps(state) {
-    const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
-    const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
-    const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;
-    const trashDropOffToggle = state.trashTracker.trashDropOffToggle;
-    const myTrashToggle = state.trashTracker.myTrashToggle;
-    const cleanAreasToggle = state.trashTracker.cleanAreasToggle;
-    return { collectedTrashToggle, supplyPickupToggle, uncollectedTrashToggle, trashDropOffToggle, myTrashToggle, cleanAreasToggle };
+    const { myTrashToggle, cleanAreasToggle, trashDropOffToggle, uncollectedTrashToggle, collectedTrashToggle, supplyPickupToggle } = state.trashTracker;
+    return {
+        collectedTrashToggle,
+        supplyPickupToggle,
+        uncollectedTrashToggle,
+        trashDropOffToggle,
+        myTrashToggle,
+        cleanAreasToggle
+    };
 }
 
 function mapDispatchToProps(dispatch) {

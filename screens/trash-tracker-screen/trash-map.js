@@ -199,10 +199,10 @@ class TrashMap extends Component<Props> {
         const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, "_");
         const townInfo = townData[encodedTownName] || {};
         const trashDropOffLocations = Object.values(townData).map(t => t.dropOffLocations)
-            .reduce((a, b) => ([...a, ...b]))
+            .reduce((a, b) => ([...a, ...b]), [])
             .filter(loc => loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude);
         const supplyPickupLocations = Object.values(townData).map(t => t.pickupLocations)
-            .reduce((a, b) => ([...a, ...b]))
+            .reduce((a, b) => ([...a, ...b]), [])
             .filter(loc => loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude);
         const initialMapLocation = location ? {
             latitude: Number(location.coords.latitude),
@@ -514,7 +514,7 @@ function mapStateToProps(state) {
     const drops = (state.trashTracker.trashDrops || [])
         .filter(drop => drop.location && drop.location.longitude && drop.location.latitude);
 
-    const cleanAreas = Object.values(state.teams.teams)
+    const cleanAreas = Object.values(state.teams.teams || {})
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: "",
             coordinates: l.coordinates,

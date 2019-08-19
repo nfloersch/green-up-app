@@ -7,6 +7,8 @@ import moment from "moment";
 import * as actions from "./actions";
 import Anchor from "../../components/anchor";
 import { defaultStyles } from "../../styles/default-styles";
+import { isValidDate } from "../../libs/validators";
+import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -38,7 +40,7 @@ class About extends Component<Props> {
                         <View style={ styles.infoBlockHeader }>
                             <Text style={ styles.headerText }>{eventName}</Text>
                             <Text style={ styles.headerText }>
-                                {moment(eventDate).utc().format("dddd, MMMM Do YYYY")}
+                                {moment(isValidDate(eventDate) ? eventDate : getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY")}
                             </Text>
                         </View>
                         <Text
@@ -92,7 +94,7 @@ const mapStateToProps = state => {
     const eventDescription = state.about.description || "";
     const faqs = state.about.faqs || [];
     const eventName = state.about.name;
-    const contactUs = state.about.contactUs;
+    const contactUs = state.about.contactUs || {};
     return { eventDate, eventDescription, eventName, faqs, contactUs };
 
 };
