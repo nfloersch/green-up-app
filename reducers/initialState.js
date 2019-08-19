@@ -1,6 +1,17 @@
 // @flow
+import { getCurrentGreenUpDay } from "../libs/green-up-day-calucators";
+import moment from "moment";
+
 export default {
-    about: {},
+    about: {
+        date: moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY"),
+        marketingPermissions: {
+            permissionText: "We would love to keep in touch by email. Would you be interested in receiving our latest news by email?",
+            noButtonText: "No thanks :(",
+            yesButtonText: "Yes please"
+        },
+        contactUs: { addressLine1: "", addressLine2: "", email: "", fullName: "", phoneNumber: "" }
+    },
     loading: {
         initialAuthChecked: false,
         isInitialized: false,
@@ -10,7 +21,7 @@ export default {
         setupTeamsListener: false,
         setupMyTeamsListeners: false,
         setupProfileListener: false,
-        setupInvitationsListener:false
+        setupInvitationsListener: false
     },
     login: {
         userIsLoggedIn: null,
