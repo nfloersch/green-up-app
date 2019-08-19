@@ -26,7 +26,9 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: Install Yarn
+          command: yarn install
 
       - save_cache:
           paths:
@@ -47,6 +49,34 @@ jobs:
       - run:
           name: Configure Firebase
           command: node write-firebase-config.js
+
+      -run:
+          name: Install Firebase Functions
+          command: cd functions && npm install
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Storage Rules
+          command: ./node_modules/.bin/firebase deploy -P dev --only storage --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firestore Security Rules
+          command: ./node_modules/.bin/firebase deploy -P dev --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Storage Rules
+          command: ./node_modules/.bin/firebase deploy -P qa --only storage --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firestore Security Rules
+          command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
 
       - run:
           name: Login into Expo

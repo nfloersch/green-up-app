@@ -1,5 +1,5 @@
 const constants = require('./constants');
-const {isString, isValidDate} = require('./validators');
+const { isString, isValidDate } = require('./validators');
 const TeamMember = require('./team-member');
 
 class Message {
@@ -35,7 +35,7 @@ class Message {
     }
 
     static create(args = {}, id) {
-        const _args = {...args};
+        const _args = { ...args };
         if (id) {
             _args.id = id;
         }

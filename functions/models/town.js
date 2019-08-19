@@ -1,5 +1,5 @@
 /** global require **/
-const {isString, isValidDate} = require('./validators');
+const { isString, isValidDate } = require('./validators');
 const Coordinates = require('./coordinates');
 
 class TownLocation {
@@ -11,7 +11,7 @@ class TownLocation {
     }
 
     static create(args = {}, id) {
-        const _args = {...args};
+        const _args = { ...args };
         if (id) {
             _args.id = id;
         }
@@ -45,7 +45,7 @@ class Town {
     }
 
     static create(args = {}, id) {
-        const _args = {...args};
+        const _args = { ...args };
         if (id) {
             _args.id = id;
         }
