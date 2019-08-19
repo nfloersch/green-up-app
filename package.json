@@ -10,7 +10,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo|@expo/vector-icons|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)"
     ],
     "collectCoverage": false,
     "collectCoverageFrom": [
@@ -30,6 +30,7 @@
     "@sendgrid/mail": "^6.3.1",
     "@turf/boolean-within": "^6.0.1",
     "@turf/helpers": "^6.1.4",
+    "@types/react-navigation": "^3.0.8",
     "expo": "^34.0.0",
     "expo-asset": "~6.0.0",
     "expo-constants": "~6.0.0",
@@ -41,6 +42,7 @@
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
     "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-autocomplete-input": "^4.1.0",
     "react-native-checkbox": "^2.0.0",
@@ -52,6 +54,7 @@
     "react-native-tab-view": "^2.10.0",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.1",
+    "react-test-renderer": "16.8.6",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2"
