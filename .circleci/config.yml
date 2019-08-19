@@ -4,6 +4,10 @@
 #
 version: 2
 jobs:
+   branches:
+     only:
+        - master # list of branches to build
+
   build:
     docker:
       # specify the version you desire here
