@@ -47,7 +47,7 @@ type Props = {
     collectedTrashToggle: Boolean,
     cleanAreas: Array<Object>,
     cleanAreasToggle: Boolean
-}
+};
 
 
 class TrashMap extends Component<Props> {
@@ -103,10 +103,10 @@ class TrashMap extends Component<Props> {
         return town ? town.properties.TOWNNAMEMC : "";
     }
 
-    _getLocationAsync = async () => {
-        // TODO: what if the user doesn't grant permission to location
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    async _getLocationAsync() {
+       
 
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             const locationProviderStatus = await Location.getProviderStatusAsync();
             if (locationProviderStatus.locationServicesEnabled === false) {
@@ -123,7 +123,7 @@ class TrashMap extends Component<Props> {
         } else {
             this.setState({ errorMessage: "Access to the device location is required. Please make sure you have location services on and you grant access when requested." });
         }
-    };
+    }
 
     _toggleTag = (editable, tag) => () => {
         if (editable) {
@@ -218,30 +218,30 @@ class TrashMap extends Component<Props> {
 
         const collectedTrash = (collectedTrashToggle ? drops : []).filter(drop => drop.wasCollected === true).map(drop => (
             <MapView.Marker
-                key={ drop.id }
+                key={drop.id}
                 // image={collectedTrashIcon}
-                pinColor={ "turquoise" }
-                coordinate={ drop.location }
-                title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
-                description={ "Tap to view collected trash" }
-                onCalloutPress={ () => {
+                pinColor={"turquoise"}
+                coordinate={drop.location}
+                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}`}
+                description={"Tap to view collected trash"}
+                onCalloutPress={() => {
                     this.setState({ modalVisible: true, drop: drop });
-                } }
-                stopPropagation={ true }/>
+                }}
+                stopPropagation={true} />
         ));
 
         const myTrash = (drops || []).filter(drop => (myTrashToggle && !drop.wasCollected && drop.createdBy && drop.createdBy.uid === currentUser.uid)).map(drop => (
             <MapView.Marker
-                key={ drop.id }
+                key={drop.id}
                 // image={myUncollectedTrashIcon}
-                pinColor={ "yellow" }
-                coordinate={ drop.location }
-                title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
-                description={ "Tap to view, edit or collect" }
-                onCalloutPress={ () => {
+                pinColor={"yellow"}
+                coordinate={drop.location}
+                title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}`}
+                description={"Tap to view, edit or collect"}
+                onCalloutPress={() => {
                     this.setState({ modalVisible: true, drop: drop });
-                } }
-                stopPropagation={ true }
+                }}
+                stopPropagation={true}
             />
         ));
 
@@ -249,30 +249,30 @@ class TrashMap extends Component<Props> {
             .filter(drop => (!drop.wasCollected && drop.createdBy && drop.createdBy.uid !== currentUser.uid))
             .map(drop => (
                 <MapView.Marker
-                    key={ drop.id }
+                    key={drop.id}
                     // image={uncollectedTrashIcon}
-                    pinColor={ "red" }
-                    coordinate={ drop.location }
-                    title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
-                    description={ "Tap to view or collect" }
-                    onCalloutPress={ () => {
+                    pinColor={"red"}
+                    coordinate={drop.location}
+                    title={`${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}`}
+                    description={"Tap to view or collect"}
+                    onCalloutPress={() => {
                         this.setState({ modalVisible: true, drop: drop });
-                    } }
-                    stopPropagation={ true }
+                    }}
+                    stopPropagation={true}
                 />
             ));
 
         const dropOffLocations = offsetLocations((supplyPickupToggle ? supplyPickupLocations : []), trashDropOffToggle ? trashDropOffLocations : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `${town}DropOffLocation${i}` }
+                    key={`${town}DropOffLocation${i}`}
                     // image={trashDropOffLocationIcon}
-                    pinColor={ "blue" }
-                    coordinate={ d.coordinates }
-                    stopPropagation={ true }>
+                    pinColor={"blue"}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
                     <MultiLineMapCallout
                         title="Drop Off Location"
-                        description={ `${d.name}, ${d.address}` }
+                        description={`${d.name}, ${d.address}`}
                     />
                 </MapView.Marker>
             ));
@@ -280,14 +280,14 @@ class TrashMap extends Component<Props> {
         const pickupLocations = (supplyPickupToggle ? supplyPickupLocations : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `supplyPickup${i}` }
+                    key={`supplyPickup${i}`}
                     // image={supplyPickupLocationIcon}
-                    pinColor={ "green" }
-                    coordinate={ d.coordinates }
-                    stopPropagation={ true }>
+                    pinColor={"green"}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
                     <MultiLineMapCallout
                         title="Supply Pickup Location"
-                        description={ `${d.name}, ${d.address}` }
+                        description={`${d.name}, ${d.address}`}
                     />
                 </MapView.Marker>
             ));
@@ -295,13 +295,13 @@ class TrashMap extends Component<Props> {
         const cleanAreaMarkers = (cleanAreasToggle ? cleanAreas : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `cleanArea${i}` }
-                    pinColor={ "orange" }
-                    coordinate={ d.coordinates }
-                    stopPropagation={ true }>
+                    key={`cleanArea${i}`}
+                    pinColor={"orange"}
+                    coordinate={d.coordinates}
+                    stopPropagation={true}>
                     <MultiLineMapCallout
-                        title={ `${d.title}` }
-                        description={ `${d.description}` }/>
+                        title={`${d.title}`}
+                        description={`${d.description}`} />
                 </MapView.Marker>
             ));
 
@@ -329,19 +329,19 @@ class TrashMap extends Component<Props> {
         return this.state.errorMessage
             ? (<View>
                 <Text>{this.state.errorMessage}</Text>
-                <TouchableHighlight style={ styles.link } onPress={ enableLocation }>
-                    <Text style={ [styles.linkText, { color: "#333333" }] }>{"Enable Location Services"}</Text>
+                <TouchableHighlight style={styles.link} onPress={enableLocation}>
+                    <Text style={[styles.linkText, { color: "#333333" }]}>{"Enable Location Services"}</Text>
                 </TouchableHighlight>
             </View>)
             : initialMapLocation &&
             (
-                <View style={ styles.frame }>
+                <View style={styles.frame}>
                     <MapView
-                        initialRegion={ initialMapLocation }
-                        showsUserLocation={ true }
-                        showsMyLocationButton={ true }
-                        showsCompass={ true }
-                        style={ {
+                        initialRegion={initialMapLocation}
+                        showsUserLocation={true}
+                        showsMyLocationButton={true}
+                        showsCompass={true}
+                        style={{
                             position: "absolute",
                             top: 50,
                             left: 0,
@@ -351,12 +351,12 @@ class TrashMap extends Component<Props> {
                             width: "100%",
                             margin: 0,
                             padding: 0
-                        } }
+                        }}
                     >
                         {allMarkers}
                     </MapView>
 
-                    <View style={ {
+                    <View style={{
                         position: "absolute",
                         top: 0,
                         left: 0,
@@ -366,66 +366,66 @@ class TrashMap extends Component<Props> {
                         flexDirection: "row",
                         padding: 0,
                         justifyContent: "flex-end"
-                    } }>
+                    }}>
 
 
                         {townInfo.roadsideDropOffAllowed
                             ? (
                                 <TouchableHighlight
-                                    style={ [styles.headerButton, {
+                                    style={[styles.headerButton, {
                                         backgroundColor: "#EEE",
                                         paddingTop: 13,
                                         height: 50,
                                         flex: 1
-                                    }] }
-                                    onPress={ goToTrashDrop }>
-                                    <Text style={ styles.headerButtonText }>
+                                    }]}
+                                    onPress={goToTrashDrop}>
+                                    <Text style={styles.headerButtonText}>
                                         {"Drop A Trash Bag Here"}
                                     </Text>
                                 </TouchableHighlight>
                             )
-                            : (<View style={ [styles.headerButton, {
+                            : (<View style={[styles.headerButton, {
                                 backgroundColor: "#EEE",
                                 paddingTop: 13,
                                 height: 50,
                                 flex: 1
-                            }] }/>)
+                            }]} />)
                         }
                         <TouchableHighlight
-                            style={ { height: 50, width: 50, padding: 5, backgroundColor: "rgba(255,255,255,0.8)" } }
-                            onPress={ () => {
+                            style={{ height: 50, width: 50, padding: 5, backgroundColor: "rgba(255,255,255,0.8)" }}
+                            onPress={() => {
                                 this.setState({
                                     toggleModalVisible: true
                                 });
-                            } }>
+                            }}>
                             <Ionicons
-                                name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
-                                size={ 42 }
+                                name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+                                size={42}
                                 color="#333"
                             />
                         </TouchableHighlight>
                     </View>
 
-                    <TownInformation townInfo={ townInfo } town={ town }/>
+                    <TownInformation townInfo={townInfo} town={town} />
                     <Modal
-                        animationType={ "slide" }
-                        transparent={ false }
-                        visible={ this.state.modalVisible }
-                        onRequestClose={ () => {
+                        animationType={"slide"}
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
                             this.closeModal();
-                        } }>
-                        <View style={ [styles.frame, { paddingTop: 30 }] }>
-                            <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                                <View style={ styles.buttonBar }>
+                        }}>
+                        <View style={[styles.frame, { paddingTop: 30 }]}>
+                            <View style={[styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }]}>
+                                <View style={styles.buttonBar}>
                                     {
                                         showFirstButton
                                             ? (
-                                                <View style={ styles.buttonBarButton }>
+                                                <View style={styles.buttonBarButton}>
                                                     <TouchableOpacity
-                                                        style={ styles.headerButton }
-                                                        onPress={ saveTrashDrop }
+                                                        style={styles.headerButton}
+                                                        onPress={saveTrashDrop}
                                                     >
-                                                        <Text style={ styles.headerButtonText }>
+                                                        <Text style={styles.headerButtonText}>
                                                             {this.state.drop.id ? "Update This Spot" : "Mark This Spot"}
                                                         </Text>
                                                     </TouchableOpacity>
@@ -435,62 +435,62 @@ class TrashMap extends Component<Props> {
                                     }
 
 
-                                    <View style={ styles.buttonBarButton }>
-                                        <TouchableOpacity style={ styles.headerButton } onPress={ this.closeModal }>
-                                            <Text style={ styles.headerButtonText }>{"Cancel"}</Text>
+                                    <View style={styles.buttonBarButton}>
+                                        <TouchableOpacity style={styles.headerButton} onPress={this.closeModal}>
+                                            <Text style={styles.headerButtonText}>{"Cancel"}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
                             <KeyboardAvoidingView
-                                style={ defaultStyles.frame }
-                                behavior={ Platform.OS === "ios" ? "padding" : null }
+                                style={defaultStyles.frame}
+                                behavior={Platform.OS === "ios" ? "padding" : null}
                             >
-                                <ScrollView style={ styles.scroll }>
-                                    <View style={ styles.infoBlockContainer }>
-                                        <Text style={ styles.labelDark }>Number of Bags</Text>
+                                <ScrollView style={styles.scroll}>
+                                    <View style={styles.infoBlockContainer}>
+                                        <Text style={styles.labelDark}>Number of Bags</Text>
                                         <TextInput
                                             underlineColorAndroid="transparent"
-                                            editable={ showFirstButton }
-                                            value={ this.state.drop.bagCount.toString() }
+                                            editable={showFirstButton}
+                                            value={this.state.drop.bagCount.toString()}
                                             keyboardType="numeric"
                                             placeholder="1"
-                                            style={ styles.textInput }
-                                            onChangeText={ (text) => this.setState({
+                                            style={styles.textInput}
+                                            onChangeText={(text) => this.setState({
                                                 drop: {
                                                     ...this.state.drop,
                                                     bagCount: Number(text)
                                                 }
-                                            }) }
+                                            })}
                                         />
-                                        <Text style={ styles.labelDark }>Other Items</Text>
-                                        <View style={ styles.fieldset }>
+                                        <Text style={styles.labelDark}>Other Items</Text>
+                                        <View style={styles.fieldset}>
                                             <CheckBox
-                                                editable={ showFirstButton }
+                                                editable={showFirstButton}
                                                 label="Needles/Bio-Waste"
-                                                checked={ this.state.drop.tags.indexOf("bio-waste") > -1 }
-                                                onChange={ this._toggleTag(showFirstButton, "bio-waste") }/>
+                                                checked={this.state.drop.tags.indexOf("bio-waste") > -1}
+                                                onChange={this._toggleTag(showFirstButton, "bio-waste")} />
                                             <CheckBox
-                                                editable={ showFirstButton }
+                                                editable={showFirstButton}
                                                 label="Tires"
-                                                checked={ this.state.drop.tags.indexOf("tires") > -1 }
-                                                onChange={ this._toggleTag(showFirstButton, "tires") }/>
+                                                checked={this.state.drop.tags.indexOf("tires") > -1}
+                                                onChange={this._toggleTag(showFirstButton, "tires")} />
                                             <CheckBox
-                                                editable={ showFirstButton }
+                                                editable={showFirstButton}
                                                 label="Large Object"
-                                                checked={ this.state.drop.tags.indexOf("large") > -1 }
-                                                onChange={ this._toggleTag(showFirstButton, "large") }/>
+                                                checked={this.state.drop.tags.indexOf("large") > -1}
+                                                onChange={this._toggleTag(showFirstButton, "large")} />
                                         </View>
 
                                     </View>
                                     {
                                         this.state.drop.id && !this.state.drop.wasCollected && (
-                                            <View style={ { width: "100%", height: 60 } }>
+                                            <View style={{ width: "100%", height: 60 }}>
                                                 <TouchableHighlight
-                                                    style={ [styles.button, { width: "100%" }] }
-                                                    onPress={ collectTrashDrop }
+                                                    style={[styles.button, { width: "100%" }]}
+                                                    onPress={collectTrashDrop}
                                                 >
-                                                    <Text style={ styles.buttonText }>{"Collect Trash"}</Text>
+                                                    <Text style={styles.buttonText}>{"Collect Trash"}</Text>
                                                 </TouchableHighlight>
                                             </View>
                                         )
@@ -500,13 +500,13 @@ class TrashMap extends Component<Props> {
                         </View>
                     </Modal>
                     <Modal
-                        animationType={ "slide" }
-                        transparent={ false }
-                        visible={ this.state.toggleModalVisible }
-                        onRequestClose={ () => {
+                        animationType={"slide"}
+                        transparent={false}
+                        visible={this.state.toggleModalVisible}
+                        onRequestClose={() => {
                             this.closeToggleModal();
-                        } }>
-                        <TrashToggles close={ this.closeToggleModal }/>
+                        }}>
+                        <TrashToggles close={this.closeToggleModal} />
                     </Modal>
                 </View>
             );
