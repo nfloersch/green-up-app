@@ -11,7 +11,7 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo|@expo/vector-icons|react-navigation|@react-navigation/.*|@unimodules/.*|sentry-expo|native-base)"
     ],
     "collectCoverage": false,
     "collectCoverageFrom": [
@@ -23,44 +23,59 @@
     ]
   },
   "engines": {
-    "node": "10.16.3"
+    "node": "10"
   },
   "dependencies": {
-    "@expo/samples": "2.1.1",
-    "@expo/vector-icons": "^9.0.0",
+    "@expo/samples": "3.0.3",
+    "@expo/vector-icons": "^10.0.0",
     "@sendgrid/mail": "^6.3.1",
     "@turf/boolean-within": "^6.0.1",
     "@turf/helpers": "^6.1.4",
-    "expo": "^32.0.0",
-    "firebase": "^5.8.4",
+    "@types/react-navigation": "^3.0.8",
+    "expo": "^34.0.0",
+    "expo-asset": "~6.0.0",
+    "expo-constants": "^6.0.0",
+    "expo-contacts": "^6.0.0",
+    "expo-font": "~6.0.1",
+    "expo-intent-launcher": "^6.0.0",
+    "expo-location": "^6.0.0",
+    "expo-module-scripts": "^1.0.1",
+    "firebase": "^6.3.5",
     "md5-hash": "^1.0.1",
     "moment": "^2.24.0",
+    "node-gyp": "^5.0.3",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-autocomplete-input": "^3.6.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native-autocomplete-input": "^4.1.0",
     "react-native-checkbox": "^2.0.0",
-    "react-native-modal-datetime-picker": "^6.0.0",
+    "react-native-gesture-handler": "~1.3.0",
+    "react-native-maps": "~0.24.0",
+    "react-native-modal-datetime-picker": "^7.5.0",
     "react-native-radio-buttons": "^1.0.0",
-    "react-native-tab-view": "^2.0.0-alpha.4",
+    "react-native-reanimated": "~1.1.0",
+    "react-native-tab-view": "^2.10.0",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.1",
+    "react-test-renderer": "16.8.6",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "babel-preset-expo": "^5.0.0",
+    "babel-preset-expo": "^5.2.0",
     "eslint": "^5.15.0",
     "eslint-config-react-app": "^3.0.8",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "expo-cli": "^3.0.9",
+    "expo-permissions": "^6.0.0",
     "firebase-tools": "^7.2.2",
-    "jest-expo": "^32.0.0"
+    "jest-expo": "^34.0.0"
   },
   "private": true
 }

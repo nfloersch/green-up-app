@@ -1,10 +1,10 @@
 //  @flow
 import React from "react";
-import { Icon } from "expo";
+import { Ionicons } from '@expo/vector-icons';
 import colors from "../../constants/colors";
 
 export const TabBarIcon = ({ focused, name }: { focused: boolean, name: string }) => (
-    <Icon.Ionicons
+    <Ionicons
         name={ name }
         size={ 26 }
         style={ { marginBottom: -3 } }

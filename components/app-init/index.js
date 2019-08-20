@@ -3,7 +3,10 @@ import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import * as actions from "./actions";
 import { connect } from "react-redux";
-import { AppLoading, Asset, Font, Icon } from "expo";
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
     children: any,
@@ -39,7 +42,7 @@ class AppInit extends Component<Props> {
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
-            ...Icon.Ionicons.font,
+            ...Ionicons.font,
             // We include SpaceMono because we use it in HomeScreen.js. Feel free
             // to remove this if you are not using it in your app
             "space-mono": require("../../assets/fonts/SpaceMono-Regular.ttf")

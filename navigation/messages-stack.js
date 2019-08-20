@@ -1,5 +1,4 @@
 // @flow
-
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import NewMessageScreen from "../screens/new-message-screen";
 import MessagesSummariesScreen from "../screens/message-summaries-screen";

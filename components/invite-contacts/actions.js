@@ -1,7 +1,9 @@
 // @flow
 import * as types from "../../constants/action-types";
 import Contact from "../../models/contact";
-import { Permissions, Contacts } from "expo";
+
+import * as Contacts from "expo-contacts";
+import * as Permissions from "expo-permissions";
 import TeamMember from "../../models/team-member";
 import Invitation from "../../models/invitation";
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";

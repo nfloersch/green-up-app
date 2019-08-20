@@ -25,7 +25,10 @@ import TeamMember from "../../models/team-member";
 import * as statuses from "../../constants/team-member-statuses";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
-import { Constants, Location, Permissions, MapView } from "expo";
+import Constants from "expo-constants";
+import * as Location from "expo-location";
+import MapView from "react-native-maps";
+import * as Permissions from "expo-permissions";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { TownLocation } from "../../models/town";
 

@@ -1,6 +1,9 @@
 // @flow
 import React, { Component } from "react";
-import { IntentLauncherAndroid, Location, MapView, Permissions } from "expo";
+import * as IntentLauncherAndroid from "expo-intent-launcher";
+import * as Location from "expo-location";
+import MapView from "react-native-maps";
+import * as Permissions from "expo-permissions";
 import CheckBox from "react-native-checkbox";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -31,7 +34,6 @@ import offsetLocations from "../../libs/offset-locations";
 const styles = StyleSheet.create(defaultStyles);
 
 type Props = {
-    navigation: Object,
     actions: Object,
     drops: Array<Object>,
     currentUser: Object,
@@ -44,8 +46,7 @@ type Props = {
     collectedTrashToggle: Boolean,
     cleanAreas: Array<Object>,
     cleanAreasToggle: Boolean
-}
-
+};
 
 class TrashMap extends Component<Props> {
 
@@ -100,10 +101,10 @@ class TrashMap extends Component<Props> {
         return town ? town.properties.TOWNNAMEMC : "";
     }
 
-    _getLocationAsync = async () => {
-        // TODO: what if the user doesn't grant permission to location
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    async _getLocationAsync() {
 
+
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             const locationProviderStatus = await Location.getProviderStatusAsync();
             if (locationProviderStatus.locationServicesEnabled === false) {
@@ -120,7 +121,7 @@ class TrashMap extends Component<Props> {
         } else {
             this.setState({ errorMessage: "Access to the device location is required. Please make sure you have location services on and you grant access when requested." });
         }
-    };
+    }
 
     _toggleTag = (editable, tag) => () => {
         if (editable) {
@@ -219,7 +220,7 @@ class TrashMap extends Component<Props> {
                 // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
                 coordinate={ drop.location }
-                title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
+                title={ `${ drop.bagCount } bag(s)${ drop.tags.length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view collected trash" }
                 onCalloutPress={ () => {
                     this.setState({ modalVisible: true, drop: drop });
@@ -233,7 +234,7 @@ class TrashMap extends Component<Props> {
                 // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
                 coordinate={ drop.location }
-                title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
+                title={ `${ drop.bagCount } bag(s)${ drop.tags.length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view, edit or collect" }
                 onCalloutPress={ () => {
                     this.setState({ modalVisible: true, drop: drop });
@@ -250,7 +251,7 @@ class TrashMap extends Component<Props> {
                     // image={uncollectedTrashIcon}
                     pinColor={ "red" }
                     coordinate={ drop.location }
-                    title={ `${drop.bagCount} bag(s)${drop.tags.length > 0 ? " & other trash" : ""}` }
+                    title={ `${ drop.bagCount } bag(s)${ drop.tags.length > 0 ? " & other trash" : "" }` }
                     description={ "Tap to view or collect" }
                     onCalloutPress={ () => {
                         this.setState({ modalVisible: true, drop: drop });
@@ -262,14 +263,14 @@ class TrashMap extends Component<Props> {
         const dropOffLocations = offsetLocations((supplyPickupToggle ? supplyPickupLocations : []), trashDropOffToggle ? trashDropOffLocations : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `${town}DropOffLocation${i}` }
+                    key={ `${ town }DropOffLocation${ i }` }
                     // image={trashDropOffLocationIcon}
                     pinColor={ "blue" }
                     coordinate={ d.coordinates }
                     stopPropagation={ true }>
                     <MultiLineMapCallout
                         title="Drop Off Location"
-                        description={ `${d.name}, ${d.address}` }
+                        description={ `${ d.name }, ${ d.address }` }
                     />
                 </MapView.Marker>
             ));
@@ -277,14 +278,14 @@ class TrashMap extends Component<Props> {
         const pickupLocations = (supplyPickupToggle ? supplyPickupLocations : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `supplyPickup${i}` }
+                    key={ `supplyPickup${ i }` }
                     // image={supplyPickupLocationIcon}
                     pinColor={ "green" }
                     coordinate={ d.coordinates }
                     stopPropagation={ true }>
                     <MultiLineMapCallout
                         title="Supply Pickup Location"
-                        description={ `${d.name}, ${d.address}` }
+                        description={ `${ d.name }, ${ d.address }` }
                     />
                 </MapView.Marker>
             ));
@@ -292,13 +293,13 @@ class TrashMap extends Component<Props> {
         const cleanAreaMarkers = (cleanAreasToggle ? cleanAreas : [])
             .map((d, i) => (
                 <MapView.Marker
-                    key={ `cleanArea${i}` }
+                    key={ `cleanArea${ i }` }
                     pinColor={ "orange" }
                     coordinate={ d.coordinates }
                     stopPropagation={ true }>
                     <MultiLineMapCallout
-                        title={ `${d.title}` }
-                        description={ `${d.description}` }/>
+                        title={ `${ d.title }` }
+                        description={ `${ d.description }` }/>
                 </MapView.Marker>
             ));
 
@@ -311,9 +312,7 @@ class TrashMap extends Component<Props> {
 
         const enableLocation = async () => {
             if (Platform.OS === "android") {
-                await IntentLauncherAndroid.startActivityAsync(
-                    IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS
-                );
+                await IntentLauncherAndroid.startActivityAsync(IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS);
             }
 
             if (Platform.OS === "ios") {
@@ -325,9 +324,9 @@ class TrashMap extends Component<Props> {
 
         return this.state.errorMessage
             ? (<View>
-                <Text>{this.state.errorMessage}</Text>
+                <Text>{ this.state.errorMessage }</Text>
                 <TouchableHighlight style={ styles.link } onPress={ enableLocation }>
-                    <Text style={ [styles.linkText, { color: "#333333" }] }>{"Enable Location Services"}</Text>
+                    <Text style={ [styles.linkText, { color: "#333333" }] }>{ "Enable Location Services" }</Text>
                 </TouchableHighlight>
             </View>)
             : initialMapLocation &&
@@ -350,7 +349,7 @@ class TrashMap extends Component<Props> {
                             padding: 0
                         } }
                     >
-                        {allMarkers}
+                        { allMarkers }
                     </MapView>
 
                     <View style={ {
@@ -366,7 +365,7 @@ class TrashMap extends Component<Props> {
                     } }>
 
 
-                        {townInfo.roadsideDropOffAllowed
+                        { townInfo.roadsideDropOffAllowed
                             ? (
                                 <TouchableHighlight
                                     style={ [styles.headerButton, {
@@ -377,7 +376,7 @@ class TrashMap extends Component<Props> {
                                     }] }
                                     onPress={ goToTrashDrop }>
                                     <Text style={ styles.headerButtonText }>
-                                        {"Drop A Trash Bag Here"}
+                                        { "Drop A Trash Bag Here" }
                                     </Text>
                                 </TouchableHighlight>
                             )
@@ -423,7 +422,7 @@ class TrashMap extends Component<Props> {
                                                         onPress={ saveTrashDrop }
                                                     >
                                                         <Text style={ styles.headerButtonText }>
-                                                            {this.state.drop.id ? "Update This Spot" : "Mark This Spot"}
+                                                            { this.state.drop.id ? "Update This Spot" : "Mark This Spot" }
                                                         </Text>
                                                     </TouchableOpacity>
                                                 </View>
@@ -434,7 +433,7 @@ class TrashMap extends Component<Props> {
 
                                     <View style={ styles.buttonBarButton }>
                                         <TouchableOpacity style={ styles.headerButton } onPress={ this.closeModal }>
-                                            <Text style={ styles.headerButtonText }>{"Cancel"}</Text>
+                                            <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -487,7 +486,7 @@ class TrashMap extends Component<Props> {
                                                     style={ [styles.button, { width: "100%" }] }
                                                     onPress={ collectTrashDrop }
                                                 >
-                                                    <Text style={ styles.buttonText }>{"Collect Trash"}</Text>
+                                                    <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
                                                 </TouchableHighlight>
                                             </View>
                                         )
@@ -518,7 +517,7 @@ function mapStateToProps(state) {
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: "",
             coordinates: l.coordinates,
-            title: `${team.name}`,
+            title: `${ team.name }`,
             description: "claimed this area"
         }))), []);
     const townData = state.towns.townData;
