@@ -206,7 +206,6 @@ export default class TeamMemberDetails extends Component<Props> {
         };
 
         function getStatus(_teamMember: Object) {
-            debugger;
             switch (_teamMember.memberStatus) {
                 case status.OWNER :
                     return (
