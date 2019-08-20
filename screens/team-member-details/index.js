@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getMemberIcon } from "../../libs/member-icons";
+import MemberIcon from "../../components/member-icon";
 import * as actions from "./actions";
 import TeamMember from "../../models/team-member";
 import * as status from "../../constants/team-member-statuses";
@@ -195,7 +195,7 @@ class TeamMemberDetails extends Component {
                 case status.OWNER :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(status.OWNER)}
+                            <MemberIcon memberStatus={ status.OWNER }/>
                             <Text style={ styles.statusBarText }>
                                 {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email}`} is
                                 the owner of this team
@@ -205,7 +205,7 @@ class TeamMemberDetails extends Component {
                 case status.REQUEST_TO_JOIN :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(status.REQUEST_TO_JOIN, {}, _isOwner)}
+                            <MemberIcon memberStatus={ status.REQUEST_TO_JOIN } isOwner={ _isOwner }/>
                             <Text style={ styles.statusBarText }>
                                 {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to
                                 join this team
@@ -215,7 +215,7 @@ class TeamMemberDetails extends Component {
                 case status.ACCEPTED :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(status.ACCEPTED)}
+                            <MemberIcon memberStatus={ status.ACCEPTED }/>
                             <Text style={ styles.statusBarText }>
                                 {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} is a
                                 member of this team.
@@ -225,7 +225,7 @@ class TeamMemberDetails extends Component {
                 case status.INVITED :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(status.INVITED)}
+                            <MemberIcon memberStatus={ status.INVITED }/>
                             <Text style={ styles.statusBarText }>
                                 {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email} has not yet accepted the invitation`}
                             </Text>
@@ -234,7 +234,7 @@ class TeamMemberDetails extends Component {
                 default :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(status.NOT_INVITED)}
+                            <MemberIcon memberStatus={ status.NOT_INVITED }/>
                             <Text style={ styles.statusBarText }>
                                 {teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "This person"} is
                                 not a member of this
@@ -264,7 +264,8 @@ class TeamMemberDetails extends Component {
                         <View style={ { marginTop: 10 } }>
                             <Text
                                 style={ styles.labelDark }>{`About ${member.displayName && member.displayName.trim() || ""}: `}</Text>
-                            <Text style={ { marginTop: 5 } }>{member.bio || "This person has not completed a bio :-("}</Text>
+                            <Text
+                                style={ { marginTop: 5 } }>{member.bio || "This person has not completed a bio :-("}</Text>
                         </View>
                     </View>
                 </ScrollView>

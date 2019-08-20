@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { getMemberIcon } from "../../libs/member-icons";
+import MemberIcon from "../../components/member-icon";
 import {
     FlatList,
     ImageBackground,
@@ -112,7 +112,6 @@ class TeamItem extends Component<{ item: Object }> {
                         />
                     </View>
                 </TouchableHighlight>
-
             </View>
         );
     }
@@ -175,11 +174,11 @@ class TeamsScreen extends Component<Props> {
         // TODO : replace this hack.
         switch (true) {
             case isInvited: // We should check in the team invites here, not rely on the argument.
-                return getMemberIcon(TeamMember.memberStatuses.INVITED, {});
+                return (<MemberIcon memberStatus={ TeamMember.memberStatuses.INVITED } />);
             case Boolean(status) : // This is okay
-                return getMemberIcon(status, {});
+                return (<MemberIcon memberStatus={ status } />);
             default: // we should actually check to see if the user has requested to join
-                return getMemberIcon(TeamMember.memberStatuses.REQUEST_TO_JOIN, {});
+                return (<MemberIcon memberStatuss={ TeamMember.memberStatuses.REQUEST_TO_JOIN } />);
         }
     };
 

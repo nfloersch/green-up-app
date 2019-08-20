@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
-import { getMemberIcon } from "../../libs/member-icons";
+import MemberIcon from "../../components/member-icon";
 import { defaultStyles } from "../../styles/default-styles";
 import InviteContacts from "../invite-contacts";
 import InviteForm from "../invite-form";
@@ -63,7 +63,10 @@ class MemberItem extends Component<MProps> {
                             alignItems: "stretch"
                         }] }>{item.displayName && item.displayName.trim() || item.email || ""}</Text>
                     </View>
-                    {getMemberIcon(item.memberStatus, { paddingTop: 10, height: 50, width: 50 }, true)}
+                    <MemberIcon
+                        memberStatus={ item.memberStatus }
+                        style={ { paddingTop: 10, height: 50, width: 50 } }
+                        isOwner={ true }/>
                 </View>
             </TouchableOpacity>
         );

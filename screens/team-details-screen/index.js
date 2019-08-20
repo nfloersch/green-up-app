@@ -8,7 +8,7 @@ import * as actions from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import User from "../../models/user";
-import { getMemberIcon } from "../../libs/member-icons";
+import MemberIcon from "../../components/member-icon";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import TownItem from "../../components/town-item";
 
@@ -147,7 +147,7 @@ class TeamDetailsScreen extends Component<Props> {
         const teamMemberList = (
             <View style={ { width: "100%" } }>
                 <Text style={ [styles.textDark, { textAlign: "center" }] }>
-                    {"Team Members"}
+                    { "Team Members" }
                 </Text>
                 {
                     Object
@@ -171,10 +171,13 @@ class TeamDetailsScreen extends Component<Props> {
                                             source={ { uri: member.photoURL } }
                                         />
                                         <Text style={ styles.teamMember }>
-                                            {member.displayName || member.email}
+                                            { member.displayName || member.email }
                                         </Text>
                                     </View>
-                                    {getMemberIcon(member.memberStatus, { marginTop: 10, marginRight: 5 })}
+                                    <MemberIcon
+                                        memberStatus={ member.memberStatus }
+                                        style={ { marginTop: 10, marginRight: 5 } }
+                                    />
                                 </View>
                             </TouchableHighlight>
                         ))
@@ -212,7 +215,7 @@ class TeamDetailsScreen extends Component<Props> {
                                         style={ styles.headerButton }
                                         onPress={ this._acceptInvitation(selectedTeam.id, currentUser) }>
                                         <Text style={ styles.headerButtonText }>
-                                            {"Accept Invitation"}
+                                            { "Accept Invitation" }
                                         </Text>
                                     </TouchableHighlight>
                                 </View>
@@ -221,7 +224,7 @@ class TeamDetailsScreen extends Component<Props> {
                                         style={ styles.headerButton }
                                         onPress={ this._declineInvitation(selectedTeam.id, currentUser.email) }>
                                         <Text style={ styles.headerButtonText }>
-                                            {"Decline Invitation"}
+                                            { "Decline Invitation" }
                                         </Text>
                                     </TouchableHighlight>
                                 </View>
@@ -237,7 +240,7 @@ class TeamDetailsScreen extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ () => this._leaveTeam(selectedTeam.id, currentUser) }>
                                 <Text style={ styles.headerButtonText }>
-                                    {"Leave Team"}
+                                    { "Leave Team" }
                                 </Text>
                             </TouchableHighlight>
                         </View>
@@ -249,7 +252,7 @@ class TeamDetailsScreen extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ this._removeRequest(selectedTeam.id, currentUser) }>
                                 <Text style={ styles.headerButtonText }>
-                                    {"Remove Request"}
+                                    { "Remove Request" }
                                 </Text>
                             </TouchableHighlight>
                         </View>
@@ -260,7 +263,7 @@ class TeamDetailsScreen extends Component<Props> {
                             <TouchableHighlight
                                 style={ styles.headerButton }
                                 onPress={ this._askToJoin(selectedTeam, currentUser) }>
-                                <Text style={ styles.headerButtonText }>{"Ask to join this team"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Ask to join this team" }</Text>
                             </TouchableHighlight>
                         </View>
                     );
@@ -272,35 +275,35 @@ class TeamDetailsScreen extends Component<Props> {
                 case memberStatus === teamMemberStatuses.INVITED:
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(teamMemberStatuses.INVITED)}
+                            <MemberIcon memberStatus={ teamMemberStatuses.INVITED }/>
                             <Text style={ styles.statusMessage }>
-                                {"You have been invited to this team"}
+                                { "You have been invited to this team" }
                             </Text>
                         </View>
                     );
                 case selectedTeam.owner.uid === currentUser.uid :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(teamMemberStatuses.OWNER)}
+                            <MemberIcon memberStatus={ teamMemberStatuses.OWNER }/>
                             <Text style={ styles.statusMessage }>
-                                {"You are the owner of this team"}
+                                { "You are the owner of this team" }
                             </Text>
                         </View>
                     );
                 case memberStatus === teamMemberStatuses.ACCEPTED :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(teamMemberStatuses.ACCEPTED)}
+                            <MemberIcon memberStatus={ teamMemberStatuses.ACCEPTED }/>
                             <Text style={ styles.statusMessage }>
-                                {"You are a member of this team."}
+                                { "You are a member of this team." }
                             </Text>
                         </View>);
                 case this.state.hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
                     return (
                         <View style={ styles.statusBar }>
-                            {getMemberIcon(teamMemberStatuses.REQUEST_TO_JOIN)}
+                            <MemberIcon memberStatus={ teamMemberStatuses.REQUEST_TO_JOIN }/>
                             <Text style={ styles.statusMessage }>
-                                {"Waiting on owner approval"}
+                                { "Waiting on owner approval" }
                             </Text>
                         </View>
                     );
@@ -321,59 +324,59 @@ class TeamDetailsScreen extends Component<Props> {
 
         return (
             <View style={ styles.frame }>
-                {getStatusButtons()}
+                { getStatusButtons() }
                 <ScrollView style={ styles.scroll }>
                     <View style={ styles.infoBlockContainer }>
-                        {getMemberStatus()}
+                        { getMemberStatus() }
                         <View style={ styles.block }>
                             <Text style={ [styles.textDark, { textAlign: "center" }] }>
-                                {selectedTeam.name}
+                                { selectedTeam.name }
                             </Text>
                             <View style={ { width: "100%" } }>
                                 <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{"Owner: "}</Text>
-                                    <Text style={ styles.dataDark }>{selectedTeam.owner.displayName}</Text>
+                                    <Text style={ styles.labelDark }>{ "Owner: " }</Text>
+                                    <Text style={ styles.dataDark }>{ selectedTeam.owner.displayName }</Text>
                                 </Text>
                                 <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{"Where: "}</Text>
+                                    <Text style={ styles.labelDark }>{ "Where: " }</Text>
                                     <Text
-                                        style={ styles.dataDark }>{`${selectedTeam.location || ""}${!selectedTeam.location || !selectedTeam.town ? "" : ", "}${selectedTeam.town || ""}`}</Text>
+                                        style={ styles.dataDark }>{ `${ selectedTeam.location || "" }${ !selectedTeam.location || !selectedTeam.town ? "" : ", " }${ selectedTeam.town || "" }` }</Text>
                                 </Text>
                                 <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{"Date: "}</Text>
-                                    <Text style={ styles.dataDark }>{selectedTeam.date}</Text>
+                                    <Text style={ styles.labelDark }>{ "Date: " }</Text>
+                                    <Text style={ styles.dataDark }>{ selectedTeam.date }</Text>
                                 </Text>
                                 <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{"Starts: "}</Text>
-                                    <Text style={ styles.dataDark }>{selectedTeam.start}</Text>
+                                    <Text style={ styles.labelDark }>{ "Starts: " }</Text>
+                                    <Text style={ styles.dataDark }>{ selectedTeam.start }</Text>
                                 </Text>
                                 <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{"Ends: "}</Text>
-                                    <Text style={ styles.dataDark }>{selectedTeam.end}</Text>
+                                    <Text style={ styles.labelDark }>{ "Ends: " }</Text>
+                                    <Text style={ styles.dataDark }>{ selectedTeam.end }</Text>
                                 </Text>
-                                {!selectedTeam.notes ? null
+                                { !selectedTeam.notes ? null
                                     : <Text style={ styles.dataBlock }>
-                                        <Text style={ styles.labelDark }>{"Description: "}</Text>
-                                        <Text>{selectedTeam.notes}</Text>
+                                        <Text style={ styles.labelDark }>{ "Description: " }</Text>
+                                        <Text>{ selectedTeam.notes }</Text>
                                     </Text>
                                 }
                             </View>
                         </View>
                         <View style={ [styles.block, { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.2)" }] }>
                             <Text style={ [styles.textDark, { textAlign: "center" }] }>
-                                {"Clean Up Location"}
+                                { "Clean Up Location" }
                             </Text>
                             <MapView
                                 style={ { height: 300, marginBottom: 20, marginTop: 5 } }
                                 initialRegion={ this.state.initialMapLocation }
                                 onPress={ this._handleMapClick }>
-                                {teamAreas}
+                                { teamAreas }
                             </MapView>
                             {
                                 (this.props.locations || []).length > 0
                                     ? null
                                     : (<Text style={ [styles.textDark, { fontSize: 14, textAlign: "left" }] }>
-                                        {"The team owner has yet to designate a clean up location."}
+                                        { "The team owner has yet to designate a clean up location." }
                                     </Text>)
                             }
                         </View>
@@ -390,7 +393,7 @@ class TeamDetailsScreen extends Component<Props> {
                             borderBottomWidth: 0,
                             borderTopColor: "rgba(255,255,255,0.2)"
                         }] }>
-                            {isTeamMember ? teamMemberList : null}
+                            { isTeamMember ? teamMemberList : null }
                         </View>
                     </View>
                     <View style={ defaultStyles.padForIOSKeyboard }/>
@@ -406,7 +409,7 @@ const mapStateToProps = (state) => {
         .reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
             key: "",
             coordinates: l.coordinates,
-            title: `${team.name}`,
+            title: `${ team.name }`,
             description: "claimed this area"
         }))), []);
     const selectedTownName = ((state.teams.selectedTeam || {}).town || "").toLowerCase();
