@@ -1,6 +1,6 @@
 /* global describe expect it jest */
 
-import { getCurrentGreenUpDay, getGreenUpDayByYear } from "./green-up-day-calucators";
+import { getCurrentGreenUpDay, getGreenUpDayByYear } from "../green-up-day-calucators";
 
 describe("getCurrentGreenUpDay", () => {
     it("returns this year's green up day if today if before Green Up Day", () => {
