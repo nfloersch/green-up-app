@@ -23,7 +23,7 @@
     ]
   },
   "engines": {
-    "node": "10.15.3"
+    "node": "10"
   },
   "dependencies": {
     "@expo/samples": "3.0.3",
@@ -34,8 +34,11 @@
     "@types/react-navigation": "^3.0.8",
     "expo": "^34.0.0",
     "expo-asset": "~6.0.0",
-    "expo-constants": "~6.0.0",
+    "expo-constants": "^6.0.0",
+    "expo-contacts": "^6.0.0",
     "expo-font": "~6.0.1",
+    "expo-intent-launcher": "^6.0.0",
+    "expo-location": "^6.0.0",
     "expo-module-scripts": "^1.0.1",
     "firebase": "^6.3.5",
     "md5-hash": "^1.0.1",
@@ -70,6 +73,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "expo-cli": "^3.0.9",
+    "expo-permissions": "^6.0.0",
     "firebase-tools": "^7.2.2",
     "jest-expo": "^34.0.0"
   },

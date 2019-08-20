@@ -1,11 +1,11 @@
 import React from "react";
 import { Platform } from "react-native";
-import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
+import {createBottomTabNavigator } from "react-navigation";
 import TabBarIcon from "../components/tab-bar-icon";
-import TrashTrackerScreen from "../screens/trash-tracker-screen";
 import TeamsStack from "./teams-stack";
 import MenuStack from "./menu-stack";
 import MessagesStack from "./messages-stack";
+import TrashTrackerStack from "./trash-tracker-stack";
 
 type focusedType = { focused: boolean };
 
@@ -38,10 +38,6 @@ TeamsStack.navigationOptions = {
     )
 };
 
-/** * Trash Tracker ***/
-const TrashTrackerStack = createStackNavigator({
-    TrashTracker: TrashTrackerScreen
-});
 
 TrashTrackerStack.navigationOptions = {
     tabBarLabel: "Trash",
@@ -55,12 +51,6 @@ TrashTrackerStack.navigationOptions = {
     )
 };
 
-
-// /** Menu **/
-// const MenuStack = createStackNavigator({
-//     Menu: MenuScreen,
-// });
-//
 MenuStack.navigationOptions = {
     tabBarLabel: "Menu",
     tabBarIcon: ({ focused }: focusedType) => (
