@@ -387,6 +387,7 @@ export async function facebookAuth(token) {
         .credential(token);
 
     // Sign in with credential from the Facebook user.
+    // TODO: signInAndRetrieveDataWithCredential is deprecated. Consult docs for alternative
     return firebase
         .auth()
         .signInAndRetrieveDataWithCredential(credential)
