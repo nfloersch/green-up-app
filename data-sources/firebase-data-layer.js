@@ -1,4 +1,3 @@
-/* eslint no-unused-vars: 1 */
 // @flow
 
 import firebase from "firebase";
@@ -111,15 +110,16 @@ function fetchEventInfo(dispatch) {
 
         }).catch(
         (error) => {
-            console.log("Error getting event info:", error);
+            // eslint-disable-next-line no-console
+            console.error("Error getting event info:", error);
         }
     );
 }
 
 function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void): void {
     return (teamIds || []).map(teamId => {
-        const ref = db.collection(`teams/${teamId}/invitations`);
-        addListener(`teamMembers_${teamId}_invitations}`,
+        const ref = db.collection(`teams/${ teamId }/invitations`);
+        addListener(`teamMembers_${ teamId }_invitations}`,
             ref.onSnapshot(
                 querySnapshot => {
                     const data = [];
@@ -128,8 +128,8 @@ function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any =>
                     dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
                 },
                 ((error) => {
-                    console.log("setupInvitedTeamMember Error");
-                    console.log(error);
+                    // eslint-disable-next-line no-console
+                    console.error("setupInvitedTeamMember Error: ", error);
                     // TODO : Handle the error
                 })
             ));
@@ -137,9 +137,9 @@ function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any =>
 }
 
 function setupInvitationListener(email, dispatch) {
-    const ref = db.collection(`/invitations/${email}/teams`);
+    const ref = db.collection(`/invitations/${ email }/teams`);
 
-    addListener(`invitations_${email}_teams`,
+    addListener(`invitations_${ email }_teams`,
         ref.onSnapshot(
             querySnapshot => {
                 const data = [];
@@ -152,7 +152,7 @@ function setupInvitationListener(email, dispatch) {
                     {
                         ...obj, [invite.id]: Message.create({
                             id: invite.id,
-                            text: `${invite.sender.displayName} has invited you to join team : ${invite.team.name}`,
+                            text: `${ invite.sender.displayName } has invited you to join team : ${ invite.team.name }`,
                             sender: invite.sender,
                             teamId: invite.team.id,
                             read: false,
@@ -172,8 +172,8 @@ function setupInvitationListener(email, dispatch) {
                 dispatch(dataLayerActions.invitationFetchSuccessful(invitations));
             },
             ((error) => {
-                console.log("setupInvitationListener Error");
-                console.log(error);
+                // eslint-disable-next-line no-console
+                console.error("setupInvitationListener Error", error);
                 // TODO : Handle the error
             })
         )
@@ -181,9 +181,9 @@ function setupInvitationListener(email, dispatch) {
 }
 
 function setupMessageListener(uid, dispatch) {
-    const ref = db.collection(`messages/${uid}/messages`);
+    const ref = db.collection(`messages/${ uid }/messages`);
 
-    addListener(`message_${uid}_messages`, ref.onSnapshot(
+    addListener(`message_${ uid }_messages`, ref.onSnapshot(
         querySnapshot => {
             const data = [];
             querySnapshot.forEach(doc => data.push({ ...doc.data(), id: doc.id }));
@@ -191,8 +191,8 @@ function setupMessageListener(uid, dispatch) {
             dispatch(dataLayerActions.messageFetchSuccessful({ [uid]: messages }));
         },
         ((error) => {
-            console.log("setupMessageListener Error");
-            console.log(error);
+            // eslint-disable-next-line no-console
+            console.error("setupMessageListener Error", error);
             // TODO : Handle the error
         })
     ));
@@ -208,8 +208,8 @@ function setupTeamListener(user: Object, dispatch: any => void) {
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
             },
             ((error) => {
-                console.log("setupTeamListener Error");
-                console.log(error);
+                // eslint-disable-next-line no-console
+                console.error("setupTeamListener Error", error);
                 // TODO : Handle the error
             })
         ));
@@ -217,7 +217,7 @@ function setupTeamListener(user: Object, dispatch: any => void) {
 
 function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void): void {
     return Promise.all((teamIds || []).map(teamId => (
-        addListener(`team_${teamId}_members`, db.collection(`teams/${teamId}/members`)
+        addListener(`team_${ teamId }_members`, db.collection(`teams/${ teamId }/members`)
             .onSnapshot(
                 querySnapshot => {
                     const data = [];
@@ -226,8 +226,8 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
                     dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
                 },
                 ((error) => {
-                    console.log("setupTeamMemberListener Error");
-                    console.log(error);
+                    // eslint-disable-next-line no-console
+                    console.error("setupTeamMemberListener Error", error);
                     // TODO : Handle the error
                 })
             ))
@@ -235,7 +235,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
 }
 
 function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void): void {
-    (teamIds || []).map(teamId => addListener(`team_${teamId}_requests`, db.collection(`teams/${teamId}/requests`)
+    (teamIds || []).map(teamId => addListener(`team_${ teamId }_requests`, db.collection(`teams/${ teamId }/requests`)
         .onSnapshot(
             querySnapshot => {
                 const data = [];
@@ -244,8 +244,8 @@ function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void)
                 dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
             },
             ((error) => {
-                console.log("setupTeamRequestListener Error");
-                console.log(error);
+                // eslint-disable-next-line no-console
+                console.error("setupTeamRequestListener Error", error);
                 // TODO : Handle the error
             })
         )));
@@ -253,9 +253,9 @@ function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void)
 
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     return Promise.all((teamIds || []).map(teamId => {
-        const ref = db.collection(`teams/${teamId}/messages`);
+        const ref = db.collection(`teams/${ teamId }/messages`);
 
-        addListener(`team_${teamId}_messages`, ref.onSnapshot(
+        addListener(`team_${ teamId }_messages`, ref.onSnapshot(
             (querySnapshot => {
                 const data = [];
                 querySnapshot.forEach(doc => data.push({ ...doc.data(), id: doc.id }));
@@ -263,8 +263,8 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
                 dispatch(dataLayerActions.messageFetchSuccessful({ [teamId]: messages }));
             }),
             ((error) => {
-                console.log(`setupTeamMessageListener Error for team ${teamId}`);
-                console.log(error);
+                // eslint-disable-next-line no-console
+                console.error(`setupTeamMessageListener Error for team ${ teamId }`, error);
                 // TODO : Handle the error
             })
         ));
@@ -274,7 +274,7 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
 function setupProfileListener(user, dispatch) {
     const { uid } = user;
 
-    addListener(`profiles_${uid}`, db.collection("profiles").doc(uid)
+    addListener(`profiles_${ uid }`, db.collection("profiles").doc(uid)
         .onSnapshot(doc => {
             if (doc.exists) {
                 const profile = doc.data();
@@ -289,7 +289,7 @@ function setupProfileListener(user, dispatch) {
 function setupMyTeamsListener(user, dispatch) {
     const { uid } = user;
 
-    addListener("myTeams", db.collection(`profiles/${uid}/teams`)
+    addListener("myTeams", db.collection(`profiles/${ uid }/teams`)
         .onSnapshot(
             (querySnapshot => {
                 const data = [];
@@ -309,8 +309,8 @@ function setupMyTeamsListener(user, dispatch) {
                 setupTeamRequestListener(ownedTeamIds, dispatch);
             }),
             ((error) => {
-                console.log("setupMyTeamsListener error");
-                console.log(error);
+                // eslint-disable-next-line no-console
+                console.error("setupMyTeamsListener error", error);
                 // TODO : Handle the error
             })));
 }
@@ -398,7 +398,8 @@ export async function facebookAuth(token) {
                         createProfile({ uid, email, displayName, photoURL });
                     }
                 }).catch((error) => {
-                console.log("Error getting document:", error);
+                // eslint-disable-next-line no-console
+                console.error("Error getting document:", error);
             });
         });
 }
@@ -415,7 +416,8 @@ export async function googleAuth(token) {
                         createProfile({ uid, email, displayName, photoURL });
                     }
                 }).catch((error) => {
-                console.log("Error getting document:", error);
+                // eslint-disable-next-line no-console
+                console.error("Error getting document:", error);
             });
         });
 }
@@ -432,7 +434,8 @@ export function loginWithEmailPassword(_email: string, password: string) {
                         createProfile({ uid, email, displayName, photoURL });
                     }
                 }).catch((error) => {
-                console.log("Error getting document:", error);
+                // eslint-disable-next-line no-console
+                console.error("Error getting document:", error);
             });
         });
 }
@@ -455,7 +458,7 @@ export function updateEmail(email: string) {
 
 export function sendUserMessage(userId, message) {
     const _message = deconstruct(stringifyDates(message));
-    return db.collection(`messages/${userId}/messages`).add(_message);
+    return db.collection(`messages/${ userId }/messages`).add(_message);
 }
 
 export function sendGroupMessage(group, message) {
@@ -465,16 +468,16 @@ export function sendGroupMessage(group, message) {
 }
 
 export function sendTeamMessage(teamId, message) {
-    return db.collection(`teams/${teamId}/messages`).add(deconstruct(message));
+    return db.collection(`teams/${ teamId }/messages`).add(deconstruct(message));
 }
 
 export function updateMessage(message: Object, userId: string) {
     const newMessage = deconstruct({ ...message, sender: { ...message.sender } });
-    return db.collection(`messages/${userId}/messages`).doc(message.id).set(newMessage);
+    return db.collection(`messages/${ userId }/messages`).doc(message.id).set(newMessage);
 }
 
 export function deleteMessage(userId: string, messageId: string) {
-    return db.collection(`messages/${userId}/messages`).doc(messageId).delete();
+    return db.collection(`messages/${ userId }/messages`).doc(messageId).delete();
 }
 
 /** *************** TEAMS *************** **/
@@ -483,11 +486,12 @@ export async function createTeam(team: Object = {}, user: User = {}, dispatch) {
     const { uid } = user;
     const myTeam = deconstruct({ ...team, owner: { ...user } });
     const docRef = await db.collection("teams").add(myTeam);
-    const memberships = await Promise.all([
-        db.collection(`teams/${docRef.id}/members`).doc(team.owner.uid).set({ ...team.owner }),
-        db.collection(`profiles/${uid}/teams`).doc(docRef.id).set({ ...myTeam, isMember: true })
+    // TODO: Refactor to single Promise.all that is returned.
+    await Promise.all([
+        db.collection(`teams/${ docRef.id }/members`).doc(team.owner.uid).set({ ...team.owner }),
+        db.collection(`profiles/${ uid }/teams`).doc(docRef.id).set({ ...myTeam, isMember: true })
     ]);
-    const listeners = await Promise.all([setupTeamMemberListener([docRef.id], dispatch),
+    await Promise.all([setupTeamMemberListener([docRef.id], dispatch),
         setupTeamMessageListener([docRef.id], dispatch)]);
 }
 
@@ -497,7 +501,7 @@ export function saveTeam(team) {
 }
 
 export function deleteTeam(teamId: string) {
-    db.collection("teams").doc(teamId).delete();
+    return db.collection("teams").doc(teamId).delete();
 }
 
 export function saveLocations(locations: Object, teamId: string) {
@@ -511,62 +515,62 @@ export function inviteTeamMember(invitation: Object) {
     const teamMember = { ...invitation.teamMember };
     const invite = { ...invitation, teamMember, team, sender };
     return db
-        .collection(`invitations/${membershipId}/teams`)
+        .collection(`invitations/${ membershipId }/teams`)
         .doc(team.id)
         .set({ ...invite })
-        .then(db.collection(`teams/${team.id}/invitations`).doc(membershipId).set(deconstruct({ ...invitation.teamMember })));
+        .then(db.collection(`teams/${ team.id }/invitations`).doc(membershipId).set(deconstruct({ ...invitation.teamMember })));
 }
 
 export function removeInvitation(teamId, email) {
-    const deleteInvitation = db.collection(`invitations/${email}/teams`).doc(teamId).delete();
-    const deleteTeamRecord = db.collection(`teams/${teamId}/invitations`).doc(email.toLowerCase().trim()).delete();
+    const deleteInvitation = db.collection(`invitations/${ email }/teams`).doc(teamId).delete();
+    const deleteTeamRecord = db.collection(`teams/${ teamId }/invitations`).doc(email.toLowerCase().trim()).delete();
     return Promise.all([deleteInvitation, deleteTeamRecord]);
 }
 
 export async function addTeamMember(teamId: string, user: Object, status?: string = "ACCEPTED", dispatch: any => void) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, { memberStatus: status }));
-    const addToTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct(teamMember));
-    const removeRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
-    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({ isMember: true });
+    const addToTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const removeRequest = db.collection(`teams/${ teamId }/requests`).doc(teamMember.uid).delete();
+    const addTeamToProfile = db.collection(`profiles/${ user.uid }/teams`).doc(teamId).set({ isMember: true });
     const results = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then(() => removeInvitation(teamId, email));
     if (dispatch) { // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
-        const teamListener = setupTeamMemberListener([teamId], dispatch);
-        const teamMessageListener = setupTeamMessageListener([teamId], dispatch);
+        setupTeamMemberListener([teamId], dispatch);
+        setupTeamMessageListener([teamId], dispatch);
     }
     return results;
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMember) {
-    return db.collection(`teams/${teamId}/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
+    return db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
 }
 
 export function removeTeamMember(teamId: string, teamMember: TeamMember) {
-    const deleteFromTeam = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
-    const deleteFromProfile = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    const deleteFromTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
+    const deleteFromProfile = db.collection(`profiles/${ teamMember.uid }/teams`).doc(teamId).delete();
     return Promise.all([deleteFromTeam, deleteFromProfile]);
 }
 
 export function leaveTeam(teamId: string, teamMember: TeamMember) {
     const teams = { ...teamMember.teams };
     delete teams[teamId];
-    const removeMember = db.collection(`teams/${teamId}/members`).doc(teamMember.uid).delete();
-    const removeTeam = db.collection(`profiles/${teamMember.uid}/teams`).doc(teamId).delete();
+    const removeMember = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
+    const removeTeam = db.collection(`profiles/${ teamMember.uid }/teams`).doc(teamId).delete();
     return Promise.all([removeMember, removeTeam]);
 }
 
 export function revokeInvitation(teamId: string, membershipId: string) {
     const _membershipId = membershipId.toLowerCase();
-    const teamListing = db.collection(`teams/${teamId}/invitations`).doc(_membershipId).delete();
-    const invite = db.collection(`invitations/${_membershipId}/teams`).doc(teamId).delete();
+    const teamListing = db.collection(`teams/${ teamId }/invitations`).doc(_membershipId).delete();
+    const invite = db.collection(`invitations/${ _membershipId }/teams`).doc(teamId).delete();
     return Promise.all([teamListing, invite]);
 }
 
 export function addTeamRequest(teamId: string, user: Object) {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, { memberStatus: teamStatuses.REQUEST_TO_JOIN }));
-    const teamRequest = db.collection(`teams/${teamId}/requests`).doc(user.uid).set(deconstruct(teamMember));
-    const addTeamToProfile = db.collection(`profiles/${user.uid}/teams`).doc(teamId).set({ isMember: false });
+    const teamRequest = db.collection(`teams/${ teamId }/requests`).doc(user.uid).set(deconstruct(teamMember));
+    const addTeamToProfile = db.collection(`profiles/${ user.uid }/teams`).doc(teamId).set({ isMember: false });
     return Promise.all([teamRequest, addTeamToProfile]).then(() => removeInvitation(teamId, email));
 }
 
@@ -574,19 +578,19 @@ export function addTeamRequest(teamId: string, user: Object) {
 export function removeTeamRequest(teamId: string, teamMember: TeamMember) {
     const teams = { ...teamMember.teams };
     delete teams[teamId];
-    const delRequest = db.collection(`teams/${teamId}/requests`).doc(teamMember.uid).delete();
-    const delFromProfile = db.collection(`profiles/${teamMember.uid}/teams/`).doc(teamId).delete();
+    const delRequest = db.collection(`teams/${ teamId }/requests`).doc(teamMember.uid).delete();
+    const delFromProfile = db.collection(`profiles/${ teamMember.uid }/teams/`).doc(teamId).delete();
     return Promise.all([delRequest, delFromProfile]);
 }
 
 /** *************** TRASH DROPS *************** **/
 
 export function dropTrash(trashDrop: Object) {
-    db.collection("trashDrops").add(deconstruct({ ...trashDrop, location: { ...trashDrop.location } }));
+    return db.collection("trashDrops").add(deconstruct({ ...trashDrop, location: { ...trashDrop.location } }));
 }
 
 export function updateTrashDrop(trashDrop: Object) {
-    db.collection("trashDrops").doc(trashDrop.id).set(deconstruct({
+    return db.collection("trashDrops").doc(trashDrop.id).set(deconstruct({
         ...trashDrop,
         location: { ...trashDrop.location }
     }));

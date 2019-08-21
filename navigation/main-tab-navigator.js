@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
-import {createBottomTabNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation";
 import TabBarIcon from "../components/tab-bar-icon";
 import TeamsStack from "./teams-stack";
 import MenuStack from "./menu-stack";

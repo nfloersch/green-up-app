@@ -39,9 +39,9 @@ class TeamEditorMap extends Component {
         // Note: By default the icon is only shown on iOS. Search the showIcon option
         // below.
         tabBarIcon: ({ focused }) => (
-            <Ionicons name={Platform.OS === "ios" ? `ios-pin${focused ? "" : ""}` : "md-pin"}
-                size={24}
-                color={focused ? colors.tabIconSelected : colors.tabIconDefault}
+            <Ionicons name={ Platform.OS === "ios" ? `ios-pin${focused ? "" : ""}` : "md-pin" }
+                size={ 24 }
+                color={ focused ? colors.tabIconSelected : colors.tabIconDefault }
             />)
     };
 
@@ -111,7 +111,7 @@ class TeamEditorMap extends Component {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== "granted") {
             this.setState({
-                errorMessage: "Permission to access location was denied",
+                errorMessage: "Permission to access location was denied"
             });
             return;
         }
@@ -146,24 +146,24 @@ class TeamEditorMap extends Component {
 
         return this.state.errorMessage ? (<Text>{this.state.errorMessage}</Text>)
             : this.state.initialMapLocation && ( // only render when the initial location is set, otherwise there's a weird race condition and the map won't always show properly
-                <View style={defaultStyles.frame}>
-                    <View style={[styles.infoBlockContainer, { height: "98%" }]}>
-                        <Text style={[styles.statusBar, { maxHeight: 63 }]}>
+                <View style={ defaultStyles.frame }>
+                    <View style={ [styles.infoBlockContainer, { height: "98%" }] }>
+                        <Text style={ [styles.statusBar, { maxHeight: 63 }] }>
                             Place a marker where you want your team to work.
                             Other markers are areas claimed by other teams.
                         </Text>
-                        <View style={{ flex: 1, flexDirection: "row", backgroundColor: "red" }}>
-                            <MapView style={{ flex: 1 }}
-                                initialRegion={this.state.initialMapLocation}
-                                onPress={this._handleMapClick}>
+                        <View style={ { flex: 1, flexDirection: "row", backgroundColor: "red" } }>
+                            <MapView style={ { flex: 1 } }
+                                initialRegion={ this.state.initialMapLocation }
+                                onPress={ this._handleMapClick }>
                                 {this.props.locations.length > 0 && locations.map((marker, index) => (
-                                    <MapView.Marker coordinate={marker.coordinates}
-                                        key={`location${index}`}
-                                        pinColor={"red"}
-                                        onCalloutPress={this._removeMarker(marker)}
-                                        stopPropagation={true}>
-                                        <MultiLineMapCallout title={marker.title || "Clean Area"}
-                                            description={marker.description || "Tap to remove"} />
+                                    <MapView.Marker coordinate={ marker.coordinates }
+                                        key={ `location${index}` }
+                                        pinColor={ "red" }
+                                        onCalloutPress={ this._removeMarker(marker) }
+                                        stopPropagation={ true }>
+                                        <MultiLineMapCallout title={ marker.title || "Clean Area" }
+                                            description={ marker.description || "Tap to remove" } />
                                     </MapView.Marker>
                                 ))}
                                 {otherCleanAreas.length > 0 && otherCleanAreas.map((a, i) =>
@@ -180,8 +180,8 @@ class TeamEditorMap extends Component {
                             </MapView>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={this._removeLastMarker}>
-                            <Text style={styles.buttonText}>{"Remove marker"}</Text>
+                        <TouchableOpacity style={ styles.button } onPress={ this._removeLastMarker }>
+                            <Text style={ styles.buttonText }>{"Remove marker"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

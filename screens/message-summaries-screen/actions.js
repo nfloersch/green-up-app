@@ -28,7 +28,8 @@ export function readMessage(message, userID) {
     const _message = Object.assign({}, message, { read: true });
     return () => firebaseDataLayer.updateMessage(_message, userID)
         .catch(error => {
-            console.log(error);
+            // eslint-disable-next-line no-console
+            console.error(error);
         });
 }
 

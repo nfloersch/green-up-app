@@ -14,7 +14,6 @@ export function sendUserMessage(message: Object, recipients: [Object]) {
     return (dispatch) => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message, dispatch));
 }
 
-
 export function sendTeamMessage(teamId: String, message: Object) {
     const _message = Message.create(message);
     return (dispatch) => firebaseDataLayer.sendTeamMessage(teamId, _message, dispatch);
@@ -29,7 +28,8 @@ export function readMessage(message, userID) {
     return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
         dispatch(readMessage(res));
     }).catch(error => {
-        console.log(error);
+        // eslint-disable-next-line no-console
+        console.error(error);
     });
 }
 

@@ -29,6 +29,7 @@ export function readMessage(message, userID) {
     return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
         dispatch(readMessage(res));
     }).catch(error => {
+        // eslint-disable-next-line no-console
         console.log(error);
     });
 }

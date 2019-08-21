@@ -31,5 +31,6 @@ fs.writeFile("./data-sources/firebase-config.js", fileContents, (err) => {
     if (err) {
         throw err;
     }
+    // eslint-disable-next-line no-console
     console.log("Successfully written to firebase-config.js.");
 });
