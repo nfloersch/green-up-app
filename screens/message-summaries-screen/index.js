@@ -267,7 +267,7 @@ function mapStateToProps(state) {
         userHasTeams,
         userHasMessages,
         teamsLoaded: state.messages.teamsLoaded,
-        teamMembersLoaded: state.loading.teamMembersLoaded,
+        teamMembersLoaded: state.session.teamMembersLoaded,
         teams: teams
     };
 }
