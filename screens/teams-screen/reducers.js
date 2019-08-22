@@ -1,6 +1,6 @@
 // @flwo
 import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initialState";
+import initialState from "../../reducers/initial-state";
 
 export function reducers(state = initialState.teams, action) {
     switch (action.type) {

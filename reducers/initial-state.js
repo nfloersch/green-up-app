@@ -54,5 +54,6 @@ export default {
         cleanAreasToggle: true
     },
     teamSearchResults: [],
-    selectedTeam: null
+    selectedTeam: null,
+    session: {}
 };
