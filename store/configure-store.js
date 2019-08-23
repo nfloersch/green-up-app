@@ -7,18 +7,17 @@ import { createLogger } from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
-// Using the default initial state reconciler, autoMergeLevel1
 const persistConfig = {
     key: "root",
     storage: storage,
-    stateReconciler:autoMergeLevel2,
-    blacklist: ["modals"]
+    stateReconciler: autoMergeLevel2,
+    blacklist: ["modals", "networkStatus"] // Add top-level store keys here to avoid persistence
 };
 
 const middlewares = [thunk];
 
 // eslint-disable-next-line no-undef
-if(__DEV__) {
+if (__DEV__) {
     middlewares.push(createLogger());
 }
 

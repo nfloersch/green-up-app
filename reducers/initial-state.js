@@ -38,6 +38,7 @@ export default {
         invitationsLoaded: false,
         teamsLoaded: false
     },
+    networkStatus: { isOnline: null },
     teamMembers: {},
     teamMembersLoaded: false,
     teamRequests: {},
