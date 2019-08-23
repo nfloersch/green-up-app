@@ -1,5 +1,5 @@
-import * as actions from '../../constants/action-types';
-import initialState from '../../reducers/initial-state';
+import * as actions from "../../constants/action-types";
+import initialState from "../../reducers/initial-state";
 
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
