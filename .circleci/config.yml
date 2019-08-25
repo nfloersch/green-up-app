@@ -34,6 +34,10 @@ jobs:
           name: Install Yarn
           command: yarn install
 
+      - run:
+          name: Install Expo
+          command: yarn global add expo-cli
+
       - save_cache:
           paths:
             - node_modules
