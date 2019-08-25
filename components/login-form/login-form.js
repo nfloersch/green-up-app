@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { isValidEmail } from "../../libs/validators";
 import { defaultStyles } from "../../styles/default-styles";
@@ -9,16 +8,17 @@ const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-export class LoginForm extends Component {
+type Props = {
+    buttonText: string,
+    onButtonPress: any => void
+};
+
+export class LoginForm extends Component<Props> {
 
     static navigationOptions = {
         title: "Green Up Vermont"
     };
 
-    static propTypes = {
-        buttonText: PropTypes.string,
-        onButtonPress: PropTypes.func
-    };
 
     constructor(props) {
         super(props);

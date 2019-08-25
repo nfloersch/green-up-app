@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import {
     KeyboardAvoidingView, Platform,
     ScrollView,
@@ -14,7 +13,6 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
 import * as actions from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
@@ -49,13 +47,10 @@ const myStyles = {
         padding: 3
     }
 };
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-
-class SearchItem extends Component {
-    static propTypes = { item: PropTypes.object };
+class SearchItem extends Component<{ item: Object }> {
 
     render() {
         const item = this.props.item;

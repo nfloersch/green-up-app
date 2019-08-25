@@ -1,11 +1,10 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import MemberIcon from "../../components/member-icon";
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import TeamMember from "../../models/team-member";
 import * as status from "../../constants/team-member-statuses";
 import { defaultStyles } from "../../styles/default-styles";
@@ -25,20 +24,24 @@ const myStyles = {
     },
     statusBarText: { fontSize: 12, textAlign: "left" }
 };
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+type Props = {
+    actions: {
+        updateTeamMember: (teamId: string, _member: Object, newStatus: string) => void,
+        removeTeamMember: (teamId: string, user: Object) => void,
+        deleteMessage: (currentUserId: string, id: string) => void,
+        revokeInvitation: (teamId: string, membershipId: string) => void
+    },
+    messages: Object,
+    navigation: Object,
+    profile: Object,
+    teamMembers: Object,
+    teams: Object,
+    currentUserId: string
+};
 
-class TeamMemberDetails extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        messages: PropTypes.object,
-        navigation: PropTypes.object,
-        profile: PropTypes.object,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object,
-        currentUserId: PropTypes.string
-    };
+class TeamMemberDetails extends Component<Props> {
 
     static navigationOptions = {
         title: "User Profile"
@@ -46,9 +49,6 @@ class TeamMemberDetails extends Component {
 
     constructor(props) {
         super(props);
-        this._updateTeamMember = this._updateTeamMember.bind(this);
-        this._removeTeamMember = this._removeTeamMember.bind(this);
-        this._cancel = this._cancel.bind(this);
         this.state = Object.assign({}, props.profile);
     }
 
@@ -64,19 +64,23 @@ class TeamMemberDetails extends Component {
         }
     }
 
-    _updateTeamMember(teamId: string, member: Object, currentUserId) {
-        return (newStatus: Object) => {
-            const messages = this.props.messages;
-            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === "REQUEST_TO_JOIN" && messages[id].sender.uid === member.uid);
-            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-            const _member = TeamMember.create(Object.assign({}, member, (newStatus ? { memberStatus: newStatus } : {})));
-            this.props.navigation.goBack();
-            this.props.actions.updateTeamMember(teamId, _member, newStatus);
-        };
-    }
 
-    _revokeInvitation(teamId: string, membershipId: string) {
-        return () => {
+    render() {
+        const { teamMembers, navigation, teams, actions, currentUserId, messages } = this.props;
+        const { membershipId, teamId } = navigation.state.params;
+        const member = (teamMembers[teamId] || {})[membershipId] || {};
+        const avatar = (member || {}).photoURL;
+        const isOwner = ((teams[teamId] || {}).owner || {}).uid === currentUserId;
+
+        const updateTeamMember = (newStatus: Object) => () => {
+            const messageIds = Object.keys(messages).filter(id => messages[id].teamId === teamId && messages[id].type === "REQUEST_TO_JOIN" && messages[id].sender.uid === member.uid);
+            messageIds.map(id => actions.deleteMessage(currentUserId, id));
+            const _member = TeamMember.create(Object.assign({}, member, (newStatus ? { memberStatus: newStatus } : {})));
+            navigation.goBack();
+            actions.updateTeamMember(teamId, _member, newStatus);
+        };
+
+        const revokeInvitation = () => {
             Alert.alert(
                 "DANGER!",
                 "Are you sure you want to revoke this invitation?",
@@ -87,8 +91,8 @@ class TeamMemberDetails extends Component {
                     },
                     {
                         text: "Yes", onPress: () => {
-                            this.props.navigation.goBack();
-                            this.props.actions.revokeInvitation(teamId, membershipId);
+                            navigation.goBack();
+                            actions.revokeInvitation(teamId, membershipId);
                         }
                     }
                 ],
@@ -96,12 +100,8 @@ class TeamMemberDetails extends Component {
             );
 
         };
-    }
 
-    _removeTeamMember(teamId: string, user: Object, currentUserId: string) {
-        return () => {
-
-
+        const removeTeamMember = () => {
             Alert.alert(
                 "DANGER!",
                 "Are you sure you want to remove this team member?",
@@ -112,11 +112,10 @@ class TeamMemberDetails extends Component {
                     },
                     {
                         text: "Yes", onPress: () => {
-                            const messages = this.props.messages;
-                            const messageIds = Object.keys(this.props.messages).filter(id => messages[id].teamId === teamId && messages[id].type === "REQUEST_TO_JOIN" && messages[id].sender.uid === user.uid);
-                            messageIds.map(id => this.props.actions.deleteMessage(currentUserId, id));
-                            this.props.navigation.goBack();
-                            return this.props.actions.removeTeamMember(teamId, user);
+                            const messageIds = Object.keys(messages).filter(id => messages[id].teamId === teamId && messages[id].type === "REQUEST_TO_JOIN" && messages[id].sender.uid === member.uid);
+                            messageIds.map(id => actions.deleteMessage(currentUserId, id));
+                            navigation.goBack();
+                            return actions.removeTeamMember(teamId, member);
                         }
                     }
                 ],
@@ -124,19 +123,12 @@ class TeamMemberDetails extends Component {
             );
 
         };
-    }
 
-    _cancel() {
-        this.setState(this.props.profile, () => {
-            this.props.navigation.goBack();
-        });
-    }
-
-    render() {
-        const { membershipId, teamId } = this.props.navigation.state.params;
-        const member = (this.props.teamMembers[teamId] || {})[membershipId] || {};
-        const avatar = (member || {}).photoURL;
-        const isOwner = ((this.props.teams[teamId] || {}).owner || {}).uid === this.props.currentUserId;
+        // const cancel = () => {
+        //     this.setState(this.props.profile, () => {
+        //         navigation.goBack();
+        //     });
+        // };
 
         const getButtons = (teamMember: Object = {}) => {
             switch (teamMember.memberStatus) {
@@ -149,15 +141,15 @@ class TeamMemberDetails extends Component {
                                 <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
                                         style={ styles.headerButton }
-                                        onPress={ this._removeTeamMember(teamId, member, this.props.currentUserId) }>
-                                        <Text style={ styles.headerButtonText }>{"Ignore"}</Text>
+                                        onPress={ removeTeamMember }>
+                                        <Text style={ styles.headerButtonText }>{ "Ignore" }</Text>
                                     </TouchableHighlight>
                                 </View>
                                 <View style={ styles.buttonBarButton }>
                                     <TouchableHighlight
                                         style={ styles.headerButton }
-                                        onPress={ () => this._updateTeamMember(teamId, member, this.props.currentUserId)(status.ACCEPTED) }>
-                                        <Text style={ styles.headerButtonText }>{"Add to Team"}</Text>
+                                        onPress={ updateTeamMember(status.ACCEPTED) }>
+                                        <Text style={ styles.headerButtonText }>{ "Add to Team" }</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -168,9 +160,9 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.singleButtonHeader }>
                             <TouchableHighlight
                                 style={ styles.headerButton }
-                                onPress={ this._removeTeamMember(teamId, member, this.props.currentUserId) }
+                                onPress={ removeTeamMember }
                             >
-                                <Text style={ styles.headerButtonText }>{"Remove from Team"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Remove from Team" }</Text>
                             </TouchableHighlight>
                         </View>
                     );
@@ -179,9 +171,9 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.singleButtonHeader }>
                             <TouchableHighlight
                                 style={ styles.headerButton }
-                                onPress={ this._revokeInvitation(teamId, membershipId) }
+                                onPress={ revokeInvitation }
                             >
-                                <Text style={ styles.headerButtonText }>{"Revoke Invitation"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Revoke Invitation" }</Text>
                             </TouchableHighlight>
                         </View>
                     );
@@ -197,7 +189,7 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.statusBar }>
                             <MemberIcon memberStatus={ status.OWNER }/>
                             <Text style={ styles.statusBarText }>
-                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email}`} is
+                                { `${ teamMember.displayName && teamMember.displayName.trim() || teamMember.email }` } is
                                 the owner of this team
                             </Text>
                         </View>
@@ -207,7 +199,7 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.statusBar }>
                             <MemberIcon memberStatus={ status.REQUEST_TO_JOIN } isOwner={ _isOwner }/>
                             <Text style={ styles.statusBarText }>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} wants to
+                                { teamMember.displayName && teamMember.displayName.trim() || teamMember.email } wants to
                                 join this team
                             </Text>
                         </View>
@@ -217,7 +209,7 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.statusBar }>
                             <MemberIcon memberStatus={ status.ACCEPTED }/>
                             <Text style={ styles.statusBarText }>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email} is a
+                                { teamMember.displayName && teamMember.displayName.trim() || teamMember.email } is a
                                 member of this team.
                             </Text>
                         </View>
@@ -227,7 +219,7 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.statusBar }>
                             <MemberIcon memberStatus={ status.INVITED }/>
                             <Text style={ styles.statusBarText }>
-                                {`${teamMember.displayName && teamMember.displayName.trim() || teamMember.email} has not yet accepted the invitation`}
+                                { `${ teamMember.displayName && teamMember.displayName.trim() || teamMember.email } has not yet accepted the invitation` }
                             </Text>
                         </View>
                     );
@@ -236,7 +228,7 @@ class TeamMemberDetails extends Component {
                         <View style={ styles.statusBar }>
                             <MemberIcon memberStatus={ status.NOT_INVITED }/>
                             <Text style={ styles.statusBarText }>
-                                {teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "This person"} is
+                                { teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "This person" } is
                                 not a member of this
                                 team
                             </Text>
@@ -246,7 +238,7 @@ class TeamMemberDetails extends Component {
 
         return (
             <View style={ styles.frame }>
-                {isOwner ? getButtons.bind(this)(member) : (<View style={ { height: 10 } }/>)}
+                { isOwner ? getButtons.bind(this)(member) : (<View style={ { height: 10 } }/>) }
                 <ScrollView style={ styles.scroll }>
                     <View style={ styles.infoBlockContainer }>
                         <View style={ styles.profileHeader }>
@@ -255,17 +247,17 @@ class TeamMemberDetails extends Component {
                                 source={ { uri: avatar } }
                             />
                             <Text style={ [styles.profileName, styles.heading] }>
-                                {`${member.displayName && member.displayName.trim() || member.email || ""}`}
+                                { `${ member.displayName && member.displayName.trim() || member.email || "" }` }
                             </Text>
                         </View>
                         <View>
-                            {getStatus.bind(this)(member, isOwner)}
+                            { getStatus.bind(this)(member, isOwner) }
                         </View>
                         <View style={ { marginTop: 10 } }>
                             <Text
-                                style={ styles.labelDark }>{`About ${member.displayName && member.displayName.trim() || ""}: `}</Text>
+                                style={ styles.labelDark }>{ `About ${ member.displayName && member.displayName.trim() || "" }: ` }</Text>
                             <Text
-                                style={ { marginTop: 5 } }>{member.bio || "This person has not completed a bio :-("}</Text>
+                                style={ { marginTop: 5 } }>{ member.bio || "This person has not completed a bio :-(" }</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -284,7 +276,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberDetails);

@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import {
     Image,
     ScrollView,
@@ -114,18 +113,21 @@ class MessageItem extends Component<TProps> {
     }
 }
 
-class MessageSummariesScreen extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        messages: PropTypes.object,
-        navigation: PropTypes.object,
-        userHasTeams: PropTypes.bool,
-        teamMembersLoaded: PropTypes.bool,
-        teamsLoaded: PropTypes.bool,
-        messagesLoaded: PropTypes.bool,
-        teams: PropTypes.object
-    };
+
+type MessageProps = {
+    actions: Object,
+    currentUser: Object,
+    messages: Object,
+    navigation: Object,
+    userHasTeams: boolean,
+    teamMembersLoaded: boolean,
+    teamsLoaded: boolean,
+    messagesLoaded: boolean,
+    teams: Object
+};
+
+
+class MessageSummariesScreen extends Component<MessageProps> {
 
     static navigationOptions = {
         title: "Message Board",

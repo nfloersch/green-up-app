@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import {
     StyleSheet,
     ScrollView,
@@ -15,8 +14,7 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
 import { removeNulls } from "../../libs/remove-nulls";
@@ -26,17 +24,17 @@ const myStyles = {
         minHeight: 120
     }
 };
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class Profile extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        profile: PropTypes.object,
-        navigation: PropTypes.object
-    };
+type Props = {
+    actions: {saveProfile: Object => void},
+    currentUser: Object,
+    profile: Object,
+    navigation: Object
+};
+
+class Profile extends Component<Props> {
 
     static navigationOptions = {
         title: "My Profile"
@@ -44,9 +42,6 @@ class Profile extends Component {
 
     constructor(props) {
         super(props);
-        this._saveProfile = this._saveProfile.bind(this);
-        this._changeText = this._changeText.bind(this);
-        this._cancel = this._cancel.bind(this);
         this.state = Object.assign({}, props.currentUser);
     }
 
@@ -57,39 +52,37 @@ class Profile extends Component {
         }
     }
 
-    _saveProfile() {
-        this.props.actions.saveProfile(User.create(Object.assign({}, this.props.currentUser, this.state)));
-        this.props.navigation.goBack();
-    }
-
-    _cancel() {
-        this.setState(this.props.profile, () => {
-            this.props.navigation.goBack();
-        });
-    }
-
-    _changeText(key) {
-        return (text) => {
-            this.setState({ [key]: text });
-        };
-    }
 
     render() {
-        const profile = this.props.profile;
+        const { profile, actions, currentUser, navigation } = this.props;
         const avatar = profile.photoURL;
+        const saveProfile = () => {
+            actions.saveProfile(User.create(Object.assign({}, currentUser, this.state)));
+            navigation.goBack();
+        };
+
+        const cancel = () => {
+            this.setState(profile, () => {
+                navigation.goBack();
+            });
+        };
+
+        const changeText = (key) => (text) => {
+            this.setState({ [key]: text });
+        };
 
         return (
             <View style={ styles.frame }>
                 <View style={ styles.buttonBarHeader }>
                     <View style={ styles.buttonBar }>
                         <View style={ styles.buttonBarButton }>
-                            <TouchableOpacity style={ styles.headerButton } onPress={ this._saveProfile }>
-                                <Text style={ styles.headerButtonText }>{"Save Profile"}</Text>
+                            <TouchableOpacity style={ styles.headerButton } onPress={ saveProfile }>
+                                <Text style={ styles.headerButtonText }>{ "Save Profile" }</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={ styles.buttonBarButton }>
-                            <TouchableOpacity style={ styles.headerButton } onPress={ this._cancel }>
-                                <Text style={ styles.headerButtonText }>{"Cancel"}</Text>
+                            <TouchableOpacity style={ styles.headerButton } onPress={ cancel }>
+                                <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -106,17 +99,17 @@ class Profile extends Component {
                                     source={ { uri: avatar } }
                                 />
                                 <Text style={ [styles.profileName, styles.heading] }>
-                                    {this.state.displayName || ""}
+                                    { this.state.displayName || "" }
                                 </Text>
                             </View>
                             <View style={ { marginTop: 20 } }>
-                                <Text style={ styles.labelDark }>{"My Name"}</Text>
+                                <Text style={ styles.labelDark }>{ "My Name" }</Text>
                                 <TextInput
                                     style={ styles.textInput }
                                     keyBoardType={ "default" }
                                     multiline={ false }
                                     numberOfLines={ 1 }
-                                    onChangeText={ this._changeText("displayName") }
+                                    onChangeText={ changeText("displayName") }
                                     placeholder={ "Your name" }
                                     value={ this.state.displayName }
                                     underlineColorAndroid={ "transparent" }
@@ -131,7 +124,7 @@ class Profile extends Component {
                                     textAlignVertical="top"
                                     numberOfLines={ 5 }
                                     maxLength={ 144 }
-                                    onChangeText={ this._changeText("bio") }
+                                    onChangeText={ changeText("bio") }
                                     placeholder={ "Maximum of 144 characters" }
                                     value={ this.state.bio }
                                     underlineColorAndroid={ "transparent" }
@@ -153,7 +146,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actionCreators, dispatch)
     };
 }
 

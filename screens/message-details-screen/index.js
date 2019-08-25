@@ -1,9 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { StyleSheet, Image, Text, ScrollView, View } from "react-native";
-import * as actions from "./actions";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 
@@ -11,26 +8,27 @@ const myStyles = { messageHeader: { margin: 5 } };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class MessageDetailsScreen extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        messages: PropTypes.object,
-        navigation: PropTypes.object,
-        teams: PropTypes.object
-    };
+type Props = {
+    messages: Object,
+    navigation: Object,
+    teams: Object
+};
+
+class MessageDetailsScreen extends Component<Props> {
 
     static navigationOptions = {
         title: "Message Details"
     };
 
     render() {
-        const message = this.props.messages[this.props.navigation.state.params.messageId];
+        const { messages, teams, navigation } = this.props;
+        const message = messages[navigation.state.params.messageId];
         const teamId = message.teamId;
-        const team = this.props.teams[teamId] || {};
+        const team = teams[teamId] || {};
         return (
             <View style={ styles.frame }>
-                {!message
-                    ? (<Text>{message || "Oops, sorry.  We could not find that message"}</Text>)
+                { !message
+                    ? (<Text>{ message || "Oops, sorry.  We could not find that message" }</Text>)
                     : (
                         <View style={ { flex: 1 } }>
                             <View style={ {
@@ -45,20 +43,20 @@ class MessageDetailsScreen extends Component {
                                     />
                                     <View>
                                         <View style={ { height: 30, flex: 1, flexDirection: "row" } }>
-                                            <Text style={ { color: "#555", fontSize: 16 } }>{"From: "}</Text>
+                                            <Text style={ { color: "#555", fontSize: 16 } }>{ "From: " }</Text>
                                             <Text style={ [styles.textDark, {
                                                 fontSize: 12,
                                                 height: 16,
                                                 marginTop: 4
-                                            }] }>{message.sender.displayName}</Text>
+                                            }] }>{ message.sender.displayName }</Text>
                                         </View>
                                         <View style={ { height: 30, flex: 1, flexDirection: "row" } }>
-                                            <Text style={ { color: "#555", fontSize: 16 } }>{"To: "}</Text>
+                                            <Text style={ { color: "#555", fontSize: 16 } }>{ "To: " }</Text>
                                             <Text style={ [styles.textDark, {
                                                 fontSize: 12,
                                                 height: 16,
                                                 marginTop: 4
-                                            }] }>{team.name}</Text>
+                                            }] }>{ team.name }</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -70,7 +68,7 @@ class MessageDetailsScreen extends Component {
                                     <Text style={ [styles.textDark, {
                                         fontSize: 14,
                                         paddingBottom: 10
-                                    }] }>{message.text}</Text>
+                                    }] }>{ message.text }</Text>
                                 </View>
                             </ScrollView>
                         </View>
@@ -87,10 +85,4 @@ function mapStateToProps(state) {
     return { messages, teams: teams };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageDetailsScreen);
+export default connect(mapStateToProps)(MessageDetailsScreen);

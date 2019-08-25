@@ -1,6 +1,5 @@
 // @flow
 import React from "react";
-import PropTypes from "prop-types";
 import {
     StyleSheet,
     Text,
@@ -11,8 +10,8 @@ import { defaultStyles } from "../../styles/default-styles";
 const styles = StyleSheet.create(defaultStyles);
 
 type Props = {
-    townInfo: PropTypes.object,
-    town: PropTypes.string
+    townInfo: Object,
+    town: string
 };
 
 export const TownInformation = ({ townInfo, town }: Props): React.Component => (
