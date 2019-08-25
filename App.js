@@ -7,7 +7,6 @@ import AppState from "./components/app-state";
 import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
-import NetworkStatus from "./components/network-status";
 
 type Props = { skipLoadingScreen: boolean };
 
@@ -63,7 +62,6 @@ export default class App extends React.Component<Props> {
 
         const mainApp = (
             <AppState>
-                <NetworkStatus/>
                 <Session>
                     <AppNavigator/>
                 </Session>

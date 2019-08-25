@@ -14,24 +14,35 @@ export function sendUserMessage(message: Object, recipients: [Object]) {
     return (dispatch) => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message, dispatch));
 }
 
-export function sendTeamMessage(teamId: String, message: Object) {
-    const _message = Message.create(message);
-    return (dispatch) => firebaseDataLayer.sendTeamMessage(teamId, _message, dispatch);
-}
+export const sendTeamMessage = (teamId: String, message: Object) => {
+    function thunk(dispatch) {
+        const _message = Message.create(message);
+        firebaseDataLayer.sendTeamMessage(teamId, _message, dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
 export function readMessageSuccess(data) {
     return { type: types.READ_MESSAGE, data };
 }
 
-export function readMessage(message, userID) {
-    const _message = Object.assign({}, message, { read: true });
-    return (dispatch) => firebaseDataLayer.updateMessage(_message, userID).then(res => {
-        dispatch(readMessage(res));
-    }).catch(error => {
-        // eslint-disable-next-line no-console
-        console.error(error);
-    });
-}
+export const readMessage = (message, userID) => {
+
+    function thunk(dispatch) {
+        const _message = Object.assign({}, message, { read: true });
+        firebaseDataLayer.updateMessage(_message, userID).then(res => {
+            dispatch(readMessage(res));
+        }).catch(error => {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        });
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
 export function selectTeamById(teamId: string) {
     return { type: types.SELECT_TEAM_BY_ID, teamId };

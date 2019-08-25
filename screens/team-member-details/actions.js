@@ -3,25 +3,39 @@ import * as types from "../../constants/action-types";
 import TeamMember from "../../models/team-member";
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
-export function removeTeamMember(teamId: string, teamMember: Object) {
-    return () => firebaseDataLayer.removeTeamMember(teamId, teamMember);
-}
+export const removeTeamMember = (teamId: string, teamMember: Object) => {
+    function thunk() {
+        firebaseDataLayer.removeTeamMember(teamId, teamMember);
+    }
 
-export function revokeInvitation(teamId: string, membershipId: string) {
-    return (dispatch) => firebaseDataLayer.revokeInvitation(teamId, membershipId)
-        .then(dispatch({ type: types.REVOKE_INVITATION_SUCCESS, data: { teamId, membershipId } }))
-        .catch(error => ({ type: types.REVOKE_INVITATION_FAIL, data: { teamId, membershipId }, error }));
-}
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
-export function updateTeamMember(teamId: string, member: TeamMember, status: string) {
-    const _newMember = TeamMember.create(Object.assign({}, member, { memberStatus: status || member.memberStatus }));
-    return async function () {
+export const revokeInvitation = (teamId: string, membershipId: string) => {
+    function thunk(dispatch) {
+        firebaseDataLayer.revokeInvitation(teamId, membershipId)
+            .then(dispatch({ type: types.REVOKE_INVITATION_SUCCESS, data: { teamId, membershipId } }))
+            .catch(error => ({ type: types.REVOKE_INVITATION_FAIL, data: { teamId, membershipId }, error }));
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+export const updateTeamMember = (teamId: string, member: TeamMember, status: string) => {
+    function thunk() {
+        const _newMember = TeamMember.create(Object.assign({}, member, { memberStatus: status || member.memberStatus }));
         firebaseDataLayer.updateTeamMember(teamId, _newMember);
-    };
-}
+    }
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
-export function deleteMessage(userId: string, messageId: string) {
-    return async function () {
+export const deleteMessage = (userId: string, messageId: string) => {
+    function thunk() {
         firebaseDataLayer.deleteMessage(userId, messageId);
-    };
-}
+    }
+    thunk.interceptOnOffline = true;
+    return thunk;
+};

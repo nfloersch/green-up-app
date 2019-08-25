@@ -6,19 +6,16 @@ import { connect } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import type { Node } from "react";
 
-
 type Props = { isOffline: boolean, children: Node, actions: { setNetworkStatus: boolean => void } };
 
 export const Klass = ({ actions }: Props): Node => {
 
     useEffect(() => {
-
         const handler = state => {
             actions.setNetworkStatus(state.isConnected || state.type !== "none");
         };
-        // NetInfo.fetch().then(handler);
-        const unsubscribe = NetInfo.addEventListener("connectionChange", handler);
-        return unsubscribe.remove;
+        NetInfo.addEventListener("connectionChange", handler);
+        return () => NetInfo.removeEventListener("connectionChange", handler);
     }, [actions]);
 
     return (<Fragment>{ null }</Fragment>);

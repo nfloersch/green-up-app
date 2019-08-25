@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import {
     KeyboardAvoidingView,
     Picker, Platform,
@@ -15,27 +14,28 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import User from "../../models/user";
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import * as messageTypes from "../../constants/message-types";
 import { removeNulls } from "../../libs/remove-nulls";
 
 const myStyles = {};
-
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class NewMessageScreen extends Component {
-    static propTypes = {
-        actions: PropTypes.object,
-        currentUser: PropTypes.object,
-        myTeams: PropTypes.array,
-        navigation: PropTypes.object,
-        selectedTeamId: PropTypes.string,
-        teamMembers: PropTypes.object,
-        teams: PropTypes.object
-    };
+type Props = {
+    actions: { sendTeamMessage: (teamId: string, _message: string) => void },
+    currentUser: Object,
+    myTeams: Array<Object>,
+    navigation: Object,
+    selectedTeamId: string,
+    teamMembers: Object,
+    teams: Object
+};
+
+class NewMessageScreen extends Component<Props> {
+
 
     static navigationOptions = {
         title: "Send A Message"
@@ -43,10 +43,6 @@ class NewMessageScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.changeTitle = this.changeTitle.bind(this);
-        this.changeText = this.changeText.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);
-        this.cancelMessage = this.cancelMessage.bind(this);
         this.state = {
             selectedTeamId: props.navigation.selectedTeamId || props.selectedTeamId,
             title: "",
@@ -65,34 +61,32 @@ class NewMessageScreen extends Component {
         }
     }
 
-    changeTitle(title) {
-        this.setState({ title: title });
-    }
-
-    changeText(text) {
-        this.setState({ text });
-    }
-
-    sendMessage(teamId, message) {
-        const { navigation, actions, currentUser } = this.props; // eslint-disable-line no-shadow
-        const _message = Message.create(
-            {
-                text: message,
-                type: messageTypes.TEAM_MESSAGE,
-                sender: currentUser,
-                teamId
-            }
-        );
-        actions.sendTeamMessage(teamId, _message);
-        navigation.goBack();
-    }
-
-    cancelMessage() {
-        this.props.navigation.goBack();
-    }
 
     render() {
-        const { myTeams, navigation } = this.props;
+        const { myTeams, navigation, currentUser, actions } = this.props;
+
+        const changeText = (text) => {
+            this.setState({ text });
+        };
+
+        const sendMessage = (teamId, message) => {
+            const _message = Message.create(
+                {
+                    text: message,
+                    type: messageTypes.TEAM_MESSAGE,
+                    sender: currentUser,
+                    teamId
+                }
+            );
+            actions.sendTeamMessage(teamId, _message);
+            navigation.goBack();
+        };
+
+        const cancelMessage = () => {
+            navigation.goBack();
+        };
+
+
         const selectedTeamId = (navigation.state.params || {}).selectedTeamId || ((myTeams || []).length === 1 && (myTeams[0] || {}).id) || null;
         const teamName = ((myTeams || []).find(team => team.id === selectedTeamId) || {}).name || "";
         const items = (myTeams || [])
@@ -106,11 +100,11 @@ class NewMessageScreen extends Component {
                     <View style={ styles.buttonBar }>
                         <TouchableHighlight
                             style={ styles.headerButton }
-                            onPress={ () => this.sendMessage(teamValue, this.state.text) }>
-                            <Text style={ styles.headerButtonText }>{"Send Message"}</Text>
+                            onPress={ () => sendMessage(teamValue, this.state.text) }>
+                            <Text style={ styles.headerButtonText }>{ "Send Message" }</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight style={ styles.headerButton } onPress={ this.cancelMessage }>
-                            <Text style={ styles.headerButtonText }>{"Cancel"}</Text>
+                        <TouchableHighlight style={ styles.headerButton } onPress={ cancelMessage }>
+                            <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -128,13 +122,13 @@ class NewMessageScreen extends Component {
                                             style={ styles.picker }
                                             selectedValue={ teamValue }
                                             onValueChange={ (itemValue) => this.setState({ selectedTeamId: itemValue }) }>
-                                            {items}
+                                            { items }
                                         </Picker>
                                     </View>
                                 ) : (
                                     <View style={ { marginBottom: 5 } }>
-                                        <Text style={ styles.labelDark }>{"Send a Message To"}</Text>
-                                        <Text style={ styles.largeText }>{teamName}</Text>
+                                        <Text style={ styles.labelDark }>{ "Send a Message To" }</Text>
+                                        <Text style={ styles.largeText }>{ teamName }</Text>
                                     </View>
                                 )
                             }
@@ -142,7 +136,7 @@ class NewMessageScreen extends Component {
                                 keyBoardType={ "default" }
                                 multiline={ true }
                                 textAlignVertical="top"
-                                onChangeText={ this.changeText }
+                                onChangeText={ changeText }
                                 placeholder={ "Message details" }
                                 value={ this.state.text }
                                 style={ styles.textArea }
@@ -173,7 +167,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actionCreators, dispatch)
     };
 }
 

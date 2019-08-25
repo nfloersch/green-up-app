@@ -1,25 +1,24 @@
 // @flow
 
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Alert, TouchableOpacity, TouchableHighlight, StyleSheet, Text, TextInput, View } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail } from "../../libs/validators";
-
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
+
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-class ForgotPassword extends Component {
+type Props = {
+    actions: { resetPassword: string=>void },
+    navigation: { goBack: any => void }
+};
 
-    static propTypes = {
-        actions: PropTypes.object,
-        navigation: PropTypes.object
-    };
+class ForgotPassword extends Component<Props> {
 
     static navigationOptions = {
         title: "Forgot Password"
@@ -27,27 +26,25 @@ class ForgotPassword extends Component {
 
     constructor(props) {
         super(props);
-        this.onButtonPress = this.onButtonPress.bind(this);
-        this.onChangeState = this.onChangeState.bind(this);
         this.state = { email: "", passwordResetSent: false };
     }
 
-    onChangeState(stateKey) {
-        return (value) => {
-            this.setState({ [stateKey]: value });
-        };
-    }
-
-    onButtonPress() {
-        if (isValidEmail(this.state.email)) {
-            this.props.actions.resetPassword(this.state.email);
-            this.setState({ passwordResetSent: true });
-        } else {
-            Alert.alert("Please enter a valid email address");
-        }
-    }
 
     render() {
+        const { navigation, actions } = this.props;
+        const onChangeState = (stateKey: string) => (value: any) => {
+            this.setState({ [stateKey]: value });
+        };
+
+        const onButtonPress = () => {
+            if (isValidEmail(this.state.email)) {
+                actions.resetPassword(this.state.email);
+                this.setState({ passwordResetSent: true });
+            } else {
+                Alert.alert("Please enter a valid email address");
+            }
+        };
+
         return (
             <View style={ styles.frame }>
                 <View style={ [styles.container, {
@@ -56,12 +53,12 @@ class ForgotPassword extends Component {
                     paddingBottom: 20,
                     paddingTop: "20%"
                 }] }>
-                    {this.state.passwordResetSent
+                    { this.state.passwordResetSent
                         ? (
                             <View style={ [styles.container, { paddingTop: "30%" }] }>
                                 <Text style={ [styles.text, { textAlign: "center" }] }>Check your email</Text>
-                                <TouchableHighlight style={ styles.link } onPress={ () => this.props.navigation.goBack() }>
-                                    <Text style={ styles.linkText }>{"< Back to Login"}</Text>
+                                <TouchableHighlight style={ styles.link } onPress={ () => navigation.goBack() }>
+                                    <Text style={ styles.linkText }>{ "< Back to Login" }</Text>
                                 </TouchableHighlight>
                             </View>
                         )
@@ -73,27 +70,30 @@ class ForgotPassword extends Component {
                                     value={ this.state.email }
                                     keyBoardType="email-address"
                                     placeholder="you@domain.com"
-                                    onChangeText={ this.onChangeState("email") }
+                                    onChangeText={ onChangeState("email") }
                                     style={ styles.textInput }
                                     underlineColorAndroid={ "transparent" }
                                 />
-                                <TouchableOpacity style={ styles.button }
-                                    onPress={ this.onButtonPress }>
-                                    <Text style={ styles.buttonText }>{"Reset Password"}</Text>
+                                <TouchableOpacity
+                                    style={ styles.button }
+                                    onPress={ onButtonPress }
+                                >
+                                    <Text style={ styles.buttonText }>{ "Reset Password" }</Text>
                                 </TouchableOpacity>
                             </View>
                         )
                     }
                 </View>
             </View>
-        );
+        )
+        ;
     }
 }
 
 const mapStateToProps = (state) => ({ session: state.login.session });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
