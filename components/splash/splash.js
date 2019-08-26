@@ -1,7 +1,8 @@
 // @flow
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import logo from "../../assets/images/green-up-logo.png";
+import { Container } from "native-base";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {
@@ -18,18 +19,19 @@ const myStyles = {
         marginBottom: 5
     }
 };
+
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-export const Splash = ({ message }: { message: string }): void => (
-    <ScrollView style={ styles.frame }>
+export const Splash = ({ message }: { message: string }) => (
+    <Container>
         <View style={ { paddingTop: 60 } }>
             <View style={ styles.logo }>
                 <Image source={ logo } style={ { height: 120, width: 120 } }/>
             </View>
             <View style={ { width: "100%" } }>
-                <Text style={ [styles.text, { textAlign: "center" }] }>{message}</Text>
+                <Text style={ [styles.text, { color: "black", textAlign: "center" }] }>{ message }</Text>
             </View>
         </View>
-    </ScrollView>
+    </Container>
 );

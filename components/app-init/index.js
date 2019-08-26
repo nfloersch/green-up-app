@@ -38,14 +38,14 @@ class AppInit extends Component<Props> {
             require("../../assets/images/facebook-logo.png"),
             require("../../assets/images/green-up-logo.png"),
             require("../../assets/images/covered-bridge2.jpg"),
-            require("../../assets/images/teamwork.jpeg")
+            require("..assets/images/teamwork.jpeg")
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
             ...Ionicons.font,
             // We include SpaceMono because we use it in HomeScreen.js. Feel free
             // to remove this if you are not using it in your app
-            "space-mono": require("../../assets/fonts/SpaceMono-Regular.ttf")
+            "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
         })
     ]);
 
@@ -78,9 +78,9 @@ class AppInit extends Component<Props> {
 
 function mapStateToProps(state) {
     return {
-        isLoadingComplete: state.loading.isLoadingComplete,
-        skipLoadingScreen: state.loading.skipLoadingScreen,
-        isInitialized: state.loading.isInitialized
+        isLoadingComplete: state.session.isLoadingComplete,
+        skipLoadingScreen: state.session.skipLoadingScreen,
+        isInitialized: state.session.isInitialized
     };
 }
 

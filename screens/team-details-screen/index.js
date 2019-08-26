@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert } from "react-native";
-import { MapView } from "expo";
+import MapView from "react-native-maps";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "./actions";

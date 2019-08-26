@@ -1,5 +1,5 @@
 import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initialState";
+import initialState from "../../reducers/initial-state";
 import User from "../../models/user";
 
 export function reducers(state = initialState.profile, action) {

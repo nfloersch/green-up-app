@@ -39,8 +39,8 @@ export function retrieveContacts(_pageSize = 40) {
     };
 }
 
-export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
-    return () => {
+export const inviteContacts = (team: Object, currentUser: Object, teamMembers: [TeamMember]) => {
+    function thunk() {
         teamMembers.forEach(teamMember => {
             const invitation = Invitation.create({ team, sender: currentUser, teamMember });
             firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
@@ -48,30 +48,38 @@ export function inviteContacts(team: Object, currentUser: Object, teamMembers: [
                 throw err;
             });
         });
-    };
-}
+    }
 
-export function askToJoinTeam(team: Object, user: Object) {
-    const message = Message.create({
-        text: `${user.displayName || user.email} is requesting to join ${team.name} `,
-        sender: user,
-        teamId: team.id,
-        type: messageTypes.REQUEST_TO_JOIN
-    });
-    const teamId = typeof team === "string" ? team : team.id;
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
-    return async function () {
+export const askToJoinTeam = (team: Object, user: Object) => {
+    async function thunk() {
+        const message = Message.create({
+            text: `${ user.displayName || user.email } is requesting to join ${ team.name } `,
+            sender: user,
+            teamId: team.id,
+            type: messageTypes.REQUEST_TO_JOIN
+        });
+        const teamId = typeof team === "string" ? team : team.id;
         await firebaseDataLayer.addTeamRequest(teamId, user, memberStatus.REQUEST_TO_JOIN);
         await firebaseDataLayer.sendUserMessage(team.owner.uid, message);
-    };
-}
+    }
 
-export function acceptInvitation(teamId: string, user: Object) {
-    return (dispatch) => {
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+export const acceptInvitation = (teamId: string, user: Object) => {
+    function thunk(dispatch) {
         const newTeamMember = TeamMember.create(Object.assign({}, user, { memberStatus: memberStatus.ACCEPTED }));
         return firebaseDataLayer.addTeamMember(teamId, newTeamMember, "ACCEPTED", dispatch);
-    };
-}
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
 
 export function sendTeamMessage(teamMembers, message) {

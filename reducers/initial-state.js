@@ -38,6 +38,7 @@ export default {
         invitationsLoaded: false,
         teamsLoaded: false
     },
+    networkStatus: { isOnline: null },
     teamMembers: {},
     teamMembersLoaded: false,
     teamRequests: {},
@@ -54,5 +55,6 @@ export default {
         cleanAreasToggle: true
     },
     teamSearchResults: [],
-    selectedTeam: null
+    selectedTeam: null,
+    session: {}
 };

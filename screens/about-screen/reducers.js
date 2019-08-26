@@ -1,5 +1,5 @@
 // import * as types from '../../constants/actionTypes';
-import initialState from "../../reducers/initialState";
+import initialState from "../../reducers/initial-state";
 import * as types from "../../constants/action-types";
 
 export function reducers(state = initialState.about, action) {

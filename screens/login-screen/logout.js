@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Image, StyleSheet, Text, View } from "react-native";
 import logo from "../../assets/images/green-up-logo.png";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as loginActions from "./actions";
+import * as actionCreators from "./actions";
 
 const styles = StyleSheet.create({
     container: {
@@ -51,12 +50,12 @@ const styles = StyleSheet.create({
     }
 });
 
-class ABienTot extends Component {
+type Props = {
+    actions: {logout : () => void},
+    navigation: Object
+};
 
-    static propTypes = {
-        actions: PropTypes.object,
-        navigation: PropTypes.object
-    };
+class ABienTot extends Component<Props> {
 
     static navigationOptions = {
         drawerLabel: "Logout",
@@ -84,7 +83,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(loginActions, dispatch)
+        actions: bindActionCreators(actionCreators, dispatch)
     };
 }
 

@@ -6,17 +6,24 @@ import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 import { thirdPartyConfig } from "../../config/third-party-config";
 import { Platform } from "react-native";
 
-export function getCurrentUser() {
-    return (dispatch: Object => *) => {
+export const getCurrentUser = () => {
+    function thunk (dispatch: Object => *) {
         firebaseDataLayer.getCurrentUser(dispatch);
-    };
-}
+    }
 
-export function logout() {
-    return (dispatch: Object => *) => {
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+
+export const logout = () => {
+    function thunk (dispatch: Object => *) {
         firebaseDataLayer.logout(dispatch);
-    };
-}
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
 
 export function createUser(email: string, password: string, displayName: string) {
     return (dispatch: Object => *) => {
@@ -110,4 +117,3 @@ export function resetPassword(emailAddress: string) {
 export function isLoggingInViaSSO(_isLoggingInViaSSO: Boolean) {
     return { type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO };
 }
-
