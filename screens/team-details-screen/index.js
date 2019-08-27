@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert } from "react-native";
 import MapView from "react-native-maps";
+import Geojson from "react-native-geojson";
+import roadSegments from "../../data-sources/vt-road-segments-simplified-0001.json";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "./actions";
@@ -371,6 +373,7 @@ class TeamDetailsScreen extends Component<Props> {
                                 initialRegion={ this.state.initialMapLocation }
                                 onPress={ this._handleMapClick }>
                                 { teamAreas }
+                                <Geojson geojson={ roadSegments }/>
                             </MapView>
                             {
                                 (this.props.locations || []).length > 0

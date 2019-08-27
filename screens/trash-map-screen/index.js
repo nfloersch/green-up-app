@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import * as IntentLauncherAndroid from "expo-intent-launcher";
 import * as Location from "expo-location";
-import MapView from "react-native-maps";
+import MapView, { Polyline } from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import CheckBox from "react-native-checkbox";
 import { bindActionCreators } from "redux";
@@ -30,6 +30,7 @@ import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
 import TownInformation from "../../components/town-information";
 import offsetLocations from "../../libs/offset-locations";
+import roadSegments from "../../data-sources/vt-road-segments.json";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -102,7 +103,6 @@ class TrashMap extends Component<Props> {
     }
 
     async _getLocationAsync() {
-
 
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
@@ -310,6 +310,22 @@ class TrashMap extends Component<Props> {
             .concat(collectedTrash)
             .concat(cleanAreaMarkers);
 
+
+        const streets = roadSegments.features.map(feature => {
+            const coordinates = R.comp(R.reduce((latlong, acc)=>[...acc,], []), R.flatten)(feature.geometry.coordinates)
+   })
+                return ({ latitude:coordinate[1], longitude:coordinate[0] })});
+            debugger;
+            return (
+                <Polyline
+                    coordinates={ coordinates }
+                    strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeWidth={ 6 }
+                />
+            );
+        });
+
+
         const enableLocation = async () => {
             if (Platform.OS === "android") {
                 await IntentLauncherAndroid.startActivityAsync(IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -350,6 +366,8 @@ class TrashMap extends Component<Props> {
                         } }
                     >
                         { allMarkers }
+                        { streets }
+
                     </MapView>
 
                     <View style={ {
