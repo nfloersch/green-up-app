@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, SafeAreaView, FlatList } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../login-screen/actions";
@@ -49,13 +49,13 @@ const menuConfig = {
         order: 3,
         navigation: "Messages",
         label: "Create A Team",
-        backgroundImage: require("../../assets/images/button-image-ford-1970.png")
+        backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
     },
     handlingTrash: {
         order: 4,
         navigation: "Messages",
         label: "Handling Trash",
-        backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-ford-1970.png")
     },
     freeSupplies: {
         order: 5,
@@ -79,7 +79,6 @@ const menuConfig = {
 
 const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): React$Element<any> => {
     const myButtons = R.compose(
-        R.map(button => <HomeButton { ...button }/>),
         R.map(entry => ({
             onPress: () => navigation.navigate(entry[1].navigation),
             label: entry[1].label,
@@ -90,26 +89,21 @@ const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): R
         R.sort((a, b) => a[1].order - b[1].order),
         Object.entries
     );
-
+    const data = myButtons(menuConfig);
     return (
-        <View style={ styles.frame }>
-            <ScrollView style={ styles.scroll }
-                        contentContainerStyle={ {
-                            paddingTop: 1,
-                            paddingLeft: 1,
-                            paddingRight: 1,
-                            flex: 1,
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            alignItems: "flex-start"
-                        } }>
+        <SafeAreaView style={ styles.container }>
+            <FlatList
+                data={ data }
+                keyExtractor={ item => item.id }
+                renderItem={ ({ item }) => (<HomeButton { ...item }/>) }
 
-                { myButtons(menuConfig) }
-
+                numColumns={ 2 }
+            >
                 <View style={ { height: 20 } }/>
-            </ScrollView>
-        </View>
-    );
+            </FlatList>
+        </SafeAreaView>
+    )
+        ;
 };
 
 
