@@ -6,3 +6,4 @@ export const tabIconDefault = "#fff";
 export const tabBarBackground = "#4a4b4c";
 export const tabIconSelected = "orange";
 export const backGroundColorLight = "#EFEFEF";
+export const homeButtonBGColor = "#FA774E55";

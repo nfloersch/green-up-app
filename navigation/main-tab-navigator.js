@@ -6,8 +6,25 @@ import TeamsStack from "./teams-stack";
 import MenuStack from "./menu-stack";
 import MessagesStack from "./messages-stack";
 import TrashTrackerStack from "./trash-tracker-stack";
+import HomeStack from "./home-stack";
 
 type focusedType = { focused: boolean };
+
+/** Home **/
+HomeStack.navigationOptions = {
+    tabBarLabel: "Home",
+    tabBarIcon: ({ focused }: focusedType) => (
+        <TabBarIcon
+            focused={ focused }
+            name={
+                Platform.OS === "ios"
+                    ? `ios-home${focused ? "" : ""}`
+                    : "md-home"
+            }
+        />
+    )
+};
+
 
 /** * Messages ***/
 MessagesStack.navigationOptions = {
@@ -62,6 +79,7 @@ MenuStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
+    HomeStack,
     MessagesStack,
     TeamsStack,
     TrashTrackerStack,
