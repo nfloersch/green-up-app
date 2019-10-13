@@ -1,24 +1,31 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     ImageBackground,
     Text,
     TouchableHighlight
-} from "react-native";
+} from 'react-native';
+import * as colors from '../../styles/constants';
 
 const styles = StyleSheet.create({
-    homeButton: { width: "50%", aspectRatio: 1 },
-    buttonImage: { width: "100%", height: "100%" },
+    homeButton: {
+        width: '50%',
+        aspectRatio: 1,
+        borderWidth: 3,
+        borderStyle: 'solid',
+        borderColor: colors.backgroundDark
+    },
+    buttonImage: {width: '100%', height: '100%'},
     homeButtonText: {
-        position: "absolute",
+        position: 'absolute',
         bottom: 0,
         left: 0,
-        backgroundColor: "#FA774EAA",
-        width: "100%",
+        backgroundColor: '#FA774EAA',
+        width: '100%',
         padding: 2,
-        color: "#FFF",
+        color: '#FFF',
         fontSize: 20,
-        textAlign: "center"
+        textAlign: 'center'
     }
 });
 
@@ -29,17 +36,19 @@ type PropsType = {
     id?: string
 };
 
-export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) => (
+export const HomeButton = ({label, backgroundImage, onPress, id}: PropsType) => (
     <TouchableHighlight
-        id={ id }
-        style={ styles.homeButton }
-        onPress={ onPress }
+        id={id}
+        style={styles.homeButton}
+        onPress={onPress}
     >
-        <ImageBackground
-            style={ styles.buttonImage }
-            source={ backgroundImage }
-        >
-            <Text style={ styles.homeButtonText }>{ label }</Text>
-        </ImageBackground>
+        <View style={{height: '100%', width: '100%', borderStyle: 'solid', borderWidth: 1, borderColor: '#555'}}>
+            <ImageBackground
+                style={styles.buttonImage}
+                source={backgroundImage}
+            >
+                <Text style={styles.homeButtonText}>{label}</Text>
+            </ImageBackground>
+        </View>
     </TouchableHighlight>
 );

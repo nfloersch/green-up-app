@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, StyleSheet, ScrollView, SafeAreaView, FlatList } from "react-native";
+import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../login-screen/actions";
@@ -18,7 +18,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const homeTitle = R.cond(
     [
-        [days => days > 1, days => `${ days } days until Green Up Day`],
+        [days => days > 1, days => `${days} days until Green Up Day`],
         [days => days === 1, () => "Tomorrow is Green Up Day!"],
         [days => days === 0, () => "It's Green Up Day!"],
         [days => days < 0, () => "Keep on Greening"]
@@ -96,14 +96,13 @@ const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): R
                 data={ data }
                 keyExtractor={ item => item.id }
                 renderItem={ ({ item }) => (<HomeButton { ...item }/>) }
-
                 numColumns={ 2 }
+                style={ { paddingLeft: 2, paddingRight: 2 } }
             >
                 <View style={ { height: 20 } }/>
             </FlatList>
         </SafeAreaView>
-    )
-        ;
+    );
 };
 
 
