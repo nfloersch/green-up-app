@@ -50,7 +50,7 @@ const menuConfig = {
         order: 3,
         navigation: "Messages",
         label: "Create A Team",
-        backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg  ")
+        backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
     handlingTrash: {
         order: 4,
