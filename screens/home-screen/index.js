@@ -50,31 +50,31 @@ const menuConfig = {
         order: 3,
         navigation: "Messages",
         label: "Create A Team",
-        backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg  ")
     },
     handlingTrash: {
         order: 4,
         navigation: "Messages",
         label: "Handling Trash",
-        backgroundImage: require("../../assets/images/button-image-ford-1970.png")
+        backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
     },
     freeSupplies: {
         order: 5,
         navigation: "Messages",
         label: "Free Supplies",
-        backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-car-1970.jpg")
     },
     celebrations: {
         order: 6,
         navigation: "Messages",
         label: "Celebrations",
-        backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-royalton-bandstand.jpg")
     },
     greenUpFacts: {
         order: 7,
         navigation: "Messages",
         label: "Green Up Facts",
-        backgroundImage: require("../../assets/images/button-image-ford-1970.png")
+        backgroundImage: require("../../assets/images/button-image-dump-truck-bags-1970.jpg")
     }
 };
 
