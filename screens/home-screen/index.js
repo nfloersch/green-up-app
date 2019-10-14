@@ -12,6 +12,7 @@ import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import moment from "moment";
 import * as R from "ramda";
 import HomeButton from "../../components/home-button";
+import * as colors from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -43,7 +44,7 @@ const menuConfig = {
         order: 2,
         navigation: "FindTeam",
         label: "Find A Team",
-        backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-girls-2-1970.jpg")
     },
     createATeam: {
         order: 3,
@@ -107,7 +108,17 @@ const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): R
 
 
 HomeScreen.navigationOptions = {
-    title: homeTitle
+    title: homeTitle,
+    headerStyle: {
+        backgroundColor: "#FFF"
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "sriracha",
+        fontWeight: "bold",
+        fontSize: 26,
+        color: colors.buttonColor
+    }
 };
 
 const mapStateToProps = (state) => {

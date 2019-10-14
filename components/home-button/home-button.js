@@ -3,9 +3,9 @@ import {
     View,
     StyleSheet,
     Image,
-    Text,
     TouchableHighlight
 } from "react-native";
+import DisplayText from "../display-text";
 
 const styles = StyleSheet.create({
     homeButton: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#55683ADD",
         width: "100%",
         padding: 2,
-        color: "#AAA",
+        color: "#DDD",
         fontSize: 20,
         textAlign: "center"
     }
@@ -42,13 +42,13 @@ export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) =
         style={ styles.homeButton }
         onPress={ onPress }
     >
-        <View style={ { borderWidth: 2, borderColor: "#FFF"} }>
+        <View style={ { borderWidth: 2, borderColor: "#FFF" } }>
             <Image
-                style={ { height: "100%", width: "100%"} }
+                style={ { height: "100%", width: "100%" } }
                 capInsets={ { left: 5, right: 5, bottom: 5, top: 5 } }
                 source={ backgroundImage }
             />
-            <Text style={ styles.homeButtonText }>{ label }</Text>
+            <DisplayText style={ styles.homeButtonText }>{ label }</DisplayText>
         </View>
     </TouchableHighlight>
 );
