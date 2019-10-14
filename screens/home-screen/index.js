@@ -18,7 +18,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const homeTitle = R.cond(
     [
-        [days => days > 1, days => `${days} days until Green Up Day`],
+        [days => days > 1, days => `${ days } days until Green Up Day`],
         [days => days === 1, () => "Tomorrow is Green Up Day!"],
         [days => days === 0, () => "It's Green Up Day!"],
         [days => days < 0, () => "Keep on Greening"]
@@ -41,7 +41,7 @@ const menuConfig = {
     },
     findATeam: {
         order: 2,
-        navigation: "Messages",
+        navigation: "FindTeam",
         label: "Find A Team",
         backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
@@ -97,7 +97,7 @@ const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): R
                 keyExtractor={ item => item.id }
                 renderItem={ ({ item }) => (<HomeButton { ...item }/>) }
                 numColumns={ 2 }
-                style={ { paddingLeft: 2, paddingRight: 2 } }
+                style={ { paddingTop: 2, paddingLeft: 1, paddingRight: 1, paddingBottom: 2 } }
             >
                 <View style={ { height: 20 } }/>
             </FlatList>

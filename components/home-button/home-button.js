@@ -2,29 +2,28 @@ import React from "react";
 import {
     View,
     StyleSheet,
-    ImageBackground,
+    Image,
     Text,
     TouchableHighlight
 } from "react-native";
-import * as colors from "../../styles/constants";
 
 const styles = StyleSheet.create({
     homeButton: {
         width: "50%",
         aspectRatio: 1,
-        borderWidth: 3,
+        borderWidth: 1,
         borderStyle: "solid",
-        borderColor: colors.backgroundDark
+        borderColor: "#888" // styleConstants.backgroundDark
     },
     buttonImage: { width: "100%", height: "100%" },
     homeButtonText: {
         position: "absolute",
         bottom: 0,
         left: 0,
-        backgroundColor: "#FA774EAA",
+        backgroundColor: "#55683ADD",
         width: "100%",
         padding: 2,
-        color: "#FFF",
+        color: "#AAA",
         fontSize: 20,
         textAlign: "center"
     }
@@ -43,13 +42,13 @@ export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) =
         style={ styles.homeButton }
         onPress={ onPress }
     >
-        <View style={ { height: "100%", width: "100%", borderStyle: "solid", borderWidth: 1, borderColor: "#000" } }>
-            <ImageBackground
-                style={ styles.buttonImage }
+        <View style={ { borderWidth: 2, borderColor: "#FFF"} }>
+            <Image
+                style={ { height: "100%", width: "100%"} }
+                capInsets={ { left: 5, right: 5, bottom: 5, top: 5 } }
                 source={ backgroundImage }
-            >
-                <Text style={ styles.homeButtonText }>{label}</Text>
-            </ImageBackground>
+            />
+            <Text style={ styles.homeButtonText }>{ label }</Text>
         </View>
     </TouchableHighlight>
 );

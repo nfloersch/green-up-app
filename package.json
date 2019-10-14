@@ -85,6 +85,8 @@
     "eslint-plugin-react": "^7.12.4",
     "expo-permissions": "^6.0.0",
     "firebase-tools": "^7.2.2",
+    "flow-bin": "^0.109.0",
+    "flow-typed": "^2.6.1",
     "jest-expo": "^34.0.0"
   },
   "private": true
