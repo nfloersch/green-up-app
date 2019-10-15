@@ -48,8 +48,8 @@ const menuConfig = {
     },
     createATeam: {
         order: 3,
-        navigation: "Messages",
-        label: "Create A Team",
+        navigation: "NewTeam",
+        label: "Start A Team",
         backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
     handlingTrash: {
