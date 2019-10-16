@@ -1,8 +1,8 @@
 // flow-typed signature: da9e3a934faed5aec97160e69a2578c8
 // flow-typed version: 9931c6ffb0/redux-devtools-extension_v2.x.x/flow_>=v0.104.x
 
-import type { ActionCreator, StoreEnhancer } from 'redux';
-import typeof { compose } from 'redux';
+import type { ActionCreator, StoreEnhancer } from "redux";
+import typeof { compose } from "redux";
 
 declare type $npm$ReduxDevtoolsExtension$DevToolsOptions = {
   name?: string,
@@ -101,28 +101,28 @@ declare function $npm$ReduxDevtoolsExtension$composeWithDevTools<A, B, C, D, E, 
 
 declare function $npm$ReduxDevtoolsExtension$devToolsEnhancer<S, A>(options?: $npm$ReduxDevtoolsExtension$DevToolsOptions): StoreEnhancer<S, A>;
 
-declare module 'redux-devtools-extension' {
+declare module "redux-devtools-extension" {
   declare export type DevToolsOptions = $npm$ReduxDevtoolsExtension$DevToolsOptions;
 
   declare export var composeWithDevTools: typeof $npm$ReduxDevtoolsExtension$composeWithDevTools;
   declare export var devToolsEnhancer: typeof $npm$ReduxDevtoolsExtension$devToolsEnhancer;
 }
 
-declare module 'redux-devtools-extension/developmentOnly' {
+declare module "redux-devtools-extension/developmentOnly" {
   declare export type DevToolsOptions = $npm$ReduxDevtoolsExtension$DevToolsOptions;
 
   declare export var composeWithDevTools: typeof $npm$ReduxDevtoolsExtension$composeWithDevTools;
   declare export var devToolsEnhancer: typeof $npm$ReduxDevtoolsExtension$devToolsEnhancer;
 }
 
-declare module 'redux-devtools-extension/logOnly' {
+declare module "redux-devtools-extension/logOnly" {
   declare export type DevToolsOptions = $npm$ReduxDevtoolsExtension$DevToolsOptions;
 
   declare export var composeWithDevTools: typeof $npm$ReduxDevtoolsExtension$composeWithDevTools;
   declare export var devToolsEnhancer: typeof $npm$ReduxDevtoolsExtension$devToolsEnhancer;
 }
 
-declare module 'redux-devtools-extension/logOnlyInProduction' {
+declare module "redux-devtools-extension/logOnlyInProduction" {
   declare export type DevToolsOptions = $npm$ReduxDevtoolsExtension$DevToolsOptions;
 
   declare export var composeWithDevTools: typeof $npm$ReduxDevtoolsExtension$composeWithDevTools;

@@ -74,7 +74,7 @@ type PropsType = {
     style?: Object,
 };
 
-export const MiniMap = ({ initialLocation, onMapClick, onPinClick, pins = [], layers = [], style }: PropsType) => {
+export const MiniMap = ({ initialLocation, onMapClick, onPinClick, pins = [], style }: PropsType) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [initialMapLocation, setInitialMapLocation] = useState(initialLocation);
     useEffect(() => {
@@ -117,8 +117,8 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, pins = [], la
             { !errorMessage
                 ? (
                     <MapView style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
-                             initialRegion={ initialMapLocation }
-                             onPress={ _handleMapClick }>
+                        initialRegion={ initialMapLocation }
+                        onPress={ _handleMapClick }>
                         { placeMarkers(onPinClick, pins || []) }
                     </MapView>
                 )

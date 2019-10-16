@@ -19,15 +19,15 @@ type Props = {
 
 class HandlingTrash extends Component<Props> {
 
-    static navigationOptions = {
-        title: "How and Where to Dispose of Trash"
-    };
-
     constructor(props) {
         super(props);
         this.onSearchTermChange = this.onSearchTermChange.bind(this);
         this.state = { searchResults: [], searchTerm: "" };
     }
+
+    static navigationOptions = {
+        title: "How and Where to Dispose of Trash"
+    };
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;

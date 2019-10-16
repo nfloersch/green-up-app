@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-radio-buttons' {
+declare module "react-native-radio-buttons" {
   declare module.exports: any;
 }
 
@@ -22,28 +22,28 @@ declare module 'react-native-radio-buttons' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'react-native-radio-buttons/lib' {
+declare module "react-native-radio-buttons/lib" {
   declare module.exports: any;
 }
 
-declare module 'react-native-radio-buttons/lib/radio-buttons' {
+declare module "react-native-radio-buttons/lib/radio-buttons" {
   declare module.exports: any;
 }
 
-declare module 'react-native-radio-buttons/lib/segmented-controls' {
+declare module "react-native-radio-buttons/lib/segmented-controls" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'react-native-radio-buttons/lib/index' {
+declare module "react-native-radio-buttons/lib/index" {
   declare module.exports: $Exports<'react-native-radio-buttons/lib'>;
 }
-declare module 'react-native-radio-buttons/lib/index.js' {
+declare module "react-native-radio-buttons/lib/index.js" {
   declare module.exports: $Exports<'react-native-radio-buttons/lib'>;
 }
-declare module 'react-native-radio-buttons/lib/radio-buttons.js' {
+declare module "react-native-radio-buttons/lib/radio-buttons.js" {
   declare module.exports: $Exports<'react-native-radio-buttons/lib/radio-buttons'>;
 }
-declare module 'react-native-radio-buttons/lib/segmented-controls.js' {
+declare module "react-native-radio-buttons/lib/segmented-controls.js" {
   declare module.exports: $Exports<'react-native-radio-buttons/lib/segmented-controls'>;
 }

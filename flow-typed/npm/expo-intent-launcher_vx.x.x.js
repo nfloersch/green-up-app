@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'expo-intent-launcher' {
+declare module "expo-intent-launcher" {
   declare module.exports: any;
 }
 
@@ -22,25 +22,25 @@ declare module 'expo-intent-launcher' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'expo-intent-launcher/build/ExpoIntentLauncher' {
+declare module "expo-intent-launcher/build/ExpoIntentLauncher" {
   declare module.exports: any;
 }
 
-declare module 'expo-intent-launcher/build/ExpoIntentLauncher.web' {
+declare module "expo-intent-launcher/build/ExpoIntentLauncher.web" {
   declare module.exports: any;
 }
 
-declare module 'expo-intent-launcher/build/IntentLauncher' {
+declare module "expo-intent-launcher/build/IntentLauncher" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'expo-intent-launcher/build/ExpoIntentLauncher.js' {
+declare module "expo-intent-launcher/build/ExpoIntentLauncher.js" {
   declare module.exports: $Exports<'expo-intent-launcher/build/ExpoIntentLauncher'>;
 }
-declare module 'expo-intent-launcher/build/ExpoIntentLauncher.web.js' {
+declare module "expo-intent-launcher/build/ExpoIntentLauncher.web.js" {
   declare module.exports: $Exports<'expo-intent-launcher/build/ExpoIntentLauncher.web'>;
 }
-declare module 'expo-intent-launcher/build/IntentLauncher.js' {
+declare module "expo-intent-launcher/build/IntentLauncher.js" {
   declare module.exports: $Exports<'expo-intent-launcher/build/IntentLauncher'>;
 }

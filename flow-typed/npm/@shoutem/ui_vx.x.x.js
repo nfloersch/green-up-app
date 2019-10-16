@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module '@shoutem/ui' {
+declare module "@shoutem/ui" {
   declare module.exports: any;
 }
 
@@ -22,854 +22,854 @@ declare module '@shoutem/ui' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module '@shoutem/ui/components/Button' {
+declare module "@shoutem/ui/components/Button" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Card' {
+declare module "@shoutem/ui/components/Card" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Divider' {
+declare module "@shoutem/ui/components/Divider" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/DropDownMenu/DropDownMenu' {
+declare module "@shoutem/ui/components/DropDownMenu/DropDownMenu" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/DropDownMenu/DropDownModal' {
+declare module "@shoutem/ui/components/DropDownMenu/DropDownModal" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/DropDownMenu' {
+declare module "@shoutem/ui/components/DropDownMenu" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/EmptyStateView' {
+declare module "@shoutem/ui/components/EmptyStateView" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/FormGroup' {
+declare module "@shoutem/ui/components/FormGroup" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/GridRow' {
+declare module "@shoutem/ui/components/GridRow" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/HorizontalPager/HorizontalPager' {
+declare module "@shoutem/ui/components/HorizontalPager/HorizontalPager" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/HorizontalPager' {
+declare module "@shoutem/ui/components/HorizontalPager" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/HorizontalPager/Page' {
+declare module "@shoutem/ui/components/HorizontalPager/Page" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Icon/createConfig' {
+declare module "@shoutem/ui/components/Icon/createConfig" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Icon/createIcon' {
+declare module "@shoutem/ui/components/Icon/createIcon" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Icon' {
+declare module "@shoutem/ui/components/Icon" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Image' {
+declare module "@shoutem/ui/components/Image" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageBackground' {
+declare module "@shoutem/ui/components/ImageBackground" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageGallery/ImageGallery.android' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGallery.android" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageGallery/ImageGallery.ios' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGallery.ios" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageGallery/ImageGalleryBase' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGalleryBase" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageGallery' {
+declare module "@shoutem/ui/components/ImageGallery" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImageGalleryOverlay' {
+declare module "@shoutem/ui/components/ImageGalleryOverlay" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ImagePreview' {
+declare module "@shoutem/ui/components/ImagePreview" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/InlineGallery' {
+declare module "@shoutem/ui/components/InlineGallery" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Lightbox' {
+declare module "@shoutem/ui/components/Lightbox" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/LinearGradient' {
+declare module "@shoutem/ui/components/LinearGradient" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ListView' {
+declare module "@shoutem/ui/components/ListView" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/LoadingIndicator' {
+declare module "@shoutem/ui/components/LoadingIndicator" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/NavigationBar/composeChildren' {
+declare module "@shoutem/ui/components/NavigationBar/composeChildren" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/NavigationBar' {
+declare module "@shoutem/ui/components/NavigationBar" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/NavigationBar/NavigationBar' {
+declare module "@shoutem/ui/components/NavigationBar/NavigationBar" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/NavigationBar/NavigationBarAnimations' {
+declare module "@shoutem/ui/components/NavigationBar/NavigationBarAnimations" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/NumberInput' {
+declare module "@shoutem/ui/components/NumberInput" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Overlay' {
+declare module "@shoutem/ui/components/Overlay" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/PageIndicators' {
+declare module "@shoutem/ui/components/PageIndicators" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Row' {
+declare module "@shoutem/ui/components/Row" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Screen' {
+declare module "@shoutem/ui/components/Screen" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ScrollView' {
+declare module "@shoutem/ui/components/ScrollView" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ScrollView/ScrollDriverProvider' {
+declare module "@shoutem/ui/components/ScrollView/ScrollDriverProvider" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ScrollView/ScrollView' {
+declare module "@shoutem/ui/components/ScrollView/ScrollView" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/SearchField' {
+declare module "@shoutem/ui/components/SearchField" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/ShareButton' {
+declare module "@shoutem/ui/components/ShareButton" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Spinner' {
+declare module "@shoutem/ui/components/Spinner" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Switch' {
+declare module "@shoutem/ui/components/Switch" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Text' {
+declare module "@shoutem/ui/components/Text" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/TextInput' {
+declare module "@shoutem/ui/components/TextInput" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Tile' {
+declare module "@shoutem/ui/components/Tile" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Touchable' {
+declare module "@shoutem/ui/components/Touchable" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/TouchableNativeFeedback' {
+declare module "@shoutem/ui/components/TouchableNativeFeedback" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/TouchableOpacity' {
+declare module "@shoutem/ui/components/TouchableOpacity" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Video' {
+declare module "@shoutem/ui/components/Video" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Video/Video' {
+declare module "@shoutem/ui/components/Video/Video" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/Video/VideoSourceReader' {
+declare module "@shoutem/ui/components/Video/VideoSourceReader" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/components/View' {
+declare module "@shoutem/ui/components/View" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/const' {
+declare module "@shoutem/ui/const" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Buttons' {
+declare module "@shoutem/ui/examples/components/Buttons" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Cards' {
+declare module "@shoutem/ui/examples/components/Cards" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Dividers' {
+declare module "@shoutem/ui/examples/components/Dividers" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/DropDownMenus' {
+declare module "@shoutem/ui/examples/components/DropDownMenus" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Examples' {
+declare module "@shoutem/ui/examples/components/Examples" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/FormComponents' {
+declare module "@shoutem/ui/examples/components/FormComponents" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Headers' {
+declare module "@shoutem/ui/examples/components/Headers" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/HorizontalPagers' {
+declare module "@shoutem/ui/examples/components/HorizontalPagers" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/ImageGalleries' {
+declare module "@shoutem/ui/examples/components/ImageGalleries" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Images' {
+declare module "@shoutem/ui/examples/components/Images" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components' {
+declare module "@shoutem/ui/examples/components" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/InlineGalleries' {
+declare module "@shoutem/ui/examples/components/InlineGalleries" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/NavigationBars' {
+declare module "@shoutem/ui/examples/components/NavigationBars" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Rows' {
+declare module "@shoutem/ui/examples/components/Rows" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Spinners' {
+declare module "@shoutem/ui/examples/components/Spinners" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Stage' {
+declare module "@shoutem/ui/examples/components/Stage" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Tiles' {
+declare module "@shoutem/ui/examples/components/Tiles" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Typography' {
+declare module "@shoutem/ui/examples/components/Typography" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/examples/components/Videos' {
+declare module "@shoutem/ui/examples/components/Videos" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/helpers/device-selector' {
+declare module "@shoutem/ui/helpers/device-selector" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/helpers' {
+declare module "@shoutem/ui/helpers" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/components/Gallery' {
+declare module "@shoutem/ui/html/components/Gallery" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/components/Image' {
+declare module "@shoutem/ui/html/components/Image" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/components/SimpleHtml' {
+declare module "@shoutem/ui/html/components/SimpleHtml" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/A' {
+declare module "@shoutem/ui/html/elements/A" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Block' {
+declare module "@shoutem/ui/html/elements/Block" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Br' {
+declare module "@shoutem/ui/html/elements/Br" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Img' {
+declare module "@shoutem/ui/html/elements/Img" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Inline' {
+declare module "@shoutem/ui/html/elements/Inline" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/helpers/pickLiChildElements' {
+declare module "@shoutem/ui/html/elements/list/helpers/pickLiChildElements" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/helpers/renderItems' {
+declare module "@shoutem/ui/html/elements/list/helpers/renderItems" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list' {
+declare module "@shoutem/ui/html/elements/list" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/Li' {
+declare module "@shoutem/ui/html/elements/list/Li" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/Ol' {
+declare module "@shoutem/ui/html/elements/list/Ol" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/prefix/Bullet' {
+declare module "@shoutem/ui/html/elements/list/prefix/Bullet" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/prefix/Number' {
+declare module "@shoutem/ui/html/elements/list/prefix/Number" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/list/Ul' {
+declare module "@shoutem/ui/html/elements/list/Ul" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Text' {
+declare module "@shoutem/ui/html/elements/Text" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Video' {
+declare module "@shoutem/ui/html/elements/Video" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/elements/Virtual' {
+declare module "@shoutem/ui/html/elements/Virtual" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/Html' {
+declare module "@shoutem/ui/html/Html" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html' {
+declare module "@shoutem/ui/html" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/services/ElementRegistry' {
+declare module "@shoutem/ui/html/services/ElementRegistry" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/services/getEmptyObjectKeys' {
+declare module "@shoutem/ui/html/services/getEmptyObjectKeys" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/html/services/HtmlParser' {
+declare module "@shoutem/ui/html/services/HtmlParser" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/init' {
+declare module "@shoutem/ui/init" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/CardStack' {
+declare module "@shoutem/ui/navigation/CardStack" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/children-composers/back-button.composer' {
+declare module "@shoutem/ui/navigation/children-composers/back-button.composer" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/children-composers' {
+declare module "@shoutem/ui/navigation/children-composers" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/children-composers/navbar-image.composer' {
+declare module "@shoutem/ui/navigation/children-composers/navbar-image.composer" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/children-composers/share.composer' {
+declare module "@shoutem/ui/navigation/children-composers/share.composer" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/children-composers/title.composer' {
+declare module "@shoutem/ui/navigation/children-composers/title.composer" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/composeChildren' {
+declare module "@shoutem/ui/navigation/composeChildren" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation' {
+declare module "@shoutem/ui/navigation" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/NavigationBar' {
+declare module "@shoutem/ui/navigation/NavigationBar" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/NavigationBarView' {
+declare module "@shoutem/ui/navigation/NavigationBarView" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/RNCardStack' {
+declare module "@shoutem/ui/navigation/RNCardStack" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/navigation/SceneProvider' {
+declare module "@shoutem/ui/navigation/SceneProvider" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/scripts/link' {
+declare module "@shoutem/ui/scripts/link" {
   declare module.exports: any;
 }
 
-declare module '@shoutem/ui/theme' {
+declare module "@shoutem/ui/theme" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module '@shoutem/ui/components/Button.js' {
+declare module "@shoutem/ui/components/Button.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Button'>;
 }
-declare module '@shoutem/ui/components/Card.js' {
+declare module "@shoutem/ui/components/Card.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Card'>;
 }
-declare module '@shoutem/ui/components/Divider.js' {
+declare module "@shoutem/ui/components/Divider.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Divider'>;
 }
-declare module '@shoutem/ui/components/DropDownMenu/DropDownMenu.js' {
+declare module "@shoutem/ui/components/DropDownMenu/DropDownMenu.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/DropDownMenu/DropDownMenu'>;
 }
-declare module '@shoutem/ui/components/DropDownMenu/DropDownModal.js' {
+declare module "@shoutem/ui/components/DropDownMenu/DropDownModal.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/DropDownMenu/DropDownModal'>;
 }
-declare module '@shoutem/ui/components/DropDownMenu/index' {
+declare module "@shoutem/ui/components/DropDownMenu/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/DropDownMenu'>;
 }
-declare module '@shoutem/ui/components/DropDownMenu/index.js' {
+declare module "@shoutem/ui/components/DropDownMenu/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/DropDownMenu'>;
 }
-declare module '@shoutem/ui/components/EmptyStateView.js' {
+declare module "@shoutem/ui/components/EmptyStateView.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/EmptyStateView'>;
 }
-declare module '@shoutem/ui/components/FormGroup.js' {
+declare module "@shoutem/ui/components/FormGroup.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/FormGroup'>;
 }
-declare module '@shoutem/ui/components/GridRow.js' {
+declare module "@shoutem/ui/components/GridRow.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/GridRow'>;
 }
-declare module '@shoutem/ui/components/HorizontalPager/HorizontalPager.js' {
+declare module "@shoutem/ui/components/HorizontalPager/HorizontalPager.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/HorizontalPager/HorizontalPager'>;
 }
-declare module '@shoutem/ui/components/HorizontalPager/index' {
+declare module "@shoutem/ui/components/HorizontalPager/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/HorizontalPager'>;
 }
-declare module '@shoutem/ui/components/HorizontalPager/index.js' {
+declare module "@shoutem/ui/components/HorizontalPager/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/HorizontalPager'>;
 }
-declare module '@shoutem/ui/components/HorizontalPager/Page.js' {
+declare module "@shoutem/ui/components/HorizontalPager/Page.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/HorizontalPager/Page'>;
 }
-declare module '@shoutem/ui/components/Icon/createConfig.js' {
+declare module "@shoutem/ui/components/Icon/createConfig.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Icon/createConfig'>;
 }
-declare module '@shoutem/ui/components/Icon/createIcon.js' {
+declare module "@shoutem/ui/components/Icon/createIcon.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Icon/createIcon'>;
 }
-declare module '@shoutem/ui/components/Icon/index' {
+declare module "@shoutem/ui/components/Icon/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/Icon'>;
 }
-declare module '@shoutem/ui/components/Icon/index.js' {
+declare module "@shoutem/ui/components/Icon/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Icon'>;
 }
-declare module '@shoutem/ui/components/Image.js' {
+declare module "@shoutem/ui/components/Image.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Image'>;
 }
-declare module '@shoutem/ui/components/ImageBackground.js' {
+declare module "@shoutem/ui/components/ImageBackground.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageBackground'>;
 }
-declare module '@shoutem/ui/components/ImageGallery/ImageGallery.android.js' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGallery.android.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGallery/ImageGallery.android'>;
 }
-declare module '@shoutem/ui/components/ImageGallery/ImageGallery.ios.js' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGallery.ios.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGallery/ImageGallery.ios'>;
 }
-declare module '@shoutem/ui/components/ImageGallery/ImageGalleryBase.js' {
+declare module "@shoutem/ui/components/ImageGallery/ImageGalleryBase.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGallery/ImageGalleryBase'>;
 }
-declare module '@shoutem/ui/components/ImageGallery/index' {
+declare module "@shoutem/ui/components/ImageGallery/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGallery'>;
 }
-declare module '@shoutem/ui/components/ImageGallery/index.js' {
+declare module "@shoutem/ui/components/ImageGallery/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGallery'>;
 }
-declare module '@shoutem/ui/components/ImageGalleryOverlay.js' {
+declare module "@shoutem/ui/components/ImageGalleryOverlay.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImageGalleryOverlay'>;
 }
-declare module '@shoutem/ui/components/ImagePreview.js' {
+declare module "@shoutem/ui/components/ImagePreview.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ImagePreview'>;
 }
-declare module '@shoutem/ui/components/InlineGallery.js' {
+declare module "@shoutem/ui/components/InlineGallery.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/InlineGallery'>;
 }
-declare module '@shoutem/ui/components/Lightbox.js' {
+declare module "@shoutem/ui/components/Lightbox.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Lightbox'>;
 }
-declare module '@shoutem/ui/components/LinearGradient.js' {
+declare module "@shoutem/ui/components/LinearGradient.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/LinearGradient'>;
 }
-declare module '@shoutem/ui/components/ListView.js' {
+declare module "@shoutem/ui/components/ListView.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ListView'>;
 }
-declare module '@shoutem/ui/components/LoadingIndicator.js' {
+declare module "@shoutem/ui/components/LoadingIndicator.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/LoadingIndicator'>;
 }
-declare module '@shoutem/ui/components/NavigationBar/composeChildren.js' {
+declare module "@shoutem/ui/components/NavigationBar/composeChildren.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/NavigationBar/composeChildren'>;
 }
-declare module '@shoutem/ui/components/NavigationBar/index' {
+declare module "@shoutem/ui/components/NavigationBar/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/NavigationBar'>;
 }
-declare module '@shoutem/ui/components/NavigationBar/index.js' {
+declare module "@shoutem/ui/components/NavigationBar/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/NavigationBar'>;
 }
-declare module '@shoutem/ui/components/NavigationBar/NavigationBar.js' {
+declare module "@shoutem/ui/components/NavigationBar/NavigationBar.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/NavigationBar/NavigationBar'>;
 }
-declare module '@shoutem/ui/components/NavigationBar/NavigationBarAnimations.js' {
+declare module "@shoutem/ui/components/NavigationBar/NavigationBarAnimations.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/NavigationBar/NavigationBarAnimations'>;
 }
-declare module '@shoutem/ui/components/NumberInput.js' {
+declare module "@shoutem/ui/components/NumberInput.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/NumberInput'>;
 }
-declare module '@shoutem/ui/components/Overlay.js' {
+declare module "@shoutem/ui/components/Overlay.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Overlay'>;
 }
-declare module '@shoutem/ui/components/PageIndicators.js' {
+declare module "@shoutem/ui/components/PageIndicators.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/PageIndicators'>;
 }
-declare module '@shoutem/ui/components/Row.js' {
+declare module "@shoutem/ui/components/Row.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Row'>;
 }
-declare module '@shoutem/ui/components/Screen.js' {
+declare module "@shoutem/ui/components/Screen.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Screen'>;
 }
-declare module '@shoutem/ui/components/ScrollView/index' {
+declare module "@shoutem/ui/components/ScrollView/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/ScrollView'>;
 }
-declare module '@shoutem/ui/components/ScrollView/index.js' {
+declare module "@shoutem/ui/components/ScrollView/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ScrollView'>;
 }
-declare module '@shoutem/ui/components/ScrollView/ScrollDriverProvider.js' {
+declare module "@shoutem/ui/components/ScrollView/ScrollDriverProvider.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ScrollView/ScrollDriverProvider'>;
 }
-declare module '@shoutem/ui/components/ScrollView/ScrollView.js' {
+declare module "@shoutem/ui/components/ScrollView/ScrollView.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ScrollView/ScrollView'>;
 }
-declare module '@shoutem/ui/components/SearchField.js' {
+declare module "@shoutem/ui/components/SearchField.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/SearchField'>;
 }
-declare module '@shoutem/ui/components/ShareButton.js' {
+declare module "@shoutem/ui/components/ShareButton.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/ShareButton'>;
 }
-declare module '@shoutem/ui/components/Spinner.js' {
+declare module "@shoutem/ui/components/Spinner.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Spinner'>;
 }
-declare module '@shoutem/ui/components/Switch.js' {
+declare module "@shoutem/ui/components/Switch.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Switch'>;
 }
-declare module '@shoutem/ui/components/Text.js' {
+declare module "@shoutem/ui/components/Text.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Text'>;
 }
-declare module '@shoutem/ui/components/TextInput.js' {
+declare module "@shoutem/ui/components/TextInput.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/TextInput'>;
 }
-declare module '@shoutem/ui/components/Tile.js' {
+declare module "@shoutem/ui/components/Tile.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Tile'>;
 }
-declare module '@shoutem/ui/components/Touchable.js' {
+declare module "@shoutem/ui/components/Touchable.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Touchable'>;
 }
-declare module '@shoutem/ui/components/TouchableNativeFeedback.js' {
+declare module "@shoutem/ui/components/TouchableNativeFeedback.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/TouchableNativeFeedback'>;
 }
-declare module '@shoutem/ui/components/TouchableOpacity.js' {
+declare module "@shoutem/ui/components/TouchableOpacity.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/TouchableOpacity'>;
 }
-declare module '@shoutem/ui/components/Video/index' {
+declare module "@shoutem/ui/components/Video/index" {
   declare module.exports: $Exports<'@shoutem/ui/components/Video'>;
 }
-declare module '@shoutem/ui/components/Video/index.js' {
+declare module "@shoutem/ui/components/Video/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Video'>;
 }
-declare module '@shoutem/ui/components/Video/Video.js' {
+declare module "@shoutem/ui/components/Video/Video.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Video/Video'>;
 }
-declare module '@shoutem/ui/components/Video/VideoSourceReader.js' {
+declare module "@shoutem/ui/components/Video/VideoSourceReader.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/Video/VideoSourceReader'>;
 }
-declare module '@shoutem/ui/components/View.js' {
+declare module "@shoutem/ui/components/View.js" {
   declare module.exports: $Exports<'@shoutem/ui/components/View'>;
 }
-declare module '@shoutem/ui/const.js' {
+declare module "@shoutem/ui/const.js" {
   declare module.exports: $Exports<'@shoutem/ui/const'>;
 }
-declare module '@shoutem/ui/examples/components/Buttons.js' {
+declare module "@shoutem/ui/examples/components/Buttons.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Buttons'>;
 }
-declare module '@shoutem/ui/examples/components/Cards.js' {
+declare module "@shoutem/ui/examples/components/Cards.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Cards'>;
 }
-declare module '@shoutem/ui/examples/components/Dividers.js' {
+declare module "@shoutem/ui/examples/components/Dividers.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Dividers'>;
 }
-declare module '@shoutem/ui/examples/components/DropDownMenus.js' {
+declare module "@shoutem/ui/examples/components/DropDownMenus.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/DropDownMenus'>;
 }
-declare module '@shoutem/ui/examples/components/Examples.js' {
+declare module "@shoutem/ui/examples/components/Examples.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Examples'>;
 }
-declare module '@shoutem/ui/examples/components/FormComponents.js' {
+declare module "@shoutem/ui/examples/components/FormComponents.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/FormComponents'>;
 }
-declare module '@shoutem/ui/examples/components/Headers.js' {
+declare module "@shoutem/ui/examples/components/Headers.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Headers'>;
 }
-declare module '@shoutem/ui/examples/components/HorizontalPagers.js' {
+declare module "@shoutem/ui/examples/components/HorizontalPagers.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/HorizontalPagers'>;
 }
-declare module '@shoutem/ui/examples/components/ImageGalleries.js' {
+declare module "@shoutem/ui/examples/components/ImageGalleries.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/ImageGalleries'>;
 }
-declare module '@shoutem/ui/examples/components/Images.js' {
+declare module "@shoutem/ui/examples/components/Images.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Images'>;
 }
-declare module '@shoutem/ui/examples/components/index' {
+declare module "@shoutem/ui/examples/components/index" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components'>;
 }
-declare module '@shoutem/ui/examples/components/index.js' {
+declare module "@shoutem/ui/examples/components/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components'>;
 }
-declare module '@shoutem/ui/examples/components/InlineGalleries.js' {
+declare module "@shoutem/ui/examples/components/InlineGalleries.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/InlineGalleries'>;
 }
-declare module '@shoutem/ui/examples/components/NavigationBars.js' {
+declare module "@shoutem/ui/examples/components/NavigationBars.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/NavigationBars'>;
 }
-declare module '@shoutem/ui/examples/components/Rows.js' {
+declare module "@shoutem/ui/examples/components/Rows.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Rows'>;
 }
-declare module '@shoutem/ui/examples/components/Spinners.js' {
+declare module "@shoutem/ui/examples/components/Spinners.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Spinners'>;
 }
-declare module '@shoutem/ui/examples/components/Stage.js' {
+declare module "@shoutem/ui/examples/components/Stage.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Stage'>;
 }
-declare module '@shoutem/ui/examples/components/Tiles.js' {
+declare module "@shoutem/ui/examples/components/Tiles.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Tiles'>;
 }
-declare module '@shoutem/ui/examples/components/Typography.js' {
+declare module "@shoutem/ui/examples/components/Typography.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Typography'>;
 }
-declare module '@shoutem/ui/examples/components/Videos.js' {
+declare module "@shoutem/ui/examples/components/Videos.js" {
   declare module.exports: $Exports<'@shoutem/ui/examples/components/Videos'>;
 }
-declare module '@shoutem/ui/helpers/device-selector.js' {
+declare module "@shoutem/ui/helpers/device-selector.js" {
   declare module.exports: $Exports<'@shoutem/ui/helpers/device-selector'>;
 }
-declare module '@shoutem/ui/helpers/index' {
+declare module "@shoutem/ui/helpers/index" {
   declare module.exports: $Exports<'@shoutem/ui/helpers'>;
 }
-declare module '@shoutem/ui/helpers/index.js' {
+declare module "@shoutem/ui/helpers/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/helpers'>;
 }
-declare module '@shoutem/ui/html/components/Gallery.js' {
+declare module "@shoutem/ui/html/components/Gallery.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/components/Gallery'>;
 }
-declare module '@shoutem/ui/html/components/Image.js' {
+declare module "@shoutem/ui/html/components/Image.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/components/Image'>;
 }
-declare module '@shoutem/ui/html/components/SimpleHtml.js' {
+declare module "@shoutem/ui/html/components/SimpleHtml.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/components/SimpleHtml'>;
 }
-declare module '@shoutem/ui/html/elements/A.js' {
+declare module "@shoutem/ui/html/elements/A.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/A'>;
 }
-declare module '@shoutem/ui/html/elements/Block.js' {
+declare module "@shoutem/ui/html/elements/Block.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Block'>;
 }
-declare module '@shoutem/ui/html/elements/Br.js' {
+declare module "@shoutem/ui/html/elements/Br.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Br'>;
 }
-declare module '@shoutem/ui/html/elements/Img.js' {
+declare module "@shoutem/ui/html/elements/Img.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Img'>;
 }
-declare module '@shoutem/ui/html/elements/Inline.js' {
+declare module "@shoutem/ui/html/elements/Inline.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Inline'>;
 }
-declare module '@shoutem/ui/html/elements/list/helpers/pickLiChildElements.js' {
+declare module "@shoutem/ui/html/elements/list/helpers/pickLiChildElements.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/helpers/pickLiChildElements'>;
 }
-declare module '@shoutem/ui/html/elements/list/helpers/renderItems.js' {
+declare module "@shoutem/ui/html/elements/list/helpers/renderItems.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/helpers/renderItems'>;
 }
-declare module '@shoutem/ui/html/elements/list/index' {
+declare module "@shoutem/ui/html/elements/list/index" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list'>;
 }
-declare module '@shoutem/ui/html/elements/list/index.js' {
+declare module "@shoutem/ui/html/elements/list/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list'>;
 }
-declare module '@shoutem/ui/html/elements/list/Li.js' {
+declare module "@shoutem/ui/html/elements/list/Li.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/Li'>;
 }
-declare module '@shoutem/ui/html/elements/list/Ol.js' {
+declare module "@shoutem/ui/html/elements/list/Ol.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/Ol'>;
 }
-declare module '@shoutem/ui/html/elements/list/prefix/Bullet.js' {
+declare module "@shoutem/ui/html/elements/list/prefix/Bullet.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/prefix/Bullet'>;
 }
-declare module '@shoutem/ui/html/elements/list/prefix/Number.js' {
+declare module "@shoutem/ui/html/elements/list/prefix/Number.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/prefix/Number'>;
 }
-declare module '@shoutem/ui/html/elements/list/Ul.js' {
+declare module "@shoutem/ui/html/elements/list/Ul.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/list/Ul'>;
 }
-declare module '@shoutem/ui/html/elements/Text.js' {
+declare module "@shoutem/ui/html/elements/Text.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Text'>;
 }
-declare module '@shoutem/ui/html/elements/Video.js' {
+declare module "@shoutem/ui/html/elements/Video.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Video'>;
 }
-declare module '@shoutem/ui/html/elements/Virtual.js' {
+declare module "@shoutem/ui/html/elements/Virtual.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/elements/Virtual'>;
 }
-declare module '@shoutem/ui/html/Html.js' {
+declare module "@shoutem/ui/html/Html.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/Html'>;
 }
-declare module '@shoutem/ui/html/index' {
+declare module "@shoutem/ui/html/index" {
   declare module.exports: $Exports<'@shoutem/ui/html'>;
 }
-declare module '@shoutem/ui/html/index.js' {
+declare module "@shoutem/ui/html/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/html'>;
 }
-declare module '@shoutem/ui/html/services/ElementRegistry.js' {
+declare module "@shoutem/ui/html/services/ElementRegistry.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/services/ElementRegistry'>;
 }
-declare module '@shoutem/ui/html/services/getEmptyObjectKeys.js' {
+declare module "@shoutem/ui/html/services/getEmptyObjectKeys.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/services/getEmptyObjectKeys'>;
 }
-declare module '@shoutem/ui/html/services/HtmlParser.js' {
+declare module "@shoutem/ui/html/services/HtmlParser.js" {
   declare module.exports: $Exports<'@shoutem/ui/html/services/HtmlParser'>;
 }
-declare module '@shoutem/ui/index' {
+declare module "@shoutem/ui/index" {
   declare module.exports: $Exports<'@shoutem/ui'>;
 }
-declare module '@shoutem/ui/index.js' {
+declare module "@shoutem/ui/index.js" {
   declare module.exports: $Exports<'@shoutem/ui'>;
 }
-declare module '@shoutem/ui/init.js' {
+declare module "@shoutem/ui/init.js" {
   declare module.exports: $Exports<'@shoutem/ui/init'>;
 }
-declare module '@shoutem/ui/navigation/CardStack.js' {
+declare module "@shoutem/ui/navigation/CardStack.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/CardStack'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/back-button.composer.js' {
+declare module "@shoutem/ui/navigation/children-composers/back-button.composer.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers/back-button.composer'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/index' {
+declare module "@shoutem/ui/navigation/children-composers/index" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/index.js' {
+declare module "@shoutem/ui/navigation/children-composers/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/navbar-image.composer.js' {
+declare module "@shoutem/ui/navigation/children-composers/navbar-image.composer.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers/navbar-image.composer'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/share.composer.js' {
+declare module "@shoutem/ui/navigation/children-composers/share.composer.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers/share.composer'>;
 }
-declare module '@shoutem/ui/navigation/children-composers/title.composer.js' {
+declare module "@shoutem/ui/navigation/children-composers/title.composer.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/children-composers/title.composer'>;
 }
-declare module '@shoutem/ui/navigation/composeChildren.js' {
+declare module "@shoutem/ui/navigation/composeChildren.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/composeChildren'>;
 }
-declare module '@shoutem/ui/navigation/index' {
+declare module "@shoutem/ui/navigation/index" {
   declare module.exports: $Exports<'@shoutem/ui/navigation'>;
 }
-declare module '@shoutem/ui/navigation/index.js' {
+declare module "@shoutem/ui/navigation/index.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation'>;
 }
-declare module '@shoutem/ui/navigation/NavigationBar.js' {
+declare module "@shoutem/ui/navigation/NavigationBar.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/NavigationBar'>;
 }
-declare module '@shoutem/ui/navigation/NavigationBarView.js' {
+declare module "@shoutem/ui/navigation/NavigationBarView.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/NavigationBarView'>;
 }
-declare module '@shoutem/ui/navigation/RNCardStack.js' {
+declare module "@shoutem/ui/navigation/RNCardStack.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/RNCardStack'>;
 }
-declare module '@shoutem/ui/navigation/SceneProvider.js' {
+declare module "@shoutem/ui/navigation/SceneProvider.js" {
   declare module.exports: $Exports<'@shoutem/ui/navigation/SceneProvider'>;
 }
-declare module '@shoutem/ui/scripts/link.js' {
+declare module "@shoutem/ui/scripts/link.js" {
   declare module.exports: $Exports<'@shoutem/ui/scripts/link'>;
 }
-declare module '@shoutem/ui/theme.js' {
+declare module "@shoutem/ui/theme.js" {
   declare module.exports: $Exports<'@shoutem/ui/theme'>;
 }

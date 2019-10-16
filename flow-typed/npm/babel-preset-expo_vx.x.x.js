@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'babel-preset-expo' {
+declare module "babel-preset-expo" {
   declare module.exports: any;
 }
 
@@ -22,24 +22,24 @@ declare module 'babel-preset-expo' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'babel-preset-expo/__tests__/index-test' {
+declare module "babel-preset-expo/__tests__/index-test" {
   declare module.exports: any;
 }
 
-declare module 'babel-preset-expo/__tests__/samples/App' {
+declare module "babel-preset-expo/__tests__/samples/App" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'babel-preset-expo/__tests__/index-test.js' {
+declare module "babel-preset-expo/__tests__/index-test.js" {
   declare module.exports: $Exports<'babel-preset-expo/__tests__/index-test'>;
 }
-declare module 'babel-preset-expo/__tests__/samples/App.js' {
+declare module "babel-preset-expo/__tests__/samples/App.js" {
   declare module.exports: $Exports<'babel-preset-expo/__tests__/samples/App'>;
 }
-declare module 'babel-preset-expo/index' {
+declare module "babel-preset-expo/index" {
   declare module.exports: $Exports<'babel-preset-expo'>;
 }
-declare module 'babel-preset-expo/index.js' {
+declare module "babel-preset-expo/index.js" {
   declare module.exports: $Exports<'babel-preset-expo'>;
 }

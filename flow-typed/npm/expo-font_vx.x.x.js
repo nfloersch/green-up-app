@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'expo-font' {
+declare module "expo-font" {
   declare module.exports: any;
 }
 
@@ -22,25 +22,25 @@ declare module 'expo-font' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'expo-font/build/ExpoFontLoader' {
+declare module "expo-font/build/ExpoFontLoader" {
   declare module.exports: any;
 }
 
-declare module 'expo-font/build/ExpoFontLoader.web' {
+declare module "expo-font/build/ExpoFontLoader.web" {
   declare module.exports: any;
 }
 
-declare module 'expo-font/build/Font' {
+declare module "expo-font/build/Font" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'expo-font/build/ExpoFontLoader.js' {
+declare module "expo-font/build/ExpoFontLoader.js" {
   declare module.exports: $Exports<'expo-font/build/ExpoFontLoader'>;
 }
-declare module 'expo-font/build/ExpoFontLoader.web.js' {
+declare module "expo-font/build/ExpoFontLoader.web.js" {
   declare module.exports: $Exports<'expo-font/build/ExpoFontLoader.web'>;
 }
-declare module 'expo-font/build/Font.js' {
+declare module "expo-font/build/Font.js" {
   declare module.exports: $Exports<'expo-font/build/Font'>;
 }

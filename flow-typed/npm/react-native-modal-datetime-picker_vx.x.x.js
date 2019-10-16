@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-modal-datetime-picker' {
+declare module "react-native-modal-datetime-picker" {
   declare module.exports: any;
 }
 
@@ -22,35 +22,35 @@ declare module 'react-native-modal-datetime-picker' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'react-native-modal-datetime-picker/src/CustomDatePickerAndroid' {
+declare module "react-native-modal-datetime-picker/src/CustomDatePickerAndroid" {
   declare module.exports: any;
 }
 
-declare module 'react-native-modal-datetime-picker/src/CustomDatePickerIOS' {
+declare module "react-native-modal-datetime-picker/src/CustomDatePickerIOS" {
   declare module.exports: any;
 }
 
-declare module 'react-native-modal-datetime-picker/src' {
+declare module "react-native-modal-datetime-picker/src" {
   declare module.exports: any;
 }
 
-declare module 'react-native-modal-datetime-picker/src/utils' {
+declare module "react-native-modal-datetime-picker/src/utils" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'react-native-modal-datetime-picker/src/CustomDatePickerAndroid.js' {
+declare module "react-native-modal-datetime-picker/src/CustomDatePickerAndroid.js" {
   declare module.exports: $Exports<'react-native-modal-datetime-picker/src/CustomDatePickerAndroid'>;
 }
-declare module 'react-native-modal-datetime-picker/src/CustomDatePickerIOS.js' {
+declare module "react-native-modal-datetime-picker/src/CustomDatePickerIOS.js" {
   declare module.exports: $Exports<'react-native-modal-datetime-picker/src/CustomDatePickerIOS'>;
 }
-declare module 'react-native-modal-datetime-picker/src/index' {
+declare module "react-native-modal-datetime-picker/src/index" {
   declare module.exports: $Exports<'react-native-modal-datetime-picker/src'>;
 }
-declare module 'react-native-modal-datetime-picker/src/index.js' {
+declare module "react-native-modal-datetime-picker/src/index.js" {
   declare module.exports: $Exports<'react-native-modal-datetime-picker/src'>;
 }
-declare module 'react-native-modal-datetime-picker/src/utils.js' {
+declare module "react-native-modal-datetime-picker/src/utils.js" {
   declare module.exports: $Exports<'react-native-modal-datetime-picker/src/utils'>;
 }

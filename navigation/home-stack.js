@@ -16,8 +16,8 @@ const HomeStack = createStackNavigator({
     NewTeam: { screen: NewTeam },
     HandlingTrash: { screen: HandlingTrash },
     FreeSupplies: { screen: FreeSupplies },
-    Celebrations:{screen: Celebrations},
-    GreenUpFacts:{screen: GreenUpFacts}
+    Celebrations:{ screen: Celebrations },
+    GreenUpFacts:{ screen: GreenUpFacts }
 });
 
 export default createAppContainer(HomeStack);

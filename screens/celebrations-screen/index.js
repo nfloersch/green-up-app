@@ -19,15 +19,15 @@ type Props = {
 
 class Celebrations extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Celebrations"
-    };
-
     constructor(props) {
         super(props);
         this.onSearchTermChange = this.onSearchTermChange.bind(this);
         this.state = { searchResults: [], searchTerm: "" };
     }
+
+    static navigationOptions = {
+        title: "Celebrations"
+    };
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;

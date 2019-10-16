@@ -3,8 +3,9 @@
 
 // @flow
 
-declare module 'react-navigation' {
-  /**
+declare module "react-navigation" {
+
+    /**
    * First, a bunch of things we would love to import but instead must
    * reconstruct (mostly copy-pasted).
    */
@@ -237,6 +238,7 @@ declare module 'react-navigation' {
    * state for the whole app.
    */
   declare export type NavigationState = {
+
     /**
      * Index refers to the active child route in the routes array.
      */
@@ -251,20 +253,24 @@ declare module 'react-navigation' {
     | NavigationStateRoute;
 
   declare export type NavigationLeafRoute = {|
+
     /**
      * React's key used by some navigators. No need to specify these manually,
      * they will be defined by the router.
      */
     key: string,
+
     /**
      * For example 'Home'.
      * This is used as a key in a route config when creating a navigator.
      */
     routeName: string,
+
     /**
      * Path is an advanced feature used for deep linking and on the web.
      */
     path?: string,
+
     /**
      * Params passed to this route when navigating to it,
      * e.g. `{ car_id: 123 }` in a route that displays a car.
@@ -287,12 +293,14 @@ declare module 'react-navigation' {
   ) => Options;
 
   declare export type NavigationRouter<State: NavigationState, Options: {...}> = {
+
     /**
      * The reducer that outputs the new navigation state for a given action,
      * with an optional previous state. When the action is considered handled
      * but the state is unchanged, the output state is null.
      */
     getStateForAction: (action: NavigationAction, lastState: ?State) => ?State,
+
     /**
      * Maps a URI-like string to an action. This can be mapped to a state
      * using `getStateForAction`.
@@ -310,6 +318,7 @@ declare module 'react-navigation' {
     },
     getComponentForRouteName: (routeName: string) => NavigationComponent,
     getComponentForState: (state: State) => NavigationComponent,
+
     /**
      * Gets the screen navigation options for a given screen.
      *
@@ -991,6 +1000,7 @@ declare module 'react-navigation' {
     removeClippedSubviews?: boolean,
     containerOptions?: void,
   |};
+
   /* TODO: fix the config for each of these tab navigator types */
   declare export function createBottomTabNavigator(
     routeConfigs: NavigationRouteConfigMap,
@@ -1063,6 +1073,7 @@ declare module 'react-navigation' {
     cardStyle?: ViewStyleProp,
     onTransitionStart?: () => void,
     onTransitionEnd?: () => void,
+
     /**
      * Optional custom animation when transitioning between screens.
      */
@@ -1082,6 +1093,7 @@ declare module 'react-navigation' {
     cardStyle?: ViewStyleProp,
     onTransitionStart?: () => void,
     onTransitionEnd?: () => void,
+
     /**
      * Optional custom animation when transitioning between screens.
      */

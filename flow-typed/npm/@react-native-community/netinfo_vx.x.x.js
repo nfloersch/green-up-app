@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module '@react-native-community/netinfo' {
+declare module "@react-native-community/netinfo" {
   declare module.exports: any;
 }
 
@@ -22,122 +22,122 @@ declare module '@react-native-community/netinfo' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module '@react-native-community/netinfo/lib/commonjs' {
+declare module "@react-native-community/netinfo/lib/commonjs" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedSubscriptions' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedSubscriptions" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedTypes' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedTypes" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedUtils' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedUtils" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/nativeInterface' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/nativeInterface" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/privateTypes' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/privateTypes" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/subscriptions' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/subscriptions" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/commonjs/internal/types' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/types" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module' {
+declare module "@react-native-community/netinfo/lib/module" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedSubscriptions' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedSubscriptions" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedTypes' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedTypes" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedUtils' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedUtils" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/nativeInterface' {
+declare module "@react-native-community/netinfo/lib/module/internal/nativeInterface" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/privateTypes' {
+declare module "@react-native-community/netinfo/lib/module/internal/privateTypes" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/subscriptions' {
+declare module "@react-native-community/netinfo/lib/module/internal/subscriptions" {
   declare module.exports: any;
 }
 
-declare module '@react-native-community/netinfo/lib/module/internal/types' {
+declare module "@react-native-community/netinfo/lib/module/internal/types" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module '@react-native-community/netinfo/lib/commonjs/index' {
+declare module "@react-native-community/netinfo/lib/commonjs/index" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/index.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/index.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedSubscriptions.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedSubscriptions.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/deprecatedSubscriptions'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedTypes.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedTypes.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/deprecatedTypes'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/deprecatedUtils.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/deprecatedUtils.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/deprecatedUtils'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/nativeInterface.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/nativeInterface.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/nativeInterface'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/privateTypes.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/privateTypes.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/privateTypes'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/subscriptions.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/subscriptions.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/subscriptions'>;
 }
-declare module '@react-native-community/netinfo/lib/commonjs/internal/types.js' {
+declare module "@react-native-community/netinfo/lib/commonjs/internal/types.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/types'>;
 }
-declare module '@react-native-community/netinfo/lib/module/index' {
+declare module "@react-native-community/netinfo/lib/module/index" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module'>;
 }
-declare module '@react-native-community/netinfo/lib/module/index.js' {
+declare module "@react-native-community/netinfo/lib/module/index.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedSubscriptions.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedSubscriptions.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/deprecatedSubscriptions'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedTypes.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedTypes.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/deprecatedTypes'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/deprecatedUtils.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/deprecatedUtils.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/deprecatedUtils'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/nativeInterface.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/nativeInterface.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/nativeInterface'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/privateTypes.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/privateTypes.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/privateTypes'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/subscriptions.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/subscriptions.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/subscriptions'>;
 }
-declare module '@react-native-community/netinfo/lib/module/internal/types.js' {
+declare module "@react-native-community/netinfo/lib/module/internal/types.js" {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/types'>;
 }
