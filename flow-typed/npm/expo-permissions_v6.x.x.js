@@ -1,7 +1,7 @@
 // flow-typed signature: 3fba6f246c11590477683070b0c68b30
 // flow-typed version: 75b56c3a87/expo-permissions_v6.x.x/flow_>=v0.69.0
 
-declare module 'expo-permissions' {
+declare module "expo-permissions" {
   declare export type PermissionResponse = $ReadOnly<{|
     status: PermissionStatus,
     expires: PermissionExpiration,

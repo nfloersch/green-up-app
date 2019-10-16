@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-checkbox' {
+declare module "react-native-checkbox" {
   declare module.exports: any;
 }
 
@@ -22,11 +22,11 @@ declare module 'react-native-checkbox' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'react-native-checkbox/checkbox' {
+declare module "react-native-checkbox/checkbox" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'react-native-checkbox/checkbox.js' {
+declare module "react-native-checkbox/checkbox.js" {
   declare module.exports: $Exports<'react-native-checkbox/checkbox'>;
 }

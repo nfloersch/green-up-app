@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-maps' {
+declare module "react-native-maps" {
   declare module.exports: any;
 }
 
@@ -22,129 +22,129 @@ declare module 'react-native-maps' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'react-native-maps/babel.config' {
+declare module "react-native-maps/babel.config" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/AnimatedRegion' {
+declare module "react-native-maps/lib/components/AnimatedRegion" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/decorateMapComponent' {
+declare module "react-native-maps/lib/components/decorateMapComponent" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapCallout' {
+declare module "react-native-maps/lib/components/MapCallout" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapCalloutSubview' {
+declare module "react-native-maps/lib/components/MapCalloutSubview" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapCircle' {
+declare module "react-native-maps/lib/components/MapCircle" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapLocalTile' {
+declare module "react-native-maps/lib/components/MapLocalTile" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapMarker' {
+declare module "react-native-maps/lib/components/MapMarker" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapOverlay' {
+declare module "react-native-maps/lib/components/MapOverlay" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapPolygon' {
+declare module "react-native-maps/lib/components/MapPolygon" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapPolyline' {
+declare module "react-native-maps/lib/components/MapPolyline" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapUrlTile' {
+declare module "react-native-maps/lib/components/MapUrlTile" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/MapView' {
+declare module "react-native-maps/lib/components/MapView" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/lib/components/ProviderConstants' {
+declare module "react-native-maps/lib/components/ProviderConstants" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/metro.config' {
+declare module "react-native-maps/metro.config" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/rn-cli.config' {
+declare module "react-native-maps/rn-cli.config" {
   declare module.exports: any;
 }
 
-declare module 'react-native-maps/scripts/update-version' {
+declare module "react-native-maps/scripts/update-version" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'react-native-maps/babel.config.js' {
+declare module "react-native-maps/babel.config.js" {
   declare module.exports: $Exports<'react-native-maps/babel.config'>;
 }
-declare module 'react-native-maps/index' {
+declare module "react-native-maps/index" {
   declare module.exports: $Exports<'react-native-maps'>;
 }
-declare module 'react-native-maps/index.js' {
+declare module "react-native-maps/index.js" {
   declare module.exports: $Exports<'react-native-maps'>;
 }
-declare module 'react-native-maps/lib/components/AnimatedRegion.js' {
+declare module "react-native-maps/lib/components/AnimatedRegion.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/AnimatedRegion'>;
 }
-declare module 'react-native-maps/lib/components/decorateMapComponent.js' {
+declare module "react-native-maps/lib/components/decorateMapComponent.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/decorateMapComponent'>;
 }
-declare module 'react-native-maps/lib/components/MapCallout.js' {
+declare module "react-native-maps/lib/components/MapCallout.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapCallout'>;
 }
-declare module 'react-native-maps/lib/components/MapCalloutSubview.js' {
+declare module "react-native-maps/lib/components/MapCalloutSubview.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapCalloutSubview'>;
 }
-declare module 'react-native-maps/lib/components/MapCircle.js' {
+declare module "react-native-maps/lib/components/MapCircle.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapCircle'>;
 }
-declare module 'react-native-maps/lib/components/MapLocalTile.js' {
+declare module "react-native-maps/lib/components/MapLocalTile.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapLocalTile'>;
 }
-declare module 'react-native-maps/lib/components/MapMarker.js' {
+declare module "react-native-maps/lib/components/MapMarker.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapMarker'>;
 }
-declare module 'react-native-maps/lib/components/MapOverlay.js' {
+declare module "react-native-maps/lib/components/MapOverlay.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapOverlay'>;
 }
-declare module 'react-native-maps/lib/components/MapPolygon.js' {
+declare module "react-native-maps/lib/components/MapPolygon.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapPolygon'>;
 }
-declare module 'react-native-maps/lib/components/MapPolyline.js' {
+declare module "react-native-maps/lib/components/MapPolyline.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapPolyline'>;
 }
-declare module 'react-native-maps/lib/components/MapUrlTile.js' {
+declare module "react-native-maps/lib/components/MapUrlTile.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapUrlTile'>;
 }
-declare module 'react-native-maps/lib/components/MapView.js' {
+declare module "react-native-maps/lib/components/MapView.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/MapView'>;
 }
-declare module 'react-native-maps/lib/components/ProviderConstants.js' {
+declare module "react-native-maps/lib/components/ProviderConstants.js" {
   declare module.exports: $Exports<'react-native-maps/lib/components/ProviderConstants'>;
 }
-declare module 'react-native-maps/metro.config.js' {
+declare module "react-native-maps/metro.config.js" {
   declare module.exports: $Exports<'react-native-maps/metro.config'>;
 }
-declare module 'react-native-maps/rn-cli.config.js' {
+declare module "react-native-maps/rn-cli.config.js" {
   declare module.exports: $Exports<'react-native-maps/rn-cli.config'>;
 }
-declare module 'react-native-maps/scripts/update-version.js' {
+declare module "react-native-maps/scripts/update-version.js" {
   declare module.exports: $Exports<'react-native-maps/scripts/update-version'>;
 }

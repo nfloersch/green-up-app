@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-offline' {
+declare module "react-native-offline" {
   declare module.exports: any;
 }
 
@@ -22,140 +22,140 @@ declare module 'react-native-offline' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'react-native-offline/src/components/NetworkConnectivity' {
+declare module "react-native-offline/src/components/NetworkConnectivity" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/components/NetworkConsumer' {
+declare module "react-native-offline/src/components/NetworkConsumer" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/components/NetworkContext' {
+declare module "react-native-offline/src/components/NetworkContext" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/components/NetworkProvider' {
+declare module "react-native-offline/src/components/NetworkProvider" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/components/ReduxNetworkProvider' {
+declare module "react-native-offline/src/components/ReduxNetworkProvider" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src' {
+declare module "react-native-offline/src" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/redux/actionCreators' {
+declare module "react-native-offline/src/redux/actionCreators" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/redux/actionTypes' {
+declare module "react-native-offline/src/redux/actionTypes" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/redux/createNetworkMiddleware' {
+declare module "react-native-offline/src/redux/createNetworkMiddleware" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/redux/createReducer' {
+declare module "react-native-offline/src/redux/createReducer" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/redux/sagas' {
+declare module "react-native-offline/src/redux/sagas" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/types' {
+declare module "react-native-offline/src/types" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/checkConnectivityInterval' {
+declare module "react-native-offline/src/utils/checkConnectivityInterval" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/checkInternetAccess' {
+declare module "react-native-offline/src/utils/checkInternetAccess" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/checkInternetConnection' {
+declare module "react-native-offline/src/utils/checkInternetConnection" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/constants' {
+declare module "react-native-offline/src/utils/constants" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/getSimilarActionInQueue' {
+declare module "react-native-offline/src/utils/getSimilarActionInQueue" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/makeHttpRequest' {
+declare module "react-native-offline/src/utils/makeHttpRequest" {
   declare module.exports: any;
 }
 
-declare module 'react-native-offline/src/utils/wait' {
+declare module "react-native-offline/src/utils/wait" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'react-native-offline/src/components/NetworkConnectivity.js' {
+declare module "react-native-offline/src/components/NetworkConnectivity.js" {
   declare module.exports: $Exports<'react-native-offline/src/components/NetworkConnectivity'>;
 }
-declare module 'react-native-offline/src/components/NetworkConsumer.js' {
+declare module "react-native-offline/src/components/NetworkConsumer.js" {
   declare module.exports: $Exports<'react-native-offline/src/components/NetworkConsumer'>;
 }
-declare module 'react-native-offline/src/components/NetworkContext.js' {
+declare module "react-native-offline/src/components/NetworkContext.js" {
   declare module.exports: $Exports<'react-native-offline/src/components/NetworkContext'>;
 }
-declare module 'react-native-offline/src/components/NetworkProvider.js' {
+declare module "react-native-offline/src/components/NetworkProvider.js" {
   declare module.exports: $Exports<'react-native-offline/src/components/NetworkProvider'>;
 }
-declare module 'react-native-offline/src/components/ReduxNetworkProvider.js' {
+declare module "react-native-offline/src/components/ReduxNetworkProvider.js" {
   declare module.exports: $Exports<'react-native-offline/src/components/ReduxNetworkProvider'>;
 }
-declare module 'react-native-offline/src/index' {
+declare module "react-native-offline/src/index" {
   declare module.exports: $Exports<'react-native-offline/src'>;
 }
-declare module 'react-native-offline/src/index.js' {
+declare module "react-native-offline/src/index.js" {
   declare module.exports: $Exports<'react-native-offline/src'>;
 }
-declare module 'react-native-offline/src/redux/actionCreators.js' {
+declare module "react-native-offline/src/redux/actionCreators.js" {
   declare module.exports: $Exports<'react-native-offline/src/redux/actionCreators'>;
 }
-declare module 'react-native-offline/src/redux/actionTypes.js' {
+declare module "react-native-offline/src/redux/actionTypes.js" {
   declare module.exports: $Exports<'react-native-offline/src/redux/actionTypes'>;
 }
-declare module 'react-native-offline/src/redux/createNetworkMiddleware.js' {
+declare module "react-native-offline/src/redux/createNetworkMiddleware.js" {
   declare module.exports: $Exports<'react-native-offline/src/redux/createNetworkMiddleware'>;
 }
-declare module 'react-native-offline/src/redux/createReducer.js' {
+declare module "react-native-offline/src/redux/createReducer.js" {
   declare module.exports: $Exports<'react-native-offline/src/redux/createReducer'>;
 }
-declare module 'react-native-offline/src/redux/sagas.js' {
+declare module "react-native-offline/src/redux/sagas.js" {
   declare module.exports: $Exports<'react-native-offline/src/redux/sagas'>;
 }
-declare module 'react-native-offline/src/types.js' {
+declare module "react-native-offline/src/types.js" {
   declare module.exports: $Exports<'react-native-offline/src/types'>;
 }
-declare module 'react-native-offline/src/utils/checkConnectivityInterval.js' {
+declare module "react-native-offline/src/utils/checkConnectivityInterval.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/checkConnectivityInterval'>;
 }
-declare module 'react-native-offline/src/utils/checkInternetAccess.js' {
+declare module "react-native-offline/src/utils/checkInternetAccess.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/checkInternetAccess'>;
 }
-declare module 'react-native-offline/src/utils/checkInternetConnection.js' {
+declare module "react-native-offline/src/utils/checkInternetConnection.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/checkInternetConnection'>;
 }
-declare module 'react-native-offline/src/utils/constants.js' {
+declare module "react-native-offline/src/utils/constants.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/constants'>;
 }
-declare module 'react-native-offline/src/utils/getSimilarActionInQueue.js' {
+declare module "react-native-offline/src/utils/getSimilarActionInQueue.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/getSimilarActionInQueue'>;
 }
-declare module 'react-native-offline/src/utils/makeHttpRequest.js' {
+declare module "react-native-offline/src/utils/makeHttpRequest.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/makeHttpRequest'>;
 }
-declare module 'react-native-offline/src/utils/wait.js' {
+declare module "react-native-offline/src/utils/wait.js" {
   declare module.exports: $Exports<'react-native-offline/src/utils/wait'>;
 }

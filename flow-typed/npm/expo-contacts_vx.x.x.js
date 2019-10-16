@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'expo-contacts' {
+declare module "expo-contacts" {
   declare module.exports: any;
 }
 
@@ -22,25 +22,25 @@ declare module 'expo-contacts' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'expo-contacts/build/Contacts' {
+declare module "expo-contacts/build/Contacts" {
   declare module.exports: any;
 }
 
-declare module 'expo-contacts/build/ExpoContacts' {
+declare module "expo-contacts/build/ExpoContacts" {
   declare module.exports: any;
 }
 
-declare module 'expo-contacts/build/ExpoContacts.web' {
+declare module "expo-contacts/build/ExpoContacts.web" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'expo-contacts/build/Contacts.js' {
+declare module "expo-contacts/build/Contacts.js" {
   declare module.exports: $Exports<'expo-contacts/build/Contacts'>;
 }
-declare module 'expo-contacts/build/ExpoContacts.js' {
+declare module "expo-contacts/build/ExpoContacts.js" {
   declare module.exports: $Exports<'expo-contacts/build/ExpoContacts'>;
 }
-declare module 'expo-contacts/build/ExpoContacts.web.js' {
+declare module "expo-contacts/build/ExpoContacts.web.js" {
   declare module.exports: $Exports<'expo-contacts/build/ExpoContacts.web'>;
 }

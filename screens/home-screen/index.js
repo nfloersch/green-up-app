@@ -78,7 +78,7 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ actions, navigation, currentUser, myTeams }: PropsType): React$Element<any> => {
+const HomeScreen = ({ navigation }: PropsType) => {
     const myButtons = R.compose(
         R.map(entry => ({
             onPress: () => navigation.navigate(entry[1].navigation),

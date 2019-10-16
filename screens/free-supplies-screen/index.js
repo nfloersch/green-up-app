@@ -19,15 +19,15 @@ type Props = {
 
 class FreeSupplies extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Find Bags, Gloves, and Other Stuff"
-    };
-
     constructor(props) {
         super(props);
         this.onSearchTermChange = this.onSearchTermChange.bind(this);
         this.state = { searchResults: [], searchTerm: "" };
     }
+
+    static navigationOptions = {
+        title: "Find Bags, Gloves, and Other Stuff"
+    };
 
     onSearchTermChange(searchTerm) {
         const towns = this.props.towns;
