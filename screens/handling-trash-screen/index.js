@@ -20,7 +20,7 @@ type Props = {
 class HandlingTrash extends Component<Props> {
 
     static navigationOptions = {
-        title: "Find Bags & Stuff"
+        title: "How and Where to Dispose of Trash"
     };
 
     constructor(props) {

@@ -20,7 +20,7 @@ type Props = {
 class FreeSupplies extends Component<Props> {
 
     static navigationOptions = {
-        title: "Find Bags & Stuff"
+        title: "Find Bags, Gloves, and Other Stuff"
     };
 
     constructor(props) {

@@ -17,10 +17,10 @@ type Props = {
     towns: Object
 };
 
-class TownInfo extends Component<Props> {
+class Celebrations extends Component<Props> {
 
     static navigationOptions = {
-        title: "Find Bags & Stuff"
+        title: "Celebrations"
     };
 
     constructor(props) {
@@ -82,4 +82,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TownInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(Celebrations);

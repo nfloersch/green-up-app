@@ -24,10 +24,10 @@ type Props = {
     faqs: Array<{ question: string, answer: string }>
 }
 
-class About extends Component<Props> {
+class GreenUpFacts extends Component<Props> {
 
     static navigationOptions = {
-        title: "About"
+        title: "About Green Up Day"
     };
 
     render() {
@@ -101,4 +101,4 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(GreenUpFacts);
