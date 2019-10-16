@@ -83,6 +83,7 @@
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
+    "expo-cli": "^3.4.0",
     "expo-permissions": "^6.0.0",
     "firebase-tools": "^7.2.2",
     "flow-bin": "^0.109.0",
