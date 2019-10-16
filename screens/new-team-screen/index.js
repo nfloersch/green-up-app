@@ -8,10 +8,10 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    TouchableHighlight,
     TouchableOpacity,
     View
 } from "react-native";
+import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -28,6 +28,8 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 // import * as Location from "expo-location";
 import { TownLocation } from "../../models/town";
+import ButtonBar from "../../components/button-bar";
+import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 
 const myStyles = {
     selected: {
@@ -37,7 +39,7 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
+const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
 const freshState = (owner, initialMapLocation = null) => ({
     team: Team.create({ owner }),
     startDateTimePickerVisible: false,
@@ -72,6 +74,7 @@ type PropsType = {
     otherCleanAreas: Array<any>,
     vermontTowns: Array<Object>
 };
+
 
 const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSettings }: PropsType) => {
 
@@ -159,17 +162,6 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
         }
     };
 
-    // android returns 24hr time with leading zero and no am/pm designation so
-    // we fix it up here to display consistently with ios
-    const fixAndroidTime = time => {
-        const orig = time.split(":");
-        const hour = orig[0];
-        const hourNum = parseInt(hour, 10);
-        const ampm = hourNum > 11 ? "PM" : "AM";
-        const hr = hour[0] === "0" ? hour[1] : hourNum > 12 ? hourNum - 12 : hour; // TODO: Refactor this nested ternary :-(
-        return `${ hr }:${ orig[1] } ${ ampm }`;
-    };
-
     const _handleDatePicked = pickedDate => {
         const arr = pickedDate.toString().split(" ");
         const date = `${ arr[0] } ${ arr[1] } ${ arr[2] } ${ arr[3] }`;
@@ -253,19 +245,10 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
     const { query } = state;
     const towns = findTown(query);
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
-
+    const headerButtons = [{ text: "Save", onClick: _createTeam }, { text: "Cancel", onClick: _cancel }];
     return (
-        <SafeAreaView style={ [styles.container, { backgroundColor: "red" }] }>
-            <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                <View style={ styles.buttonBar }>
-                    <TouchableHighlight style={ styles.headerButton } onPress={ _createTeam }>
-                        <Text style={ styles.headerButtonText }>{ "Save" }</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={ styles.headerButton } onPress={ _cancel }>
-                        <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
-                    </TouchableHighlight>
-                </View>
-            </View>
+        <SafeAreaView style={ styles.container }>
+            <ButtonBar buttonConfigs={ headerButtons }/>
             <ScrollView
                 style={ styles.scroll }
                 automaticallyAdjustContentInsets={ false }
@@ -285,8 +268,9 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                         />
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ [styles.labelDark, { fontSize: 12 }] }>Private groups can only be joined by
-                            invitation</Text>
+                        <Text style={ [styles.labelDark, { fontSize: 12 }] }>
+                            { "Only invited members can join a private group." }
+                        </Text>
 
                         <SegmentedControls
                             options={ isPublicOptions }
@@ -329,10 +313,7 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                     </View>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ [styles.alertInfo, { textAlign: "left" }] }>
-                            {
-                                `${ moment(eventSettings.date).utc().format("dddd, MMM Do YYYY") } is the next ${ eventSettings.name }, ` +
-                                "but teams may choose to work up to one week before or after."
-                            }
+                            { dateRangeMessage }
                         </Text>
                         <Text style={ styles.labelDark }>Date</Text>
                         <View>

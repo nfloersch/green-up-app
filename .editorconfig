@@ -1,0 +1,17 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.feature]
+indent_size = 2
+
+[{.babelrc,.prettierrc,.stylelintrc,.eslintrc,jest.config,*.geojson,*.json,*.jsb3,*.jsb2,*.bowerrc}]
+indent_size = 2
