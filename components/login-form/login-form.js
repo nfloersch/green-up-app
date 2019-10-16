@@ -15,11 +15,6 @@ type Props = {
 
 export class LoginForm extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Green Up Vermont"
-    };
-
-
     constructor(props) {
         super(props);
         this.onButtonPress = this.onButtonPress.bind(this);
@@ -27,6 +22,10 @@ export class LoginForm extends Component<Props> {
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.state = { email: "", password: "", displayName: "" };
     }
+
+    static navigationOptions = {
+        title: "Green Up Vermont"
+    };
 
     onChangeEmail(value) {
         this.setState({ email: (value || "").trim() });

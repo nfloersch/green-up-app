@@ -36,7 +36,7 @@ function _changeInvitee(key) {
 }
 
 function _inviteToTeam() {
-    const displayName = `${this.state.firstName} ${this.state.lastName}`;
+    const displayName = `${ this.state.firstName } ${ this.state.lastName }`;
     const teamMember = TeamMember.create(Object.assign({}, this.state, {
         displayName,
         memberStatus: TeamMember.memberStatuses.INVITED
@@ -63,10 +63,6 @@ type Props = {
 
 class InviteForm extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Invite Team Members"
-    };
-
     constructor(props) {
         super(props);
         this.inviteToTeam = _inviteToTeam.bind(this);
@@ -75,6 +71,9 @@ class InviteForm extends Component<Props> {
         this.state = { firstName: "", lastName: "", email: "" };
     }
 
+    static navigationOptions = {
+        title: "Invite Team Members"
+    };
 
     render() {
         const teamMembers = this.props.teamMembers[this.props.selectedTeam.id];
@@ -89,7 +88,7 @@ class InviteForm extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ this.inviteToTeam }
                             >
-                                <Text style={ styles.headerButtonText }>{"Invite to Team"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Invite to Team" }</Text>
                             </TouchableHighlight>
                         </View>
 
@@ -99,7 +98,7 @@ class InviteForm extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ this.props.closeModal }
                             >
-                                <Text style={ styles.headerButtonText }>{"Close"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Close" }</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
@@ -122,7 +121,7 @@ class InviteForm extends Component<Props> {
                                 onChangeText={ this.onChangeEmail }
                                 underlineColorAndroid={ "transparent" }
                             />
-                            <Text>{isInTeam(teamMembers, this.state.email) ? "That person is already on the team" : " "}</Text>
+                            <Text>{ isInTeam(teamMembers, this.state.email) ? "That person is already on the team" : " " }</Text>
                             <Text style={ styles.labelDark }>
                                 First Name
                             </Text>

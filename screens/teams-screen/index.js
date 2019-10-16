@@ -131,11 +131,6 @@ type Props = {
 
 class TeamsScreen extends Component<Props> {
 
-    static navigationOptions = {
-        title: "My Teams",
-        tabBarLabel: "Teams"
-    };
-
     constructor(props) {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
@@ -143,6 +138,11 @@ class TeamsScreen extends Component<Props> {
         this.toNewTeamEditor = this.toNewTeamEditor.bind(this);
         this.state = { selectedTeamId: null, isModalVisible: false, messageText: "" };
     }
+
+    static navigationOptions = {
+        title: "My Teams",
+        tabBarLabel: "Teams"
+    };
 
     toTeamSearch(): void {
         this.setState({ openModal: "TEAM_SEARCH" });

@@ -20,15 +20,14 @@ type Props = {
 
 class ForgotPassword extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Forgot Password"
-    };
-
     constructor(props) {
         super(props);
         this.state = { email: "", passwordResetSent: false };
     }
 
+    static navigationOptions = {
+        title: "Forgot Password"
+    };
 
     render() {
         const { navigation, actions } = this.props;

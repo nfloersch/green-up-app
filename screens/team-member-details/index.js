@@ -43,10 +43,6 @@ type Props = {
 
 class TeamMemberDetails extends Component<Props> {
 
-    static navigationOptions = {
-        title: "User Profile"
-    };
-
     constructor(props) {
         super(props);
         this.state = Object.assign({}, props.profile);
@@ -64,6 +60,9 @@ class TeamMemberDetails extends Component<Props> {
         }
     }
 
+    static navigationOptions = {
+        title: "User Profile"
+    };
 
     render() {
         const { teamMembers, navigation, teams, actions, currentUserId, messages } = this.props;

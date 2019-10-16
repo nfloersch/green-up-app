@@ -50,10 +50,6 @@ type Props = {
 
 class TrashMap extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Trash Tracker"
-    };
-
     constructor(props) {
         super(props);
         this.closeModal = this.closeModal.bind(this);
@@ -90,6 +86,10 @@ class TrashMap extends Component<Props> {
             this._getLocationAsync();
         }
     }
+
+    static navigationOptions = {
+        title: "Trash Tracker"
+    };
 
     _getTown(location) {
         const townPolygonsData = require("../../libs/VT_Boundaries__town_polygons.json");

@@ -15,9 +15,6 @@ type Props = {
 };
 
 export class CreateAccountForm extends Component<Props> {
-    static navigationOptions = {
-        title: "Create New Account"
-    };
 
     constructor(props) {
         super(props);
@@ -32,6 +29,11 @@ export class CreateAccountForm extends Component<Props> {
             Alert.alert(nextProps.createUserError);
         }
     }
+
+    static navigationOptions = {
+        title: "Create New Account"
+    };
+
 
     onChangeEmail(value) {
         this.setState({ email: (value || "").trim() });
@@ -99,7 +101,7 @@ export class CreateAccountForm extends Component<Props> {
                     style={ styles.button }
                     onPress={ this.onButtonPress }>
                     <Text style={ styles.buttonText }>
-                        {this.props.buttonText || "Create Account"}
+                        { this.props.buttonText || "Create Account" }
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -92,18 +92,18 @@ class MessageItem extends Component<TProps> {
                                 fontWeight: "bold",
                                 height: 13
                             }] }
-                            >{item.teamName}</Text>
+                            >{ item.teamName }</Text>
                             <Text style={ [{ height: 40 }, item.read
                                 ? styles.oldMsg : styles.newMsg] }>
-                                {item.text.length > 80
-                                    ? `${item.text.slice(0, 80)}...`
-                                    : item.text}
+                                { item.text.length > 80
+                                    ? `${ item.text.slice(0, 80) }...`
+                                    : item.text }
                             </Text>
                             <Text style={ [item.read ? styles.read : styles.unread, {
                                 fontSize: 10,
                                 textAlign: "right"
                             }] }>
-                                {`--${item.sender.displayName || item.sender.email}`}
+                                { `--${ item.sender.displayName || item.sender.email }` }
                             </Text>
                         </View>
                     </View>
@@ -129,16 +129,16 @@ type MessageProps = {
 
 class MessageSummariesScreen extends Component<MessageProps> {
 
-    static navigationOptions = {
-        title: "Message Board",
-        tabBarLabel: "Messages"
-    };
-
     constructor(props) {
         super(props);
         this.toMessageDetail = this.toMessageDetail.bind(this);
         this.toSendMessage = this.toSendMessage.bind(this);
     }
+
+    static navigationOptions = {
+        title: "Message Board",
+        tabBarLabel: "Messages"
+    };
 
     toSendMessage() {
         return () => {
@@ -183,15 +183,16 @@ class MessageSummariesScreen extends Component<MessageProps> {
                                 onPress={ () => {
                                     this.props.navigation.navigate("NewMessage");
                                 } }>
-                                <Text style={ styles.headerButtonText }>{"New Message"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
                             </TouchableHighlight>)
                             : (
                                 <View style={ styles.headerButton }>
-                                    <Text style={ styles.headerButtonText }>{"Join or create a team to send messages."}</Text>
+                                    <Text
+                                        style={ styles.headerButtonText }>{ "Join or create a team to send messages." }</Text>
                                 </View>)
                     }
                 </View>
-                {myMessages.length > 0
+                { myMessages.length > 0
                     ? (
                         <ScrollView style={ styles.scroll }>
                             <View style={ styles.infoBlockContainer }>
@@ -217,10 +218,13 @@ class MessageSummariesScreen extends Component<MessageProps> {
                                 paddingBottom: 50,
                                 backgroundColor: "rgba(255,255,255, 0.85)"
                             } }>
-                                <Text style={ [styles.textDark, { textAlign: "center", height: 30 }] }>{"Sorry, no messages yet."}</Text>
+                                <Text style={ [styles.textDark, {
+                                    textAlign: "center",
+                                    height: 30
+                                }] }>{ "Sorry, no messages yet." }</Text>
                             </View>
                         </ImageBackground>
-                    )}
+                    ) }
             </View>
         ) : (
             <View style={ styles.frame }>
@@ -234,10 +238,10 @@ class MessageSummariesScreen extends Component<MessageProps> {
                         backgroundColor: "rgba(255,255,255, 0.85)"
                     } }>
                         <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                            {"All your messages will be listed here."}
+                            { "All your messages will be listed here." }
                         </Text>
                         <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                            {"Before you can send or receive messages you will need to join or create a team."}
+                            { "Before you can send or receive messages you will need to join or create a team." }
                         </Text>
                         <TouchableOpacity
                             style={ styles.button }
@@ -245,7 +249,7 @@ class MessageSummariesScreen extends Component<MessageProps> {
                                 this.props.navigation.navigate("Teams");
                             } }
                         >
-                            <Text style={ styles.buttonText }>{"Go to \"My Teams\" >"}</Text>
+                            <Text style={ styles.buttonText }>{ "Go to \"My Teams\" >" }</Text>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>

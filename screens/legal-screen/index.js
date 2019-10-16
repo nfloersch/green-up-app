@@ -17,15 +17,14 @@ type Props = {
 
 class LegalScreen extends Component<Props> {
 
-
-    static navigationOptions = {
-        title: "Privacy Policy"
-    };
-
     constructor(props) {
         super(props);
         this.state = {};
     }
+
+    static navigationOptions = {
+        title: "Privacy Policy"
+    };
 
     render() {
         return (

@@ -23,7 +23,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 function getDisplayName(contact) {
     return (contact.firstName || contact.lastName)
-        ? (`${contact.firstName} ${contact.lastName} (${contact.email})`).trim()
+        ? (`${ contact.firstName } ${ contact.lastName } (${ contact.email })`).trim()
         : (contact.email);
 }
 
@@ -31,7 +31,7 @@ function _inviteToTeam() {
     const teamMembers = this.state.contacts
         .filter(contact => this.state.selectedContacts.indexOf(contact.email) > -1)
         .map(contact => TeamMember.create(Object.assign({}, contact, {
-            displayName: `${contact.firstName} ${contact.lastName}`,
+            displayName: `${ contact.firstName } ${ contact.lastName }`,
             memberStatus: TeamMember.memberStatuses.INVITED
         })));
     this.props.closeModal();
@@ -49,10 +49,6 @@ type Props = {
 };
 
 class InviteContacts extends Component<Props> {
-
-    static navigationOptions = {
-        title: "Invite Contacts"
-    };
 
     constructor(props) {
         super(props);
@@ -81,6 +77,11 @@ class InviteContacts extends Component<Props> {
         });
     }
 
+    static navigationOptions = {
+        title: "Invite Contacts"
+    };
+
+
     toggleContact(email) {
         return () => {
             const emails = this.state.selectedContacts || [];
@@ -94,8 +95,8 @@ class InviteContacts extends Component<Props> {
         const myContacts = this.state.contacts
             .filter(contact => isValidEmail(contact.email) && !isInTeam(this.props.teamMembers[this.props.selectedTeam.id], contact.email))
             .sort((a, b) => {
-                const bDisplay = (`${b.firstName}${b.lastName}${b.email}`).toLowerCase();
-                const aDisplay = (`${a.firstName}${a.lastName}${a.email}`).toLowerCase();
+                const bDisplay = (`${ b.firstName }${ b.lastName }${ b.email }`).toLowerCase();
+                const aDisplay = (`${ a.firstName }${ a.lastName }${ a.email }`).toLowerCase();
                 switch (true) {
                     case(aDisplay < bDisplay):
                         return -1;
@@ -119,7 +120,7 @@ class InviteContacts extends Component<Props> {
                         : (<TouchableHighlight key={ i } onPress={ this.toggleContact(contact.email) }>
                             <View style={ { flex: 1, flexDirection: "row", marginTop: 10 } }>
                                 <CheckBox value={ (selected.indexOf(contact.email) > -1) }/>
-                                <Text style={ { fontSize: 20, marginLeft: 10 } }>{getDisplayName(contact)}</Text>
+                                <Text style={ { fontSize: 20, marginLeft: 10 } }>{ getDisplayName(contact) }</Text>
                             </View>
                         </TouchableHighlight>)
                 )
@@ -136,7 +137,7 @@ class InviteContacts extends Component<Props> {
                                 onPress={ this.inviteToTeam }
                             >
                                 <Text style={ styles.headerButtonText }>
-                                    {"Invite to Team"}</Text>
+                                    { "Invite to Team" }</Text>
                             </TouchableHighlight>
                         </View>
 
@@ -145,7 +146,7 @@ class InviteContacts extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ this.props.closeModal }
                             >
-                                <Text style={ styles.headerButtonText }>{"Close"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Close" }</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
@@ -155,7 +156,7 @@ class InviteContacts extends Component<Props> {
                     style={ styles.scroll }
                     keyboardShouldPersistTaps="never">
                     <View style={ styles.infoBlockContainer }>
-                        {myContacts}
+                        { myContacts }
                     </View>
                 </ScrollView>
             </View>

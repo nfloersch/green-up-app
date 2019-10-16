@@ -51,20 +51,21 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    actions: {logout : () => void},
+    actions: { logout: () => void },
     navigation: Object
 };
 
 class ABienTot extends Component<Props> {
+
+    componentDidMount() {
+        this.props.actions.logout();
+    }
 
     static navigationOptions = {
         drawerLabel: "Logout",
         drawerIcon: () => (<MaterialCommunityIcons name="logout" size={ 24 } color="green"/>)
     };
 
-    componentDidMount() {
-        this.props.actions.logout();
-    }
     render() {
         return (
             <View style={ styles.container }>
@@ -81,6 +82,7 @@ class ABienTot extends Component<Props> {
 function mapStateToProps(state) {
     return { session: state.login.session };
 }
+
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actionCreators, dispatch)

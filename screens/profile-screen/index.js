@@ -36,10 +36,6 @@ type Props = {
 
 class Profile extends Component<Props> {
 
-    static navigationOptions = {
-        title: "My Profile"
-    };
-
     constructor(props) {
         super(props);
         this.state = Object.assign({}, props.currentUser);
@@ -52,6 +48,9 @@ class Profile extends Component<Props> {
         }
     }
 
+    static navigationOptions = {
+        title: "My Profile"
+    };
 
     render() {
         const { profile, actions, currentUser, navigation } = this.props;
