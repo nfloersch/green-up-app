@@ -54,25 +54,25 @@ const menuConfig = {
     },
     handlingTrash: {
         order: 4,
-        navigation: "Messages",
+        navigation: "HandlingTrash",
         label: "Handling Trash",
         backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
     },
     freeSupplies: {
         order: 5,
-        navigation: "Messages",
+        navigation: "FreeSupplies",
         label: "Free Supplies",
         backgroundImage: require("../../assets/images/button-image-car-1970.jpg")
     },
     celebrations: {
         order: 6,
-        navigation: "Messages",
+        navigation: "Celebrations",
         label: "Celebrations",
         backgroundImage: require("../../assets/images/button-image-royalton-bandstand.jpg")
     },
     greenUpFacts: {
         order: 7,
-        navigation: "Messages",
+        navigation: "GreenUpFacts",
         label: "Green Up Facts",
         backgroundImage: require("../../assets/images/button-image-dump-truck-bags-1970.jpg")
     }
