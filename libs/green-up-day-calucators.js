@@ -21,3 +21,4 @@ export const getCurrentGreenUpDay = (today: todayType = _today) => {
         ? getGreenUpDayByYear(currentYear)
         : getGreenUpDayByYear(currentYear + 1);
 };
+

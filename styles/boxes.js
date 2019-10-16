@@ -1,10 +1,10 @@
 // const backgroundLight = 'white';
 import * as constants from "./constants";
-
+// import { getStatusBarHeight } from "react-native-status-bar-height";
 export const boxes = {
     container: {
         flex: 1,
-        justifyContent: "flex-start"
+        backgroundColor: constants.backgroundDark
     },
     fieldset: {
         borderWidth: 2,
@@ -89,10 +89,7 @@ export const boxes = {
         marginBottom: 10
     },
     scroll: {
-        marginBottom: 10,
-        paddingLeft: 1,
-        paddingRight: 1,
-        paddingTop: 10
+        marginHorizontal: 5
     },
     searchHeader: {
         backgroundColor: constants.headerBackgroundColor,

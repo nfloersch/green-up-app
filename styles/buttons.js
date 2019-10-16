@@ -38,8 +38,6 @@ export const buttons = {
         fontSize: 18,
         textAlign: "center"
     },
-
-
     buttonBar: {
         width: "100%",
         flex: 1,

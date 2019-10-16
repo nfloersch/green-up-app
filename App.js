@@ -37,7 +37,8 @@ export default class App extends React.Component<Props> {
         Font.loadAsync({
             // This is the font that we are using for our tab bar
             ...Ionicons.font,
-            "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+            sriracha: require("./assets/fonts/Sriracha/Sriracha-Regular.ttf")
+
         })
     ]);
 

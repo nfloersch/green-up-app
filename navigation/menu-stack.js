@@ -12,7 +12,6 @@ const MenuStack = createStackNavigator({
     Towns: { screen: TownsScreen },
     Profile: { screen: ProfileScreen },
     Legal: { screen: LegalScreen }
-
 });
 
 export default createAppContainer(MenuStack);
