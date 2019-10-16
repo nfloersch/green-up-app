@@ -21,13 +21,13 @@ type Props = {
 
 class CreateNewAccount extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Create New Account"
-    };
-
     constructor(props) {
         super(props);
     }
+
+    static navigationOptions = {
+        title: "Create New Account"
+    };
 
     render() {
         const { actions, createUserError } = this.props;

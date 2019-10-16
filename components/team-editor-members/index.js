@@ -38,7 +38,6 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-
 type MProps = { item: Object }
 
 class MemberItem extends Component<MProps> {
@@ -61,7 +60,7 @@ class MemberItem extends Component<MProps> {
                             flex: 1,
                             paddingTop: 12,
                             alignItems: "stretch"
-                        }] }>{item.displayName && item.displayName.trim() || item.email || ""}</Text>
+                        }] }>{ item.displayName && item.displayName.trim() || item.email || "" }</Text>
                     </View>
                     <MemberIcon
                         memberStatus={ item.memberStatus }
@@ -90,15 +89,15 @@ type State = {
 
 class TeamEditorMembers extends Component<Props, State> {
 
-    static navigationOptions = {
-        title: "Team Members",
-        tabBarLabel: "Members"
-    };
-
     constructor(props) {
         super(props);
         this.state = { isModalVisible: false, modalContent: InviteForm };
     }
+
+    static navigationOptions = {
+        title: "Team Members",
+        tabBarLabel: "Members"
+    };
 
     closeModal = () => {
         this.setState({ isModalVisible: false });
@@ -112,7 +111,10 @@ class TeamEditorMembers extends Component<Props, State> {
     };
 
     inviteForm = (team: Object) => () => {
-        this.setState({ isModalVisible: true, modalContent: <InviteForm closeModal={ this.closeModal } team={ team }/> });
+        this.setState({
+            isModalVisible: true,
+            modalContent: <InviteForm closeModal={ this.closeModal } team={ team }/>
+        });
     };
 
     toMemberDetails = (team: Object, member: Object) => {
@@ -157,7 +159,7 @@ class TeamEditorMembers extends Component<Props, State> {
                                 style={ styles.headerButton }
                                 onPress={ this.inviteForm(team) }>
                                 <Text style={ styles.headerButtonText }>
-                                    {"Invite A Friend"}
+                                    { "Invite A Friend" }
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -166,7 +168,7 @@ class TeamEditorMembers extends Component<Props, State> {
                                 style={ styles.headerButton }
                                 onPress={ this.inviteContacts(team) }>
                                 <Text style={ styles.headerButtonText }>
-                                    {"From Contacts"}
+                                    { "From Contacts" }
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -183,7 +185,7 @@ class TeamEditorMembers extends Component<Props, State> {
                     transparent={ false }
                     visible={ this.state.isModalVisible }>
                     <View>
-                        {this.state.modalContent}
+                        { this.state.modalContent }
                     </View>
                 </Modal>
             </View>

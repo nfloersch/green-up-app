@@ -32,19 +32,6 @@ type Props = {
 
 class TeamEditorMap extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Team Map",
-        tabBarLabel: "Map",
-        // Note: By default the icon is only shown on iOS. Search the showIcon option
-        // below.
-        tabBarIcon: ({ focused }) => (
-            <Ionicons
-                name={ Platform.OS === "ios" ? `ios-pin${ focused ? "" : "" }` : "md-pin" }
-                size={ 24 }
-                color={ focused ? colors.tabIconSelected : colors.tabIconDefault }
-            />)
-    };
-
     constructor(props) {
         super(props);
         this._handleMapClick = this._handleMapClick.bind(this);
@@ -98,6 +85,19 @@ class TeamEditorMap extends Component<Props> {
             }
         }
     }
+
+    static navigationOptions = {
+        title: "Team Map",
+        tabBarLabel: "Map",
+        // Note: By default the icon is only shown on iOS. Search the showIcon option
+        // below.
+        tabBarIcon: ({ focused }) => (
+            <Ionicons
+                name={ Platform.OS === "ios" ? `ios-pin${ focused ? "" : "" }` : "md-pin" }
+                size={ 24 }
+                color={ focused ? colors.tabIconSelected : colors.tabIconDefault }
+            />)
+    };
 
     async _getLocationAsync() {
         const providerStatus = await Location.getProviderStatusAsync();

@@ -54,11 +54,6 @@ type Props = {
 
 class TeamEditorDetails extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Team Details",
-        tabBarLabel: "Details"
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -69,6 +64,11 @@ class TeamEditorDetails extends Component<Props> {
             town: this.props.selectedTeam.town
         };
     }
+
+    static navigationOptions = {
+        title: "Team Details",
+        tabBarLabel: "Details"
+    };
 
     showStartDateTimePicker = () => this.setState({ startDateTimePickerVisible: true });
     showEndDateTimePicker = () => this.setState({ endDateTimePickerVisible: true });

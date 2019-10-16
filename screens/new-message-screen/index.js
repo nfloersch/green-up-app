@@ -36,11 +36,6 @@ type Props = {
 
 class NewMessageScreen extends Component<Props> {
 
-
-    static navigationOptions = {
-        title: "Send A Message"
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -61,6 +56,9 @@ class NewMessageScreen extends Component<Props> {
         }
     }
 
+    static navigationOptions = {
+        title: "Send A Message"
+    };
 
     render() {
         const { myTeams, navigation, currentUser, actions } = this.props;

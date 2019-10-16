@@ -48,11 +48,6 @@ type Props = {
 
 class TeamDetailsScreen extends Component<Props> {
 
-
-    static navigationOptions = {
-        title: "Team Details"
-    };
-
     constructor(props) {
         super(props);
         this._askToJoin = this._askToJoin.bind(this);
@@ -85,6 +80,10 @@ class TeamDetailsScreen extends Component<Props> {
             this.setState({ hasAsked: false });
         }
     }
+
+    static navigationOptions = {
+        title: "Team Details"
+    };
 
     _declineInvitation(teamId: string, membershipId: string) {
         return () => this.props.actions.revokeInvitation(teamId, membershipId);

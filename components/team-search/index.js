@@ -62,14 +62,14 @@ class SearchItem extends Component<{ item: Object }> {
             >
                 <View styles={ { flex: 1, justifyItems: "center" } }>
                     <Text style={ [styles.teamTitle, { color: "#1E1E1E", marginTop: 5, textAlign: "center" }] }>
-                        {item.team.name}
+                        { item.team.name }
                     </Text>
                     <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
                         <Text style={ [styles.teamSearchTown, { color: "#1E1E1E" }] }>
-                            {item.team.town}
+                            { item.team.town }
                         </Text>
                         <Text style={ [styles.teamSearchOwner, { color: "#1E1E1E" }] }>
-                            {item.team.owner.displayName}
+                            { item.team.owner.displayName }
                         </Text>
                     </View>
                 </View>
@@ -89,10 +89,6 @@ type Props = {
 
 class TeamSearch extends Component<Props> {
 
-    static navigationOptions = {
-        title: "Find a Team"
-    };
-
     constructor(props) {
         super(props);
         this.toTeamDetail = this.toTeamDetail.bind(this);
@@ -110,6 +106,10 @@ class TeamSearch extends Component<Props> {
     componentWillReceiveProps() {
         return this.onSearchTermChange(this.state.searchTerm);
     }
+
+    static navigationOptions = {
+        title: "Find a Team"
+    };
 
     onSearchTermChange(searchTerm: string = "") {
         const { teams, teamMembers, currentUser } = this.props;
@@ -167,7 +167,7 @@ class TeamSearch extends Component<Props> {
                                 style={ styles.headerButton }
                                 onPress={ this.props.closeModal }
                             >
-                                <Text style={ styles.headerButtonText }>{"Close"}</Text>
+                                <Text style={ styles.headerButtonText }>{ "Close" }</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
