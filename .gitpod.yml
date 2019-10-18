@@ -1,4 +1,6 @@
 tasks:
+# The init task didn't seem to be working. Replaced with hints from
+# https://www.gitpod.io/blog/gitpodify/
 - before: >
       npm install &&
       npm install -g expo-cli
