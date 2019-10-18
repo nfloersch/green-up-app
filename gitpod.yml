@@ -1,0 +1,12 @@
+tasks:
+- before: npm install -g expo-cli
+  init: yarn install
+  command: expo start --host tunnel
+
+ports:
+- port: 19000-19002
+  onOpen: ignore
+- port: 4040
+  onOpen: ignore
+- port: 5037
+  onOpen: ignore
