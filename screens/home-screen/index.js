@@ -81,20 +81,6 @@ const menuConfig = {
     }
 };
 
-
-const renderTile = ({}) => (
-    <Tile styleName="small clear">
-        <Image
-            styleName="medium-square"
-            source={ { uri: "https://shoutem.github.io/img/ui-toolkit/examples/image-12.png" } }
-        />
-        <View styleName="content">
-            <Subtitle numberOfLines={ 2 }>When The Morning Dawns - DJ Silver Sample Album</Subtitle>
-            <Caption>20 hours ago</Caption>
-        </View>
-    </Tile>
-);
-
 const HomeScreen = ({ navigation }: PropsType) => {
     const myButtons = R.compose(
         R.map(entry => ({
@@ -109,7 +95,7 @@ const HomeScreen = ({ navigation }: PropsType) => {
     );
     const data = myButtons(menuConfig);
     return (
-        <Screen style={ { backgroundColor: "#55683A" } }>
+        <Screen style={ { backgroundColor: colors.colorHomeBackground } }>
             <FlatList
                 data={ data }
                 keyExtractor={ item => item.id }

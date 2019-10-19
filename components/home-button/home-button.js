@@ -6,6 +6,7 @@ import {
     TouchableHighlight
 } from "react-native";
 import DisplayText from "../display-text";
+import * as colors from "../../styles/constants";
 
 const styles = StyleSheet.create({
     homeButton: {
@@ -13,14 +14,14 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: "#55683A" // styleConstants.backgroundDark
+        borderColor: colors.colorHomeBackground
     },
     buttonImage: { width: "100%", height: "100%" },
     homeButtonBanner: {
         position: "absolute",
         bottom: 0,
         left: 0,
-        backgroundColor: "#FFFFFFCC",
+        backgroundColor: "#FFFFFFDD",
         width: "100%",
         textAlign: "center"
     },
@@ -33,6 +34,15 @@ const styles = StyleSheet.create({
         textShadowColor: "#FFF",
         textShadowOffset: { width: -1, height: -1 },
         textShadowRadius: 3
+    },
+    homeButtonContainer: {
+        shadowOffset: { width: 0, height: 1 },
+        shadowColor: "#55683A",
+        shadowOpacity: 0.2,
+        shadowRadius: 0,
+        borderStyle: "solid",
+        borderWidth: 2,
+        borderColor: "#BEBEBE"
     }
 });
 
@@ -49,7 +59,7 @@ export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) =
         style={ styles.homeButton }
         onPress={ onPress }
     >
-        <View stle={ { borderStyle: "solid", borderWidth: 1, borderColor: "black" } }>
+        <View style={ styles.homeButtonContainer }>
             <Image
                 style={ { height: "100%", width: "100%" } }
                 capInsets={ { left: 5, right: 5, bottom: 5, top: 5 } }
