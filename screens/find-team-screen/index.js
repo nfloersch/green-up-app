@@ -61,28 +61,51 @@ const myStyles = {
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 4,
         lineHeight: 36
+    },
+    teamDetail: {
+        color: colors.colorTextThemeLight,
+        fontSize: 14
+    },
+    teamName: {
+        fontSize: 30,
+        color: colors.colorTextThemeLight,
+        textShadowColor: "#a74b2e",
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 4,
+        paddingTop: 4,
+        paddingBottom: 4,
+        textAlign: "center"
     }
 };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-type SearchItemType = { item: { teamId: string, toDetail: ()=>void, team: { name: string, town: string, owner: { displayName: string } } } };
+type SearchItemType = { item: { teamId: string, toDetail: ()=>void, team: { isPublic: boolean, location: ?string, name: ?string, town: string, owner: { displayName: string } } } };
 
 const SearchItem = ({ item }: SearchItemType) => (
     <TouchableHighlight
         key={ item.teamId }
         onPress={ item.toDetail }
-        style={ [styles.altButton] }
+        style={ { marginTop: 3, backgroundColor: colors.colorButton, padding: 10 } }
     >
         <View styles={ { flex: 1, justifyItems: "center" } }>
-            <Text style={ [styles.teamTitle, { color: "#1E1E1E", marginTop: 5, textAlign: "center" }] }>
-                { item.team.name }
-            </Text>
             <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
-                <Text style={ [styles.teamSearchTown, { color: "#1E1E1E" }] }>
+                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
                     { item.team.town }
                 </Text>
-                <Text style={ [styles.teamSearchOwner, { color: "#1E1E1E" }] }>
+                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                    { item.team.isPublic ? "Public" : "Private" }
+                </Text>
+            </View>
+            <DisplayText
+                style={ styles.teamName }>
+                { item.team.name }
+            </DisplayText>
+            <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
+                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                    { item.team.location }
+                </Text>
+                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
                     { item.team.owner.displayName }
                 </Text>
             </View>
