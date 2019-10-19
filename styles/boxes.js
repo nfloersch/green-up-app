@@ -4,7 +4,7 @@ import * as constants from "./constants";
 export const boxes = {
     container: {
         flex: 1,
-        backgroundColor: constants.backgroundDark
+        backgroundColor: constants.colorBackgroundDark
     },
     fieldset: {
         borderWidth: 2,
@@ -14,11 +14,11 @@ export const boxes = {
     },
     modalFrame:{
         paddingTop: 60,
-        backgroundColor: constants.backgroundDark,
+        backgroundColor: constants.colorBackgroundDark,
         height: "100%",
         width: "100%" },
     frame: {
-        backgroundColor: constants.backgroundDark,
+        backgroundColor: constants.colorBackgroundDark,
         height: "100%",
         width: "100%"
     },
@@ -92,7 +92,7 @@ export const boxes = {
         marginHorizontal: 5
     },
     searchHeader: {
-        backgroundColor: constants.headerBackgroundColor,
+        backgroundColor: constants.colorBackgroundHeader,
         paddingTop: 10, paddingBottom: 9, paddingLeft: 12, paddingRight: 12,
         borderBottomWidth: 1,
         borderColor: "black"

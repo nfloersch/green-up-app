@@ -95,7 +95,7 @@ class TeamEditorMap extends Component<Props> {
             <Ionicons
                 name={ Platform.OS === "ios" ? `ios-pin${ focused ? "" : "" }` : "md-pin" }
                 size={ 24 }
-                color={ focused ? colors.tabIconSelected : colors.tabIconDefault }
+                color={ focused ? colors.colorTabIconSelected : colors.colorTabIconDefault }
             />)
     };
 

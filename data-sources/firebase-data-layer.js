@@ -111,7 +111,7 @@ function fetchEventInfo(dispatch) {
         }).catch(
         (error) => {
             // eslint-disable-next-line no-console
-            console.error("Error getting event info:", error);
+            console.error("Error getting event info:", JSON.stringify(error));
         }
     );
 }

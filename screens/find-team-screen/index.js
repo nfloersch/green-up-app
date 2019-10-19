@@ -14,6 +14,8 @@ import * as actionCreators from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import * as R from "ramda";
+import DisplayText from "../../components/display-text";
+import * as colors from "../../styles/constants";
 
 /**
  *
@@ -42,6 +44,23 @@ const myStyles = {
         justifyContent: "flex-start",
         backgroundColor: "#EFEFEF",
         padding: 3
+    },
+    noTeamsFound: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    noTeamsFoundWrapper: {
+        backgroundColor: "#FFFFFF44",
+        width: "100%",
+        padding: 20
+    },
+    noTeamsFoundText: {
+        fontSize: 30,
+        color: colors.colorTextThemeLight,
+        textShadowColor: `${ colors.colorTextThemeDark }`,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 4,
+        lineHeight: 36
     }
 };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -84,41 +103,36 @@ type PropsType = {
 const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: PropsType) => {
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
 
-    const onSearchTermChange = (_searchTerm: string = "") => {
-        const mkey = currentUser.uid;
+    const mkey = currentUser.uid;
 
-        const myTeams = R.compose(
-            R.filter(key =>
-                (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
-                (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)
-            ),
-            R.filter(key => Boolean(teamMembers[key])),
-            Object.keys
-        )(teams);
+    const myTeams = R.compose(
+        R.filter(key =>
+            (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
+            (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)
+        ),
+        R.filter(key => Boolean(teamMembers[key])),
+        Object.keys
+    )(teams);
 
 
-        const _searchResults = R.compose(
-            Array.from, // convert back to array
-            arr => new Set(arr), // eliminate dupes
-            R.map(score => score.key), // we only want keys
-            R.sort((score1, score2) => (score2.score - score1.score)), // sort by score
-            R.filter(score => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
-            R.map(key => ({ // get the search score for each team
-                key,
-                score: searchScore(searchTerm, [teams[key].name,
-                    teams[key].description,
-                    teams[key].town,
-                    teams[key].owner.displayName])
-            })),
-            R.filter(key => teams[key].isPublic === true || myTeams.indexOf(key) > -1), //   remove private teams
-            Object.keys // get team keys
-        )(teams);
-
-        setSearchResults(_searchResults);
-        setSearchTerm(_searchTerm);
-    };
+    const searchResults = R.compose(
+        Array.from, // convert back to array
+        arr => new Set(arr), // eliminate dupes
+        R.map(score => score.key), // we only want keys
+        R.sort((score1, score2) => (score2.score - score1.score)), // sort by score
+        R.filter(score => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
+        R.map(key => ({ // get the search score for each team
+            key,
+            score: searchScore(searchTerm, [teams[key].name,
+                teams[key].description,
+                teams[key].town,
+                teams[key].owner.displayName])
+        })),
+        // R.filter(key => myTeams.indexOf(key) === -1), // remove user's teams
+        // R.filter(key => teams[key].isPublic === true), //   remove private teams
+        Object.keys // get team keys
+    )(teams);
 
     const toTeamDetail = (teamId: string) => () => {
         actions.selectTeam(teams[teamId]);
@@ -128,28 +142,57 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
     const mySearchResults = searchResults.map(teamId => (
         { key: teamId, teamId, toDetail: toTeamDetail(teamId), team: teams[teamId] }
     ));
+
+
+    const hasTeams = mySearchResults.length > 0;
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ styles.searchHeader }>
                 <TextInput
                     keyBoardType={ "default" }
-                    onChangeText={ onSearchTermChange }
+                    onChangeText={ setSearchTerm }
                     placeholder={ "Team Name, Team Owner, or City/Town" }
                     style={ styles.textInput }
                     value={ searchTerm }
                     underlineColorAndroid={ "transparent" }
                 />
             </View>
-            <FlatList
-                data={ mySearchResults }
-                renderItem={ ({ item }) => (<SearchItem item={ item }/>) }
-            />
+            { hasTeams
+                ? (
+                    <FlatList
+                        data={ mySearchResults }
+                        renderItem={ ({ item }) => (<SearchItem item={ item }/>) }
+                    />
+                )
+                : (
+                    <View style={ styles.noTeamsFound }>
+                        <View style={ styles.noTeamsFoundWrapper }>
+                            <DisplayText style={ styles.noTeamsFoundText }>
+                                { "Sorry, we couldn't find any teams." }
+                            </DisplayText>
+                            <DisplayText style={ [styles.noTeamsFoundText, { marginTop: 10 }] }>
+                                { "Try starting your own!" }
+                            </DisplayText>
+                        </View>
+                    </View>
+                )
+            }
         </SafeAreaView>
     );
 };
 
 TeamSearch.navigationOptions = {
-    title: "Find a Team"
+    title: "Find a Team",
+    headerStyle: {
+        backgroundColor: "#FFF"
+    },
+    headerTintColor: colors.colorTextThemeDark,
+    headerTitleStyle: {
+        fontFamily: "sriracha",
+        fontWeight: "bold",
+        fontSize: 26,
+        color: colors.colorTextThemeDark
+    }
 };
 
 const mapStateToProps = (state) => ({

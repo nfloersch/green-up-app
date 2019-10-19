@@ -4,8 +4,8 @@ export const buttons = {
     button: {
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: constants.buttonColor,
-        backgroundColor: constants.buttonColor,
+        borderColor: constants.colorButton,
+        backgroundColor: constants.colorButton,
         padding: 10,
         marginTop: 10,
         marginBottom: 10,
@@ -51,14 +51,14 @@ export const buttons = {
     buttonBarHeader: {
         width: "100%",
         height: 60,
-        backgroundColor: constants.headerBackgroundColor,
+        backgroundColor: constants.colorBackgroundHeader,
         borderBottomWidth: 1,
         borderColor: "black"
     },
     buttonBarHeaderModal: {
         width: "100%",
         height: 60,
-        backgroundColor: constants.headerBackgroundColor,
+        backgroundColor: constants.colorBackgroundHeader,
         borderBottomWidth: 1,
         borderColor: "black",
         paddingTop: 0
@@ -121,7 +121,7 @@ export const buttons = {
     singleButtonHeader: {
         width: "100%",
         height: 60,
-        backgroundColor: constants.headerBackgroundColor,
+        backgroundColor: constants.colorBackgroundHeader,
         borderBottomWidth: 1,
         borderColor: "black"
     },

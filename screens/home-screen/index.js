@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }: PropsType) => {
     );
     const data = myButtons(menuConfig);
     return (
-        <Screen style={ { backgroundColor: colors.colorHomeBackground } }>
+        <Screen style={ { backgroundColor: colors.colorBackgroundHome } }>
             <FlatList
                 data={ data }
                 keyExtractor={ item => item.id }
@@ -120,7 +120,7 @@ HomeScreen.navigationOptions = {
         fontFamily: "sriracha",
         fontWeight: "bold",
         fontSize: 26,
-        color: colors.buttonColor
+        color: colors.colorButton
     }
 };
 

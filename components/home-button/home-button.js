@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: colors.colorHomeBackground
+        borderColor: colors.colorBackgroundHome
     },
     buttonImage: { width: "100%", height: "100%" },
     homeButtonBanner: {
