@@ -81,7 +81,21 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ navigation, style }: PropsType) => {
+
+const renderTile = ({}) => (
+    <Tile styleName="small clear">
+        <Image
+            styleName="medium-square"
+            source={ { uri: "https://shoutem.github.io/img/ui-toolkit/examples/image-12.png" } }
+        />
+        <View styleName="content">
+            <Subtitle numberOfLines={ 2 }>When The Morning Dawns - DJ Silver Sample Album</Subtitle>
+            <Caption>20 hours ago</Caption>
+        </View>
+    </Tile>
+);
+
+const HomeScreen = ({ navigation }: PropsType) => {
     const myButtons = R.compose(
         R.map(entry => ({
             onPress: () => navigation.navigate(entry[1].navigation),
@@ -95,7 +109,7 @@ const HomeScreen = ({ navigation, style }: PropsType) => {
     );
     const data = myButtons(menuConfig);
     return (
-        <Screen>
+        <Screen style={ { backgroundColor: "#55683A" } }>
             <FlatList
                 data={ data }
                 keyExtractor={ item => item.id }
