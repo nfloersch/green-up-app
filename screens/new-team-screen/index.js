@@ -31,6 +31,7 @@ import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as constants from "../../styles/constants";
 import TownSelector from "../../components/town-selector";
+import * as R from "ramda";
 
 const myStyles = {
     selected: {
@@ -208,14 +209,7 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
             data
         });
     };
-    const findTown = query => {
-        if (query === "") {
-            return [];
-        }
-        const towns = vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
-        debugger;
-        return towns;
-    };
+
 
     const isPublicOptions = [
         {
@@ -249,11 +243,6 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
     const eventDate = formatEventDate(eventSettings.date);
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
-
-    // Autocomplete
-    const { query } = state;
-    const towns = findTown(query);
-    const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
     const headerButtons = [{ text: "Save", onClick: _createTeam }, { text: "Cancel", onClick: _cancel }];
 
     return (
@@ -295,7 +284,7 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                             extractText={ (option) => option.label }
                             testOptionEqual={ (selectedValue, option) => selectedValue === option.value }/>
                     </View>
-             <TownSelector towns={['Fairfax','Williston','Utopia']}/>
+                    <TownSelector onSelect={ town => setState({ town }) } towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>Clean Up Site</Text>
                         <TextInput
@@ -396,26 +385,29 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                         : null
                 }
             </ScrollView>
-            < /Screen>
-                );
-                };
+        </Screen>
+    );
+};
 
-                const mapStateToProps = (state) => {
-                const profile = state.profile;
-                const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
-                const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
-                const eventSettings = state.about || { };
-                const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({ }, {
-                key: "",
-                coordinates: l.coordinates,
-                title: `${ team.name }`,
-                description: "claimed this area"
-            }))), []);
-                const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
+const mapStateToProps = (state) => {
+    const profile = state.profile;
+    const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+    const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
+    const eventSettings = state.about || {};
+    const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
+        key: "",
+        coordinates: l.coordinates,
+        title: `${ team.name }`,
+        description: "claimed this area"
+    }))), []);
+    const vermontTowns = R.compose(
+        R.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase()),
+        R.filter(town => Boolean(town.name)), // hedge against bad data.
+        Object.values)(state.towns.townData);
 
-                return { owner, currentUser, otherCleanAreas, vermontTowns, eventSettings };
-            };
+    return { owner, currentUser, otherCleanAreas, vermontTowns, eventSettings };
+};
 
-                const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
+const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
 
-                export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
+export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
