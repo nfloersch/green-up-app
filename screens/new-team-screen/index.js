@@ -42,7 +42,7 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
-const freshState = (owner, initialMapLocation = null) => ({
+const freshState = (owner: UserType, initialMapLocation: CoordinatesType = null): Object => ({
     team: Team.create({ owner }),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
@@ -84,7 +84,7 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
 
     const [state, dispatch] = useReducer(reducer, freshState(owner));
 
-    const _handleMapClick = (e) => {
+    const _handleMapClick = (e: Event) => {
         dispatch({
             type: "SET_STATE",
             data: {
@@ -191,14 +191,14 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
         this.hideEndDateTimePicker();
     };
 
-    const setSelectedOption = option => {
+    const setSelectedOption = (option: Object) => {
         dispatch({ type: "SET_TEAM_STATE", data: { isPublic: option.value } });
     };
 
-    const setTeamValue = (key) => (value) => {
+    const setTeamValue = (key: string): (any=>void) => (value: any) => {
         dispatch({
-            type: "SET_STATE",
-            data: { ...state.team, [key]: value }
+            type: "SET_TEAM_STATE",
+            data: { [key]: value }
         });
     };
 
@@ -244,7 +244,8 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: _createTeam }, { text: "Cancel", onClick: _cancel }];
-
+    const teamTown = R.path(["team", "town", "name"])(state);
+    let nextTextInput;
     return (
         <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
             <ButtonBar buttonConfigs={ headerButtons }/>
@@ -281,16 +282,25 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                             selectedTint={ "#EFEFEF" }
                             style={ { borderRadius: 0, color: "red" } }
                             tint={ constants.colorButton }
-                            extractText={ (option) => option.label }
-                            testOptionEqual={ (selectedValue, option) => selectedValue === option.value }/>
+                            extractText={ (option: Object): string => option.label }
+                            testOptionEqual={ (selectedValue: string, option: Object): boolean => selectedValue === option.value }/>
                     </View>
-                    <TownSelector onSelect={ town => setState({ town }) } towns={ vermontTowns }/>
+                    <TownSelector
+                        onSelect={ (town: TownType) => {
+                            nextTextInput.focus();
+                            setTeamValue("town")(town);
+                        } }
+                        value={ teamTown }
+                        towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>Clean Up Site</Text>
+                        <Text style={ styles.labelDark }>{ "Clean Up Site" }</Text>
                         <TextInput
                             keyBoardType={ "default" }
                             onChangeText={ setTeamValue("location") }
                             placeholder={ "Location" }
+                            ref={ (input: React$Element<any>) => {
+                                nextTextInput = input;
+                            } }
                             style={ styles.textInput }
                             value={ state.location }
                             underlineColorAndroid={ "transparent" }

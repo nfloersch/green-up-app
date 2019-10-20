@@ -11,7 +11,7 @@ export default class Coordinates {
         this.longitude = typeof (args || {}).longitude === "number" ? (args || {}).longitude : null;
     }
 
-    static create(args: ?Object = {}, id?: string) {
+    static create(args: ?Object = {}, id?: string): React$Element<any> {
         const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;

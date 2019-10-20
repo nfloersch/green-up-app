@@ -3,7 +3,7 @@ import { isValidDate } from "../libs/validators";
 import md5 from "md5-hash";
 
 const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
-const getGravatar = (email: string) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${md5(email.trim().toLowerCase())}?d=mm`);
+const getGravatar = (email: string): string => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${ md5(email.trim().toLowerCase()) }?d=mm`);
 
 export default class User {
     uid: ?string;
@@ -14,7 +14,7 @@ export default class User {
     teams: ?Object;
     bio: ?string;
     created: ?Date;
-    grantMarketingConsent: ?Boolean;
+    grantMarketingConsent: ?boolean;
 
     constructor(args: Object = {}) {
         this.uid = typeof args.uid === "string" || typeof args.id === "string"
@@ -45,7 +45,7 @@ export default class User {
         this.marketingConsentUpdatedOn = args.marketingConsentUpdatedOn || null;
     }
 
-    static create(args: ?Object, uid?: string) {
+    static create(args: ?Object, uid?: string): React$Element<any> {
         const _args = JSON.parse(JSON.stringify(args));
         if (Boolean(uid)) {
             _args.uid = uid;

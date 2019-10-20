@@ -1,9 +1,7 @@
 // @flow
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Platform, TouchableOpacity } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
-import * as styleConstants from "../../styles/constants";
-import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 
 const myStyles = {
@@ -14,48 +12,72 @@ const myStyles = {
         right: 0,
         top: 0,
         zIndex: 1
+    },
+    labelDark: {
+        color: "#333",
+        fontSize: 16,
+        shadowColor: "#FFF",
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 1,
+        shadowRadius: 1,
+        marginTop: 5
+    },
+    suggestion: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 5,
+        borderColor: "#ABABAB",
+        borderBottomWidth: 1
     }
 };
 
-const styles = StyleSheet.create({ ...defaultStyles, ...myStyles });
+const styles = StyleSheet.create(myStyles);
 
 type PropsType = {
     onSelect: string => void,
-    defaultTown: ?string,
+    value: ?string,
     towns: ?Array<string>
 };
 
 const matchTowns = R.curry((towns: ?Array<string>, query: ?string): Array<TownType> => {
-    const testTowns = Array.isArray(towns) ? towns.filter(town => Boolean(town && town.name)) : [];
+    const testTowns = Array.isArray(towns) ? towns.filter((town: TownType): boolean => Boolean(town && town.name)) : [];
     const testString = typeof query !== "string" ? "" : query.trim().toLowerCase();
-    return testTowns.filter(town => town.name.toLowerCase().indexOf(testString) > -1);
+    return testTowns.filter((town: TownType): boolean => town.name.toLowerCase().startsWith(testString));
 });
 
-
-export const TownSelector = ({ defaultTown, towns, onSelect }: PropsType) => {
+export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Element<any> => {
     const [query, setQuery] = useState("");
+    const [focus, setFocus] = useState(false);
     const myTowns = matchTowns(towns);
-    const data = myTowns(query);
+    const data = focus ? myTowns(query) : [];
+    useEffect(() => {
+        if (Boolean(value)) {
+            setQuery(value);
+        }
+    }, [value]);
     return (
         <View style={ { zIndex: 1, marginTop: 10 } }>
             <Text style={ styles.labelDark }>{ "Select Town/City" }</Text>
             <Autocomplete
                 inputContainerStyle={ { borderColor: "#000" } }
                 data={ data }
-                defaultValue={ defaultTown || "" }
+                defaultValue={ query }
                 onChangeText={ setQuery }
+                onBlur={ () => setFocus(false) }
+                onFocus={ () => setFocus(true) }
                 underlineColorAndroid={ "transparent" }
-                renderItem={ town => (
+                renderItem={ (selection: Object): React$Element<any> => (
                     <TouchableOpacity
-                        key={ town.id }
+                        key={ selection.item.id }
                         style={ styles.suggestion }
-                        onPress={ () => onSelect(town) }
+                        onPress={ () => {
+                            onSelect(selection.item);
+                        } }
                     >
-                        <Text style={ { color: "black" } }>{ town.name }</Text>
+                        <Text style={ { color: "black" } }>{ selection.item.name }</Text>
                     </TouchableOpacity>
                 ) }
             />
-
         </View>
     );
 };
