@@ -22,6 +22,7 @@
       "jsx": true
  }
  },
+  "extends": ["plugin:flowtype/recommended"],
   "globals": {
     "module": true,
     "Reflect": true
@@ -36,7 +37,8 @@
   "parser": "babel-eslint",
   "plugins": [
     "babel",
-    "react"
+    "react",
+    "flowtype"
  ],
   "rules": {
     /* Flow Rules */

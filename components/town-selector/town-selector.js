@@ -47,6 +47,7 @@ export const TownSelector = ({ defaultTown, towns, onSelect }: PropsType) => {
                 underlineColorAndroid={ "transparent" }
                 renderItem={ town => (
                     <TouchableOpacity
+                        key={ town.id }
                         style={ styles.suggestion }
                         onPress={ () => onSelect(town) }
                     >
