@@ -66,15 +66,21 @@ const myStyles = {
         color: colors.colorTextThemeLight,
         fontSize: 14
     },
+    teamNameWrapper: {
+        paddingTop: 4,
+        paddingBottom: 4,
+        flex: 1,
+        justifyContent: "center"
+    },
     teamName: {
         fontSize: 30,
         color: colors.colorTextThemeLight,
         textShadowColor: "#a74b2e",
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 4,
-        paddingTop: 4,
-        paddingBottom: 4,
-        textAlign: "center"
+        textAlign: "center",
+        textAlignVertical: "center",
+        includeFontPadding: false,
     }
 };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -86,7 +92,7 @@ const SearchItem = ({ item }: SearchItemType) => (
     <TouchableHighlight
         key={ item.teamId }
         onPress={ item.toDetail }
-        style={ { marginTop: 3, backgroundColor: colors.colorButton, padding: 10 } }
+        style={ { margin: 5, backgroundColor: colors.colorButton, padding: 10 } }
     >
         <View styles={ { flex: 1, justifyItems: "center" } }>
             <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
@@ -97,10 +103,12 @@ const SearchItem = ({ item }: SearchItemType) => (
                     { item.team.isPublic ? "Public" : "Private" }
                 </Text>
             </View>
-            <DisplayText
-                style={ styles.teamName }>
-                { item.team.name }
-            </DisplayText>
+            <View style={ styles.teamNameWrapper }>
+                <DisplayText
+                    style={ styles.teamName }>
+                    { item.team.name }
+                </DisplayText>
+            </View>
             <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
                 <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
                     { item.team.location }
@@ -152,8 +160,8 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
                 teams[key].town,
                 teams[key].owner.displayName])
         })),
-        // R.filter(key => myTeams.indexOf(key) === -1), // remove user's teams
-        // R.filter(key => teams[key].isPublic === true), //   remove private teams
+        R.filter(key => myTeams.indexOf(key) === -1), // remove user's teams
+        // R.filter(key => teams[key].isPublic === true), //   remove private teams - switching to listing private teams
         Object.keys // get team keys
     )(teams);
 
@@ -191,7 +199,7 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
                     <View style={ styles.noTeamsFound }>
                         <View style={ styles.noTeamsFoundWrapper }>
                             <DisplayText style={ styles.noTeamsFoundText }>
-                                { "Sorry, we couldn't find any teams." }
+                                { "Sorry, we couldn't find any teams for you." }
                             </DisplayText>
                             <DisplayText style={ [styles.noTeamsFoundText, { marginTop: 10 }] }>
                                 { "Try starting your own!" }

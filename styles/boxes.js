@@ -53,7 +53,7 @@ export const boxes = {
         shadowOpacity: 0.6,
         shadowRadius: 2,
         padding: 10,
-        backgroundColor: "#EEE"
+        backgroundColor: constants.colorBackGroundLight
     },
     infoBlockHeader: {
         color: "#444",

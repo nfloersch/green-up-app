@@ -3,7 +3,6 @@ import React, { useReducer } from "react";
 import {
     Alert,
     Platform,
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
@@ -11,13 +10,13 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import { Screen } from "@shoutem/ui";
 // import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SegmentedControls } from "react-native-radio-buttons";
-import Autocomplete from "react-native-autocomplete-input";
 import * as actions from "./actions";
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
@@ -30,6 +29,8 @@ import { removeNulls } from "../../libs/remove-nulls";
 import { TownLocation } from "../../models/town";
 import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import * as constants from "../../styles/constants";
+import TownSelector from "../../components/town-selector";
 
 const myStyles = {
     selected: {
@@ -58,6 +59,8 @@ function reducer(state, action) {
     switch (action.type) {
         case "SET_STATE":
             return { ...state, ...action.data };
+        case "SET_TEAM_STATE":
+            return { ...state, team: { ...state.team, ...action.data } };
         case "RESET_STATE":
             return action.data;
         default:
@@ -188,10 +191,7 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
     };
 
     const setSelectedOption = option => {
-        dispatch({
-            type: "SET_STATE",
-            data: { isPublic: option.value }
-        });
+        dispatch({ type: "SET_TEAM_STATE", data: { isPublic: option.value } });
     };
 
     const setTeamValue = (key) => (value) => {
@@ -201,11 +201,20 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
         });
     };
 
+
+    const setState = (data: Object) => () => {
+        dispatch({
+            type: "SET_STATE",
+            data
+        });
+    };
     const findTown = query => {
         if (query === "") {
             return [];
         }
-        return vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        const towns = vermontTowns.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        debugger;
+        return towns;
     };
 
     const isPublicOptions = [
@@ -246,60 +255,47 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
     const towns = findTown(query);
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
     const headerButtons = [{ text: "Save", onClick: _createTeam }, { text: "Cancel", onClick: _cancel }];
+
     return (
-        <SafeAreaView style={ styles.container }>
+        <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
             <ButtonBar buttonConfigs={ headerButtons }/>
             <ScrollView
-                style={ styles.scroll }
+                style={ [styles.scroll, {
+                    borderTopWidth: 10,
+                    borderTopColor: constants.colorBackgroundDark,
+                    borderTopStyle: "solid"
+                }] }
                 automaticallyAdjustContentInsets={ false }
                 scrollEventThrottle={ 200 }
                 keyboardShouldPersistTaps={ "always" }
             >
                 <View style={ styles.infoBlockContainer }>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>Team Name</Text>
+                        <Text style={ styles.labelDark }>{ "Team Name" }</Text>
                         <TextInput
                             keyBoardType={ "default" }
                             onChangeText={ setTeamValue("name") }
                             placeholder={ "Team Name" }
                             style={ styles.textInput }
-                            value={ state.name }
+                            value={ state.team.name }
                             underlineColorAndroid={ "transparent" }
                         />
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ [styles.labelDark, { fontSize: 12 }] }>
-                            { "Only invited members can join a private group." }
+                        <Text style={ [styles.labelDark, { fontSize: 16 }] }>
+                            { state.team.isPublic ? "This team is open to anyone" : "Only invited members can join this team." }
                         </Text>
-
                         <SegmentedControls
                             options={ isPublicOptions }
                             onSelection={ setSelectedOption }
-                            selectedOption={ state.isPublic }
-                            selectedTint={ "#EFEFEF" } tint={ "#666666" }
+                            selectedOption={ state.team.isPublic }
+                            selectedTint={ "#EFEFEF" }
+                            style={ { borderRadius: 0, color: "red" } }
+                            tint={ constants.colorButton }
                             extractText={ (option) => option.label }
                             testOptionEqual={ (selectedValue, option) => selectedValue === option.value }/>
                     </View>
-                    <View style={ { zIndex: 1, marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>{ "Select Town/City" }</Text>
-                        <Autocomplete
-                            inputContainerStyle={ { borderColor: "#000" } }
-                            data={ query.length > 0 &&
-                            comp(query, towns[0] || "") ? [] : towns }
-                            defaultValue={ state.town || "" }
-                            onChangeText={ text => dispatch({ type: "SET_STATE", data: { query: text, town: text } }) }
-                            underlineColorAndroid={ "transparent" }
-                            renderItem={ town => (
-                                <TouchableOpacity
-                                    style={ styles.suggestion }
-                                    onPress={ () => {
-                                        dispatch({ type: "SET_STATE", data: { query: "", town } });
-                                    } }>
-                                    <Text>{ town }</Text>
-                                </TouchableOpacity>
-                            ) }
-                        />
-                    </View>
+             <TownSelector towns={['Fairfax','Williston','Utopia']}/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>Clean Up Site</Text>
                         <TextInput
@@ -400,26 +396,26 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns, eventSetti
                         : null
                 }
             </ScrollView>
-        </SafeAreaView>
-    );
-};
+            < /Screen>
+                );
+                };
 
-const mapStateToProps = (state) => {
-    const profile = state.profile;
-    const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
-    const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
-    const eventSettings = state.about || {};
-    const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({}, {
-        key: "",
-        coordinates: l.coordinates,
-        title: `${ team.name }`,
-        description: "claimed this area"
-    }))), []);
-    const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
+                const mapStateToProps = (state) => {
+                const profile = state.profile;
+                const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+                const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
+                const eventSettings = state.about || { };
+                const otherCleanAreas = Object.values(state.teams.teams).reduce((areas, team) => areas.concat(team.locations.map(l => Object.assign({ }, {
+                key: "",
+                coordinates: l.coordinates,
+                title: `${ team.name }`,
+                description: "claimed this area"
+            }))), []);
+                const vermontTowns = Object.keys(state.towns.townData).map(key => state.towns.townData[key].name);
 
-    return { owner, currentUser, otherCleanAreas, vermontTowns, eventSettings };
-};
+                return { owner, currentUser, otherCleanAreas, vermontTowns, eventSettings };
+            };
 
-const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
+                const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
+                export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
