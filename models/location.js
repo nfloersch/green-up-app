@@ -19,7 +19,7 @@ export default class Location {
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
     }
 
-    static create(args: Object = {}) {
+    static create(args: Object = {}): LocationType {
         return new Location(args);
     }
 }

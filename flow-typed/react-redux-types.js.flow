@@ -1,0 +1,64 @@
+// @flow
+/** *******/
+/* redux */
+/** *******/
+
+declare opaque type Store<S, A>;
+declare type Dispatch<A> = A => A;
+
+/** *************/
+/* react-redux */
+/** *************/
+
+// A connected component wraps some component WC. Note that S (State) and D (Action)
+// are "phantom" type parameters, as they are not constrained by the definition but
+// rather by the context at the use site.
+// eslint-disable-next-line no-unused-vars
+declare class ConnectedComponent<-S, -D, OP, +WC> extends React$Component<OP> {
+    static +WrappedComponent: WC;
+    getWrappedInstance(): React$ElementRef<WC>
+}
+
+// eslint-disable-next-line flowtype/type-id-match
+type MapStateToProps<-S, -OP, +SP> = (
+        state: S,
+        ownProps: OP
+) => SP;
+
+// Same as above, but the derivation is based on dispatch instead of state.
+// eslint-disable-next-line flowtype/type-id-match
+type MapDispatchToProps<-D, -OP, +DP> = (
+        dispatch: D,
+        ownProps: OP
+) => DP;
+
+// eslint-disable-next-line flowtype/type-id-match
+type MergeProps<-SP, -DP, -OP, +MP> = (
+        stateProps: SP,
+        dispatchProps: DP,
+        ownProps: OP
+) => MP;
+
+// The connector function actually performs the wrapping, giving us a connected
+// component.
+// eslint-disable-next-line flowtype/type-id-match
+type Connector<-S, -D, OP, WC> = WC => Class<ConnectedComponent<S, D, OP, WC>>;
+
+// Putting it all together.
+declare function connect<S, D, OP, SP, DP>(
+        mapStateToProps: MapStateToProps<S, OP, DP>,
+        mapDispatchToProps: MapDispatchToProps<D, OP, SP>
+): Connector<S, D, OP, React$ComponentType<{| ...OP, ...SP, ...DP |}>>;
+
+// declare function connect<S, D, OP, SP, DP, MP>(
+//     mapStateToProps: MapStateToProps<S, OP, DP>,
+//     mapDispatchToProps: MapDispatchToProps<D, OP, SP>,
+//     mergeProps: MergeProps<SP, DP, OP, MP>
+// ): Connector<S, D, OP, React$ComponentType<MP>>;
+
+type PayloadType = { data: ?Object, error: ?any, value: ?any };
+
+declare type ActionType = {
+    type: string,
+    payload: ?PayloadType
+};
