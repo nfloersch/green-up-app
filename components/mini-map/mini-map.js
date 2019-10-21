@@ -67,7 +67,7 @@ const placeOtherMarkers = (markers: Array<Object>): Array<React$Element> => (
         <MapView.Marker
             coordinate={ marker.coordinates }
             key={ `marker${ index }` }
-            markerColor={ marker.color || "yellow" }
+            pinColor={ marker.color || "yellow" }
             stopPropagation={ true }
         >
             <MultiLineMapCallout
