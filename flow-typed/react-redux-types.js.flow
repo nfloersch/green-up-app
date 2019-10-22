@@ -62,3 +62,5 @@ declare type ActionType = {
     type: string,
     payload: ?PayloadType
 };
+
+declare type ThunkType = Dispatch<any> => void;

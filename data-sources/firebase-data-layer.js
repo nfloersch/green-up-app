@@ -25,16 +25,16 @@ db.settings({});
 
 let myListeners = {};
 
-const deconstruct = obj => JSON.parse(JSON.stringify(obj));
+const deconstruct = (obj: Object): Object => JSON.parse(JSON.stringify(obj));
 
-const removeListener = (key: string): void => {
+const removeListener = (key: string) => {
     if (myListeners[key]) {
         myListeners[key]();
         delete myListeners[key];
     }
 };
 
-const addListener = (key: string, listener: any => any): void => {
+const addListener = (key: string, listener: any => any) => {
     if (!key) {
         throw Error("Cannot add listener. Invalid listener key");
     }
@@ -42,13 +42,14 @@ const addListener = (key: string, listener: any => any): void => {
     myListeners[key] = listener;
 };
 
-const removeAllListeners = () => (
-    new Promise((resolve, reject) => {
+const removeAllListeners = (): Promise<any> => (
+    new Promise((resolve: any=>void, reject: any=>void) => {
         try {
-            Object.values(myListeners).forEach(listener => listener());
+            Object.values(myListeners).forEach((listener: (any=>any)) => listener());
             myListeners = {};
             resolve(true);
-        } catch (e) {
+        }
+        catch (e) {
             reject(e);
         }
     })
@@ -116,7 +117,7 @@ function fetchEventInfo(dispatch) {
     );
 }
 
-function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void): void {
+function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void) {
     return (teamIds || []).map(teamId => {
         const ref = db.collection(`teams/${ teamId }/invitations`);
         addListener(`teamMembers_${ teamId }_invitations}`,
@@ -215,7 +216,7 @@ function setupTeamListener(user: Object, dispatch: any => void) {
         ));
 }
 
-function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void): void {
+function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void) {
     return Promise.all((teamIds || []).map(teamId => (
         addListener(`team_${ teamId }_members`, db.collection(`teams/${ teamId }/members`)
             .onSnapshot(
@@ -234,7 +235,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
     )));
 }
 
-function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void): void {
+function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void) {
     (teamIds || []).map(teamId => addListener(`team_${ teamId }_requests`, db.collection(`teams/${ teamId }/requests`)
         .onSnapshot(
             querySnapshot => {
@@ -330,13 +331,13 @@ function setupTownListener(dispatch) {
     addListener("towns", db.collection("towns").onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot.forEach(doc => data.push(Town.create(doc.data(), doc.id)));
-        const towns = data.reduce((obj, town) => ({ ...obj, [town.id]: town }), {});
+        const towns = data.reduce((obj: Object, town: TownType) => ({ ...obj, [town.id]: town }), {});
         setTimeout(() => dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, towns }), 1);
     }));
 }
 
 // Initialize or de-initialize a user
-const initializeUser = curry((dispatch, user) => {
+const initializeUser = curry((dispatch: Dispatch, user: UserType) => {
     fetchEventInfo(dispatch);
     setupMessageListener(user.uid, dispatch);
     setupTeamListener(user, dispatch);
@@ -457,43 +458,48 @@ export function updateEmail(email: string) {
 
 /** *************** MESSAGING *************** **/
 
-export function sendUserMessage(userId, message) {
+export function sendUserMessage(userId: string, message: MessageType): Promise<any> {
     const _message = deconstruct(stringifyDates(message));
     return db.collection(`messages/${ userId }/messages`).add(_message);
 }
 
-export function sendGroupMessage(group, message) {
-    group.forEach((memberUID) => {
+export function sendGroupMessage(group: Array<string>, message: MessageType) {
+    group.forEach((memberUID: string) => {
         sendUserMessage(memberUID, deconstruct(message));
     });
 }
 
-export function sendTeamMessage(teamId, message) {
+export function sendTeamMessage(teamId: string, message: string): Promise<any> {
     return db.collection(`teams/${ teamId }/messages`).add(deconstruct(message));
 }
 
-export function updateMessage(message: Object, userId: string) {
+export function updateMessage(message: Object, userId: string): Promise<any> {
     const newMessage = deconstruct({ ...message, sender: { ...message.sender } });
     return db.collection(`messages/${ userId }/messages`).doc(message.id).set(newMessage);
 }
 
-export function deleteMessage(userId: string, messageId: string) {
+export function deleteMessage(userId: string, messageId: string): Promise<any> {
     return db.collection(`messages/${ userId }/messages`).doc(messageId).delete();
 }
 
 /** *************** TEAMS *************** **/
 
-export async function createTeam(team: Object = {}, user: User = {}, dispatch) {
+export async function createTeam(team: Object = {}, user: User = {}, dispatch: Dispatch<any>) {
+
     const { uid } = user;
     const myTeam = deconstruct({ ...team, owner: { ...user } });
+
     const docRef = await db.collection("teams").add(myTeam);
+    debugger;
     // TODO: Refactor to single Promise.all that is returned.
     await Promise.all([
         db.collection(`teams/${ docRef.id }/members`).doc(team.owner.uid).set({ ...team.owner }),
         db.collection(`profiles/${ uid }/teams`).doc(docRef.id).set({ ...myTeam, isMember: true })
     ]);
+
     await Promise.all([setupTeamMemberListener([docRef.id], dispatch),
         setupTeamMessageListener([docRef.id], dispatch)]);
+
 }
 
 export function saveTeam(team) {

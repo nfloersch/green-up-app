@@ -18,7 +18,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SegmentedControls } from "react-native-radio-buttons";
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";
@@ -74,14 +74,13 @@ type PropsType = {
     actions: { createTeam: Object => void },
     currentUser: User,
     locations: Array<TownLocation>,
-    owner: User,
     otherCleanAreas: Array<any>,
     vermontTowns: Array<Object>
 };
 
-const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns }: PropsType): React$Element<any> => {
+const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsType): React$Element<any> => {
 
-    const [state, dispatch] = useReducer(reducer, freshState(owner));
+    const [state, dispatch] = useReducer(reducer, freshState(currentUser));
 
     const handleMapClick = (coordinates: Object) => {
         Keyboard.dismiss();
@@ -111,16 +110,16 @@ const NewTeam = ({ owner, currentUser, otherCleanAreas, vermontTowns }: PropsTyp
     };
 
     const cancel = () => {
-        dispatch({ type: "RESET_STATE", data: freshState(owner) });
+        dispatch({ type: "RESET_STATE", data: freshState(currentUser) });
     };
 
     const createTeam = () => {
-        const team = Team.create({ ...state.team, owner: owner });
+        const team = Team.create({ ...state.team });
         if (!team.name) {
             Alert.alert("Please give your team a name.");
         } else {
-            actions.createTeam(team, currentUser);
-            dispatch({ action: "RESET_STATE", data: freshState(owner) });
+            actions.createTeam(team);
+            dispatch({ action: "RESET_STATE", data: freshState(currentUser) });
         }
     };
 
@@ -368,6 +367,6 @@ const mapStateToProps = (state: Object): Object => {
     return { owner, currentUser, otherCleanAreas, vermontTowns };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): Object => ({ actions: bindActionCreators(actions, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
