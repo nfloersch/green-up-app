@@ -1,0 +1,9 @@
+// @flow
+declare type contact = {
+    uid: string
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+    isSelected: boolean;
+};

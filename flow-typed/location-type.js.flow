@@ -1,0 +1,9 @@
+// @flow
+declare type LocationType = {
+    name: ?string;
+    description: ?string;
+    status: ?string;
+    active: ?boolean;
+    coordinates: ?Coordinates;
+    created: ?Date;
+}

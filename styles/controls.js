@@ -3,7 +3,7 @@ export const controls = {
         borderColor: "#333",
         borderWidth: 1,
         padding: 5,
-        minHeight: 250,
+        minHeight: 150,
         backgroundColor: "white",
         justifyContent: "flex-start"
     },

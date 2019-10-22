@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../login-screen/actions";
@@ -13,16 +13,18 @@ import moment from "moment";
 import * as R from "ramda";
 import HomeButton from "../../components/home-button";
 import * as colors from "../../styles/constants";
+import { connectStyle } from "@shoutem/theme";
+import { Screen } from "@shoutem/ui";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+
 const homeTitle = R.cond(
     [
-        [days => days > 1, days => `${ days } days until Green Up Day`],
-        [days => days === 1, () => "Tomorrow is Green Up Day!"],
-        [days => days === 0, () => "It's Green Up Day!"],
-        [days => days < 0, () => "Keep on Greening"]
+        [(days: number): boolean => days > 1, (days: number): string => `${ days } days until Green Up Day`],
+        [(days: number): boolean => days === 1, (): string => "Tomorrow is Green Up Day!"],
+        [(days: number): boolean => days === 0, (): string => "It's Green Up Day!"],
+        [(days: number): boolean => days < 0, (): string => "Keep on Greening"]
     ]
 )(moment(getCurrentGreenUpDay()).diff(moment(), "days"));
 
@@ -30,7 +32,8 @@ type PropsType = {
     actions: Object,
     navigation: Object,
     currentUser: Object,
-    myTeams: Array<Object>
+    myTeams: Array<Object>,
+    style: ?Object
 };
 
 const menuConfig = {
@@ -78,34 +81,35 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ navigation }: PropsType) => {
+const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
     const myButtons = R.compose(
-        R.map(entry => ({
-            onPress: () => navigation.navigate(entry[1].navigation),
+        R.map((entry: Array<any>): Object => ({
+            onPress: () => {
+                navigation.navigate(entry[1].navigation);
+            },
             label: entry[1].label,
             backgroundImage: entry[1].backgroundImage,
             id: entry[0],
             key: entry[0]
         })),
-        R.sort((a, b) => a[1].order - b[1].order),
+        R.sort((a: Object, b: Object): number => a[1].order - b[1].order),
         Object.entries
     );
     const data = myButtons(menuConfig);
     return (
-        <SafeAreaView style={ styles.container }>
+        <Screen style={ { backgroundColor: colors.colorBackgroundHome } }>
             <FlatList
                 data={ data }
-                keyExtractor={ item => item.id }
-                renderItem={ ({ item }) => (<HomeButton { ...item }/>) }
+                keyExtractor={ (item: Object): string => item.id }
+                renderItem={ ({ item }: { item: Object }): React$Element<any> => (<HomeButton { ...item }/>) }
                 numColumns={ 2 }
                 style={ { paddingTop: 2, paddingLeft: 1, paddingRight: 1, paddingBottom: 2 } }
             >
                 <View style={ { height: 20 } }/>
             </FlatList>
-        </SafeAreaView>
+        </Screen>
     );
 };
-
 
 HomeScreen.navigationOptions = {
     title: homeTitle,
@@ -117,11 +121,11 @@ HomeScreen.navigationOptions = {
         fontFamily: "sriracha",
         fontWeight: "bold",
         fontSize: 26,
-        color: colors.buttonColor
+        color: colors.colorButton
     }
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: Object): Object => {
     const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const teams = state.teams.teams || {};
     const myTeams = getUsersTeams(user, teams);
@@ -130,8 +134,8 @@ const mapStateToProps = (state) => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(connectStyle("org.greenup.HomeScreen", combinedStyles)(HomeScreen));
