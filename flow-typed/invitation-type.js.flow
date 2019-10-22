@@ -1,0 +1,9 @@
+// @flow
+
+declare type InvitationType = {
+    id: ?string;
+    sender: ?Object;
+    team: ?Object;
+    teamMember: ?Object;
+    created: Date;
+}

@@ -66,7 +66,7 @@ function reducer(state: Object, action: Object): Object {
         case "RESET_STATE":
             return action.data;
         default:
-            throw new Error();
+            throw new Error("Invalid action type");
     }
 }
 
@@ -119,7 +119,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
             Alert.alert("Please give your team a name.");
         } else {
             actions.createTeam(team);
-            dispatch({ action: "RESET_STATE", data: freshState(currentUser) });
+            const newState = freshState(currentUser);
+            dispatch({ type: "RESET_STATE", data: newState });
         }
     };
 

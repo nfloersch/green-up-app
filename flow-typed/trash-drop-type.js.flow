@@ -1,0 +1,14 @@
+// @flow
+
+declare type TrashDropType = {
+    id: ?string;
+    bagCount: ?number;
+    status: ?string;
+    active: ?boolean;
+    tags: ?Array<string>;
+    location: ?CoordinatesType;
+    created: ?Date;
+    wasCollected: ?boolean;
+    createdBy: ?Object;
+    collectedBy: ?Object;
+}

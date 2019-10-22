@@ -36,7 +36,7 @@ export default class TeamMember {
             : null;
     }
 
-    static create(args: ?Object = {}, uid?: string) {
+    static create(args: ?Object = {}, uid?: string): TeamMemberType {
         const _args = { ...args };
         if (Boolean(uid)) {
             _args.uid = uid;

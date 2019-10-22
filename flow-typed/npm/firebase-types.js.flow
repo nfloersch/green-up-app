@@ -1,0 +1,4 @@
+declare type QuerySnapshot = {
+    forEach: T => void,
+
+}
