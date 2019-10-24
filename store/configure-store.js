@@ -17,13 +17,13 @@ const persistConfig = {
     blacklist: ["modals", "networkStatus"] // Add top-level store keys here to avoid persistence
 };
 
-type MiddlewareConfig = {
+type MiddlewareConfigType = {
     regexActionType?: RegExp, // = /FETCH.*REQUEST/, look for specific names
     actionTypes?: Array<string>, // = [] , whitelist the types
-    queueReleaseThrottle?: number, // = 50,
-}
+    queueReleaseThrottle?: number // = 50,
+};
 
-const networkMiddleware: MiddlewareConfig = createNetworkMiddleware({
+const networkMiddleware: MiddlewareConfigType = createNetworkMiddleware({
     queueReleaseThrottle: 200
 });
 
@@ -36,7 +36,7 @@ if (__DEV__) {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default () => {
+export default (): Object => {
     // eslint-disable-next-line no-undefined
     const store = createStore(persistedReducer, undefined, composeWithDevTools(applyMiddleware(...middlewares)));
     const persistor = persistStore(store);
