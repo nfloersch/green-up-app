@@ -23,7 +23,7 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-export const Splash = ({ message }: { message: string }) => (
+export const Splash = ({ message }: { message: string }): React$Element<Container> => (
     <Container>
         <View style={ { paddingTop: 60 } }>
             <View style={ styles.logo }>

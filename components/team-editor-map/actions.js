@@ -2,11 +2,14 @@
 import * as types from "../../constants/action-types";
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
-export function saveLocations(locations, team) {
-    return async function (dispatch) {
+export const saveLocations = (locations: Array<LocationType>, team: TeamType): ThunkType => {
+    async function thunk(dispatch: Dispatch<Object>) {
         if (team.id) {
             await firebaseDataLayer.saveLocations(locations, team.id);
         }
         dispatch({ type: types.LOCATIONS_UPDATED, locations });
-    };
-}
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};

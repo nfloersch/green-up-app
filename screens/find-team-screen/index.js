@@ -26,7 +26,7 @@ import * as colors from "../../styles/constants";
 const searchScore = (term: string, searchableString: [string]): number => {
     const terms = term.trim().split(" ");
     const testTerm = terms[0].toLowerCase();
-    const score = searchableString.reduce((_score, interrogee) =>
+    const score = searchableString.reduce((_score: number, interrogee: any): number =>
         (_score + (typeof interrogee === "string" &&
         interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
     return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(" "), searchableString);
@@ -80,7 +80,7 @@ const myStyles = {
         textShadowRadius: 4,
         textAlign: "center",
         textAlignVertical: "center",
-        includeFontPadding: false,
+        includeFontPadding: false
     }
 };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -88,7 +88,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 type SearchItemType = { item: { teamId: string, toDetail: ()=>void, team: { isPublic: boolean, location: ?string, name: ?string, town: string, owner: { displayName: string } } } };
 
-const SearchItem = ({ item }: SearchItemType) => (
+const SearchItem = ({ item }: SearchItemType): React$Element<TouchableHighlight> => (
     <TouchableHighlight
         key={ item.teamId }
         onPress={ item.toDetail }
@@ -123,7 +123,7 @@ const SearchItem = ({ item }: SearchItemType) => (
 
 type PropsType = {
     actions: Object,
-    closeModal: () => void;
+    closeModal: () => void,
     teamMembers: Object,
     teams: Object,
     navigation: Object,
@@ -131,46 +131,46 @@ type PropsType = {
     currentUser: Object
 };
 
-const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: PropsType) => {
+const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: PropsType): React$Element<any> => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
     const mkey = currentUser.uid;
 
     const myTeams = R.compose(
-        R.filter(key =>
+        R.filter((key: string): boolean =>
             (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
             (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.ACCEPTED)
         ),
-        R.filter(key => Boolean(teamMembers[key])),
+        R.filter((key: string): boolean => Boolean(teamMembers[key])),
         Object.keys
     )(teams);
 
 
     const searchResults = R.compose(
         Array.from, // convert back to array
-        arr => new Set(arr), // eliminate dupes
-        R.map(score => score.key), // we only want keys
-        R.sort((score1, score2) => (score2.score - score1.score)), // sort by score
-        R.filter(score => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
-        R.map(key => ({ // get the search score for each team
+        (arr: Array<string>): Set => new Set(arr), // eliminate dupes
+        R.map((score: object): string => score.key), // we only want keys
+        R.sort((score1: Object, score2: Object): number => (score2.score - score1.score)), // sort by score
+        R.filter((score: Object): boolean => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
+        R.map((key: string): Object => ({ // get the search score for each team
             key,
             score: searchScore(searchTerm, [teams[key].name,
                 teams[key].description,
                 teams[key].town,
                 teams[key].owner.displayName])
         })),
-        R.filter(key => myTeams.indexOf(key) === -1), // remove user's teams
+        R.filter((key: string): boolean => myTeams.indexOf(key) === -1), // remove user's teams
         // R.filter(key => teams[key].isPublic === true), //   remove private teams - switching to listing private teams
         Object.keys // get team keys
     )(teams);
 
-    const toTeamDetail = (teamId: string) => () => {
+    const toTeamDetail = (teamId: string): (()=>void) => () => {
         actions.selectTeam(teams[teamId]);
         navigation.navigate("TeamDetails");
     };
 
-    const mySearchResults = searchResults.map(teamId => (
+    const mySearchResults = searchResults.map((teamId: string): Object => (
         { key: teamId, teamId, toDetail: toTeamDetail(teamId), team: teams[teamId] }
     ));
 
@@ -192,7 +192,8 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
                 ? (
                     <FlatList
                         data={ mySearchResults }
-                        renderItem={ ({ item }) => (<SearchItem item={ item }/>) }
+                        renderItem={ ({ item }: { item: any }): React$Element<SearchItem> => (
+                            <SearchItem item={ item }/>) }
                     />
                 )
                 : (
@@ -226,13 +227,13 @@ TeamSearch.navigationOptions = {
     }
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: Object): Object => ({
     teams: state.teams.teams || {},
     teamMembers: state.teams.teamMembers || {},
     currentUser: state.login.user
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import * as R from "ramda";
 import colors from "../../constants/colors";
+
 const icons = {
     [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === "ios" ? "ios-person-add" : "md-person-add",
     [memberStatuses.ACCEPTED]: Platform.OS === "ios" ? "ios-person" : "md-person",
@@ -16,15 +17,15 @@ const icons = {
 };
 
 const getIconName = R.cond([
-    [(status, isOwner) => isOwner === true, () => icons.OWNER],
-    [status => status === memberStatuses.REQUEST_TO_JOIN, () => icons.IS_REQUESTING_TO_JOIN],
-    [status => Object.keys(icons).includes(status), status => icons[status]],
-    [R.T, () => icons.DEFAULT]
+    [(status: string, isOwner: boolean): boolean => isOwner === true, (): string => icons.OWNER],
+    [(status: string): boolean => status === memberStatuses.REQUEST_TO_JOIN, (): string => icons.IS_REQUESTING_TO_JOIN],
+    [(status: string): boolean => Object.keys(icons).includes(status), (status: string): string => icons[status]],
+    [R.T, (): string => icons.DEFAULT]
 ]);
 
-type Props = { memberStatus: string, style: Object, isOwner: boolean }
+type PropsType = { memberStatus: string, style: Object, isOwner: boolean };
 
-export const MemberIcon = ({ memberStatus, style = {}, isOwner }: Props) => {
+export const MemberIcon = ({ memberStatus, style = {}, isOwner }: PropsType): React$Element<Ionicons> => {
     const status = memberStatus === memberStatuses.REQUEST_TO_JOIN && !isOwner ? "IS_REQUESTING_TO_JOIN" : memberStatus;
     const iconStyle = Object.assign({
         height: 30,
