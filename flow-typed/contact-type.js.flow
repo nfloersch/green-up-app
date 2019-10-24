@@ -1,6 +1,6 @@
 // @flow
-declare type contact = {
-    uid: string
+declare type ContactType = {
+    uid: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;

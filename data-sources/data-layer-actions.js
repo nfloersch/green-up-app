@@ -1,3 +1,4 @@
+// @flow
 import * as types from "../constants/action-types";
 import Team from "../models/team";
 import TrashDrop from "../models/trash-drop";
@@ -5,13 +6,15 @@ import Message from "../models/message";
 
 type ActionType = { type: string, error?: any, data?: any };
 
-export function userAuthenticated(user): ActionType {
+export function userAuthenticated(user: UserType): ActionType {
     return { type: types.LOGIN_SUCCESSFUL, user };
 }
 
 export function messageFetchSuccessful(messages: Object): ActionType {
     const _key = Object.keys(messages)[0];
-    const myMessages = Object.keys(messages[_key]).reduce((messageHash, key) => (Object.assign({}, messageHash, { [key]: Message.create(Object.assign({ uid: key }, messages[_key][key])) })), {});
+    const myMessages = Object
+        .keys(messages[_key])
+        .reduce((messageHash: Object, key: string): Object => Object.assign({}, messageHash, { [key]: Message.create(Object.assign({ uid: key }, messages[_key][key])) }), {});
     return { type: types.FETCH_MESSAGES_SUCCESS, messages: { [_key]: myMessages } };
 }
 
@@ -32,7 +35,7 @@ export function userFailedAuthentication(error: any): ActionType {
 }
 
 export function teamFetchSuccessful(_teams: Object): ActionType {
-    const teams = Object.keys(_teams || {}).reduce((teamObj, key) => (Object.assign({}, teamObj, { [key]: Team.create(_teams[key], key) })), {});
+    const teams = Object.keys(_teams || {}).reduce((teamObj: Object, key: string): Object => (Object.assign({}, teamObj, { [key]: Team.create(_teams[key], key) })), {});
     return { type: types.FETCH_TEAMS_SUCCESS, teams };
 }
 
@@ -45,7 +48,9 @@ export function resetData(): ActionType {
 }
 
 export function trashDropFetchSuccessful(_trashDrops: Object): ActionType {
-    const trashDrops = Object.keys(_trashDrops || {}).reduce((trashDropObj, key) => (Object.assign({}, trashDropObj, { [key]: TrashDrop.create(_trashDrops[key], key) })), {});
+    const trashDrops = Object
+        .keys(_trashDrops || {})
+        .reduce((trashDropObj: Object, key: string): Object => (Object.assign({}, trashDropObj, { [key]: TrashDrop.create(_trashDrops[key], key) })), {});
     return { type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops };
 }
 

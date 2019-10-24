@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "@shoutem/animation" {
+declare module '@shoutem/animation' {
   declare module.exports: any;
 }
 
@@ -22,164 +22,164 @@ declare module "@shoutem/animation" {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module "@shoutem/animation/src/animations/animations" {
+declare module '@shoutem/animation/src/animations/animations' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/FadeIn" {
+declare module '@shoutem/animation/src/animations/FadeIn' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/FadeOut" {
+declare module '@shoutem/animation/src/animations/FadeOut' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/HeroHeader" {
+declare module '@shoutem/animation/src/animations/HeroHeader' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/Parallax" {
+declare module '@shoutem/animation/src/animations/Parallax' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/Rotate" {
+declare module '@shoutem/animation/src/animations/Rotate' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/Slide/Slide" {
+declare module '@shoutem/animation/src/animations/Slide/Slide' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/Slide/SlideIn" {
+declare module '@shoutem/animation/src/animations/Slide/SlideIn' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/Slide/SlideOut" {
+declare module '@shoutem/animation/src/animations/Slide/SlideOut' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/View" {
+declare module '@shoutem/animation/src/animations/View' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/ZoomIn" {
+declare module '@shoutem/animation/src/animations/ZoomIn' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/animations/ZoomOut" {
+declare module '@shoutem/animation/src/animations/ZoomOut' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/components/connectAnimation" {
+declare module '@shoutem/animation/src/components/connectAnimation' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/components/measure" {
+declare module '@shoutem/animation/src/components/measure' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/components/ZoomableComponent" {
+declare module '@shoutem/animation/src/components/ZoomableComponent' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/DriverBase" {
+declare module '@shoutem/animation/src/drivers/DriverBase' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/DriverShape" {
+declare module '@shoutem/animation/src/drivers/DriverShape' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/ScrollDriver" {
+declare module '@shoutem/animation/src/drivers/ScrollDriver' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/SpringDriver" {
+declare module '@shoutem/animation/src/drivers/SpringDriver' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/TimingDriver" {
+declare module '@shoutem/animation/src/drivers/TimingDriver' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/drivers/TouchableDriver" {
+declare module '@shoutem/animation/src/drivers/TouchableDriver' {
   declare module.exports: any;
 }
 
-declare module "@shoutem/animation/src/utils/animated-style" {
+declare module '@shoutem/animation/src/utils/animated-style' {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module "@shoutem/animation/index" {
+declare module '@shoutem/animation/index' {
   declare module.exports: $Exports<'@shoutem/animation'>;
 }
-declare module "@shoutem/animation/index.js" {
+declare module '@shoutem/animation/index.js' {
   declare module.exports: $Exports<'@shoutem/animation'>;
 }
-declare module "@shoutem/animation/src/animations/animations.js" {
+declare module '@shoutem/animation/src/animations/animations.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/animations'>;
 }
-declare module "@shoutem/animation/src/animations/FadeIn.js" {
+declare module '@shoutem/animation/src/animations/FadeIn.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/FadeIn'>;
 }
-declare module "@shoutem/animation/src/animations/FadeOut.js" {
+declare module '@shoutem/animation/src/animations/FadeOut.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/FadeOut'>;
 }
-declare module "@shoutem/animation/src/animations/HeroHeader.js" {
+declare module '@shoutem/animation/src/animations/HeroHeader.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/HeroHeader'>;
 }
-declare module "@shoutem/animation/src/animations/Parallax.js" {
+declare module '@shoutem/animation/src/animations/Parallax.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/Parallax'>;
 }
-declare module "@shoutem/animation/src/animations/Rotate.js" {
+declare module '@shoutem/animation/src/animations/Rotate.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/Rotate'>;
 }
-declare module "@shoutem/animation/src/animations/Slide/Slide.js" {
+declare module '@shoutem/animation/src/animations/Slide/Slide.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/Slide/Slide'>;
 }
-declare module "@shoutem/animation/src/animations/Slide/SlideIn.js" {
+declare module '@shoutem/animation/src/animations/Slide/SlideIn.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/Slide/SlideIn'>;
 }
-declare module "@shoutem/animation/src/animations/Slide/SlideOut.js" {
+declare module '@shoutem/animation/src/animations/Slide/SlideOut.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/Slide/SlideOut'>;
 }
-declare module "@shoutem/animation/src/animations/View.js" {
+declare module '@shoutem/animation/src/animations/View.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/View'>;
 }
-declare module "@shoutem/animation/src/animations/ZoomIn.js" {
+declare module '@shoutem/animation/src/animations/ZoomIn.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/ZoomIn'>;
 }
-declare module "@shoutem/animation/src/animations/ZoomOut.js" {
+declare module '@shoutem/animation/src/animations/ZoomOut.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/animations/ZoomOut'>;
 }
-declare module "@shoutem/animation/src/components/connectAnimation.js" {
+declare module '@shoutem/animation/src/components/connectAnimation.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/components/connectAnimation'>;
 }
-declare module "@shoutem/animation/src/components/measure.js" {
+declare module '@shoutem/animation/src/components/measure.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/components/measure'>;
 }
-declare module "@shoutem/animation/src/components/ZoomableComponent.js" {
+declare module '@shoutem/animation/src/components/ZoomableComponent.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/components/ZoomableComponent'>;
 }
-declare module "@shoutem/animation/src/drivers/DriverBase.js" {
+declare module '@shoutem/animation/src/drivers/DriverBase.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/DriverBase'>;
 }
-declare module "@shoutem/animation/src/drivers/DriverShape.js" {
+declare module '@shoutem/animation/src/drivers/DriverShape.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/DriverShape'>;
 }
-declare module "@shoutem/animation/src/drivers/ScrollDriver.js" {
+declare module '@shoutem/animation/src/drivers/ScrollDriver.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/ScrollDriver'>;
 }
-declare module "@shoutem/animation/src/drivers/SpringDriver.js" {
+declare module '@shoutem/animation/src/drivers/SpringDriver.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/SpringDriver'>;
 }
-declare module "@shoutem/animation/src/drivers/TimingDriver.js" {
+declare module '@shoutem/animation/src/drivers/TimingDriver.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/TimingDriver'>;
 }
-declare module "@shoutem/animation/src/drivers/TouchableDriver.js" {
+declare module '@shoutem/animation/src/drivers/TouchableDriver.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/drivers/TouchableDriver'>;
 }
-declare module "@shoutem/animation/src/utils/animated-style.js" {
+declare module '@shoutem/animation/src/utils/animated-style.js' {
   declare module.exports: $Exports<'@shoutem/animation/src/utils/animated-style'>;
 }

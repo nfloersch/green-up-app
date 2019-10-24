@@ -1,7 +1,7 @@
 // flow-typed signature: ff47d256b1e2acb0ba4ff0785ac97337
 // flow-typed version: 75b56c3a87/expo-location_v6.x.x/flow_>=v0.69.0
 
-declare module "expo-location" {
+declare module 'expo-location' {
   declare export type ProviderStatus = {|
     locationServicesEnabled: boolean,
     backgroundModeEnabled: boolean,

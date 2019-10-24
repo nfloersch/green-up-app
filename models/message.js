@@ -6,7 +6,7 @@ import TeamMember from "./team-member";
 export default class Message {
     id: ?string;
     text: ?string;
-    sender: ?TeamMember;
+    sender: ?TeamMemberType;
     teamId: ?string;
     read: ?boolean;
     active: ?boolean;
@@ -46,7 +46,7 @@ export default class Message {
             : new Date();
     }
 
-    static create(args: Object = {}, id: string) {
+    static create(args: Object = {}, id?: string): MessageType {
         const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;

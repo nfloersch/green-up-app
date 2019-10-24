@@ -39,13 +39,13 @@ type Props = {
     currentUser: Object,
     townData: Object,
     location: Object,
-    supplyPickupToggle: Boolean,
-    uncollectedTrashToggle: Boolean,
-    trashDropOffToggle: Boolean,
-    myTrashToggle: Boolean,
-    collectedTrashToggle: Boolean,
+    supplyPickupToggle: boolean,
+    uncollectedTrashToggle: boolean,
+    trashDropOffToggle: boolean,
+    myTrashToggle: boolean,
+    collectedTrashToggle: boolean,
     cleanAreas: Array<Object>,
-    cleanAreasToggle: Boolean
+    cleanAreasToggle: boolean
 };
 
 class TrashMap extends Component<Props> {

@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "@turf/boolean-within" {
+declare module '@turf/boolean-within' {
   declare module.exports: any;
 }
 
@@ -25,9 +25,9 @@ declare module "@turf/boolean-within" {
 
 
 // Filename aliases
-declare module "@turf/boolean-within/index" {
+declare module '@turf/boolean-within/index' {
   declare module.exports: $Exports<'@turf/boolean-within'>;
 }
-declare module "@turf/boolean-within/index.js" {
+declare module '@turf/boolean-within/index.js' {
   declare module.exports: $Exports<'@turf/boolean-within'>;
 }

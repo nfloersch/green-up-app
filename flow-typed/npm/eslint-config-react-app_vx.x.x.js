@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "eslint-config-react-app" {
+declare module 'eslint-config-react-app' {
   declare module.exports: any;
 }
 
@@ -25,9 +25,9 @@ declare module "eslint-config-react-app" {
 
 
 // Filename aliases
-declare module "eslint-config-react-app/index" {
+declare module 'eslint-config-react-app/index' {
   declare module.exports: $Exports<'eslint-config-react-app'>;
 }
-declare module "eslint-config-react-app/index.js" {
+declare module 'eslint-config-react-app/index.js' {
   declare module.exports: $Exports<'eslint-config-react-app'>;
 }

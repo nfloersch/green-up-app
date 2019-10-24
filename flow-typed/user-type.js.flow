@@ -8,5 +8,5 @@ declare type UserType = {
     teams: ?Object;
     bio: ?string;
     created: ?Date;
-    grantMarketingConsent: ?Boolean;
+    grantMarketingConsent: ?boolean;
 };

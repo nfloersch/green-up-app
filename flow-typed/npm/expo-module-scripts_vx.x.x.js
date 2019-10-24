@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "expo-module-scripts" {
+declare module 'expo-module-scripts' {
   declare module.exports: any;
 }
 
@@ -22,52 +22,52 @@ declare module "expo-module-scripts" {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module "expo-module-scripts/babel.config.base" {
+declare module 'expo-module-scripts/babel.config.base' {
   declare module.exports: any;
 }
 
-declare module "expo-module-scripts/bin/expo-module" {
+declare module 'expo-module-scripts/bin/expo-module' {
   declare module.exports: any;
 }
 
-declare module "expo-module-scripts/createJestPreset" {
+declare module 'expo-module-scripts/createJestPreset' {
   declare module.exports: any;
 }
 
-declare module "expo-module-scripts/eslintrc.base" {
+declare module 'expo-module-scripts/eslintrc.base' {
   declare module.exports: any;
 }
 
-declare module "expo-module-scripts/jest-preset" {
+declare module 'expo-module-scripts/jest-preset' {
   declare module.exports: any;
 }
 
-declare module "expo-module-scripts/universal/jest-preset" {
+declare module 'expo-module-scripts/universal/jest-preset' {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module "expo-module-scripts/babel.config.base.js" {
+declare module 'expo-module-scripts/babel.config.base.js' {
   declare module.exports: $Exports<'expo-module-scripts/babel.config.base'>;
 }
-declare module "expo-module-scripts/bin/expo-module.js" {
+declare module 'expo-module-scripts/bin/expo-module.js' {
   declare module.exports: $Exports<'expo-module-scripts/bin/expo-module'>;
 }
-declare module "expo-module-scripts/createJestPreset.js" {
+declare module 'expo-module-scripts/createJestPreset.js' {
   declare module.exports: $Exports<'expo-module-scripts/createJestPreset'>;
 }
-declare module "expo-module-scripts/eslintrc.base.js" {
+declare module 'expo-module-scripts/eslintrc.base.js' {
   declare module.exports: $Exports<'expo-module-scripts/eslintrc.base'>;
 }
-declare module "expo-module-scripts/index" {
+declare module 'expo-module-scripts/index' {
   declare module.exports: $Exports<'expo-module-scripts'>;
 }
-declare module "expo-module-scripts/index.js" {
+declare module 'expo-module-scripts/index.js' {
   declare module.exports: $Exports<'expo-module-scripts'>;
 }
-declare module "expo-module-scripts/jest-preset.js" {
+declare module 'expo-module-scripts/jest-preset.js' {
   declare module.exports: $Exports<'expo-module-scripts/jest-preset'>;
 }
-declare module "expo-module-scripts/universal/jest-preset.js" {
+declare module 'expo-module-scripts/universal/jest-preset.js' {
   declare module.exports: $Exports<'expo-module-scripts/universal/jest-preset'>;
 }

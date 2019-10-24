@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import {
     View,
@@ -53,7 +54,7 @@ type PropsType = {
     id?: string
 };
 
-export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) => (
+export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType): React$Element<TouchableHighlight> => (
     <TouchableHighlight
         id={ id }
         style={ styles.homeButton }

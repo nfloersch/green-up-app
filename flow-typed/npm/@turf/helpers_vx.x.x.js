@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "@turf/helpers" {
+declare module '@turf/helpers' {
   declare module.exports: any;
 }
 
@@ -25,9 +25,9 @@ declare module "@turf/helpers" {
 
 
 // Filename aliases
-declare module "@turf/helpers/index" {
+declare module '@turf/helpers/index' {
   declare module.exports: $Exports<'@turf/helpers'>;
 }
-declare module "@turf/helpers/index.js" {
+declare module '@turf/helpers/index.js' {
   declare module.exports: $Exports<'@turf/helpers'>;
 }

@@ -1,9 +1,8 @@
 // flow-typed signature: f62df6dbce399d55b0f2954c5ac1bd4e
 // flow-typed version: c6154227d1/redux_v4.x.x/flow_>=v0.104.x
 
-declare module "redux" {
-
-    /*
+declare module 'redux' {
+  /*
 
     S = State
     A = Action

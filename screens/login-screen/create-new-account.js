@@ -13,7 +13,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type Props = {
-    actions: {createUser: any => void},
+    actions: { createUser: any => void },
     createUserError: string,
     navigation: Object
 };
@@ -40,7 +40,7 @@ class CreateNewAccount extends Component<Props> {
                     <CreateAccountForm
                         buttonText="Create Account"
                         createUserError={ createUserError }
-                        onButtonPress={ actions.createUser }
+                        createAccount={ actions.createUser }
                     />
                     {
                         Platform.OS === "ios"

@@ -1,6 +1,6 @@
 // @flow
 
-declare type Message = {
+declare type MessageType = {
     id: ?string;
     text: ?string;
     sender: ?TeamMemberType;

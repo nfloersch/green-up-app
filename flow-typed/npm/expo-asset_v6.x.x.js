@@ -1,7 +1,7 @@
 // flow-typed signature: af763b23d19eb6d7afc2be2287bc268c
 // flow-typed version: 75b56c3a87/expo-asset_v6.x.x/flow_>=v0.69.0
 
-declare module "expo-asset" {
+declare module 'expo-asset' {
   declare export type AssetMetadata = {|
     hash: string,
     name: string,
@@ -45,6 +45,6 @@ declare module "expo-asset" {
     static fromURI(uri: string): Asset;
     // https://github.com/facebook/react-native/blob/654868da336ab34ea851cada943492932009ec5d/Libraries/Image/ImageSource.js#L87-L91
     // number === require('a.png')
-    static loadAsync(moduleId: number | Array<number>): Promise<Array<void>>;
+    static loadAsync(moduleId: string | Array<string>): Promise<Array<void>>;
   }
 }

@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "react-native-autocomplete-input" {
+declare module 'react-native-autocomplete-input' {
   declare module.exports: any;
 }
 
@@ -25,9 +25,9 @@ declare module "react-native-autocomplete-input" {
 
 
 // Filename aliases
-declare module "react-native-autocomplete-input/index" {
+declare module 'react-native-autocomplete-input/index' {
   declare module.exports: $Exports<'react-native-autocomplete-input'>;
 }
-declare module "react-native-autocomplete-input/index.js" {
+declare module 'react-native-autocomplete-input/index.js' {
   declare module.exports: $Exports<'react-native-autocomplete-input'>;
 }

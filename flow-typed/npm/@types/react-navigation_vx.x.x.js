@@ -13,6 +13,6 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "@types/react-navigation" {
+declare module '@types/react-navigation' {
   declare module.exports: any;
 }

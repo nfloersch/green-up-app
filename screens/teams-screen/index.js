@@ -21,7 +21,6 @@ import TeamMember from "../../models/team-member";
 import * as actions from "./actions";
 import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
-import teamwork from "../../assets/images/teamwork.jpeg";
 import { removeNulls } from "../../libs/remove-nulls";
 import TeamSearch from "../../components/team-search";
 
@@ -256,7 +255,7 @@ class TeamsScreen extends Component<Props> {
                 <View style={ styles.frame }>
                     {myTeams.length === 0
                         ? (
-                            <ImageBackground source={ teamwork } style={ { flex: 1, justifyContent: "center" } }>
+                            <View style={ { flex: 1, justifyContent: "center" } }>
                                 <View
                                     style={ {
                                         paddingLeft: 20,
@@ -274,7 +273,7 @@ class TeamsScreen extends Component<Props> {
                                         {"Search for teams in your area, or create a new one and invite some friends."}
                                     </Text>
                                 </View>
-                            </ImageBackground>
+                            </View>
                         )
                         : (
                             <ScrollView style={ styles.scroll }>

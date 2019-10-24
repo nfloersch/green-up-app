@@ -6,7 +6,7 @@ export class TownLocation {
     address: ?string;
     name: ?string;
     notes: ?string;
-    coordinates: ?Coordinates;
+    coordinates: ?CoordinatesType;
 
 
     constructor(args: ?Object) {
@@ -14,10 +14,9 @@ export class TownLocation {
         this.name = (args || {}).name || "";
         this.notes = (args || {}).notes || "";
         this.coordinates = Coordinates.create((args || {}).coordinates);
-
     }
 
-    static create(args: Object = {}, id?: string) {
+    static create(args: Object = {}, id?: string): TownLocationType {
         const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
@@ -32,9 +31,9 @@ export default class Town {
     description: ?string;
     notes: ?string;
     dropOffInstructions: ?string;
-    dropOffLocations: ?Array<TownLocation>;
+    dropOffLocations: ?Array<TownLocationType>;
     pickupInstructions: ?string;
-    pickupLocations: ?Array<TownLocation>;
+    pickupLocations: ?Array<TownLocationType>;
     roadsideDropOffAllowed: ?boolean;
     created: ?Date;
     updated: ?Date;
@@ -52,7 +51,11 @@ export default class Town {
             : null;
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
-        this.dropOffLocations = (Array.isArray(args.dropOffLocations) ? args.dropOffLocations : []).map(loc => TownLocation.create(loc));
+        this.dropOffLocations = (
+            Array.isArray(args.dropOffLocations)
+                ? args.dropOffLocations
+                : []
+        ).map((loc: Object): TownLocationType => TownLocation.create(loc));
         this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : []).map(loc => TownLocation.create(loc));
         this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
@@ -63,12 +66,11 @@ export default class Town {
             : new Date();
     }
 
-    static create(args: ?Object = {}, id?: string) {
+    static create(args: ?Object = {}, id?: string): TownType {
         const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }
         return new Town(_args);
     }
-
 }

@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "firebase-tools" {
+declare module 'firebase-tools' {
   declare module.exports: any;
 }
 
@@ -22,2236 +22,2236 @@ declare module "firebase-tools" {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module "firebase-tools/lib/accountExporter" {
+declare module 'firebase-tools/lib/accountExporter' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/accountImporter" {
+declare module 'firebase-tools/lib/accountImporter' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/api" {
+declare module 'firebase-tools/lib/api' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/appdistribution/client" {
+declare module 'firebase-tools/lib/appdistribution/client' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/appdistribution/distribution" {
+declare module 'firebase-tools/lib/appdistribution/distribution' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/archiveDirectory" {
+declare module 'firebase-tools/lib/archiveDirectory' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/auth" {
+declare module 'firebase-tools/lib/auth' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/bin/firebase" {
+declare module 'firebase-tools/lib/bin/firebase' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/checkDupHostingKeys" {
+declare module 'firebase-tools/lib/checkDupHostingKeys' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/checkFirebaseSDKVersion" {
+declare module 'firebase-tools/lib/checkFirebaseSDKVersion' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/checkValidTargetFilters" {
+declare module 'firebase-tools/lib/checkValidTargetFilters' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/command" {
+declare module 'firebase-tools/lib/command' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/appdistribution-distribute" {
+declare module 'firebase-tools/lib/commands/appdistribution-distribute' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/apps-create" {
+declare module 'firebase-tools/lib/commands/apps-create' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/apps-list" {
+declare module 'firebase-tools/lib/commands/apps-list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/apps-sdkconfig" {
+declare module 'firebase-tools/lib/commands/apps-sdkconfig' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/auth-export" {
+declare module 'firebase-tools/lib/commands/auth-export' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/auth-import" {
+declare module 'firebase-tools/lib/commands/auth-import' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-get" {
+declare module 'firebase-tools/lib/commands/database-get' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-instances-create" {
+declare module 'firebase-tools/lib/commands/database-instances-create' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-instances-list" {
+declare module 'firebase-tools/lib/commands/database-instances-list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-profile" {
+declare module 'firebase-tools/lib/commands/database-profile' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-push" {
+declare module 'firebase-tools/lib/commands/database-push' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-remove" {
+declare module 'firebase-tools/lib/commands/database-remove' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-set" {
+declare module 'firebase-tools/lib/commands/database-set' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-settings-get" {
+declare module 'firebase-tools/lib/commands/database-settings-get' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-settings-set" {
+declare module 'firebase-tools/lib/commands/database-settings-set' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/database-update" {
+declare module 'firebase-tools/lib/commands/database-update' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/deploy" {
+declare module 'firebase-tools/lib/commands/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/emulators-exec" {
+declare module 'firebase-tools/lib/commands/emulators-exec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/emulators-start" {
+declare module 'firebase-tools/lib/commands/emulators-start' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/experimental-functions-shell" {
+declare module 'firebase-tools/lib/commands/experimental-functions-shell' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-configure" {
+declare module 'firebase-tools/lib/commands/ext-configure' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-info" {
+declare module 'firebase-tools/lib/commands/ext-info' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-install" {
+declare module 'firebase-tools/lib/commands/ext-install' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-list" {
+declare module 'firebase-tools/lib/commands/ext-list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-uninstall" {
+declare module 'firebase-tools/lib/commands/ext-uninstall' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext-update" {
+declare module 'firebase-tools/lib/commands/ext-update' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/ext" {
+declare module 'firebase-tools/lib/commands/ext' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/firestore-delete" {
+declare module 'firebase-tools/lib/commands/firestore-delete' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/firestore-indexes-list" {
+declare module 'firebase-tools/lib/commands/firestore-indexes-list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-config-clone" {
+declare module 'firebase-tools/lib/commands/functions-config-clone' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-config-get" {
+declare module 'firebase-tools/lib/commands/functions-config-get' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-config-legacy" {
+declare module 'firebase-tools/lib/commands/functions-config-legacy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-config-set" {
+declare module 'firebase-tools/lib/commands/functions-config-set' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-config-unset" {
+declare module 'firebase-tools/lib/commands/functions-config-unset' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-delete" {
+declare module 'firebase-tools/lib/commands/functions-delete' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-log" {
+declare module 'firebase-tools/lib/commands/functions-log' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/functions-shell" {
+declare module 'firebase-tools/lib/commands/functions-shell' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/help" {
+declare module 'firebase-tools/lib/commands/help' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/hosting-disable" {
+declare module 'firebase-tools/lib/commands/hosting-disable' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands" {
+declare module 'firebase-tools/lib/commands' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/init" {
+declare module 'firebase-tools/lib/commands/init' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/list" {
+declare module 'firebase-tools/lib/commands/list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/login-ci" {
+declare module 'firebase-tools/lib/commands/login-ci' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/login" {
+declare module 'firebase-tools/lib/commands/login' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/logout" {
+declare module 'firebase-tools/lib/commands/logout' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/open" {
+declare module 'firebase-tools/lib/commands/open' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/projects-addfirebase" {
+declare module 'firebase-tools/lib/commands/projects-addfirebase' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/projects-create" {
+declare module 'firebase-tools/lib/commands/projects-create' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/projects-list" {
+declare module 'firebase-tools/lib/commands/projects-list' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/serve" {
+declare module 'firebase-tools/lib/commands/serve' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/setup-emulators-database" {
+declare module 'firebase-tools/lib/commands/setup-emulators-database' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/setup-emulators-firestore" {
+declare module 'firebase-tools/lib/commands/setup-emulators-firestore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/setup-web" {
+declare module 'firebase-tools/lib/commands/setup-web' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/target-apply" {
+declare module 'firebase-tools/lib/commands/target-apply' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/target-clear" {
+declare module 'firebase-tools/lib/commands/target-clear' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/target-remove" {
+declare module 'firebase-tools/lib/commands/target-remove' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/target" {
+declare module 'firebase-tools/lib/commands/target' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/tools-migrate" {
+declare module 'firebase-tools/lib/commands/tools-migrate' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/commands/use" {
+declare module 'firebase-tools/lib/commands/use' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/config" {
+declare module 'firebase-tools/lib/config' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/configstore" {
+declare module 'firebase-tools/lib/configstore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/database/listRemote" {
+declare module 'firebase-tools/lib/database/listRemote' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/database/remove" {
+declare module 'firebase-tools/lib/database/remove' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/database/removeRemote" {
+declare module 'firebase-tools/lib/database/removeRemote' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/database/settings" {
+declare module 'firebase-tools/lib/database/settings' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/database" {
+declare module 'firebase-tools/lib/deploy/database' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/database/prepare" {
+declare module 'firebase-tools/lib/deploy/database/prepare' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/database/release" {
+declare module 'firebase-tools/lib/deploy/database/release' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/firestore/deploy" {
+declare module 'firebase-tools/lib/deploy/firestore/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/firestore" {
+declare module 'firebase-tools/lib/deploy/firestore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/firestore/prepare" {
+declare module 'firebase-tools/lib/deploy/firestore/prepare' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/firestore/release" {
+declare module 'firebase-tools/lib/deploy/firestore/release' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions/createOrUpdateSchedulesAndTopics" {
+declare module 'firebase-tools/lib/deploy/functions/createOrUpdateSchedulesAndTopics' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions/deploy" {
+declare module 'firebase-tools/lib/deploy/functions/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions" {
+declare module 'firebase-tools/lib/deploy/functions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions/prepare" {
+declare module 'firebase-tools/lib/deploy/functions/prepare' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions/release" {
+declare module 'firebase-tools/lib/deploy/functions/release' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/functions/validate" {
+declare module 'firebase-tools/lib/deploy/functions/validate' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/convertConfig" {
+declare module 'firebase-tools/lib/deploy/hosting/convertConfig' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/deploy" {
+declare module 'firebase-tools/lib/deploy/hosting/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/hashcache" {
+declare module 'firebase-tools/lib/deploy/hosting/hashcache' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting" {
+declare module 'firebase-tools/lib/deploy/hosting' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/prepare" {
+declare module 'firebase-tools/lib/deploy/hosting/prepare' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/release" {
+declare module 'firebase-tools/lib/deploy/hosting/release' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/hosting/uploader" {
+declare module 'firebase-tools/lib/deploy/hosting/uploader' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy" {
+declare module 'firebase-tools/lib/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/lifecycleHooks" {
+declare module 'firebase-tools/lib/deploy/lifecycleHooks' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/storage/deploy" {
+declare module 'firebase-tools/lib/deploy/storage/deploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/storage" {
+declare module 'firebase-tools/lib/deploy/storage' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/storage/prepare" {
+declare module 'firebase-tools/lib/deploy/storage/prepare' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploy/storage/release" {
+declare module 'firebase-tools/lib/deploy/storage/release' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/deploymentTool" {
+declare module 'firebase-tools/lib/deploymentTool' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/detectProjectRoot" {
+declare module 'firebase-tools/lib/detectProjectRoot' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/commandUtils" {
+declare module 'firebase-tools/lib/emulator/commandUtils' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/constants" {
+declare module 'firebase-tools/lib/emulator/constants' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/controller" {
+declare module 'firebase-tools/lib/emulator/controller' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/databaseEmulator" {
+declare module 'firebase-tools/lib/emulator/databaseEmulator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/download" {
+declare module 'firebase-tools/lib/emulator/download' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/emulatorLogger" {
+declare module 'firebase-tools/lib/emulator/emulatorLogger' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/emulatorServer" {
+declare module 'firebase-tools/lib/emulator/emulatorServer' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/events/types" {
+declare module 'firebase-tools/lib/emulator/events/types' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/firestoreEmulator" {
+declare module 'firebase-tools/lib/emulator/firestoreEmulator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/functionsEmulator" {
+declare module 'firebase-tools/lib/emulator/functionsEmulator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/functionsEmulatorRuntime" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorRuntime' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/functionsEmulatorShared" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorShared' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/functionsEmulatorShell" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorShell' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/functionsEmulatorUtils" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorUtils' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/hostingEmulator" {
+declare module 'firebase-tools/lib/emulator/hostingEmulator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/registry" {
+declare module 'firebase-tools/lib/emulator/registry' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/emulator/types" {
+declare module 'firebase-tools/lib/emulator/types' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/ensureApiEnabled" {
+declare module 'firebase-tools/lib/ensureApiEnabled' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/ensureCloudResourceLocation" {
+declare module 'firebase-tools/lib/ensureCloudResourceLocation' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/ensureDefaultCredentials" {
+declare module 'firebase-tools/lib/ensureDefaultCredentials' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/error" {
+declare module 'firebase-tools/lib/error' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/errorOut" {
+declare module 'firebase-tools/lib/errorOut' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/askUserForConsent" {
+declare module 'firebase-tools/lib/extensions/askUserForConsent' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/askUserForParam" {
+declare module 'firebase-tools/lib/extensions/askUserForParam' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/checkProjectBilling" {
+declare module 'firebase-tools/lib/extensions/checkProjectBilling' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/extensionsApi" {
+declare module 'firebase-tools/lib/extensions/extensionsApi' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/extensionsHelper" {
+declare module 'firebase-tools/lib/extensions/extensionsHelper' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/generateInstanceId" {
+declare module 'firebase-tools/lib/extensions/generateInstanceId' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/listExtensions" {
+declare module 'firebase-tools/lib/extensions/listExtensions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/paramHelper" {
+declare module 'firebase-tools/lib/extensions/paramHelper' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/populatePostinstall" {
+declare module 'firebase-tools/lib/extensions/populatePostinstall' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/resolveSource" {
+declare module 'firebase-tools/lib/extensions/resolveSource' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/rolesHelper" {
+declare module 'firebase-tools/lib/extensions/rolesHelper' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/updateHelper" {
+declare module 'firebase-tools/lib/extensions/updateHelper' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extensions/utils" {
+declare module 'firebase-tools/lib/extensions/utils' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/extractTriggers" {
+declare module 'firebase-tools/lib/extractTriggers' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/fetchMOTD" {
+declare module 'firebase-tools/lib/fetchMOTD' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/fetchWebSetup" {
+declare module 'firebase-tools/lib/fetchWebSetup' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/filterTargets" {
+declare module 'firebase-tools/lib/filterTargets' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/delete" {
+declare module 'firebase-tools/lib/firestore/delete' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/encodeFirestoreValue" {
+declare module 'firebase-tools/lib/firestore/encodeFirestoreValue' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/indexes-api" {
+declare module 'firebase-tools/lib/firestore/indexes-api' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/indexes-sort" {
+declare module 'firebase-tools/lib/firestore/indexes-sort' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/indexes-spec" {
+declare module 'firebase-tools/lib/firestore/indexes-spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/indexes" {
+declare module 'firebase-tools/lib/firestore/indexes' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/util" {
+declare module 'firebase-tools/lib/firestore/util' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/firestore/validator" {
+declare module 'firebase-tools/lib/firestore/validator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/fsAsync" {
+declare module 'firebase-tools/lib/fsAsync' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/fsutils" {
+declare module 'firebase-tools/lib/fsutils' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/functionsConfig" {
+declare module 'firebase-tools/lib/functionsConfig' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/functionsConfigClone" {
+declare module 'firebase-tools/lib/functionsConfigClone' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/functionsDelete" {
+declare module 'firebase-tools/lib/functionsDelete' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/functionsDeployHelper" {
+declare module 'firebase-tools/lib/functionsDeployHelper' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/functionsShellCommandAction" {
+declare module 'firebase-tools/lib/functionsShellCommandAction' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/cloudbilling" {
+declare module 'firebase-tools/lib/gcp/cloudbilling' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/cloudfunctions" {
+declare module 'firebase-tools/lib/gcp/cloudfunctions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/cloudlogging" {
+declare module 'firebase-tools/lib/gcp/cloudlogging' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/cloudscheduler" {
+declare module 'firebase-tools/lib/gcp/cloudscheduler' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/firedata" {
+declare module 'firebase-tools/lib/gcp/firedata' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/firestore" {
+declare module 'firebase-tools/lib/gcp/firestore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/iam" {
+declare module 'firebase-tools/lib/gcp/iam' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp" {
+declare module 'firebase-tools/lib/gcp' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/pubsub" {
+declare module 'firebase-tools/lib/gcp/pubsub' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/rules" {
+declare module 'firebase-tools/lib/gcp/rules' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/runtimeconfig" {
+declare module 'firebase-tools/lib/gcp/runtimeconfig' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/gcp/storage" {
+declare module 'firebase-tools/lib/gcp/storage' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/getInstanceId" {
+declare module 'firebase-tools/lib/getInstanceId' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/getProjectId" {
+declare module 'firebase-tools/lib/getProjectId' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/getProjectNumber" {
+declare module 'firebase-tools/lib/getProjectNumber' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/handlePreviewToggles" {
+declare module 'firebase-tools/lib/handlePreviewToggles' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/cloudRunProxy" {
+declare module 'firebase-tools/lib/hosting/cloudRunProxy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/functionsProxy" {
+declare module 'firebase-tools/lib/hosting/functionsProxy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/implicitInit" {
+declare module 'firebase-tools/lib/hosting/implicitInit' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/initMiddleware" {
+declare module 'firebase-tools/lib/hosting/initMiddleware' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/normalizedHostingConfigs" {
+declare module 'firebase-tools/lib/hosting/normalizedHostingConfigs' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/hosting/proxy" {
+declare module 'firebase-tools/lib/hosting/proxy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/identifierToProjectId" {
+declare module 'firebase-tools/lib/identifierToProjectId' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib" {
+declare module 'firebase-tools/lib' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/database" {
+declare module 'firebase-tools/lib/init/features/database' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/firestore" {
+declare module 'firebase-tools/lib/init/features/firestore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/firestore/indexes" {
+declare module 'firebase-tools/lib/init/features/firestore/indexes' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/firestore/rules" {
+declare module 'firebase-tools/lib/init/features/firestore/rules' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/functions" {
+declare module 'firebase-tools/lib/init/features/functions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/functions/javascript" {
+declare module 'firebase-tools/lib/init/features/functions/javascript' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/functions/npm-dependencies" {
+declare module 'firebase-tools/lib/init/features/functions/npm-dependencies' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/functions/typescript" {
+declare module 'firebase-tools/lib/init/features/functions/typescript' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/hosting" {
+declare module 'firebase-tools/lib/init/features/hosting' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features" {
+declare module 'firebase-tools/lib/init/features' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/project" {
+declare module 'firebase-tools/lib/init/features/project' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init/features/storage" {
+declare module 'firebase-tools/lib/init/features/storage' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/init" {
+declare module 'firebase-tools/lib/init' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/listFiles" {
+declare module 'firebase-tools/lib/listFiles' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/loadCJSON" {
+declare module 'firebase-tools/lib/loadCJSON' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/localFunction" {
+declare module 'firebase-tools/lib/localFunction' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/logError" {
+declare module 'firebase-tools/lib/logError' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/logger" {
+declare module 'firebase-tools/lib/logger' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/management/apps" {
+declare module 'firebase-tools/lib/management/apps' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/management/projects" {
+declare module 'firebase-tools/lib/management/projects' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/operation-poller" {
+declare module 'firebase-tools/lib/operation-poller' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/parseBoltRules" {
+declare module 'firebase-tools/lib/parseBoltRules' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/parseTriggers" {
+declare module 'firebase-tools/lib/parseTriggers' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/pollOperations" {
+declare module 'firebase-tools/lib/pollOperations' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/prepareFirebaseRules" {
+declare module 'firebase-tools/lib/prepareFirebaseRules' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/prepareFunctionsUpload" {
+declare module 'firebase-tools/lib/prepareFunctionsUpload' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/prepareUpload" {
+declare module 'firebase-tools/lib/prepareUpload' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/previews" {
+declare module 'firebase-tools/lib/previews' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/profiler" {
+declare module 'firebase-tools/lib/profiler' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/profileReport" {
+declare module 'firebase-tools/lib/profileReport' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/projectPath" {
+declare module 'firebase-tools/lib/projectPath' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/prompt" {
+declare module 'firebase-tools/lib/prompt' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/rc" {
+declare module 'firebase-tools/lib/rc' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/requireAccess" {
+declare module 'firebase-tools/lib/requireAccess' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/requireAuth" {
+declare module 'firebase-tools/lib/requireAuth' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/requireConfig" {
+declare module 'firebase-tools/lib/requireConfig' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/requireInstance" {
+declare module 'firebase-tools/lib/requireInstance' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/requirePermissions" {
+declare module 'firebase-tools/lib/requirePermissions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/responseToError" {
+declare module 'firebase-tools/lib/responseToError' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/rtdb" {
+declare module 'firebase-tools/lib/rtdb' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/RulesDeploy" {
+declare module 'firebase-tools/lib/RulesDeploy' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/runtimeChoiceSelector" {
+declare module 'firebase-tools/lib/runtimeChoiceSelector' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/scopes" {
+declare module 'firebase-tools/lib/scopes' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve/database" {
+declare module 'firebase-tools/lib/serve/database' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve/firestore" {
+declare module 'firebase-tools/lib/serve/firestore' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve/functions" {
+declare module 'firebase-tools/lib/serve/functions' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve/hosting" {
+declare module 'firebase-tools/lib/serve/hosting' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve" {
+declare module 'firebase-tools/lib/serve' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/serve/javaEmulators" {
+declare module 'firebase-tools/lib/serve/javaEmulators' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/accountExporter.spec" {
+declare module 'firebase-tools/lib/test/accountExporter.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/accountImporter.spec" {
+declare module 'firebase-tools/lib/test/accountImporter.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/appdistro/client.spec" {
+declare module 'firebase-tools/lib/test/appdistro/client.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/archiveDirectory.spec" {
+declare module 'firebase-tools/lib/test/archiveDirectory.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/command.spec" {
+declare module 'firebase-tools/lib/test/command.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/config.spec" {
+declare module 'firebase-tools/lib/test/config.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/database/fakeListRemote.spec" {
+declare module 'firebase-tools/lib/test/database/fakeListRemote.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/database/fakeRemoveRemote.spec" {
+declare module 'firebase-tools/lib/test/database/fakeRemoveRemote.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/database/listRemote.spec" {
+declare module 'firebase-tools/lib/test/database/listRemote.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/database/remove.spec" {
+declare module 'firebase-tools/lib/test/database/remove.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/database/removeRemote.spec" {
+declare module 'firebase-tools/lib/test/database/removeRemote.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/deploy/functions/validate.spec" {
+declare module 'firebase-tools/lib/test/deploy/functions/validate.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/controller.spec" {
+declare module 'firebase-tools/lib/test/emulators/controller.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/emulatorServer.spec" {
+declare module 'firebase-tools/lib/test/emulators/emulatorServer.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/fakeEmulator" {
+declare module 'firebase-tools/lib/test/emulators/fakeEmulator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/fixtures" {
+declare module 'firebase-tools/lib/test/emulators/fixtures' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/functionsEmulator.spec" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulator.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/functionsEmulatorRuntime.spec" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulatorRuntime.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/functionsEmulatorUtils.spec" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulatorUtils.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/emulators/registry.spec" {
+declare module 'firebase-tools/lib/test/emulators/registry.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/error.spec" {
+declare module 'firebase-tools/lib/test/error.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/askUserForConsent.spec" {
+declare module 'firebase-tools/lib/test/extensions/askUserForConsent.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/askUserForParam.spec" {
+declare module 'firebase-tools/lib/test/extensions/askUserForParam.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/checkProjectBilling.spec" {
+declare module 'firebase-tools/lib/test/extensions/checkProjectBilling.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/extensionsApi.spec" {
+declare module 'firebase-tools/lib/test/extensions/extensionsApi.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/extensionsHelper.spec" {
+declare module 'firebase-tools/lib/test/extensions/extensionsHelper.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/generateInstanceId.spec" {
+declare module 'firebase-tools/lib/test/extensions/generateInstanceId.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/listExtensions.spec" {
+declare module 'firebase-tools/lib/test/extensions/listExtensions.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/paramHelper.spec" {
+declare module 'firebase-tools/lib/test/extensions/paramHelper.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/populatePostinstall.spec" {
+declare module 'firebase-tools/lib/test/extensions/populatePostinstall.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/rolesHelper.spec" {
+declare module 'firebase-tools/lib/test/extensions/rolesHelper.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extensions/updateHelper.spec" {
+declare module 'firebase-tools/lib/test/extensions/updateHelper.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/extractTriggers.spec" {
+declare module 'firebase-tools/lib/test/extractTriggers.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/firestore/encodeFirestoreValue" {
+declare module 'firebase-tools/lib/test/firestore/encodeFirestoreValue' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/firestore/indexes.spec" {
+declare module 'firebase-tools/lib/test/firestore/indexes.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/fsAsync.spec" {
+declare module 'firebase-tools/lib/test/fsAsync.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/fsutils.spec" {
+declare module 'firebase-tools/lib/test/fsutils.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/functionsConfig.spec" {
+declare module 'firebase-tools/lib/test/functionsConfig.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/functionsDeployHelper.spec" {
+declare module 'firebase-tools/lib/test/functionsDeployHelper.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/gcp/cloudscheduler.spec" {
+declare module 'firebase-tools/lib/test/gcp/cloudscheduler.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/helpers" {
+declare module 'firebase-tools/lib/test/helpers' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/helpers/mocha-bootstrap" {
+declare module 'firebase-tools/lib/test/helpers/mocha-bootstrap' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/hosting/cloudRunProxy.spec" {
+declare module 'firebase-tools/lib/test/hosting/cloudRunProxy.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/hosting/functionsProxy.spec" {
+declare module 'firebase-tools/lib/test/hosting/functionsProxy.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/identifierToProjectId.spec" {
+declare module 'firebase-tools/lib/test/identifierToProjectId.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/init/features/firestore.spec" {
+declare module 'firebase-tools/lib/test/init/features/firestore.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/init/features/project.spec" {
+declare module 'firebase-tools/lib/test/init/features/project.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/init/features/storage.spec" {
+declare module 'firebase-tools/lib/test/init/features/storage.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/listFiles.spec" {
+declare module 'firebase-tools/lib/test/listFiles.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/localFunction.spec" {
+declare module 'firebase-tools/lib/test/localFunction.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/management/apps.spec" {
+declare module 'firebase-tools/lib/test/management/apps.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/management/projects.spec" {
+declare module 'firebase-tools/lib/test/management/projects.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/operation-poller.spec" {
+declare module 'firebase-tools/lib/test/operation-poller.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/profilerReport.spec" {
+declare module 'firebase-tools/lib/test/profilerReport.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/prompt.spec" {
+declare module 'firebase-tools/lib/test/prompt.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/rc.spec" {
+declare module 'firebase-tools/lib/test/rc.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/runtimeChoiceSelector.spec" {
+declare module 'firebase-tools/lib/test/runtimeChoiceSelector.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/throttler/queue.spec" {
+declare module 'firebase-tools/lib/test/throttler/queue.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/throttler/stack.spec" {
+declare module 'firebase-tools/lib/test/throttler/stack.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/throttler/throttler.spec" {
+declare module 'firebase-tools/lib/test/throttler/throttler.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/test/utils.spec" {
+declare module 'firebase-tools/lib/test/utils.spec' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/errors/retries-exhausted-error" {
+declare module 'firebase-tools/lib/throttler/errors/retries-exhausted-error' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/errors/task-error" {
+declare module 'firebase-tools/lib/throttler/errors/task-error' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/errors/timeout-error" {
+declare module 'firebase-tools/lib/throttler/errors/timeout-error' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/queue" {
+declare module 'firebase-tools/lib/throttler/queue' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/stack" {
+declare module 'firebase-tools/lib/throttler/stack' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/throttler/throttler" {
+declare module 'firebase-tools/lib/throttler/throttler' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/track" {
+declare module 'firebase-tools/lib/track' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/triggerParser" {
+declare module 'firebase-tools/lib/triggerParser' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/utils" {
+declare module 'firebase-tools/lib/utils' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/validateJsonRules" {
+declare module 'firebase-tools/lib/validateJsonRules' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/lib/validator" {
+declare module 'firebase-tools/lib/validator' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/standalone/check" {
+declare module 'firebase-tools/standalone/check' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/standalone/config.template" {
+declare module 'firebase-tools/standalone/config.template' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/standalone/firepit" {
+declare module 'firebase-tools/standalone/firepit' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/standalone/runtime" {
+declare module 'firebase-tools/standalone/runtime' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/standalone/welcome" {
+declare module 'firebase-tools/standalone/welcome' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/templates/hosting/init" {
+declare module 'firebase-tools/templates/hosting/init' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/templates/init/functions/javascript" {
+declare module 'firebase-tools/templates/init/functions/javascript' {
   declare module.exports: any;
 }
 
-declare module "firebase-tools/templates/setup/web" {
+declare module 'firebase-tools/templates/setup/web' {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module "firebase-tools/lib/accountExporter.js" {
+declare module 'firebase-tools/lib/accountExporter.js' {
   declare module.exports: $Exports<'firebase-tools/lib/accountExporter'>;
 }
-declare module "firebase-tools/lib/accountImporter.js" {
+declare module 'firebase-tools/lib/accountImporter.js' {
   declare module.exports: $Exports<'firebase-tools/lib/accountImporter'>;
 }
-declare module "firebase-tools/lib/api.js" {
+declare module 'firebase-tools/lib/api.js' {
   declare module.exports: $Exports<'firebase-tools/lib/api'>;
 }
-declare module "firebase-tools/lib/appdistribution/client.js" {
+declare module 'firebase-tools/lib/appdistribution/client.js' {
   declare module.exports: $Exports<'firebase-tools/lib/appdistribution/client'>;
 }
-declare module "firebase-tools/lib/appdistribution/distribution.js" {
+declare module 'firebase-tools/lib/appdistribution/distribution.js' {
   declare module.exports: $Exports<'firebase-tools/lib/appdistribution/distribution'>;
 }
-declare module "firebase-tools/lib/archiveDirectory.js" {
+declare module 'firebase-tools/lib/archiveDirectory.js' {
   declare module.exports: $Exports<'firebase-tools/lib/archiveDirectory'>;
 }
-declare module "firebase-tools/lib/auth.js" {
+declare module 'firebase-tools/lib/auth.js' {
   declare module.exports: $Exports<'firebase-tools/lib/auth'>;
 }
-declare module "firebase-tools/lib/bin/firebase.js" {
+declare module 'firebase-tools/lib/bin/firebase.js' {
   declare module.exports: $Exports<'firebase-tools/lib/bin/firebase'>;
 }
-declare module "firebase-tools/lib/checkDupHostingKeys.js" {
+declare module 'firebase-tools/lib/checkDupHostingKeys.js' {
   declare module.exports: $Exports<'firebase-tools/lib/checkDupHostingKeys'>;
 }
-declare module "firebase-tools/lib/checkFirebaseSDKVersion.js" {
+declare module 'firebase-tools/lib/checkFirebaseSDKVersion.js' {
   declare module.exports: $Exports<'firebase-tools/lib/checkFirebaseSDKVersion'>;
 }
-declare module "firebase-tools/lib/checkValidTargetFilters.js" {
+declare module 'firebase-tools/lib/checkValidTargetFilters.js' {
   declare module.exports: $Exports<'firebase-tools/lib/checkValidTargetFilters'>;
 }
-declare module "firebase-tools/lib/command.js" {
+declare module 'firebase-tools/lib/command.js' {
   declare module.exports: $Exports<'firebase-tools/lib/command'>;
 }
-declare module "firebase-tools/lib/commands/appdistribution-distribute.js" {
+declare module 'firebase-tools/lib/commands/appdistribution-distribute.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/appdistribution-distribute'>;
 }
-declare module "firebase-tools/lib/commands/apps-create.js" {
+declare module 'firebase-tools/lib/commands/apps-create.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/apps-create'>;
 }
-declare module "firebase-tools/lib/commands/apps-list.js" {
+declare module 'firebase-tools/lib/commands/apps-list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/apps-list'>;
 }
-declare module "firebase-tools/lib/commands/apps-sdkconfig.js" {
+declare module 'firebase-tools/lib/commands/apps-sdkconfig.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/apps-sdkconfig'>;
 }
-declare module "firebase-tools/lib/commands/auth-export.js" {
+declare module 'firebase-tools/lib/commands/auth-export.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/auth-export'>;
 }
-declare module "firebase-tools/lib/commands/auth-import.js" {
+declare module 'firebase-tools/lib/commands/auth-import.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/auth-import'>;
 }
-declare module "firebase-tools/lib/commands/database-get.js" {
+declare module 'firebase-tools/lib/commands/database-get.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-get'>;
 }
-declare module "firebase-tools/lib/commands/database-instances-create.js" {
+declare module 'firebase-tools/lib/commands/database-instances-create.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-instances-create'>;
 }
-declare module "firebase-tools/lib/commands/database-instances-list.js" {
+declare module 'firebase-tools/lib/commands/database-instances-list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-instances-list'>;
 }
-declare module "firebase-tools/lib/commands/database-profile.js" {
+declare module 'firebase-tools/lib/commands/database-profile.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-profile'>;
 }
-declare module "firebase-tools/lib/commands/database-push.js" {
+declare module 'firebase-tools/lib/commands/database-push.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-push'>;
 }
-declare module "firebase-tools/lib/commands/database-remove.js" {
+declare module 'firebase-tools/lib/commands/database-remove.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-remove'>;
 }
-declare module "firebase-tools/lib/commands/database-set.js" {
+declare module 'firebase-tools/lib/commands/database-set.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-set'>;
 }
-declare module "firebase-tools/lib/commands/database-settings-get.js" {
+declare module 'firebase-tools/lib/commands/database-settings-get.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-settings-get'>;
 }
-declare module "firebase-tools/lib/commands/database-settings-set.js" {
+declare module 'firebase-tools/lib/commands/database-settings-set.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-settings-set'>;
 }
-declare module "firebase-tools/lib/commands/database-update.js" {
+declare module 'firebase-tools/lib/commands/database-update.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/database-update'>;
 }
-declare module "firebase-tools/lib/commands/deploy.js" {
+declare module 'firebase-tools/lib/commands/deploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/deploy'>;
 }
-declare module "firebase-tools/lib/commands/emulators-exec.js" {
+declare module 'firebase-tools/lib/commands/emulators-exec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/emulators-exec'>;
 }
-declare module "firebase-tools/lib/commands/emulators-start.js" {
+declare module 'firebase-tools/lib/commands/emulators-start.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/emulators-start'>;
 }
-declare module "firebase-tools/lib/commands/experimental-functions-shell.js" {
+declare module 'firebase-tools/lib/commands/experimental-functions-shell.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/experimental-functions-shell'>;
 }
-declare module "firebase-tools/lib/commands/ext-configure.js" {
+declare module 'firebase-tools/lib/commands/ext-configure.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-configure'>;
 }
-declare module "firebase-tools/lib/commands/ext-info.js" {
+declare module 'firebase-tools/lib/commands/ext-info.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-info'>;
 }
-declare module "firebase-tools/lib/commands/ext-install.js" {
+declare module 'firebase-tools/lib/commands/ext-install.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-install'>;
 }
-declare module "firebase-tools/lib/commands/ext-list.js" {
+declare module 'firebase-tools/lib/commands/ext-list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-list'>;
 }
-declare module "firebase-tools/lib/commands/ext-uninstall.js" {
+declare module 'firebase-tools/lib/commands/ext-uninstall.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-uninstall'>;
 }
-declare module "firebase-tools/lib/commands/ext-update.js" {
+declare module 'firebase-tools/lib/commands/ext-update.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext-update'>;
 }
-declare module "firebase-tools/lib/commands/ext.js" {
+declare module 'firebase-tools/lib/commands/ext.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/ext'>;
 }
-declare module "firebase-tools/lib/commands/firestore-delete.js" {
+declare module 'firebase-tools/lib/commands/firestore-delete.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/firestore-delete'>;
 }
-declare module "firebase-tools/lib/commands/firestore-indexes-list.js" {
+declare module 'firebase-tools/lib/commands/firestore-indexes-list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/firestore-indexes-list'>;
 }
-declare module "firebase-tools/lib/commands/functions-config-clone.js" {
+declare module 'firebase-tools/lib/commands/functions-config-clone.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-config-clone'>;
 }
-declare module "firebase-tools/lib/commands/functions-config-get.js" {
+declare module 'firebase-tools/lib/commands/functions-config-get.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-config-get'>;
 }
-declare module "firebase-tools/lib/commands/functions-config-legacy.js" {
+declare module 'firebase-tools/lib/commands/functions-config-legacy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-config-legacy'>;
 }
-declare module "firebase-tools/lib/commands/functions-config-set.js" {
+declare module 'firebase-tools/lib/commands/functions-config-set.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-config-set'>;
 }
-declare module "firebase-tools/lib/commands/functions-config-unset.js" {
+declare module 'firebase-tools/lib/commands/functions-config-unset.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-config-unset'>;
 }
-declare module "firebase-tools/lib/commands/functions-delete.js" {
+declare module 'firebase-tools/lib/commands/functions-delete.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-delete'>;
 }
-declare module "firebase-tools/lib/commands/functions-log.js" {
+declare module 'firebase-tools/lib/commands/functions-log.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-log'>;
 }
-declare module "firebase-tools/lib/commands/functions-shell.js" {
+declare module 'firebase-tools/lib/commands/functions-shell.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/functions-shell'>;
 }
-declare module "firebase-tools/lib/commands/help.js" {
+declare module 'firebase-tools/lib/commands/help.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/help'>;
 }
-declare module "firebase-tools/lib/commands/hosting-disable.js" {
+declare module 'firebase-tools/lib/commands/hosting-disable.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/hosting-disable'>;
 }
-declare module "firebase-tools/lib/commands/index" {
+declare module 'firebase-tools/lib/commands/index' {
   declare module.exports: $Exports<'firebase-tools/lib/commands'>;
 }
-declare module "firebase-tools/lib/commands/index.js" {
+declare module 'firebase-tools/lib/commands/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands'>;
 }
-declare module "firebase-tools/lib/commands/init.js" {
+declare module 'firebase-tools/lib/commands/init.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/init'>;
 }
-declare module "firebase-tools/lib/commands/list.js" {
+declare module 'firebase-tools/lib/commands/list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/list'>;
 }
-declare module "firebase-tools/lib/commands/login-ci.js" {
+declare module 'firebase-tools/lib/commands/login-ci.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/login-ci'>;
 }
-declare module "firebase-tools/lib/commands/login.js" {
+declare module 'firebase-tools/lib/commands/login.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/login'>;
 }
-declare module "firebase-tools/lib/commands/logout.js" {
+declare module 'firebase-tools/lib/commands/logout.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/logout'>;
 }
-declare module "firebase-tools/lib/commands/open.js" {
+declare module 'firebase-tools/lib/commands/open.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/open'>;
 }
-declare module "firebase-tools/lib/commands/projects-addfirebase.js" {
+declare module 'firebase-tools/lib/commands/projects-addfirebase.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/projects-addfirebase'>;
 }
-declare module "firebase-tools/lib/commands/projects-create.js" {
+declare module 'firebase-tools/lib/commands/projects-create.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/projects-create'>;
 }
-declare module "firebase-tools/lib/commands/projects-list.js" {
+declare module 'firebase-tools/lib/commands/projects-list.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/projects-list'>;
 }
-declare module "firebase-tools/lib/commands/serve.js" {
+declare module 'firebase-tools/lib/commands/serve.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/serve'>;
 }
-declare module "firebase-tools/lib/commands/setup-emulators-database.js" {
+declare module 'firebase-tools/lib/commands/setup-emulators-database.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/setup-emulators-database'>;
 }
-declare module "firebase-tools/lib/commands/setup-emulators-firestore.js" {
+declare module 'firebase-tools/lib/commands/setup-emulators-firestore.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/setup-emulators-firestore'>;
 }
-declare module "firebase-tools/lib/commands/setup-web.js" {
+declare module 'firebase-tools/lib/commands/setup-web.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/setup-web'>;
 }
-declare module "firebase-tools/lib/commands/target-apply.js" {
+declare module 'firebase-tools/lib/commands/target-apply.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/target-apply'>;
 }
-declare module "firebase-tools/lib/commands/target-clear.js" {
+declare module 'firebase-tools/lib/commands/target-clear.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/target-clear'>;
 }
-declare module "firebase-tools/lib/commands/target-remove.js" {
+declare module 'firebase-tools/lib/commands/target-remove.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/target-remove'>;
 }
-declare module "firebase-tools/lib/commands/target.js" {
+declare module 'firebase-tools/lib/commands/target.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/target'>;
 }
-declare module "firebase-tools/lib/commands/tools-migrate.js" {
+declare module 'firebase-tools/lib/commands/tools-migrate.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/tools-migrate'>;
 }
-declare module "firebase-tools/lib/commands/use.js" {
+declare module 'firebase-tools/lib/commands/use.js' {
   declare module.exports: $Exports<'firebase-tools/lib/commands/use'>;
 }
-declare module "firebase-tools/lib/config.js" {
+declare module 'firebase-tools/lib/config.js' {
   declare module.exports: $Exports<'firebase-tools/lib/config'>;
 }
-declare module "firebase-tools/lib/configstore.js" {
+declare module 'firebase-tools/lib/configstore.js' {
   declare module.exports: $Exports<'firebase-tools/lib/configstore'>;
 }
-declare module "firebase-tools/lib/database/listRemote.js" {
+declare module 'firebase-tools/lib/database/listRemote.js' {
   declare module.exports: $Exports<'firebase-tools/lib/database/listRemote'>;
 }
-declare module "firebase-tools/lib/database/remove.js" {
+declare module 'firebase-tools/lib/database/remove.js' {
   declare module.exports: $Exports<'firebase-tools/lib/database/remove'>;
 }
-declare module "firebase-tools/lib/database/removeRemote.js" {
+declare module 'firebase-tools/lib/database/removeRemote.js' {
   declare module.exports: $Exports<'firebase-tools/lib/database/removeRemote'>;
 }
-declare module "firebase-tools/lib/database/settings.js" {
+declare module 'firebase-tools/lib/database/settings.js' {
   declare module.exports: $Exports<'firebase-tools/lib/database/settings'>;
 }
-declare module "firebase-tools/lib/deploy/database/index" {
+declare module 'firebase-tools/lib/deploy/database/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/database'>;
 }
-declare module "firebase-tools/lib/deploy/database/index.js" {
+declare module 'firebase-tools/lib/deploy/database/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/database'>;
 }
-declare module "firebase-tools/lib/deploy/database/prepare.js" {
+declare module 'firebase-tools/lib/deploy/database/prepare.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/database/prepare'>;
 }
-declare module "firebase-tools/lib/deploy/database/release.js" {
+declare module 'firebase-tools/lib/deploy/database/release.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/database/release'>;
 }
-declare module "firebase-tools/lib/deploy/firestore/deploy.js" {
+declare module 'firebase-tools/lib/deploy/firestore/deploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/firestore/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/firestore/index" {
+declare module 'firebase-tools/lib/deploy/firestore/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/firestore'>;
 }
-declare module "firebase-tools/lib/deploy/firestore/index.js" {
+declare module 'firebase-tools/lib/deploy/firestore/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/firestore'>;
 }
-declare module "firebase-tools/lib/deploy/firestore/prepare.js" {
+declare module 'firebase-tools/lib/deploy/firestore/prepare.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/firestore/prepare'>;
 }
-declare module "firebase-tools/lib/deploy/firestore/release.js" {
+declare module 'firebase-tools/lib/deploy/firestore/release.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/firestore/release'>;
 }
-declare module "firebase-tools/lib/deploy/functions/createOrUpdateSchedulesAndTopics.js" {
+declare module 'firebase-tools/lib/deploy/functions/createOrUpdateSchedulesAndTopics.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions/createOrUpdateSchedulesAndTopics'>;
 }
-declare module "firebase-tools/lib/deploy/functions/deploy.js" {
+declare module 'firebase-tools/lib/deploy/functions/deploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/functions/index" {
+declare module 'firebase-tools/lib/deploy/functions/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions'>;
 }
-declare module "firebase-tools/lib/deploy/functions/index.js" {
+declare module 'firebase-tools/lib/deploy/functions/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions'>;
 }
-declare module "firebase-tools/lib/deploy/functions/prepare.js" {
+declare module 'firebase-tools/lib/deploy/functions/prepare.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions/prepare'>;
 }
-declare module "firebase-tools/lib/deploy/functions/release.js" {
+declare module 'firebase-tools/lib/deploy/functions/release.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions/release'>;
 }
-declare module "firebase-tools/lib/deploy/functions/validate.js" {
+declare module 'firebase-tools/lib/deploy/functions/validate.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/functions/validate'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/convertConfig.js" {
+declare module 'firebase-tools/lib/deploy/hosting/convertConfig.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/convertConfig'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/deploy.js" {
+declare module 'firebase-tools/lib/deploy/hosting/deploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/hashcache.js" {
+declare module 'firebase-tools/lib/deploy/hosting/hashcache.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/hashcache'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/index" {
+declare module 'firebase-tools/lib/deploy/hosting/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/index.js" {
+declare module 'firebase-tools/lib/deploy/hosting/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/prepare.js" {
+declare module 'firebase-tools/lib/deploy/hosting/prepare.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/prepare'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/release.js" {
+declare module 'firebase-tools/lib/deploy/hosting/release.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/release'>;
 }
-declare module "firebase-tools/lib/deploy/hosting/uploader.js" {
+declare module 'firebase-tools/lib/deploy/hosting/uploader.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/hosting/uploader'>;
 }
-declare module "firebase-tools/lib/deploy/index" {
+declare module 'firebase-tools/lib/deploy/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/index.js" {
+declare module 'firebase-tools/lib/deploy/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/lifecycleHooks.js" {
+declare module 'firebase-tools/lib/deploy/lifecycleHooks.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/lifecycleHooks'>;
 }
-declare module "firebase-tools/lib/deploy/storage/deploy.js" {
+declare module 'firebase-tools/lib/deploy/storage/deploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/storage/deploy'>;
 }
-declare module "firebase-tools/lib/deploy/storage/index" {
+declare module 'firebase-tools/lib/deploy/storage/index' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/storage'>;
 }
-declare module "firebase-tools/lib/deploy/storage/index.js" {
+declare module 'firebase-tools/lib/deploy/storage/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/storage'>;
 }
-declare module "firebase-tools/lib/deploy/storage/prepare.js" {
+declare module 'firebase-tools/lib/deploy/storage/prepare.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/storage/prepare'>;
 }
-declare module "firebase-tools/lib/deploy/storage/release.js" {
+declare module 'firebase-tools/lib/deploy/storage/release.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploy/storage/release'>;
 }
-declare module "firebase-tools/lib/deploymentTool.js" {
+declare module 'firebase-tools/lib/deploymentTool.js' {
   declare module.exports: $Exports<'firebase-tools/lib/deploymentTool'>;
 }
-declare module "firebase-tools/lib/detectProjectRoot.js" {
+declare module 'firebase-tools/lib/detectProjectRoot.js' {
   declare module.exports: $Exports<'firebase-tools/lib/detectProjectRoot'>;
 }
-declare module "firebase-tools/lib/emulator/commandUtils.js" {
+declare module 'firebase-tools/lib/emulator/commandUtils.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/commandUtils'>;
 }
-declare module "firebase-tools/lib/emulator/constants.js" {
+declare module 'firebase-tools/lib/emulator/constants.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/constants'>;
 }
-declare module "firebase-tools/lib/emulator/controller.js" {
+declare module 'firebase-tools/lib/emulator/controller.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/controller'>;
 }
-declare module "firebase-tools/lib/emulator/databaseEmulator.js" {
+declare module 'firebase-tools/lib/emulator/databaseEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/databaseEmulator'>;
 }
-declare module "firebase-tools/lib/emulator/download.js" {
+declare module 'firebase-tools/lib/emulator/download.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/download'>;
 }
-declare module "firebase-tools/lib/emulator/emulatorLogger.js" {
+declare module 'firebase-tools/lib/emulator/emulatorLogger.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/emulatorLogger'>;
 }
-declare module "firebase-tools/lib/emulator/emulatorServer.js" {
+declare module 'firebase-tools/lib/emulator/emulatorServer.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/emulatorServer'>;
 }
-declare module "firebase-tools/lib/emulator/events/types.js" {
+declare module 'firebase-tools/lib/emulator/events/types.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/events/types'>;
 }
-declare module "firebase-tools/lib/emulator/firestoreEmulator.js" {
+declare module 'firebase-tools/lib/emulator/firestoreEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/firestoreEmulator'>;
 }
-declare module "firebase-tools/lib/emulator/functionsEmulator.js" {
+declare module 'firebase-tools/lib/emulator/functionsEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/functionsEmulator'>;
 }
-declare module "firebase-tools/lib/emulator/functionsEmulatorRuntime.js" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorRuntime.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/functionsEmulatorRuntime'>;
 }
-declare module "firebase-tools/lib/emulator/functionsEmulatorShared.js" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorShared.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/functionsEmulatorShared'>;
 }
-declare module "firebase-tools/lib/emulator/functionsEmulatorShell.js" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorShell.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/functionsEmulatorShell'>;
 }
-declare module "firebase-tools/lib/emulator/functionsEmulatorUtils.js" {
+declare module 'firebase-tools/lib/emulator/functionsEmulatorUtils.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/functionsEmulatorUtils'>;
 }
-declare module "firebase-tools/lib/emulator/hostingEmulator.js" {
+declare module 'firebase-tools/lib/emulator/hostingEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/hostingEmulator'>;
 }
-declare module "firebase-tools/lib/emulator/registry.js" {
+declare module 'firebase-tools/lib/emulator/registry.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/registry'>;
 }
-declare module "firebase-tools/lib/emulator/types.js" {
+declare module 'firebase-tools/lib/emulator/types.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/types'>;
 }
-declare module "firebase-tools/lib/ensureApiEnabled.js" {
+declare module 'firebase-tools/lib/ensureApiEnabled.js' {
   declare module.exports: $Exports<'firebase-tools/lib/ensureApiEnabled'>;
 }
-declare module "firebase-tools/lib/ensureCloudResourceLocation.js" {
+declare module 'firebase-tools/lib/ensureCloudResourceLocation.js' {
   declare module.exports: $Exports<'firebase-tools/lib/ensureCloudResourceLocation'>;
 }
-declare module "firebase-tools/lib/ensureDefaultCredentials.js" {
+declare module 'firebase-tools/lib/ensureDefaultCredentials.js' {
   declare module.exports: $Exports<'firebase-tools/lib/ensureDefaultCredentials'>;
 }
-declare module "firebase-tools/lib/error.js" {
+declare module 'firebase-tools/lib/error.js' {
   declare module.exports: $Exports<'firebase-tools/lib/error'>;
 }
-declare module "firebase-tools/lib/errorOut.js" {
+declare module 'firebase-tools/lib/errorOut.js' {
   declare module.exports: $Exports<'firebase-tools/lib/errorOut'>;
 }
-declare module "firebase-tools/lib/extensions/askUserForConsent.js" {
+declare module 'firebase-tools/lib/extensions/askUserForConsent.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/askUserForConsent'>;
 }
-declare module "firebase-tools/lib/extensions/askUserForParam.js" {
+declare module 'firebase-tools/lib/extensions/askUserForParam.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/askUserForParam'>;
 }
-declare module "firebase-tools/lib/extensions/checkProjectBilling.js" {
+declare module 'firebase-tools/lib/extensions/checkProjectBilling.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/checkProjectBilling'>;
 }
-declare module "firebase-tools/lib/extensions/extensionsApi.js" {
+declare module 'firebase-tools/lib/extensions/extensionsApi.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/extensionsApi'>;
 }
-declare module "firebase-tools/lib/extensions/extensionsHelper.js" {
+declare module 'firebase-tools/lib/extensions/extensionsHelper.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/extensionsHelper'>;
 }
-declare module "firebase-tools/lib/extensions/generateInstanceId.js" {
+declare module 'firebase-tools/lib/extensions/generateInstanceId.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/generateInstanceId'>;
 }
-declare module "firebase-tools/lib/extensions/listExtensions.js" {
+declare module 'firebase-tools/lib/extensions/listExtensions.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/listExtensions'>;
 }
-declare module "firebase-tools/lib/extensions/paramHelper.js" {
+declare module 'firebase-tools/lib/extensions/paramHelper.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/paramHelper'>;
 }
-declare module "firebase-tools/lib/extensions/populatePostinstall.js" {
+declare module 'firebase-tools/lib/extensions/populatePostinstall.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/populatePostinstall'>;
 }
-declare module "firebase-tools/lib/extensions/resolveSource.js" {
+declare module 'firebase-tools/lib/extensions/resolveSource.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/resolveSource'>;
 }
-declare module "firebase-tools/lib/extensions/rolesHelper.js" {
+declare module 'firebase-tools/lib/extensions/rolesHelper.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/rolesHelper'>;
 }
-declare module "firebase-tools/lib/extensions/updateHelper.js" {
+declare module 'firebase-tools/lib/extensions/updateHelper.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/updateHelper'>;
 }
-declare module "firebase-tools/lib/extensions/utils.js" {
+declare module 'firebase-tools/lib/extensions/utils.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extensions/utils'>;
 }
-declare module "firebase-tools/lib/extractTriggers.js" {
+declare module 'firebase-tools/lib/extractTriggers.js' {
   declare module.exports: $Exports<'firebase-tools/lib/extractTriggers'>;
 }
-declare module "firebase-tools/lib/fetchMOTD.js" {
+declare module 'firebase-tools/lib/fetchMOTD.js' {
   declare module.exports: $Exports<'firebase-tools/lib/fetchMOTD'>;
 }
-declare module "firebase-tools/lib/fetchWebSetup.js" {
+declare module 'firebase-tools/lib/fetchWebSetup.js' {
   declare module.exports: $Exports<'firebase-tools/lib/fetchWebSetup'>;
 }
-declare module "firebase-tools/lib/filterTargets.js" {
+declare module 'firebase-tools/lib/filterTargets.js' {
   declare module.exports: $Exports<'firebase-tools/lib/filterTargets'>;
 }
-declare module "firebase-tools/lib/firestore/delete.js" {
+declare module 'firebase-tools/lib/firestore/delete.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/delete'>;
 }
-declare module "firebase-tools/lib/firestore/encodeFirestoreValue.js" {
+declare module 'firebase-tools/lib/firestore/encodeFirestoreValue.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/encodeFirestoreValue'>;
 }
-declare module "firebase-tools/lib/firestore/indexes-api.js" {
+declare module 'firebase-tools/lib/firestore/indexes-api.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/indexes-api'>;
 }
-declare module "firebase-tools/lib/firestore/indexes-sort.js" {
+declare module 'firebase-tools/lib/firestore/indexes-sort.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/indexes-sort'>;
 }
-declare module "firebase-tools/lib/firestore/indexes-spec.js" {
+declare module 'firebase-tools/lib/firestore/indexes-spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/indexes-spec'>;
 }
-declare module "firebase-tools/lib/firestore/indexes.js" {
+declare module 'firebase-tools/lib/firestore/indexes.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/indexes'>;
 }
-declare module "firebase-tools/lib/firestore/util.js" {
+declare module 'firebase-tools/lib/firestore/util.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/util'>;
 }
-declare module "firebase-tools/lib/firestore/validator.js" {
+declare module 'firebase-tools/lib/firestore/validator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/firestore/validator'>;
 }
-declare module "firebase-tools/lib/fsAsync.js" {
+declare module 'firebase-tools/lib/fsAsync.js' {
   declare module.exports: $Exports<'firebase-tools/lib/fsAsync'>;
 }
-declare module "firebase-tools/lib/fsutils.js" {
+declare module 'firebase-tools/lib/fsutils.js' {
   declare module.exports: $Exports<'firebase-tools/lib/fsutils'>;
 }
-declare module "firebase-tools/lib/functionsConfig.js" {
+declare module 'firebase-tools/lib/functionsConfig.js' {
   declare module.exports: $Exports<'firebase-tools/lib/functionsConfig'>;
 }
-declare module "firebase-tools/lib/functionsConfigClone.js" {
+declare module 'firebase-tools/lib/functionsConfigClone.js' {
   declare module.exports: $Exports<'firebase-tools/lib/functionsConfigClone'>;
 }
-declare module "firebase-tools/lib/functionsDelete.js" {
+declare module 'firebase-tools/lib/functionsDelete.js' {
   declare module.exports: $Exports<'firebase-tools/lib/functionsDelete'>;
 }
-declare module "firebase-tools/lib/functionsDeployHelper.js" {
+declare module 'firebase-tools/lib/functionsDeployHelper.js' {
   declare module.exports: $Exports<'firebase-tools/lib/functionsDeployHelper'>;
 }
-declare module "firebase-tools/lib/functionsShellCommandAction.js" {
+declare module 'firebase-tools/lib/functionsShellCommandAction.js' {
   declare module.exports: $Exports<'firebase-tools/lib/functionsShellCommandAction'>;
 }
-declare module "firebase-tools/lib/gcp/cloudbilling.js" {
+declare module 'firebase-tools/lib/gcp/cloudbilling.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/cloudbilling'>;
 }
-declare module "firebase-tools/lib/gcp/cloudfunctions.js" {
+declare module 'firebase-tools/lib/gcp/cloudfunctions.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/cloudfunctions'>;
 }
-declare module "firebase-tools/lib/gcp/cloudlogging.js" {
+declare module 'firebase-tools/lib/gcp/cloudlogging.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/cloudlogging'>;
 }
-declare module "firebase-tools/lib/gcp/cloudscheduler.js" {
+declare module 'firebase-tools/lib/gcp/cloudscheduler.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/cloudscheduler'>;
 }
-declare module "firebase-tools/lib/gcp/firedata.js" {
+declare module 'firebase-tools/lib/gcp/firedata.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/firedata'>;
 }
-declare module "firebase-tools/lib/gcp/firestore.js" {
+declare module 'firebase-tools/lib/gcp/firestore.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/firestore'>;
 }
-declare module "firebase-tools/lib/gcp/iam.js" {
+declare module 'firebase-tools/lib/gcp/iam.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/iam'>;
 }
-declare module "firebase-tools/lib/gcp/index" {
+declare module 'firebase-tools/lib/gcp/index' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp'>;
 }
-declare module "firebase-tools/lib/gcp/index.js" {
+declare module 'firebase-tools/lib/gcp/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp'>;
 }
-declare module "firebase-tools/lib/gcp/pubsub.js" {
+declare module 'firebase-tools/lib/gcp/pubsub.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/pubsub'>;
 }
-declare module "firebase-tools/lib/gcp/rules.js" {
+declare module 'firebase-tools/lib/gcp/rules.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/rules'>;
 }
-declare module "firebase-tools/lib/gcp/runtimeconfig.js" {
+declare module 'firebase-tools/lib/gcp/runtimeconfig.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/runtimeconfig'>;
 }
-declare module "firebase-tools/lib/gcp/storage.js" {
+declare module 'firebase-tools/lib/gcp/storage.js' {
   declare module.exports: $Exports<'firebase-tools/lib/gcp/storage'>;
 }
-declare module "firebase-tools/lib/getInstanceId.js" {
+declare module 'firebase-tools/lib/getInstanceId.js' {
   declare module.exports: $Exports<'firebase-tools/lib/getInstanceId'>;
 }
-declare module "firebase-tools/lib/getProjectId.js" {
+declare module 'firebase-tools/lib/getProjectId.js' {
   declare module.exports: $Exports<'firebase-tools/lib/getProjectId'>;
 }
-declare module "firebase-tools/lib/getProjectNumber.js" {
+declare module 'firebase-tools/lib/getProjectNumber.js' {
   declare module.exports: $Exports<'firebase-tools/lib/getProjectNumber'>;
 }
-declare module "firebase-tools/lib/handlePreviewToggles.js" {
+declare module 'firebase-tools/lib/handlePreviewToggles.js' {
   declare module.exports: $Exports<'firebase-tools/lib/handlePreviewToggles'>;
 }
-declare module "firebase-tools/lib/hosting/cloudRunProxy.js" {
+declare module 'firebase-tools/lib/hosting/cloudRunProxy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/cloudRunProxy'>;
 }
-declare module "firebase-tools/lib/hosting/functionsProxy.js" {
+declare module 'firebase-tools/lib/hosting/functionsProxy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/functionsProxy'>;
 }
-declare module "firebase-tools/lib/hosting/implicitInit.js" {
+declare module 'firebase-tools/lib/hosting/implicitInit.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/implicitInit'>;
 }
-declare module "firebase-tools/lib/hosting/initMiddleware.js" {
+declare module 'firebase-tools/lib/hosting/initMiddleware.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/initMiddleware'>;
 }
-declare module "firebase-tools/lib/hosting/normalizedHostingConfigs.js" {
+declare module 'firebase-tools/lib/hosting/normalizedHostingConfigs.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/normalizedHostingConfigs'>;
 }
-declare module "firebase-tools/lib/hosting/proxy.js" {
+declare module 'firebase-tools/lib/hosting/proxy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/hosting/proxy'>;
 }
-declare module "firebase-tools/lib/identifierToProjectId.js" {
+declare module 'firebase-tools/lib/identifierToProjectId.js' {
   declare module.exports: $Exports<'firebase-tools/lib/identifierToProjectId'>;
 }
-declare module "firebase-tools/lib/index" {
+declare module 'firebase-tools/lib/index' {
   declare module.exports: $Exports<'firebase-tools/lib'>;
 }
-declare module "firebase-tools/lib/index.js" {
+declare module 'firebase-tools/lib/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib'>;
 }
-declare module "firebase-tools/lib/init/features/database.js" {
+declare module 'firebase-tools/lib/init/features/database.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/database'>;
 }
-declare module "firebase-tools/lib/init/features/firestore/index" {
+declare module 'firebase-tools/lib/init/features/firestore/index' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/firestore'>;
 }
-declare module "firebase-tools/lib/init/features/firestore/index.js" {
+declare module 'firebase-tools/lib/init/features/firestore/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/firestore'>;
 }
-declare module "firebase-tools/lib/init/features/firestore/indexes.js" {
+declare module 'firebase-tools/lib/init/features/firestore/indexes.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/firestore/indexes'>;
 }
-declare module "firebase-tools/lib/init/features/firestore/rules.js" {
+declare module 'firebase-tools/lib/init/features/firestore/rules.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/firestore/rules'>;
 }
-declare module "firebase-tools/lib/init/features/functions/index" {
+declare module 'firebase-tools/lib/init/features/functions/index' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/functions'>;
 }
-declare module "firebase-tools/lib/init/features/functions/index.js" {
+declare module 'firebase-tools/lib/init/features/functions/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/functions'>;
 }
-declare module "firebase-tools/lib/init/features/functions/javascript.js" {
+declare module 'firebase-tools/lib/init/features/functions/javascript.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/functions/javascript'>;
 }
-declare module "firebase-tools/lib/init/features/functions/npm-dependencies.js" {
+declare module 'firebase-tools/lib/init/features/functions/npm-dependencies.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/functions/npm-dependencies'>;
 }
-declare module "firebase-tools/lib/init/features/functions/typescript.js" {
+declare module 'firebase-tools/lib/init/features/functions/typescript.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/functions/typescript'>;
 }
-declare module "firebase-tools/lib/init/features/hosting.js" {
+declare module 'firebase-tools/lib/init/features/hosting.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/hosting'>;
 }
-declare module "firebase-tools/lib/init/features/index" {
+declare module 'firebase-tools/lib/init/features/index' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features'>;
 }
-declare module "firebase-tools/lib/init/features/index.js" {
+declare module 'firebase-tools/lib/init/features/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features'>;
 }
-declare module "firebase-tools/lib/init/features/project.js" {
+declare module 'firebase-tools/lib/init/features/project.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/project'>;
 }
-declare module "firebase-tools/lib/init/features/storage.js" {
+declare module 'firebase-tools/lib/init/features/storage.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init/features/storage'>;
 }
-declare module "firebase-tools/lib/init/index" {
+declare module 'firebase-tools/lib/init/index' {
   declare module.exports: $Exports<'firebase-tools/lib/init'>;
 }
-declare module "firebase-tools/lib/init/index.js" {
+declare module 'firebase-tools/lib/init/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/init'>;
 }
-declare module "firebase-tools/lib/listFiles.js" {
+declare module 'firebase-tools/lib/listFiles.js' {
   declare module.exports: $Exports<'firebase-tools/lib/listFiles'>;
 }
-declare module "firebase-tools/lib/loadCJSON.js" {
+declare module 'firebase-tools/lib/loadCJSON.js' {
   declare module.exports: $Exports<'firebase-tools/lib/loadCJSON'>;
 }
-declare module "firebase-tools/lib/localFunction.js" {
+declare module 'firebase-tools/lib/localFunction.js' {
   declare module.exports: $Exports<'firebase-tools/lib/localFunction'>;
 }
-declare module "firebase-tools/lib/logError.js" {
+declare module 'firebase-tools/lib/logError.js' {
   declare module.exports: $Exports<'firebase-tools/lib/logError'>;
 }
-declare module "firebase-tools/lib/logger.js" {
+declare module 'firebase-tools/lib/logger.js' {
   declare module.exports: $Exports<'firebase-tools/lib/logger'>;
 }
-declare module "firebase-tools/lib/management/apps.js" {
+declare module 'firebase-tools/lib/management/apps.js' {
   declare module.exports: $Exports<'firebase-tools/lib/management/apps'>;
 }
-declare module "firebase-tools/lib/management/projects.js" {
+declare module 'firebase-tools/lib/management/projects.js' {
   declare module.exports: $Exports<'firebase-tools/lib/management/projects'>;
 }
-declare module "firebase-tools/lib/operation-poller.js" {
+declare module 'firebase-tools/lib/operation-poller.js' {
   declare module.exports: $Exports<'firebase-tools/lib/operation-poller'>;
 }
-declare module "firebase-tools/lib/parseBoltRules.js" {
+declare module 'firebase-tools/lib/parseBoltRules.js' {
   declare module.exports: $Exports<'firebase-tools/lib/parseBoltRules'>;
 }
-declare module "firebase-tools/lib/parseTriggers.js" {
+declare module 'firebase-tools/lib/parseTriggers.js' {
   declare module.exports: $Exports<'firebase-tools/lib/parseTriggers'>;
 }
-declare module "firebase-tools/lib/pollOperations.js" {
+declare module 'firebase-tools/lib/pollOperations.js' {
   declare module.exports: $Exports<'firebase-tools/lib/pollOperations'>;
 }
-declare module "firebase-tools/lib/prepareFirebaseRules.js" {
+declare module 'firebase-tools/lib/prepareFirebaseRules.js' {
   declare module.exports: $Exports<'firebase-tools/lib/prepareFirebaseRules'>;
 }
-declare module "firebase-tools/lib/prepareFunctionsUpload.js" {
+declare module 'firebase-tools/lib/prepareFunctionsUpload.js' {
   declare module.exports: $Exports<'firebase-tools/lib/prepareFunctionsUpload'>;
 }
-declare module "firebase-tools/lib/prepareUpload.js" {
+declare module 'firebase-tools/lib/prepareUpload.js' {
   declare module.exports: $Exports<'firebase-tools/lib/prepareUpload'>;
 }
-declare module "firebase-tools/lib/previews.js" {
+declare module 'firebase-tools/lib/previews.js' {
   declare module.exports: $Exports<'firebase-tools/lib/previews'>;
 }
-declare module "firebase-tools/lib/profiler.js" {
+declare module 'firebase-tools/lib/profiler.js' {
   declare module.exports: $Exports<'firebase-tools/lib/profiler'>;
 }
-declare module "firebase-tools/lib/profileReport.js" {
+declare module 'firebase-tools/lib/profileReport.js' {
   declare module.exports: $Exports<'firebase-tools/lib/profileReport'>;
 }
-declare module "firebase-tools/lib/projectPath.js" {
+declare module 'firebase-tools/lib/projectPath.js' {
   declare module.exports: $Exports<'firebase-tools/lib/projectPath'>;
 }
-declare module "firebase-tools/lib/prompt.js" {
+declare module 'firebase-tools/lib/prompt.js' {
   declare module.exports: $Exports<'firebase-tools/lib/prompt'>;
 }
-declare module "firebase-tools/lib/rc.js" {
+declare module 'firebase-tools/lib/rc.js' {
   declare module.exports: $Exports<'firebase-tools/lib/rc'>;
 }
-declare module "firebase-tools/lib/requireAccess.js" {
+declare module 'firebase-tools/lib/requireAccess.js' {
   declare module.exports: $Exports<'firebase-tools/lib/requireAccess'>;
 }
-declare module "firebase-tools/lib/requireAuth.js" {
+declare module 'firebase-tools/lib/requireAuth.js' {
   declare module.exports: $Exports<'firebase-tools/lib/requireAuth'>;
 }
-declare module "firebase-tools/lib/requireConfig.js" {
+declare module 'firebase-tools/lib/requireConfig.js' {
   declare module.exports: $Exports<'firebase-tools/lib/requireConfig'>;
 }
-declare module "firebase-tools/lib/requireInstance.js" {
+declare module 'firebase-tools/lib/requireInstance.js' {
   declare module.exports: $Exports<'firebase-tools/lib/requireInstance'>;
 }
-declare module "firebase-tools/lib/requirePermissions.js" {
+declare module 'firebase-tools/lib/requirePermissions.js' {
   declare module.exports: $Exports<'firebase-tools/lib/requirePermissions'>;
 }
-declare module "firebase-tools/lib/responseToError.js" {
+declare module 'firebase-tools/lib/responseToError.js' {
   declare module.exports: $Exports<'firebase-tools/lib/responseToError'>;
 }
-declare module "firebase-tools/lib/rtdb.js" {
+declare module 'firebase-tools/lib/rtdb.js' {
   declare module.exports: $Exports<'firebase-tools/lib/rtdb'>;
 }
-declare module "firebase-tools/lib/RulesDeploy.js" {
+declare module 'firebase-tools/lib/RulesDeploy.js' {
   declare module.exports: $Exports<'firebase-tools/lib/RulesDeploy'>;
 }
-declare module "firebase-tools/lib/runtimeChoiceSelector.js" {
+declare module 'firebase-tools/lib/runtimeChoiceSelector.js' {
   declare module.exports: $Exports<'firebase-tools/lib/runtimeChoiceSelector'>;
 }
-declare module "firebase-tools/lib/scopes.js" {
+declare module 'firebase-tools/lib/scopes.js' {
   declare module.exports: $Exports<'firebase-tools/lib/scopes'>;
 }
-declare module "firebase-tools/lib/serve/database.js" {
+declare module 'firebase-tools/lib/serve/database.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve/database'>;
 }
-declare module "firebase-tools/lib/serve/firestore.js" {
+declare module 'firebase-tools/lib/serve/firestore.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve/firestore'>;
 }
-declare module "firebase-tools/lib/serve/functions.js" {
+declare module 'firebase-tools/lib/serve/functions.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve/functions'>;
 }
-declare module "firebase-tools/lib/serve/hosting.js" {
+declare module 'firebase-tools/lib/serve/hosting.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve/hosting'>;
 }
-declare module "firebase-tools/lib/serve/index" {
+declare module 'firebase-tools/lib/serve/index' {
   declare module.exports: $Exports<'firebase-tools/lib/serve'>;
 }
-declare module "firebase-tools/lib/serve/index.js" {
+declare module 'firebase-tools/lib/serve/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve'>;
 }
-declare module "firebase-tools/lib/serve/javaEmulators.js" {
+declare module 'firebase-tools/lib/serve/javaEmulators.js' {
   declare module.exports: $Exports<'firebase-tools/lib/serve/javaEmulators'>;
 }
-declare module "firebase-tools/lib/test/accountExporter.spec.js" {
+declare module 'firebase-tools/lib/test/accountExporter.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/accountExporter.spec'>;
 }
-declare module "firebase-tools/lib/test/accountImporter.spec.js" {
+declare module 'firebase-tools/lib/test/accountImporter.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/accountImporter.spec'>;
 }
-declare module "firebase-tools/lib/test/appdistro/client.spec.js" {
+declare module 'firebase-tools/lib/test/appdistro/client.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/appdistro/client.spec'>;
 }
-declare module "firebase-tools/lib/test/archiveDirectory.spec.js" {
+declare module 'firebase-tools/lib/test/archiveDirectory.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/archiveDirectory.spec'>;
 }
-declare module "firebase-tools/lib/test/command.spec.js" {
+declare module 'firebase-tools/lib/test/command.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/command.spec'>;
 }
-declare module "firebase-tools/lib/test/config.spec.js" {
+declare module 'firebase-tools/lib/test/config.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/config.spec'>;
 }
-declare module "firebase-tools/lib/test/database/fakeListRemote.spec.js" {
+declare module 'firebase-tools/lib/test/database/fakeListRemote.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/database/fakeListRemote.spec'>;
 }
-declare module "firebase-tools/lib/test/database/fakeRemoveRemote.spec.js" {
+declare module 'firebase-tools/lib/test/database/fakeRemoveRemote.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/database/fakeRemoveRemote.spec'>;
 }
-declare module "firebase-tools/lib/test/database/listRemote.spec.js" {
+declare module 'firebase-tools/lib/test/database/listRemote.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/database/listRemote.spec'>;
 }
-declare module "firebase-tools/lib/test/database/remove.spec.js" {
+declare module 'firebase-tools/lib/test/database/remove.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/database/remove.spec'>;
 }
-declare module "firebase-tools/lib/test/database/removeRemote.spec.js" {
+declare module 'firebase-tools/lib/test/database/removeRemote.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/database/removeRemote.spec'>;
 }
-declare module "firebase-tools/lib/test/deploy/functions/validate.spec.js" {
+declare module 'firebase-tools/lib/test/deploy/functions/validate.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/deploy/functions/validate.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/controller.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/controller.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/controller.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/emulatorServer.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/emulatorServer.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/emulatorServer.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/fakeEmulator.js" {
+declare module 'firebase-tools/lib/test/emulators/fakeEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/fakeEmulator'>;
 }
-declare module "firebase-tools/lib/test/emulators/fixtures.js" {
+declare module 'firebase-tools/lib/test/emulators/fixtures.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/fixtures'>;
 }
-declare module "firebase-tools/lib/test/emulators/functionsEmulator.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulator.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/functionsEmulator.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/functionsEmulatorRuntime.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulatorRuntime.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/functionsEmulatorRuntime.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/functionsEmulatorUtils.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/functionsEmulatorUtils.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/functionsEmulatorUtils.spec'>;
 }
-declare module "firebase-tools/lib/test/emulators/registry.spec.js" {
+declare module 'firebase-tools/lib/test/emulators/registry.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/emulators/registry.spec'>;
 }
-declare module "firebase-tools/lib/test/error.spec.js" {
+declare module 'firebase-tools/lib/test/error.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/error.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/askUserForConsent.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/askUserForConsent.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/askUserForConsent.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/askUserForParam.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/askUserForParam.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/askUserForParam.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/checkProjectBilling.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/checkProjectBilling.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/checkProjectBilling.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/extensionsApi.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/extensionsApi.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/extensionsApi.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/extensionsHelper.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/extensionsHelper.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/extensionsHelper.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/generateInstanceId.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/generateInstanceId.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/generateInstanceId.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/listExtensions.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/listExtensions.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/listExtensions.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/paramHelper.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/paramHelper.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/paramHelper.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/populatePostinstall.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/populatePostinstall.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/populatePostinstall.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/rolesHelper.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/rolesHelper.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/rolesHelper.spec'>;
 }
-declare module "firebase-tools/lib/test/extensions/updateHelper.spec.js" {
+declare module 'firebase-tools/lib/test/extensions/updateHelper.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extensions/updateHelper.spec'>;
 }
-declare module "firebase-tools/lib/test/extractTriggers.spec.js" {
+declare module 'firebase-tools/lib/test/extractTriggers.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/extractTriggers.spec'>;
 }
-declare module "firebase-tools/lib/test/firestore/encodeFirestoreValue.js" {
+declare module 'firebase-tools/lib/test/firestore/encodeFirestoreValue.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/firestore/encodeFirestoreValue'>;
 }
-declare module "firebase-tools/lib/test/firestore/indexes.spec.js" {
+declare module 'firebase-tools/lib/test/firestore/indexes.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/firestore/indexes.spec'>;
 }
-declare module "firebase-tools/lib/test/fsAsync.spec.js" {
+declare module 'firebase-tools/lib/test/fsAsync.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/fsAsync.spec'>;
 }
-declare module "firebase-tools/lib/test/fsutils.spec.js" {
+declare module 'firebase-tools/lib/test/fsutils.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/fsutils.spec'>;
 }
-declare module "firebase-tools/lib/test/functionsConfig.spec.js" {
+declare module 'firebase-tools/lib/test/functionsConfig.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/functionsConfig.spec'>;
 }
-declare module "firebase-tools/lib/test/functionsDeployHelper.spec.js" {
+declare module 'firebase-tools/lib/test/functionsDeployHelper.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/functionsDeployHelper.spec'>;
 }
-declare module "firebase-tools/lib/test/gcp/cloudscheduler.spec.js" {
+declare module 'firebase-tools/lib/test/gcp/cloudscheduler.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/gcp/cloudscheduler.spec'>;
 }
-declare module "firebase-tools/lib/test/helpers/index" {
+declare module 'firebase-tools/lib/test/helpers/index' {
   declare module.exports: $Exports<'firebase-tools/lib/test/helpers'>;
 }
-declare module "firebase-tools/lib/test/helpers/index.js" {
+declare module 'firebase-tools/lib/test/helpers/index.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/helpers'>;
 }
-declare module "firebase-tools/lib/test/helpers/mocha-bootstrap.js" {
+declare module 'firebase-tools/lib/test/helpers/mocha-bootstrap.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/helpers/mocha-bootstrap'>;
 }
-declare module "firebase-tools/lib/test/hosting/cloudRunProxy.spec.js" {
+declare module 'firebase-tools/lib/test/hosting/cloudRunProxy.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/hosting/cloudRunProxy.spec'>;
 }
-declare module "firebase-tools/lib/test/hosting/functionsProxy.spec.js" {
+declare module 'firebase-tools/lib/test/hosting/functionsProxy.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/hosting/functionsProxy.spec'>;
 }
-declare module "firebase-tools/lib/test/identifierToProjectId.spec.js" {
+declare module 'firebase-tools/lib/test/identifierToProjectId.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/identifierToProjectId.spec'>;
 }
-declare module "firebase-tools/lib/test/init/features/firestore.spec.js" {
+declare module 'firebase-tools/lib/test/init/features/firestore.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/init/features/firestore.spec'>;
 }
-declare module "firebase-tools/lib/test/init/features/project.spec.js" {
+declare module 'firebase-tools/lib/test/init/features/project.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/init/features/project.spec'>;
 }
-declare module "firebase-tools/lib/test/init/features/storage.spec.js" {
+declare module 'firebase-tools/lib/test/init/features/storage.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/init/features/storage.spec'>;
 }
-declare module "firebase-tools/lib/test/listFiles.spec.js" {
+declare module 'firebase-tools/lib/test/listFiles.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/listFiles.spec'>;
 }
-declare module "firebase-tools/lib/test/localFunction.spec.js" {
+declare module 'firebase-tools/lib/test/localFunction.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/localFunction.spec'>;
 }
-declare module "firebase-tools/lib/test/management/apps.spec.js" {
+declare module 'firebase-tools/lib/test/management/apps.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/management/apps.spec'>;
 }
-declare module "firebase-tools/lib/test/management/projects.spec.js" {
+declare module 'firebase-tools/lib/test/management/projects.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/management/projects.spec'>;
 }
-declare module "firebase-tools/lib/test/operation-poller.spec.js" {
+declare module 'firebase-tools/lib/test/operation-poller.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/operation-poller.spec'>;
 }
-declare module "firebase-tools/lib/test/profilerReport.spec.js" {
+declare module 'firebase-tools/lib/test/profilerReport.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/profilerReport.spec'>;
 }
-declare module "firebase-tools/lib/test/prompt.spec.js" {
+declare module 'firebase-tools/lib/test/prompt.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/prompt.spec'>;
 }
-declare module "firebase-tools/lib/test/rc.spec.js" {
+declare module 'firebase-tools/lib/test/rc.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/rc.spec'>;
 }
-declare module "firebase-tools/lib/test/runtimeChoiceSelector.spec.js" {
+declare module 'firebase-tools/lib/test/runtimeChoiceSelector.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/runtimeChoiceSelector.spec'>;
 }
-declare module "firebase-tools/lib/test/throttler/queue.spec.js" {
+declare module 'firebase-tools/lib/test/throttler/queue.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/throttler/queue.spec'>;
 }
-declare module "firebase-tools/lib/test/throttler/stack.spec.js" {
+declare module 'firebase-tools/lib/test/throttler/stack.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/throttler/stack.spec'>;
 }
-declare module "firebase-tools/lib/test/throttler/throttler.spec.js" {
+declare module 'firebase-tools/lib/test/throttler/throttler.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/throttler/throttler.spec'>;
 }
-declare module "firebase-tools/lib/test/utils.spec.js" {
+declare module 'firebase-tools/lib/test/utils.spec.js' {
   declare module.exports: $Exports<'firebase-tools/lib/test/utils.spec'>;
 }
-declare module "firebase-tools/lib/throttler/errors/retries-exhausted-error.js" {
+declare module 'firebase-tools/lib/throttler/errors/retries-exhausted-error.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/errors/retries-exhausted-error'>;
 }
-declare module "firebase-tools/lib/throttler/errors/task-error.js" {
+declare module 'firebase-tools/lib/throttler/errors/task-error.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/errors/task-error'>;
 }
-declare module "firebase-tools/lib/throttler/errors/timeout-error.js" {
+declare module 'firebase-tools/lib/throttler/errors/timeout-error.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/errors/timeout-error'>;
 }
-declare module "firebase-tools/lib/throttler/queue.js" {
+declare module 'firebase-tools/lib/throttler/queue.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/queue'>;
 }
-declare module "firebase-tools/lib/throttler/stack.js" {
+declare module 'firebase-tools/lib/throttler/stack.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/stack'>;
 }
-declare module "firebase-tools/lib/throttler/throttler.js" {
+declare module 'firebase-tools/lib/throttler/throttler.js' {
   declare module.exports: $Exports<'firebase-tools/lib/throttler/throttler'>;
 }
-declare module "firebase-tools/lib/track.js" {
+declare module 'firebase-tools/lib/track.js' {
   declare module.exports: $Exports<'firebase-tools/lib/track'>;
 }
-declare module "firebase-tools/lib/triggerParser.js" {
+declare module 'firebase-tools/lib/triggerParser.js' {
   declare module.exports: $Exports<'firebase-tools/lib/triggerParser'>;
 }
-declare module "firebase-tools/lib/utils.js" {
+declare module 'firebase-tools/lib/utils.js' {
   declare module.exports: $Exports<'firebase-tools/lib/utils'>;
 }
-declare module "firebase-tools/lib/validateJsonRules.js" {
+declare module 'firebase-tools/lib/validateJsonRules.js' {
   declare module.exports: $Exports<'firebase-tools/lib/validateJsonRules'>;
 }
-declare module "firebase-tools/lib/validator.js" {
+declare module 'firebase-tools/lib/validator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/validator'>;
 }
-declare module "firebase-tools/standalone/check.js" {
+declare module 'firebase-tools/standalone/check.js' {
   declare module.exports: $Exports<'firebase-tools/standalone/check'>;
 }
-declare module "firebase-tools/standalone/config.template.js" {
+declare module 'firebase-tools/standalone/config.template.js' {
   declare module.exports: $Exports<'firebase-tools/standalone/config.template'>;
 }
-declare module "firebase-tools/standalone/firepit.js" {
+declare module 'firebase-tools/standalone/firepit.js' {
   declare module.exports: $Exports<'firebase-tools/standalone/firepit'>;
 }
-declare module "firebase-tools/standalone/runtime.js" {
+declare module 'firebase-tools/standalone/runtime.js' {
   declare module.exports: $Exports<'firebase-tools/standalone/runtime'>;
 }
-declare module "firebase-tools/standalone/welcome.js" {
+declare module 'firebase-tools/standalone/welcome.js' {
   declare module.exports: $Exports<'firebase-tools/standalone/welcome'>;
 }
-declare module "firebase-tools/templates/hosting/init.js" {
+declare module 'firebase-tools/templates/hosting/init.js' {
   declare module.exports: $Exports<'firebase-tools/templates/hosting/init'>;
 }
-declare module "firebase-tools/templates/init/functions/javascript/index" {
+declare module 'firebase-tools/templates/init/functions/javascript/index' {
   declare module.exports: $Exports<'firebase-tools/templates/init/functions/javascript'>;
 }
-declare module "firebase-tools/templates/init/functions/javascript/index.js" {
+declare module 'firebase-tools/templates/init/functions/javascript/index.js' {
   declare module.exports: $Exports<'firebase-tools/templates/init/functions/javascript'>;
 }
-declare module "firebase-tools/templates/setup/web.js" {
+declare module 'firebase-tools/templates/setup/web.js' {
   declare module.exports: $Exports<'firebase-tools/templates/setup/web'>;
 }

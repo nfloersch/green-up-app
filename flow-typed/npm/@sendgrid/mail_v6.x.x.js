@@ -1,7 +1,7 @@
 // flow-typed signature: 7c1c23fadb241f680941eb17c8680c01
 // flow-typed version: c6154227d1/@sendgrid/mail_v6.x.x/flow_>=v0.104.x
 
-declare module "@sendgrid/mail" {
+declare module '@sendgrid/mail' {
 
   declare export class ResponseError extends Error {
     code: number;

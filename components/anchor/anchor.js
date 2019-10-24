@@ -2,9 +2,9 @@
 import React from "react";
 import { Text, Linking } from "react-native";
 
-type Props = { children: React.Node, href: string, onPress?: any => void };
+type PropsType = { children: React$Element<any>, href: string, onPress?: any => void };
 
-export const Anchor = (props: Props) => {
+export const Anchor = (props: PropsType): React$Element<any> => {
     const { children, href, onPress, ...rest } = props;
     const _handlePress = () => {
         Linking.openURL(href);
@@ -14,7 +14,7 @@ export const Anchor = (props: Props) => {
     };
     return (
         <Text { ...rest } onPress={ _handlePress }>
-            {children}
+            { children }
         </Text>
     );
 };

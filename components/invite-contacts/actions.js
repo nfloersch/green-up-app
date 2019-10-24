@@ -10,11 +10,11 @@ import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 import { Alert } from "react-native";
 
 
-export function retrieveContacts(_pageSize = 40) {
-    return async function (dispatch) {
+export function retrieveContacts(_pageSize: number = 40): (Dispatch<Object> => Promise<any>) {
+    return async function (dispatch: Dispatch<Object>) {
 
         // recursively get all contacts
-        async function getContactsAsync(pageSize, pageOffset = 0) {
+        async function getContactsAsync(pageSize: number, pageOffset: number = 0): Promise<any> {
             const data = await Contacts.getContactsAsync({
                 fields: [
                     Contacts.PHONE_NUMBERS, Contacts.EMAILS, Contacts.PHONETIC_FIRST_NAME, Contacts.PHONETIC_LAST_NAME
@@ -22,7 +22,7 @@ export function retrieveContacts(_pageSize = 40) {
                 pageSize,
                 pageOffset
             });
-            const contacts = data.data.map((contact) => (Contact.create(contact)));
+            const contacts = data.data.map((contact: ContactType): ContactType => Contact.create(contact));
             dispatch({ type: types.RETRIEVE_CONTACTS_SUCCESS, contacts });
             return (data.hasNextPage !== 0)
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))
@@ -41,17 +41,18 @@ export function retrieveContacts(_pageSize = 40) {
                 // we have permission lets start getting contacts
                 getContactsAsync(_pageSize);
             }
-        } catch (error) {
+        }
+        catch (error) {
             dispatch({ type: types.RETRIEVE_CONTACTS_FAIL });
         }
     };
 }
 
-export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]) {
+export function inviteContacts(team: Object, currentUser: Object, teamMembers: [TeamMember]): (Dispatch<any> => Promise<any>) {
     return async function () {
-        teamMembers.forEach(teamMember => {
+        teamMembers.forEach((teamMember: TeamMemberType) => {
             const invitation = Invitation.create({ team, sender: currentUser, teamMember });
-            firebaseDataLayer.inviteTeamMember(invitation).catch(err => {
+            firebaseDataLayer.inviteTeamMember(invitation).catch((err: Error) => {
                 Alert.alert(err);
                 throw err;
             });
