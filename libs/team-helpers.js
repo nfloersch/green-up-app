@@ -2,11 +2,13 @@
 
 import * as R from "ramda";
 
+type TeamHashType = { [key: string]: TeamType };
+
 // Filters the teams by the user's membership status
 export const getUsersTeams = R.curry(
-    (user, teams) => R.compose(
-        R.map(key => teams[key]),
-        R.filter(key => Boolean(teams[key])),
+    (user: UserType, teams: TeamHashType): TeamHashType => R.compose(
+        R.map((key: string): TeamType => teams[key]),
+        R.filter((key: string): boolean => Boolean(teams[key])),
         Object.keys
     )
 );

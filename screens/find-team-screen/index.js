@@ -18,19 +18,24 @@ import DisplayText from "../../components/display-text";
 import * as colors from "../../styles/constants";
 
 /**
- *
- * @param {string} term - what to search for
- * @param {string[]} searchableString - things we search
+ * scores a string according to how many search terms it contains
+ * @param {string} termsToSearchFor - what to search for
+ * @param {string[]} stringsToSearchIn - things we search
  * @returns {number} the number of matches
  */
-const searchScore = (term: string, searchableString: [string]): number => {
-    const terms = term.trim().split(" ");
-    const testTerm = terms[0].toLowerCase();
-    const score = searchableString.reduce((_score: number, interrogee: any): number =>
-        (_score + (typeof interrogee === "string" &&
-        interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
-    return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(" "), searchableString);
-};
+function searchScore(termsToSearchFor: string, stringsToSearchIn: Array<string>): number {
+    // break condition
+    if (!Array.isArray(stringsToSearchIn) || stringsToSearchIn.length === 0 || typeof termsToSearchFor !== "string" || termsToSearchFor.length === 0) {
+        return 0;
+    }
+    const searchedString = stringsToSearchIn[0].toLowerCase(); // normalize string to search
+    const terms = termsToSearchFor.trim().split(" ");
+    const testTerm = terms[0].toLowerCase().trim(); // normalize what to search for
+    // score 1 point for contains the search term and an extra point if it starts with the search term
+    const score = (searchedString.indexOf(testTerm) > -1 ? 1 : 0) + searchedString.startwWith(testTerm) > -1 ? 1 : 0;
+    // Add scores from for the rest of terms on current string and scores from all terms on remaining strings
+    return score + searchScore(terms.join(" "), stringsToSearchIn.slice(1)) + searchScore(terms.slice(1), searchedString); // tail call
+}
 
 const myStyles = {
     scrollview: {
@@ -155,10 +160,15 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
         R.filter((score: Object): boolean => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
         R.map((key: string): Object => ({ // get the search score for each team
             key,
-            score: searchScore(searchTerm, [teams[key].name,
-                teams[key].description,
-                teams[key].town,
-                teams[key].owner.displayName])
+            score: searchScore(
+                searchTerm,
+                [
+                    teams[key].name,
+                    teams[key].description,
+                    teams[key].town,
+                    teams[key].owner.displayName
+                ]
+            )
         })),
         R.filter((key: string): boolean => myTeams.indexOf(key) === -1), // remove user's teams
         // R.filter(key => teams[key].isPublic === true), //   remove private teams - switching to listing private teams

@@ -2,7 +2,7 @@
 
 // android returns 24hr time with leading zero and no am/pm designation so
 // we fix it up here to display consistently with ios
-export const fixAndroidTime = time => {
+export const fixAndroidTime = (time: string): string => {
     const orig = time.split(":");
     const hour = orig[0];
     const hourNum = parseInt(hour, 10);

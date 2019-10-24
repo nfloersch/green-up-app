@@ -1,7 +1,11 @@
 // @flow
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
-export function fetchTownData() {
+export const fetchTownData = (): ThunkType => {
     // this is not used anywhere
-    return (dispatch) => firebaseDataLayer.fetchTownData(dispatch);
-}
+    function thunk(dispatch: Dispatch) {
+        firebaseDataLayer.fetchTownData(dispatch);
+    }
+
+    return thunk;
+};

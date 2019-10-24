@@ -19,18 +19,13 @@ import * as teamMemberStatuses from "../../constants/team-member-statuses";
 
 /**
  *
- * @param {string} term - what to search for
- * @param {string[]} searchableString - things we search
+ * @param {string} termsToSearchFor - what to search for
+ * @param {[string]} stringToSearchIn - things we search
  * @returns {number} the number of matches
  */
-function searchScore(term: string, searchableString: [string]) {
-    const terms = term.trim().split(" ");
-    const testTerm = terms[0].toLowerCase();
-    const score = searchableString.reduce((_score, interrogee) =>
-        (_score + (typeof interrogee === "string" &&
-        interrogee.toLowerCase().indexOf(testTerm) > -1 ? 1 : 0)), 0);
-    return (terms.length <= 1) ? score : score + searchScore(terms.slice(1).join(" "), searchableString);
-
+function searchScore(termsToSearchFor: string, stringToSearchIn: ?string): number {
+    // We are deleting this screen
+    return 0;
 }
 
 const myStyles = {
@@ -79,7 +74,7 @@ class SearchItem extends Component<{ item: Object }> {
 
 type Props = {
     actions: Object,
-    closeModal: () => void;
+    closeModal: () => void,
     teamMembers: Object,
     teams: Object,
     navigation: Object,

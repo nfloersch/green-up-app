@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import * as R from "ramda";
 
@@ -63,8 +63,12 @@ export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Eleme
                 data={ data }
                 defaultValue={ query }
                 onChangeText={ setQuery }
-                onBlur={ () => setFocus(false) }
-                onFocus={ () => setFocus(true) }
+                onBlur={ () => {
+                    setFocus(false);
+                } }
+                onFocus={ () => {
+                    setFocus(true);
+                } }
                 underlineColorAndroid={ "transparent" }
                 renderItem={ (selection: Object): React$Element<any> => (
                     <TouchableOpacity
