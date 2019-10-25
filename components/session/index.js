@@ -46,7 +46,7 @@ const Session = ({ actions, children, appIsInitialized, userIsLoggedIn }: PropsT
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

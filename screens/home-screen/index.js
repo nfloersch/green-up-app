@@ -82,6 +82,7 @@ const menuConfig = {
 };
 
 const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
+    // $FlowFixMe
     const myButtons = R.compose(
         R.map((entry: Array<any>): Object => ({
             onPress: () => {
@@ -134,8 +135,9 @@ const mapStateToProps = (state: Object): Object => {
     });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(connectStyle("org.greenup.HomeScreen", combinedStyles)(HomeScreen));

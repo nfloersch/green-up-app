@@ -23,7 +23,7 @@ export const Klass = ({ actions }: PropsType): React$Element<Fragment> => {
     return (<Fragment>{ null }</Fragment>);
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

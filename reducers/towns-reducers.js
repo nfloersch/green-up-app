@@ -1,13 +1,13 @@
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+// @flow
+import initialState from "./initial-state";
+import * as types from "../constants/action-types";
 
-export function reducers(state = initialState.towns, action) {
+export const townsReducers = (state: Object = initialState.towns, action: ActionType): Object => {
     switch (action.type) {
-
         case types.FETCH_TOWN_DATA_SUCCESS :
             return {
                 ...state,
-                townData: Object.assign({}, action.towns)
+                townData: Object.assign({}, action.data)
             };
         case types.FETCH_SUPPLY_LOCATIONS_FAIL :
             return {
@@ -17,4 +17,4 @@ export function reducers(state = initialState.towns, action) {
         default:
             return state;
     }
-}
+};

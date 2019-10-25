@@ -6,8 +6,8 @@ import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 import * as messageTypes from "../../constants/message-types";
 import Message from "../../models/message";
 
-export const askToJoinTeam = (team: Object, user: Object) => {
-    async function thunk() {
+export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
+    function thunk() {
         const message = Message.create({
             text: `${ user.displayName || user.email } is requesting to join ${ team.name } `,
             sender: user,
@@ -15,16 +15,16 @@ export const askToJoinTeam = (team: Object, user: Object) => {
             type: messageTypes.REQUEST_TO_JOIN
         });
         const teamId = typeof team === "string" ? team : team.id;
-        await firebaseDataLayer.addTeamRequest(teamId, user, memberStatus.REQUEST_TO_JOIN);
-        await firebaseDataLayer.sendUserMessage(team.owner.uid, message);
+        firebaseDataLayer.addTeamRequest(teamId, { ...user, memberStatus: memberStatus.REQUEST_TO_JOIN });
+        firebaseDataLayer.sendUserMessage(team.owner.uid, message);
     }
 
     thunk.interceptOnOffline = true;
     return thunk;
 };
 
-export const acceptInvitation = (teamId: string, user: Object) => {
-    function thunk(dispatch) {
+export const acceptInvitation = (teamId: string, user: Object): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
         const newTeamMember = TeamMember.create(Object.assign({}, user, { memberStatus: memberStatus.ACCEPTED }));
         firebaseDataLayer.addTeamMember(teamId, newTeamMember, "ACCEPTED", dispatch);
     }
@@ -33,23 +33,25 @@ export const acceptInvitation = (teamId: string, user: Object) => {
     return thunk;
 };
 
-export function selectTeam(team: Object) {
-    return { type: types.SELECT_TEAM, team };
-}
+export const selectTeam = (team: Object): ActionType => ({ type: types.SELECT_TEAM, team });
 
 
-export const revokeInvitation = (teamId: string, membershipId: string) => {
-    function thunk(dispatch) {
+export const revokeInvitation = (teamId: string, membershipId: string): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.revokeInvitation(teamId, membershipId)
-            .then(dispatch({ type: types.REVOKE_INVITATION_SUCCESS, data: { teamId, membershipId } }))
-            .catch(error => ({ type: types.REVOKE_INVITATION_FAIL, data: { teamId, membershipId }, error }));
+            .then(() => {
+                dispatch({ type: types.REVOKE_INVITATION_SUCCESS, data: { teamId, membershipId } });
+            })
+            .catch((error: Error) => {
+                dispatch({ type: types.REVOKE_INVITATION_FAIL, data: { teamId, membershipId }, error });
+            });
     }
 
     thunk.interceptOnOffline = true;
     return thunk;
 };
 
-export const leaveTeam = (teamId: string, user: Object) => {
+export const leaveTeam = (teamId: string, user: Object): ThunkType => {
     function thunk() {
         firebaseDataLayer.leaveTeam(teamId, user);
     }
@@ -59,7 +61,7 @@ export const leaveTeam = (teamId: string, user: Object) => {
 };
 
 
-export const removeTeamRequest = (teamId: string, user: Object) => {
+export const removeTeamRequest = (teamId: string, user: UserType): ThunkType => {
     function thunk() {
         firebaseDataLayer.removeTeamRequest(teamId, user);
     }
@@ -69,7 +71,7 @@ export const removeTeamRequest = (teamId: string, user: Object) => {
 };
 
 
-export const deleteMessage = (userId: string, messageId: string) => {
+export const deleteMessage = (userId: string, messageId: string): ThunkType => {
     function thunk() {
         firebaseDataLayer.deleteMessage(userId, messageId);
     }

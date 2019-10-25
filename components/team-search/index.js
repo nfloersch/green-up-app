@@ -24,7 +24,9 @@ import * as teamMemberStatuses from "../../constants/team-member-statuses";
  * @returns {number} the number of matches
  */
 function searchScore(termsToSearchFor: string, stringToSearchIn: ?string): number {
-    // We are deleting this screen
+    // stub only - We are deleting this screen
+    // eslint-disable-next-line no-console
+    console.log(termsToSearchFor, stringToSearchIn);
     return 0;
 }
 

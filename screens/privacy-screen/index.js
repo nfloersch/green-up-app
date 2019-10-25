@@ -1,12 +1,13 @@
 // @flow
-
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { defaultStyles } from "../../styles/default-styles";
 
-const styles = StyleSheet.create(defaultStyles);
+const myStyles = {};
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
-const LegalScreen = (): React$Element<any> => (
+export const Privacy = (): React$Element<View> => (
     <View style={ styles.frame }>
         <ScrollView style={ styles.scroll }>
             <View style={ styles.infoBlockContainer }>
@@ -296,6 +297,6 @@ const LegalScreen = (): React$Element<any> => (
     </View>
 );
 
-LegalScreen.navigationOptions = {
+Privacy.navigationOptions = {
     title: "Privacy Policy"
 };

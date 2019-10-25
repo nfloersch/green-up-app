@@ -7,7 +7,7 @@ import Message from "../models/message";
 type ActionType = { type: string, error?: any, data?: any };
 
 export function userAuthenticated(user: UserType): ActionType {
-    return { type: types.LOGIN_SUCCESSFUL, user };
+    return { type: types.LOGIN_SUCCESSFUL, data: user };
 }
 
 export function messageFetchSuccessful(messages: Object): ActionType {

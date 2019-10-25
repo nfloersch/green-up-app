@@ -1,10 +1,9 @@
 // @flow
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import logo from "../../assets/images/green-up-logo.png";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as actionCreators from "./actions";
 
 const styles = StyleSheet.create({
@@ -50,43 +49,38 @@ const styles = StyleSheet.create({
     }
 });
 
-type Props = {
-    actions: { logout: () => void },
-    navigation: Object
+type PropsType = {
+    actions: { logout: () => void }
 };
 
-class ABienTot extends Component<Props> {
+const ABienTot = ({ actions }: PropsType): React$Element<View> => {
 
-    componentDidMount() {
-        this.props.actions.logout();
-    }
+    useEffect(() => {
+        actions.logout();
+    }, []);
 
-    static navigationOptions = {
-        drawerLabel: "Logout",
-        drawerIcon: () => (<MaterialCommunityIcons name="logout" size={ 24 } color="green"/>)
-    };
 
-    render() {
-        return (
-            <View style={ styles.container }>
-                <Image source={ logo } style={ {
-                    height: 120,
-                    width: 120
-                } }/>
-                <Text style={ styles.welcome }>Bye Bye</Text>
-            </View>
-        );
-    }
-}
+    return (
+        <View style={ styles.container }>
+            <Image source={ logo } style={ {
+                height: 120,
+                width: 120
+            } }/>
+            <Text style={ styles.welcome }>{ "Bye Bye" }</Text>
+        </View>
+    );
+};
 
-function mapStateToProps(state) {
-    return { session: state.login.session };
-}
+ABienTot.navigationOptions = {
+    drawerLabel: "Logout"
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actionCreators, dispatch)
-    };
-}
+const mapStateToProps = (state: Object): Object => ({ session: state.login.session });
 
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+    actions: bindActionCreators(actionCreators, dispatch)
+});
+
+
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(ABienTot);

@@ -1,8 +1,8 @@
-// @flwo
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+// @flow
+import * as types from "../constants/action-types";
+import initialState from "./initial-state";
 
-export function reducers(state = initialState.teams, action) {
+export const teamsReducers = (state: Object = initialState.teams, action: ActionType): Object => {
     switch (action.type) {
         case types.NEW_TEAM:
             return {
@@ -12,12 +12,12 @@ export function reducers(state = initialState.teams, action) {
         case types.DELETE_TEAM:
             return {
                 ...state,
-                teams: (state.teams || []).filter(team => team.uid !== action.teamId)
+                teams: (state.teams || []).filter((team: TeamType): boolean => team.id !== action.teamId)
             };
         case types.RETRIEVE_CONTACTS_SUCCESS:
             return {
                 ...state,
-                contacts: (state.contacts || []).filter(contact => (action.contacts || []).map(c => c.email).indexOf(contact.email) < 0).concat(action.contacts)
+                contacts: (state.contacts || []).filter((contact: ContactType): boolean => (action.contacts || []).map(c => c.email).indexOf(contact.email) < 0).concat(action.contacts)
             };
         case types.RETRIEVE_CONTACTS_FAIL:
             return {
@@ -53,7 +53,7 @@ export function reducers(state = initialState.teams, action) {
         }
         case types.SET_SELECTED_TEAM_VALUE: {
             const newSelectedTeam = Object.assign({}, state.selectedTeam);
-            newSelectedTeam[action.data.key] = action.data.value;
+            newSelectedTeam[action.data.key] = (action.data || {}).value;
             return {
                 ...state,
                 selectedTeam: newSelectedTeam
@@ -101,4 +101,4 @@ export function reducers(state = initialState.teams, action) {
         default:
             return state;
     }
-}
+};

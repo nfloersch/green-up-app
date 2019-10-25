@@ -1,8 +1,8 @@
-// import * as types from '../../constants/actionTypes';
-import initialState from "../../reducers/initial-state";
-import * as types from "../../constants/action-types";
+// @flow
+import initialState from "./initial-state";
+import * as types from "../constants/action-types";
 
-export function reducers(state = initialState.about, action) {
+export const aboutReducers = (state: Object = initialState.about, action: ActionType): Object => {
     switch (action.type) {
         case types.FETCH_EVENT_INFO_SUCCESS:
             return { ...state, ...action.data };
@@ -11,4 +11,4 @@ export function reducers(state = initialState.about, action) {
         default:
             return state;
     }
-}
+};

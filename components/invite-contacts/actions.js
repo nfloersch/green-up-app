@@ -11,7 +11,7 @@ import { Alert } from "react-native";
 
 
 export function retrieveContacts(_pageSize: number = 40): (Dispatch<Object> => Promise<any>) {
-    return async function (dispatch: Dispatch<Object>) {
+    return async function (dispatch: Dispatch<ActionType>) {
 
         // recursively get all contacts
         async function getContactsAsync(pageSize: number, pageOffset: number = 0): Promise<any> {

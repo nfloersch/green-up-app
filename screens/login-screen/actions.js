@@ -7,7 +7,7 @@ import { thirdPartyConfig } from "../../config/third-party-config";
 import { Platform } from "react-native";
 
 export const logout = (): ThunkType => {
-    function thunk(dispatch: Dispatch<Object>) {
+    function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.logout(dispatch);
     }
 
@@ -16,9 +16,9 @@ export const logout = (): ThunkType => {
 };
 
 export function createUser(email: string, password: string, displayName: string): ThunkType {
-    function thunk(dispatch: Dispatch<Object>) {
+    function thunk(dispatch: Dispatch<ActionType>) {
         dispatch({ type: types.CREATING_USER });
-        const _promise = firebaseDataLayer.createUser(email, password, displayName);
+        const _promise = firebaseDataLayer.createUser(email, password, displayName, dispatch);
         _promise.catch((error: Error) => {
             dispatch({ type: types.CREATE_USER_FAIL, error: error.message || "Could not create account." });
         });
@@ -29,9 +29,9 @@ export function createUser(email: string, password: string, displayName: string)
 }
 
 export function loginWithEmailPassword(email: string, password: string): ThunkType {
-    function thunk(dispatch: Dispatch<Object>) {
+    function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer
-            .loginWithEmailPassword(email, password)
+            .loginWithEmailPassword(email, password, dispatch)
             .catch((error: Error) => {
                 dispatch({ type: types.LOGIN_FAIL, error });
             });
@@ -43,7 +43,7 @@ export function loginWithEmailPassword(email: string, password: string): ThunkTy
 
 // TODO Refactor this into a true Thunk
 export function googleLogin(): (Dispatch<Object> => Promise<any>) {
-    return async function logIn(dispatch: Dispatch<Object>) {
+    return async function logIn(dispatch: Dispatch<ActionType>) {
         try {
             // Expo SDK 32 has a bug. Swap clientId logic if you are in dev or pushing a standalone app to TestFlight or App store
             const result = await Google.logInAsync({
@@ -55,7 +55,7 @@ export function googleLogin(): (Dispatch<Object> => Promise<any>) {
             });
 
             if (result.type === "success") {
-                firebaseDataLayer.googleAuth(result.idToken).catch((error: Error) => {
+                firebaseDataLayer.googleAuth(result.idToken, dispatch).catch((error: Error) => {
                     dispatch({
                         type: types.LOGIN_FAIL,
                         error
@@ -81,7 +81,7 @@ export function facebookLogin(): (Dispatch<Object> => Promise<any>) {
         });
         const { type, token } = facebook;
         if (type === "success") {
-            firebaseDataLayer.facebookAuth(token).catch((error: Error) => {
+            firebaseDataLayer.facebookAuth(token, dispatch).catch((error: Error) => {
                 dispatch({
                     type: types.LOGIN_FAIL,
                     error
@@ -100,7 +100,7 @@ export function facebookLogin(): (Dispatch<Object> => Promise<any>) {
 }
 
 export function resetPassword(emailAddress: string): ThunkType {
-    function thunk(dispatch: Dispatch<Object>) {
+    function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.resetPassword(emailAddress)
             .then(() => {
                 dispatch({ type: types.RESET_PASSWORD_SUCCESS });

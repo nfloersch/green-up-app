@@ -32,9 +32,9 @@ function searchScore(termsToSearchFor: string, stringsToSearchIn: Array<string>)
     const terms = termsToSearchFor.trim().split(" ");
     const testTerm = terms[0].toLowerCase().trim(); // normalize what to search for
     // score 1 point for contains the search term and an extra point if it starts with the search term
-    const score = (searchedString.indexOf(testTerm) > -1 ? 1 : 0) + searchedString.startwWith(testTerm) > -1 ? 1 : 0;
+    const score = (searchedString.indexOf(testTerm) > -1 ? 1 : 0) + searchedString.startsWith(testTerm) > -1 ? 1 : 0;
     // Add scores from for the rest of terms on current string and scores from all terms on remaining strings
-    return score + searchScore(terms.join(" "), stringsToSearchIn.slice(1)) + searchScore(terms.slice(1), searchedString); // tail call
+    return score + searchScore(terms.join(" "), stringsToSearchIn.slice(1)) + searchScore(terms.slice(1).join(" "), [searchedString]); // tail call
 }
 
 const myStyles = {
@@ -142,6 +142,7 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
 
     const mkey = currentUser.uid;
 
+    // $FlowFixMe
     const myTeams = R.compose(
         R.filter((key: string): boolean =>
             (teamMembers[key][mkey] && teamMembers[key][mkey].memberStatus === teamMemberStatuses.OWNER) ||
@@ -151,11 +152,11 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
         Object.keys
     )(teams);
 
-
+    // $FlowFixMe
     const searchResults = R.compose(
         Array.from, // convert back to array
-        (arr: Array<string>): Set => new Set(arr), // eliminate dupes
-        R.map((score: object): string => score.key), // we only want keys
+        (arr: Array<string>): Set<string> => new Set(arr), // eliminate dupes
+        R.map((score: Object): string => score.key), // we only want keys
         R.sort((score1: Object, score2: Object): number => (score2.score - score1.score)), // sort by score
         R.filter((score: Object): boolean => (searchTerm.trim() === "" || score.score > 0)), // filter out zero scores
         R.map((key: string): Object => ({ // get the search score for each team
@@ -202,7 +203,7 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
                 ? (
                     <FlatList
                         data={ mySearchResults }
-                        renderItem={ ({ item }: { item: any }): React$Element<SearchItem> => (
+                        renderItem={ ({ item }: { item: any }): React$Element<any> => (
                             <SearchItem item={ item }/>) }
                     />
                 )
@@ -243,8 +244,9 @@ const mapStateToProps = (state: Object): Object => ({
     currentUser: state.login.user
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TeamSearch);

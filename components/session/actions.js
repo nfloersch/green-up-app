@@ -2,7 +2,7 @@
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
 export const initialize = (): ThunkType => {
-    function thunk(dispatch: Dispatch<Object>) {
+    function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.initialize(dispatch);
     }
 

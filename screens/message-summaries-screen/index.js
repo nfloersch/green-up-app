@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import {
     Image,
     ScrollView,
@@ -14,10 +14,11 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as messageTypes from "../../constants/message-types";
-import * as actions from "./actions";
+import * as actionCreators from "./actions";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import coveredBridge from "../../assets/images/covered-bridge2.jpg";
+import * as R from "ramda";
 
 const myStyles = {
     message: {
@@ -68,202 +69,200 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-type TProps = {
-    item: Message,
+type ItemPropsType = {
+    item: MessageType,
     toDetail: any => any
-}
+};
 
-class MessageItem extends Component<TProps> {
-
-    render() {
-        const { item, toDetail } = this.props;
-        return (
-            <TouchableOpacity key={ item.id } onPress={ toDetail }>
-                <View style={ [styles.row, { height: 85 }] }>
-                    <View style={ { flex: 1, flexDirection: "row" } }>
-                        <Image
-                            style={ { width: 50, height: 50, marginRight: 10 } }
-                            source={ { uri: item.sender.photoURL } }
-                        />
-                        <View style={ { flex: 1, flexDirection: "column", alignItems: "stretch" } }>
-                            <Text style={ [item.read ? styles.read : styles.unread, {
-                                fontSize: 10,
-                                textAlign: "left",
-                                fontWeight: "bold",
-                                height: 13
-                            }] }
-                            >{ item.teamName }</Text>
-                            <Text style={ [{ height: 40 }, item.read
-                                ? styles.oldMsg : styles.newMsg] }>
-                                { item.text.length > 80
-                                    ? `${ item.text.slice(0, 80) }...`
-                                    : item.text }
-                            </Text>
-                            <Text style={ [item.read ? styles.read : styles.unread, {
-                                fontSize: 10,
-                                textAlign: "right"
-                            }] }>
-                                { `--${ item.sender.displayName || item.sender.email }` }
-                            </Text>
-                        </View>
+const MessageItem = ({ item, toDetail }: ItemPropsType): React$Element<any> => {
+    const sender = item.sender || {};
+    return (
+        <TouchableOpacity key={ item.id } onPress={ toDetail }>
+            <View style={ [styles.row, { height: 85 }] }>
+                <View style={ { flex: 1, flexDirection: "row" } }>
+                    <Image
+                        style={ { width: 50, height: 50, marginRight: 10 } }
+                        source={ { uri: sender.photoURL } }
+                    />
+                    <View style={ { flex: 1, flexDirection: "column", alignItems: "stretch" } }>
+                        <Text style={ [item.read ? styles.read : styles.unread, {
+                            fontSize: 10,
+                            textAlign: "left",
+                            fontWeight: "bold",
+                            height: 13
+                        }] }
+                        >{ item.teamName }</Text>
+                        <Text style={ [{ height: 40 }, item.read
+                            ? styles.oldMsg : styles.newMsg] }>
+                            { (item.text || "").length > 80
+                                ? `${ (item.text || "").slice(0, 80) }...`
+                                : item.text }
+                        </Text>
+                        <Text style={ [item.read ? styles.read : styles.unread, {
+                            fontSize: 10,
+                            textAlign: "right"
+                        }] }>
+                            { `--${ sender.displayName || sender.email || "" }` }
+                        </Text>
                     </View>
                 </View>
-            </TouchableOpacity>
-        );
-    }
-}
+            </View>
+        </TouchableOpacity>
+    );
+};
 
 
-type MessageProps = {
+type MessagePropsType = {
     actions: Object,
     currentUser: Object,
     messages: Object,
     navigation: Object,
-    userHasTeams: boolean,
-    teamMembersLoaded: boolean,
-    teamsLoaded: boolean,
-    messagesLoaded: boolean,
-    teams: Object
+    userHasTeams: boolean
 };
 
 
-class MessageSummariesScreen extends Component<MessageProps> {
+const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, userHasTeams }: MessagePropsType): React$Element<any> => {
 
-    constructor(props) {
-        super(props);
-        this.toMessageDetail = this.toMessageDetail.bind(this);
-        this.toSendMessage = this.toSendMessage.bind(this);
-    }
-
-    static navigationOptions = {
-        title: "Message Board",
-        tabBarLabel: "Messages"
-    };
-
-    toSendMessage() {
-        return () => {
-            this.props.navigation.navigate("NewMessage");
-        };
-    }
-
-    toMessageDetail(message) {
-        const userId = (this.props.currentUser || {}).uid;
+    const toMessageDetail = (message: MessageType): (()=>void) => {
+        const userId = (currentUser || {}).uid;
         switch (message.type) {
             case messageTypes.INVITATION :
                 return () => {
-                    this.props.actions.selectTeamById(message.teamId);
-                    this.props.navigation.navigate("TeamDetails");
+                    actions.selectTeamById(message.teamId);
+                    navigation.navigate("TeamDetails");
                 };
             case messageTypes.REQUEST_TO_JOIN :
                 return () => {
-                    const membershipId = message.sender.email.uid;
+                    const membershipId = ((message.sender || {}).email || {}).uid || "";
                     const teamId = message.teamId;
-                    this.props.actions.readMessage(message, userId);
-                    this.props.navigation.navigate("TeamMemberDetails", { teamId, membershipId });
+                    actions.readMessage(message, userId);
+                    navigation.navigate("TeamMemberDetails", { teamId, membershipId });
                 };
             default :
                 return () => {
                     // mark message as read
-                    this.props.actions.readMessage(message, userId);
+                    actions.readMessage(message, userId);
                     // navigate to details screen
-                    this.props.navigation.navigate("MessageDetails", { messageId: message.id });
+                    navigation.navigate("MessageDetails", { messageId: message.id });
                 };
         }
-    }
+    };
 
-    render() {
-        const myMessages = Object.entries(this.props.messages).map(entry => Message.create(entry[1], entry[0])).sort((a, b) => b.created.valueOf() - a.created.valueOf());
-        return this.props.userHasTeams || myMessages.length > 0 ? (
-            <View style={ styles.frame }>
-                <View style={ styles.singleButtonHeader }>
-                    {
-                        this.props.userHasTeams
-                            ? (<TouchableHighlight
-                                style={ styles.headerButton }
-                                onPress={ () => {
-                                    this.props.navigation.navigate("NewMessage");
-                                } }>
-                                <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
-                            </TouchableHighlight>)
-                            : (
-                                <View style={ styles.headerButton }>
-                                    <Text
-                                        style={ styles.headerButtonText }>{ "Join or create a team to send messages." }</Text>
-                                </View>)
-                    }
-                </View>
-                { myMessages.length > 0
-                    ? (
-                        <ScrollView style={ styles.scroll }>
-                            <View style={ styles.infoBlockContainer }>
-                                <FlatList
-                                    data={ myMessages }
-                                    keyExtractor={ item => item.id }
-                                    renderItem={ ({ item }) => (
-                                        <MessageItem
-                                            item={ item }
-                                            toDetail={ this.toMessageDetail(item) }/>) }
-                                    style={ styles.infoBlockContainer }
-                                />
-                            </View>
-                        </ScrollView>
-                    )
-                    : (
-                        <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
-                            <View style={ {
-                                marginTop: "20%",
-                                paddingLeft: 20,
-                                paddingRight: 20,
-                                paddingTop: 50,
-                                paddingBottom: 50,
-                                backgroundColor: "rgba(255,255,255, 0.85)"
-                            } }>
-                                <Text style={ [styles.textDark, {
-                                    textAlign: "center",
-                                    height: 30
-                                }] }>{ "Sorry, no messages yet." }</Text>
-                            </View>
-                        </ImageBackground>
-                    ) }
-            </View>
-        ) : (
-            <View style={ styles.frame }>
-                <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
-                    <View style={ {
-                        marginTop: "20%",
-                        paddingLeft: 20,
-                        paddingRight: 20,
-                        paddingTop: 50,
-                        paddingBottom: 50,
-                        backgroundColor: "rgba(255,255,255, 0.85)"
-                    } }>
-                        <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                            { "All your messages will be listed here." }
-                        </Text>
-                        <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                            { "Before you can send or receive messages you will need to join or create a team." }
-                        </Text>
-                        <TouchableOpacity
-                            style={ styles.button }
+
+    const myMessages = Object
+        .entries(messages)
+        .map((entry: [string, Object]): MessageType => Message.create(entry[1], entry[0]))
+        .sort((a: MessageType, b: MessageType): number => (b.created || 0).valueOf() - (a.created || 0).valueOf());
+
+    return userHasTeams || myMessages.length > 0 ? (
+        <View style={ styles.frame }>
+            <View style={ styles.singleButtonHeader }>
+                {
+                    userHasTeams
+                        ? (<TouchableHighlight
+                            style={ styles.headerButton }
                             onPress={ () => {
-                                this.props.navigation.navigate("Teams");
-                            } }
-                        >
-                            <Text style={ styles.buttonText }>{ "Go to \"My Teams\" >" }</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
+                                navigation.navigate("NewMessage");
+                            } }>
+                            <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
+                        </TouchableHighlight>)
+                        : (
+                            <View style={ styles.headerButton }>
+                                <Text
+                                    style={ styles.headerButtonText }>{ "Join or create a team to send messages." }</Text>
+                            </View>)
+                }
             </View>
-        );
-    }
-}
+            { myMessages.length > 0
+                ? (
+                    <ScrollView style={ styles.scroll }>
+                        <View style={ styles.infoBlockContainer }>
+                            <FlatList
+                                data={ myMessages }
+                                keyExtractor={ (item: Object): string => item.id }
+                                renderItem={ ({ item }: { item: Object }): React$Element<any> => (
+                                    <MessageItem
+                                        item={ item }
+                                        toDetail={ toMessageDetail(item) }/>) }
+                                style={ styles.infoBlockContainer }
+                            />
+                        </View>
+                    </ScrollView>
+                )
+                : (
+                    <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
+                        <View style={ {
+                            marginTop: "20%",
+                            paddingLeft: 20,
+                            paddingRight: 20,
+                            paddingTop: 50,
+                            paddingBottom: 50,
+                            backgroundColor: "rgba(255,255,255, 0.85)"
+                        } }>
+                            <Text style={ [styles.textDark, {
+                                textAlign: "center",
+                                height: 30
+                            }] }>{ "Sorry, no messages yet." }</Text>
+                        </View>
+                    </ImageBackground>
+                ) }
+        </View>
+    ) : (
+        <View style={ styles.frame }>
+            <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
+                <View style={ {
+                    marginTop: "20%",
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 50,
+                    paddingBottom: 50,
+                    backgroundColor: "rgba(255,255,255, 0.85)"
+                } }>
+                    <Text style={ [styles.textDark, { textAlign: "justify" }] }>
+                        { "All your messages will be listed here." }
+                    </Text>
+                    <Text style={ [styles.textDark, { textAlign: "justify" }] }>
+                        { "Before you can send or receive messages you will need to join or create a team." }
+                    </Text>
+                    <TouchableOpacity
+                        style={ styles.button }
+                        onPress={ () => {
+                            navigation.navigate("Teams");
+                        } }
+                    >
+                        <Text style={ styles.buttonText }>{ "Go to \"My Teams\" >" }</Text>
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
+        </View>
+    );
+};
 
-function mapStateToProps(state) {
+
+MessageSummariesScreen.navigationOptions = {
+    title: "Message Board",
+    tabBarLabel: "Messages"
+};
+
+type MessageHashType = { [key: string]: MessageType };
+
+const mapStateToProps = (state: Object): Object => {
     const teams = state.teams.teams || {};
-    const mapMessagesToTeamNames = queue => Object.values(queue)
-        .map(message => Message.create({ ...message, teamName: (teams[message.teamId] || {}).name }))
-        .reduce((obj, message) => ({ ...obj, [message.id]: message }), {});
-    const messages = Object.values((state.messages || {}).messages || {}).reduce((obj, queue) => ({ ...obj, ...mapMessagesToTeamNames(queue) }), {});
+
+    // $FlowFixMe
+    const addTeamNamesToMessages = R.compose(
+        R.reduce((obj: Object, message: MessageType): MessageHashType => ({ ...obj, [message.id]: message }), {}),
+        R.map((message: Object): MessageType => Message.create({
+            ...message,
+            teamName: (teams[message.teamId] || {}).name
+        })),
+        Object.values
+    );
+
+    const messages = Object
+        .values((state.messages || {}).messages || {})
+        .reduce((obj: Object, queue: Object): MessageHashType => ({ ...obj, ...addTeamNamesToMessages(queue) }), {});
+
     const userHasTeams = Object.keys((state.profile || {}).teams || {}).length > 0;
     const userHasMessages = state.messages.length > 0;
     return {
@@ -271,15 +270,14 @@ function mapStateToProps(state) {
         messages: messages,
         messagesLoaded: state.messages.loaded,
         userHasTeams,
-        userHasMessages,
-        teamsLoaded: state.messages.teamsLoaded,
-        teamMembersLoaded: state.session.teamMembersLoaded,
-        teams: teams
+        userHasMessages
     };
-}
+};
 
-const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actions, dispatch)
+
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSummariesScreen);

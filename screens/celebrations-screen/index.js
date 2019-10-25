@@ -1,85 +1,72 @@
 // @flow
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { StyleSheet, KeyboardAvoidingView, ScrollView, View, FlatList, TextInput, Platform } from "react-native";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actions from "./actions";
 import { defaultStyles } from "../../styles/default-styles";
 import TownItem from "../../components/town-item";
+import * as R from "ramda";
 
 const styles = StyleSheet.create(defaultStyles);
 
-type Props = {
-    actions: Object,
-    currentUser: Object,
-    profile: Object,
-    navigation: Object,
-    towns: Object
+type PropsType = {
+    towns: { [key: string]: TownType }
 };
 
-class Celebrations extends Component<Props> {
+const Celebrations = ({ towns }: PropsType): React$Element<any> => {
+    const [searchResults, setSearchResults] = useState(Object.keys(towns));
+    const [searchTerm, setSearchTerm] = useState("");
+    const onSearchTermChange = (term: string) => {
 
-    constructor(props) {
-        super(props);
-        this.onSearchTermChange = this.onSearchTermChange.bind(this);
-        this.state = { searchResults: [], searchTerm: "" };
-    }
-
-    static navigationOptions = {
-        title: "Celebrations"
-    };
-
-    onSearchTermChange(searchTerm) {
-        const towns = this.props.towns;
-        const searchResults = Object.keys(this.props.towns).filter(key => (towns[key].name || "").toLowerCase().indexOf(searchTerm.trim().toLowerCase()) !== -1);
-        this.setState({ searchResults, searchTerm: searchTerm.trim() });
-    }
-
-    render() {
-        const towns = this.props.towns;
-        const keys = this.state.searchTerm ? this.state.searchResults : Object.keys(towns);
-        const locations = keys.map(key => ({ key, ...(towns[key] || {}) }));
-
-        return (
-            <View style={ styles.frame }>
-                <View style={ { margin: 10 } }>
-                    <TextInput
-                        keyBoardType={ "default" }
-                        onChangeText={ this.onSearchTermChange }
-                        placeholder={ "Search by City/Town" }
-                        style={ styles.textInput }
-                        value={ this.state.searchTerm }
-                        underlineColorAndroid={ "transparent" }
-                    />
-                </View>
-                <KeyboardAvoidingView
-                    style={ defaultStyles.frame }
-                    behavior={ Platform.OS === "ios" ? "padding" : null }
-                >
-                    <ScrollView style={ styles.scroll }>
-                        <View style={ styles.infoBlockContainer }>
-                            <FlatList
-                                style={ styles.infoBlockContainer }
-                                data={ locations }
-                                renderItem={ ({ item }) => (<TownItem item={ item }/>) }/>
-                        </View>
-                        <View style={ defaultStyles.padForIOSKeyboard }/>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
+        // $FlowFixMe
+        const filterTowns = R.compose(
+            R.map((town: TownType): ?string => town.id),
+            R.filter(((value: Object): boolean => (value.name || "").toLowerCase().indexOf(term.trim().toLowerCase()) !== -1)),
+            Object.values
         );
-    }
-}
 
-function mapStateToProps(state) {
-    const towns = state.towns.townData;
-    return { towns };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actions, dispatch)
+        setSearchResults(filterTowns(towns));
+        setSearchTerm(term.trim());
     };
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Celebrations);
+    const keys = searchTerm ? searchResults : Object.keys(towns);
+    const locations = keys.map((key: string): Object => ({ key, ...(towns[key] || {}) }));
+
+    return (
+        <View style={ styles.frame }>
+            <View style={ { margin: 10 } }>
+                <TextInput
+                    keyBoardType={ "default" }
+                    onChangeText={ onSearchTermChange }
+                    placeholder={ "Search by City/Town" }
+                    style={ styles.textInput }
+                    value={ searchTerm }
+                    underlineColorAndroid={ "transparent" }
+                />
+            </View>
+            <KeyboardAvoidingView
+                style={ defaultStyles.frame }
+                behavior={ Platform.OS === "ios" ? "padding" : null }
+            >
+                <ScrollView style={ styles.scroll }>
+                    <View style={ styles.infoBlockContainer }>
+                        <FlatList
+                            style={ styles.infoBlockContainer }
+                            data={ locations }
+                            renderItem={ ({ item }: { item: TownType }): React$Element<any> => (
+                                <TownItem item={ item }/>) }/>
+                    </View>
+                    <View style={ defaultStyles.padForIOSKeyboard }/>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </View>
+    );
+};
+
+Celebrations.navigationOptions = {
+    title: "Find Bags, Gloves, and Other Stuff"
+};
+
+const mapStateToProps = (state: Object): Object => ({ towns: state.towns.townData });
+
+// $FlowFixMe
+export default connect(mapStateToProps)(Celebrations);

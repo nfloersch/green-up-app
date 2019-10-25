@@ -58,12 +58,7 @@ declare function connect<S, D, OP, SP, DP, MP>(
         mergeProps: MergeProps<SP, DP, OP, MP>
 ): Connector<S, D, OP, React$ComponentType<MP>>;
 
-type PayloadType = { data: ?Object, error: ?any, value: ?any };
-
-declare type ActionType = {
-    type: string,
-    payload: ?PayloadType
-};
+declare type ActionType = { type: string, error?: (string | Error), data?: any };
 
 declare type ThunkType = Dispatch<any> => void;
 

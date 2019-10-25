@@ -3,7 +3,7 @@ import * as types from "../../constants/action-types";
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
 export const saveTeam = (team: Object): ThunkType => {
-    async function thunk(dispatch: Dispatch<Object>) {
+    async function thunk(dispatch: Dispatch<ActionType>) {
         const savedTeam = await firebaseDataLayer.saveTeam(team);
         dispatch({ type: types.SAVE_TEAM_SUCCESS, savedTeam });
     }
