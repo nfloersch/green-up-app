@@ -1,0 +1,11 @@
+// @flow
+
+declare type TeamMemberType = {
+    uid: ? string;
+    displayName: ? string;
+    bio: ? string;
+    email: ? string;
+    invitationId: ? string;
+    memberStatus: ? string;
+    photoURL: ? string;
+}

@@ -1,0 +1,12 @@
+// @flow
+declare type UserType = {
+    uid: ?string;
+    displayName: ?string;
+    updated: ?Date;
+    email: ?string;
+    photoURL: ?string;
+    teams: ?Object;
+    bio: ?string;
+    created: ?Date;
+    grantMarketingConsent: ?Boolean;
+};

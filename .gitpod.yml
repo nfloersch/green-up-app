@@ -5,6 +5,7 @@ tasks:
       npm install &&
       npm install -g expo-cli &&
       npm install -g flow
+
   command: expo start --host tunnel
 
 ports:
@@ -51,4 +52,4 @@ ports:
 # =================
 vscode:
   extensions:
-    - flowtype.flow-for-vscode@1.5.0:AwOT6wgHTF43loZQCAUMLA==
+    - flowtype.flow-for-vscode@1.5.0:AwOT6wgHTF43loZQCAUMLA== 

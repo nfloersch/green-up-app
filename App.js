@@ -7,6 +7,8 @@ import AppState from "./components/app-state";
 import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
+import { StyleProvider } from "@shoutem/theme";
+import { greenUpTheme } from "./styles/theme";
 
 type Props = { skipLoadingScreen: boolean };
 
@@ -62,11 +64,13 @@ export default class App extends React.Component<Props> {
         );
 
         const mainApp = (
-            <AppState>
-                <Session>
-                    <AppNavigator/>
-                </Session>
-            </AppState>
+            <StyleProvider style={ greenUpTheme }>
+                <AppState>
+                    <Session>
+                        <AppNavigator/>
+                    </Session>
+                </AppState>
+            </StyleProvider>
         );
 
         return (!this.state.isLoadingComplete && !this.props.skipLoadingScreen ? load : mainApp);

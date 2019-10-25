@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     buttonBarHeader: {
         width: "100%",
         height: 60,
-        backgroundColor: constants.headerBackgroundColor,
+        backgroundColor: constants.colorBackgroundHeader,
         borderBottomWidth: 1,
         borderColor: "black"
     },

@@ -1,0 +1,14 @@
+// @flow
+
+declare type Message = {
+    id: ?string;
+    text: ?string;
+    sender: ?TeamMemberType;
+    teamId: ?string;
+    read: ?boolean;
+    active: ?boolean;
+    link: ?string;
+    type: ?string;
+    created: ?Date;
+    teamName: ?string
+}
