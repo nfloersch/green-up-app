@@ -1,7 +1,7 @@
 # Green Up App
 
 <p align="center">
-  <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/app.png">
+  <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/gu-50-logo.png">
 </p>
 
 This repository contains the source code for the Green Up App, a mobile app for Vermont's Green Up Day. Green Up App is an official Code for America Project. More information about the motivation and context of this project is available on the [Code for BTV Website](http://codeforbtv.org/projects/greenup-app).
