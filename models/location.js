@@ -7,7 +7,7 @@ export default class Location {
     description: ?string;
     status: ?string;
     active: ?boolean;
-    coordinates: ?Coordinates;
+    coordinates: ?CoordinatesType;
     created: ?Date;
 
     constructor(args: Object = {}) {

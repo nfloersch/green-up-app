@@ -169,6 +169,7 @@ const TrashMap = (
 
     const townInfo = townData[encodedTownName] || {};
 
+    // $FlowFixMe
     const trashDropOffLocations = R.compose(
         R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
         R.flatten,
@@ -176,6 +177,7 @@ const TrashMap = (
         Object.values
     )(townData);
 
+    // $FlowFixMe
     const supplyPickupLocations = R.compose(
         R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
         R.flatten,
@@ -183,7 +185,8 @@ const TrashMap = (
         Object.values
     )(townData);
 
-    const initialMapLocation = location ? {
+    const initialMapLocation = location
+        ? {
             latitude: Number(location.coords.latitude),
             longitude: Number(location.coords.longitude),
             latitudeDelta: 0.0922,
