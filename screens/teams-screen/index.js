@@ -18,7 +18,7 @@ import {
 } from "react-native";
 import NewTeam from "./new-team";
 import TeamMember from "../../models/team-member";
-import * as actions from "./actions";
+import * as actions from "../../action-creators/team-action-creators";
 import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
 import { removeNulls } from "../../libs/remove-nulls";

@@ -8,7 +8,7 @@ export default class TrashDrop {
     status: ?string;
     active: ?boolean;
     tags: ?Array<string>;
-    location: ?Coordinates;
+    location: ?CoordinatesType;
     created: ?Date;
     wasCollected: ?boolean;
     createdBy: ?Object;

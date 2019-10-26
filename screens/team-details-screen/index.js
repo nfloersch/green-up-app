@@ -29,11 +29,11 @@ const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
     actions: {
-        removeTeamRequest: any => void,
-        leaveTeam: any => void,
-        acceptInvitation: any => void,
-        revokeInvitation: any => void,
-        askToJoinTeam: any => void
+        removeTeamRequest: (string, UserType) => void,
+        leaveTeam: (string, UserType) => void,
+        acceptInvitation: (string, UserType) => void,
+        revokeInvitation: (string, string) => void,
+        askToJoinTeam: (TeamType, UserType) => void
     },
     currentUser: Object,
     invitations: Object,
@@ -46,11 +46,7 @@ type PropsType = {
     otherCleanAreas: Array<Object>
 };
 
-const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navigation, selectedTeam, teamMembers, teams, town, otherCleanAreas }: PropsType): React$Element<any> => {
-
-    const [hasAsked, setHasAsked] = useState(false);
-    const [initialMapLocation, setInitialMapLocation] = useState(getInitialMapLocation(locations));
-    const [teamId, setTeamId] = useState((selectedTeam || {}).id);
+const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navigation, selectedTeam, teamMembers, town }: PropsType): React$Element<any> => {
 
     const getInitialMapLocation = (_locations: Array<LocationType>): LocationType => (
         locations && locations.length > 0
@@ -68,21 +64,31 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
             })
     );
 
+    const [hasAsked, setHasAsked] = useState(false);
+    const [initialMapLocation, setInitialMapLocation] = useState(getInitialMapLocation(locations));
+    const [myTeamId, setMyTeamId] = useState((selectedTeam || {}).id);
+
+
     useEffect(() => {
         const newTeamId = (selectedTeam || {}).id;
-        if (newTeamId !== teamId) {
+        if (newTeamId !== myTeamId) {
             setHasAsked(false);
-            setTeamId(newTeamId);
+            setMyTeamId(newTeamId);
         }
     }, [selectedTeam]);
 
 
+    useEffect(() => {
+        setInitialMapLocation(locations);
+    }, [locations]);
+
     const declineInvitation = (teamId: string, membershipId: string) => {
-        return () => actions.revokeInvitation(teamId, membershipId);
+        actions.revokeInvitation(teamId, membershipId);
     };
 
+
     const acceptInvitation = (teamId: string, user: Object) => {
-        return () => actions.acceptInvitation(teamId, user);
+        actions.acceptInvitation(teamId, user);
     };
 
     const leaveTeam = (teamId: string, user: Object) => {
@@ -91,13 +97,16 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
             "Are you really, really sure you want to leave this team?",
             [
                 {
-                    text: "No", onPress: () => {
-                    }, style: "cancel"
+                    text: "No",
+                    onPress: () => {
+                    },
+                    style: "cancel"
                 },
                 {
-                    text: "Yes", onPress: () => {
+                    text: "Yes",
+                    onPress: () => {
                         navigation.goBack();
-                        return actions.leaveTeam(teamId, user);
+                        actions.leaveTeam(teamId, user);
                     }
                 }
             ],
@@ -106,33 +115,24 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     };
 
     const removeRequest = (teamId: string, user: Object) => {
-        return () => {
-            navigation.goBack();
-            actions.removeTeamRequest(teamId, user);
-        };
+        navigation.goBack();
+        actions.removeTeamRequest(teamId, user);
     };
+
 
     const askToJoin = (team: Object, user: Object) => {
-        return () => {
-            this.setState({ hasAsked: true }, () => {
-                actions.askToJoinTeam(team, user);
-            });
-        };
+        setHasAsked(true);
+        actions.askToJoinTeam(team, user);
     };
+
 
     const toMemberDetails = (teamId: string, membershipId: string) => {
-        return () => {
-            navigation.navigate("TeamMemberDetails", { teamId, membershipId });
-        };
+        navigation.navigate("TeamMemberDetails", { teamId, membershipId });
     };
 
-    const selectedTeamMembers = teamMembers[selectedTeam.id] || {};
+
     const memberKey = currentUser.uid;
-    // const inviteKey = currentUser.email.toLowerCase().trim();
-    // const membership = teamMembers[memberKey] || selectedTeamMembers[inviteKey];
     const hasInvitation = Boolean(invitations[selectedTeam.id]);
-    // const memberStatus = (membership && membership.memberStatus) || (hasInvitation && teamMemberStatuses.INVITED);
-    // const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
     const teamMemberList = (
         <View style={ { width: "100%" } }>
             <Text style={ [styles.textDark, { textAlign: "center" }] }>
@@ -141,7 +141,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
             {
                 Object
                     .values(teamMembers)
-                    .map((member, i) => (
+                    .map((member: Object, i: number): React$Element<any> => (
                         <TouchableHighlight
                             key={ i }
                             style={ {
@@ -152,7 +152,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                                 height: 52,
                                 marginTop: 5
                             } }
-                            onPress={ toMemberDetails(selectedTeam.id, member.uid) }>
+                            onPress={ () => {
+                                toMemberDetails(selectedTeam.id, member.uid);
+                            } }>
                             <View style={ { flex: 1, flexDirection: "row" } }>
                                 <View style={ { flex: 1, flexDirection: "row" } }>
                                     <Image
@@ -193,7 +195,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     const memberStatus = getTeamMemberStatus();
     const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
 
-    const getStatusButtons = () => {
+    const getStatusButtons = (): ?React$Element<any> => {
         switch (true) {
             case memberStatus === teamMemberStatuses.INVITED:
                 return (
@@ -202,7 +204,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                             <View style={ styles.buttonBarButton }>
                                 <TouchableHighlight
                                     style={ styles.headerButton }
-                                    onPress={ acceptInvitation(selectedTeam.id, currentUser) }>
+                                    onPress={ () => {
+                                        acceptInvitation(selectedTeam.id, currentUser);
+                                    } }>
                                     <Text style={ styles.headerButtonText }>
                                         { "Accept Invitation" }
                                     </Text>
@@ -211,7 +215,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                             <View style={ styles.buttonBarButton }>
                                 <TouchableHighlight
                                     style={ styles.headerButton }
-                                    onPress={ declineInvitation(selectedTeam.id, currentUser.email) }>
+                                    onPress={ () => {
+                                        declineInvitation(selectedTeam.id, currentUser.email);
+                                    } }>
                                     <Text style={ styles.headerButtonText }>
                                         { "Decline Invitation" }
                                     </Text>
@@ -241,7 +247,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     <View style={ styles.singleButtonHeader }>
                         <TouchableHighlight
                             style={ styles.headerButton }
-                            onPress={ removeRequest(selectedTeam.id, currentUser) }>
+                            onPress={ () => {
+                                removeRequest(selectedTeam.id, currentUser);
+                            } }>
                             <Text style={ styles.headerButtonText }>
                                 { "Remove Request" }
                             </Text>
@@ -253,7 +261,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     <View style={ styles.singleButtonHeader }>
                         <TouchableHighlight
                             style={ styles.headerButton }
-                            onPress={ askToJoin(selectedTeam, currentUser) }>
+                            onPress={ () => {
+                                askToJoin(selectedTeam, currentUser);
+                            } }>
                             <Text style={ styles.headerButtonText }>{ "Ask to join this team" }</Text>
                         </TouchableHighlight>
                     </View>
@@ -261,7 +271,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         }
     };
 
-    const getMemberStatus = () => {
+    const getMemberStatus = (): ?React$Element<any> => {
         switch (true) {
             case memberStatus === teamMemberStatuses.INVITED:
                 return (
@@ -304,14 +314,14 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     };
 
 
-    const teamAreas = (locations || []).map((marker, index) => (
+    const teamAreas = (locations || []).map((marker: Object, index: number): React$Element<any> => (
         <MapView.Marker
             coordinate={ marker.coordinates }
             key={ index }
             stopPropagation={ true }>
             <MultiLineMapCallout title={ marker.title || "Clean Area" } description={ "" }/>
         </MapView.Marker>
-    ));// .concat(otherTeamAreas);
+    ));
 
     return (
         <View style={ styles.frame }>
@@ -360,7 +370,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                         <MapView
                             style={ { height: 300, marginBottom: 20, marginTop: 5 } }
                             initialRegion={ initialMapLocation }
-                            onPress={ handleMapClick }>
+                        >
                             { teamAreas }
                         </MapView>
                         {
@@ -395,15 +405,6 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
 
 const mapStateToProps = (state: Object): Object => {
-    const otherCleanAreas = Object.values(state.teams.teams)
-        .filter((team: Object): boolean => team.id !== state.teams.selectedTeam.id)
-        .reduce((areas: Array<TeamType>, team: Object): Array<TeamType> => areas.concat((team.locations || [])
-            .map((l: LocationType): Object => Object.assign({}, {
-                key: "",
-                coordinates: l.coordinates,
-                title: `${ team.name }`,
-                description: "claimed this area"
-            }))), []);
     const selectedTownName = ((state.teams.selectedTeam || {}).town || "").toLowerCase();
     const town = Object
         .values((state.towns.townData || {}))
@@ -411,21 +412,19 @@ const mapStateToProps = (state: Object): Object => {
     return ({
         locations: state.teams.locations,
         invitations: state.teams.myInvitations || {},
-        teams: state.teams.teams,
         selectedTeam: state.teams.selectedTeam,
         currentUser: User.create({ ...state.login.user, ...state.profile }),
         teamMembers: state.teams.teamMembers,
-        town,
-        otherCleanAreas
+        town
     });
 };
 
 TeamDetailsScreen.navigationOptions = { title: "Team Details" };
 
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
-// @FlowFixMe
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetailsScreen);

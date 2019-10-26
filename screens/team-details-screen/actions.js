@@ -7,7 +7,7 @@ import * as messageTypes from "../../constants/message-types";
 import Message from "../../models/message";
 
 export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
-    function thunk() {
+    function thunk(dispatch: Dispatch<ActionType>) {
         const message = Message.create({
             text: `${ user.displayName || user.email } is requesting to join ${ team.name } `,
             sender: user,
@@ -17,6 +17,7 @@ export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
         const teamId = typeof team === "string" ? team : team.id;
         firebaseDataLayer.addTeamRequest(teamId, { ...user, memberStatus: memberStatus.REQUEST_TO_JOIN });
         firebaseDataLayer.sendUserMessage(team.owner.uid, message);
+        dispatch({ type: types.REQUEST_MEMBERSHIP, data: team });
     }
 
     thunk.interceptOnOffline = true;

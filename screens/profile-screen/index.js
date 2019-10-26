@@ -139,7 +139,7 @@ const mapStateToProps = (state: Object): Object => {
     return { currentUser };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

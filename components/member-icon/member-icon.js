@@ -17,24 +17,24 @@ const icons = {
 };
 
 const getIconName = R.cond([
-    [(status: string, isOwner: boolean): boolean => isOwner === true, (): string => icons.OWNER],
-    [(status: string): boolean => status === memberStatuses.REQUEST_TO_JOIN, (): string => icons.IS_REQUESTING_TO_JOIN],
-    [(status: string): boolean => Object.keys(icons).includes(status), (status: string): string => icons[status]],
+    [(status: Object): boolean => status.isOwner === true, (): string => icons.OWNER],
+    [(status: Object): boolean => status.status === memberStatuses.REQUEST_TO_JOIN, (): string => icons.IS_REQUESTING_TO_JOIN],
+    [(status: Object): boolean => Object.keys(icons).includes(status.status), (status: Object): string => icons[status.status]],
     [R.T, (): string => icons.DEFAULT]
 ]);
 
-type PropsType = { memberStatus: string, style: Object, isOwner: boolean };
+type PropsType = { memberStatus: string, style?: Object, isOwner?: boolean };
 
 export const MemberIcon = ({ memberStatus, style = {}, isOwner }: PropsType): React$Element<Ionicons> => {
     const status = memberStatus === memberStatuses.REQUEST_TO_JOIN && !isOwner ? "IS_REQUESTING_TO_JOIN" : memberStatus;
     const iconStyle = Object.assign({
         height: 30,
         width: 30,
-        color: colors.iconColor // "#007AFF"
+        color: colors.iconColor
     }, style);
     return (
         <Ionicons
-            name={ getIconName(status) }
+            name={ getIconName({ status, isOwner: Boolean(isOwner) }) }
             size={ 30 }
             style={ iconStyle }/>
     );

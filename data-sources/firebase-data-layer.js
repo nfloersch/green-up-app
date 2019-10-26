@@ -521,10 +521,9 @@ export function sendUserMessage(userId: string, message: MessageType): Promise<a
     return db.collection(`messages/${ userId }/messages`).add(_message);
 }
 
-export function sendGroupMessage(group: Array<string>, message: MessageType) {
-    group.forEach((memberUID: string) => {
-        sendUserMessage(memberUID, deconstruct(message));
-    });
+export function sendGroupMessage(group: Array<{ uid: string }>, message: MessageType): Promise<Array<mixed>> {
+    const sentMessges = group.map((recipient: string): Promise<mixed> => sendUserMessage(recipient.uid, deconstruct(message)));
+    return Promise.all(sentMessges);
 }
 
 export function sendTeamMessage(teamId: string, message: MessageType): Promise<any> {
@@ -605,7 +604,7 @@ export async function addTeamMember(teamId: string, user: Object, status?: strin
     return results;
 }
 
-export function updateTeamMember(teamId: string, teamMember: TeamMember): Promise<any> {
+export function updateTeamMember(teamId: string, teamMember: TeamMemberType): Promise<any> {
     return db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
 }
 

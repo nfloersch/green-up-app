@@ -1,8 +1,8 @@
 // @flow
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+import * as types from "../constants/action-types";
+import initialState from "./initial-state";
 
-export function reducers(state = initialState.loading, action) {
+export const sessionReducers = (state: Object = initialState.loading, action: ActionType): Object => {
     switch (action.type) {
         case types.LOGIN_SUCCESSFUL :
             return { ...state, userIsLoggedIn: true };
@@ -56,4 +56,4 @@ export function reducers(state = initialState.loading, action) {
         default:
             return state;
     }
-}
+};

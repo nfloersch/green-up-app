@@ -1,7 +1,8 @@
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+// @flow
+import * as types from "../constants/action-types";
+import initialState from "./initial-state";
 
-export function reducers(state = initialState.trashTracker, action) {
+export const trashTrackerReducers = (state: Object = initialState.trashTracker, action: ActionType): Object => {
     switch (action.type) {
         case types.FETCH_TRASH_DROPS_SUCCESS:
             return {
@@ -23,4 +24,4 @@ export function reducers(state = initialState.trashTracker, action) {
         default:
             return state;
     }
-}
+};
