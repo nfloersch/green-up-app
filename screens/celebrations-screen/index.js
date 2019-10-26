@@ -9,7 +9,7 @@ import * as R from "ramda";
 const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
-    towns: { [key: string]: TownType }
+    towns: { [key: string]: Town }
 };
 
 const Celebrations = ({ towns }: PropsType): React$Element<any> => {
@@ -19,7 +19,7 @@ const Celebrations = ({ towns }: PropsType): React$Element<any> => {
 
         // $FlowFixMe
         const filterTowns = R.compose(
-            R.map((town: TownType): ?string => town.id),
+            R.map((town: Town): ?string => town.id),
             R.filter(((value: Object): boolean => (value.name || "").toLowerCase().indexOf(term.trim().toLowerCase()) !== -1)),
             Object.values
         );
@@ -52,7 +52,7 @@ const Celebrations = ({ towns }: PropsType): React$Element<any> => {
                         <FlatList
                             style={ styles.infoBlockContainer }
                             data={ locations }
-                            renderItem={ ({ item }: { item: TownType }): React$Element<any> => (
+                            renderItem={ ({ item }: { item: Town }): React$Element<any> => (
                                 <TownItem item={ item }/>) }/>
                     </View>
                     <View style={ defaultStyles.padForIOSKeyboard }/>

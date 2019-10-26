@@ -299,3 +299,5 @@ const LegalScreen = (): React$Element<any> => (
 LegalScreen.navigationOptions = {
     title: "Privacy Policy"
 };
+
+export default LegalScreen;

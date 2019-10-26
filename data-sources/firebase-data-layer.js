@@ -387,7 +387,7 @@ function setupTownListener(dispatch: Dispatch<ActionType>) {
         querySnapshot.forEach((doc: Object) => {
             data.push(Town.create(doc.data(), doc.id));
         });
-        const towns = data.reduce((obj: Object, town: TownType): Object => ({ ...obj, [town.id]: town }), {});
+        const towns = data.reduce((obj: Object, town: Town): Object => ({ ...obj, [town.id]: town }), {});
         setTimeout(() => {
             dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, data: towns });
         }, 1);
@@ -647,11 +647,11 @@ export function removeTeamRequest(teamId: string, teamMember: UserType): Promise
 
 /** *************** TRASH DROPS *************** **/
 
-export function dropTrash(trashDrop: TrashDropType): Promise<any> {
+export function dropTrash(trashDrop: TrashDrop): Promise<any> {
     return db.collection("trashDrops").add(deconstruct({ ...trashDrop, location: { ...trashDrop.location } }));
 }
 
-export function updateTrashDrop(trashDrop: TrashDropType): Promise<any> {
+export function updateTrashDrop(trashDrop: TrashDrop): Promise<any> {
     return db.collection("trashDrops").doc(trashDrop.id).set(deconstruct({
         ...trashDrop,
         location: { ...trashDrop.location }

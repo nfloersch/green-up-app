@@ -39,10 +39,10 @@ type PropsType = {
     towns: ?Array<string>
 };
 
-const matchTowns = R.curry((towns: ?Array<string>, query: ?string): Array<TownType> => {
-    const testTowns = Array.isArray(towns) ? towns.filter((town: TownType): boolean => Boolean(town && town.name)) : [];
+const matchTowns = R.curry((towns: ?Array<string>, query: ?string): Array<Town> => {
+    const testTowns = Array.isArray(towns) ? towns.filter((town: Town): boolean => Boolean(town && town.name)) : [];
     const testString = typeof query !== "string" ? "" : query.trim().toLowerCase();
-    return testTowns.filter((town: TownType): boolean => town.name.toLowerCase().startsWith(testString));
+    return testTowns.filter((town: Town): boolean => town.name.toLowerCase().startsWith(testString));
 });
 
 export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Element<any> => {

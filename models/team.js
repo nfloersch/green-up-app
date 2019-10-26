@@ -24,7 +24,7 @@ export default class Team {
     notes: ?Array<string>;
     owner: TeamMember;
     start: ?string;
-    town: ?TownType;
+    town: ?Town;
 
     constructor(args: Object = {}) {
         this.active = typeof args.active === "boolean"

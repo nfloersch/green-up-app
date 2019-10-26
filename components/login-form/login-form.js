@@ -10,7 +10,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
     buttonText: string,
-    onButtonPress: any => void
+    onButtonPress: (string, string) => void
 };
 
 const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Element<View> => {

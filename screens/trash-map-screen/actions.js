@@ -3,7 +3,7 @@ import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 import TrashDrop from "../../models/trash-drop";
 import * as types from "../../constants/action-types";
 
-export const dropTrash = (trashDrop: TrashDropType): ThunkType => {
+export const dropTrash = (trashDrop: TrashDrop): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         const drop = TrashDrop.create(trashDrop);
         firebaseDataLayer.dropTrash(drop)
@@ -19,7 +19,7 @@ export const dropTrash = (trashDrop: TrashDropType): ThunkType => {
     return thunk;
 };
 
-export const updateTrashDrop = (trashDrop: TrashDropType): ThunkType => {
+export const updateTrashDrop = (trashDrop: TrashDrop): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         const drop = TrashDrop.create(trashDrop);
         firebaseDataLayer.updateTrashDrop(drop)

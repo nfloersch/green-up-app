@@ -232,7 +232,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             testOptionEqual={ (selectedValue: string, option: Object): boolean => selectedValue === option.value }/>
                     </View>
                     <TownSelector
-                        onSelect={ (town: TownType) => {
+                        onSelect={ (town: Town) => {
                             nextTextInput.focus();
                             setTeamValue("town")(town);
                         } }
@@ -361,7 +361,7 @@ const mapStateToProps = (state: Object): Object => {
         }))), []);
     const vermontTowns = R.compose(
         R.sort((a: TeamType, b: TeamType): boolean => a.name.toLowerCase() < b.name.toLowerCase()),
-        R.filter((town: TownType): boolean => Boolean(town.name)), // hedge against bad data.
+        R.filter((town: Town): boolean => Boolean(town.name)), // hedge against bad data.
         Object.values
     )(state.towns.townData);
 

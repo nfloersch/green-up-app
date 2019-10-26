@@ -17,7 +17,7 @@ export default class TrashDrop {
     constructor(args: Object) {
         this.id = typeof args.id === "string" ? args.id : null;
         this.bagCount = typeof args.bagCount === "number" ? args.bagCount : null;
-        this.tags = Array.isArray(args.tags) ? args.tags.filter((tag) => typeof tag === "string") : [];
+        this.tags = Array.isArray(args.tags) ? args.tags.filter((tag: mixed): boolean => typeof tag === "string") : [];
         this.status = typeof args.status === "string" ? args.status : null;
         this.active = typeof args.active === "boolean" ? args.active : true;
         this.location = Coordinates.create(args.location);
@@ -27,7 +27,7 @@ export default class TrashDrop {
         this.collectedBy = typeof args.collectedBy === "object" ? args.collectedBy : null;
     }
 
-    static create(args: ?Object = {}, id?: string) {
+    static create(args: ?Object = {}, id?: string): TrashDrop {
         const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;

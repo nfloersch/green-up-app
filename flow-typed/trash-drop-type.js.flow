@@ -1,6 +1,6 @@
 // @flow
 
-declare type TrashDropType = {
+declare class TrashDrop {
     id: ?string;
     bagCount: ?number;
     status: ?string;
