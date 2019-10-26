@@ -62,9 +62,7 @@ declare type ActionType = { type: string, error?: (string | Error), data?: any }
 
 declare type ThunkType = Dispatch<any> => void;
 
-declare type OwnProps = $ReadOnly<{|
-    comingFromOutside: string,
-|}>;
+declare type OwnProps = $ReadOnly<{comingFromOutside: string}>;
 
 type Props = {
     ...OwnProps,

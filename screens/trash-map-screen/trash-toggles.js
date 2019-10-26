@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "./actions";
@@ -17,91 +17,95 @@ const myStyles = { toggle: { height: 50 } };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-type Props = {
-    actions: { toggleTrashData: (string, string)=>void },
+type PropsType = {
+    actions: { toggleTrashData: (string, boolean)=>void },
     close: any => void,
-    messages: Array<Object>,
-    navigation: Object,
     supplyPickupToggle: boolean,
     uncollectedTrashToggle: boolean,
     trashDropOffToggle: boolean,
     myTrashToggle: boolean,
     collectedTrashToggle: boolean,
-    cleanAreasToggle: boolean,
+    cleanAreasToggle: boolean
 };
 
 
-class TrashToggles extends Component<Props> {
-
-
-    render() {
-        const {
-            close,
-            myTrashToggle,
-            supplyPickupToggle,
-            cleanAreasToggle,
-            trashDropOffToggle,
-            collectedTrashToggle,
-            uncollectedTrashToggle,
-            actions
-        } = this.props;
-
-        return (
-            <View style={ [styles.frame, { paddingTop: 30 }] }>
-                <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                    <View style={ styles.buttonBar }>
-                        <View style={ styles.buttonBarButton }>
-                            <TouchableOpacity style={ styles.headerButton } onPress={ close }>
-                                <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={ [styles.infoBlockContainer, { height: 300 }] }>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleYellow }
-                        label="My Trash"
-                        value={ myTrashToggle }
-                        onValueChange={ () => actions.toggleTrashData("myTrashToggle", !myTrashToggle) }/>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleRed }
-                        label="Uncollected Trash"
-                        value={ this.props.uncollectedTrashToggle }
-                        onValueChange={ () => actions.toggleTrashData("uncollectedTrashToggle", !uncollectedTrashToggle) }/>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleBlue }
-                        label="Trash Drop-Offs"
-                        value={ this.props.trashDropOffToggle }
-                        onValueChange={ () => actions.toggleTrashData("trashDropOffToggle", !trashDropOffToggle) }/>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleGreen }
-                        label="Supply Pickups"
-                        value={ supplyPickupToggle }
-                        onValueChange={ () => actions.toggleTrashData("supplyPickupToggle", !supplyPickupToggle) }/>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleTurquoise }
-                        label="Collected Trash"
-                        value={ this.props.collectedTrashToggle }
-                        onValueChange={ () => actions.toggleTrashData("collectedTrashToggle", !collectedTrashToggle) }/>
-                    <Toggle
-                        style={ styles.toggle }
-                        icon={ circleOrange }
-                        label="Team Cleaning Areas"
-                        value={ cleanAreasToggle }
-                        onValueChange={ () => actions.toggleTrashData("cleanAreasToggle", !cleanAreasToggle) }/>
+const TrashToggles = (
+    {
+        actions,
+        close,
+        supplyPickupToggle,
+        uncollectedTrashToggle,
+        trashDropOffToggle,
+        myTrashToggle,
+        collectedTrashToggle,
+        cleanAreasToggle
+    }: PropsType): React$Element<any> => (
+    <View style={ [styles.frame, { paddingTop: 30 }] }>
+        <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
+            <View style={ styles.buttonBar }>
+                <View style={ styles.buttonBarButton }>
+                    <TouchableOpacity style={ styles.headerButton } onPress={ close }>
+                        <Text style={ styles.headerButtonText }>{ "Close" }</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-        );
-    }
-}
+        </View>
 
-function mapStateToProps(state) {
+        <View style={ [styles.infoBlockContainer, { height: 300 }] }>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleYellow }
+                label="My Trash"
+                value={ myTrashToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("myTrashToggle", !myTrashToggle);
+                } }/>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleRed }
+                label="Uncollected Trash"
+                value={ uncollectedTrashToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("uncollectedTrashToggle", !uncollectedTrashToggle);
+                } }/>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleBlue }
+                label="Trash Drop-Offs"
+                value={ trashDropOffToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("trashDropOffToggle", !trashDropOffToggle);
+                } }/>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleGreen }
+                label="Supply Pickups"
+                value={ supplyPickupToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("supplyPickupToggle", !supplyPickupToggle);
+                } }/>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleTurquoise }
+                label="Collected Trash"
+                value={ collectedTrashToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("collectedTrashToggle", !collectedTrashToggle);
+                } }/>
+            <Toggle
+                style={ styles.toggle }
+                icon={ circleOrange }
+                label="Team Cleaning Areas"
+                value={ cleanAreasToggle }
+                onValueChange={ () => {
+                    actions.toggleTrashData("cleanAreasToggle", !cleanAreasToggle);
+                } }/>
+        </View>
+    </View>
+);
+
+
+const mapStateToProps = (state: Object): Object => {
     const { myTrashToggle, cleanAreasToggle, trashDropOffToggle, uncollectedTrashToggle, collectedTrashToggle, supplyPickupToggle } = state.trashTracker;
     return {
         collectedTrashToggle,
@@ -111,12 +115,9 @@ function mapStateToProps(state) {
         myTrashToggle,
         cleanAreasToggle
     };
-}
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actionCreators, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TrashToggles);
