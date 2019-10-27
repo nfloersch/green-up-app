@@ -26,7 +26,7 @@ import TeamMember from "../../models/team-member";
 import * as statuses from "../../constants/team-member-statuses";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
-// import * as Location from "expo-location";
+import * as colors from "../../styles/constants";
 import { TownLocation } from "../../models/town";
 import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
@@ -43,7 +43,7 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
-const freshState = (owner: UserType, initialMapLocation: CoordinatesType = null): Object => ({
+const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null): Object => ({
     team: Team.create({ owner }),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
@@ -181,7 +181,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
     const dateIsSelected = state.team.date === null;
     const endIsSelected = state.team.end === null;
     const startIsSelected = state.team.start === null;
-    const applyDateOffset = (date: string, days: number): Date => {
+    const applyDateOffset = (date: Date, days: number): Date => {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
@@ -244,7 +244,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             keyBoardType={ "default" }
                             onChangeText={ setTeamValue("location") }
                             placeholder={ "Location" }
-                            ref={ (input: React$Element<any>) => {
+                            ref={ (input: any) => {
                                 nextTextInput = input;
                             } }
                             style={ styles.textInput }
@@ -347,20 +347,60 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
     );
 };
 
+NewTeam.navigationOptions = {
+    title: "Start a Team",
+    headerStyle: {
+        backgroundColor: "#FFF"
+    },
+    headerTintColor: colors.colorTextThemeDark,
+    headerTitleStyle: {
+        fontFamily: "sriracha",
+        fontWeight: "bold",
+        fontSize: 26,
+        color: colors.colorTextThemeDark
+    }
+};
+
+type PinType<T> = ?(Array<T> | T);
+
 const mapStateToProps = (state: Object): Object => {
     const profile = state.profile;
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
-    const otherCleanAreas = Object
-        .values(state.teams.teams)
-        .reduce((areas: Array<LocationType>, team: TeamType): Array<LocationType> => areas.concat(team.locations.map((l: LocationType): Object => Object.assign({}, {
-            key: "",
-            coordinates: l.coordinates,
-            title: `${ team.name }`,
-            description: "claimed this area"
-        }))), []);
+
+    const mapToPinData = R.cond([
+        [
+            (locations: any): boolean => !locations,
+            (): Array<any> => []
+        ],
+        [
+            Array.isArray,
+            (locations: PinType<any>, teamName: any): Array<Object> => (locations || [])
+                .filter((l: PinType<any>): boolean => Boolean(l))
+                .map((l: Object): mixed => mapToPinData(l, teamName))
+        ],
+
+        [
+            R.T,
+            (location: any, teamName: any): Object => ({
+                key: "",
+                coordinates: location.coordinates,
+                title: `${ teamName || "Another Team" }`,
+                description: "has claimed this area"
+            })]
+    ]);
+
+
+    // $FlowFixMe
+    const otherCleanAreas = R.compose(
+        R.flatten,
+        R.map((team: TeamType): Array<Object> => mapToPinData(team.locations, team.name)),
+        Object.values
+    )(state.teams.teams);
+
+    // $FlowFixMe
     const vermontTowns = R.compose(
-        R.sort((a: TeamType, b: TeamType): boolean => a.name.toLowerCase() < b.name.toLowerCase()),
+        R.sort((a: TeamType, b: TeamType): number => ((a.name || "").toLowerCase() < (b.name || "").toLowerCase()) ? 1 : -1),
         R.filter((town: Town): boolean => Boolean(town.name)), // hedge against bad data.
         Object.values
     )(state.towns.townData);
@@ -368,6 +408,7 @@ const mapStateToProps = (state: Object): Object => {
     return { owner, currentUser, otherCleanAreas, vermontTowns };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);

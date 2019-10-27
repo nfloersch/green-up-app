@@ -129,7 +129,6 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
     );
 };
 
-
 Profile.navigationOptions = {
     title: "My Profile"
 };

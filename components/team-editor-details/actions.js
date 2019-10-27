@@ -3,9 +3,12 @@ import * as types from "../../constants/action-types";
 import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 
 export const saveTeam = (team: Object): ThunkType => {
-    async function thunk(dispatch: Dispatch<ActionType>) {
-        const savedTeam = await firebaseDataLayer.saveTeam(team);
-        dispatch({ type: types.SAVE_TEAM_SUCCESS, savedTeam });
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.saveTeam(team).then((savedTeam: Object) => {
+            dispatch({ type: types.SAVE_TEAM_SUCCESS, savedTeam });
+        }).catch((error: Error) => {
+            dispatch({ type: types.SAVE_TEAM_FAIL, data: team, error });
+        });
     }
 
     thunk.interceptOnOffline = true;
@@ -13,8 +16,12 @@ export const saveTeam = (team: Object): ThunkType => {
 };
 
 export const deleteTeam = (teamId: string): ThunkType => {
-    function thunk() {
-        firebaseDataLayer.deleteTeam(teamId);
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.deleteTeam(teamId).then((data: Object) => {
+            dispatch({ type: types.DELETE_TEAM_SUCCESS, data });
+        }).catch((error: Error) => {
+            dispatch({ type: types.DELETE_TEAM_FAIL, data: teamId, error });
+        });
     }
 
     thunk.interceptOnOffline = true;

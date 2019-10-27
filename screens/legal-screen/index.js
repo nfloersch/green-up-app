@@ -3,6 +3,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { defaultStyles } from "../../styles/default-styles";
+import * as colors from "../../styles/constants";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -297,7 +298,18 @@ const LegalScreen = (): React$Element<any> => (
 );
 
 LegalScreen.navigationOptions = {
-    title: "Privacy Policy"
+    title: "Privacy and Terms",
+    headerStyle: {
+        backgroundColor: "#FFF"
+    },
+    headerTintColor: colors.colorTextThemeDark,
+    headerTitleStyle: {
+        fontFamily: "sriracha",
+        fontWeight: "bold",
+        fontSize: 26,
+        color: colors.colorTextThemeDark
+    }
 };
+
 
 export default LegalScreen;

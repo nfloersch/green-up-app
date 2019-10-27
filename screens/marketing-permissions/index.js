@@ -49,7 +49,7 @@ const mapStateToProps = (state: Object): Object => {
     return { currentUser, marketingPermissions };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MarketingPermissionsScreen);

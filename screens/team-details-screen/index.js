@@ -1,7 +1,6 @@
 // @flow
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert } from "react-native";
-import MapView from "react-native-maps";
+import React from "react";
+import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "./actions";
@@ -9,9 +8,8 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import User from "../../models/user";
 import MemberIcon from "../../components/member-icon";
-import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import TownItem from "../../components/town-item";
-import Location from "../../models/location";
+import MiniMap from "../../components/mini-map";
 
 const myStyles = {
     memberStatusBanner: {
@@ -48,44 +46,9 @@ type PropsType = {
 
 const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navigation, selectedTeam, teamMembers, town }: PropsType): React$Element<any> => {
 
-    const getInitialMapLocation = (_locations: Array<LocationType>): LocationType => (
-        locations && locations.length > 0
-            ? Location.create({
-                latitude: Number((_locations[0].coordinates || {}).latitude),
-                longitude: Number((_locations[0].coordinates || {}).longitude),
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01
-            })
-            : Location.create({
-                latitude: 43.5705016,
-                longitude: -72.6767611,
-                latitudeDelta: 3,
-                longitudeDelta: 3
-            })
-    );
-
-    const [hasAsked, setHasAsked] = useState(false);
-    const [initialMapLocation, setInitialMapLocation] = useState(getInitialMapLocation(locations));
-    const [myTeamId, setMyTeamId] = useState((selectedTeam || {}).id);
-
-
-    useEffect(() => {
-        const newTeamId = (selectedTeam || {}).id;
-        if (newTeamId !== myTeamId) {
-            setHasAsked(false);
-            setMyTeamId(newTeamId);
-        }
-    }, [selectedTeam]);
-
-
-    useEffect(() => {
-        setInitialMapLocation(locations);
-    }, [locations]);
-
     const declineInvitation = (teamId: string, membershipId: string) => {
         actions.revokeInvitation(teamId, membershipId);
     };
-
 
     const acceptInvitation = (teamId: string, user: Object) => {
         actions.acceptInvitation(teamId, user);
@@ -119,20 +82,18 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         actions.removeTeamRequest(teamId, user);
     };
 
-
     const askToJoin = (team: Object, user: Object) => {
-        setHasAsked(true);
         actions.askToJoinTeam(team, user);
     };
-
 
     const toMemberDetails = (teamId: string, membershipId: string) => {
         navigation.navigate("TeamMemberDetails", { teamId, membershipId });
     };
 
-
     const memberKey = currentUser.uid;
+
     const hasInvitation = Boolean(invitations[selectedTeam.id]);
+
     const teamMemberList = (
         <View style={ { width: "100%" } }>
             <Text style={ [styles.textDark, { textAlign: "center" }] }>
@@ -176,7 +137,6 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         </View>
     );
 
-
     const getTeamMemberStatus = (): string => {
         switch (true) {
             case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
@@ -193,6 +153,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     };
 
     const memberStatus = getTeamMemberStatus();
+
     const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
 
     const getStatusButtons = (): ?React$Element<any> => {
@@ -242,7 +203,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                         </TouchableHighlight>
                     </View>
                 );
-            case hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
+            case memberStatus === teamMemberStatuses.REQUEST_TO_JOIN :
                 return (
                     <View style={ styles.singleButtonHeader }>
                         <TouchableHighlight
@@ -299,7 +260,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                             { "You are a member of this team." }
                         </Text>
                     </View>);
-            case hasAsked || (memberStatus === teamMemberStatuses.REQUEST_TO_JOIN) :
+            case memberStatus === teamMemberStatuses.REQUEST_TO_JOIN :
                 return (
                     <View style={ styles.statusBar }>
                         <MemberIcon memberStatus={ teamMemberStatuses.REQUEST_TO_JOIN }/>
@@ -313,18 +274,8 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         }
     };
 
-
-    const teamAreas = (locations || []).map((marker: Object, index: number): React$Element<any> => (
-        <MapView.Marker
-            coordinate={ marker.coordinates }
-            key={ index }
-            stopPropagation={ true }>
-            <MultiLineMapCallout title={ marker.title || "Clean Area" } description={ "" }/>
-        </MapView.Marker>
-    ));
-
     return (
-        <View style={ styles.frame }>
+        <SafeAreaView style={ styles.container }>
             { getStatusButtons() }
             <ScrollView style={ styles.scroll }>
                 <View style={ styles.infoBlockContainer }>
@@ -367,15 +318,10 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                         <Text style={ [styles.textDark, { textAlign: "center" }] }>
                             { "Clean Up Location" }
                         </Text>
-                        <MapView
-                            style={ { height: 300, marginBottom: 20, marginTop: 5 } }
-                            initialRegion={ initialMapLocation }
-                        >
-                            { teamAreas }
-                        </MapView>
+
                         {
                             (locations || []).length > 0
-                                ? null
+                                ? (<MiniMap pins={ selectedTeam.locations }/>)
                                 : (<Text style={ [styles.textDark, { fontSize: 14, textAlign: "left" }] }>
                                     { "The team owner has yet to designate a clean up location." }
                                 </Text>)
@@ -399,7 +345,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                 </View>
                 <View style={ defaultStyles.padForIOSKeyboard }/>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

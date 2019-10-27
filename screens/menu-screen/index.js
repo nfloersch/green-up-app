@@ -3,13 +3,12 @@ import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "../login-screen/actions";
+import { logout } from "../login-screen/actions";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-
 
 type PropsType = {
     actions: Object,
@@ -25,7 +24,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                     navigation.navigate("Towns");
                 } }
             >
-                <Text style={ styles.buttonText }>{ "Events, Supplies & Info" }</Text>
+                <Text style={ styles.buttonText }>{ "Town Info" }</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={ styles.button }
@@ -50,7 +49,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                     navigation.navigate("Legal");
                 } }
             >
-                <Text style={ styles.buttonText }>{ "Privacy & Terms" }</Text>
+                <Text style={ styles.buttonText }>{ "Legal" }</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={ styles.button }
@@ -68,8 +67,8 @@ MenuScreen.navigationOptions = {
 };
 const mapStateToProps = (): Object => ({});
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
-    actions: bindActionCreators(actionCreators, dispatch)
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
+    actions: bindActionCreators({ logout }, dispatch)
 });
 
 // $FlowFixMe

@@ -246,7 +246,7 @@ const mapStateToProps = (state: Object): Object => ({
     currentUser: state.login.user
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

@@ -77,7 +77,7 @@ ABienTot.navigationOptions = {
 
 const mapStateToProps = (state: Object): Object => ({ session: state.login.session });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
