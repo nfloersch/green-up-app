@@ -16,6 +16,7 @@ export default class Team {
     description: ?string;
     end: ?string;
     id: ?string;
+    isMember: ?boolean;
     isPublic: boolean;
     location: ?string;
     locations: ?Array<LocationType>;
@@ -46,6 +47,9 @@ export default class Team {
             ? args.end
             : null;
         this.id = typeof args.id === "string" ? args.id : null;
+        this.isMember = typeof args.isMember === "boolean"
+            ? args.isMember
+            : false;
         this.isPublic = typeof args.isPublic === "boolean"
             ? args.isPublic
             : true;

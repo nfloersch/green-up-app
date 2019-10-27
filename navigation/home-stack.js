@@ -8,12 +8,14 @@ import FreeSupplies from "../screens/free-supplies-screen";
 import Celebrations from "../screens/celebrations-screen";
 import GreenUpFacts from "../screens/green-up-facts-screen";
 import TeamDetails from "../screens/team-details-screen";
+import TeamEditorScreen from "../screens/team-editor-screen";
 
 const HomeStack = createStackNavigator({
     Home: { screen: HomeScreen },
     FindTeam: { screen: FindTeam },
     TeamDetails: { screen: TeamDetails },
     NewTeam: { screen: NewTeam },
+    TeamEditor: { screen: TeamEditorScreen },
     HandlingTrash: { screen: HandlingTrash },
     FreeSupplies: { screen: FreeSupplies },
     Celebrations: { screen: Celebrations },
