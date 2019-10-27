@@ -148,7 +148,6 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
         }
     };
 
-
     const myMessages = Object
         .entries(messages)
         .map((entry: [string, Object]): MessageType => Message.create(entry[1], entry[0]))
@@ -275,7 +274,7 @@ const mapStateToProps = (state: Object): Object => {
 };
 
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

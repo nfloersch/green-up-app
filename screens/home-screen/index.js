@@ -33,13 +33,14 @@ type PropsType = {
     navigation: Object,
     currentUser: Object,
     myTeams: Array<Object>,
-    style: ?Object
+    style: ?Object,
+    tabNav: Object
 };
 
 const menuConfig = {
     messages: {
         order: 1,
-        navigation: "Messages",
+        navigation: "MessagesStack",
         label: "Messages",
         backgroundImage: require("../../assets/images/button-image-ford-1970.png")
     },
@@ -81,7 +82,7 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
+const HomeScreen = ({ navigation, tabNav }: PropsType): React$Element<any> => {
     // $FlowFixMe
     const myButtons = R.compose(
         R.map((entry: Array<any>): Object => ({
@@ -135,7 +136,7 @@ const mapStateToProps = (state: Object): Object => {
     });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

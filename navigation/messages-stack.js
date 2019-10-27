@@ -10,5 +10,5 @@ const MessagesStack = createStackNavigator({
     MessageDetails: { screen: MessageDetailsScreen }
 });
 
-export default createAppContainer(MessagesStack);
+export default createAppContainer<any, any>(MessagesStack);
 

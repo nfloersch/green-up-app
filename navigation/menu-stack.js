@@ -14,5 +14,5 @@ const MenuStack = createStackNavigator({
     Legal: { screen: LegalScreen }
 });
 
-export default createAppContainer(MenuStack);
+export default createAppContainer<any, any>(MenuStack);
 
