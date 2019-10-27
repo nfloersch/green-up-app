@@ -365,7 +365,9 @@ type PinType<T> = ?(Array<T> | T);
 
 const mapStateToProps = (state: Object): Object => {
     const profile = state.profile;
+
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+
     const owner = TeamMember.create({ ...currentUser, ...profile, memberStatus: statuses.OWNER });
 
     const mapToPinData = R.cond([
@@ -389,7 +391,6 @@ const mapStateToProps = (state: Object): Object => {
                 description: "has claimed this area"
             })]
     ]);
-
 
     // $FlowFixMe
     const otherCleanAreas = R.compose(

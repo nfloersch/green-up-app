@@ -4,19 +4,16 @@ import React, { useState } from "react";
 import { Dimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 import TeamEditorDetails from "../../components/team-editor-details";
-import TeamEditorMap from "../../components/team-editor-map";
 import TeamEditorMembers from "../../components/team-editor-members";
 
 
 type DetailPropsType = { goBack: () => void };
 const Details = ({ goBack }: DetailPropsType): React$Element<any> => (<TeamEditorDetails goBack={ goBack }/>);
-const Map = (): React$Element<any> => (<TeamEditorMap/>);
 const Members = (): React$Element<any> => (<TeamEditorMembers/>);
 
 const routes = [
     { key: "first", title: "Details" },
-    { key: "second", title: "Members" },
-    { key: "third", title: "Map" }
+    { key: "second", title: "Members" }
 ];
 
 type PropsType = { navigation: Object };
@@ -42,6 +39,5 @@ const TeamEditorScreen = ({ navigation }: PropsType): React$Element<any> => {
         />
     );
 };
-
 
 export default TeamEditorScreen;
