@@ -94,9 +94,7 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
     useEffect(() => {
         if (!initialMapLocation) {
             if (Platform.OS === "android" && !Constants.isDevice) {
-                setErrorMessage({
-                    errorMessage: "Oops, this will not work on Sketch or an Android emulator. Try it again on your device!"
-                });
+                setErrorMessage("Oops, MiniMap will not work on Sketch or an Android emulator. Try it again on your device!");
             } else {
                 getLocationAsync()
                     .then((location: Object) => {
@@ -138,7 +136,11 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
                         { placeOtherMarkers(markers) }
                     </MapView>
                 )
-                : (<Text>{ errorMessage }</Text>)
+                : (
+                    <Text style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }>
+                        { errorMessage }
+                    </Text>
+                )
             }
         </View>
     );

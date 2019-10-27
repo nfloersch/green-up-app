@@ -184,7 +184,7 @@ const mapStateToProps = (state: Object): Object => ({
     loginError: state.login.loginError
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 

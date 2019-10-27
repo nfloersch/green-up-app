@@ -9,9 +9,12 @@ import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
 import { StyleProvider } from "@shoutem/theme";
 import { greenUpTheme } from "./styles/theme";
+import { YellowBox } from "react-native";
+
+// Stop annoying Android users with useless warnings.
+YellowBox.ignoreWarnings(["Setting a timer"]);
 
 type PropsType = { skipLoadingScreen: boolean };
-
 // Bootstrapping the app
 const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
 

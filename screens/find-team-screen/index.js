@@ -28,11 +28,11 @@ function searchScore(termsToSearchFor: string, stringsToSearchIn: Array<string>)
     if (!Array.isArray(stringsToSearchIn) || stringsToSearchIn.length === 0 || typeof termsToSearchFor !== "string" || termsToSearchFor.length === 0) {
         return 0;
     }
-    const searchedString = stringsToSearchIn[0].toLowerCase(); // normalize string to search
+    const searchedString = (stringsToSearchIn[0] || "").toLowerCase(); // normalize string to search
     const terms = termsToSearchFor.trim().split(" ");
-    const testTerm = terms[0].toLowerCase().trim(); // normalize what to search for
+    const testTerm = (terms[0] || "").toLowerCase().trim(); // normalize what to search for
     // score 1 point for contains the search term and an extra point if it starts with the search term
-    const score = (searchedString.indexOf(testTerm) > -1 ? 1 : 0) + searchedString.startsWith(testTerm) > -1 ? 1 : 0;
+    const score = (searchedString.indexOf(testTerm) > -1 ? 1 : 0) + (searchedString.startsWith(testTerm) ? 1 : 0);
     // Add scores from for the rest of terms on current string and scores from all terms on remaining strings
     return score + searchScore(terms.join(" "), stringsToSearchIn.slice(1)) + searchScore(terms.slice(1).join(" "), [searchedString]); // tail call
 }
@@ -152,8 +152,16 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
         Object.keys
     )(teams);
 
+    const toTeamDetail = (teamId: string): (()=>void) => () => {
+        actions.selectTeam(teams[teamId]);
+        navigation.navigate("TeamDetails");
+    };
+
     // $FlowFixMe
     const searchResults = R.compose(
+        R.map((teamId: string): Object => (
+            { key: teamId, teamId, toDetail: toTeamDetail(teamId), team: teams[teamId] }
+        )),
         Array.from, // convert back to array
         (arr: Array<string>): Set<string> => new Set(arr), // eliminate dupes
         R.map((score: Object): string => score.key), // we only want keys
@@ -163,12 +171,12 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
             key,
             score: searchScore(
                 searchTerm,
-                [
+                ([
                     teams[key].name,
                     teams[key].description,
                     teams[key].town,
-                    teams[key].owner.displayName
-                ]
+                    (teams[key].owner || {}).displayName
+                ]).filter((term: ?string): boolean => Boolean(term))
             )
         })),
         R.filter((key: string): boolean => myTeams.indexOf(key) === -1), // remove user's teams
@@ -176,17 +184,11 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
         Object.keys // get team keys
     )(teams);
 
-    const toTeamDetail = (teamId: string): (()=>void) => () => {
-        actions.selectTeam(teams[teamId]);
-        navigation.navigate("TeamDetails");
-    };
+    // const mySearchResults = searchResults.map((teamId: string): Object => (
+    //     { key: teamId, teamId, toDetail: toTeamDetail(teamId), team: teams[teamId] }
+    // ));
 
-    const mySearchResults = searchResults.map((teamId: string): Object => (
-        { key: teamId, teamId, toDetail: toTeamDetail(teamId), team: teams[teamId] }
-    ));
-
-
-    const hasTeams = mySearchResults.length > 0;
+    const hasTeams = searchResults.length > 0;
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ styles.searchHeader }>
@@ -202,7 +204,7 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
             { hasTeams
                 ? (
                     <FlatList
-                        data={ mySearchResults }
+                        data={ searchResults }
                         renderItem={ ({ item }: { item: any }): React$Element<any> => (
                             <SearchItem item={ item }/>) }
                     />

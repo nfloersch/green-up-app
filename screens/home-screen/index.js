@@ -40,7 +40,7 @@ type PropsType = {
 const menuConfig = {
     messages: {
         order: 1,
-        navigation: "MessagesStack",
+        navigation: "Messages",
         label: "Messages",
         backgroundImage: require("../../assets/images/button-image-ford-1970.png")
     },
@@ -82,7 +82,7 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ navigation, tabNav }: PropsType): React$Element<any> => {
+const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
     // $FlowFixMe
     const myButtons = R.compose(
         R.map((entry: Array<any>): Object => ({

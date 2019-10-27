@@ -9,11 +9,11 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
-    buttonText: string,
+    buttonText?: string,
     onButtonPress: (string, string) => void
 };
 
-const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Element<View> => {
+export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Element<View> => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -59,9 +59,4 @@ const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Element<View
             </TouchableOpacity>
         </View>
     );
-};
-
-
-LoginForm.navigationOptions = {
-    title: "Green Up Vermont"
 };
