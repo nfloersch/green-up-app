@@ -14,7 +14,6 @@ import HomeButton from "../../components/home-button";
 import * as colors from "../../styles/constants";
 import { connectStyle } from "@shoutem/theme";
 import { Screen } from "@shoutem/ui";
-import Team from "../../models/team";
 import { selectTeam } from "../../action-creators/team-action-creators";
 
 const myStyles = {};
@@ -86,21 +85,18 @@ const menuConfig = {
 const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<any> => {
 
     // $FlowFixMe
-    const teamButtonsConfig = R.compose(
-        R.reduce((acc: Object, team: TeamType): Object => ({
-            ...acc,
-            [team.id]: {
-                order: 20,
-                navigation: "TeamDetails",
-                beforeNav: () => {
-                    actions.selectTeam(team);
-                },
-                label: team.name || "My Team",
-                backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
-            }
-        })),
-        R.filter((team: TeamType): boolean => Boolean(team.isMember))
-    );
+    const teamButtonsConfig = R.reduce((acc: Object, team: TeamType): Object => ({
+        ...acc,
+        [team.id]: {
+            order: 20,
+            navigation: "TeamDetails",
+            beforeNav: () => {
+                actions.selectTeam(team);
+            },
+            label: team.name || "My Team",
+            backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
+        }
+    }), {});
 
     // $FlowFixMe
     const myButtons = R.compose(
@@ -120,8 +116,18 @@ const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<
         Object.entries
     );
 
-    const buttonConfigs = { ...menuConfig, ...teamButtonsConfig(myTeams) };
-    const data = myButtons(buttonConfigs);
+    const fillerButtonConfig = {
+        "fillerButton": {
+            order: 999,
+            navigation: "HomeScreen",
+            backgroundImage: require("../../assets/images/gu-50-logo.png")
+        }
+    };
+
+    const teamButtons = teamButtonsConfig(myTeams);
+    const buttonConfigs = { ...menuConfig, ...teamButtons };
+    const oddButtons = Object.keys(buttonConfigs).length % 2 !== 0;
+    const data = myButtons({ ...buttonConfigs, ...(oddButtons ? fillerButtonConfig : {}) });
 
     return (
         <Screen style={ { backgroundColor: colors.colorBackgroundHome } }>
