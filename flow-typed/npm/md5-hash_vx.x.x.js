@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "md5-hash" {
+declare module 'md5-hash' {
   declare module.exports: any;
 }
 
@@ -22,14 +22,14 @@ declare module "md5-hash" {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module "md5-hash/dist" {
+declare module 'md5-hash/dist' {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module "md5-hash/dist/index" {
+declare module 'md5-hash/dist/index' {
   declare module.exports: $Exports<'md5-hash/dist'>;
 }
-declare module "md5-hash/dist/index.js" {
+declare module 'md5-hash/dist/index.js' {
   declare module.exports: $Exports<'md5-hash/dist'>;
 }

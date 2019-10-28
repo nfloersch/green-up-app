@@ -13,7 +13,6 @@ import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
-import MapPin from "../../models/map-pin";
 
 const myStyles = {
     selected: {
@@ -26,7 +25,9 @@ const myStyles = {
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+
 const styles = StyleSheet.create(combinedStyles);
+
 const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LOCATION)
     .then((locationPermission: Object): Object => {
         if (locationPermission.status !== "granted") {
@@ -43,14 +44,17 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
         }
         throw new Error("Location is not available");
     });
-const placePins = (onPinClick: number => void, pins: Array<Object>): Array<React$Element> => (
-    pins.map((pin: Object, index: number): React$Element => (
+
+const placePins = (pins?: Array<Object>, onPinClick?: number => void): Array<React$Element<any>> => (
+    (pins || []).map((pin: Object, index: number): React$Element<any> => (
         <MapView.Marker
             coordinate={ pin.coordinates }
             key={ `pin${ index }` }
             pinColor={ pin.color || "red" }
             onCalloutPress={ () => {
-                onPinClick(index);
+                if (onPinClick) {
+                    onPinClick(index);
+                }
             } }
             stopPropagation={ true }
         >
@@ -62,8 +66,8 @@ const placePins = (onPinClick: number => void, pins: Array<Object>): Array<React
     ))
 );
 
-const placeOtherMarkers = (markers: Array<Object>): Array<React$Element> => (
-    markers.map((marker: Object, index: number): React$Element => (
+const placeOtherMarkers = (markers: Array<Object>): Array<React$Element<any>> => (
+    markers.map((marker: Object, index: number): React$Element<any> => (
         <MapView.Marker
             coordinate={ marker.coordinates }
             key={ `marker${ index }` }
@@ -79,12 +83,12 @@ const placeOtherMarkers = (markers: Array<Object>): Array<React$Element> => (
 );
 
 type PropsType = {
-    initialLocation: ?Location,
-    markers: Array<Object>,
-    pins: Array<Object>,
-    onMapClick: typeof Location => void,
-    onPinClick: typeof MapPin => void,
-    layers: Array<Object>,
+    initialLocation?: LocationType,
+    markers?: Array<Object>,
+    pins?: Array<Object>,
+    onMapClick?: CoordinatesType => void,
+    onPinClick?: number => void,
+    layers?: Array<Object>,
     style?: Object
 };
 
@@ -94,9 +98,7 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
     useEffect(() => {
         if (!initialMapLocation) {
             if (Platform.OS === "android" && !Constants.isDevice) {
-                setErrorMessage({
-                    errorMessage: "Oops, this will not work on Sketch or an Android emulator. Try it again on your device!"
-                });
+                setErrorMessage("Oops, MiniMap will not work on Sketch or an Android emulator. Try it again on your device!");
             } else {
                 getLocationAsync()
                     .then((location: Object) => {
@@ -121,8 +123,10 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
         }
     }, []);
 
-    const handleMapClick = (e: Event) => {
-        onMapClick(e.nativeEvent.coordinate);
+    const handleMapClick = (e: SyntheticEvent<any, any>) => {
+        if (onMapClick) {
+            onMapClick(e.nativeEvent.coordinate);
+        }
     };
 
     return (
@@ -134,11 +138,15 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
                         initialRegion={ initialMapLocation }
                         onPress={ handleMapClick }
                     >
-                        { placePins(onPinClick, pins || []) }
+                        { placePins(pins, onPinClick) }
                         { placeOtherMarkers(markers) }
                     </MapView>
                 )
-                : (<Text>{ errorMessage }</Text>)
+                : (
+                    <Text style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }>
+                        { errorMessage }
+                    </Text>
+                )
             }
         </View>
     );

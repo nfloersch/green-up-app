@@ -1,7 +1,7 @@
 // flow-typed signature: 04b00915eae2134f479eec9121b7c5a1
 // flow-typed version: 75b56c3a87/expo-constants_v6.x.x/flow_>=v0.69.0
 
-declare module "expo-constants" {
+declare module 'expo-constants' {
   declare export type AppOwnership = 'standalone' | 'expo' | 'guest';
 
   declare export type UserInterfaceIdiom = 'handset' | 'tablet' | 'unsupported';

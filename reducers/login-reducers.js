@@ -1,14 +1,15 @@
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+// @flow
+import * as types from "../constants/action-types";
+import initialState from "./initial-state";
 
-export function reducers(state = initialState.login, action) {
+export const loginReducers = (state: Object = initialState.login, action: ActionType): Object => {
     switch (action.type) {
         case types.LOGIN_SUCCESSFUL:
             return {
                 ...state,
                 createUserError: null,
                 userIsLoggedIn: true,
-                user: action.user,
+                user: action.data,
                 initialAuthChecked: true,
                 loginError: null,
                 creatingUser: false
@@ -46,22 +47,26 @@ export function reducers(state = initialState.login, action) {
                 createUserError: action.error
             };
         case types.RESET:
-            return { ...state,
+            return {
+                ...state,
                 user: null,
                 createUserError: null,
                 userIsLoggedIn: false,
                 initialAuthChecked: true,
                 isLoggingInViaSSO: false,
                 loginError: null,
-                creatingUser: false };
+                creatingUser: false
+            };
         case types.IS_LOGGING_IN_VIA_SSO:
             return {
                 ...state,
                 initialAuthChecked: true,
                 createUserError: null,
-                isLoggingInViaSSO: action.isLoggingInViaSSO
+                isLoggingInViaSSO: action.data
             };
         default:
             return state;
     }
-}
+};
+
+

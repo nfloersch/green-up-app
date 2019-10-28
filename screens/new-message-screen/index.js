@@ -1,8 +1,7 @@
 // @flow
 
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
-    KeyboardAvoidingView,
     Picker, Platform,
     ScrollView,
     StyleSheet,
@@ -19,154 +18,135 @@ import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import * as messageTypes from "../../constants/message-types";
 import { removeNulls } from "../../libs/remove-nulls";
+import Team from "../../models/team";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
-type Props = {
-    actions: { sendTeamMessage: (teamId: string, _message: string) => void },
+type PropsType = {
+    actions: { sendTeamMessage: (teamId: string, message: MessageType) => void },
     currentUser: Object,
-    myTeams: Array<Object>,
     navigation: Object,
-    selectedTeamId: string,
-    teamMembers: Object,
-    teams: Object
+    selectedTeamId?: string
 };
 
-class NewMessageScreen extends Component<Props> {
+const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: PropsType): React$Element<View> => {
+    const teamHash = (currentUser.teams || {}) || {};
+    const teamList = Object
+        .entries(teamHash)
+        .map((entry: [string, Object]): TeamType => Team.create(entry[1], entry[0]));
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedTeamId: props.navigation.selectedTeamId || props.selectedTeamId,
-            title: "",
-            text: ""
-        };
-    }
+    const [currentTeamId, setCurrentTeamId] = useState(navigation.selectedTeamid || selectedTeamId || (teamList[0] || {}).id || null);
 
-    componentWillReceiveProps(nextProps) {
-        const nextTeamId = nextProps.navigation.selectedTeamId || nextProps.selectedTeamId;
-        if (Boolean(nextTeamId) && nextTeamId !== this.state.selectedTeamId) {
-            this.setState({
-                selectedTeamId: nextTeamId,
-                title: "",
-                text: ""
-            });
+    const [messageText, setMessageText] = useState("");
+
+    useEffect(() => {
+        const newTeamId = navigation.selectedTeamId || selectedTeamId || null;
+        if (newTeamId && newTeamId !== currentTeamId) {
+            setCurrentTeamId(newTeamId);
+            setMessageText("");
         }
-    }
+    }, [selectedTeamId, navigation]);
 
-    static navigationOptions = {
-        title: "Send A Message"
+
+    const sendMessage = () => {
+        const message = Message.create(
+            {
+                text: messageText,
+                type: messageTypes.TEAM_MESSAGE,
+                sender: currentUser,
+                teamId: currentTeamId
+            }
+        );
+        actions.sendTeamMessage(currentTeamId, message);
+        navigation.goBack();
     };
 
-    render() {
-        const { myTeams, navigation, currentUser, actions } = this.props;
+    const cancelMessage = () => {
+        navigation.goBack();
+    };
 
-        const changeText = (text) => {
-            this.setState({ text });
-        };
+    const items = teamList.map((team: TeamType): React$Element<any> => (
+        <Picker.Item key={ team.id } label={ team.name } value={ team.id }/>
+    ));
 
-        const sendMessage = (teamId, message) => {
-            const _message = Message.create(
-                {
-                    text: message,
-                    type: messageTypes.TEAM_MESSAGE,
-                    sender: currentUser,
-                    teamId
-                }
-            );
-            actions.sendTeamMessage(teamId, _message);
-            navigation.goBack();
-        };
-
-        const cancelMessage = () => {
-            navigation.goBack();
-        };
-
-
-        const selectedTeamId = (navigation.state.params || {}).selectedTeamId || ((myTeams || []).length === 1 && (myTeams[0] || {}).id) || null;
-        const teamName = ((myTeams || []).find(team => team.id === selectedTeamId) || {}).name || "";
-        const items = (myTeams || [])
-            .map(team => (
-                <Picker.Item key={ team.id } label={ team.name } value={ team.id }/>)
-            );
-        const teamValue = selectedTeamId || this.state.selectedTeamId || ((myTeams || [])[0] || {}).id;
-        return (
-            <View style={ styles.frame }>
-                <View style={ styles.buttonBarHeader }>
-                    <View style={ styles.buttonBar }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => sendMessage(teamValue, this.state.text) }>
-                            <Text style={ styles.headerButtonText }>{ "Send Message" }</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight style={ styles.headerButton } onPress={ cancelMessage }>
-                            <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
-                        </TouchableHighlight>
-                    </View>
+    return (
+        <View style={ styles.frame }>
+            <View style={ styles.buttonBarHeader }>
+                <View style={ styles.buttonBar }>
+                    <TouchableHighlight
+                        style={ styles.headerButton }
+                        onPress={ sendMessage }>
+                        <Text style={ styles.headerButtonText }>{ "Send Message" }</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight style={ styles.headerButton } onPress={ cancelMessage }>
+                        <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
+                    </TouchableHighlight>
                 </View>
-                <KeyboardAvoidingView
-                    style={ defaultStyles.frame }
-                    behavior={ Platform.OS === "ios" ? "padding" : null }
-                >
-                    <ScrollView style={ styles.scroll }>
-                        <View style={ styles.infoBlockContainer }>
-                            {
-                                !selectedTeamId ? (
-                                    <View style={ { marginBottom: 5 } }>
-                                        <Text style={ styles.labelDark }>Select Team to Message:</Text>
-                                        <Picker
-                                            style={ styles.picker }
-                                            selectedValue={ teamValue }
-                                            onValueChange={ (itemValue) => this.setState({ selectedTeamId: itemValue }) }>
-                                            { items }
-                                        </Picker>
-                                    </View>
-                                ) : (
-                                    <View style={ { marginBottom: 5 } }>
-                                        <Text style={ styles.labelDark }>{ "Send a Message To" }</Text>
-                                        <Text style={ styles.largeText }>{ teamName }</Text>
-                                    </View>
+            </View>
+
+            <ScrollView style={ styles.scroll }>
+                <View style={ styles.infoBlockContainer }>
+                    {
+
+                        <View style={ { marginBottom: 5 } }>
+                            <Text style={ styles.labelDark }>{ "Send a Message To Team:" }</Text>
+                            { teamList.length > 1
+                                ? (
+                                    <Picker
+                                        style={ styles.picker }
+                                        selectedValue={ currentTeamId }
+                                        onValueChange={ (teamId: string) => {
+                                            setCurrentTeamId(teamId);
+                                        } }>
+                                        { items }
+                                    </Picker>
+                                )
+                                : (
+
+                                    <Text style={ styles.largeText }>{ (teamHash[currentTeamId] || {}).name }</Text>
                                 )
                             }
-                            <TextInput
-                                keyBoardType={ "default" }
-                                multiline={ true }
-                                textAlignVertical="top"
-                                onChangeText={ changeText }
-                                placeholder={ "Message details" }
-                                value={ this.state.text }
-                                style={ styles.textArea }
-                                underlineColorAndroid={ "transparent" }
-                            />
                         </View>
-                        {
-                            Platform.OS === "ios"
-                                ? (<View style={ defaultStyles.padForIOSKeyboardBig }/>)
-                                : null
-                        }
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
-        );
-    }
-}
 
-function mapStateToProps(state) {
+
+                    }
+                    <TextInput
+                        keyBoardType={ "default" }
+                        multiline={ true }
+                        textAlignVertical="top"
+                        onChangeText={ (text: string) => {
+                            setMessageText(text);
+                        } }
+                        placeholder={ "Message details" }
+                        value={ messageText }
+                        style={ styles.textArea }
+                        underlineColorAndroid={ "transparent" }
+                    />
+                </View>
+                {
+                    Platform.OS === "ios"
+                        ? (<View style={ defaultStyles.padForIOSKeyboardBig }/>)
+                        : null
+                }
+            </ScrollView>
+
+        </View>
+    );
+};
+
+
+NewMessageScreen.navigationOptions = {
+    title: "Send A Message"
+};
+
+const mapStateToProps = (state: Object): Object => {
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
-    const myTeams = Object.keys((state.profile || {}).teams)
-        .map(key => state.teams.teams[key]) // match id's to their teams
-        .filter(team => Boolean(team)); // remove deleted teams, just in case
-    const teams = state.teams.teams;
-    const teamMembers = state.teams.teamMembers;
-    return { teams, myTeams, teamMembers, currentUser };
-}
+    return { currentUser };
+};
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators(actionCreators, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(NewMessageScreen);

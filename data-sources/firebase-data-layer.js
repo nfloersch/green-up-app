@@ -45,9 +45,11 @@ const addListener = (key: string, listener: () => void) => {
 const removeAllListeners = (): Promise<any> => (
     new Promise((resolve: any=>void, reject: any=>void) => {
         try {
-            Object.values(myListeners).forEach((listener: (any=>any)) => {
-                listener();
-            });
+            Object
+                .values(myListeners)
+                .forEach((listener: any) => {
+                    listener();
+                });
             myListeners = {};
             resolve(true);
         }
@@ -57,13 +59,15 @@ const removeAllListeners = (): Promise<any> => (
     })
 );
 
+type ReturnType = (string | Array<string> | Object);
+type EntryType = { toString: ()=>string, map: (any=>ReturnType)=>Array<ReturnType> };
 
-function returnType<T>(entry: T): (string | Array<string>) {
+function returnType(entry: EntryType): (string | Array<string> | Object) {
     switch (true) {
         case (entry instanceof Date):
             return entry.toString();
         case Array.isArray(entry):
-            return entry.map((x: any): any => returnType(x));
+            return entry.map((x: EntryType): ReturnType => returnType(x));
         case entry !== null && typeof entry === "object" :
             return stringifyDates(entry); // eslint-disable-line
         default:
@@ -71,8 +75,9 @@ function returnType<T>(entry: T): (string | Array<string>) {
     }
 }
 
-function stringifyDates<T>(obj: T): T {
-    return Object.entries(obj).reduce((returnObj: Object, entry: Array<any>): Object => Object.assign({}, returnObj, {
+
+function stringifyDates(obj: Object): Object {
+    return Object.entries(obj).reduce((returnObj: Object, entry: [string, any]): Object => Object.assign({}, returnObj, {
         [entry[0]]: returnType(entry[1])
     }), {});
 }
@@ -87,7 +92,7 @@ export function updateProfile(profile: Object, dispatch: any => any): Promise<an
     });
 }
 
-function createProfile(user: User, dispatch: any => void): Promise<any> {
+function createProfile(user: UserType, dispatch: Dispatch<ActionType>): Promise<any> {
     const now = new Date();
     const newProfile = User.create(user);
 
@@ -103,7 +108,7 @@ function createProfile(user: User, dispatch: any => void): Promise<any> {
 /** *************** INITIALIZATION *************** **/
 
 
-function fetchEventInfo(dispatch: Dispatch) {
+function fetchEventInfo(dispatch: Dispatch<ActionType>) {
     db.collection("eventInfo").doc("eventSettings").get().then(
         (doc: Object) => {
             if (!doc.exists) {
@@ -119,35 +124,34 @@ function fetchEventInfo(dispatch: Dispatch) {
     );
 }
 
-function setupInvitedTeamMemberListener(teamIds: Array<string>, dispatch: any => void): Array<any> {
-    return (teamIds || []).map((teamId: string) => {
-        const ref = db.collection(`teams/${ teamId }/invitations`);
-        addListener(`teamMembers_${ teamId }_invitations}`,
-            ref.onSnapshot(
-                (querySnapshot: Object) => {
-                    const data = [];
-                    querySnapshot.forEach((_doc: Object) => {
-                        data.push({ ..._doc.data(), id: _doc.id });
-                    });
-                    const invitees = data.reduce((obj: Object, member: TeamMemberType): Object => ({
-                        ...obj,
-                        [member.id]: member
-                    }), {});
-                    dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
-                },
-                ((error: Object | string) => {
-                    // eslint-disable-next-line no-console
-                    console.error("setupInvitedTeamMember Error: ", error);
-                    // TODO : Handle the error
-                })
-            ));
-    });
-}
+const setupInvitedTeamMemberListener = (teamIds: Array<string>, dispatch: Dispatch<ActionType>): Array<any> => (teamIds || []).map((teamId: string) => {
+    const ref = db.collection(`teams/${ teamId }/invitations`);
+    addListener(`teamMembers_${ teamId }_invitations}`,
+        ref.onSnapshot(
+            (querySnapshot: Object) => {
+                const data = [];
+                querySnapshot.forEach((_doc: Object) => {
+                    data.push({ ..._doc.data(), id: _doc.id });
+                });
+                const invitees = data.reduce((obj: Object, member: TeamMemberType): Object => ({
+                    ...obj,
+                    [member.uid]: member
+                }), {});
+                dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
+            },
+            ((error: Object | string) => {
+                // eslint-disable-next-line no-console
+                console.error("setupInvitedTeamMember Error: ", error);
+                // TODO : Handle the error
+            })
+        ));
+});
 
-function setupInvitationListener(email: string, dispatch: Dispatch) {
-    const ref = db.collection(`/invitations/${ email }/teams`);
 
-    addListener(`invitations_${ email }_teams`,
+function setupInvitationListener(email: ?string = "", dispatch: Dispatch<ActionType>) {
+    const ref = db.collection(`/invitations/${ email || "" }/teams`);
+
+    addListener(`invitations_${ email || "" }_teams`,
         ref.onSnapshot(
             (querySnapshot: QuerySnapshot) => {
                 const data = [];
@@ -155,17 +159,18 @@ function setupInvitationListener(email: string, dispatch: Dispatch) {
                     data.push(Invitation.create({ ...doc.data(), id: doc.id }));
                 });
                 // this should be an array not an object
-                const invitations = data.reduce((obj: Object, team: TeamType): Object => ({
-                    ...obj,
-                    [team.id]: team
-                }), {});
-                const messages = Object.values(data).reduce((obj: Object, invite: InvitationType): Object => (
+                const invitations = data.reduce(
+                    (obj: Object, team: Object): Object => ({
+                        ...obj,
+                        [team.id]: team
+                    }), {});
+                const messages = Object.values(data).reduce((obj: Object, invite: Object): Object => (
                     {
                         ...obj, [invite.id]: Message.create({
                             id: invite.id,
-                            text: `${ invite.sender.displayName } has invited you to join team : ${ invite.team.name }`,
+                            text: `${ (invite.sender || {}).displayName } has invited you to join team : ${ (invite.team || {}).name }`,
                             sender: invite.sender,
-                            teamId: invite.team.id,
+                            teamId: (invite.team || {}).id,
                             read: false,
                             active: true,
                             link: null,
@@ -191,10 +196,10 @@ function setupInvitationListener(email: string, dispatch: Dispatch) {
     );
 }
 
-function setupMessageListener(uid: string, dispatch: Dispatch) {
-    const ref = db.collection(`messages/${ uid }/messages`);
+function setupMessageListener(uid: ?string = "", dispatch: Dispatch<ActionType>) {
+    const ref = db.collection(`messages/${ uid || "" }/messages`);
 
-    addListener(`message_${ uid }_messages`, ref.onSnapshot(
+    addListener(`message_${ uid || "" }_messages`, ref.onSnapshot(
         (querySnapshot: QuerySnapshot) => {
             const data = [];
             querySnapshot.forEach((doc: Object) => {
@@ -204,7 +209,7 @@ function setupMessageListener(uid: string, dispatch: Dispatch) {
                 ...obj,
                 [message.id]: Message.create(message)
             }), {});
-            dispatch(dataLayerActions.messageFetchSuccessful({ [uid]: messages }));
+            dispatch(dataLayerActions.messageFetchSuccessful({ [uid || ""]: messages }));
         },
         ((error: Error) => {
             // eslint-disable-next-line no-console
@@ -214,15 +219,17 @@ function setupMessageListener(uid: string, dispatch: Dispatch) {
     ));
 }
 
-function setupTeamsListener(user: Object, dispatch: any => void) {
-    debugger;
+function setupTeamsListener(user: Object, dispatch: Dispatch<ActionType>) {
+
     addListener("teams", db.collection("teams")
         .onSnapshot(
             (querySnapshot: QuerySnapshot) => {
-                const data = [];
-                querySnapshot.forEach((doc: TeamType): Array<TeamType> => data.push({ ...doc.data(), id: doc.id }));
+                const data: Array<Object> = [];
+                querySnapshot.forEach((doc: Object) => {
+                    data.push({ ...doc.data(), id: doc.id });
+                });
                 const teams = data.reduce((obj: Object, team: TeamType): Object => ({ ...obj, [team.id]: team }), {});
-                debugger;
+
                 dispatch(dataLayerActions.teamFetchSuccessful(teams));
             },
             ((error: string | Object) => {
@@ -233,7 +240,7 @@ function setupTeamsListener(user: Object, dispatch: any => void) {
         ));
 }
 
-function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => void) {
+function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: Dispatch<ActionType>) {
 
     const addTeamMemberListener = (teamId: string) => {
         addListener(`team_${ teamId }_members`, db.collection(`teams/${ teamId }/members`)
@@ -246,7 +253,7 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
                     const members = data.reduce((obj: Object, member: TeamMemberType): Object => (
                         {
                             ...obj,
-                            [member.id]: member
+                            [member.uid]: member
                         }
                     ), {});
                     dispatch(dataLayerActions.teamMemberFetchSuccessful(members, teamId));
@@ -262,10 +269,9 @@ function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: any => v
     (teamIds || []).forEach((teamId: string) => {
         addTeamMemberListener(teamId);
     });
-
 }
 
-function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void) {
+function setupTeamRequestListener(teamIds: Array<string>, dispatch: Dispatch<ActionType>) {
     (teamIds || []).map((teamId: string): void =>
         addListener(`team_${ teamId }_requests`,
             db.collection(`teams/${ teamId }/requests`).onSnapshot(
@@ -276,7 +282,7 @@ function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void)
                     });
                     const members = data.reduce((obj: Object, member: TeamMemberType): Object => ({
                         ...obj,
-                        [member.id]: member
+                        [member.uid]: member
                     }), {});
                     dispatch(dataLayerActions.teamRequestFetchSuccessful(members, teamId));
                 },
@@ -293,7 +299,7 @@ function setupTeamRequestListener(teamIds: Array<string>, dispatch: any => void)
 function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) {
     (teamIds || []).map((teamId: string) => {
         const ref = db.collection(`teams/${ teamId }/messages`);
-        debugger;
+
         addListener(`team_${ teamId }_messages`, ref.onSnapshot(
             ((querySnapshot: QuerySnapshot) => {
                 const data = [];
@@ -317,14 +323,14 @@ function setupTeamMessageListener(teamIds: Array<string>, dispatch: any => any) 
     });
 }
 
-function setupProfileListener(user: UserType, dispatch: Dispatch) {
+function setupProfileListener(user: UserType, dispatch: Dispatch<ActionType>) {
     const { uid } = user;
 
-    addListener(`profiles_${ uid }`, db.collection("profiles").doc(uid)
+    addListener(`profiles_${ uid || "" }`, db.collection("profiles").doc(uid)
         .onSnapshot((doc: Object) => {
             if (doc.exists) {
-                const profile = doc.data();
-                dispatch({ type: types.FETCH_PROFILE_SUCCESS, profile });
+                const data = doc.data();
+                dispatch({ type: types.FETCH_PROFILE_SUCCESS, data });
             } else {
                 // just in case
                 createProfile(user, dispatch);
@@ -332,61 +338,64 @@ function setupProfileListener(user: UserType, dispatch: Dispatch) {
         }));
 }
 
-function setupMyTeamsListener(user: UserType, dispatch: Dispatch) {
+function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
     const { uid } = user;
 
-    addListener("myTeams", db.collection(`profiles/${ uid }/teams`)
-        .onSnapshot(
-            ((querySnapshot: QuerySnapshot) => {
-                const data = [];
-                const ids = [];
-                querySnapshot.forEach((doc: Object) => {
-                    data.push({ ...doc.data(), id: doc.id });
-                    ids.push(doc.id);
-                });
-                const myTeams = data.reduce((obj: Object, team: TeamType): Object => ({ ...obj, [team.id]: team }), {});
-                dispatch({ type: types.FETCH_MY_TEAMS_SUCCESS, myTeams });
-                setupTeamMessageListener(ids, dispatch);
-                setupTeamMemberListener(ids, dispatch);
-                // Add additional listeners for team owners
-                const ownedTeamIds = data.filter((team: TeamType): boolean => team.id && team.owner && team.owner.uid === uid)
-                    .map((team: TeamType): string => team.id);
-                setupInvitedTeamMemberListener(ownedTeamIds, dispatch);
-                setupTeamRequestListener(ownedTeamIds, dispatch);
-            }),
-            ((error: Error) => {
-                // eslint-disable-next-line no-console
-                console.error("setupMyTeamsListener error", error);
-                // TODO : Handle the error
-            })));
+    const gotSnapshot = (querySnapshot: QuerySnapshot) => {
+        const data = [];
+        const ids = [];
+        querySnapshot.forEach((doc: Object) => {
+            data.push({ ...doc.data(), id: doc.id });
+            ids.push(doc.id);
+        });
+        const myTeams = data.reduce((obj: Object, team: TeamType): Object => ({ ...obj, [team.id]: team }), {});
+        dispatch({ type: types.FETCH_MY_TEAMS_SUCCESS, data: myTeams });
+        setupTeamMessageListener(ids, dispatch);
+        setupTeamMemberListener(ids, dispatch);
+        // Add additional listeners for team owners
+        const ownedTeamIds = data
+            .filter((team: TeamType): boolean => Boolean(team.id && team.owner && team.owner.uid === uid))
+            .map((team: TeamType): string => (team.id || ""));
+        setupInvitedTeamMemberListener(ownedTeamIds, dispatch);
+        setupTeamRequestListener(ownedTeamIds, dispatch);
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("setupMyTeamsListener error", error);
+        // TODO : Handle the error
+    };
+
+    addListener("myTeams", db.collection(`profiles/${ (uid || "") }/teams`).onSnapshot(gotSnapshot, snapShotError));
+
 }
 
-function setupTrashDropListener(dispatch: Dispatch) {
+function setupTrashDropListener(dispatch: Dispatch<ActionType>) {
     addListener("trashDrops", db.collection("trashDrops").onSnapshot((querySnapshot: QuerySnapshot) => {
         const trashDrops = [];
         querySnapshot.forEach((doc: Object) => {
             trashDrops.push(TrashDrop.create(doc.data(), doc.id));
         });
-        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops });
+        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, data:trashDrops });
     }));
 }
 
 // Get Town Data
-function setupTownListener(dispatch: Dispatch) {
+function setupTownListener(dispatch: Dispatch<ActionType>) {
     addListener("towns", db.collection("towns").onSnapshot((querySnapshot: QuerySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc: Object) => {
             data.push(Town.create(doc.data(), doc.id));
         });
-        const towns = data.reduce((obj: Object, town: TownType): Object => ({ ...obj, [town.id]: town }), {});
+        const towns = data.reduce((obj: Object, town: Town): Object => ({ ...obj, [town.id]: town }), {});
         setTimeout(() => {
-            dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, towns });
+            dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, data: towns });
         }, 1);
     }));
 }
 
 // Initialize or de-initialize a user
-const initializeUser = curry((dispatch: Dispatch, user: UserType) => {
+const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) => {
     fetchEventInfo(dispatch);
     setupMessageListener(user.uid, dispatch);
     setupTeamsListener(user, dispatch);
@@ -399,7 +408,7 @@ const initializeUser = curry((dispatch: Dispatch, user: UserType) => {
     dispatch({ type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false });
 });
 
-const deinitializeUser = (dispatch: Dispatch) => {
+const deinitializeUser = (dispatch: Dispatch<ActionType>) => {
     removeAllListeners();
     dispatch(dataLayerActions.userLoggedOut());
 };
@@ -409,7 +418,7 @@ const deinitializeUser = (dispatch: Dispatch) => {
  * @param {function} dispatch - dispatch function
  * @returns {void}
  */
-export function initialize(dispatch: any => void) {
+export function initialize(dispatch: Dispatch<ActionType>) {
     firebase.auth().onAuthStateChanged((user: Object) => {
         if (Boolean(user)) {
             initializeUser(dispatch)(user);
@@ -421,15 +430,15 @@ export function initialize(dispatch: any => void) {
 
 /** *************** AUTHENTICATION *************** **/
 
-export function createUser(email: string, password: string, displayName: string): Promise<any> {
+export function createUser(email: string, password: string, displayName: string, dispatch: Dispatch<ActionType>): Promise<any> {
     return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password).then(
-            (response: Object): Promise<any> => createProfile({ ...User.create(response.user), displayName })
+            (response: Object): Promise<any> => createProfile({ ...User.create(response.user), displayName }, dispatch)
         );
 }
 
-export async function facebookAuth(token: string): Promise<any> {
+export async function facebookAuth(token: string, dispatch: Dispatch<ActionType>): Promise<any> {
     // Build Firebase credential with the Facebook access token.
     const credential = firebase
         .auth
@@ -446,7 +455,7 @@ export async function facebookAuth(token: string): Promise<any> {
             db.collection("profiles").doc(uid).get().then(
                 (doc: Object) => {
                     if (!doc.exists) {
-                        createProfile({ uid, email, displayName, photoURL });
+                        createProfile(User.create({ uid, email, displayName, photoURL }), dispatch);
                     }
                 }).catch((error: Error) => {
                 // eslint-disable-next-line no-console
@@ -455,7 +464,7 @@ export async function facebookAuth(token: string): Promise<any> {
         });
 }
 
-export async function googleAuth(token: string): Promise<any> {
+export async function googleAuth(token: string, dispatch: Dispatch<ActionType>): Promise<any> {
     // Build Firebase credential with the Google access token.
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
     return firebase.auth().signInAndRetrieveDataWithCredential(credential)
@@ -464,7 +473,7 @@ export async function googleAuth(token: string): Promise<any> {
             db.collection("profiles").doc(uid).get().then(
                 (doc: Object) => {
                     if (!doc.exists) {
-                        createProfile({ uid, email, displayName, photoURL });
+                        createProfile(User.create({ uid, email, displayName, photoURL }), dispatch);
                     }
                 }).catch((error: Error) => {
                 // eslint-disable-next-line no-console
@@ -473,16 +482,16 @@ export async function googleAuth(token: string): Promise<any> {
         });
 }
 
-export function loginWithEmailPassword(_email: string, password: string): Promise<any> {
+export function loginWithEmailPassword(_email: string, password: string, dispatch: Dispatch<ActionType>): Promise<any> {
     return firebase
         .auth()
         .signInWithEmailAndPassword(_email, password)
-        .then((userInfo: UserType) => {
+        .then((userInfo: { user: UserType }) => {
             const { uid, email, displayName, photoURL } = userInfo.user;
             db.collection("profiles").doc(uid).get().then(
                 (doc: Object) => {
                     if (!doc.exists) {
-                        createProfile({ uid, email, displayName, photoURL });
+                        createProfile(User.create({ uid, email, displayName, photoURL }), dispatch);
                     }
                 }).catch((error: Error) => {
                 // eslint-disable-next-line no-console
@@ -495,7 +504,7 @@ export function resetPassword(emailAddress: string): Promise<any> {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
-export function logout(dispatch: any => void): Promise<any> {
+export function logout(dispatch: Dispatch<ActionType>): Promise<any> {
     removeAllListeners();
     dispatch(dataLayerActions.resetData());
     return firebase.auth().signOut();
@@ -512,17 +521,18 @@ export function sendUserMessage(userId: string, message: MessageType): Promise<a
     return db.collection(`messages/${ userId }/messages`).add(_message);
 }
 
-export function sendGroupMessage(group: Array<string>, message: MessageType) {
-    group.forEach((memberUID: string) => {
-        sendUserMessage(memberUID, deconstruct(message));
-    });
+export function sendGroupMessage(group: Array<Object>, message: MessageType): Promise<Array<mixed>> {
+    const sentMessages = group.map((recipient: UserType): Promise<any> => recipient.uid
+        ? sendUserMessage(recipient.uid, deconstruct(message))
+        : Promise.reject("Invalid User"));
+    return Promise.all(sentMessages);
 }
 
-export function sendTeamMessage(teamId: string, message: string): Promise<any> {
+export function sendTeamMessage(teamId: string, message: MessageType): Promise<any> {
     return db.collection(`teams/${ teamId }/messages`).add(deconstruct(message));
 }
 
-export function updateMessage(message: Object, userId: string): Promise<any> {
+export function updateMessage(message: MessageType, userId: string): Promise<any> {
     const newMessage = deconstruct({ ...message, sender: { ...message.sender } });
     return db.collection(`messages/${ userId }/messages`).doc(message.id).set(newMessage);
 }
@@ -533,9 +543,9 @@ export function deleteMessage(userId: string, messageId: string): Promise<any> {
 
 /** *************** TEAMS *************** **/
 
-export async function createTeam(team: Object = {}, user: User = {}, dispatch: Dispatch<any>): Promise<any> {
+export async function createTeam(team: Object = {}, user: ?Object = {}, dispatch: Dispatch<ActionType>): Promise<any> {
 
-    const { uid } = user;
+    const { uid } = (user || {});
     const myTeam = deconstruct({ ...team, owner: TeamMember.create({ ...user, memberStatus: "OWNER" }) });
 
     const docRef = await db.collection("teams").add(myTeam);
@@ -582,7 +592,7 @@ export function removeInvitation(teamId: string, email: string): Promise<any> {
     return Promise.all([deleteInvitation, deleteTeamRecord]);
 }
 
-export async function addTeamMember(teamId: string, user: Object, status?: string = "ACCEPTED", dispatch: any => void): Promise<any> {
+export async function addTeamMember(teamId: string, user: Object, status?: string = "ACCEPTED", dispatch: Dispatch<ActionType>): Promise<any> {
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, { memberStatus: status }));
     const addToTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct(teamMember));
@@ -596,21 +606,21 @@ export async function addTeamMember(teamId: string, user: Object, status?: strin
     return results;
 }
 
-export function updateTeamMember(teamId: string, teamMember: TeamMember): Promise<any> {
+export function updateTeamMember(teamId: string, teamMember: TeamMemberType): Promise<any> {
     return db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
 }
 
-export function removeTeamMember(teamId: string, teamMember: TeamMember): Promise<any> {
+export function removeTeamMember(teamId: string, teamMember: UserType): Promise<any> {
     const deleteFromTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
-    const deleteFromProfile = db.collection(`profiles/${ teamMember.uid }/teams`).doc(teamId).delete();
+    const deleteFromProfile = db.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
     return Promise.all([deleteFromTeam, deleteFromProfile]);
 }
 
-export function leaveTeam(teamId: string, teamMember: TeamMember): Promise<any> {
+export function leaveTeam(teamId: string, teamMember: UserType): Promise<any> {
     const teams = { ...teamMember.teams };
     delete teams[teamId];
     const removeMember = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
-    const removeTeam = db.collection(`profiles/${ teamMember.uid }/teams`).doc(teamId).delete();
+    const removeTeam = db.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
     return Promise.all([removeMember, removeTeam]);
 }
 
@@ -629,21 +639,21 @@ export function addTeamRequest(teamId: string, user: Object): Promise<any> {
     return Promise.all([teamRequest, addTeamToProfile]).then((): Promise<any> => removeInvitation(teamId, email));
 }
 
-export function removeTeamRequest(teamId: string, teamMember: TeamMember): Promise<any> {
+export function removeTeamRequest(teamId: string, teamMember: UserType): Promise<any> {
     const teams = { ...teamMember.teams };
     delete teams[teamId];
     const delRequest = db.collection(`teams/${ teamId }/requests`).doc(teamMember.uid).delete();
-    const delFromProfile = db.collection(`profiles/${ teamMember.uid }/teams/`).doc(teamId).delete();
+    const delFromProfile = db.collection(`profiles/${ teamMember.uid || "" }/teams/`).doc(teamId).delete();
     return Promise.all([delRequest, delFromProfile]);
 }
 
 /** *************** TRASH DROPS *************** **/
 
-export function dropTrash(trashDrop: TrashDropType): Promise<any> {
+export function dropTrash(trashDrop: TrashDrop): Promise<any> {
     return db.collection("trashDrops").add(deconstruct({ ...trashDrop, location: { ...trashDrop.location } }));
 }
 
-export function updateTrashDrop(trashDrop: TrashDropType): Promise<any> {
+export function updateTrashDrop(trashDrop: TrashDrop): Promise<any> {
     return db.collection("trashDrops").doc(trashDrop.id).set(deconstruct({
         ...trashDrop,
         location: { ...trashDrop.location }

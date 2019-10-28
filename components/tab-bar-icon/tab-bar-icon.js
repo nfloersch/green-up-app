@@ -3,7 +3,7 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../constants/colors";
 
-export const TabBarIcon = ({ focused, name }: { focused: boolean, name: string }) => (
+export const TabBarIcon = ({ focused, name }: { focused: boolean, name: string }): React$Element<Ionicons> => (
     <Ionicons
         name={ name }
         size={ 26 }

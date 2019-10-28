@@ -9,7 +9,7 @@ type $npm$propTypes$ReactPropsCheckType = (
 ) => ?Error;
 
 // Copied from: https://github.com/facebook/flow/blob/0938da8d7293d0077fbe95c3a3e0eebadb57b012/lib/react.js#L433-L449
-declare module "prop-types" {
+declare module 'prop-types' {
   declare var array: React$PropType$Primitive<Array<any>>;
   declare var bool: React$PropType$Primitive<boolean>;
   declare var func: React$PropType$Primitive<(...a: Array<any>) => mixed>;

@@ -1,5 +1,5 @@
-// flow-typed signature: 6ec6da1feb3aa5d811d27f73584d93c2
-// flow-typed version: f81ef43c6a/ramda_v0.26.x/flow_>=v0.104.x
+// flow-typed signature: 0f1a9c6ea7893ac0eda0adfd9cdc851b
+// flow-typed version: 76d209a40d/ramda_v0.26.x/flow_>=v0.104.x
 
 /* eslint-disable no-unused-vars, no-redeclare */
 
@@ -423,14 +423,56 @@ declare module ramda {
       ab: UnaryPromiseFn<A, B>,
     ) => UnaryPromiseFn<A, B>);
 
-  declare type Compose = (<A, B, C, D, E, F, G>(
+  declare type Compose = (<A, B, C, D, E, F, G, H, I, J, K>(
+    jk: UnaryFn<J, K>,
+    ij: UnaryFn<I, J>,
+    hi: UnaryFn<H, I>,
+    gh: UnaryFn<G, H>,
     fg: UnaryFn<F, G>,
     ef: UnaryFn<E, F>,
     de: UnaryFn<D, E>,
     cd: UnaryFn<C, D>,
     bc: UnaryFn<B, C>,
-    ab: UnaryFn<A, B>,
-  ) => UnaryFn<A, G>) &
+    ab: UnaryFn<A, B>
+  ) => UnaryFn<A, K>) &
+    (<A, B, C, D, E, F, G, H, I, J>(
+      ij: UnaryFn<I, J>,
+      hi: UnaryFn<H, I>,
+      gh: UnaryFn<G, H>,
+      fg: UnaryFn<F, G>,
+      ef: UnaryFn<E, F>,
+      de: UnaryFn<D, E>,
+      cd: UnaryFn<C, D>,
+      bc: UnaryFn<B, C>,
+      ab: UnaryFn<A, B>
+    ) => UnaryFn<A, J>) &
+    (<A, B, C, D, E, F, G, H, I>(
+      hi: UnaryFn<H, I>,
+      gh: UnaryFn<G, H>,
+      fg: UnaryFn<F, G>,
+      ef: UnaryFn<E, F>,
+      de: UnaryFn<D, E>,
+      cd: UnaryFn<C, D>,
+      bc: UnaryFn<B, C>,
+      ab: UnaryFn<A, B>
+    ) => UnaryFn<A, I>) &
+    (<A, B, C, D, E, F, G, H>(
+      gh: UnaryFn<G, H>,
+      fg: UnaryFn<F, G>,
+      ef: UnaryFn<E, F>,
+      de: UnaryFn<D, E>,
+      cd: UnaryFn<C, D>,
+      bc: UnaryFn<B, C>,
+      ab: UnaryFn<A, B>
+    ) => UnaryFn<A, H>) &
+    (<A, B, C, D, E, F, G>(
+      fg: UnaryFn<F, G>,
+      ef: UnaryFn<E, F>,
+      de: UnaryFn<D, E>,
+      cd: UnaryFn<C, D>,
+      bc: UnaryFn<B, C>,
+      ab: UnaryFn<A, B>
+    ) => UnaryFn<A, G>) &
     (<A, B, C, D, E, F>(
       ef: UnaryFn<E, F>,
       de: UnaryFn<D, E>,
@@ -2061,19 +2103,19 @@ declare module ramda {
     boolean
   >;
 
-  declare function propSatisfies<T>(
-    cond: (x: $Values<T>) => boolean,
-    prop: $Keys<T>,
+  declare function propSatisfies<T, K>(
+    cond: (x: $ElementType<T, K>) => boolean,
+    prop: K,
     o: T
   ): boolean;
-  declare function propSatisfies<T>(
-    cond: (x: $Values<T>) => boolean,
-    prop: $Keys<T>,
+  declare function propSatisfies<T, K>(
+    cond: (x: $ElementType<T, K>) => boolean,
+    prop: K,
   ): (o: T) => boolean;
-  declare function propSatisfies<T>(
-    cond: (x: $Values<T>) => boolean,
-  ): ((prop:  $Keys<T>) => (o: T) => boolean) &
-    ((prop:  $Keys<T>, o: T) => boolean);
+  declare function propSatisfies<T, K>(
+    cond: (x: $ElementType<T, K>) => boolean,
+  ): ((prop:  K) => (o: T) => boolean) &
+    ((prop:  K, o: T) => boolean);
 
   declare function unless<T, V, S>(
     pred: UnaryPredicateFn<T>,

@@ -17,28 +17,22 @@ const persistConfig = {
     blacklist: ["modals", "networkStatus"] // Add top-level store keys here to avoid persistence
 };
 
-type MiddlewareConfig = {
-    regexActionType?: RegExp, // = /FETCH.*REQUEST/, look for specific names
-    actionTypes?: Array<string>, // = [] , whitelist the types
-    queueReleaseThrottle?: number, // = 50,
-}
-
-const networkMiddleware: MiddlewareConfig = createNetworkMiddleware({
+const networkMiddleware = createNetworkMiddleware({
     queueReleaseThrottle: 200
 });
 
 const middlewares = [networkMiddleware, thunk];
 
-// eslint-disable-next-line no-undef
 if (__DEV__) {
     middlewares.push(createLogger());
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default () => {
+export default (): Object => {
     // eslint-disable-next-line no-undefined
     const store = createStore(persistedReducer, undefined, composeWithDevTools(applyMiddleware(...middlewares)));
+    // $FlowFixMe
     const persistor = persistStore(store);
     return { store, persistor };
 };

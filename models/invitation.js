@@ -26,8 +26,8 @@ export default class Invitation {
     teamMember: ?Object;
     created: Date;
 
-    static create(args: ?Object = {}, id?: string) {
-        const _args = JSON.parse(JSON.stringify(args));
+    static create(args: ?Object = {}, id?: string): Invitation {
+        const _args = JSON.parse(JSON.stringify(args || ""));
         if (Boolean(id)) {
             _args.id = id;
         }

@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useState } from "react";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
@@ -9,16 +9,18 @@ import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
 import { StyleProvider } from "@shoutem/theme";
 import { greenUpTheme } from "./styles/theme";
+import { YellowBox } from "react-native";
 
-type Props = { skipLoadingScreen: boolean };
+// Stop annoying Android users with useless warnings.
+YellowBox.ignoreWarnings(["Setting a timer"]);
 
+type PropsType = { skipLoadingScreen: boolean };
 // Bootstrapping the app
-export default class App extends React.Component<Props> {
-    state = {
-        isLoadingComplete: false
-    };
+const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
 
-    _loadResourcesAsync = async () => Promise.all([
+    const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+
+    const loadResourcesAsync = async (): Promise<any> => Promise.all([
         Asset.loadAsync([
             require("./assets/images/circle-turquoise.png"),
             require("./assets/images/circle-blue.png"),
@@ -28,13 +30,10 @@ export default class App extends React.Component<Props> {
             require("./assets/images/circle-purple.png"),
             require("./assets/images/circle-orange.png"),
             require("./assets/images/broom.png"),
-            require("./assets/images/robot-dev.png"),
-            require("./assets/images/robot-prod.png"),
             require("./assets/images/google-logo.jpg"),
             require("./assets/images/facebook-logo.png"),
             require("./assets/images/green-up-logo.png"),
-            require("./assets/images/covered-bridge2.jpg"),
-            require("./assets/images/teamwork.jpeg")
+            require("./assets/images/covered-bridge2.jpg")
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
@@ -44,36 +43,36 @@ export default class App extends React.Component<Props> {
         })
     ]);
 
-    _handleLoadingError = error => {
+    const handleLoadingError = (error: Error) => {
         // In this case, you might want to report the error to your error
         // reporting service, for example Sentry
         console.warn(error); // eslint-disable-line no-console
     };
 
-    _handleFinishLoading = () => {
-        this.setState({ isLoadingComplete: true });
+    const handleFinishLoading = () => {
+        setIsLoadingComplete(true);
     };
 
-    render() {
-        const load = (
-            <AppLoading
-                onError={ this._handleLoadingError }
-                onFinish={ this._handleFinishLoading }
-                startAsync={ this._loadResourcesAsync }
-            />
-        );
+    const load = (
+        <AppLoading
+            onError={ handleLoadingError }
+            onFinish={ handleFinishLoading }
+            startAsync={ loadResourcesAsync }
+        />
+    );
 
-        const mainApp = (
-            <StyleProvider style={ greenUpTheme }>
-                <AppState>
-                    <Session>
-                        <AppNavigator/>
-                    </Session>
-                </AppState>
-            </StyleProvider>
-        );
+    const mainApp = (
+        <StyleProvider style={ greenUpTheme }>
+            <AppState>
+                <Session>
+                    <AppNavigator/>
+                </Session>
+            </AppState>
+        </StyleProvider>
+    );
 
-        return (!this.state.isLoadingComplete && !this.props.skipLoadingScreen ? load : mainApp);
-    }
-}
+    return (!isLoadingComplete && !skipLoadingScreen ? load : mainApp);
 
+};
+
+export default App;

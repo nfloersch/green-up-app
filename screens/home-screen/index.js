@@ -3,7 +3,6 @@ import React from "react";
 import { View, FlatList } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "../login-screen/actions";
 import { defaultStyles } from "../../styles/default-styles";
 import { getUsersTeams } from "../../libs/team-helpers";
 import User from "../../models/user";
@@ -15,6 +14,7 @@ import HomeButton from "../../components/home-button";
 import * as colors from "../../styles/constants";
 import { connectStyle } from "@shoutem/theme";
 import { Screen } from "@shoutem/ui";
+import { selectTeam } from "../../action-creators/team-action-creators";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -29,7 +29,7 @@ const homeTitle = R.cond(
 )(moment(getCurrentGreenUpDay()).diff(moment(), "days"));
 
 type PropsType = {
-    actions: Object,
+    actions: { selectTeam: TeamType => void },
     navigation: Object,
     currentUser: Object,
     myTeams: Array<Object>,
@@ -44,47 +44,67 @@ const menuConfig = {
         backgroundImage: require("../../assets/images/button-image-ford-1970.png")
     },
     findATeam: {
-        order: 2,
+        order: 100,
         navigation: "FindTeam",
         label: "Find A Team",
         backgroundImage: require("../../assets/images/button-image-girls-2-1970.jpg")
     },
     createATeam: {
-        order: 3,
+        order: 101,
+
         navigation: "NewTeam",
         label: "Start A Team",
         backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
     handlingTrash: {
-        order: 4,
+        order: 102,
         navigation: "HandlingTrash",
         label: "Handling Trash",
         backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
     },
     freeSupplies: {
-        order: 5,
+        order: 103,
         navigation: "FreeSupplies",
         label: "Free Supplies",
         backgroundImage: require("../../assets/images/button-image-car-1970.jpg")
     },
     celebrations: {
-        order: 6,
+        order: 104,
         navigation: "Celebrations",
         label: "Celebrations",
         backgroundImage: require("../../assets/images/button-image-royalton-bandstand.jpg")
     },
     greenUpFacts: {
-        order: 7,
+        order: 105,
         navigation: "GreenUpFacts",
         label: "Green Up Facts",
         backgroundImage: require("../../assets/images/button-image-dump-truck-bags-1970.jpg")
     }
 };
 
-const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
+const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<any> => {
+
+    // $FlowFixMe
+    const teamButtonsConfig = R.reduce((acc: Object, team: TeamType): Object => ({
+        ...acc,
+        [team.id]: {
+            order: 20,
+            navigation: "TeamDetails",
+            beforeNav: () => {
+                actions.selectTeam(team);
+            },
+            label: team.name || "My Team",
+            backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
+        }
+    }), {});
+
+    // $FlowFixMe
     const myButtons = R.compose(
         R.map((entry: Array<any>): Object => ({
             onPress: () => {
+                if (entry[1].beforeNav) {
+                    entry[1].beforeNav();
+                }
                 navigation.navigate(entry[1].navigation);
             },
             label: entry[1].label,
@@ -95,7 +115,20 @@ const HomeScreen = ({ navigation }: PropsType): React$Element<any> => {
         R.sort((a: Object, b: Object): number => a[1].order - b[1].order),
         Object.entries
     );
-    const data = myButtons(menuConfig);
+
+    const fillerButtonConfig = {
+        "fillerButton": {
+            order: 999,
+            navigation: "HomeScreen",
+            backgroundImage: require("../../assets/images/filler-button-background.png")
+        }
+    };
+
+    const teamButtons = teamButtonsConfig(myTeams);
+    const buttonConfigs = { ...menuConfig, ...teamButtons };
+    const oddButtons = Object.keys(buttonConfigs).length % 2 !== 0;
+    const data = myButtons({ ...buttonConfigs, ...(oddButtons ? fillerButtonConfig : {}) });
+
     return (
         <Screen style={ { backgroundColor: colors.colorBackgroundHome } }>
             <FlatList
@@ -129,13 +162,12 @@ const mapStateToProps = (state: Object): Object => {
     const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const teams = state.teams.teams || {};
     const myTeams = getUsersTeams(user, teams);
-    return ({
-        user, myTeams
-    });
+    return ({ myTeams });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): Object => ({
-    actions: bindActionCreators(actionCreators, dispatch)
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
+    actions: bindActionCreators({ selectTeam }, dispatch)
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(connectStyle("org.greenup.HomeScreen", combinedStyles)(HomeScreen));

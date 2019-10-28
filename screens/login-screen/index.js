@@ -17,5 +17,6 @@ const AppNavigator = createStackNavigator({
     }
 });
 
+// $FlowFixMe
 export default createAppContainer(AppNavigator);
 

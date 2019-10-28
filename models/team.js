@@ -16,15 +16,16 @@ export default class Team {
     description: ?string;
     end: ?string;
     id: ?string;
+    isMember: ?boolean;
     isPublic: boolean;
     location: ?string;
-    locations: ?Array<Location>;
+    locations: ?Array<LocationType>;
     members: ?Object;
     name: ?string;
     notes: ?Array<string>;
-    owner: TeamMember;
+    owner: TeamMemberType;
     start: ?string;
-    town: ?TownType;
+    town: ?Town;
 
     constructor(args: Object = {}) {
         this.active = typeof args.active === "boolean"
@@ -46,6 +47,9 @@ export default class Team {
             ? args.end
             : null;
         this.id = typeof args.id === "string" ? args.id : null;
+        this.isMember = typeof args.isMember === "boolean"
+            ? args.isMember
+            : false;
         this.isPublic = typeof args.isPublic === "boolean"
             ? args.isPublic
             : true;
@@ -56,11 +60,11 @@ export default class Team {
             ? args.location
             : null;
         this.locations = Array.isArray(args.locations)
-            ? args.locations.map((location) => Location.create(location))
+            ? args.locations.map((location: Object): LocationType => Location.create(location))
             : [];
         this.members = Object.keys(args.members || {})
-            .map(key => TeamMember.create({ ...args.members[key], uid: key }))
-            .reduce((obj, member) => ({ ...obj, [member.uid || uuid()]: member }), {});
+            .map((key: string): TeamMemberType => TeamMember.create({ ...args.members[key], uid: key }))
+            .reduce((obj: Object, member: TeamMemberType): Object => ({ ...obj, [member.uid || uuid()]: member }), {});
         this.notes = typeof args.notes === "string"
             ? args.notes
             : null;
@@ -73,7 +77,7 @@ export default class Team {
             : null;
     }
 
-    static create(args: Object = {}, id?: string) {
+    static create(args: Object = {}, id?: string): TeamType {
         const _args = { ...args };
         if (id) {
             _args.id = id;

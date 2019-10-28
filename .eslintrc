@@ -25,8 +25,8 @@
   "extends": ["plugin:flowtype/recommended"],
   "globals": {
     "module": true,
-    "Reflect": true
-    // for Reflect.deleteProperty()
+    "Reflect": true, // for Reflect.deleteProperty()
+    "__DEV__": true
  },
   "env": {
     "browser": true,
@@ -46,7 +46,7 @@
     "flowtype/define-flow-type": 1,
     "flowtype/delimiter-dangle": [ 2, "never" ],
     "flowtype/generic-spacing": [ 2, "never" ],
-    "flowtype/no-mixed": 2,
+    "flowtype/no-mixed": 0,
     "flowtype/no-primitive-constructor-types": 2,
     "flowtype/no-types-missing-file-annotation": 2,
     "flowtype/no-weak-types": 0,

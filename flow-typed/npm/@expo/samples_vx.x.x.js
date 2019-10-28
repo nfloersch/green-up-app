@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module "@expo/samples" {
+declare module '@expo/samples' {
   declare module.exports: any;
 }
 
@@ -22,24 +22,24 @@ declare module "@expo/samples" {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module "@expo/samples/ExpoConfigView" {
+declare module '@expo/samples/ExpoConfigView' {
   declare module.exports: any;
 }
 
-declare module "@expo/samples/ExpoLinksView" {
+declare module '@expo/samples/ExpoLinksView' {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module "@expo/samples/ExpoConfigView.js" {
+declare module '@expo/samples/ExpoConfigView.js' {
   declare module.exports: $Exports<'@expo/samples/ExpoConfigView'>;
 }
-declare module "@expo/samples/ExpoLinksView.js" {
+declare module '@expo/samples/ExpoLinksView.js' {
   declare module.exports: $Exports<'@expo/samples/ExpoLinksView'>;
 }
-declare module "@expo/samples/index" {
+declare module '@expo/samples/index' {
   declare module.exports: $Exports<'@expo/samples'>;
 }
-declare module "@expo/samples/index.js" {
+declare module '@expo/samples/index.js' {
   declare module.exports: $Exports<'@expo/samples'>;
 }

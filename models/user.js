@@ -15,6 +15,7 @@ export default class User {
     bio: ?string;
     created: ?Date;
     grantMarketingConsent: ?boolean;
+    marketingConsentUpdatedOn: ?Date;
 
     constructor(args: Object = {}) {
         this.uid = typeof args.uid === "string" || typeof args.id === "string"
@@ -45,8 +46,8 @@ export default class User {
         this.marketingConsentUpdatedOn = args.marketingConsentUpdatedOn || null;
     }
 
-    static create(args: ?Object, uid?: string): React$Element<any> {
-        const _args = JSON.parse(JSON.stringify(args));
+    static create(args: ?Object, uid?: string): UserType {
+        const _args = JSON.parse(JSON.stringify(args || {}));
         if (Boolean(uid)) {
             _args.uid = uid;
         }

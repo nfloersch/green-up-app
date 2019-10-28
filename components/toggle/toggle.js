@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import {
     Image,
@@ -28,23 +29,25 @@ const styles = {
 };
 
 
-type Props = {
+type PropsType = {
     icon: any,
     label: string,
     value: boolean,
     onValueChange: any => void
 };
 
-export const Toggle = ({ icon, label, value, onValueChange }: Props) => (
+export const Toggle = ({ icon, label, value, onValueChange }: PropsType): React$Element<View> => (
     <View style={ styles.toggle }>
         <View style={ { justifyContent: "flex-start", flex: 1, flexDirection: "row" } }>
             <Image style={ styles.icon } source={ icon }/>
-            <Text style={ styles.label }>{label}</Text>
+            <Text style={ styles.label }>{ label }</Text>
         </View>
         <Switch
             style={ { marginTop: 5, transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] } }
             value={ value }
-            onValueChange={ (v) => onValueChange(v) }
+            onValueChange={ (v: string) => {
+                onValueChange(v);
+            } }
         />
     </View>
 );

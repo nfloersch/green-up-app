@@ -1,59 +1,51 @@
-// @flwo
-import * as types from "../../constants/action-types";
-import initialState from "../../reducers/initial-state";
+// @flow
+import * as types from "../constants/action-types";
+import initialState from "./initial-state";
 
-export function reducers(state = initialState.teams, action) {
+export const teamsReducers = (state: Object = initialState.teams, action: ActionType): Object => {
     switch (action.type) {
         case types.NEW_TEAM:
             return {
                 ...state,
-                teams: [].concat(state.teams).concat(action.team)
+                teams: [].concat(state.teams).concat(action.data)
             };
         case types.DELETE_TEAM:
             return {
                 ...state,
-                teams: (state.teams || []).filter(team => team.uid !== action.teamId)
+                teams: (state.teams || []).filter((team: TeamType): boolean => team.id !== action.data)
             };
         case types.RETRIEVE_CONTACTS_SUCCESS:
             return {
                 ...state,
-                contacts: (state.contacts || []).filter(contact => (action.contacts || []).map(c => c.email).indexOf(contact.email) < 0).concat(action.contacts)
+                contacts: (state.contacts || [])
+                    .filter((contact: ContactType): boolean => (action.data || []).map((c: Object): ?string => c.email).indexOf(contact.email) < 0)
+                    .concat(action.data)
             };
         case types.RETRIEVE_CONTACTS_FAIL:
             return {
                 ...state,
                 contacts: []
             };
-        case types.SEARCH_TEAMS_SUCCESS:
-            return {
-                ...state,
-                teamSearchResults: action.teams
-            };
         case types.SELECT_TEAM:
             return {
                 ...state,
-                selectedTeam: action.team,
-                locations: action.team.locations
+                selectedTeam: action.data,
+                locations: (action.data || {}).locations
             };
         case types.SELECT_TEAM_BY_ID :
             return {
                 ...state,
-                selectedTeam: state.teams[action.teamId]
+                selectedTeam: state.teams[action.data]
             };
         case types.FETCH_TEAMS_SUCCESS :
             return {
                 ...state,
-                teams: action.teams
+                teams: action.data
             };
-        case types.LOCATIONS_UPDATED: {
-            return {
-                ...state,
-                locations: action.locations
-            };
-        }
+
         case types.SET_SELECTED_TEAM_VALUE: {
             const newSelectedTeam = Object.assign({}, state.selectedTeam);
-            newSelectedTeam[action.data.key] = action.data.value;
+            newSelectedTeam[(action.data || {}).key] = (action.data || {}).value;
             return {
                 ...state,
                 selectedTeam: newSelectedTeam
@@ -62,31 +54,29 @@ export function reducers(state = initialState.teams, action) {
         case types.TEAM_MEMBER_FETCH_SUCCESS : {
             return {
                 ...state,
-                teamMembers: { ...state.teamMembers, [action.teamId]: action.membership },
+                teamMembers: { ...state.teamMembers, [(action.data || {}).teamId]: (action.data || {}).membership },
                 teamMembersLoaded: true
             };
         }
         case types.TEAM_REQUEST_FETCH_SUCCESS : {
             return {
                 ...state,
-                teamRequests: { ...state.teamRequests, [action.teamId]: action.requests }
+                teamRequests: { ...state.teamRequests, [(action.data || {}).teamId]: (action.data || {}).requests }
             };
         }
         case types.FETCH_INVITATIONS_SUCCESS : {
             return {
                 ...state,
-                myInvitations: action.invitations
+                myInvitations: action.data
             };
         }
         case types.FETCH_INVITEES_SUCCESS : {
             return {
                 ...state,
-                invitations: { ...state.invitations, [action.teamId]: action.invitees }
+                invitations: { ...state.invitations, [(action.data || {}).teamId]: (action.data || {}).invitees }
             };
         }
         case types.REVOKE_INVITATION_SUCCESS : {
-            // const {teamId, membershipId} = action.data;
-            // const invitations = JSON.parse(JSON.stringify(...state.invitations));
             return {
                 ...state
             };
@@ -101,4 +91,4 @@ export function reducers(state = initialState.teams, action) {
         default:
             return state;
     }
-}
+};

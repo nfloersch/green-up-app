@@ -4,6 +4,6 @@ declare type LocationType = {
     description: ?string;
     status: ?string;
     active: ?boolean;
-    coordinates: ?Coordinates;
+    coordinates: ?CoordinatesType;
     created: ?Date;
 }

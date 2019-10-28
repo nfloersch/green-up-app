@@ -1,24 +1,24 @@
+// @flow
 import React from "react";
 import { Platform } from "react-native";
 import { createBottomTabNavigator } from "react-navigation";
 import TabBarIcon from "../components/tab-bar-icon";
-import TeamsStack from "./teams-stack";
 import MenuStack from "./menu-stack";
 import MessagesStack from "./messages-stack";
 import TrashTrackerStack from "./trash-tracker-stack";
 import HomeStack from "./home-stack";
 
-type focusedType = { focused: boolean };
+type FocusedType = { focused: boolean };
 
 /** Home **/
 HomeStack.navigationOptions = {
     tabBarLabel: "Home",
-    tabBarIcon: ({ focused }: focusedType) => (
+    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
         <TabBarIcon
             focused={ focused }
             name={
                 Platform.OS === "ios"
-                    ? `ios-home${focused ? "" : ""}`
+                    ? `ios-home${ focused ? "" : "" }`
                     : "md-home"
             }
         />
@@ -29,40 +29,25 @@ HomeStack.navigationOptions = {
 /** * Messages ***/
 MessagesStack.navigationOptions = {
     tabBarLabel: "Messages",
-    tabBarIcon: ({ focused }: focusedType) => (
+    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
         <TabBarIcon
             focused={ focused }
             name={
                 Platform.OS === "ios"
-                    ? `ios-chatbubbles${focused ? "" : ""}`
+                    ? `ios-chatbubbles${ focused ? "" : "" }`
                     : "md-chatbubbles"
             }
         />
     )
 };
 
-
-/** * Teams ***/
-TeamsStack.navigationOptions = {
-    tabBarLabel: "Teams",
-    tabBarIcon: ({ focused }: focusedType) => (
-        <TabBarIcon
-            focused={ focused }
-            name={
-                Platform.OS === "ios" ? `ios-contacts${focused ? "" : ""}` : "md-contacts"
-            }
-        />
-    )
-};
-
-
 TrashTrackerStack.navigationOptions = {
     tabBarLabel: "Trash",
-    tabBarIcon: ({ focused }: focusedType) => (
+    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
         <TabBarIcon
             focused={ focused }
             name={
-                Platform.OS === "ios" ? `ios-pin${focused ? "" : ""}` : "md-pin"
+                Platform.OS === "ios" ? `ios-pin${ focused ? "" : "" }` : "md-pin"
             }
         />
     )
@@ -70,7 +55,7 @@ TrashTrackerStack.navigationOptions = {
 
 MenuStack.navigationOptions = {
     tabBarLabel: "Menu",
-    tabBarIcon: ({ focused }: focusedType) => (
+    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
         <TabBarIcon
             focused={ focused }
             name={ Platform.OS === "ios" ? "ios-menu" : "md-menu" }
@@ -81,7 +66,6 @@ MenuStack.navigationOptions = {
 export default createBottomTabNavigator({
     HomeStack,
     MessagesStack,
-    TeamsStack,
     TrashTrackerStack,
     MenuStack
 });

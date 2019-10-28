@@ -6,25 +6,28 @@ import { connect } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import type { Node } from "react";
 
-type Props = { isOffline: boolean, children: Node, actions: { setNetworkStatus: boolean => void } };
+type PropsType = { isOffline: boolean, children: Node, actions: { setNetworkStatus: boolean => void } };
 
-export const Klass = ({ actions }: Props): Node => {
+export const Klass = ({ actions }: PropsType): React$Element<any> => {
 
-    useEffect(() => {
-        const handler = state => {
+    useEffect((): (()=>void) => {
+        const handler = (state: Object) => {
             actions.setNetworkStatus(state.isConnected || state.type !== "none");
         };
         NetInfo.addEventListener("connectionChange", handler);
-        return () => NetInfo.removeEventListener("connectionChange", handler);
+        return () => {
+            NetInfo.removeEventListener("connectionChange", handler);
+        };
     }, [actions]);
 
     return (<Fragment>{ null }</Fragment>);
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
-const mapStateToProps = state => ({ isOffline: state.networkStatus.isOffline });
+const mapStateToProps = (state: Object): Object => ({ isOffline: state.networkStatus.isOffline });
 
+// $FlowFixMe
 export const NetworkStatus = connect(mapStateToProps, mapDispatchToProps)(Klass);

@@ -4,47 +4,49 @@ import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
 import Message from "../../models/message";
 import * as statuses from "../../constants/team-member-statuses";
 
-export function addMessageSuccess(data) {
-    return { type: types.NEW_MESSAGE, data };
-}
+export const addMessageSuccess = (data: any): ActionType => ({ type: types.NEW_MESSAGE, data });
 
-export function sendUserMessage(message: Object, recipients: [Object]) {
-    const _message = Message.create(message);
-    const _recipients = recipients.filter(recipient => recipient.memberStatus === statuses.ACCEPTED || recipient.memberStatus === statuses.OWNER);
-    return (dispatch) => _recipients.map(recipient => firebaseDataLayer.sendUserMessage(recipient.uid, _message, dispatch));
-}
-
-export const sendTeamMessage = (teamId: String, message: Object) => {
-    function thunk(dispatch) {
+export const sendUserMessage = (message: Object, recipients: Array<TeamMemberType>): ThunkType => {
+    function thunk() { // No dispatch needed, this is fire and forget.
         const _message = Message.create(message);
-        firebaseDataLayer.sendTeamMessage(teamId, _message, dispatch);
-    }
-
-    thunk.interceptOnOffline = true;
-    return thunk;
-};
-
-export function readMessageSuccess(data) {
-    return { type: types.READ_MESSAGE, data };
-}
-
-export const readMessage = (message, userID) => {
-
-    function thunk(dispatch) {
-        const _message = Object.assign({}, message, { read: true });
-        firebaseDataLayer.updateMessage(_message, userID).then(res => {
-            dispatch(readMessage(res));
-        }).catch(error => {
-            // eslint-disable-next-line no-console
-            console.error(error);
+        const _recipients = recipients.filter((recipient: TeamMemberType): boolean => recipient.memberStatus === statuses.ACCEPTED || recipient.memberStatus === statuses.OWNER);
+        _recipients.forEach((recipient: TeamMemberType) => {
+            firebaseDataLayer.sendUserMessage((recipient.uid || ""), _message);
         });
     }
 
     thunk.interceptOnOffline = true;
     return thunk;
+
 };
 
-export function selectTeamById(teamId: string) {
-    return { type: types.SELECT_TEAM_BY_ID, teamId };
-}
+export const sendTeamMessage = (teamId: string, message: Object): ThunkType => {
+    function thunk() { // No dispatch needed, this is fire and forget.
+        firebaseDataLayer.sendTeamMessage(teamId, Message.create(message));
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+export const readMessage = (message: MessageType, userId: string): ThunkType => {
+
+    function thunk(dispatch: Dispatch<ActionType>) {
+        const _message = Object.assign({}, message, { read: true });
+        dispatch({ type: types.READ_MESSAGE_SUCCESS, data: message.id });
+
+        firebaseDataLayer
+            .updateMessage(_message, userId)
+            .catch((error: Error) => {
+                // eslint-disable-next-line no-console
+                console.error(error);
+                dispatch({ type: types.READ_MESSAGE_FAIL, data: message.id });
+            });
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, data: teamId });
 

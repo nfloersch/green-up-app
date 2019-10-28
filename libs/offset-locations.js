@@ -1,25 +1,29 @@
 // @flow
-export default function offsetLocations(staticLocations: Array<Object>, locationsToOffset: Array<Object>): Array<Object> {
+export default function offsetLocations(staticLocations: Array<LocationType>, locationsToOffset: Array<LocationType>): Array<LocationType> {
 
-    const isDupe = (staticLocs: Array<Object>, loc: Object) => staticLocs.find(
-        staticLoc => {
+    const isDupe = (staticLocs: Array<LocationType>, loc: Object): boolean => Boolean(staticLocs.find(
+        (staticLoc: LocationType): boolean => {
             const staticCoordinates = staticLoc.coordinates || {};
             const locCoordinates = loc.coordinates || {};
-            return (staticCoordinates).latitude && (staticCoordinates).longitude && (staticCoordinates).latitude === locCoordinates.latitude &&
-                (staticCoordinates).longitude === locCoordinates.longitude;
+            return Boolean(
+                staticCoordinates.latitude &&
+                staticCoordinates.longitude &&
+                staticCoordinates.latitude === locCoordinates.latitude &&
+                staticCoordinates.longitude === locCoordinates.longitude
+            );
         }
-    );
+    ));
 
-    return locationsToOffset.map(loc => {
+    return locationsToOffset.map((loc: LocationType): Object => {
         if (isDupe(staticLocations, loc)) {
-            const foo = {
+            return {
                 ...loc,
-                coordinates: { latitude: loc.coordinates.latitude + 0.001, longitude: loc.coordinates.longitude + 0.001 }
+                coordinates: {
+                    latitude: (loc.coordinates || {}).latitude + 0.001,
+                    longitude: (loc.coordinates || {}).longitude + 0.001
+                }
             };
-            return foo;
         }
-
         return loc;
-
     });
 }

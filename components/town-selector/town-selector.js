@@ -1,8 +1,7 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
-import * as R from "ramda";
 
 const myStyles = {
     autocompleteContainer: {
@@ -34,25 +33,24 @@ const myStyles = {
 const styles = StyleSheet.create(myStyles);
 
 type PropsType = {
-    onSelect: string => void,
+    onSelect: Town => void,
     value: ?string,
-    towns: ?Array<string>
+    towns: ?Array<Town>
 };
 
-const matchTowns = R.curry((towns: ?Array<string>, query: ?string): Array<TownType> => {
-    const testTowns = Array.isArray(towns) ? towns.filter((town: TownType): boolean => Boolean(town && town.name)) : [];
+const matchTowns = (towns: ?Array<Town>, query?: string): Array<Town> => {
+    const testTowns = Array.isArray(towns) ? towns.filter((town: Town): boolean => Boolean(town && town.name)) : [];
     const testString = typeof query !== "string" ? "" : query.trim().toLowerCase();
-    return testTowns.filter((town: TownType): boolean => town.name.toLowerCase().startsWith(testString));
-});
+    return testTowns.filter((town: Town): boolean => (town.name || "").toLowerCase().startsWith(testString));
+};
 
 export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Element<any> => {
     const [query, setQuery] = useState("");
     const [focus, setFocus] = useState(false);
-    const myTowns = matchTowns(towns);
-    const data = focus ? myTowns(query) : [];
+    const data = focus ? matchTowns(towns, query) : [];
     useEffect(() => {
         if (Boolean(value)) {
-            setQuery(value);
+            setQuery(value || "");
         }
     }, [value]);
     return (
@@ -63,8 +61,12 @@ export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Eleme
                 data={ data }
                 defaultValue={ query }
                 onChangeText={ setQuery }
-                onBlur={ () => setFocus(false) }
-                onFocus={ () => setFocus(true) }
+                onBlur={ () => {
+                    setFocus(false);
+                } }
+                onFocus={ () => {
+                    setFocus(true);
+                } }
                 underlineColorAndroid={ "transparent" }
                 renderItem={ (selection: Object): React$Element<any> => (
                     <TouchableOpacity

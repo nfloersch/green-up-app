@@ -1,8 +1,7 @@
 [ignore]
-; We fork some components by platform
-.*/*[.]android.js
 .*/node_modules
-./flow-typed
+./flow-typed/npm/.*
+./write-firebase-config.js
 
 ; Ignore "BUCK" generated dirs
 <PROJECT_ROOT>/\.buckd/
@@ -16,6 +15,7 @@
 .*/Libraries/react-native/React.js
 .*/Libraries/react-native/ReactNative.js
 
+
 [include]
 
 [libs]
@@ -25,9 +25,11 @@ flow/
 
 [options]
 emoji=true
+module.name_mapper='^src\/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 module.system=haste
 munge_underscores=true
-module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
+module.system.node.resolve_dirname=node_modules
+module.name_mapper='^[@./a-zA-Z0-9$_-]+\\.(jpeg|gif|png|jpg|svg|psd|webp|m4v|mov|mp4|mpg|webm|aac|aiff|caf|m4a|mp3|wav|html|pdf)$' -> 'RelativeImageStub'
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
 suppress_type=$FixMe

@@ -5,10 +5,10 @@ import MessagesSummariesScreen from "../screens/message-summaries-screen";
 import MessageDetailsScreen from "../screens/message-details-screen";
 
 const MessagesStack = createStackNavigator({
-    Message: { screen: MessagesSummariesScreen },
+    Messages: { screen: MessagesSummariesScreen },
     NewMessage: { screen: NewMessageScreen },
     MessageDetails: { screen: MessageDetailsScreen }
 });
 
-export default createAppContainer(MessagesStack);
+export default createAppContainer<any, any>(MessagesStack);
 

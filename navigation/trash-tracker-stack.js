@@ -6,4 +6,4 @@ const TrashTrackerStack = createStackNavigator({
     TrashTracker: { screen: TrashTrackerScreen }
 });
 
-export default createAppContainer(TrashTrackerStack);
+export default createAppContainer<any, any>(TrashTrackerStack);

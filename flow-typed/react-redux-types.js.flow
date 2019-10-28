@@ -7,6 +7,7 @@ declare opaque type Store<S, A>;
 declare type Dispatch<A> = A => A;
 
 /** *************/
+
 /* react-redux */
 /** *************/
 
@@ -41,7 +42,8 @@ type MergeProps<-SP, -DP, -OP, +MP> = (
 
 // The connector function actually performs the wrapping, giving us a connected
 // component.
-// eslint-disable-next-line flowtype/type-id-match
+
+
 type Connector<-S, -D, OP, WC> = WC => Class<ConnectedComponent<S, D, OP, WC>>;
 
 // Putting it all together.
@@ -50,17 +52,20 @@ declare function connect<S, D, OP, SP, DP>(
         mapDispatchToProps: MapDispatchToProps<D, OP, SP>
 ): Connector<S, D, OP, React$ComponentType<{| ...OP, ...SP, ...DP |}>>;
 
-// declare function connect<S, D, OP, SP, DP, MP>(
-//     mapStateToProps: MapStateToProps<S, OP, DP>,
-//     mapDispatchToProps: MapDispatchToProps<D, OP, SP>,
-//     mergeProps: MergeProps<SP, DP, OP, MP>
-// ): Connector<S, D, OP, React$ComponentType<MP>>;
+declare function connect<S, D, OP, SP, DP, MP>(
+        mapStateToProps: MapStateToProps<S, OP, DP>,
+        mapDispatchToProps: MapDispatchToProps<D, OP, SP>,
+        mergeProps: MergeProps<SP, DP, OP, MP>
+): Connector<S, D, OP, React$ComponentType<MP>>;
 
-type PayloadType = { data: ?Object, error: ?any, value: ?any };
-
-declare type ActionType = {
-    type: string,
-    payload: ?PayloadType
-};
+declare type ActionType = { type: string, error?: (string | Error), data?: any };
 
 declare type ThunkType = Dispatch<any> => void;
+
+declare type OwnProps = $ReadOnly<{comingFromOutside: string}>;
+
+type Props = {
+    ...OwnProps,
+    fromStateToProps: string,
+    ...
+};

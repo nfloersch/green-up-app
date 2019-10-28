@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import {
     View,
@@ -53,7 +54,7 @@ type PropsType = {
     id?: string
 };
 
-export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) => (
+export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType): React$Element<TouchableHighlight> => (
     <TouchableHighlight
         id={ id }
         style={ styles.homeButton }
@@ -65,9 +66,12 @@ export const HomeButton = ({ label, backgroundImage, onPress, id }: PropsType) =
                 capInsets={ { left: 5, right: 5, bottom: 5, top: 5 } }
                 source={ backgroundImage }
             />
-            <View style={ styles.homeButtonBanner }>
-                <DisplayText style={ styles.homeButtonText }>{ label }</DisplayText>
-            </View>
+            { Boolean(label)
+                ? (<View style={ styles.homeButtonBanner }>
+                    <DisplayText style={ styles.homeButtonText }>{ label }</DisplayText>
+                </View>)
+                : null
+            }
         </View>
     </TouchableHighlight>
 );
