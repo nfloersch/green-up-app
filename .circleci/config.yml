@@ -87,12 +87,12 @@ jobs:
           command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
 
       - run:
-        name: Bump up the version
-        command: |
-          git config user.name $CIRCLE_USERNAME
-          npm version patch -m "Bumped version number to %s [ci skip]"
-          git push origin master
-          git push --tags
+          name: Bump up the version
+          command: |
+            git config user.name $CIRCLE_USERNAME
+            npm version patch -m "Bumped version number to %s [ci skip]"
+            git push origin master
+            git push --tags
 
       - run:
           name: Login into Expo
