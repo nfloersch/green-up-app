@@ -14,7 +14,7 @@
 ; "node_modules/react-native" but in the source repo it is in the root
 .*/Libraries/react-native/React.js
 .*/Libraries/react-native/ReactNative.js
-./flow-typed/npm/react-redux_v6.x.x.js
+
 
 [include]
 
