@@ -52,8 +52,7 @@ const removeAllListeners = (): Promise<any> => (
                 });
             myListeners = {};
             resolve(true);
-        }
-        catch (e) {
+        } catch (e) {
             reject(e);
         }
     })

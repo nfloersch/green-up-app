@@ -12,7 +12,7 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import IOSCheckBox from "react-native-checkbox";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import { isValidEmail, isInTeam } from "../../libs/validators";

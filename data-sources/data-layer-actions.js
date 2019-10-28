@@ -60,15 +60,15 @@ export function profileFetchSuccessful(profile: Object): ActionType {
 
 
 export function inviteesFetchSuccessful(invitees: Object, teamId: string): ActionType {
-    return { type: types.FETCH_INVITEES_SUCCESS, data:{invitees, teamId} };
+    return { type: types.FETCH_INVITEES_SUCCESS, data:{ invitees, teamId } };
 }
 
 export function teamMemberFetchSuccessful(membership: Object, teamId: string): ActionType {
-    return { type: types.TEAM_MEMBER_FETCH_SUCCESS, data: {membership, teamId} };
+    return { type: types.TEAM_MEMBER_FETCH_SUCCESS, data: { membership, teamId } };
 }
 
 export function teamRequestFetchSuccessful(requests: Object, teamId: string): ActionType {
-    return { type: types.TEAM_REQUEST_FETCH_SUCCESS, data:{requests, teamId} };
+    return { type: types.TEAM_REQUEST_FETCH_SUCCESS, data:{ requests, teamId } };
 }
 
 export function profileCreateFail(error: Object): ActionType {

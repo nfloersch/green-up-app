@@ -14,7 +14,9 @@ See the [CONTRIBUTING](./CONTRIBUTING.md) page for details on how to contribute.
 The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
 (https://gitpod.io/#https://github.com/codeforbtv/green-up-app)
 
-You won't be able to run the code without a enviroment.js file.  Get your own Firebase database here (https://firebase.google.com/) and rename environment.example.js to environment.js.   You will need to substitute your won Firebase app settings.
+You won't be able to run the code without a environment.js file. and template for this file can be found in environment.example.js 
+Setup a Firebase app and use those app settings to configure environment.js,    
+Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack](https://codeforbtv.slack.com/) and we'll gladly share ours. Not on our Slack board?  [Get an invitation.](https://cfbtv-slackin.herokuapp.com/) 
  
 Install the [expo client](https://expo.io/tools#client) on your phone
 
