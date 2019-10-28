@@ -1,7 +1,7 @@
 # Green Up App
 
 <p align="center">
-  <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/app.png">
+  <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/gu-50-logo.png">
 </p>
 
 This repository contains the source code for the Green Up App, a mobile app for Vermont's Green Up Day. Green Up App is an official Code for America Project. More information about the motivation and context of this project is available on the [Code for BTV Website](http://codeforbtv.org/projects/greenup-app).
@@ -11,36 +11,14 @@ This repository contains the source code for the Green Up App, a mobile app for 
 See the [CONTRIBUTING](./CONTRIBUTING.md) page for details on how to contribute.
 
 ## Setting up your development environment
+The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
+(https://gitpod.io/#https://github.com/codeforbtv/green-up-app)
 
-Install the [expo cli](https://expo.io/tools#cli) 
-
-```
-npm install expo-cli --global
-```
-
-Install [node.js](https://nodejs.org/en/)
-
-Clone this repository
-```
-git clone https://github.com/codeforbtv/green-up-app.git
-```
-Run ```yarn install``` in the root folder. Depending on your system, you may need to run it as sudo.
-
-Create the firebase-config.js file and make sure you have the correct configuration in there. Ask around in the #green-up Slack channel about what these are.
-
-```
-touch data-sources/firebase-config.js
-```
-
+You won't be able to run the code without a enviroment.js file.  Get your own Firebase database here (https://firebase.google.com/) and rename environment.example.js to environment.js.   You will need to substitute your won Firebase app settings.
+ 
 Install the [expo client](https://expo.io/tools#client) on your phone
 
-For running in an emulator, install [Genymotion](https://www.genymotion.com/).
-
 Run the project in the root folder.
-
-```npm run start``` 
-
-or 
 
 ```expo start```
 
