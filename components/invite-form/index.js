@@ -14,7 +14,7 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail, isInTeam } from "../../libs/validators";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import User from "../../models/user";

@@ -117,7 +117,7 @@ const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<
     );
 
     const fillerButtonConfig = {
-        "fillerButton": {
+        fillerButton: {
             order: 999,
             navigation: "HomeScreen",
             backgroundImage: require("../../assets/images/filler-button-background.png")

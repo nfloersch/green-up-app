@@ -42,10 +42,10 @@ type PropsType = {
     buttonConfigs: Array<ButtonConfigType>
 };
 
-export const ButtonBar = ({ buttonConfigs }: PropsType) => (
+export const ButtonBar = ({ buttonConfigs }: PropsType): React$Element<any> => (
     <View style={ [styles.buttonBarHeader, {}] }>
         <View style={ styles.buttonBar }>
-            { buttonConfigs.map((config: ButtonConfigType, index: number) => (
+            { buttonConfigs.map((config: ButtonConfigType, index: number): React$Element<any> => (
                 <TouchableHighlight
                     key={ index }
                     style={ styles.headerButton }
