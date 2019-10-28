@@ -14,7 +14,7 @@ type PropsType = {
     town: string
 };
 
-export const TownInformation = ({ townInfo, town }: PropsType): React$Component<any> => (
+export const TownInformation = ({ townInfo, town }: PropsType): React$Element<any> => (
     <View style={ {
         padding: 5,
         position: "absolute",
@@ -44,7 +44,7 @@ export const TownInformation = ({ townInfo, town }: PropsType): React$Component<
                         { " allowed. Please take your trash to a designated drop off." }
                     </Text>
                 </Text>
-                { townInfo.dropOffLocations.map((d: Object, i: number): Array<React$Element<Text>> => (
+                { townInfo.dropOffLocations.map((d: Object, i: number): React$Element<Text> => (
                     <Text key={ i }>{ `\n${ d.name }, ${ d.address }` }</Text>
                 )) }
             </View>) }

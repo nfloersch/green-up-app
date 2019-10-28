@@ -8,7 +8,7 @@ export const getGreenUpDayByYear = (year: number): Date => {
     return new Date(`${ year }-05-${ day }`);
 };
 
-const addDays = (date: Date, days: number): Date => new Date(date).setDate(new Date(date).getDate() + days);
+const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
 
 const _today = new Date().toUTCString();
 type TodayType = Date | string;

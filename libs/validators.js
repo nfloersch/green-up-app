@@ -8,8 +8,8 @@ export const isValidPhone = (value: string = ""): boolean => value.replace(/[^0-
 export const isValidEmail = (value: string): boolean => (/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i).test(value);
 export const isValidDate = (param: any): boolean => ((param || "invalid").toString() !== "Invalid Date" && (param instanceof Date));
 export const isValidHexColor = (value: string): boolean => (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/).test(value);
-export const isInTeam = (teamMembers: Object, address: string): boolean => {
-    const _email = address.toLowerCase().trim();
+export const isInTeam = (teamMembers: Object, address: ?string): boolean => {
+    const _email = (address || "").toLowerCase().trim();
     return Object
         .values(teamMembers || {})
         .map((teamMember: Object): string => (teamMember.email || "x").toLowerCase().trim())

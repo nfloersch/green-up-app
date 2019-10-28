@@ -16,6 +16,7 @@ import * as actionCreators from "./actions";
 import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import { isValidEmail, isInTeam } from "../../libs/validators";
+import * as R from "ramda";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -23,8 +24,8 @@ const styles = StyleSheet.create(combinedStyles);
 
 function getDisplayName(contact: ContactType): string {
     return (contact.firstName || contact.lastName)
-        ? (`${ contact.firstName } ${ contact.lastName } (${ contact.email })`).trim()
-        : (contact.email);
+        ? (`${ contact.firstName || "" } ${ contact.lastName || "" } (${ contact.email || "" })`).trim()
+        : (contact.email || "");
 }
 
 type PropsType = {
@@ -55,7 +56,7 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
         const _teamMembers = myContacts
             .filter((contact: ContactType): boolean => selectedContacts.indexOf(contact.email) > -1)
             .map((contact: ContactType): TeamMemberType => TeamMember.create(Object.assign({}, contact, {
-                displayName: `${ contact.firstName } ${ contact.lastName }`,
+                displayName: `${ contact.firstName || "" } ${ contact.lastName || "" }`,
                 memberStatus: TeamMember.memberStatuses.INVITED
             })));
         closeModal();
@@ -63,19 +64,21 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
     }
 
 
-    const toggleContact = (email: string): (()=>void) => () => {
-        const newContacts = (selectedContacts.indexOf(email) > -1)
-            ? selectedContacts.filter((_email: string): boolean => _email !== email)
+    const toggleContact = (email: ?string = ""): (()=>void) => () => {
+        const hasContact = selectedContacts.indexOf(email) > -1;
+        const newContacts = hasContact
+            ? R.filter((_email: string): boolean => (_email !== email))(selectedContacts)
             : selectedContacts.concat(email);
+        // $FlowFixMe - not sure why this is an error.
         setSelectedContacts(newContacts);
     };
 
 
     const _myContacts = myContacts
-        .filter((contact: ContactType): boolean => isValidEmail(contact.email) && !isInTeam(teamMembers[selectedTeam.id], contact.email))
+        .filter((contact: ContactType): boolean => isValidEmail(contact.email || "") && !isInTeam(teamMembers[selectedTeam.id], contact.email))
         .sort((a: ContactType, b: ContactType): number => {
-            const bDisplay = (`${ b.firstName }${ b.lastName }${ b.email }`).toLowerCase();
-            const aDisplay = (`${ a.firstName }${ a.lastName }${ a.email }`).toLowerCase();
+            const bDisplay = (`${ b.firstName || "" }${ b.lastName || "" }${ b.email || "" }`).toLowerCase();
+            const aDisplay = (`${ a.firstName || "" }${ a.lastName || "" }${ a.email || "" }`).toLowerCase();
             switch (true) {
                 case(aDisplay < bDisplay):
                     return -1;
