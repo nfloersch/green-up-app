@@ -521,7 +521,7 @@ export function sendUserMessage(userId: string, message: MessageType): Promise<a
     return db.collection(`messages/${ userId }/messages`).add(_message);
 }
 
-export function sendGroupMessage(group: Array<UserType>, message: MessageType): Promise<Array<mixed>> {
+export function sendGroupMessage(group: Array<Object>, message: MessageType): Promise<Array<mixed>> {
     const sentMessages = group.map((recipient: UserType): Promise<any> => recipient.uid
         ? sendUserMessage(recipient.uid, deconstruct(message))
         : Promise.reject("Invalid User"));

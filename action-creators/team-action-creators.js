@@ -152,7 +152,7 @@ export const revokeInvitation = (teamId: string, membershipId: string): ThunkTyp
 export const addTeamMember = (teamId: string, member: TeamMember, status: string): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         const newMember = TeamMember.create(Object.assign({}, member, { memberStatus: status || member.memberStatus }));
-        firebaseDataLayer.addTeamMember(teamId, newMember)
+        firebaseDataLayer.addTeamMember(teamId, newMember, "ACCEPTED", dispatch)
             .then(() => {
                 dispatch({ type: types.ADD_TEAM_MEMBER_SUCCESS, data: { teamId, newMember } });
             })

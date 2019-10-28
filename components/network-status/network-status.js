@@ -8,7 +8,7 @@ import type { Node } from "react";
 
 type PropsType = { isOffline: boolean, children: Node, actions: { setNetworkStatus: boolean => void } };
 
-export const Klass = ({ actions }: PropsType): React$Element<Fragment> => {
+export const Klass = ({ actions }: PropsType): React$Element<any> => {
 
     useEffect((): (()=>void) => {
         const handler = (state: Object) => {
@@ -29,4 +29,5 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
 
 const mapStateToProps = (state: Object): Object => ({ isOffline: state.networkStatus.isOffline });
 
+// $FlowFixMe
 export const NetworkStatus = connect(mapStateToProps, mapDispatchToProps)(Klass);

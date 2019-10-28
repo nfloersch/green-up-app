@@ -7,7 +7,7 @@ export function reducers(state: Object = initialState.networkStatus, action: Act
         case types.NETWORK_STATUS_CHANGE :
             return {
                 ...state,
-                isOnline: action.data.isOnline
+                isOnline: (action.data || {}).isOnline
             };
         default:
             return state;

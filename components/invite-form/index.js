@@ -145,7 +145,7 @@ const mapStateToProps = (state: Object): Object => {
     return { teamMembers, currentUser, selectedTeam };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>): Object => ({
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
