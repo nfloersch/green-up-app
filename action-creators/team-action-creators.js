@@ -69,7 +69,7 @@ export const sendGroupMessage = (messageRecipients: Array<{ uid: string }>, mess
     return thunk;
 };
 
-export const selectTeam = (team: Object): ActionType => ({ type: types.SELECT_TEAM, team });
+export const selectTeam = (team: Object): ActionType => ({ type: types.SELECT_TEAM, data: team });
 
 export const saveTeam = (team: Object): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
@@ -200,7 +200,7 @@ export const saveLocations = (locations: Array<LocationType>, team: TeamType): T
     return thunk;
 };
 
-export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, teamId });
+export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, data: teamId });
 
 export const leaveTeam = (teamId: string, user: Object): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
