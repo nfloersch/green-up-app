@@ -38,13 +38,11 @@ export const updateTrashDrop = (trashDrop: TrashDrop): ThunkType => {
 export const locationUpdated = (location: LocationType): ActionType => (
     {
         type: types.USER_LOCATION_UPDATED,
-        location
+        data: location
     }
 );
 
-
 export const toggleTrashData = (toggle: boolean, value: mixed): ActionType => ({
     type: types.TOGGLE_TRASH_DATA,
-    toggle,
-    value
+    data: { toggle, value }
 });

@@ -18,6 +18,5 @@ const AppState = ({ children }: PropsType): React$Element<any> => (
     </Provider>
 );
 
-
 export default AppState;
 

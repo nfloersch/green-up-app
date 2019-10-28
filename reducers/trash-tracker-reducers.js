@@ -7,17 +7,17 @@ export const trashTrackerReducers = (state: Object = initialState.trashTracker, 
         case types.FETCH_TRASH_DROPS_SUCCESS:
             return {
                 ...state,
-                trashDrops: action.trashDrops
+                trashDrops: action.data
             };
         case types.USER_LOCATION_UPDATED:
             return {
                 ...state,
-                location: action.location
+                location: action.data
             };
         case types.TOGGLE_TRASH_DATA:
             return {
                 ...state,
-                [action.toggle]: action.value
+                [(action.data || {}).toggle]: (action.data || {}).value
             };
         case types.RESET:
             return { ...state, trashTracker: initialState.trashTracker };

@@ -9,7 +9,7 @@ export function profileReducers(state: Object = initialState.profile, action: Ac
         case types.FETCH_PROFILE_SUCCESS :
             return {
                 ...state,
-                ...User.create({ ...action.profile, teams: state.teams || {} })
+                ...User.create({ ...action.data, teams: state.teams || {} })
             };
         case types.FETCH_PROFILE_FAIL :
             return {
@@ -19,7 +19,7 @@ export function profileReducers(state: Object = initialState.profile, action: Ac
         case types.FETCH_MY_TEAMS_SUCCESS :
             return {
                 ...state,
-                teams: action.myTeams
+                teams: action.data
             };
         case types.RESET:
             return { ...state, profile: initialState.profile };

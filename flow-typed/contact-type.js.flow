@@ -1,9 +1,9 @@
 // @flow
 declare type ContactType = {
-    uid: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    email: string;
+    uid: ?string;
+    firstName: ?string;
+    lastName: ?string;
+    phoneNumber: ?string;
+    email: ?string;
     isSelected: boolean;
 };

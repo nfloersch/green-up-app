@@ -9,12 +9,12 @@ export const messageReducers = (state: Object = initialState.messages, action: A
         case types.NEW_MESSAGE:
             return {
                 ...state,
-                messages: Object.assign({}, state.messages, { [action.message.id]: action.message })
+                messages: Object.assign({}, state.messages, { [(action.data || {}).id]: action.data })
             };
         case types.FETCH_MESSAGES_SUCCESS :
             return {
                 ...state,
-                messages: { ...state.messages, ...deconstruct(action.messages) },
+                messages: { ...state.messages, ...deconstruct(action.data) },
                 loaded: true
             };
         case types.FETCH_TEAMS_SUCCESS :

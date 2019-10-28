@@ -34,7 +34,7 @@ export const acceptInvitation = (teamId: string, user: Object): ThunkType => {
     return thunk;
 };
 
-export const selectTeam = (team: Object): ActionType => ({ type: types.SELECT_TEAM, team });
+export const selectTeam = (team: Object): ActionType => ({ type: types.SELECT_TEAM, data: team });
 
 
 export const revokeInvitation = (teamId: string, membershipId: string): ThunkType => {

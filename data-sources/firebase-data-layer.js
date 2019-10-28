@@ -329,8 +329,8 @@ function setupProfileListener(user: UserType, dispatch: Dispatch<ActionType>) {
     addListener(`profiles_${ uid || "" }`, db.collection("profiles").doc(uid)
         .onSnapshot((doc: Object) => {
             if (doc.exists) {
-                const profile = doc.data();
-                dispatch({ type: types.FETCH_PROFILE_SUCCESS, profile });
+                const data = doc.data();
+                dispatch({ type: types.FETCH_PROFILE_SUCCESS, data });
             } else {
                 // just in case
                 createProfile(user, dispatch);
@@ -349,7 +349,7 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
             ids.push(doc.id);
         });
         const myTeams = data.reduce((obj: Object, team: TeamType): Object => ({ ...obj, [team.id]: team }), {});
-        dispatch({ type: types.FETCH_MY_TEAMS_SUCCESS, myTeams });
+        dispatch({ type: types.FETCH_MY_TEAMS_SUCCESS, data: myTeams });
         setupTeamMessageListener(ids, dispatch);
         setupTeamMemberListener(ids, dispatch);
         // Add additional listeners for team owners
@@ -376,7 +376,7 @@ function setupTrashDropListener(dispatch: Dispatch<ActionType>) {
         querySnapshot.forEach((doc: Object) => {
             trashDrops.push(TrashDrop.create(doc.data(), doc.id));
         });
-        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops });
+        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, data:trashDrops });
     }));
 }
 

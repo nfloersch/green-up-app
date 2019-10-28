@@ -23,25 +23,6 @@ export const sessionReducers = (state: Object = initialState.loading, action: Ac
                 userIsLoggedIn: false,
                 isInitialized: false
             };
-        case types.LOADING_COMPLETED:
-            return {
-                ...state,
-                isLoadingComplete: action.isLoadingComplete,
-                teamMembersLoaded: false,
-                loadingError: null
-            };
-        case types.INITIAL_AUTH_CHECKED:
-            return {
-                ...state,
-                initialAuthChecked: action.initialAuthChecked,
-                userIsLoggedIn: action.isLoggedIn
-            };
-        case types.LOADING_FAILED:
-            return {
-                ...state,
-                skipLoadingScreen: true,
-                loadingError: action.error
-            };
         case types.NO_TEAMS_TO_LOAD:
             return {
                 ...state,

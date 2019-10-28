@@ -18,5 +18,5 @@ export const readMessage = (message: MessageType, userId: string): ThunkType => 
     return thunk;
 };
 
-export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, teamId });
+export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, data: teamId });
 

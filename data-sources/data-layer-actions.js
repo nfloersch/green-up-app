@@ -15,7 +15,7 @@ export function messageFetchSuccessful(messages: Object): ActionType {
     const myMessages = Object
         .keys(messages[_key])
         .reduce((messageHash: Object, key: string): Object => Object.assign({}, messageHash, { [key]: Message.create(Object.assign({ uid: key }, messages[_key][key])) }), {});
-    return { type: types.FETCH_MESSAGES_SUCCESS, messages: { [_key]: myMessages } };
+    return { type: types.FETCH_MESSAGES_SUCCESS, data:  { [_key]: myMessages } };
 }
 
 export function noCurrentUser(): ActionType {
@@ -36,7 +36,7 @@ export function userFailedAuthentication(error: any): ActionType {
 
 export function teamFetchSuccessful(_teams: Object): ActionType {
     const teams = Object.keys(_teams || {}).reduce((teamObj: Object, key: string): Object => (Object.assign({}, teamObj, { [key]: Team.create(_teams[key], key) })), {});
-    return { type: types.FETCH_TEAMS_SUCCESS, teams };
+    return { type: types.FETCH_TEAMS_SUCCESS, data: teams };
 }
 
 export function townDataFetchFail(): ActionType {
@@ -51,24 +51,24 @@ export function trashDropFetchSuccessful(_trashDrops: Object): ActionType {
     const trashDrops = Object
         .keys(_trashDrops || {})
         .reduce((trashDropObj: Object, key: string): Object => (Object.assign({}, trashDropObj, { [key]: TrashDrop.create(_trashDrops[key], key) })), {});
-    return { type: types.FETCH_TRASH_DROPS_SUCCESS, trashDrops };
+    return { type: types.FETCH_TRASH_DROPS_SUCCESS, data:trashDrops };
 }
 
 export function profileFetchSuccessful(profile: Object): ActionType {
-    return { type: types.FETCH_PROFILE_SUCCESS, profile };
+    return { type: types.FETCH_PROFILE_SUCCESS, data: profile };
 }
 
 
 export function inviteesFetchSuccessful(invitees: Object, teamId: string): ActionType {
-    return { type: types.FETCH_INVITEES_SUCCESS, invitees, teamId };
+    return { type: types.FETCH_INVITEES_SUCCESS, data:{invitees, teamId} };
 }
 
 export function teamMemberFetchSuccessful(membership: Object, teamId: string): ActionType {
-    return { type: types.TEAM_MEMBER_FETCH_SUCCESS, membership, teamId };
+    return { type: types.TEAM_MEMBER_FETCH_SUCCESS, data: {membership, teamId} };
 }
 
 export function teamRequestFetchSuccessful(requests: Object, teamId: string): ActionType {
-    return { type: types.TEAM_REQUEST_FETCH_SUCCESS, requests, teamId };
+    return { type: types.TEAM_REQUEST_FETCH_SUCCESS, data:{requests, teamId} };
 }
 
 export function profileCreateFail(error: Object): ActionType {
@@ -88,7 +88,7 @@ export function townDataFetchSuccessful(townData: Object): ActionType {
 }
 
 export function invitationFetchSuccessful(invitations: Object): ActionType {
-    return { type: types.FETCH_INVITATIONS_SUCCESS, invitations };
+    return { type: types.FETCH_INVITATIONS_SUCCESS, data:invitations };
 }
 
 export function noTeamsToLoad(): ActionType {
@@ -104,5 +104,5 @@ export function initilizationFail(): ActionType {
 }
 
 export function myTeamsFetchSuccessful(myTeams: Array<Object>): ActionType {
-    return { type: types.FETCH_MY_TEAMS_SUCCESS, myTeams };
+    return { type: types.FETCH_MY_TEAMS_SUCCESS, data: myTeams };
 }
