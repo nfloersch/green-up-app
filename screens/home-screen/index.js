@@ -120,7 +120,7 @@ const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<
         "fillerButton": {
             order: 999,
             navigation: "HomeScreen",
-            backgroundImage: require("../../assets/images/gu-50-logo.png")
+            backgroundImage: require("../../assets/images/filler-button-background.png")
         }
     };
 
