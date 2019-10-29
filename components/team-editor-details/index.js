@@ -54,8 +54,8 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
-const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null): Object => ({
-    team: Team.create({ owner }),
+const freshState = (selectedTeam: TeamType, initialMapLocation: ?CoordinatesType = null): Object => ({
+    team: Team.create(selectedTeam),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
     datePickerVisible: false,
@@ -92,7 +92,7 @@ type PropsType = {
 
 const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, vermontTowns, selectedTeam }: PropsType): React$Element<any> => {
 
-    const [state, dispatch] = useReducer(reducer, freshState(currentUser));
+    const [state, dispatch] = useReducer(reducer, freshState(selectedTeam));
 
     const handleMapClick = (coordinates: Object) => {
         Keyboard.dismiss();
