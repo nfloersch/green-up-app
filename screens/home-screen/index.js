@@ -33,8 +33,15 @@ type PropsType = {
     navigation: Object,
     currentUser: Object,
     myTeams: Array<Object>,
-    style: ?Object
+    style: ?Object,
+    teams: { [key: string]: TeamType }
 };
+
+const isOwner = (teams, user: UserType, teamId: string): boolean => {
+    const teamOwner = (teams[teamId] || {}).owner;
+    return teamOwner && teamOwner.uid === user.uid;
+};
+
 
 const menuConfig = {
     messages: {
@@ -82,14 +89,14 @@ const menuConfig = {
     }
 };
 
-const HomeScreen = ({ actions, navigation, myTeams }: PropsType): React$Element<any> => {
+const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsType): React$Element<any> => {
 
     // $FlowFixMe
     const teamButtonsConfig = R.reduce((acc: Object, team: TeamType): Object => ({
         ...acc,
         [team.id]: {
             order: 20,
-            navigation: "TeamDetails",
+            navigation: isOwner(teams, currentUser, (team.id || "foo")) ? "TeamEditor" : "TeamDetails",
             beforeNav: () => {
                 actions.selectTeam(team);
             },
@@ -162,7 +169,7 @@ const mapStateToProps = (state: Object): Object => {
     const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const teams = state.teams.teams || {};
     const myTeams = getUsersTeams(user, teams);
-    return ({ myTeams });
+    return ({ myTeams, currentUser: user, teams });
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({

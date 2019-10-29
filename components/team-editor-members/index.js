@@ -78,8 +78,8 @@ type PropsType = {
 const TeamEditorMembers = ({ actions, team, members, requests, invitations }: PropsType): React$Element<any> => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const [modalContent, setModalContent] = useState(InviteForm);
+    //
+    const [modalContent, setModalContent] = useState(<Text>FOO</Text>);
 
     const closeModal = () => {
         setIsModalVisible(false);
@@ -101,7 +101,6 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
         const updateTeamMember = partial(actions.updateTeamMember, [myTeam.id, member]);
         const addTeamMember = partial(actions.addTeamMember, [myTeam.id, member]);
         return () => {
-            setIsModalVisible(true);
             setModalContent(
                 <TeamMemberDetails
                     closeModal={ closeModal }
@@ -112,6 +111,7 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
                     teamMember={ member }
                 />
             );
+            setIsModalVisible(true);
         };
     };
 
