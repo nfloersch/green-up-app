@@ -497,7 +497,9 @@ const TrashMap = (
                 <TrashToggles close={ closeToggleModal }/>
             </Modal>
         </View>) ||
-        (<View style={ styles.frame }> <Text>{ "...Locating" }</Text></View>);
+        (<View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
+            <Text style={ { fontSize: 10, color: "white" } }>{ "...Locating" }</Text>
+        </View>);
 };
 
 

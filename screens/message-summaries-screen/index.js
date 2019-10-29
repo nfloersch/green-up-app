@@ -158,18 +158,22 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
             <View style={ styles.singleButtonHeader }>
                 {
                     userHasTeams
-                        ? (<TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => {
-                                navigation.navigate("NewMessage");
-                            } }>
-                            <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
-                        </TouchableHighlight>)
+                        ? (
+                            <TouchableHighlight
+                                style={ styles.headerButton }
+                                onPress={ () => {
+                                    navigation.navigate("NewMessage");
+                                } }>
+                                <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
+                            </TouchableHighlight>
+                        )
                         : (
                             <View style={ styles.headerButton }>
-                                <Text
-                                    style={ styles.headerButtonText }>{ "Join or create a team to send messages." }</Text>
-                            </View>)
+                                <Text style={ styles.headerButtonText }>
+                                    { "Join or create a team to send messages." }
+                                </Text>
+                            </View>
+                        )
                 }
             </View>
             { myMessages.length > 0

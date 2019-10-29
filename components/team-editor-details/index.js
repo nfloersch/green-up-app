@@ -219,6 +219,7 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: saveTeam }, { text: "Cancel", onClick: cancel }];
     const teamTown = R.path(["team", "town", "name"])(state);
+    debugger;
     let nextTextInput;
 
     return (
@@ -395,7 +396,7 @@ TeamEditorDetails.navigationOptions = {
 type PinType<T> = ?(Array<T> | T);
 
 const mapStateToProps = (state: Object): Object => {
-    const selectedTeam = state.teams.selectedTeam || Team.create({});
+    const selectedTeam = state.teams.selectedTeam;
 
     const profile = state.profile;
 
