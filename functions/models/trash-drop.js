@@ -1,17 +1,8 @@
+const deconstruct = require("./libs/deconstruct");
 const Coordinates = require("./coordinates");
 const isValidDate = require("./validators").isValidDate;
 
 class TrashDrop {
-    id;
-    bagCount;
-    status;
-    active;
-    tags;
-    location: ?CoordinatesType;
-    created;
-    wasCollected;
-    createdBy;
-    collectedBy;
 
     constructor(args) {
         this.id = typeof args.id === "string" ? args.id : null;
@@ -28,10 +19,10 @@ class TrashDrop {
 
     static create(args = {}, id) {
         const _args = { ...args };
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new TrashDrop(_args);
+        return deconstruct(new TrashDrop(_args));
     }
 }
 

@@ -1,6 +1,6 @@
-
 const isValidDate = require("../validators").isValidDate;
 const TeamMember = require("./team-member");
+const deconstruct = require("./libs/deconstruct");
 
 class Invitation {
 
@@ -20,19 +20,13 @@ class Invitation {
             : new Date();
     }
 
-    id;
-    sender;
-    team;
-    teamMember;
-    created;
-
-    static create(args = {}, id): Invitation {
+    static create(args = {}, id) {
         const _args = JSON.parse(JSON.stringify(args || ""));
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new Invitation(_args);
+        return deconstruct(new Invitation(_args));
     }
 }
 
-module.exports = Invitation
+module.exports = Invitation;

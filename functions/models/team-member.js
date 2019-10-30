@@ -1,16 +1,8 @@
-
-const   memberStati = require("../constants/team-member-statuses");
-
+const deconstruct = require("./libs/deconstruct");
+const memberStati = require("../constants/team-member-statuses");
 const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
 
 class TeamMember {
-    uid;
-    displayName;
-    bio;
-    email;
-    invitationId;
-    memberStatus;
-    photoURL;
 
     constructor(args) {
         this.uid = typeof args.uid === "string" || typeof args.id === "string" || typeof args._id === "string"
@@ -38,10 +30,10 @@ class TeamMember {
 
     static create(args = {}, uid) {
         const _args = { ...args };
-        if (Boolean(uid)) {
+        if (uid) {
             _args.uid = uid;
         }
-        return new TeamMember(_args);
+        return deconstruct(new TeamMember(_args));
     }
 
     static memberStatuses = memberStati;

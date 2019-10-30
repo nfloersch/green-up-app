@@ -1,21 +1,10 @@
-
+const deconstruct = require("./libs/deconstruct");
 const  isValidDate = require("./validators");
 const md5 = require("md5-hash");
-
 const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
 const getGravatar = (email) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${ md5(email.trim().toLowerCase()) }?d=mm`);
 
 class User {
-    uid;
-    displayName;
-    updated;
-    email;
-    photoURL;
-    teams;
-    bio;
-    created;
-    grantMarketingConsent;
-    marketingConsentUpdatedOn;
 
     constructor(args = {}) {
         this.uid = typeof args.uid === "string" || typeof args.id === "string"
@@ -48,10 +37,10 @@ class User {
 
     static create(args, uid) {
         const _args = JSON.parse(JSON.stringify(args || {}));
-        if (Boolean(uid)) {
+        if (uid) {
             _args.uid = uid;
         }
-        return new User(_args);
+        return deconstruct(new User(_args));
     }
 }
 

@@ -1,17 +1,9 @@
-
+const deconstruct = require("./libs/deconstruct");
 const Coordinates = require("./coordinates");
 
 const standardOffsetFactor = 0.1;
 
 class MapPin {
-
-    active;
-    coordinates: ?CoordinatesType;
-    color;
-    description;
-    icon;
-    id;
-    title;
 
     constructor(args = {}) {
         this.active = typeof args.active === "boolean" ? args.active : true;
@@ -23,11 +15,11 @@ class MapPin {
         this.title = typeof args.title === "string" ? args.title : null;
     }
 
-    static create(args = {}): MapPin {
-        return new MapPin(args);
+    static create(args = {})  {
+        return deconstruct(new MapPin(args));
     }
 
-    static offset(pin: MapPin, distance = 1, azimuth = 45): MapPin {
+    static offset(pin, distance = 1, azimuth = 45) {
         const r = distance * standardOffsetFactor;
         const theta = azimuth * Math.PI / 180;
         const x = r * Math.cos(theta);

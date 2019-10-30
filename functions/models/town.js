@@ -1,12 +1,8 @@
-
-const  isValidDate = require("./validators");
+const deconstruct = require("./libs/deconstruct");
+const isValidDate = require("./validators").isValidDate;
 const Coordinates = require("./coordinates");
 
 class TownLocation {
-    address;
-    name;
-    notes;
-    coordinates;
 
     constructor(args) {
         this.address = (args || {}).address || "";
@@ -17,25 +13,14 @@ class TownLocation {
 
     static create(args = {}, id) {
         const _args = { ...args };
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new TownLocation(_args);
+        return deconstruct(new TownLocation(_args));
     }
 }
 
 class Town {
-    id;
-    name;
-    description;
-    notes;
-    dropOffInstructions;
-    dropOffLocations;
-    pickupInstructions;
-    pickupLocations;
-    roadsideDropOffAllowed;
-    created;
-    updated;
 
     constructor(args = {}) {
         this.id = typeof args.id === "string" ? args.id : null;
@@ -54,9 +39,9 @@ class Town {
             Array.isArray(args.dropOffLocations)
                 ? args.dropOffLocations
                 : []
-        ).map((loc): TownLocation => TownLocation.create(loc));
+        ).map(loc => TownLocation.create(loc));
         this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : [])
-            .map((loc: TownLocation): TownLocation => TownLocation.create(loc));
+            .map(loc => TownLocation.create(loc));
         this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
@@ -66,12 +51,12 @@ class Town {
             : new Date();
     }
 
-    static create(args = {}, id): Town {
+    static create(args = {}, id) {
         const _args = { ...args };
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new Town(_args);
+        return deconstruct(new Town(_args));
     }
 }
 

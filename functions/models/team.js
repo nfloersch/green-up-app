@@ -1,5 +1,5 @@
-
-const isValidDate = require("./validators");
+const deconstruct = require("./libs/deconstruct");
+const isValidDate = require("./validators").isValidDate;
 const Location = require("./location");
 const TeamMember = require("./team-member");
 const uuid = require("uuid");
@@ -9,25 +9,8 @@ const moment = require("moment");
 const defaultDate = moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY");
 
 class Team {
-    active;
-    autoAccept;
-    created;
-    date;
-    description;
-    end;
-    id;
-    isMember;
-    isPublic;
-    location;
-    locations;
-    members;
-    name;
-    notes;
-    owner;
-    start;
-    townId;
 
-    constructor(args = {}) {
+     constructor(args = {}) {
         this.active = typeof args.active === "boolean"
             ? args.active
             : true;
@@ -60,7 +43,7 @@ class Team {
             ? args.location
             : null;
         this.locations = Array.isArray(args.locations)
-            ? args.locations.map((location): LocationType => Location.create(location))
+            ? args.locations.map(location => Location.create(location))
             : [];
         this.members = Object.keys(args.members || {})
             .map((key) => TeamMember.create({ ...args.members[key], uid: key }))
@@ -77,12 +60,12 @@ class Team {
             : null;
     }
 
-    static create(args = {}, id): TeamType {
+    static create(args = {}, id) {
         const _args = { ...args };
         if (id) {
             _args.id = id;
         }
-        return new Team(_args);
+        return deconstruct(new Team(_args));
     }
 
 }

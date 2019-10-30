@@ -235,7 +235,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             nextTextInput.focus();
                             setTeamValue("townId")(town.id);
                         } }
-                        value={ (vermontTowns.find((town: TownType): boolean => town.id === state.team.townId) || {}).name || "" }
+                        value={ (vermontTowns.find((town: Town): boolean => town.id === state.team.townId) || {}).name || "" }
                         towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>{ "Clean Up Site" }</Text>
@@ -410,5 +410,4 @@ const mapStateToProps = (state: Object): Object => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);

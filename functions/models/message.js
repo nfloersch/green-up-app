@@ -1,19 +1,9 @@
-
+const deconstruct = require("./libs/deconstruct");
 const messageTypes = require("../constants/message-types");
-const isValidDate = require("./validators");
+const isValidDate = require("./validators").isValidDate;
 const TeamMember = require("./team-member");
 
 class Message {
-    id;
-    text;
-    sender: ?TeamMemberType;
-    teamId;
-    read;
-    active;
-    link;
-    type;
-    created;
-    teamName;
 
     constructor(args) {
         this.id = typeof args.id === "string"
@@ -46,12 +36,12 @@ class Message {
             : new Date();
     }
 
-    static create(args = {}, id): MessageType {
+    static create(args = {}, id)  {
         const _args = { ...args };
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new Message(_args);
+        return deconstruct(new Message(_args));
     }
 
     static messageTypes = messageTypes;

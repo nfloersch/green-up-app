@@ -1,7 +1,6 @@
+const deconstruct = require("./libs/deconstruct");
+
 class Coordinates {
-    latitude;
-    longitude;
-    id;
 
     constructor(args) {
         this.id = (args || {}).id || null;
@@ -9,12 +8,12 @@ class Coordinates {
         this.longitude = typeof (args || {}).longitude === "number" ? (args || {}).longitude : null;
     }
 
-    static create(args = {}, id): CoordinatesType {
+    static create(args = {}, id) {
         const _args = { ...args };
-        if (Boolean(id)) {
+        if (id) {
             _args.id = id;
         }
-        return new Coordinates(_args);
+        return deconstruct(new Coordinates(_args));
     }
 }
 

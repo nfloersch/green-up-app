@@ -23,7 +23,7 @@ const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = { item: Object };
 
-const TownItem = ({ item }: PropsType): React$Element<any> => (
+export const TownItem = ({ item }: PropsType): React$Element<any> => (
     <View key={ item.key } style={ styles.infoBlock }>
         <Text style={ styles.townName }>{ item.name }</Text>
         <Text style={ [styles.textDark, { fontSize: 16, marginBottom: 5 }] }>
@@ -98,6 +98,3 @@ const TownItem = ({ item }: PropsType): React$Element<any> => (
         }
     </View>
 );
-
-
-export default TownItem;

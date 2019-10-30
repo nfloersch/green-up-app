@@ -263,7 +263,7 @@ const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns,
                             nextTextInput.focus();
                             setTeamValue("townId")(town.id);
                         } }
-                        value={ (vermontTowns.find((town: TownType): boolean => town.id === state.team.townId) || {}).name || "" }
+                        value={ (vermontTowns.find((town: Town): boolean => town.id === state.team.townId) || {}).name || "" }
                         towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>{ "Clean Up Site" }</Text>
@@ -426,7 +426,7 @@ const mapStateToProps = (state: Object): Object => {
     // $FlowFixMe
     const otherCleanAreas = R.compose(
         R.flatten,
-        R.map((entry: [string, teamType]): Array<Object> => mapToPinData(entry[1].locations, entry[1].name)),
+        R.map((entry: [string, TeamType]): Array<Object> => mapToPinData(entry[1].locations, entry[1].name)),
         R.filter((entry: [string, TeamType]): boolean => (entry[0] !== selectedTeam.id)),
         Object.entries
     )(state.teams.teams);
@@ -441,8 +441,6 @@ const mapStateToProps = (state: Object): Object => {
     return { owner, currentUser, otherCleanAreas, vermontTowns, selectedTeam };
 };
 
-
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);

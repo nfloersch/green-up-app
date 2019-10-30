@@ -1,13 +1,8 @@
+const deconstruct = require("./libs/deconstruct");
 const Coordinates = require("./coordinates");
 const  isValidDate = require("./validators").isValidDate;
 
 class Location {
-    name;
-    description;
-    status;
-    active;
-    coordinates: ?CoordinatesType;
-    created;
 
     constructor(args = {}) {
         this.name = typeof args.name === "string" ? args.name : null;
@@ -18,8 +13,8 @@ class Location {
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
     }
 
-    static create(args = {}): LocationType {
-        return new Location(args);
+    static create(args = {})  {
+        return deconstruct(new Location(args));
     }
 }
 

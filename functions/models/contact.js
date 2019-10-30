@@ -1,14 +1,12 @@
-const validateEmail = require('./validators').isValidEmail;
+const deconstruct = require("./libs/deconstruct");
+const validateEmail = require("./validators").isValidEmail;
 
 function getEmail(email) {
     switch (true) {
         case Array.isArray(emails):
-            const myEmail = emails
-                .filter((email) => !!email && validateEmail(email.email))
-                .map((email) => email.email)[0] || null;
-            return (typeof myEmail === "string")
-                ? myEmail.toLowerCase()
-                : myEmail;
+            return emails
+                .filter((email) => Boolean(email) && validateEmail(email.email))
+                .map((email) => email.email.toLowerCase())[0] || null;
         case typeof emails === "string" && validateEmail(emails):
             return emails.toLowerCase();
         default:
@@ -20,8 +18,8 @@ function getPhoneNumber(phoneNumbers) {
     switch (true) {
         case Array.isArray(phoneNumbers):
             return phoneNumbers
-                .filter((phoneNumber) => !!phoneNumber)
-                .map((phoneNumber): Array<string> => phoneNumber.number)[0] || null;
+                .filter((phoneNumber) => Boolean(phoneNumber))
+                .map(phoneNumber => phoneNumber.number)[0] || null;
         case typeof phoneNumbers === "string":
             return phoneNumbers;
         default:
@@ -30,12 +28,6 @@ function getPhoneNumber(phoneNumbers) {
 }
 
 class Contact {
-    uid;
-    firstName;
-    lastName;
-    phoneNumber;
-    email;
-    isSelected;
 
     constructor(args = {}) {
         this.uid = typeof args.uid === "string"
@@ -54,12 +46,12 @@ class Contact {
             : false;
     }
 
-    static create(args, uid): ContactType {
+    static create(args, uid) {
         const _args = { ...(args || { uid: "" }) };
-        if (Boolean(uid)) {
+        if (uid) {
             _args.uid = uid;
         }
-        return new Contact(_args);
+        return deconstruct(new Contact(_args));
     }
 }
 
