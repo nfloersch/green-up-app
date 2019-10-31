@@ -79,7 +79,7 @@ const menuConfig = {
         order: 104,
         navigation: "Celebrations",
         label: "Celebrations",
-        backgroundImage: require("../../assets/images/button-image-royalton-bandstand.jpg")
+        backgroundImage: require("../../assets/images/button-image-cake.jpg")
     },
     greenUpFacts: {
         order: 105,
@@ -101,7 +101,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 actions.selectTeam(team);
             },
             label: team.name || "My Team",
-            backgroundImage: require("../../assets/images/button-image-girls-1970.jpg")
+            backgroundImage: require("../../assets/images/button-image-mule.jpg")
         }
     }), {});
 

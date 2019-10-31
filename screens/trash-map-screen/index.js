@@ -25,7 +25,7 @@ import TrashToggles from "./trash-toggles";
 import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
 import TrashDrop from "../../models/trash-drop";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
@@ -497,7 +497,9 @@ const TrashMap = (
                 <TrashToggles close={ closeToggleModal }/>
             </Modal>
         </View>) ||
-        (<View style={ styles.frame }> <Text>{ "...Locating" }</Text></View>);
+        (<View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
+            <Text style={ { fontSize: 10, color: "white" } }>{ "...Locating" }</Text>
+        </View>);
 };
 
 

@@ -1,5 +1,5 @@
 // @flow
-// eslint-disable new-cap 0
+/* eslint-disable new-cap */
 import React, { useState } from "react";
 import { Dimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
@@ -11,15 +11,11 @@ const routes = [
     { key: "second", title: "Members" }
 ];
 
-type PropsType = { navigation: Object };
-
-const TeamEditorScreen = ({ navigation }: PropsType): React$Element<any> => {
+const TeamEditorScreen = (): React$Element<any> => {
 
     const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
     return (
-
-
         <TabView
             navigationState={ navState }
             renderScene={ SceneMap({

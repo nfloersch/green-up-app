@@ -15,7 +15,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/session-action-creators";
 import logo from "../../assets/images/green-up-logo.png";
 import facebookLogo from "../../assets/images/facebook-logo.png";
 // import googleLogo from "../../assets/images/google-logo.png";

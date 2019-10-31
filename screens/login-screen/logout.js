@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import logo from "../../assets/images/green-up-logo.png";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/session-action-creators";
 
 const styles = StyleSheet.create({
     container: {

@@ -55,7 +55,7 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     const end = team.end ? `<p>End Time : <strong>${team.end}</strong></p>` : '';
     const teamName = `<p>Team Name: <strong>${team.name}</strong></p>`;
     const owner = team.owner.displayName ? `<p>Team Captain : <strong>${team.owner.displayName}</strong>` : '';
-    const town = team.town ? `<p>Town : <strong>${team.town}</strong></p>` : '';
+    const town = team.townId ? `<p>Town : <strong>${team.townId}</strong></p>` : '';
     const notes = team.notes ? `<p>Description : <strong>${team.notes}</strong></p>` : '';
     const teamInfo = `${teamName}${owner}${date}${start}${end}${town}${where}${notes}`;
     const message = {

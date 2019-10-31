@@ -4,7 +4,7 @@ import { Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight } 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import MemberIcon from "../../components/member-icon";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import TeamMember from "../../models/team-member";
 import * as status from "../../constants/team-member-statuses";
 import { defaultStyles } from "../../styles/default-styles";

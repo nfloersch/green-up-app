@@ -1,9 +1,9 @@
 // @flow
 
-import * as types from "../../constants/action-types";
+import * as types from "../constants/action-types";
 import { Google, Facebook } from "expo";
-import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
-import { thirdPartyConfig } from "../../config/third-party-config";
+import * as firebaseDataLayer from "../data-sources/firebase-data-layer";
+import { thirdPartyConfig } from "../config/third-party-config";
 import { Platform } from "react-native";
 
 export const logout = (): ThunkType => {
@@ -122,3 +122,12 @@ export function resetPassword(emailAddress: string): ThunkType {
 export function isLoggingInViaSSO(_isLoggingInViaSSO: boolean): Object {
     return { type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO };
 }
+
+export const initialize = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.initialize(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};

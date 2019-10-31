@@ -1,15 +1,13 @@
-/* global require */
+const deconstruct = require("./libs/deconstruct");
+const validateEmail = require("./validators").isValidEmail;
 
-const { isString, isValidEmail } = require('./validators');
-
-function getEmail(emails) {
-    const myEmail = emails.filter(email => Boolean(email) && isValidEmail(email.email)).map(email => email.email)[0] || null;
+function getEmail(email) {
     switch (true) {
         case Array.isArray(emails):
-            return (isString(myEmail))
-                ? myEmail.toLowerCase()
-                : myEmail;
-        case isString(emails) && isValidEmail(emails):
+            return emails
+                .filter((email) => Boolean(email) && validateEmail(email.email))
+                .map((email) => email.email.toLowerCase())[0] || null;
+        case typeof emails === "string" && validateEmail(emails):
             return emails.toLowerCase();
         default:
             return null;
@@ -19,8 +17,10 @@ function getEmail(emails) {
 function getPhoneNumber(phoneNumbers) {
     switch (true) {
         case Array.isArray(phoneNumbers):
-            return phoneNumbers.filter(phoneNumber => Boolean(phoneNumber)).map(phoneNumber => phoneNumber.number)[0] || null;
-        case isString(phoneNumbers):
+            return phoneNumbers
+                .filter((phoneNumber) => Boolean(phoneNumber))
+                .map(phoneNumber => phoneNumber.number)[0] || null;
+        case typeof phoneNumbers === "string":
             return phoneNumbers;
         default:
             return null;
@@ -28,29 +28,30 @@ function getPhoneNumber(phoneNumbers) {
 }
 
 class Contact {
+
     constructor(args = {}) {
-        this.uid = isString(args.uid)
+        this.uid = typeof args.uid === "string"
             ? args.uid
             : null;
-        this.firstName = isString(args.lastName)
+        this.firstName = typeof args.lastName === "string"
             ? args.firstName
             : null;
-        this.lastName = isString(args.lastName)
+        this.lastName = typeof args.lastName === "string"
             ? args.lastName
             : null;
         this.email = getEmail(args.email || args.emails);
         this.phoneNumber = getPhoneNumber(args.phoneNumber || args.phoneNumbers || args.phone);
-        this.isSelected = typeof args.isSelected === 'boolean'
+        this.isSelected = typeof args.isSelected === "boolean"
             ? args.isSelected
             : false;
     }
 
     static create(args, uid) {
-        const _args = { ...(args || {}) };
+        const _args = { ...(args || { uid: "" }) };
         if (uid) {
             _args.uid = uid;
         }
-        return JSON.parse(JSON.stringify(new Contact(_args)));
+        return deconstruct(new Contact(_args));
     }
 }
 

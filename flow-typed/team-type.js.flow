@@ -17,5 +17,5 @@ declare type TeamType = {
     notes: ?Array<string>,
     owner: TeamMemberType,
     start: ?string,
-    town: ?Town,
+    townId: ?string,
 };

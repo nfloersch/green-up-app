@@ -14,7 +14,7 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as messageTypes from "../../constants/message-types";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/message-action-creators";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import coveredBridge from "../../assets/images/covered-bridge2.jpg";
@@ -158,18 +158,22 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
             <View style={ styles.singleButtonHeader }>
                 {
                     userHasTeams
-                        ? (<TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => {
-                                navigation.navigate("NewMessage");
-                            } }>
-                            <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
-                        </TouchableHighlight>)
+                        ? (
+                            <TouchableHighlight
+                                style={ styles.headerButton }
+                                onPress={ () => {
+                                    navigation.navigate("NewMessage");
+                                } }>
+                                <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
+                            </TouchableHighlight>
+                        )
                         : (
                             <View style={ styles.headerButton }>
-                                <Text
-                                    style={ styles.headerButtonText }>{ "Join or create a team to send messages." }</Text>
-                            </View>)
+                                <Text style={ styles.headerButtonText }>
+                                    { "Join or create a team to send messages." }
+                                </Text>
+                            </View>
+                        )
                 }
             </View>
             { myMessages.length > 0
@@ -278,5 +282,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSummariesScreen);

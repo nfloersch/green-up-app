@@ -262,7 +262,6 @@ export const leaveTeam = (teamId: string, user: Object): ThunkType => {
     return thunk;
 };
 
-
 export const deleteMessage = (userId: string, messageId: string): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.deleteMessage(userId, messageId)

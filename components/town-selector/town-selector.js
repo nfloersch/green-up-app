@@ -67,6 +67,7 @@ export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Eleme
                 onFocus={ () => {
                     setFocus(true);
                 } }
+                keyExtractor={ (item): string => item.id }
                 underlineColorAndroid={ "transparent" }
                 renderItem={ (selection: Object): React$Element<any> => (
                     <TouchableOpacity

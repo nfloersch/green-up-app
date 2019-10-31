@@ -1,12 +1,13 @@
-/** global require **/
-const { isString, isValidDate } = require('./validators');
-const Coordinates = require('./coordinates');
+const deconstruct = require("./libs/deconstruct");
+const isValidDate = require("./validators").isValidDate;
+const Coordinates = require("./coordinates");
 
 class TownLocation {
+
     constructor(args) {
-        this.address = (args || {}).address || '';
-        this.name = (args || {}).name || '';
-        this.notes = (args || {}).notes || '';
+        this.address = (args || {}).address || "";
+        this.name = (args || {}).name || "";
+        this.notes = (args || {}).notes || "";
         this.coordinates = Coordinates.create((args || {}).coordinates);
     }
 
@@ -15,27 +16,33 @@ class TownLocation {
         if (id) {
             _args.id = id;
         }
-        return new TownLocation(_args);
+        return deconstruct(new TownLocation(_args));
     }
 }
 
 class Town {
+
     constructor(args = {}) {
-        this.id = isString(args.id) ? args.id : null;
-        this.name = isString(args.name)
+        this.id = typeof args.id === "string" ? args.id : null;
+        this.name = typeof args.name === "string"
             ? args.name
             : null;
-        this.description = isString(args.description)
+        this.description = typeof args.description === "string"
             ? args.description
             : null;
-        this.notes = isString(args.notes)
+        this.notes = typeof args.notes === "string"
             ? args.notes
             : null;
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
-        this.dropOffLocations = (Array.isArray(args.dropOffLocations) ? args.dropOffLocations : []).map(loc => TownLocation.create(loc));
-        this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : []).map(loc => TownLocation.create(loc));
-        this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === 'boolean' ? args.roadsideDropOffAllowed : false;
+        this.dropOffLocations = (
+            Array.isArray(args.dropOffLocations)
+                ? args.dropOffLocations
+                : []
+        ).map(loc => TownLocation.create(loc));
+        this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : [])
+            .map(loc => TownLocation.create(loc));
+        this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)
             : new Date();
@@ -49,7 +56,7 @@ class Town {
         if (id) {
             _args.id = id;
         }
-        return JSON.parse(JSON.stringify(new Town(_args)));
+        return deconstruct(new Town(_args));
     }
 }
 

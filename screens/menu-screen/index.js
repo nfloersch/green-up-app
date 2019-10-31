@@ -3,7 +3,7 @@ import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { logout } from "../login-screen/actions";
+import { logout } from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};

@@ -1,7 +1,7 @@
 // @flow
 import React, { Fragment, useEffect } from "react";
 import { bindActionCreators } from "redux";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/network-action-creators";
 import { connect } from "react-redux";
 import NetInfo from "@react-native-community/netinfo";
 import type { Node } from "react";

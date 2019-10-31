@@ -19,7 +19,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SegmentedControls } from "react-native-radio-buttons";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";
@@ -54,8 +54,8 @@ const myStyles = {
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
-const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null): Object => ({
-    team: Team.create({ owner }),
+const freshState = (selectedTeam: ?TeamType, initialMapLocation: ?CoordinatesType = null): Object => ({
+    team: Team.create(selectedTeam),
     startDateTimePickerVisible: false,
     endDateTimePickerVisible: false,
     datePickerVisible: false,
@@ -90,9 +90,9 @@ type PropsType = {
     vermontTowns: Array<Object>
 };
 
-const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, vermontTowns, selectedTeam }: PropsType): React$Element<any> => {
+const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns, selectedTeam }: PropsType): React$Element<any> => {
 
-    const [state, dispatch] = useReducer(reducer, freshState(currentUser));
+    const [state, dispatch] = useReducer(reducer, freshState(selectedTeam));
 
     const handleMapClick = (coordinates: Object) => {
         Keyboard.dismiss();
@@ -122,7 +122,7 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
     };
 
     const cancel = () => {
-        dispatch({ type: "RESET_STATE", data: freshState(currentUser) });
+        dispatch({ type: "RESET_STATE", data: freshState(selectedTeam) });
     };
 
     const saveTeam = () => {
@@ -218,9 +218,7 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: saveTeam }, { text: "Cancel", onClick: cancel }];
-    const teamTown = R.path(["team", "town", "name"])(state);
     let nextTextInput;
-
     return (
         <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
             <ButtonBar buttonConfigs={ headerButtons }/>
@@ -263,9 +261,9 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
                     <TownSelector
                         onSelect={ (town: Town) => {
                             nextTextInput.focus();
-                            setTeamValue("town")(town);
+                            setTeamValue("townId")(town.id);
                         } }
-                        value={ teamTown }
+                        value={ (vermontTowns.find((town: Town): boolean => town.id === state.team.townId) || {}).name || "" }
                         towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>{ "Clean Up Site" }</Text>
@@ -277,7 +275,7 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
                                 nextTextInput = input;
                             } }
                             style={ styles.textInput }
-                            value={ state.location }
+                            value={ state.team.location }
                             underlineColorAndroid={ "transparent" }
                         />
                     </View>
@@ -285,7 +283,7 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
                         <Text style={ [styles.alertInfo, { textAlign: "left" }] }>
                             { dateRangeMessage }
                         </Text>
-                        <Text style={ styles.labelDark }>Date</Text>
+                        <Text style={ styles.labelDark }>{ "Date" }</Text>
                         <View>
                             <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
                                 <Text style={ [styles.textInput, dateIsSelected && styles.selected] }>
@@ -338,16 +336,16 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
                         </View>
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>Team Description</Text>
+                        <Text style={ styles.labelDark }>{ "Team Description" }</Text>
                         <TextInput
                             keyBoardType={ "default" }
                             multiline={ true }
                             numberOfLines={ 10 }
                             textAlignVertical="top"
-                            onChangeText={ setTeamValue("notes") }
+                            onChangeText={ setTeamValue("description") }
                             placeholder={ "Tell us about your team" }
                             style={ styles.textArea }
-                            value={ state.notes }
+                            value={ state.team.description }
                             underlineColorAndroid={ "transparent" }
                         />
                     </View>
@@ -386,7 +384,6 @@ const TeamEditorDetails = ({ actions, currentUser, navigation, otherCleanAreas, 
     );
 };
 
-
 TeamEditorDetails.navigationOptions = {
     title: "Team Details",
     tabBarLabel: "Details"
@@ -395,7 +392,7 @@ TeamEditorDetails.navigationOptions = {
 type PinType<T> = ?(Array<T> | T);
 
 const mapStateToProps = (state: Object): Object => {
-    const selectedTeam = state.teams.selectedTeam || Team.create({});
+    const selectedTeam = state.teams.selectedTeam;
 
     const profile = state.profile;
 
@@ -425,11 +422,13 @@ const mapStateToProps = (state: Object): Object => {
             })]
     ]);
 
+
     // $FlowFixMe
     const otherCleanAreas = R.compose(
         R.flatten,
-        R.map((team: TeamType): Array<Object> => mapToPinData(team.locations, team.name)),
-        Object.values
+        R.map((entry: [string, TeamType]): Array<Object> => mapToPinData(entry[1].locations, entry[1].name)),
+        R.filter((entry: [string, TeamType]): boolean => (entry[0] !== selectedTeam.id)),
+        Object.entries
     )(state.teams.teams);
 
     // $FlowFixMe
@@ -442,8 +441,6 @@ const mapStateToProps = (state: Object): Object => {
     return { owner, currentUser, otherCleanAreas, vermontTowns, selectedTeam };
 };
 
-
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorDetails);

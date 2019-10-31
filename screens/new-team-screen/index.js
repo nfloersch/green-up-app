@@ -18,7 +18,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { SegmentedControls } from "react-native-radio-buttons";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";
@@ -71,7 +71,7 @@ function reducer(state: Object, action: Object): Object {
 }
 
 type PropsType = {
-    actions: { createTeam: Object => void },
+    actions: { createTeam: (TeamType, UserType) => void },
     currentUser: User,
     locations: Array<TownLocation>,
     otherCleanAreas: Array<any>,
@@ -118,7 +118,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
         if (!team.name) {
             Alert.alert("Please give your team a name.");
         } else {
-            actions.createTeam(team);
+            actions.createTeam(team, currentUser);
             const newState = freshState(currentUser);
             dispatch({ type: "RESET_STATE", data: newState });
         }
@@ -190,7 +190,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Cancel", onClick: cancel }];
-    const teamTown = R.path(["team", "town", "name"])(state);
     let nextTextInput;
     return (
         <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
@@ -234,9 +233,9 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                     <TownSelector
                         onSelect={ (town: Town) => {
                             nextTextInput.focus();
-                            setTeamValue("town")(town);
+                            setTeamValue("townId")(town.id);
                         } }
-                        value={ teamTown }
+                        value={ (vermontTowns.find((town: Town): boolean => town.id === state.team.townId) || {}).name || "" }
                         towns={ vermontTowns }/>
                     <View style={ { marginTop: 10 } }>
                         <Text style={ styles.labelDark }>{ "Clean Up Site" }</Text>
@@ -248,7 +247,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                                 nextTextInput = input;
                             } }
                             style={ styles.textInput }
-                            value={ state.location }
+                            value={ state.team.location }
                             underlineColorAndroid={ "transparent" }
                         />
                     </View>
@@ -309,16 +308,16 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         </View>
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>Team Description</Text>
+                        <Text style={ styles.labelDark }>{"Team Description"}</Text>
                         <TextInput
                             keyBoardType={ "default" }
                             multiline={ true }
                             numberOfLines={ 10 }
                             textAlignVertical="top"
-                            onChangeText={ setTeamValue("notes") }
+                            onChangeText={ setTeamValue("description") }
                             placeholder={ "Tell us about your team" }
                             style={ styles.textArea }
-                            value={ state.notes }
+                            value={ state.team.description }
                             underlineColorAndroid={ "transparent" }
                         />
                     </View>
@@ -411,5 +410,4 @@ const mapStateToProps = (state: Object): Object => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(NewTeam);
