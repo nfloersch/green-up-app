@@ -3,7 +3,7 @@ import React from "react";
 import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/team-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import User from "../../models/user";

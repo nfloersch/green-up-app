@@ -2,7 +2,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Toggle from "../../components/toggle";

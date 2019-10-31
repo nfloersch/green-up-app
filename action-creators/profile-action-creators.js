@@ -1,7 +1,6 @@
 // @flow
-
-import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
-import User from "../../models/user";
+import * as firebaseDataLayer from "../data-sources/firebase-data-layer";
+import User from "../models/user";
 
 export const saveProfile = (profile: UserType): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {

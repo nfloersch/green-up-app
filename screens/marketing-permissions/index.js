@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { defaultStyles } from "../../styles/default-styles";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/profile-actions";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 

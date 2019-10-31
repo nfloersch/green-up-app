@@ -3,7 +3,7 @@ import React, { useEffect, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import LoginScreen from "../../screens/login-screen/index";
 // import MarketingPermissionsScreen from "../../screens/marketing-permissions";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/session-action-creators";
 import { connect } from "react-redux";
 import { Platform, StyleSheet, StatusBar, View } from "react-native";
 

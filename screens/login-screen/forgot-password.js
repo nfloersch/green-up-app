@@ -5,7 +5,7 @@ import { Alert, TouchableOpacity, TouchableHighlight, StyleSheet, Text, TextInpu
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail } from "../../libs/validators";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 
 

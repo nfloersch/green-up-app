@@ -1,7 +1,7 @@
 // @flow
-import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
-import TrashDrop from "../../models/trash-drop";
-import * as types from "../../constants/action-types";
+import * as firebaseDataLayer from "../data-sources/firebase-data-layer";
+import TrashDrop from "../models/trash-drop";
+import * as types from "../constants/action-types";
 
 export const dropTrash = (trashDrop: TrashDrop): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {

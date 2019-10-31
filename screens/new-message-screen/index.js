@@ -13,7 +13,7 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import User from "../../models/user";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/message-action-creators";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import * as messageTypes from "../../constants/message-types";

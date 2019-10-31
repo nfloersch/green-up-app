@@ -14,7 +14,7 @@ import {
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as messageTypes from "../../constants/message-types";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/message-action-creators";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import coveredBridge from "../../assets/images/covered-bridge2.jpg";
@@ -282,5 +282,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSummariesScreen);

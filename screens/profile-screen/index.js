@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/profile-action-creators";
 import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
 import { removeNulls } from "../../libs/remove-nulls";

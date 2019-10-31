@@ -1,8 +1,8 @@
 // @flow
-import * as types from "../../constants/action-types";
-import * as firebaseDataLayer from "../../data-sources/firebase-data-layer";
-import Message from "../../models/message";
-import * as statuses from "../../constants/team-member-statuses";
+import * as types from "../constants/action-types";
+import * as firebaseDataLayer from "../data-sources/firebase-data-layer";
+import Message from "../models/message";
+import * as statuses from "../constants/team-member-statuses";
 
 export const addMessageSuccess = (data: any): ActionType => ({ type: types.NEW_MESSAGE, data });
 
@@ -50,3 +50,4 @@ export const readMessage = (message: MessageType, userId: string): ThunkType => 
 
 export const selectTeamById = (teamId: string): ActionType => ({ type: types.SELECT_TEAM_BY_ID, data: teamId });
 
+export const readMessageSuccess = (data: Object): Object => ({ type: types.READ_MESSAGE_SUCCESS, data });

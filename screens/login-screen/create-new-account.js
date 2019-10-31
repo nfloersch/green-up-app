@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform } from "re
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CreateAccountForm from "../../components/create-account-form";
-import * as actionCreators from "./actions";
+import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {};
