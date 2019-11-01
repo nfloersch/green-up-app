@@ -31,7 +31,6 @@ export default {
         user: null,
         isLoggingInViaSSO: false
     },
-    profile: {},
     messages: {
         messages: {},
         loaded: false,
@@ -39,10 +38,14 @@ export default {
         teamsLoaded: false
     },
     networkStatus: { isOnline: null },
+    profile: {},
+    selectedTeam: null,
+    session: {},
     teamMembers: {},
     teamMembersLoaded: false,
     teamRequests: {},
     teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
+    teamSearchResults: [],
     towns: { townData: {} },
     trashTracker: {
         trashDrops: [],
@@ -54,7 +57,5 @@ export default {
         myTrashToggle: true,
         cleanAreasToggle: true
     },
-    teamSearchResults: [],
-    selectedTeam: null,
-    session: {}
+    userLocation: { coordinates: { latitude: null, longitude: null }, townId: null }
 };
