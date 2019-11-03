@@ -9,7 +9,19 @@ import { sessionReducers as session } from "./session-reducers";
 import { teamsReducers as teams } from "./teams-reducers";
 import { townsReducers as towns } from "./towns-reducers";
 import { trashTrackerReducers as trashTracker } from "./trash-tracker-reducers";
+import { userLocationReducers as userLocation } from "./user-location-reducers";
 
-const rootReducer = combineReducers<any, any>({ about, session, login, messages, network, teams, trashTracker, profile, towns });
+const rootReducer = combineReducers<any, any>({
+    about,
+    session,
+    login,
+    messages,
+    network,
+    teams,
+    trashTracker,
+    profile,
+    towns,
+    userLocation
+});
 
 export default rootReducer;

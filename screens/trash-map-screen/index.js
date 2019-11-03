@@ -553,6 +553,4 @@ const mapStateToProps = (state: Object): Object => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-
-// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TrashMap);

@@ -53,7 +53,7 @@
     "flowtype/object-type-delimiter": [ 2, "comma" ],
     "flowtype/require-parameter-type": 1,
     "flowtype/require-readonly-react-props": 0,
-    "flowtype/require-return-type": [ 2, "always", { "annotateUndefined": "never" } ],
+    "flowtype/require-return-type": [ 1, "always", { "annotateUndefined": "never" } ],
     "flowtype/require-valid-file-annotation": 2, "flowtype/semi": [ 2, "always" ],
     "flowtype/space-after-type-colon": [ 2, "always" ],
     "flowtype/space-before-generic-bracket": [ 2, "never" ],
