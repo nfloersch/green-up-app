@@ -1,9 +1,8 @@
 // @flow
 /* eslint-disable no-undefined */
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Card, Caption, Subtitle, Image } from "@shoutem/ui";
-
+import { StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { Card, Caption, Subtitle, View } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {
@@ -29,11 +28,10 @@ export const CelebrationLocation = ({ item, onPress }: PropsType): React$Element
     <TouchableOpacity
         onPress={ onPress }
         styleName="flexible">
-        <Card key={ item.key }>
-            <Image
-                styleName="medium-wide"
-                source={ { uri: "https://www.vermont.org/wp-content/uploads/2018/08/vermont_in-the-fall.jpg" } }
-                resizeMode="contain"
+        <Card>
+            <ImageBackground
+                style={ { width: "100%", height: "75%" } }
+                source={ { uri: item.image } }
             />
             <View styleName="content">
                 <Subtitle>{ item.name }</Subtitle>
