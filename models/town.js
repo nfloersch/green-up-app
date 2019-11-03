@@ -27,6 +27,7 @@ export class TownLocation {
 export default class Town {
     id: ?string;
     name: ?string;
+    celebrations: ?Array<Object>;
     description: ?string;
     notes: ?string;
     dropOffInstructions: ?string;
@@ -38,6 +39,7 @@ export default class Town {
     updated: ?Date;
 
     constructor(args: Object = {}) {
+        this.celebrations = args.celebrations || null;
         this.id = typeof args.id === "string" ? args.id : null;
         this.name = typeof args.name === "string"
             ? args.name

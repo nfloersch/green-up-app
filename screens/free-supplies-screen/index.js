@@ -80,7 +80,7 @@ const FreeSupplies = ({ pickupSpots, userLocation }: PropsType): React$Element<a
                         renderItem={ ({ item }: { item: Town }): React$Element<any> => (
                             <PickupLocation item={ item }/>) }/>
                 </View>
-                <View style={ defaultStyles.padForIOSKeyboard }/>
+                
             </ScrollView>
         </View>
     );

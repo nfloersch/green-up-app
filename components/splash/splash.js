@@ -1,8 +1,7 @@
 // @flow
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, SafeAreaView } from "react-native";
 import logo from "../../assets/images/green-up-logo.png";
-import { Container } from "native-base";
 import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {
@@ -24,7 +23,7 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 export const Splash = ({ message }: { message: string }): React$Element<Container> => (
-    <Container>
+    <SafeAreaView style={ styles.container }>
         <View style={ { paddingTop: 60 } }>
             <View style={ styles.logo }>
                 <Image source={ logo } style={ { height: 120, width: 120 } }/>
@@ -33,5 +32,5 @@ export const Splash = ({ message }: { message: string }): React$Element<Containe
                 <Text style={ [styles.text, { color: "black", textAlign: "center" }] }>{ message }</Text>
             </View>
         </View>
-    </Container>
+    </SafeAreaView>
 );
