@@ -9,6 +9,7 @@ import Celebrations from "../screens/celebrations-screen";
 import GreenUpFacts from "../screens/green-up-facts-screen";
 import TeamDetails from "../screens/team-details-screen";
 import TeamEditorScreen from "../screens/team-editor-screen";
+import CelebrationDetailsScreen from "../components/celebration-details";
 
 const HomeStack = createStackNavigator({
     Home: { screen: HomeScreen },
@@ -19,7 +20,8 @@ const HomeStack = createStackNavigator({
     HandlingTrash: { screen: HandlingTrash },
     FreeSupplies: { screen: FreeSupplies },
     Celebrations: { screen: Celebrations },
-    GreenUpFacts: { screen: GreenUpFacts }
+    GreenUpFacts: { screen: GreenUpFacts },
+    CelebrationDetails: { screen: CelebrationDetailsScreen }
 });
 
 export default createAppContainer<any, any>(HomeStack);

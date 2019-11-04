@@ -1,6 +1,16 @@
 // @flow
 import React, { useState } from "react";
-import { StyleSheet, FlatList, Image, Modal, Text, ScrollView, TouchableOpacity, View } from "react-native";
+import {
+    StyleSheet,
+    FlatList,
+    Image,
+    Modal,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    View,
+    SafeAreaView
+} from "react-native";
 import { connect } from "react-redux";
 import MemberIcon from "../../components/member-icon";
 import { defaultStyles } from "../../styles/default-styles";
@@ -78,7 +88,6 @@ type PropsType = {
 const TeamEditorMembers = ({ actions, team, members, requests, invitations }: PropsType): React$Element<any> => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    //
     const [modalContent, setModalContent] = useState(<Text>FOO</Text>);
 
     const closeModal = () => {
@@ -123,7 +132,7 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
         }));
 
     return (
-        <View style={ styles.frame }>
+        <SafeAreaView style={ styles.frame }>
             <View style={ styles.buttonBarHeader }>
                 <View style={ styles.buttonBar }>
                     <View style={ styles.buttonBarButton }>
@@ -163,7 +172,7 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
                     { modalContent }
                 </View>
             </Modal>
-        </View>
+        </SafeAreaView>
     );
 };
 

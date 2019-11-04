@@ -7,11 +7,11 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Platform,
-    SafeAreaView
+    SafeAreaView, Text, Modal
 } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
-// import CelebrationLocation from "../../components/celebration-location";
+import CelebrationDetails from "../../components/celebration-details";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
@@ -37,6 +37,8 @@ const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Ele
 
     const [searchResults, setSearchResults] = useState(celebrationEvents);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedCelebration, setSelectedCelebration] = useState(null);
 
     useEffect(() => {
         const spotsFound = searchArray(searchableFields, celebrationEvents, searchTerm);
@@ -49,7 +51,10 @@ const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Ele
         // so we need to remap it into cells and pass to GridRow
         if (rowData.length === 1) {
             return (
-                <TouchableOpacity key={ index }>
+                <TouchableOpacity key={ index } onPress={ () => {
+                    setSelectedCelebration(rowData[0]);
+                    setIsModalVisible(true);
+                } }>
                     <ImageBackground
                         styleName="large"
                         source={ { uri: rowData[0].image } }
@@ -65,7 +70,13 @@ const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Ele
         }
 
         const cellViews = rowData.map((item, id) => (
-            <TouchableOpacity key={ id } styleName="flexible">
+            <TouchableOpacity
+                key={ id }
+                onPress={ () => {
+                    setSelectedCelebration(item);
+                    setIsModalVisible(true);
+                } }
+                styleName="flexible">
                 <Card styleName="flexible">
                     <Image
                         styleName="medium-wide"
@@ -140,6 +151,15 @@ const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Ele
                 data={ groupedData }
                 renderRow={ renderRow }
             />
+            <Modal
+                animationType={ "slide" }
+                onRequestClose={ (): string => ("this function is required. Who knows why?") }
+                transparent={ false }
+                visible={ isModalVisible }>
+                <CelebrationDetails celebration={ selectedCelebration } closeModal={ () => {
+                    setIsModalVisible(false);
+                } }/>
+            </Modal>
         </SafeAreaView>
     );
 };

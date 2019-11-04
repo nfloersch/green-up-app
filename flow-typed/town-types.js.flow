@@ -9,12 +9,13 @@ declare type TownLocation = {
 declare class Town {
     id: ?string;
     name: ?string;
+    celebrations: Array<Celebration>;
     description: ?string;
     notes: ?string;
     dropOffInstructions: ?string;
-    dropOffLocations: ?Array<TownLocation>;
+    dropOffLocations: Array<TownLocation>;
     pickupInstructions: ?string;
-    pickupLocations: ?Array<TownLocation>;
+    pickupLocations: Array<TownLocation>;
     roadsideDropOffAllowed: ?boolean;
     created: ?Date;
     updated: ?Date;
