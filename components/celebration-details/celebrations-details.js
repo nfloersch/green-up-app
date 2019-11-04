@@ -13,7 +13,7 @@ type PropsType = {
     closeModal: () => void
 };
 
-export const CelebrationDetails = ({ celebration, closeModal }: PropsType): React$Element<any> => n(
+export const CelebrationDetails = ({ celebration, closeModal }: PropsType): React$Element<any> => (
     <SafeAreaView style={ styles.container }>
         <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
             <View style={ styles.buttonBar }>
