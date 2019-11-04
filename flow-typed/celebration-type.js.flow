@@ -1,0 +1,14 @@
+// @flow
+
+declare class Celebration {
+    name: ?string;
+    description: ?string;
+    status: ?string;
+    active: ?boolean;
+    address: ?string;
+    coordinates: ?CoordinatesType;
+    created: ?Date;
+    start: ?Date;
+    end: ?Date;
+    image: ?string;
+}
