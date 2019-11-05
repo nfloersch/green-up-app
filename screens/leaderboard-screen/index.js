@@ -1,10 +1,10 @@
 // @flow
-import React from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
-import { Title, Subtitle, Divider, ListView } from "@shoutem/ui";
+import { Tile, Divider, ListView, Text } from "@shoutem/ui";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -19,23 +19,45 @@ const renderRow = (ranking) => {
     }
 
     return (
-        <View style={ { flex: 1, flexDirection: "row" } }>
-            <Title styleName="md-gutter-bottom">{ ranking.rank }</Title>
-            <Subtitle styleName="sm-gutter-horizontal">{ ranking.teamName }</Subtitle>
-            <Title styleName="md-gutter-bottom">{ ranking.bagCount }</Title>
+        <Tile style={ { flex: 1, flexDirection: "row" } }>
+            <Text styleName="md-gutter-bottom">{ ranking.rank }</Text>
+            <Text styleName="sm-gutter-horizontal">{ ranking.teamName }</Text>
+            <Text styleName="md-gutter-bottom">{ ranking.bagCount }</Text>
             <Divider styleName="line"/>
-        </View>
+        </Tile>
     );
 };
 
 
-const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => (
-    <SafeAreaView style={ styles.container }>
-        <ListView
-            data={ rankings }
-            renderRow={ renderRow }/>
-    </SafeAreaView>
-);
+const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
+    const [sortBy, setSortBy] = useState("rank");
+
+    const sortedRanks = R.cond([
+        [
+            (sort) => (sort === "rank"),
+            () => R.sortBy(ranking => ranking.rank)(rankings)
+        ],
+        [
+            (sort) => (sort === "teamName"),
+            () => R.sortBy(ranking => ranking.teamName)(rankings)
+        ]
+    ])(sortBy);
+    return (
+        <SafeAreaView style={ styles.container }>
+            <View style={ { height: 30, width: "100%", backgroundColor: "#EEE" } }>
+                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
+                    <TouchableOpacity onPress={ () => {
+                        setSortBy("rank");
+                    } }><Text>{ "Sort by Rank" }</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={ () => {
+                        setSortBy("teamName");
+                    } }><Text>{ "Sort by Team" }</Text></TouchableOpacity>
+                </View>
+            </View>
+            <ListView data={ sortedRanks } renderRow={ renderRow }/>
+        </SafeAreaView>
+    );
+};
 
 
 LeaderboardScreen.navigationOptions = {
