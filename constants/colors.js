@@ -1,7 +1,7 @@
 const tintColor = "#2f95dc";
 
 export default Object.freeze({
-    backgroundLight: '#EEE',
+    backgroundLight: "#EEE",
     errorBackground: "red",
     errorText: "#fff",
     iconColor: "#007AFF",
