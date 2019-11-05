@@ -1,5 +1,7 @@
 # Green Up App
 
+GITPOD DEMO
+
 <p align="center">
   <img alt="Green Up Vermont Logo" width="300" height="300" src="./assets/images/gu-50-logo.png">
 </p>
@@ -14,10 +16,13 @@ See the [CONTRIBUTING](./CONTRIBUTING.md) page for details on how to contribute.
 The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
 (https://gitpod.io/#https://github.com/codeforbtv/green-up-app)
 
-You won't be able to run the code without a environment.js file. and template for this file can be found in environment.example.js 
-Setup a Firebase app and use those app settings to configure environment.js,    
-Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack](https://codeforbtv.slack.com/) and we'll gladly share ours. Not on our Slack board?  [Get an invitation.](https://cfbtv-slackin.herokuapp.com/) 
- 
+You won't be able to run the code without a environment.js file. and template for this file can be found in environment.example.js
+
+
+
+Setup a Firebase app and use those app settings to configure environment.js,
+Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack](https://codeforbtv.slack.com/) and we'll gladly share ours. Not on our Slack board?  [Get an invitation.](https://cfbtv-slackin.herokuapp.com/)
+
 Install the [expo client](https://expo.io/tools#client) on your phone
 
 Run the project in the root folder.
