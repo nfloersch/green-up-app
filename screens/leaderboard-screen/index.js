@@ -44,11 +44,13 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
     ])(sortBy);
     return (
         <SafeAreaView style={ styles.container }>
-            <View style={ { height: 30, width: "100%", backgroundColor: "#EEE" } }>
-                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
+            <View style={ { height: 50, width: "100%", backgroundColor: "#EEE" } }>
+                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-around" } }>
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
-                    } }><Text>{ "Sort by Rank" }</Text></TouchableOpacity>
+                    } }>
+                        <Text>{ "Sort by Rank" }</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={ () => {
                         setSortBy("teamName");
                     } }><Text>{ "Sort by Team" }</Text></TouchableOpacity>

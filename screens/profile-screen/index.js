@@ -18,6 +18,7 @@ import * as actionCreators from "../../action-creators/profile-action-creators";
 import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
 import { removeNulls } from "../../libs/remove-nulls";
+import PhotoPicker from "../../components/photo-picker";
 
 const myStyles = {
     aboutMeInput: {
@@ -48,9 +49,7 @@ const reducer = (state: Object, action: ActionType): (Object | void) => {
 
 
 const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element<View> => {
-
     const [state, dispatch] = useReducer(reducer, currentUser);
-
     const { photoURL, displayName, bio } = (state || {});
     const saveProfile = () => {
         actions.saveProfile(User.create(Object.assign({}, currentUser, state)));
@@ -82,10 +81,14 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                 <ScrollView style={ styles.scroll }>
                     <View style={ [styles.infoBlockContainer, { height: 400 }] }>
                         <View style={ [styles.profileHeader, { backgroundColor: "white" }] }>
-                            <Image
-                                style={ { width: 50, height: 50 } }
-                                source={ { uri: photoURL } }
-                            />
+                            <PhotoPicker onChange={ (image: Object) => {
+                                dispatch({ type: "UPDATE_AVATAR", data: `data:image/png;base64,${image.base64}` });
+                            } }>
+                                <Image
+                                    style={ { width: 50, height: 50 } }
+                                    source={ { uri: photoURL } }
+                                />
+                            </PhotoPicker>
                             <Text style={ [styles.profileName, styles.heading] }>
                                 { displayName || "" }
                             </Text>
