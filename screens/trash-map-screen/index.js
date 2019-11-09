@@ -9,7 +9,7 @@ import CheckBox from "react-native-checkbox";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
-    KeyboardAvoidingView,
+    SafeAreaView,
     Linking,
     TouchableHighlight,
     TouchableOpacity,
@@ -31,6 +31,7 @@ import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
 import TownInformation from "../../components/town-information";
 import offsetLocations from "../../libs/offset-locations";
+import TrashDropForm from "../../components/trash-drop-form";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -347,7 +348,6 @@ const TrashMap = (
             >
                 { allMarkers }
             </MapView>
-
             <View style={ {
                 position: "absolute",
                 top: 0,
@@ -397,14 +397,13 @@ const TrashMap = (
                     />
                 </TouchableHighlight>
             </View>
-
             <TownInformation townInfo={ townInfo } town={ town }/>
             <Modal
                 animationType={ "slide" }
                 transparent={ false }
                 visible={ modalVisible }
                 onRequestClose={ closeModal }>
-                <View style={ [styles.frame, { paddingTop: 30 }] }>
+                <SafeAreaView style={ styles.container }>
                     <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
                         <View style={ styles.buttonBar }>
                             {
@@ -432,62 +431,57 @@ const TrashMap = (
                             </View>
                         </View>
                     </View>
-                    <KeyboardAvoidingView
-                        style={ defaultStyles.frame }
-                        behavior={ Platform.OS === "ios" ? "padding" : null }
-                    >
-                        <ScrollView style={ styles.scroll }>
-                            <View style={ styles.infoBlockContainer }>
-                                <Text style={ styles.labelDark }>Number of Bags</Text>
-                                <TextInput
-                                    underlineColorAndroid="transparent"
+                    <ScrollView style={ styles.scroll }>
+                        <View style={ styles.infoBlockContainer }>
+                            <Text style={ styles.labelDark }>Number of Bags</Text>
+                            <TextInput
+                                underlineColorAndroid="transparent"
+                                editable={ showFirstButton }
+                                value={ (drop.bagCount || "").toString() }
+                                keyboardType="numeric"
+                                placeholder="1"
+                                style={ styles.textInput }
+                                onChangeText={ (text: string) => {
+                                    setDrop({
+                                        ...drop,
+                                        bagCount: Number(text)
+                                    });
+                                } }
+                            />
+                            <Text style={ styles.labelDark }>Other Items</Text>
+                            <View style={ styles.fieldset }>
+                                <CheckBox
                                     editable={ showFirstButton }
-                                    value={ (drop.bagCount || "").toString() }
-                                    keyboardType="numeric"
-                                    placeholder="1"
-                                    style={ styles.textInput }
-                                    onChangeText={ (text: string) => {
-                                        setDrop({
-                                            ...drop,
-                                            bagCount: Number(text)
-                                        });
-                                    } }
-                                />
-                                <Text style={ styles.labelDark }>Other Items</Text>
-                                <View style={ styles.fieldset }>
-                                    <CheckBox
-                                        editable={ showFirstButton }
-                                        label="Needles/Bio-Waste"
-                                        checked={ (drop.tags || []).indexOf("bio-waste") > -1 }
-                                        onChange={ toggleTag(showFirstButton, "bio-waste") }/>
-                                    <CheckBox
-                                        editable={ showFirstButton }
-                                        label="Tires"
-                                        checked={ (drop.tags || []).indexOf("tires") > -1 }
-                                        onChange={ toggleTag(showFirstButton, "tires") }/>
-                                    <CheckBox
-                                        editable={ showFirstButton }
-                                        label="Large Object"
-                                        checked={ (drop.tags || []).indexOf("large") > -1 }
-                                        onChange={ toggleTag(showFirstButton, "large") }/>
-                                </View>
-
+                                    label="Needles/Bio-Waste"
+                                    checked={ (drop.tags || []).indexOf("bio-waste") > -1 }
+                                    onChange={ toggleTag(showFirstButton, "bio-waste") }/>
+                                <CheckBox
+                                    editable={ showFirstButton }
+                                    label="Tires"
+                                    checked={ (drop.tags || []).indexOf("tires") > -1 }
+                                    onChange={ toggleTag(showFirstButton, "tires") }/>
+                                <CheckBox
+                                    editable={ showFirstButton }
+                                    label="Large Object"
+                                    checked={ (drop.tags || []).indexOf("large") > -1 }
+                                    onChange={ toggleTag(showFirstButton, "large") }/>
                             </View>
-                            {
-                                drop.id && !drop.wasCollected && (
-                                    <View style={ { width: "100%", height: 60 } }>
-                                        <TouchableHighlight
-                                            style={ [styles.button, { width: "100%" }] }
-                                            onPress={ collectTrashDrop }
-                                        >
-                                            <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
-                                        </TouchableHighlight>
-                                    </View>
-                                )
-                            }
-                        </ScrollView>
-                    </KeyboardAvoidingView>
-                </View>
+
+                        </View>
+                        {
+                            drop.id && !drop.wasCollected && (
+                                <View style={ { width: "100%", height: 60 } }>
+                                    <TouchableHighlight
+                                        style={ [styles.button, { width: "100%" }] }
+                                        onPress={ collectTrashDrop }
+                                    >
+                                        <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            )
+                        }
+                    </ScrollView>
+                </SafeAreaView>
             </Modal>
             <Modal
                 animationType={ "slide" }
