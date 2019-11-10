@@ -6954,13 +6954,6 @@ expo-contacts@^6.0.0:
   dependencies:
     uuid-js "^0.7.5"
 
-expo-file-system@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-7.0.0.tgz#ac98233b18774cce299fffd9451f08f21b116564"
-  integrity sha512-ignf5Vf5cPDYO/4HgUkgnL574wMbCNxyazlOvBgV34rLGJzBbFsn++hqC7njr2VTpIIXh2G9vp1+8g6cvsQdqA==
-  dependencies:
-    uuid-js "^0.7.5"
-
 expo-file-system@~6.0.0:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-6.0.2.tgz#e65f30eb6a7213e07933df9688116eaf4e25bbf8"

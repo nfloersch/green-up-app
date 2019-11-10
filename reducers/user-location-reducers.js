@@ -7,7 +7,8 @@ export const userLocationReducers = (state: Object = initialState.userLocation, 
         case types.USER_LOCATION_UPDATE_SUCCESS:
             return {
                 ...state,
-                ...action.data
+                ...action.data,
+                error: null
             };
         case types.USER_LOCATION_UPDATE_FAIL:
             return {

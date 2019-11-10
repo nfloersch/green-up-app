@@ -41,7 +41,7 @@
     "expo-asset": "~6.0.0",
     "expo-constants": "^6.0.0",
     "expo-contacts": "^6.0.0",
-    "expo-file-system": "^7.0.0",
+    "expo-file-system": "~6.0.0",
     "expo-font": "~6.0.1",
     "expo-image-manipulator": "~6.0.0",
     "expo-image-picker": "~6.0.0",

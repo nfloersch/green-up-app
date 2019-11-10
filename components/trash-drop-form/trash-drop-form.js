@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     TouchableHighlight,
     StyleSheet,
@@ -33,14 +33,47 @@ type PropsType = {
     location: LocationType,
     trashDrop: Object,
     onSave: Object => void,
-    onCancel: ()=> void
+    onCancel: ()=> void,
+    currentUser: UserType
 };
 
+export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser }: PropsType): React$Element<View> => {
+    const [drop, setDrop] = useState({
+        id: null,
+        location: {},
+        tags: [],
+        bagCount: 1,
+        wasCollected: false,
+        createdBy: { uid: currentUser.uid, email: currentUser.email }
+    });
+    const collectTrashDrop = () => {
+        const collectedDrop = {
+            ...drop,
+            wasCollected: true,
+            collectedBy: {
+                uid: currentUser.uid,
+                email: currentUser.email
+            }
+        };
+        onSave(collectedDrop);
+    };
 
-export const TrashDropForm = ({ location, trashDrop, onSave, onCancel }: PropsType): React$Element<View> => {
     const town = location ? getTown(location) : "";
     const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, "_");
     const townInfo = townData[encodedTownName] || {};
+    const toggleTag = (editable: boolean, tag: string): (any=>any) => () => {
+        if (editable) {
+            const hasTag = (drop.tags || []).indexOf(tag) > -1;
+            const tags = hasTag
+                ? (drop.tags || []).filter((_tag: string): boolean => _tag !== tag)
+                : (drop.tags || []).concat(tag);
+            setDrop({ ...drop, tags });
+        }
+    };
+    const showFirstButton = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
+    useEffect(() => {
+        setDrop(trashDrop);
+    }, [trashDrop]);
 
     return (
         <SafeAreaView style={ styles.container }>
@@ -52,7 +85,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel }: PropsTy
                                 <View style={ styles.buttonBarButton }>
                                     <TouchableOpacity
                                         style={ styles.headerButton }
-                                        onPress={ saveTrashDrop }
+                                        onPress={ onSave }
                                     >
                                         <Text style={ styles.headerButtonText }>
                                             { drop.id ? "Update This Spot" : "Mark This Spot" }
