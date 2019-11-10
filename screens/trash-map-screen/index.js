@@ -1,8 +1,6 @@
 // @flow
 import React, { useState, Fragment } from "react";
-import * as Location from "expo-location";
 import MapView from "react-native-maps";
-import * as Permissions from "expo-permissions";
 import * as R from "ramda";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -22,7 +20,7 @@ import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
-import TownInformation from "../../components/town-information";
+
 import offsetLocations from "../../libs/offset-locations";
 import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
@@ -92,9 +90,7 @@ const TrashMap = (
         }
         closeModal();
     };
-    const goToTrashDrop = () => {
-        setModalVisible(true);
-    };
+
     // $FlowFixMe
     const trashDropOffLocations = R.compose(
         R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
@@ -228,7 +224,7 @@ const TrashMap = (
                 R.cond([
                     [
                         () => Boolean(location.error),
-                        () => (<EnableLocationServices errorMessage={ location.error}/>)
+                        () => (<EnableLocationServices errorMessage={ location.error }/>)
                     ],
                     [() => !Boolean(initialMapLocation), () => (
                         <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
@@ -268,28 +264,20 @@ const TrashMap = (
                                 padding: 0,
                                 justifyContent: "flex-end"
                             } }>
-                                { townInfo.roadsideDropOffAllowed
-                                    ? (
-                                        <TouchableHighlight
-                                            style={ [styles.headerButton, {
-                                                backgroundColor: "#EEE",
-                                                paddingTop: 13,
-                                                height: 50,
-                                                flex: 1
-                                            }] }
-                                            onPress={ goToTrashDrop }>
-                                            <Text style={ styles.headerButtonText }>
-                                                { "Drop A Trash Bag Here" }
-                                            </Text>
-                                        </TouchableHighlight>
-                                    )
-                                    : (<View style={ [styles.headerButton, {
+                                <TouchableHighlight
+                                    style={ [styles.headerButton, {
                                         backgroundColor: "#EEE",
                                         paddingTop: 13,
                                         height: 50,
                                         flex: 1
-                                    }] }/>)
-                                }
+                                    }] }
+                                    onPress={ () => {
+                                        setModalVisible(true);
+                                    } }>
+                                    <Text style={ styles.headerButtonText }>
+                                        { "Record Your Trash" }
+                                    </Text>
+                                </TouchableHighlight>
                                 <TouchableHighlight
                                     style={ {
                                         height: 50,
@@ -309,7 +297,6 @@ const TrashMap = (
                                     />
                                 </TouchableHighlight>
                             </View>
-                            <TownInformation townInfo={ townInfo } town={ town }/>
                             <Modal
                                 animationType={ "slide" }
                                 transparent={ false }

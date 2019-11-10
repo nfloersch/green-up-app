@@ -13,8 +13,10 @@ import { SafeAreaView, TouchableOpacity } from "react-native";
 import CheckBox from "react-native-checkbox";
 import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
+import TownInformation from "../town-information";
 
 type LocationType = { coords: { longitude: number, latitude: number } };
+
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
@@ -77,6 +79,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
 
     return (
         <SafeAreaView style={ styles.container }>
+
             <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
                 <View style={ styles.buttonBar }>
                     {
@@ -95,10 +98,8 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                             )
                             : null
                     }
-
-
                     <View style={ styles.buttonBarButton }>
-                        <TouchableOpacity style={ styles.headerButton } onPress={ closeModal }>
+                        <TouchableOpacity style={ styles.headerButton } onPress={ onCancel }>
                             <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
                         </TouchableOpacity>
                     </View>
@@ -106,6 +107,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
             </View>
             <ScrollView style={ styles.scroll }>
                 <View style={ styles.infoBlockContainer }>
+                    <TownInformation townInfo={ townInfo } town={ town }/>
                     <Text style={ styles.labelDark }>Number of Bags</Text>
                     <TextInput
                         underlineColorAndroid="transparent"
@@ -139,7 +141,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                             checked={ (drop.tags || []).indexOf("large") > -1 }
                             onChange={ toggleTag(showFirstButton, "large") }/>
                     </View>
-
                 </View>
                 {
                     drop.id && !drop.wasCollected && (
