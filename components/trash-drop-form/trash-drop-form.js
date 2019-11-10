@@ -15,14 +15,14 @@ import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
 import TownInformation from "../town-information";
 
-type LocationType = { coords: { longitude: number, latitude: number } };
+type LocationType = { coordinates: { longitude: number, latitude: number } };
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const getTown = (myLocation: LocationType): string => {
     const townPolygonsData = require("../../libs/VT_Boundaries__town_polygons.json");
-    const currentLocation = turf.point([myLocation.coords.longitude, myLocation.coords.latitude]);
+    const currentLocation = turf.point([myLocation.coordinates.longitude, myLocation.coordinates.latitude]);
     const town = townPolygonsData.features
         .find((f: Object): boolean => {
             const feature = turf.feature(f.geometry);
@@ -36,10 +36,11 @@ type PropsType = {
     trashDrop: Object,
     onSave: Object => void,
     onCancel: ()=> void,
-    currentUser: UserType
+    currentUser: UserType,
+    townData: Object
 };
 
-export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData }: PropsType): React$Element<View> => {
     const [drop, setDrop] = useState({
         id: null,
         location: {},
@@ -72,30 +73,27 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
             setDrop({ ...drop, tags });
         }
     };
-    const showFirstButton = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
+    const isEditable = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
     useEffect(() => {
         setDrop(trashDrop);
     }, [trashDrop]);
 
     return (
         <SafeAreaView style={ styles.container }>
-
             <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
                 <View style={ styles.buttonBar }>
                     {
-                        showFirstButton
-                            ? (
-                                <View style={ styles.buttonBarButton }>
-                                    <TouchableOpacity
-                                        style={ styles.headerButton }
-                                        onPress={ onSave }
-                                    >
-                                        <Text style={ styles.headerButtonText }>
-                                            { drop.id ? "Update This Spot" : "Mark This Spot" }
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            )
+                        isEditable
+                            ? (<View style={ styles.buttonBarButton }>
+                                <TouchableOpacity
+                                    style={ styles.headerButton }
+                                    onPress={ () => onSave(drop) }
+                                >
+                                    <Text style={ styles.headerButtonText }>
+                                        { "Save" }
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>)
                             : null
                     }
                     <View style={ styles.buttonBarButton }>
@@ -111,7 +109,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                     <Text style={ styles.labelDark }>Number of Bags</Text>
                     <TextInput
                         underlineColorAndroid="transparent"
-                        editable={ showFirstButton }
+                        editable={ isEditable }
                         value={ (drop.bagCount || "").toString() }
                         keyboardType="numeric"
                         placeholder="1"
@@ -126,20 +124,20 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                     <Text style={ styles.labelDark }>Other Items</Text>
                     <View style={ styles.fieldset }>
                         <CheckBox
-                            editable={ showFirstButton }
+                            editable={ isEditable }
                             label="Needles/Bio-Waste"
                             checked={ (drop.tags || []).indexOf("bio-waste") > -1 }
-                            onChange={ toggleTag(showFirstButton, "bio-waste") }/>
+                            onChange={ toggleTag(isEditable, "bio-waste") }/>
                         <CheckBox
-                            editable={ showFirstButton }
+                            editable={ isEditable }
                             label="Tires"
                             checked={ (drop.tags || []).indexOf("tires") > -1 }
-                            onChange={ toggleTag(showFirstButton, "tires") }/>
+                            onChange={ toggleTag(isEditable, "tires") }/>
                         <CheckBox
-                            editable={ showFirstButton }
+                            editable={ isEditable }
                             label="Large Object"
                             checked={ (drop.tags || []).indexOf("large") > -1 }
-                            onChange={ toggleTag(showFirstButton, "large") }/>
+                            onChange={ toggleTag(isEditable, "large") }/>
                     </View>
                 </View>
                 {

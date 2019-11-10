@@ -314,7 +314,7 @@ const TrashMap = (
                                 <TrashDropForm
                                     townData={ townData }
                                     trashDrop={ drop }
-                                    location={ location }
+                                    location={ userLocation }
                                     onSave={ saveTrashDrop }
                                     onCancel={ closeModal }
                                     currentUser={ currentUser }
