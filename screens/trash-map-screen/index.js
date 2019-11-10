@@ -34,12 +34,12 @@ type PropsType = {
     cleanAreasToggle: boolean,
     collectedTrashToggle: boolean,
     currentUser: Object,
-    location: Object,
     supplyPickupToggle: boolean,
     townData: Object,
     trashDropOffToggle: boolean,
     myTrashToggle: boolean,
-    uncollectedTrashToggle: boolean
+    uncollectedTrashToggle: boolean,
+    userLocation: Object
 };
 
 const TrashMap = (
@@ -50,13 +50,14 @@ const TrashMap = (
         collectedTrashToggle,
         currentUser,
         drops,
-        location,
         myTrashToggle,
         supplyPickupToggle,
         townData,
         trashDropOffToggle,
-        uncollectedTrashToggle
+        uncollectedTrashToggle,
+        userLocation
     }: PropsType): React$Element<any> => {
+
     const [drop, setDrop] = useState({
         id: null,
         location: {},
@@ -65,8 +66,11 @@ const TrashMap = (
         wasCollected: false,
         createdBy: { uid: currentUser.uid, email: currentUser.email }
     });
+
     const [modalVisible, setModalVisible] = useState(false);
+
     const [toggleModalVisible, setToggleModalVisible] = useState(false);
+
     const closeModal = () => {
         const newDrop = TrashDrop.create({
             id: null,
@@ -79,9 +83,11 @@ const TrashMap = (
         setModalVisible(false);
         setDrop(newDrop);
     };
+
     const closeToggleModal = () => {
         setToggleModalVisible(false);
     };
+
     const saveTrashDrop = (myDrop: Object) => {
         if (myDrop.id) {
             actions.updateTrashDrop(myDrop);
@@ -98,6 +104,7 @@ const TrashMap = (
         R.map((t: Object): Array<Object> => t.dropOffLocations),
         Object.values
     )(townData);
+
     // $FlowFixMe
     const supplyPickupLocations = R.compose(
         R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
@@ -105,10 +112,12 @@ const TrashMap = (
         R.map((t: Object): Array<Object> => t.pickupLocations),
         Object.values
     )(townData);
-    const initialMapLocation = location
+
+
+    const initialMapLocation = userLocation
         ? {
-            latitude: Number(location.coords.latitude),
-            longitude: Number(location.coords.longitude),
+            latitude: Number(userLocation.coordinates.latitude),
+            longitude: Number(userLocation.coordinates.longitude),
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         }
@@ -223,8 +232,8 @@ const TrashMap = (
             {
                 R.cond([
                     [
-                        () => Boolean(location.error),
-                        () => (<EnableLocationServices errorMessage={ location.error }/>)
+                        () => Boolean(userLocation.error),
+                        () => (<EnableLocationServices errorMessage={userLocation.error }/>)
                     ],
                     [() => !Boolean(initialMapLocation), () => (
                         <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
