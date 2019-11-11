@@ -1,5 +1,5 @@
 // @flow
-import Coordinates from "./coordinates";
+import Location from "./location";
 import { isValidDate } from "../libs/validators";
 
 export default class TrashDrop {
@@ -9,7 +9,7 @@ export default class TrashDrop {
     active: ?boolean;
     tags: ?Array<string>;
     teamId: ?string;
-    location: ?CoordinatesType;
+    location: ?LocationType;
     created: ?Date;
     wasCollected: ?boolean;
     createdBy: ?Object;
@@ -22,7 +22,7 @@ export default class TrashDrop {
         this.teamId = typeof args.teamId === "string" ? args.teamId : null;
         this.status = typeof args.status === "string" ? args.status : null;
         this.active = typeof args.active === "boolean" ? args.active : true;
-        this.location = Coordinates.create(args.location);
+        this.location = Location.create(args.location);
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : new Date();
         this.wasCollected = typeof args.wasCollected === "boolean" ? args.wasCollected : false;
         this.createdBy = typeof args.createdBy === "object" ? args.createdBy : null;

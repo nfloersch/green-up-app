@@ -92,7 +92,7 @@ const TrashMap = (
         if (myDrop.id) {
             actions.updateTrashDrop(myDrop);
         } else {
-            actions.dropTrash(TrashDrop.create({ ...myDrop, location: location.coords }));
+            actions.dropTrash(TrashDrop.create(myDrop));
         }
         closeModal();
     };
@@ -233,7 +233,7 @@ const TrashMap = (
                 R.cond([
                     [
                         () => Boolean(userLocation.error),
-                        () => (<EnableLocationServices errorMessage={userLocation.error }/>)
+                        () => (<EnableLocationServices errorMessage={ userLocation.error }/>)
                     ],
                     [() => !Boolean(initialMapLocation), () => (
                         <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>

@@ -60,7 +60,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
         };
         onSave(collectedDrop);
     };
-
     const town = location ? getTown(location) : "";
     const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, "_");
     const townInfo = townData[encodedTownName] || {};
@@ -75,8 +74,10 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
     };
     const isEditable = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
     useEffect(() => {
-        setDrop(trashDrop);
-    }, [trashDrop]);
+        debugger;
+        setDrop({ ...trashDrop, location });
+    }, [trashDrop, location]);
+
 
     return (
         <SafeAreaView style={ styles.container }>
@@ -104,7 +105,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                 </View>
             </View>
             <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
+                <View style={ { flex: 1, justifyContent: "flex-start" } }>
                     <TownInformation townInfo={ townInfo } town={ town }/>
                     <Text style={ styles.labelDark }>Number of Bags</Text>
                     <TextInput
@@ -154,9 +155,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                 }
             </ScrollView>
         </SafeAreaView>
-
     );
 };
-
-
 
