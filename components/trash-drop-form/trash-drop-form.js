@@ -74,7 +74,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
     };
     const isEditable = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
     useEffect(() => {
-        debugger;
         setDrop({ ...trashDrop, location });
     }, [trashDrop, location]);
 

@@ -227,7 +227,7 @@ const TrashMap = (
         .concat(cleanAreaMarkers);
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
             {
                 R.cond([
@@ -243,25 +243,6 @@ const TrashMap = (
                         </View>)],
                     [R.T, () => (
                         <Fragment>
-                            <MapView
-                                initialRegion={ initialMapLocation }
-                                showsUserLocation={ true }
-                                showsMyLocationButton={ true }
-                                showsCompass={ true }
-                                style={ {
-                                    position: "absolute",
-                                    top: 50,
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    height: "100%",
-                                    width: "100%",
-                                    margin: 0,
-                                    padding: 0
-                                } }
-                            >
-                                { allMarkers }
-                            </MapView>
                             <View style={ {
                                 position: "absolute",
                                 top: 0,
@@ -306,38 +287,58 @@ const TrashMap = (
                                     />
                                 </TouchableHighlight>
                             </View>
-                            <Modal
-                                animationType={ "slide" }
-                                transparent={ false }
-                                visible={ modalVisible }
-                                onRequestClose={ closeModal }>
-                                <TrashDropForm
-                                    townData={ townData }
-                                    trashDrop={ drop }
-                                    location={ userLocation }
-                                    onSave={ saveTrashDrop }
-                                    onCancel={ closeModal }
-                                    currentUser={ currentUser }
-                                />
-                            </Modal>
-                            <Modal
-                                animationType={ "slide" }
-                                transparent={ false }
-                                visible={ toggleModalVisible }
-                                onRequestClose={ closeToggleModal }>
-                                <TrashToggles close={ closeToggleModal }/>
-                            </Modal>
+                            <MapView
+                                initialRegion={ initialMapLocation }
+                                showsUserLocation={ true }
+                                showsMyLocationButton={ true }
+                                showsCompass={ true }
+                                style={ {
+                                    position: "absolute",
+                                    top: 50,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    height: "100%",
+                                    width: "100%",
+                                    margin: 0,
+                                    padding: 0
+                                } }
+                            >
+                                { allMarkers }
+                            </MapView>
                         </Fragment>)
                     ]
                 ])()
             }
-
+            <Modal
+                animationType={ "slide" }
+                transparent={ false }
+                visible={ modalVisible }
+                onRequestClose={ closeModal }>
+                <TrashDropForm
+                    townData={ townData }
+                    trashDrop={ drop }
+                    location={ userLocation }
+                    onSave={ saveTrashDrop }
+                    onCancel={ closeModal }
+                    currentUser={ currentUser }
+                />
+            </Modal>
+            <Modal
+                animationType={ "slide" }
+                transparent={ false }
+                visible={ toggleModalVisible }
+                onRequestClose={ closeToggleModal }>
+                <TrashToggles close={ closeToggleModal }/>
+            </Modal>
         </SafeAreaView>
+
+
     );
 };
 
 TrashMap.navigationOptions = {
-    title: "Trash Tracker"
+    title: "Trash Map"
 };
 
 const mapStateToProps = (state: Object): Object => {
