@@ -19,10 +19,23 @@ const renderRow = (ranking) => {
     }
 
     return (
-        <Tile style={ { flex: 1, flexDirection: "row" } }>
-            <Text styleName="md-gutter-bottom">{ ranking.rank }</Text>
-            <Text styleName="sm-gutter-horizontal">{ ranking.teamName }</Text>
-            <Text styleName="md-gutter-bottom">{ ranking.bagCount }</Text>
+        <Tile style={ { flex: 1, flexDirection: "row", justifyContent: "space-between", width: "100%" } }>
+            <View style={ { marginLeft: 10, marginRight: 10 } }>
+                <Text styleName="md-gutter-bottom">{ ranking.rank }</Text>
+            </View>
+            <View style={ {
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "stretch",
+                margin: 5
+            } }>
+                <Text styleName="sm-gutter-horizontal" style={ { alignSelf: "stretch" } }>{ ranking.teamName }</Text>
+            </View>
+            <View style={ { paddingLeft: 10, paddingRight: 10 } }>
+                <Text styleName="md-gutter-bottom">{ ranking.bagCount }</Text>
+            </View>
             <Divider styleName="line"/>
         </Tile>
     );
@@ -45,15 +58,31 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ { height: 50, width: "100%", backgroundColor: "#EEE" } }>
-                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-around" } }>
-                    <TouchableOpacity onPress={ () => {
-                        setSortBy("rank");
+                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between", width: "100%" } }>
+                    <View style={ { marginLeft: 10, marginRight: 10 } }>
+                        <TouchableOpacity onPress={ () => {
+                            setSortBy("rank");
+                        } }>
+                            <Text>{ "Rank" }</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={ {
+                        flex: 1,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignSelf: "stretch",
+                        margin: 5
                     } }>
-                        <Text>{ "Sort by Rank" }</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={ () => {
-                        setSortBy("teamName");
-                    } }><Text>{ "Sort by Team" }</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={ () => {
+                            setSortBy("teamName");
+                        } }>
+                            <Text>{ "Team" }</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={ { paddingLeft: 10, paddingRight: 10 } }>
+                        <Text styleName="md-gutter-bottom">{ "Bags" }</Text>
+                    </View>
                 </View>
             </View>
             <ListView data={ sortedRanks } renderRow={ renderRow }/>
