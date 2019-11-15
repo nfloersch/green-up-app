@@ -77,23 +77,24 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
         setDrop({ ...trashDrop, location });
     }, [trashDrop, location]);
 
-
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
                 <View style={ styles.buttonBar }>
                     {
                         isEditable
-                            ? (<View style={ styles.buttonBarButton }>
-                                <TouchableOpacity
-                                    style={ styles.headerButton }
-                                    onPress={ () => onSave(drop) }
-                                >
-                                    <Text style={ styles.headerButtonText }>
-                                        { "Save" }
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>)
+                            ? (
+                                <View style={ styles.buttonBarButton }>
+                                    <TouchableOpacity
+                                        style={ styles.headerButton }
+                                        onPress={ () => onSave(drop) }
+                                    >
+                                        <Text style={ styles.headerButtonText }>
+                                            { "Save" }
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )
                             : null
                     }
                     <View style={ styles.buttonBarButton }>
@@ -139,19 +140,19 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                             checked={ (drop.tags || []).indexOf("large") > -1 }
                             onChange={ toggleTag(isEditable, "large") }/>
                     </View>
+                    {
+                        drop.id && !drop.wasCollected && (
+                            <View style={ { width: "100%", height: 60 } }>
+                                <TouchableHighlight
+                                    style={ [styles.button, { width: "100%" }] }
+                                    onPress={ collectTrashDrop }
+                                >
+                                    <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
+                                </TouchableHighlight>
+                            </View>
+                        )
+                    }
                 </View>
-                {
-                    drop.id && !drop.wasCollected && (
-                        <View style={ { width: "100%", height: 60 } }>
-                            <TouchableHighlight
-                                style={ [styles.button, { width: "100%" }] }
-                                onPress={ collectTrashDrop }
-                            >
-                                <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
-                            </TouchableHighlight>
-                        </View>
-                    )
-                }
             </ScrollView>
         </SafeAreaView>
     );

@@ -10,7 +10,9 @@ export const boxes = {
         borderWidth: 2,
         borderColor: "#000",
         borderRadius: 5,
-        padding: 5
+        padding: 5,
+        flex: 1,
+        marginBottom: 5
     },
     modalFrame:{
         paddingTop: 60,
