@@ -262,5 +262,222 @@ app.put("/trash_collection_sites", (req, res) => {
 
 });
 
+// Supply Distribution Sites
+
+app.get("/supply_distribution_sites", async (req, res) => {
+    const db = admin.firestore();
+    const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isCoordinator = userPermissions.exists && (userPermissions.data().isCoordinator || userPermissions.data().isAdmin);
+    const permittedTowns = isCoordinator ? userPermissions.data().towns || [] : [];
+    const filterEditable = R.cond([
+        [editable => typeof editable === "string" && editable.toLowerCase() === "false", () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => typeof editable === "string" && editable.toLowerCase() === "true", () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === false, () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === true, () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [R.T, () => R.filter(R.T)]
+    ]);
+    const filterAll = R.compose(filterByName, filterEditable(req.query.editable));
+
+    firebaseHelper.firestore
+        .backup(db, "supplyDistributionSites")
+        .then(data => res.status(200).send({ supplyDistributionSites: filterAll(data.supplyDistributionSites) }))
+        .catch(error => res.status(400).send(`Cannot get trash collection sites: ${ error }`));
+});
+
+app.get("/supply_distribution_sites/:id", (req, res) => {
+    const docRef = admin.firestore().collection("supplyDistributionSites").doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            } else {
+                return res.status(400).send(`Cannot get supply distribution site: ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot get  supply distribution site: ${ error }`));
+});
+
+app.post("/supply_distribution_sites", (req, res) => {
+    const db = admin.firestore();
+    const newSite = SupplyDistributionSite.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+    db.collection("supplyDistributionSites")
+        .add(newSite)
+        .then((docRef) => {
+            return docRef.get()
+                .then(doc => {
+                    return res.status(200).send({ [docRef.id]: doc.data() });
+                });
+        })
+        .catch(error => res.status(400).send(`Cannot create  supply distribution site: ${ error }`));
+});
+
+app.patch("/supply_distribution_sites/:id", (req, res) => {
+    const blackListedFields = ["id", "updated", "created", "townId"];
+    const fieldsToMerge = R.compose(
+        R.fromPairs,
+        R.filter(entry => !blackListedFields.includes(entry[0])),
+        Object.entries)(req.body);
+    const db = admin.firestore();
+    const docRef = db.collection("supplyDistributionSites").doc(req.params.id);
+    docRef.get()
+        .then(doc => {
+            if (doc.exists) {
+                const newSite = SupplyDistributionSite.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+                return docRef.set(newSite).then(() => {
+                    return docRef.get()
+                        .then(doc => {
+                            return res.status(200).send({ [doc.id]: doc.data() });
+                        });
+                });
+            } else {
+                return res.status(404).send(`Cannot find  supply distribution : ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot update  supply distribution : ${ error }`));
+});
+
+app.delete("/supply_distribution_sites/:id", (req, res) => {
+    const docRef = admin.firestore().collection("supplyDistributionSites").doc(req.params.id);
+    docRef.delete()
+        .then(() => {
+            const result = { id: req.params.id };
+            return res.status(200).send(result);
+        })
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+});
+
+// Bulk upload of Trash Collection Sites data
+app.put("/supply_distribution_sites", (req, res) => {
+
+    const collection = admin.firestore().collection("supplyDistributionSites");
+    try {
+        const data = R.map(site => SupplyDistributionSite.create(site), Object.values(JSON.parse(req.body.supplyDistributionSites)));
+        const records = data.map(site => collection.add(site));
+        Promise.all(records)
+            .then(results => {
+                return res.status(200).send({ results });
+            })
+            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
+
+});
+
+
+// Celebrattions
+
+app.get("/celebrations", async (req, res) => {
+    const db = admin.firestore();
+    const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isCoordinator = userPermissions.exists && (userPermissions.data().isCoordinator || userPermissions.data().isAdmin);
+    const permittedTowns = isCoordinator ? userPermissions.data().towns || [] : [];
+    const filterEditable = R.cond([
+        [editable => typeof editable === "string" && editable.toLowerCase() === "false", () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => typeof editable === "string" && editable.toLowerCase() === "true", () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === false, () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === true, () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [R.T, () => R.filter(R.T)]
+    ]);
+    const filterAll = R.compose(filterByName, filterEditable(req.query.editable));
+
+    firebaseHelper.firestore
+        .backup(db, "celebrations")
+        .then(data => res.status(200).send({ celebrations: filterAll(data.celebrations) }))
+        .catch(error => res.status(400).send(`Cannot get trash collection sites: ${ error }`));
+});
+
+app.get("/celebrations/:id", (req, res) => {
+    const docRef = admin.firestore().collection("celebrations").doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            } else {
+                return res.status(400).send(`Cannot get supply distribution site: ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot get  supply distribution site: ${ error }`));
+});
+
+app.post("/celebrations", (req, res) => {
+    const db = admin.firestore();
+    const newSite = Celebration.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+    db.collection("celebrations")
+        .add(newSite)
+        .then((docRef) => {
+            return docRef.get()
+                .then(doc => {
+                    return res.status(200).send({ [docRef.id]: doc.data() });
+                });
+        })
+        .catch(error => res.status(400).send(`Cannot create  supply distribution site: ${ error }`));
+});
+
+app.patch("/celebrations/:id", (req, res) => {
+    const blackListedFields = ["id", "updated", "created", "townId"];
+    const fieldsToMerge = R.compose(
+        R.fromPairs,
+        R.filter(entry => !blackListedFields.includes(entry[0])),
+        Object.entries)(req.body);
+    const db = admin.firestore();
+    const docRef = db.collection("celebrations").doc(req.params.id);
+    docRef.get()
+        .then(doc => {
+            if (doc.exists) {
+                const newSite = Celebration.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+                return docRef.set(newSite).then(() => {
+                    return docRef.get()
+                        .then(doc => {
+                            return res.status(200).send({ [doc.id]: doc.data() });
+                        });
+                });
+            } else {
+                return res.status(404).send(`Cannot find  supply distribution : ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot update  supply distribution : ${ error }`));
+});
+
+app.delete("/celebrations/:id", (req, res) => {
+    const docRef = admin.firestore().collection("celebrations").doc(req.params.id);
+    docRef.delete()
+        .then(() => {
+            const result = { id: req.params.id };
+            return res.status(200).send(result);
+        })
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+});
+
+// Bulk upload of Trash Collection Sites data
+app.put("/celebrations", (req, res) => {
+
+    const collection = admin.firestore().collection("celebrations");
+    try {
+        const data = R.map(site => Celebration.create(site), Object.values(JSON.parse(req.body.celebrations)));
+        const records = data.map(site => collection.add(site));
+        Promise.all(records)
+            .then(results => {
+                return res.status(200).send({ results });
+            })
+            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
+
+});
+
+
+
 
 module.exports.app = functions.https.onRequest(app);
