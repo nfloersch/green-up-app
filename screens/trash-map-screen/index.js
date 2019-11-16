@@ -322,6 +322,7 @@ const TrashMap = (
                     onSave={ saveTrashDrop }
                     onCancel={ closeModal }
                     currentUser={ currentUser }
+                    trashDropOffLocations={trashDropOffLocations}
                 />
             </Modal>
             <Modal

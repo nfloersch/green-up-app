@@ -10,6 +10,7 @@ const app = express();
 const R = require("ramda");
 const bodyParser = require("body-parser");
 const Town = require("./models/town");
+const TrashCollectionSite = require("./models/trash-collection-site");
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -147,12 +148,119 @@ app.put("/towns", (req, res) => {
                 const towns = results.reduce((obj, town) => ({ ...obj, [town.id]: town }), {});
                 return res.status(200).send({ towns });
             })
-            .catch(error => res.status(400).send(`An error occurred: ${JSON.stringify(error) }`));
+            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
     }
     catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
 });
+
+// Trash Collection Sites
+app.get("/trash_collection_sites", async (req, res) => {
+    const db = admin.firestore();
+    const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isCoordinator = userPermissions.exists && (userPermissions.data().isCoordinator || userPermissions.data().isAdmin);
+    const permittedTowns = isCoordinator ? userPermissions.data().towns || [] : [];
+    const filterEditable = R.cond([
+        [editable => typeof editable === "string" && editable.toLowerCase() === "false", () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => typeof editable === "string" && editable.toLowerCase() === "true", () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === false, () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => editable === true, () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [R.T, () => R.filter(R.T)]
+    ]);
+    const filterAll = R.compose(filterByName, filterEditable(req.query.editable));
+
+    firebaseHelper.firestore
+        .backup(db, "trashCollectionSites")
+        .then(data => res.status(200).send({ trashCollectionSites: filterAll(data.trashCollectionSites) }))
+        .catch(error => res.status(400).send(`Cannot get trash collection sites: ${ error }`));
+});
+
+app.get("/trash_collection_sites/:id", (req, res) => {
+    const docRef = admin.firestore().collection("trashCollectionSites").doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            } else {
+                return res.status(400).send(`Cannot get trashCollectionSite: ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot get trashCollectionSite: ${ error }`));
+});
+
+app.post("/trash_collection_sites", (req, res) => {
+    const db = admin.firestore();
+    const newSite = TrashCollectionSite.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+    db.collection("trashCollectionSites")
+        .add(newSite)
+        .then((docRef) => {
+            return docRef.get()
+                .then(doc => {
+                    return res.status(200).send({ [docRef.id]: doc.data() });
+                });
+        })
+        .catch(error => res.status(400).send(`Cannot create trashCollectionSite: ${ error }`));
+});
+
+app.patch("/trash_collection_sites/:id", (req, res) => {
+    const blackListedFields = ["id", "updated", "created", "townId"];
+    const fieldsToMerge = R.compose(
+        R.fromPairs,
+        R.filter(entry => !blackListedFields.includes(entry[0])),
+        Object.entries)(req.body);
+    const db = admin.firestore();
+    const docRef = db.collection("trashCollectionSites").doc(req.params.id);
+    docRef.get()
+        .then(doc => {
+            if (doc.exists) {
+                const newSite = TrashCollectionSite.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+                return docRef.set(newSite).then(() => {
+                    return docRef.get()
+                        .then(doc => {
+                            return res.status(200).send({ [doc.id]: doc.data() });
+                        });
+                });
+            } else {
+                return res.status(404).send(`Cannot find trashCollectionSite: ${ req.params.id }`);
+            }
+        })
+        .catch(error => res.status(400).send(`Cannot update trashCollectionSite: ${ error }`));
+});
+
+app.delete("/trash_collection_sites/:id", (req, res) => {
+    const docRef = admin.firestore().collection("trashCollectionSites").doc(req.params.id);
+    docRef.delete()
+        .then(() => {
+            const result = { id: req.params.id };
+            return res.status(200).send(result);
+        })
+        .catch(error => {
+            return res.status(400).send(error);
+        });
+});
+
+// Bulk upload of Trash Collection Sites data
+app.put("/trash_collection_sites", (req, res) => {
+
+    const collection = admin.firestore().collection("trashCollectionSites");
+    try {
+        const data = R.map(site => TrashCollectionSite.create(site), Object.values(JSON.parse(req.body.trashCollectionSites)));
+        const records = data.map(site => collection.add(site));
+        Promise.all(records)
+            .then(results => {
+                return res.status(200).send({ results });
+            })
+            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
+
+});
+
 
 module.exports.app = functions.https.onRequest(app);

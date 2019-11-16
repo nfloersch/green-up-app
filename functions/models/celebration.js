@@ -1,5 +1,6 @@
 const Coordinates = require("./coordinates");
 const isValidDate = require("./libs/validators").isValidDate;
+const deconstruct = require("./libs/deconstruct");
 
 class Celebration {
 
@@ -17,7 +18,7 @@ class Celebration {
     }
 
     static create(args = {}) {
-        return new Celebration(args);
+        return deconstruct(new Celebration(args));
     }
 }
 

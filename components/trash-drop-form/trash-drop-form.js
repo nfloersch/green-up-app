@@ -37,10 +37,11 @@ type PropsType = {
     onSave: Object => void,
     onCancel: ()=> void,
     currentUser: UserType,
-    townData: Object
+    townData: Object,
+    trashDropOffLocations:Arrray<Object>
 };
 
-export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData, trashDropOffLocations }: PropsType): React$Element<View> => {
     const [drop, setDrop] = useState({
         id: null,
         location: {},
@@ -150,6 +151,26 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                                     <Text style={ styles.buttonText }>{ "Collect Trash" }</Text>
                                 </TouchableHighlight>
                             </View>
+                        )
+                    }
+                    {
+                        !drop.id && townInfo.roadsideDropOffAllowed === true && (
+                            <View style={ { width: "100%", height: 60 } }>
+                                <TouchableHighlight
+                                    style={ [styles.button, { width: "100%" }] }
+                                    onPress={ collectTrashDrop }
+                                >
+                                    <Text style={ styles.buttonText }>{ "Drop trash right here" }</Text>
+                                </TouchableHighlight>
+                            </View>
+                        )
+                    }
+                    {
+                        !drop.id && (
+                            <View style={ { width: "100%", height: 60 } }>
+                                    <SiteSelector value={} onSelect={} sites={trashDropOffLocations}/>
+                                    <Text style={ styles.buttonText }>{ "Trash was taken to  this drop-off location." }</Text>
+                             </View>
                         )
                     }
                 </View>

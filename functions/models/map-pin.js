@@ -1,6 +1,5 @@
 const deconstruct = require("./libs/deconstruct");
 const Coordinates = require("./coordinates");
-
 const standardOffsetFactor = 0.1;
 
 class MapPin {
