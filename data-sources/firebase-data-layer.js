@@ -74,7 +74,6 @@ function returnType(entry: EntryType): (string | Array<string> | Object) {
     }
 }
 
-
 function stringifyDates(obj: Object): Object {
     return Object.entries(obj).reduce((returnObj: Object, entry: [string, any]): Object => Object.assign({}, returnObj, {
         [entry[0]]: returnType(entry[1])
@@ -105,7 +104,6 @@ function createProfile(user: UserType, dispatch: Dispatch<ActionType>): Promise<
 }
 
 /** *************** INITIALIZATION *************** **/
-
 
 function fetchEventInfo(dispatch: Dispatch<ActionType>) {
     db.collection("eventInfo").doc("eventSettings").get().then(
@@ -145,7 +143,6 @@ const setupInvitedTeamMemberListener = (teamIds: Array<string>, dispatch: Dispat
             })
         ));
 });
-
 
 function setupInvitationListener(email: ?string = "", dispatch: Dispatch<ActionType>) {
     const ref = db.collection(`/invitations/${ email || "" }/teams`);
