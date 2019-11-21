@@ -11,6 +11,7 @@ const R = require("ramda");
 const bodyParser = require("body-parser");
 const Town = require("./models/town");
 const TrashCollectionSite = require("./models/trash-collection-site");
+const SupplyDistributionSite = require("./models/supply-distribution-site");
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -66,9 +67,14 @@ app.use(cookieParser);
 app.use(validateFirebaseIdToken);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+/*** Hello ***/
+
 app.get("/hello", (req, res) => {
     res.json({ "greeting": `Hello ${ req.user.email }` });
 });
+
+/*** Towns ***/
 
 app.get("/towns", async (req, res) => {
     const db = admin.firestore();
@@ -156,7 +162,8 @@ app.put("/towns", (req, res) => {
 
 });
 
-// Trash Collection Sites
+/*** Trash Collection Sites ***/
+
 app.get("/trash_collection_sites", async (req, res) => {
     const db = admin.firestore();
     const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
@@ -262,7 +269,7 @@ app.put("/trash_collection_sites", (req, res) => {
 
 });
 
-// Supply Distribution Sites
+/*** Supply Distribution Sites ***/
 
 app.get("/supply_distribution_sites", async (req, res) => {
     const db = admin.firestore();
@@ -282,7 +289,7 @@ app.get("/supply_distribution_sites", async (req, res) => {
     firebaseHelper.firestore
         .backup(db, "supplyDistributionSites")
         .then(data => res.status(200).send({ supplyDistributionSites: filterAll(data.supplyDistributionSites) }))
-        .catch(error => res.status(400).send(`Cannot get trash collection sites: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot get Trash Collection Sites: ${ error }`));
 });
 
 app.get("/supply_distribution_sites/:id", (req, res) => {
@@ -293,15 +300,16 @@ app.get("/supply_distribution_sites/:id", (req, res) => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
             } else {
-                return res.status(400).send(`Cannot get supply distribution site: ${ req.params.id }`);
+                return res.status(400).send(`Cannot get Supply Distribution Site: ${ req.params.id }`);
             }
         })
-        .catch(error => res.status(400).send(`Cannot get  supply distribution site: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot get Supply Distribution Site: ${ error }`));
 });
 
 app.post("/supply_distribution_sites", (req, res) => {
     const db = admin.firestore();
     const newSite = SupplyDistributionSite.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+
     db.collection("supplyDistributionSites")
         .add(newSite)
         .then((docRef) => {
@@ -310,7 +318,7 @@ app.post("/supply_distribution_sites", (req, res) => {
                     return res.status(200).send({ [docRef.id]: doc.data() });
                 });
         })
-        .catch(error => res.status(400).send(`Cannot create  supply distribution site: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot create Supply Distribution Site: ${ error }`));
 });
 
 app.patch("/supply_distribution_sites/:id", (req, res) => {
@@ -350,9 +358,8 @@ app.delete("/supply_distribution_sites/:id", (req, res) => {
         });
 });
 
-// Bulk upload of Trash Collection Sites data
+// Bulk upload of Supply Distribution Sites data
 app.put("/supply_distribution_sites", (req, res) => {
-
     const collection = admin.firestore().collection("supplyDistributionSites");
     try {
         const data = R.map(site => SupplyDistributionSite.create(site), Object.values(JSON.parse(req.body.supplyDistributionSites)));
@@ -366,11 +373,9 @@ app.put("/supply_distribution_sites", (req, res) => {
     catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
-
 });
 
-
-// Celebrattions
+/*** Celebrations ***/
 
 app.get("/celebrations", async (req, res) => {
     const db = admin.firestore();
@@ -458,7 +463,7 @@ app.delete("/celebrations/:id", (req, res) => {
         });
 });
 
-// Bulk upload of Trash Collection Sites data
+// Bulk upload of Celebrations data
 app.put("/celebrations", (req, res) => {
 
     const collection = admin.firestore().collection("celebrations");
@@ -476,8 +481,5 @@ app.put("/celebrations", (req, res) => {
     }
 
 });
-
-
-
 
 module.exports.app = functions.https.onRequest(app);

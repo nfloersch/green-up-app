@@ -1,7 +1,8 @@
 const isValidDate = require("./validators").isValidDate;
 const Coordinates = require("./coordinates");
 const Address = require("./address");
-1
+const deconstruct = require("./libs/deconstruct");
+
 class SupplyDistributionSite {
 
     constructor(args) {

@@ -3,12 +3,12 @@ const deconstruct = require("./libs/deconstruct");
 class Address {
 
     constructor(args) {
-        this.address = (args || {}).address || "";
-        this.address2 = (args || {}).address2 || "";
         this.city = (args || {}).city || "";
-        this.state = (args || {}).state || "";
-        this.zip = (args || {}).zip || "";
         this.notes = (args || {}).notes || "";
+        this.state = (args || {}).state || "";
+        this.street = (args || {}).street || "";
+        this.street2 = (args || {}).street2 || "";
+        this.zip = (args || {}).zip || "";
     }
 
     static create(args = {}) {

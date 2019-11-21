@@ -95,17 +95,32 @@ service cloud.firestore {
     }
 
    match /trashDrops/{dropId} {
-           allow read: if true;
-					 allow write: if isAuthed();
+        allow read: if true;
+        allow write: if isAuthed();
     }
 
     match /admins/{userId} {
-           allow read, write: if isAdmin();
+        allow read, write: if isAdmin();
     }
 
-      match /eventInfo/{id} {
-           allow read: if true;
-					 allow write: if isAdmin();
+    match /eventInfo/{id} {
+        allow read: if true;
+		allow write: if isAdmin();
+    }
+
+   match /trashCollectionSites {
+        allow read: if true;
+		allow write: if true;
+    }
+
+   match /supplyDistributionSites {
+        allow read: if true;
+		allow write: if true;
+    }
+
+    match /celebrations {
+        allow read: if true;
+		allow write: if true;
     }
   }
 }

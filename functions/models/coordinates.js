@@ -8,7 +8,7 @@ class Coordinates {
     }
 
     static create(args = {}) {
-        return deconstruct(new Coordinates(_args));
+        return deconstruct(new Coordinates(args));
     }
 }
 
