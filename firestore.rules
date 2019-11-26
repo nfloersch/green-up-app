@@ -108,17 +108,17 @@ service cloud.firestore {
 		allow write: if isAdmin();
     }
 
-   match /trashCollectionSites {
+   match /trashCollectionSites/{id} {
         allow read: if true;
 		allow write: if true;
     }
 
-   match /supplyDistributionSites {
+   match /supplyDistributionSites/{id} {
         allow read: if true;
 		allow write: if true;
     }
 
-    match /celebrations {
+    match /celebrations{id} {
         allow read: if true;
 		allow write: if true;
     }
