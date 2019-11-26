@@ -20,4 +20,23 @@ export default class Address {
     static create(args: Object = {}): Address {
         return new Address(args);
     }
+
+    static toString(address: Address): string {
+        const a = typeof address !== "object" ? {} : address;
+        const street = (add => {
+            switch (true) {
+                case Boolean(add.street && add.street2):
+                    return `${ add.street.trim() } / ${ add.street2.trim() } `;
+                case add.street2 && !add.street:
+                    return `${ add.street2.trim() } `;
+                case add.street && !add.street2:
+                    return `${ add.street.trim() } `;
+                default:
+                    return "";
+            }
+        })(a);
+
+        return (`${ street }${ a.city } ${ a.state } ${ a.zip }}}`).trim();
+
+    }
 }

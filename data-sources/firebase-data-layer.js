@@ -14,6 +14,8 @@ import { curry } from "ramda";
 import * as messageTypes from "../constants/message-types";
 import TrashDrop from "../models/trash-drop";
 import * as teamStatuses from "../constants/team-member-statuses";
+import TrashCollectionSite from "../models/trash-collection-site";
+import SupplyDistributionSite from "../models/supply-distribution-site";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -52,7 +54,8 @@ const removeAllListeners = (): Promise<any> => (
                 });
             myListeners = {};
             resolve(true);
-        } catch (e) {
+        }
+        catch (e) {
             reject(e);
         }
     })
@@ -121,28 +124,26 @@ function fetchEventInfo(dispatch: Dispatch<ActionType>) {
     );
 }
 
-const setupInvitedTeamMemberListener = (teamIds: Array<string>, dispatch: Dispatch<ActionType>): Array<any> => (teamIds || []).map((teamId: string) => {
+const setupInvitedTeamMemberListener = (teamIds: Array<string>, dispatch: Dispatch<ActionType>): Array<any> => (teamIds || []).map((teamId) => {
     const ref = db.collection(`teams/${ teamId }/invitations`);
-    addListener(`teamMembers_${ teamId }_invitations}`,
-        ref.onSnapshot(
-            (querySnapshot: Object) => {
-                const data = [];
-                querySnapshot.forEach((_doc: Object) => {
-                    data.push({ ..._doc.data(), id: _doc.id });
-                });
-                const invitees = data.reduce((obj: Object, member: TeamMemberType): Object => ({
-                    ...obj,
-                    [member.uid]: member
-                }), {});
-                dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
-            },
-            ((error: Object | string) => {
-                // eslint-disable-next-line no-console
-                console.error("setupInvitedTeamMember Error: ", error);
-                // TODO : Handle the error
-            })
-        ));
+
+    const onSnapshot = (querySnapshot: Object) => {
+        const data = [];
+        querySnapshot.forEach((_doc: Object) => {
+            data.push({ ..._doc.data(), id: _doc.id });
+        });
+        const invitees = data.reduce((obj, member): Object => ({ ...obj, [member.uid]: member }), {});
+        dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
+    };
+    const onError = ((error: Object | string) => {
+        // eslint-disable-next-line no-console
+        console.error("setupInvitedTeamMember Error: ", error);
+        // TODO : Handle the error
+    });
+
+    addListener(`teamMembers_${ teamId }_invitations}`, ref.onSnapshot(onSnapshot, onError));
 });
+
 
 function setupInvitationListener(email: ?string = "", dispatch: Dispatch<ActionType>) {
     const ref = db.collection(`/invitations/${ email || "" }/teams`);
@@ -363,31 +364,90 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
     };
 
     addListener("myTeams", db.collection(`profiles/${ (uid || "") }/teams`).onSnapshot(gotSnapshot, snapShotError));
-
 }
 
 function setupTrashDropListener(dispatch: Dispatch<ActionType>) {
-    addListener("trashDrops", db.collection("trashDrops").onSnapshot((querySnapshot: QuerySnapshot) => {
+
+    const gotSnapShot = (querySnapshot: QuerySnapshot) => {
         const trashDrops = [];
         querySnapshot.forEach((doc: Object) => {
             trashDrops.push(TrashDrop.create(doc.data(), doc.id));
         });
-        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, data:trashDrops });
-    }));
+        dispatch({ type: types.FETCH_TRASH_DROPS_SUCCESS, data: trashDrops });
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("Error in setupTrashDropListener:", error);
+        // TODO : Handle the error
+    };
+
+    addListener("trashDrops", db.collection("trashDrops").onSnapshot(gotSnapShot, snapShotError));
 }
 
 // Get Town Data
 function setupTownListener(dispatch: Dispatch<ActionType>) {
     addListener("towns", db.collection("towns").onSnapshot((querySnapshot: QuerySnapshot) => {
         const data = [];
-        querySnapshot.forEach((doc: Object) => {
-            data.push(Town.create(doc.data(), doc.id));
-        });
-        const towns = data.reduce((obj: Object, town: Town): Object => ({ ...obj, [town.id]: town }), {});
-        setTimeout(() => {
-            dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, data: towns });
-        }, 1);
+        try {
+            querySnapshot.forEach((doc: Object) => {
+                data.push(Town.create(doc.data(), doc.id));
+            });
+            const towns = data.reduce((obj: Object, town: Town): Object => ({ ...obj, [town.id]: town }), {});
+            setTimeout(() => {
+                dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, data: towns });
+            }, 1);
+        }
+        catch (error) {
+            console.error("Error in setupTownListener: ", error);
+            setTimeout(() => {
+                dispatch({ type: types.FETCH_TOWN_DATA_FAIL, error });
+            }, 1);
+        }
     }));
+}
+
+// Get TrashCollectionSite Data
+function setupTrashCollectionSiteListener(dispatch: Dispatch<ActionType>) {
+    const gotSnapShot = (querySnapshot: QuerySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc: Object) => {
+            data.push(TrashCollectionSite.create(doc.data(), doc.id));
+        });
+        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site.id }), {});
+        setTimeout(() => {
+            dispatch({ type: types.FETCH_TRASH_COLLECTION_SITES_SUCCESS, data: sites });
+        }, 1);
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("Error in setupTrashCollectionSiteListener: ", error);
+        // TODO : Handle the error
+    };
+
+    addListener("trashCollectionSites", db.collection("trashCollectionSites").onSnapshot(gotSnapShot, snapShotError));
+}
+
+// Get SupplyDistributionSite Data
+function setupSupplyDistributionSiteListener(dispatch: Dispatch<ActionType>) {
+    const gotSnapShot = (querySnapshot: QuerySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc: Object) => {
+            data.push(SupplyDistributionSite.create(doc.data(), doc.id));
+        });
+        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site.id }), {});
+        setTimeout(() => {
+            dispatch({ type: types.FETCH_SUPPLY_DISTRIBUTION_SITES_SUCCESS, data: sites });
+        }, 1);
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("Error in setupSupplyDistributionSiteListener: ", error);
+        // TODO : Handle the error
+    };
+    addListener("supplyDistributionSites", db.collection("supplyDistributionSites").onSnapshot(gotSnapShot, snapShotError));
 }
 
 // Initialize or de-initialize a user
@@ -399,6 +459,8 @@ const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) =>
     setupTrashDropListener(dispatch);
     setupInvitationListener(user.email, dispatch);
     setupTownListener(dispatch);
+    setupTrashCollectionSiteListener(dispatch);
+    setupSupplyDistributionSiteListener(dispatch);
     setupProfileListener(user, dispatch);
     dispatch(dataLayerActions.userAuthenticated(User.create(user)));
     dispatch({ type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false });
@@ -540,7 +602,6 @@ export function deleteMessage(userId: string, messageId: string): Promise<any> {
 /** *************** TEAMS *************** **/
 
 export async function createTeam(team: Object = {}, user: ?Object = {}, dispatch: Dispatch<ActionType>): Promise<any> {
-
     const { uid } = (user || {});
     const myTeam = deconstruct({ ...team, owner: TeamMember.create({ ...user, memberStatus: "OWNER" }) });
 

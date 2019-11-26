@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const Town = require("./models/town");
 const TrashCollectionSite = require("./models/trash-collection-site");
 const SupplyDistributionSite = require("./models/supply-distribution-site");
+const Celebration = require("./models/celebration");
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -414,16 +415,16 @@ app.get("/celebrations/:id", (req, res) => {
 
 app.post("/celebrations", (req, res) => {
     const db = admin.firestore();
-    const newSite = Celebration.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+    const celebration = Celebration.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
     db.collection("celebrations")
-        .add(newSite)
+        .add(celebration)
         .then((docRef) => {
             return docRef.get()
                 .then(doc => {
                     return res.status(200).send({ [docRef.id]: doc.data() });
                 });
         })
-        .catch(error => res.status(400).send(`Cannot create  supply distribution site: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot create Celebration: ${ error }`));
 });
 
 app.patch("/celebrations/:id", (req, res) => {
@@ -445,10 +446,10 @@ app.patch("/celebrations/:id", (req, res) => {
                         });
                 });
             } else {
-                return res.status(404).send(`Cannot find  supply distribution : ${ req.params.id }`);
+                return res.status(404).send(`Cannot find celebration: ${ req.params.id }`);
             }
         })
-        .catch(error => res.status(400).send(`Cannot update  supply distribution : ${ error }`));
+        .catch(error => res.status(400).send(`Cannot update celebration: ${ error }`));
 });
 
 app.delete("/celebrations/:id", (req, res) => {
@@ -465,7 +466,6 @@ app.delete("/celebrations/:id", (req, res) => {
 
 // Bulk upload of Celebrations data
 app.put("/celebrations", (req, res) => {
-
     const collection = admin.firestore().collection("celebrations");
     try {
         const data = R.map(site => Celebration.create(site), Object.values(JSON.parse(req.body.celebrations)));

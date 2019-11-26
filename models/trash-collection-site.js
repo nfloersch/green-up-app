@@ -3,11 +3,12 @@ import { isValidDate } from "../libs/validators";
 import Coordinates from "./coordinates";
 import Address from "./address";
 
-export class TrashCollectionSite {
+export default class TrashCollectionSite {
     active: boolean;
     address: ?Address;
     coordinates: ?Coordinates;
     end: ?Date;
+    id: ?string;
     name: ?string;
     notes: ?string;
     start: ?Date;
@@ -20,6 +21,7 @@ export class TrashCollectionSite {
         this.address = Address.create((args || {}).address);
         this.coordinates = Coordinates.create((args || {}).coordinates);
         this.end = isValidDate((args || {}).end) ? (args || {}).end : null;
+        this.id = typeof args.id === "string" ? args.id : null;
         this.name = (args || {}).name || "";
         this.notes = (args || {}).notes || "";
         this.start = isValidDate((args || {}).start) ? (args || {}).start : null;

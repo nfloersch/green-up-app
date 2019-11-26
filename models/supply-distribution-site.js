@@ -9,6 +9,7 @@ export default class SupplyDistributionSite {
     coordinates: ?Coordinates;
     created: ?string;
     end: ?Date;
+    id: ?string;
     name: ?string;
     notes: ?string;
     start: ?Date;
@@ -21,6 +22,7 @@ export default class SupplyDistributionSite {
         this.coordinates = Coordinates.create((args || {}).coordinates);
         this.created = (args || {}).created || null;
         this.end = isValidDate((args || {}).end) ? (args || {}).end : null;
+        this.id = typeof args.id === "string" ? args.id : null;
         this.name = (args || {}).name || "";
         this.notes = (args || {}).notes || "";
         this.start = isValidDate((args || {}).start) ? (args || {}).start : null;

@@ -10,6 +10,8 @@ import { teamsReducers as teams } from "./teams-reducers";
 import { townsReducers as towns } from "./towns-reducers";
 import { trashTrackerReducers as trashTracker } from "./trash-tracker-reducers";
 import { userLocationReducers as userLocation } from "./user-location-reducers";
+import { trashCollectionSitesReducers as trashCollectionSites } from "./trash-collection-sites-reducers";
+import { supplyDistributionSitesReducers as supplyDistributionSites } from "./supply-distribution-sites-reducers";
 
 const rootReducer = combineReducers<any, any>({
     about,
@@ -17,7 +19,9 @@ const rootReducer = combineReducers<any, any>({
     login,
     messages,
     network,
+    supplyDistributionSites,
     teams,
+    trashCollectionSites,
     trashTracker,
     profile,
     towns,

@@ -1,7 +1,7 @@
 // @flow
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import Autocomplete from "react-native-autocomplete-input";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, Modal, SafeAreaView } from "react-native";
+import MiniMap from "../mini-map";
 
 const myStyles = {
     autocompleteContainer: {
@@ -33,57 +33,42 @@ const myStyles = {
 const styles = StyleSheet.create(myStyles);
 
 type PropsType = {
-    onSelect: Town => void,
+    label: ?string,
+    onSelect: any => void,
     value: ?string,
-    towns: ?Array<Town>
+    sites: ?Array<any>
 };
 
-const matchTowns = (towns: ?Array<Town>, query?: string): Array<Town> => {
-    const testTowns = Array.isArray(towns) ? towns.filter((town: Town): boolean => Boolean(town && town.name)) : [];
-    const testString = typeof query !== "string" ? "" : query.trim().toLowerCase();
-    return testTowns.filter((town: Town): boolean => (town.name || "").toLowerCase().startsWith(testString));
-};
+export const SiteSelector = ({ value, sites, onSelect, label }: PropsType): React$Element<any> => {
 
-export const SiteSelector = ({ value, towns, onSelect }: PropsType): React$Element<any> => {
-    const [query, setQuery] = useState("");
-    const [focus, setFocus] = useState(false);
-    const data = focus ? matchTowns(towns, query) : [];
-    useEffect(() => {
-        if (Boolean(value)) {
-            setQuery(value || "");
-        }
-    }, [value]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
     return (
         <View style={ { zIndex: 1, marginTop: 10 } }>
-            <Text style={ styles.labelDark }>{ "Select Town/City" }</Text>
-            <Autocomplete
-                inputContainerStyle={ { borderColor: "#000" } }
-                data={ data }
-                defaultValue={ query }
-                onChangeText={ setQuery }
-                onBlur={ () => {
-                    setFocus(false);
+            <Text style={ styles.labelDark }>{ label || "Select" }</Text>
+            <TouchableOpacity onPrews={ () => {
+                setIsModalVisible(true);
+            } }>
+                <Text>{ value }</Text>
+            </TouchableOpacity>
+            <Modal
+                animationType={ "slide" }
+                onRequestClose={ () => {
+                    setIsModalVisible(false);
                 } }
-                onFocus={ () => {
-                    setFocus(true);
-                } }
-                keyExtractor={ (item): string => item.id }
-                underlineColorAndroid={ "transparent" }
-                renderItem={ (selection: Object): React$Element<any> => (
-                    <TouchableOpacity
-                        key={ selection.item.id }
-                        style={ styles.suggestion }
-                        onPress={ () => {
-                            onSelect(selection.item);
-                        } }
-                    >
-                        <Text style={ { color: "black" } }>{ selection.item.name }</Text>
+                transparent={ false }
+                visible={ isModalVisible }>
+                <SafeAreaView>
+                    <TouchableOpacity onPress={ () => {
+                        setIsModalVisible(false);
+                    } }>
+                        <Text>{ "X" }</Text>
                     </TouchableOpacity>
-                ) }
-            />
+                    <MiniMap/>
+                </SafeAreaView>
+            </Modal>
         </View>
     );
 };
 
-
-export default TownSelector;
+export default SiteSelector;

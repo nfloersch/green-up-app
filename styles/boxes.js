@@ -49,12 +49,13 @@ export const boxes = {
         marginBottom: 1
     },
     infoBlockContainer: {
-        margin: 5,
+        marginTop: 5,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.6,
         shadowRadius: 2,
         padding: 10,
+        width: "100%",
         backgroundColor: constants.colorBackGroundLight
     },
     infoBlockHeader: {

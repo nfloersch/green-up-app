@@ -1,12 +1,13 @@
 const Coordinates = require("./coordinates");
-const isValidDate = require("./libs/validators").isValidDate;
+const isValidDate = require("./validators").isValidDate;
 const deconstruct = require("./libs/deconstruct");
+const Address = require("./address");
 
 class Celebration {
 
     constructor(args = {}) {
         this.active = typeof args.active === "boolean" ? args.active : true;
-        this.address = typeof args.address === "string" ? args.address : null;
+        this.address = Address.create(args.address);
         this.coordinates = Coordinates.create(args.coordinates);
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
         this.description = typeof args.description === "string" ? args.description : null;

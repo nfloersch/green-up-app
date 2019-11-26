@@ -24,6 +24,7 @@ import { Ionicons } from "@expo/vector-icons";
 import offsetLocations from "../../libs/offset-locations";
 import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
+import Address from "../../models/address";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -34,8 +35,10 @@ type PropsType = {
     cleanAreasToggle: boolean,
     collectedTrashToggle: boolean,
     currentUser: Object,
+    supplyDistributionSites: Object,
     supplyPickupToggle: boolean,
     townData: Object,
+    trashCollectionSites: Object,
     trashDropOffToggle: boolean,
     myTrashToggle: boolean,
     uncollectedTrashToggle: boolean,
@@ -51,8 +54,10 @@ const TrashMap = (
         currentUser,
         drops,
         myTrashToggle,
+        supplyDistributionSites,
         supplyPickupToggle,
         townData,
+        trashCollectionSites,
         trashDropOffToggle,
         uncollectedTrashToggle,
         userLocation
@@ -98,21 +103,16 @@ const TrashMap = (
     };
 
     // $FlowFixMe
-    const trashDropOffLocations = R.compose(
-        R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
-        R.flatten,
-        R.map((t: Object): Array<Object> => t.dropOffLocations),
+    const collectionSites = R.compose(
+        R.filter((site: Object): boolean => Boolean(site.coordinates && site.coordinates.latitude && site.coordinates.longitude)),
         Object.values
-    )(townData);
+    )(trashCollectionSites);
 
     // $FlowFixMe
-    const supplyPickupLocations = R.compose(
-        R.filter((loc: Object): boolean => Boolean(loc.coordinates && loc.coordinates.latitude && loc.coordinates.longitude)),
-        R.flatten,
-        R.map((t: Object): Array<Object> => t.pickupLocations),
+    const distributionSites = R.compose(
+        R.filter((site: Object): boolean => Boolean(site.coordinates && site.coordinates.latitude && site.coordinates.longitude)),
         Object.values
-    )(townData);
-
+    )(supplyDistributionSites);
 
     const initialMapLocation = userLocation
         ? {
@@ -122,7 +122,7 @@ const TrashMap = (
             longitudeDelta: 0.0421
         }
         : null;
-    const collectedTrash = (collectedTrashToggle ? drops : [])
+    const collectedTrashMarkers = (collectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => d.wasCollected === true)
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
@@ -139,7 +139,7 @@ const TrashMap = (
                 stopPropagation={ true }/>
         ));
 
-    const myTrash = (drops || [])
+    const myTrashMarkers = (drops || [])
         .filter((d: TrashDrop): boolean => Boolean(myTrashToggle && !d.wasCollected && d.createdBy && d.createdBy.uid === currentUser.uid))
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
@@ -157,7 +157,7 @@ const TrashMap = (
             />
         ));
 
-    const unCollectedTrash = (uncollectedTrashToggle ? drops : [])
+    const uncollectedTrashMakers = (uncollectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => Boolean(!d.wasCollected && d.createdBy && d.createdBy.uid !== currentUser.uid))
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
@@ -175,7 +175,7 @@ const TrashMap = (
             />
         ));
 
-    const dropOffLocations = offsetLocations((supplyPickupToggle ? supplyPickupLocations : []), trashDropOffToggle ? trashDropOffLocations : [])
+    const collectionSiteMarkers = offsetLocations((supplyPickupToggle ? distributionSites : []), trashDropOffToggle ? collectionSites : [])
         .map((d: Object, i: number): React$Element<any> => (
             <MapView.Marker
                 key={ `dropOffLocation${ i }.map((d, i) => (` }
@@ -185,12 +185,12 @@ const TrashMap = (
                 stopPropagation={ true }>
                 <MultiLineMapCallout
                     title="Drop Off Location"
-                    description={ `${ d.name }, ${ d.address }` }
+                    description={ `${ d.name }, ${ Address.toString(d.address) }` }
                 />
             </MapView.Marker>
         ));
 
-    const pickupLocations = (supplyPickupToggle ? supplyPickupLocations : [])
+    const distributionSiteMarkers = (supplyPickupToggle ? distributionSites : [])
         .map((d: Object, i: number): React$Element<any> => (
             <MapView.Marker
                 key={ `supplyPickup${ i }` }
@@ -200,7 +200,7 @@ const TrashMap = (
                 stopPropagation={ true }>
                 <MultiLineMapCallout
                     title="Supply Pickup Location"
-                    description={ `${ d.name }, ${ d.address }` }
+                    description={ `${ d.name }, ${ Address.toString(d.address) }` }
                 />
             </MapView.Marker>
         ));
@@ -219,11 +219,11 @@ const TrashMap = (
             </MapView.Marker>
         ));
 
-    const allMarkers = pickupLocations
-        .concat(dropOffLocations)
-        .concat(unCollectedTrash)
-        .concat(myTrash)
-        .concat(collectedTrash)
+    const allMarkers = distributionSiteMarkers
+        .concat(collectionSiteMarkers)
+        .concat(uncollectedTrashMakers)
+        .concat(myTrashMarkers)
+        .concat(collectedTrashMarkers)
         .concat(cleanAreaMarkers);
 
     return (
@@ -316,13 +316,13 @@ const TrashMap = (
                 visible={ modalVisible }
                 onRequestClose={ closeModal }>
                 <TrashDropForm
-                    townData={ townData }
-                    trashDrop={ drop }
+                    currentUser={ currentUser }
                     location={ userLocation }
                     onSave={ saveTrashDrop }
                     onCancel={ closeModal }
-                    currentUser={ currentUser }
-                    trashDropOffLocations={trashDropOffLocations}
+                    townData={ townData }
+                    trashCollectionSites={ trashCollectionSites }
+                    trashDrop={ drop }
                 />
             </Modal>
             <Modal
@@ -333,8 +333,6 @@ const TrashMap = (
                 <TrashToggles close={ closeToggleModal }/>
             </Modal>
         </SafeAreaView>
-
-
     );
 };
 
@@ -361,6 +359,8 @@ const mapStateToProps = (state: Object): Object => {
         Object.values
     );
 
+    const trashCollectionSites = state.trashCollectionSites.sites;
+    const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
     const drops = (state.trashTracker.trashDrops || [])
         .filter((drop: TrashDrop): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
@@ -377,8 +377,10 @@ const mapStateToProps = (state: Object): Object => {
         collectedTrashToggle,
         currentUser: state.login.user,
         drops: drops,
+        supplyDistributionSites,
         supplyPickupToggle,
         townData,
+        trashCollectionSites,
         trashDropOffToggle,
         uncollectedTrashToggle,
         myTrashToggle,
