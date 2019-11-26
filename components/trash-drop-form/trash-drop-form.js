@@ -37,7 +37,7 @@ const getTown = (myLocation: LocationType): string => {
 
 type PropsType = {
     location: LocationType,
-    trashDrop: Object,
+    trashDrop?: Object,
     onSave: Object => void,
     onCancel: ()=> void,
     currentUser: UserType,

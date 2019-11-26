@@ -11,7 +11,6 @@ import { DisposalSite } from "../../components/disposal-site/disposal-site";
 import moment from "moment";
 import { dateIsInCurrentEventWindow, getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import EnableLocationServices from "../../components/enable-location-services/enable-location-services";
-import { Title } from "@shoutem/ui";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { bindActionCreators } from "redux";
 import TrashDropForm from "../../components/trash-drop-form";
@@ -28,7 +27,7 @@ const iconStyle = {
 };
 const searchableFields = ["name", "townName", "address", "townId"];
 type PropsType = {
-    action: Object,
+    actions: Object,
     currentUser: UserType,
     trashCollectionSites: Array<Object>,
     townInfo: Array<Object>,
@@ -78,7 +77,7 @@ const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashColl
                 </View>)
         ],
         [
-            () => !dateIsInCurrentEventWindow(guStart),
+            () => !dateIsInCurrentEventWindow(guStart.toDate()),
             () => (
                 <View style={ { flex: 1 } }>
                     <View style={ { margin: 2 } }>
@@ -129,11 +128,10 @@ const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashColl
                         justifyContent: "center",
                         alignSelf: "stretch"
                     } }>
-
                         <FlatList
                             style={ styles.infoBlockContainer }
                             data={ searchTerm ? searchResults : townInfo }
-                            keyExtractor={ (item: Object, index: number): string => `${ id }` }
+                            keyExtractor={ (item: Object): string => `${ item.id }` }
                             renderItem={ ({ item }: { item: Object }): React$Element<any> => (
                                 <DisposalSite item={ item }/>
                             ) }/>
