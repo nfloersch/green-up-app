@@ -9,7 +9,7 @@ export default class TrashDrop {
     active: ?boolean;
     tags: ?Array<string>;
     teamId: ?string;
-    dropOffSite: ?Object;
+    collectionSiteId: ?Object;
     location: ?LocationType;
     created: ?Date;
     wasCollected: ?boolean;
@@ -19,7 +19,7 @@ export default class TrashDrop {
     constructor(args: Object) {
         this.id = typeof args.id === "string" ? args.id : null;
         this.bagCount = typeof args.bagCount === "number" ? args.bagCount : null;
-        this.dropOffSite = args.dropOffSite || null;
+        this.collectionSiteId = args.collectionSiteId || null;
         this.tags = Array.isArray(args.tags) ? args.tags.filter((tag: mixed): boolean => typeof tag === "string") : [];
         this.teamId = typeof args.teamId === "string" ? args.teamId : null;
         this.status = typeof args.status === "string" ? args.status : null;

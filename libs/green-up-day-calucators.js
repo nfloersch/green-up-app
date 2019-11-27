@@ -26,8 +26,7 @@ export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
     const myToday = new Date(today || (new Date()).toUTCString());
     const greenUpDay = getCurrentGreenUpDay();
     const differenceInTime = greenUpDay.getTime() - myToday.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-    return differenceInDays;
+    return differenceInTime / (1000 * 3600 * 24);
 };
 
 // Determine if we're in the Event period, Thur, Fri, Green Up Day (Sat), Sun, Mon, or Tue

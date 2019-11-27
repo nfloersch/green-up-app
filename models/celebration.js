@@ -13,6 +13,7 @@ export default class Celebration {
     created: ?Date;
     start: ?Date;
     end: ?Date;
+    townId: ?string;
     id: ?string;
     image: ?string;
 
@@ -23,6 +24,7 @@ export default class Celebration {
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
         this.description = typeof args.description === "string" ? args.description : null;
         this.id = typeof args.id === "string" ? args.id : null;
+        this.townId = typeof args.townId === "string" ? args.townId : null;
         this.end = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
         this.image = typeof args.image === "string" ? args.image : null;
         this.name = typeof args.name === "string" ? args.name : null;

@@ -1,6 +1,6 @@
 // @flow
-import React, { useState, useEffect, Fragment } from "react";
-import { StyleSheet, ScrollView, View, FlatList, TextInput, TouchableHighlight, Platform, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, FlatList, TextInput, TouchableHighlight, Platform, Text } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
@@ -16,6 +16,7 @@ import { bindActionCreators } from "redux";
 import TrashDropForm from "../../components/trash-drop-form";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
+import { DropDownMenu } from "@shoutem/ui";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -40,7 +41,6 @@ const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashColl
     const [searchResults, setSearchResults] = useState(townInfo);
     const [searchTerm, setSearchTerm] = useState("");
     const [modal, setModal] = useState(null);
-
 
     useEffect(() => {
         const spotsFound = searchArray(searchableFields, townInfo, searchTerm);
@@ -169,18 +169,17 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = Object.values(state.trashCollectionSites.sites);
 
     const townInfo = R.compose(
-        R.map((entry): Array<Object> => (
+        R.map((entry): Object => (
             {
                 townId: entry[0],
                 townName: entry[1].name,
                 dropOffInstructions: entry[1].dropOffInstructions,
                 allowsRoadside: entry[1].roadsideDropOffAllowed,
-                collectionSites: trashCollectionSites.filter(site => site.townId === entry[0])
+                collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
             })),
         Object.entries
     )(state.towns.townData);
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
-
     return (
         {
             currentUser,

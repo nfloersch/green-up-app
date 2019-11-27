@@ -468,8 +468,8 @@ app.delete("/celebrations/:id", (req, res) => {
 app.put("/celebrations", (req, res) => {
     const collection = admin.firestore().collection("celebrations");
     try {
-        const data = R.map(site => Celebration.create(site), Object.values(JSON.parse(req.body.celebrations)));
-        const records = data.map(site => collection.add(site));
+        const data = R.map(event => Celebration.create(event), Object.values(req.body.celebrations));
+        const records = data.map(event => collection.add(event));
         Promise.all(records)
             .then(results => {
                 return res.status(200).send({ results });

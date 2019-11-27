@@ -16,6 +16,7 @@ class Celebration {
         this.name = typeof args.name === "string" ? args.name : null;
         this.start = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
         this.status = typeof args.status === "string" ? args.status : null;
+        this.townId = typeof args.townId === "string" ? args.townId : null;
     }
 
     static create(args = {}) {
