@@ -419,7 +419,7 @@ function setupTrashCollectionSiteListener(dispatch: Dispatch<ActionType>) {
         querySnapshot.forEach((doc: Object) => {
             data.push(TrashCollectionSite.create(doc.data(), doc.id));
         });
-        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site.id }), {});
+        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site }), {});
         setTimeout(() => {
             dispatch({ type: types.FETCH_TRASH_COLLECTION_SITES_SUCCESS, data: sites });
         }, 1);
@@ -467,7 +467,7 @@ function setupSupplyDistributionSiteListener(dispatch: Dispatch<ActionType>) {
         querySnapshot.forEach((doc: Object) => {
             data.push(SupplyDistributionSite.create(doc.data(), doc.id));
         });
-        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site.id }), {});
+        const sites = data.reduce((obj: Object, site: Object): Object => ({ ...obj, [site.id]: site }), {});
         setTimeout(() => {
             dispatch({ type: types.FETCH_SUPPLY_DISTRIBUTION_SITES_SUCCESS, data: sites });
         }, 1);

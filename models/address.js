@@ -35,8 +35,7 @@ export default class Address {
                     return "";
             }
         })(a);
-
-        return (`${ street }${ a.city } ${ a.state } ${ a.zip }}}`).trim();
+        return (`${ street }${ a.city } ${ a.state } ${ a.zip }`).trim();
 
     }
 }

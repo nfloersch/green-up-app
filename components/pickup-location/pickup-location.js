@@ -2,6 +2,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { defaultStyles } from "../../styles/default-styles";
+import Address from "../../models/address";
 
 const myStyles = {
     location: {
@@ -26,12 +27,11 @@ export const PickupLocation = ({ item }: PropsType): React$Element<any> => (
     <View key={ item.key } style={ styles.infoBlock }>
         <Text style={ styles.locationName }>{ item.name }</Text>
         <Text style={ styles.townName }>{ item.townName }</Text>
-
         {
             item.address
                 ? (
                     <Text style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
-                        { item.address }
+                        { Address.toString(item.address) }
                     </Text>
                 )
                 : null
