@@ -21,7 +21,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
 
-import offsetLocations from "../../libs/offset-locations";
+import geoHelpers from "../../libs/geo-helpers";
 import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import Address from "../../models/address";
@@ -175,7 +175,7 @@ const TrashMap = (
             />
         ));
 
-    const collectionSiteMarkers = offsetLocations((supplyPickupToggle ? distributionSites : []), trashDropOffToggle ? collectionSites : [])
+    const collectionSiteMarkers = geoHelpers((supplyPickupToggle ? distributionSites : []), trashDropOffToggle ? collectionSites : [])
         .map((d: Object, i: number): React$Element<any> => (
             <MapView.Marker
                 key={ `dropOffLocation${ i }.map((d, i) => (` }

@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import {
     TouchableHighlight,
     StyleSheet,
@@ -7,7 +7,7 @@ import {
     View,
     ScrollView, Modal
 } from "react-native";
-import { Text, Title } from "@shoutem/ui";
+import { DropDownMenu, Text, Title } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView, TouchableOpacity } from "react-native";
 import CheckBox from "react-native-checkbox";
@@ -15,15 +15,15 @@ import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
 import TownInformation from "../town-information";
 import SiteSelector from "../site-selector";
-import { dateIsInCurrentEventWindow, getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import moment from "moment";
-import { MiniMap } from "../mini-map/mini-map";
-
+import * as R from "ramda";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number } };
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+
 const styles = StyleSheet.create(combinedStyles);
 
 const getTown = (myLocation: LocationType): string => {
@@ -44,10 +44,11 @@ type PropsType = {
     onCancel: ()=> void,
     currentUser: UserType,
     townData: Object,
-    trashCollectionSites: Array<Object>
+    trashCollectionSites: Array<Object>,
+    userLocation: LocationType
 };
 
-export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData, trashCollectionSites }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0];
     const [drop, setDrop] = useState({
         id: null,
@@ -81,6 +82,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
 
     const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
     const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
+    const teamOptions = Object.entries(currentUser.teams || {}).map(entry => ({ id: entry[0], name: entry[1].name }));
 
     return (
         <SafeAreaView style={ styles.container }>
@@ -145,6 +147,27 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                             onChange={ toggleTag(isEditable, "large") }/>
                     </View>
 
+
+                    { R.cond([
+                        [() => teamOptions.length > 1, () => (
+                            <View style={ { flex: 1, flexDirection: "row" } }>
+                                <Title>{ "This drop is for team:" }</Title>
+                                <DropDownMenu options={ teamOptions }
+                                              selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
+                                              onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
+                                              titleProperty="name"
+                                              valueProperty="teamOptions.id"
+                                              style={ { modalItem: {color: "blue", backgroundColor: "red" } } }
+                                />
+                            </View>
+                        )],
+                        [() => teamOptions.length === 1, () => (
+                            <Title>{ `This drop is for team: ${ teamOptions[0].name }` }</Title>
+                        )],
+                        [R.T, () => null]
+                    ])() }
+
+
                     <TownInformation townInfo={ townInfo } town={ town }/>
                     {
                         !drop.id && townInfo.roadsideDropOffAllowed === true && (
@@ -160,14 +183,16 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                     }
                     <View style={ { width: "100%", height: 60 } }>
                         <TouchableHighlight
+                            stle={ styles.button }
                             onPress={ () => {
                                 setModal("site-selector");
                             } }
                         >
-                            <Text>{ "Choose Site" }</Text>
+                            <Text>{ "Find a trash collection site" }</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
+
             </ScrollView>
             <Modal
                 animationType={ "slide" }
@@ -176,17 +201,20 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                 } }
                 transparent={ false }
                 visible={ modal === "site-selector" }>
-                <TouchableOpacity onPress={ () => {
-                    setModal(null);
-                } }>
-                    <Text> { "X" };</Text>
-                </TouchableOpacity>
-                <SiteSelector
-                    onSelect={ site => {
-                        setDrop({ ...drop, collectionSiteId: site.id });
-                    } }
-                    sites={ trashCollectionSites }
-                />
+                <SafeAreaView>
+                    <SiteSelector
+                        onSelect={ site => {
+                            setDrop({ ...drop, collectionSiteId: site.id });
+                            setModal(null);
+                        } }
+                        sites={ trashCollectionSites || [] }
+                        userLocation={ userLocation }
+                        towns={ townData }
+                        onCancel={ () => {
+                            setModal(null);
+                        } }
+                    />
+                </SafeAreaView>
             </Modal>
         </SafeAreaView>
     );

@@ -61,10 +61,10 @@ const menuConfig = {
         label: "Start A Team",
         backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
-    handlingTrash: {
+    trashDisposal: {
         order: 400,
-        navigation: "HandlingTrash",
-        label: "Handling Trash",
+        navigation: "TrashDisposal",
+        label: "Trash Disposal",
         backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
     },
     freeSupplies: {
@@ -84,12 +84,6 @@ const menuConfig = {
         navigation: "GreenUpFacts",
         label: "Green Up Facts",
         backgroundImage: require("../../assets/images/button-image-dump-truck-bags-1970.jpg")
-    },
-    recordTrash: {
-        order: 400,
-        navigation: "RecordTrash",
-        label: "Record Trash",
-        backgroundImage: require("../../assets/images/button-image-car-1970.jpg")
     }
 };
 

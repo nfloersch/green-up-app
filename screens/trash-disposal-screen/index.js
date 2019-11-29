@@ -16,7 +16,6 @@ import { bindActionCreators } from "redux";
 import TrashDropForm from "../../components/trash-drop-form";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
-import { DropDownMenu } from "@shoutem/ui";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -36,7 +35,7 @@ type PropsType = {
 };
 
 
-const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
 
     const [searchResults, setSearchResults] = useState(townInfo);
     const [searchTerm, setSearchTerm] = useState("");
@@ -149,6 +148,7 @@ const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashColl
                     onCancel={ closeModal }
                     townData={ townInfo }
                     trashCollectionSites={ trashCollectionSites }
+                    userLocation={ userLocation }
                 />)
         ]
     ])();
@@ -161,12 +161,16 @@ const HandlingTrash = ({ actions, currentUser, townInfo, userLocation, trashColl
     );
 };
 
-HandlingTrash.navigationOptions = {
+TrashDisposalScreen.navigationOptions = {
     title: "Trash Disposal"
 };
 
 const mapStateToProps = (state: Object): Object => {
-    const trashCollectionSites = Object.values(state.trashCollectionSites.sites);
+    const trashCollectionSites = Object.values(state.trashCollectionSites.sites).filter(site => {
+        const hasLatitude = typeof (site.coordinates || {}).latitude === "number";
+        const hasLongitude = typeof (site.coordinates || {}).longitude === "number";
+        return hasLatitude && hasLongitude;
+    });
 
     const townInfo = R.compose(
         R.map((entry): Object => (
@@ -192,4 +196,4 @@ const mapStateToProps = (state: Object): Object => {
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(HandlingTrash);
+export default connect(mapStateToProps, mapDispatchToProps)(TrashDisposalScreen);

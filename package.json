@@ -35,6 +35,7 @@
     "@shoutem/theme": "^0.11.3",
     "@shoutem/ui": "^1.0.3",
     "@turf/boolean-within": "^6.0.1",
+    "@turf/distance": "^6.0.1",
     "@turf/helpers": "^6.1.4",
     "@types/react-navigation": "^3.0.8",
     "expo": "^34.0.0",

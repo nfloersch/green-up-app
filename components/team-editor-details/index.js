@@ -218,6 +218,17 @@ const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns,
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: saveTeam }, { text: "Cancel", onClick: cancel }];
+
+    const pinsConfig = state.team.locations
+        .map(l => ({
+            coordinates: l.coordinates,
+            title: state.team.name,
+            description: "Click here to remove pin",
+            onCalloutPress: removeMarker,
+            color: "green"
+        }))
+        .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
+
     let nextTextInput;
     return (
         <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
@@ -355,9 +366,7 @@ const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns,
                         { "Place a marker where you want your team to work." }
                     </Text>
                     <MiniMap
-                        pins={ state.team.locations }
-                        markers={ otherCleanAreas }
-                        onPinClick={ removeMarker }
+                        pinsConfig={ pinsConfig }
                         onMapClick={ handleMapClick }
                     />
                     <TouchableOpacity style={ styles.button } onPress={ removeLastMarker }>
