@@ -7,6 +7,7 @@ export default class Location {
     description: ?string;
     status: ?string;
     active: ?boolean;
+    townId: ?string;
     coordinates: ?CoordinatesType;
     created: ?Date;
 
@@ -17,6 +18,7 @@ export default class Location {
         this.active = typeof args.active === "boolean" ? args.active : true;
         this.coordinates = Coordinates.create(args.coordinates);
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
+        this.townId = typeof args.townId === "string" ? args.townId : null;
     }
 
     static create(args: Object = {}): LocationType {

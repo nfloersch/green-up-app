@@ -2,6 +2,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { defaultStyles } from "../../styles/default-styles";
+import Address from "../../models/address";
 
 const myStyles = {
     location: {
@@ -25,28 +26,38 @@ type PropsType = { item: Object };
 
 export const DisposalSite = ({ item }: PropsType): React$Element<any> => (
     <View key={ item.key } style={ styles.infoBlock }>
-        <Text style={ styles.locationName }>{ item.name }</Text>
         <Text style={ styles.townName }>{ item.townName }</Text>
+        <Text style={ styles.town }>
+            {
+                item.allowsRoadside
+                    ? `${ item.townName } allows trash bags to be dropped along the road side`
+                    : `${ item.townName } does NOT allow trash bags along the road. Please take your bags the nearest collection site`
+            }
+        </Text>
+        <Text style={ styles.townName }>{ item.dropOffInstructions }</Text>
 
-        {
-            item.address
-                ? (
-                    <Text style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
-                        { item.address }
-                    </Text>
-                )
-                : null
-        }
-        <Text style={ styles.allowsRoadside }>{ item.allowsRoadside }</Text>
-        {
-            item.notes
-                ? (
-                    <Text style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
-                        { item.notes }
-                    </Text>
-                )
-                : null
-        }
 
+        <View>
+
+            {
+                item.collectionSites.map(site => (
+                    <View>
+                        <Text
+                            style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
+                            { Address.toString(site.name) }
+                        </Text>
+                        <Text
+                            style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
+                            { Address.toString(site.address) }
+                        </Text>
+                        <Text
+                            style={ [styles.textDark, { fontSize: 14, marginBottom: 5, marginTop: 5 }] }>
+                            { site.notes }
+                        </Text>
+                    </View>
+                ))
+            }
+                </View>
+            }
     </View>
 );

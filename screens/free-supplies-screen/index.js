@@ -8,6 +8,7 @@ import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search-score";
+import SupplyDistributionSite from "../../models/supply-distribution-site";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -80,7 +81,7 @@ const FreeSupplies = ({ pickupSpots, userLocation }: PropsType): React$Element<a
                         renderItem={ ({ item }: { item: Town }): React$Element<any> => (
                             <PickupLocation item={ item }/>) }/>
                 </View>
-                
+
             </ScrollView>
         </View>
     );
@@ -92,24 +93,14 @@ FreeSupplies.navigationOptions = {
 
 const mapStateToProps = (state: Object): Object => {
 
-    const flatReduce = ([key, town]) => (town.pickupLocations || [])
-        .map((pickup): Object => ({
-            ...pickup,
-            townId: key,
-            townName: town.name
-        }));
-
     const pickupSpots = R.compose(
-        R.flatten,
-        R.map((entry): Array<Object> => flatReduce(entry)),
+        R.map(entry => SupplyDistributionSite.create(entry[1], entry[0])),
         Object.entries
-    )(state.towns.townData);
-
-    return (
-        {
-            pickupSpots,
-            userLocation: state.userLocation
-        });
+    )(state.supplyDistributionSites.sites);
+    return ({
+        pickupSpots,
+        userLocation: state.userLocation
+    });
 };
 
 export default connect(mapStateToProps)(FreeSupplies);

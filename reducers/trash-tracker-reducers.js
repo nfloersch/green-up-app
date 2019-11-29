@@ -9,11 +9,6 @@ export const trashTrackerReducers = (state: Object = initialState.trashTracker, 
                 ...state,
                 trashDrops: action.data
             };
-        case types.USER_LOCATION_UPDATED:
-            return {
-                ...state,
-                location: action.data
-            };
         case types.TOGGLE_TRASH_DATA:
             return {
                 ...state,

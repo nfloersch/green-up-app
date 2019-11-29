@@ -10,15 +10,28 @@ export const getGreenUpDayByYear = (year: number): Date => {
 
 const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
 
-const _today = new Date().toUTCString();
 type TodayType = Date | string;
 
 // Calculate the current year's GreenUp Day if we are within 7 days
-export const getCurrentGreenUpDay = (today: TodayType = _today): Date => {
-    const myToday = new Date(today);
+export const getCurrentGreenUpDay = (today: ?TodayType): Date => {
+    const myToday = new Date(today || (new Date()).toUTCString());
     const currentYear = myToday.getUTCFullYear();
     return addDays(getGreenUpDayByYear(currentYear), 7) > myToday
         ? getGreenUpDayByYear(currentYear)
         : getGreenUpDayByYear(currentYear + 1);
 };
 
+// Calculate days until Green Up Day
+export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
+    const myToday = new Date(today || (new Date()).toUTCString());
+    const greenUpDay = getCurrentGreenUpDay();
+    const differenceInTime = greenUpDay.getTime() - myToday.getTime();
+    return differenceInTime / (1000 * 3600 * 24);
+};
+
+// Determine if we're in the Event period, Thur, Fri, Green Up Day (Sat), Sun, Mon, or Tue
+export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
+    const myToday = new Date(today || (new Date()).toUTCString());
+    const daysUntilGreenUpDay = daysUntilCurrentGreenUpDay(myToday);
+    return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
+};

@@ -1,6 +1,27 @@
 // @flow
-export default function offsetLocations(staticLocations: Array<LocationType>, locationsToOffset: Array<LocationType>): Array<LocationType> {
 
+import * as turf from "@turf/helpers";
+import distance from "@turf/distance";
+import * as R from "ramda";
+
+const circumferenceOfTheEarth = 24901;
+
+export const getClosestSite = (sites: Array<LocationType>, userLocation: CoordinatesType): Object => {
+    const from = turf.point([userLocation.longitude, userLocation.latitude]);
+
+    return R.reduce(
+        (closest, site) => {
+            const to = turf.point([site.coordinates.longitude, site.coordinates.latitude]);
+            const options = { units: "miles" };
+            const siteDistance = distance(from, to, options);
+            return closest.distance < siteDistance ? closest : { distance: siteDistance, site };
+        },
+        { distance: circumferenceOfTheEarth, site: {} },
+        sites
+    );
+};
+
+export const offsetLocations = (staticLocations: Array<LocationType>, locationsToOffset: Array<LocationType>): Array<LocationType> => {
     const isDupe = (staticLocs: Array<LocationType>, loc: Object): boolean => Boolean(staticLocs.find(
         (staticLoc: LocationType): boolean => {
             const staticCoordinates = staticLoc.coordinates || {};
@@ -26,4 +47,4 @@ export default function offsetLocations(staticLocations: Array<LocationType>, lo
         }
         return loc;
     });
-}
+};

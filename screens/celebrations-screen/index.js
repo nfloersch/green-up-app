@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search-score";
 import { ListView, GridRow, ImageBackground, Tile, Subtitle, Title, Divider, Card, Image, Caption } from "@shoutem/ui";
 import * as constants from "../../styles/constants";
+import Celebration from "../../models/celebration";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -27,13 +28,13 @@ const iconStyle = {
     color: "white",
     textAlign: "center"
 };
-const searchableFields = ["name", "townName", "address", "townId"];
+const searchableFields = ["name", "townName","description", "address", "townId"];
 type PropsType = {
     celebrationEvents: Array<Object>,
     userLocation: Object
 };
 
-const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Element<any> => {
+const CelebrationsScreen = ({ celebrationEvents, userLocation }: PropsType): React$Element<any> => {
 
     const [searchResults, setSearchResults] = useState(celebrationEvents);
     const [searchTerm, setSearchTerm] = useState("");
@@ -164,24 +165,16 @@ const Celebrations = ({ celebrationEvents, userLocation }: PropsType): React$Ele
     );
 };
 
-Celebrations.navigationOptions = {
+CelebrationsScreen.navigationOptions = {
     title: "Celebrate Green Up"
 };
 
 const mapStateToProps = (state: Object): Object => {
 
-    const flatReduce = ([key, town]) => (town.celebrations || [])
-        .map((celebration): Object => ({
-            ...celebration,
-            townId: key,
-            townName: town.name
-        }));
-
     const celebrationEvents = R.compose(
-        R.flatten,
-        R.map((entry): Array<Object> => flatReduce(entry)),
+        R.map(entry => Celebration.create(entry[1], entry[0])),
         Object.entries
-    )(state.towns.townData);
+    )(state.celebrations.celebrations);
     return (
         {
             celebrationEvents,
@@ -189,4 +182,4 @@ const mapStateToProps = (state: Object): Object => {
         });
 };
 
-export default connect(mapStateToProps)(Celebrations);
+export default connect(mapStateToProps)(CelebrationsScreen);

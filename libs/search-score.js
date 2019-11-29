@@ -2,6 +2,17 @@
 
 import * as R from "ramda";
 
+const stringify = (thing: any) => {
+    switch (typeof thing) {
+        case "string":
+            return thing;
+        case "object" :
+            return JSON.stringify(thing);
+        default:
+            return thing.toString();
+    }
+};
+
 /**
  * scores a string or array of strings according to how many search terms it contains
  * @param {string} termsToSearchFor - what to search for
@@ -13,7 +24,7 @@ export function searchScore(termsToSearchFor: string, stringsToSearchIn: Array<s
     if (!Array.isArray(stringsToSearchIn) || stringsToSearchIn.length === 0 || typeof termsToSearchFor !== "string" || termsToSearchFor.length === 0) {
         return 0;
     }
-    const searchedString = (stringsToSearchIn[0] || "").toLowerCase(); // normalize string to search
+    const searchedString = (stringify(stringsToSearchIn[0]) || "").toLowerCase(); // normalize string to search
     const terms = termsToSearchFor.trim().split(" ");
     const testTerm = (terms[0] || "").toLowerCase().trim(); // normalize what to search for
     // score 1 point for contains the search term and an extra point if it starts with the search term

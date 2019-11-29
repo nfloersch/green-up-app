@@ -27,19 +27,15 @@ export class TownLocation {
 export default class Town {
     id: ?string;
     name: ?string;
-    celebrations: ?Array<Object>;
     description: ?string;
     notes: ?string;
     dropOffInstructions: ?string;
-    dropOffLocations: ?Array<TownLocation>;
     pickupInstructions: ?string;
-    pickupLocations: ?Array<TownLocation>;
     roadsideDropOffAllowed: ?boolean;
     created: ?Date;
     updated: ?Date;
 
     constructor(args: Object = {}) {
-        this.celebrations = args.celebrations || null;
         this.id = typeof args.id === "string" ? args.id : null;
         this.name = typeof args.name === "string"
             ? args.name
@@ -52,13 +48,6 @@ export default class Town {
             : null;
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
-        this.dropOffLocations = (
-            Array.isArray(args.dropOffLocations)
-                ? args.dropOffLocations
-                : []
-        ).map((loc: Object): TownLocation => TownLocation.create(loc));
-        this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : [])
-            .map((loc: TownLocation): TownLocation => TownLocation.create(loc));
         this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)

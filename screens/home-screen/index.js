@@ -7,8 +7,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import { getUsersTeams } from "../../libs/team-helpers";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
-import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
-import moment from "moment";
+import { daysUntilCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as R from "ramda";
 import HomeButton from "../../components/home-button";
 import * as colors from "../../styles/constants";
@@ -26,7 +25,7 @@ const homeTitle = R.cond(
         [(days: number): boolean => days === 0, (): string => "It's Green Up Day!"],
         [(days: number): boolean => days < 0, (): string => "Keep on Greening"]
     ]
-)(moment(getCurrentGreenUpDay()).diff(moment(), "days"));
+)(daysUntilCurrentGreenUpDay);
 
 type PropsType = {
     actions: { selectTeam: TeamType => void },
@@ -45,44 +44,43 @@ const isOwner = (teams, user: UserType, teamId: string): boolean => {
 
 const menuConfig = {
     messages: {
-        order: 1,
+        order: 100,
         navigation: "Messages",
         label: "Messages",
         backgroundImage: require("../../assets/images/button-image-ford-1970.png")
     },
     findATeam: {
-        order: 100,
+        order: 200,
         navigation: "FindTeam",
         label: "Find A Team",
         backgroundImage: require("../../assets/images/button-image-girls-2-1970.jpg")
     },
     createATeam: {
-        order: 101,
-
+        order: 301,
         navigation: "NewTeam",
         label: "Start A Team",
         backgroundImage: require("../../assets/images/button-image-gov-dean-1970.jpg")
     },
-    handlingTrash: {
-        order: 102,
-        navigation: "HandlingTrash",
-        label: "Handling Trash",
+    trashDisposal: {
+        order: 400,
+        navigation: "TrashDisposal",
+        label: "Trash Disposal",
         backgroundImage: require("../../assets/images/button-image-loading-pickup-1970.jpg")
     },
     freeSupplies: {
-        order: 103,
+        order: 401,
         navigation: "FreeSupplies",
         label: "Free Supplies",
-        backgroundImage: require("../../assets/images/button-image-car-1970.jpg")
+        backgroundImage: require("../../assets/images/button-image-royalton-bandstand.jpg")
     },
     celebrations: {
-        order: 104,
+        order: 402,
         navigation: "Celebrations",
         label: "Celebrations",
         backgroundImage: require("../../assets/images/button-image-cake.jpg")
     },
     greenUpFacts: {
-        order: 105,
+        order: 403,
         navigation: "GreenUpFacts",
         label: "Green Up Facts",
         backgroundImage: require("../../assets/images/button-image-dump-truck-bags-1970.jpg")

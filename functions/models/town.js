@@ -21,7 +21,6 @@ class TownLocation {
 }
 
 class Town {
-
     constructor(args = {}) {
         this.id = typeof args.id === "string" ? args.id : null;
         this.name = typeof args.name === "string"
@@ -35,13 +34,6 @@ class Town {
             : null;
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
-        this.dropOffLocations = (
-            Array.isArray(args.dropOffLocations)
-                ? args.dropOffLocations
-                : []
-        ).map(loc => TownLocation.create(loc));
-        this.pickupLocations = (Array.isArray(args.pickupLocations) ? args.pickupLocations : [])
-            .map(loc => TownLocation.create(loc));
         this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)

@@ -17,9 +17,6 @@ type PropsType = {
 export const TownInformation = ({ townInfo, town }: PropsType): React$Element<any> => (
     <View style={ {
         padding: 5,
-        position: "absolute",
-        bottom: 0,
-        left: 0,
         height: 60,
         width: "100%",
         backgroundColor: "rgba(255,255,255, 0.8)"

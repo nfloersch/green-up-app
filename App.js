@@ -39,7 +39,9 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
             // This is the font that we are using for our tab bar
             ...Ionicons.font,
             sriracha: require("./assets/fonts/Sriracha/Sriracha-Regular.ttf"),
-            "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf")
+            "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf"),
+            "rubicon-icon-font": require("./assets/fonts/Rubik/rubicon-icon-font.ttf")
+
         })
     ]);
 

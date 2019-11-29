@@ -71,7 +71,6 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     return sgMail.send(message);
 }
 
-
 /**
  * User setup after an invitation create
  * Sends a invitation email to an invited user.

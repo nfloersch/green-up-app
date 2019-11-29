@@ -190,6 +190,17 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Cancel", onClick: cancel }];
+
+    const pinsConfig = state.team.locations
+        .map(l => ({
+            coordinates: l.coordinates,
+            title: state.team.name,
+            description: "Click here to remove pin",
+            onCalloutPress: removeMarker,
+            color: "green"
+        }))
+        .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
+
     let nextTextInput;
     return (
         <Screen style={ { backgroundColor: constants.colorBackgroundDark } }>
@@ -308,7 +319,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         </View>
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ styles.labelDark }>{"Team Description"}</Text>
+                        <Text style={ styles.labelDark }>{ "Team Description" }</Text>
                         <TextInput
                             keyBoardType={ "default" }
                             multiline={ true }
@@ -327,9 +338,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         { "Place a marker where you want your team to work." }
                     </Text>
                     <MiniMap
-                        pins={ state.team.locations }
-                        markers={ otherCleanAreas }
-                        onPinClick={ removeMarker }
+                        pinsConfig={ pinsConfig }
                         onMapClick={ handleMapClick }
                     />
                     <TouchableOpacity style={ styles.button } onPress={ removeLastMarker }>

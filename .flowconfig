@@ -2,7 +2,7 @@
 .*/node_modules
 ./flow-typed/npm/.*
 ./write-firebase-config.js
-
+./functions
 ; Ignore "BUCK" generated dirs
 <PROJECT_ROOT>/\.buckd/
 

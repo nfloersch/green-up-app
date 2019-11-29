@@ -36,12 +36,8 @@ class Message {
             : new Date();
     }
 
-    static create(args = {}, id)  {
-        const _args = { ...args };
-        if (id) {
-            _args.id = id;
-        }
-        return deconstruct(new Message(_args));
+    static create(args = {})  {
+        return deconstruct(new Message(args));
     }
 
     static messageTypes = messageTypes;

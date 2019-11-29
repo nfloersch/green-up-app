@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import Toggle from "../../components/toggle";
+import Toggle from "../toggle";
 import circleTurquoise from "../../assets/images/circle-turquoise.png";
 import circleBlue from "../../assets/images/circle-blue.png";
 import circleRed from "../../assets/images/circle-red.png";

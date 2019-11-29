@@ -19,8 +19,8 @@ const myStyles = {
         opacity: 0.5
     },
     miniMap: {
-        width: "100%",
-        minHeight: 10
+        flexGrow: 1,
+        backgroundColor: "red"
     }
 };
 
@@ -45,54 +45,44 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
         throw new Error("Location is not available");
     });
 
-const placePins = (pins?: Array<Object>, onPinClick?: number => void): Array<React$Element<any>> => (
+const placePins = (pins?: Array<Object>): Array<React$Element<any>> => (
     (pins || []).map((pin: Object, index: number): React$Element<any> => (
         <MapView.Marker
             coordinate={ pin.coordinates }
             key={ `pin${ index }` }
             pinColor={ pin.color || "red" }
-            onCalloutPress={ () => {
-                if (onPinClick) {
-                    onPinClick(index);
+            stopPropagation={ true }
+            onPress={ () => {
+                if (pin.onPress) {
+                    pin.onPress(index);
                 }
             } }
-            stopPropagation={ true }
         >
+            { pin.callout ||
             <MultiLineMapCallout
-                title={ pin.title || "Clean Area" }
-                description={ pin.description || "Tap to remove" }
+                onPress={ () => {
+                    if (pin.onCalloutPress) {
+                        pin.onCalloutPress(index);
+                    }
+                } }
+                title={ pin.title }
+                description={ typeof pin.description === "string" ? pin.description : "" }
             />
+            }
         </MapView.Marker>
     ))
 );
 
-const placeOtherMarkers = (markers: Array<Object>): Array<React$Element<any>> => (
-    markers.map((marker: Object, index: number): React$Element<any> => (
-        <MapView.Marker
-            coordinate={ marker.coordinates }
-            key={ `marker${ index }` }
-            pinColor={ marker.color || "yellow" }
-            stopPropagation={ true }
-        >
-            <MultiLineMapCallout
-                title={ marker.title || "" }
-                description={ marker.description || "Claimed Area" }
-            />
-        </MapView.Marker>
-    ))
-);
 
 type PropsType = {
     initialLocation?: LocationType,
-    markers?: Array<Object>,
-    pins?: Array<Object>,
-    onMapClick?: CoordinatesType => void,
-    onPinClick?: number => void,
+    onMapClick?: Object => void,
+    pinsConfig: ?Array<Object>,
     layers?: Array<Object>,
     style?: Object
 };
 
-export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [], pins = [], style }: PropsType): React$Element<any> => {
+export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style }: PropsType): React$Element<any> => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [initialMapLocation, setInitialMapLocation] = useState(initialLocation);
     useEffect(() => {
@@ -128,28 +118,23 @@ export const MiniMap = ({ initialLocation, onMapClick, onPinClick, markers = [],
             onMapClick(e.nativeEvent.coordinate);
         }
     };
-
-    return (
-        <View style={ styles.miniMap }>
-            { !errorMessage
-                ? (
-                    <MapView
-                        style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
-                        initialRegion={ initialMapLocation }
-                        onPress={ handleMapClick }
-                    >
-                        { placePins(pins, onPinClick) }
-                        { placeOtherMarkers(markers) }
-                    </MapView>
-                )
-                : (
-                    <Text style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }>
-                        { errorMessage }
-                    </Text>
-                )
-            }
-        </View>
-    );
+    return !errorMessage
+        ? (
+            <MapView
+                style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
+                initialRegion={ initialMapLocation }
+                onPress={ handleMapClick }
+            >
+                { placePins(pinsConfig) }
+            </MapView>
+        )
+        : (
+            <View style={ styles.miniMap }>
+                <Text style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }>
+                    { errorMessage }
+                </Text>
+            </View>
+        );
 };
 
 
