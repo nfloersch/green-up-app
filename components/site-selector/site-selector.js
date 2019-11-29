@@ -15,18 +15,16 @@ import Address from "../../models/address";
 import { getClosestSite } from "../../libs/geo-helpers";
 import { defaultStyles } from "../../styles/default-styles";
 import ButtonBar from "../button-bar";
-import { Screen } from "@shoutem/ui";
-import * as constants from "../../styles/constants";
+import Site from "../site";
 
 type PropsType = {
     onSelect: any => void,
     onCancel: any => void,
     userLocation: LocationType,
     sites: ?Array<any>,
-    towns: Array<Town>
+    towns: Array<Town>,
+    value?: Object,
 };
-
-type SitePropsType = { site: Object, town: string };
 
 const myStyles = {};
 
@@ -34,21 +32,8 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 
 const styles = StyleSheet.create(combinedStyles);
 
-const Site = ({ site, town }: SitePropsType) => {
-    return (
-        <Fragment>
-            <Text>{ (town || {}).townName }</Text>
-            <Text>{ (site || {}).name }</Text>
-            <Text>{ Address.toString((site || {}).address) }</Text>
-            <Text>{ (site || {}).notes }</Text>
-            <Text>{ (town || {}).dropOffInstructions }</Text>
-        </Fragment>
-    );
-};
-
-
-export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel }: PropsType): React$Element<any> => {
-    const [selectedSite, setSelectedSite] = useState(getClosestSite(sites, userLocation.coordinates).site);
+export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, value }: PropsType): React$Element<any> => {
+    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, userLocation.coordinates).site);
 
     const pins = (sites || []).filter(site => Boolean(site.coordinates)).map(site => ({
         coordinates: site.coordinates,
@@ -62,7 +47,15 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel }:
     }));
 
     const town = towns.find(t => t.townId === selectedSite.townId);
-    const headerButtons = [{ text: "Select", onClick: onSelect }, { text: "Cancel", onClick: onCancel }];
+    const headerButtons = [
+        {
+            text: "Select",
+            onClick: () => {
+                onSelect(selectedSite);
+            }
+        },
+        { text: "Cancel", onClick: onCancel }
+    ];
 
     return (
 

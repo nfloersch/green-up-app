@@ -15,9 +15,8 @@ import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
 import TownInformation from "../town-information";
 import SiteSelector from "../site-selector";
-import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
-import moment from "moment";
 import * as R from "ramda";
+import Site from "../site";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number } };
 
@@ -41,14 +40,13 @@ type PropsType = {
     location: LocationType,
     trashDrop?: Object,
     onSave: Object => void,
-    onCancel: ()=> void,
     currentUser: UserType,
     townData: Object,
     trashCollectionSites: Array<Object>,
     userLocation: LocationType
 };
 
-export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0];
     const [drop, setDrop] = useState({
         id: null,
@@ -66,49 +64,36 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
     const town = location ? getTown(location) : "";
     const encodedTownName = town.toUpperCase().replace(/[^A-Z]/g, "_");
     const townInfo = townData[encodedTownName] || {};
-    const toggleTag = (editable: boolean, tag: string): (any=>any) => () => {
-        if (editable) {
-            const hasTag = (drop.tags || []).indexOf(tag) > -1;
-            const tags = hasTag
-                ? (drop.tags || []).filter((_tag: string): boolean => _tag !== tag)
-                : (drop.tags || []).concat(tag);
-            setDrop({ ...drop, tags });
-        }
+    const toggleTag = (tag: string): (any=>any) => () => {
+        const hasTag = (drop.tags || []).indexOf(tag) > -1;
+        const tags = hasTag
+            ? (drop.tags || []).filter((_tag: string): boolean => _tag !== tag)
+            : (drop.tags || []).concat(tag);
+        setDrop({ ...drop, tags });
+
     };
-    const isEditable = Boolean(!drop.wasCollected && drop.createdBy && (drop.createdBy.uid === currentUser.uid));
+
     useEffect(() => {
         setDrop({ ...trashDrop, location });
     }, [trashDrop, location]);
 
-    const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
-    const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
+    // const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
+    // const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
     const teamOptions = Object.entries(currentUser.teams || {}).map(entry => ({ id: entry[0], name: entry[1].name }));
-
+    const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
+    const selectedTown = townData.find(t => t.townId === (selectedSite || {}).townId);
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ styles.buttonBarHeader }>
                 <View style={ styles.buttonBar }>
-                    {
-                        isEditable
-                            ? (
-                                <View style={ styles.buttonBarButton }>
-                                    <TouchableOpacity
-                                        style={ styles.headerButton }
-                                        onPress={ () => onSave(drop) }
-                                    >
-                                        <Text style={ styles.headerButtonText }>
-                                            { "Save" }
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                            : null
-                    }
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableOpacity style={ styles.headerButton } onPress={ onCancel }>
-                            <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        style={ styles.headerButton }
+                        onPress={ () => onSave(drop) }
+                    >
+                        <Text style={ styles.headerButtonText }>
+                            { "Save" }
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             <ScrollView style={ styles.scroll }>
@@ -116,7 +101,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                     <Text style={ styles.labelDark }>Number of Bags</Text>
                     <TextInput
                         underlineColorAndroid="transparent"
-                        editable={ isEditable }
                         value={ (drop.bagCount || "").toString() }
                         keyboardType="numeric"
                         placeholder="1"
@@ -131,20 +115,17 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                     <Text style={ styles.labelDark }>Other Items</Text>
                     <View style={ styles.fieldset }>
                         <CheckBox
-                            editable={ isEditable }
                             label="Needles/Bio-Waste"
                             checked={ (drop.tags || []).indexOf("bio-waste") > -1 }
-                            onChange={ toggleTag(isEditable, "bio-waste") }/>
+                            onChange={ toggleTag("bio-waste") }/>
                         <CheckBox
-                            editable={ isEditable }
                             label="Tires"
                             checked={ (drop.tags || []).indexOf("tires") > -1 }
-                            onChange={ toggleTag(isEditable, "tires") }/>
+                            onChange={ toggleTag("tires") }/>
                         <CheckBox
-                            editable={ isEditable }
                             label="Large Object"
                             checked={ (drop.tags || []).indexOf("large") > -1 }
-                            onChange={ toggleTag(isEditable, "large") }/>
+                            onChange={ toggleTag("large") }/>
                     </View>
 
 
@@ -157,12 +138,12 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                                               onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
                                               titleProperty="name"
                                               valueProperty="teamOptions.id"
-                                              style={ { modalItem: {color: "blue", backgroundColor: "red" } } }
+                                              style={ { modalItem: { color: "blue", backgroundColor: "red" } } }
                                 />
                             </View>
                         )],
                         [() => teamOptions.length === 1, () => (
-                            <Title>{ `This drop is for team: ${ teamOptions[0].name }` }</Title>
+                            <Title>{ `These bags coun for team: ${ teamOptions[0].name }` }</Title>
                         )],
                         [R.T, () => null]
                     ])() }
@@ -191,6 +172,10 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                             <Text>{ "Find a trash collection site" }</Text>
                         </TouchableHighlight>
                     </View>
+                    { drop.collectionSiteId ? (
+                        <View style={ styles.fieldset }>
+                            <Site site={ selectedSite } town={ selectedTown }/></View>
+                    ) : null }
                 </View>
 
             </ScrollView>
@@ -213,6 +198,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, onCancel, currentUs
                         onCancel={ () => {
                             setModal(null);
                         } }
+                        value={ selectedSite }
                     />
                 </SafeAreaView>
             </Modal>
