@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, SafeAreaView, TouchableOpacity } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -12,8 +12,10 @@ import * as R from "ramda";
 import HomeButton from "../../components/home-button";
 import * as colors from "../../styles/constants";
 import { connectStyle } from "@shoutem/theme";
-import { Screen } from "@shoutem/ui";
 import { selectTeam } from "../../action-creators/team-action-creators";
+import * as constants from "../../styles/constants";
+import { Caption, Card, Divider, GridRow, Image, ImageBackground, ListView, Subtitle, Tile, Title } from "@shoutem/ui";
+
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -121,31 +123,87 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         Object.entries
     );
 
-    const fillerButtonConfig = {
-        fillerButton: {
-            order: 999,
-            navigation: "HomeScreen",
-            backgroundImage: require("../../assets/images/filler-button-background.png")
-        }
-    };
+    // const fillerButtonConfig = {
+    //     fillerButton: {
+    //         order: 999,
+    //         navigation: "HomeScreen",
+    //         backgroundImage: require("../../assets/images/filler-button-background.png")
+    //     }
+    // };
 
     const teamButtons = teamButtonsConfig(myTeams);
     const buttonConfigs = { ...menuConfig, ...teamButtons };
-    const oddButtons = Object.keys(buttonConfigs).length % 2 !== 0;
-    const data = myButtons({ ...buttonConfigs, ...(oddButtons ? fillerButtonConfig : {}) });
+    const data = myButtons(buttonConfigs);
+    let isFirstArticle = true;
+    const groupedData = GridRow.groupByRows(data, 2, () => {
+        if (isFirstArticle) {
+            isFirstArticle = false;
+            return 2;
+        }
+        return 1;
+    });
+
+    const renderRow = (rowData, index) => {
+        // rowData contains grouped data for one row,
+        // so we need to remap it into cells and pass to GridRow
+        if (rowData.length === 1) {
+            return (
+                <TouchableOpacity key={ index } onPress={ rowData[0].onPress }>
+                    <ImageBackground
+                        styleName="large"
+                        source={ rowData[0].backgroundImage }
+                    >
+                        <Tile>
+                            <Title styleName="md-gutter-bottom">{ rowData[0].label }</Title>
+                        </Tile>
+                    </ImageBackground>
+                    <Divider styleName="line"/>
+                </TouchableOpacity>
+            );
+        }
+
+        const cellViews = rowData.map((item, id) => (
+            <TouchableOpacity
+                key={ id }
+                onPress={ item.onPress }
+                styleName="flexible">
+                <Card styleName="flexible">
+                    <Image
+                        styleName="medium-wide"
+                        source={ item.backgroundImage }
+                    />
+                    <View styleName="content">
+                        <Subtitle numberOfLines={ 3 }>{ item.label }</Subtitle>
+                    </View>
+                </Card>
+            </TouchableOpacity>
+        ));
+
+        return (
+            <GridRow columns={ 2 }>
+                { cellViews }
+            </GridRow>
+        );
+    };
+
 
     return (
-        <Screen style={ { backgroundColor: colors.colorBackgroundHome } }>
-            <FlatList
-                data={ data }
-                keyExtractor={ (item: Object): string => item.id }
-                renderItem={ ({ item }: { item: Object }): React$Element<any> => (<HomeButton { ...item }/>) }
-                numColumns={ 2 }
-                style={ { paddingTop: 2, paddingLeft: 1, paddingRight: 1, paddingBottom: 2 } }
-            >
-                <View style={ { height: 20 } }/>
-            </FlatList>
-        </Screen>
+        <SafeAreaView style={ { backgroundColor: colors.colorBackgroundHome } }>
+            <ListView
+                style={ { backgroundColor: constants.colorBackgroundDark } }
+                data={ groupedData }
+                renderRow={ renderRow }
+            />
+            {/*<FlatList*/ }
+            {/*    data={ data }*/ }
+            {/*    keyExtractor={ (item: Object): string => item.id }*/ }
+            {/*    renderItem={ ({ item }: { item: Object }): React$Element<any> => (<HomeButton { ...item }/>) }*/ }
+            {/*    numColumns={ 2 }*/ }
+            {/*    style={ { paddingTop: 2, paddingLeft: 1, paddingRight: 1, paddingBottom: 2 } }*/ }
+            {/*>*/ }
+            {/*    <View style={ { height: 20 } }/>*/ }
+            {/*</FlatList>*/ }
+        </SafeAreaView>
     );
 };
 
