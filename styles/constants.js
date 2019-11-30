@@ -1,11 +1,11 @@
 export const colorButton = "#FA774E";
-export const colorBackgroundHome = "#DFDFDF";
+export const colorBackgroundHome = "#55683A";
 export const colorTextThemeDark = "#55683A";
 export const colorTextThemeLight = "#FFFFFF";
 export const colorTextThemeAlt = "#FA774E";
 export const colorBackgroundHeader = "#EFEFEF";
 export const colorBorderHeader = "#333";
-export const colorBackgroundDark = "#DFDFDF";
+export const colorBackgroundDark = "#55683A";
 export const colorTabIconDefault = "#FFF";
 export const colorTabBarBackground = "#4A4B4C";
 export const colorTabIconSelected = "orange";

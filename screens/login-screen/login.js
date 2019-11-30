@@ -140,7 +140,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                                 </TouchableHighlight>
                             </View>
                         </KeyboardAvoidingView>
-                        <Text style={ [styles.text, { textAlign: "center", marginTop: 10 }] }> - OR - </Text>
+                        {/*<Text style={ [styles.text, { textAlign: "center", marginTop: 10 }] }> - OR - </Text>*/}
                         {/* <TouchableOpacity*/ }
                         {/* style={styles.socialLoginButton}*/ }
                         {/* onPress={googleLogin}>*/ }
@@ -151,20 +151,20 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                         {/* <Text style={styles.socialLoginText}>Log in with Google</Text>*/ }
                         {/* </View>*/ }
                         {/* </TouchableOpacity>*/ }
-                        <TouchableOpacity
-                            style={ styles.socialLoginButton }
-                            onPress={ facebookLogin }>
-                            <View style={ [styles.socialLoginLogo, {
-                                backgroundColor: "#415893"
-                            }] }>
-                                <Image style={ styles.logos } source={ facebookLogo }/>
-                            </View>
-                            <View style={ [styles.socialLogin, { backgroundColor: "#2d3f67" }] }>
-                                <Text style={ [styles.socialLoginText, { alignSelf: "stretch" }] }>
-                                    Log in with Facebook
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity*/}
+                        {/*    style={ styles.socialLoginButton }*/}
+                        {/*    onPress={ facebookLogin }>*/}
+                        {/*    <View style={ [styles.socialLoginLogo, {*/}
+                        {/*        backgroundColor: "#415893"*/}
+                        {/*    }] }>*/}
+                        {/*        <Image style={ styles.logos } source={ facebookLogo }/>*/}
+                        {/*    </View>*/}
+                        {/*    <View style={ [styles.socialLogin, { backgroundColor: "#2d3f67" }] }>*/}
+                        {/*        <Text style={ [styles.socialLoginText, { alignSelf: "stretch" }] }>*/}
+                        {/*            Log in with Facebook*/}
+                        {/*        </Text>*/}
+                        {/*    </View>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                     <View style={ defaultStyles.padForIOSKeyboard }/>
                 </ScrollView>
