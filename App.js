@@ -7,8 +7,6 @@ import AppState from "./components/app-state";
 import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
-import { StyleProvider } from "@shoutem/theme";
-import { greenUpTheme } from "./styles/theme";
 import { YellowBox } from "react-native";
 
 // Stop annoying Android users with useless warnings.

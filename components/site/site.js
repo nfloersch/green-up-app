@@ -5,7 +5,7 @@ import { Text } from "@shoutem/ui";
 
 import Address from "../../models/address";
 
-type SitePropsType = { site: Object, town: string };
+type SitePropsType = { site: Object, town: Object };
 
 
 export const Site = ({ site, town }: SitePropsType) => (

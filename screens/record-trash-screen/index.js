@@ -6,18 +6,13 @@ import { connect } from "react-redux";
 import EnableLocationServices from "../../components/enable-location-services";
 import {
     SafeAreaView,
-    TouchableHighlight,
-    Modal,
     StyleSheet,
     Text,
-    View,
-    Platform
+    View
 } from "react-native";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
-import { Ionicons } from "@expo/vector-icons";
-import { dateIsInCurrentEventWindow } from "../../libs/green-up-day-calucators";
 
 import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
@@ -45,7 +40,6 @@ const RecordTrashScreen = (
     {
         actions,
         currentUser,
-        drops,
         townData,
         trashCollectionSites,
         userLocation
@@ -83,11 +77,6 @@ const RecordTrashScreen = (
         closeModal();
     };
 
-    // $FlowFixMe
-    const collectionSites = R.compose(
-        R.filter((site: Object): boolean => Boolean(site.coordinates && site.coordinates.latitude && site.coordinates.longitude)),
-        Object.values
-    )(trashCollectionSites);
 
     const initialMapLocation = userLocation
         ? {

@@ -6,7 +6,7 @@ import * as R from "ramda";
 
 const circumferenceOfTheEarth = 24901;
 
-export const getClosestSite = (sites: Array<LocationType>, userLocation: CoordinatesType): Object => {
+export const getClosestSite = (sites: ?Array<LocationType>, userLocation: ?CoordinatesType): Object => {
     const from = turf.point([userLocation.longitude, userLocation.latitude]);
 
     return R.reduce(

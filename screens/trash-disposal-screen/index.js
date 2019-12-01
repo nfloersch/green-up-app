@@ -39,16 +39,13 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
 
     const [searchResults, setSearchResults] = useState(townInfo);
     const [searchTerm, setSearchTerm] = useState("");
-    const [modal, setModal] = useState(null);
 
     useEffect(() => {
         const spotsFound = searchArray(searchableFields, townInfo, searchTerm);
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
-    const closeModal = () => {
-        setModal(null);
-    };
+
     const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
     const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
 
@@ -145,7 +142,6 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                     currentUser={ currentUser }
                     location={ userLocation }
                     onSave={ actions.dropTrash }
-                    onCancel={ closeModal }
                     townData={ townInfo }
                     trashCollectionSites={ trashCollectionSites }
                     userLocation={ userLocation }

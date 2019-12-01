@@ -17,7 +17,7 @@ export default class TrashCollectionSite {
     updated: ?string;
 
     constructor(args: ?Object) {
-        this.active = (args || {}).active === false ? false : true;
+        this.active = (args || {}).active !== false;
         this.address = Address.create((args || {}).address);
         this.coordinates = Coordinates.create((args || {}).coordinates);
         this.end = isValidDate((args || {}).end) ? (args || {}).end : null;

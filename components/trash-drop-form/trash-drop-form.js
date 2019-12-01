@@ -43,15 +43,15 @@ type PropsType = {
     currentUser: UserType,
     townData: Object,
     trashCollectionSites: Array<Object>,
-    userLocation: LocationType
+    userLocation?: LocationType
 };
 
 export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
-    const defaultTeam = Object.values(currentUser.teams || {})[0];
+    const defaultTeam = Object.values(currentUser.teams || {})[0] || {};
     const [drop, setDrop] = useState({
         id: null,
         active: true,
-        teamId: (defaultTeam || {}).id,
+        teamId: defaultTeam.id,
         collectionSiteId: null,
         created: new Date(),
         wasCollected: false,
@@ -79,7 +79,10 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
 
     // const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
     // const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
-    const teamOptions = Object.entries(currentUser.teams || {}).map(entry => ({ id: entry[0], name: entry[1].name }));
+    const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({
+        id: entry[0],
+        name: entry[1].name
+    }));
     const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
     const selectedTown = townData.find(t => t.townId === (selectedSite || {}).townId);
     return (
@@ -133,12 +136,13 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                         [() => teamOptions.length > 1, () => (
                             <View style={ { flex: 1, flexDirection: "row" } }>
                                 <Title>{ "This drop is for team:" }</Title>
-                                <DropDownMenu options={ teamOptions }
-                                              selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
-                                              onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
-                                              titleProperty="name"
-                                              valueProperty="teamOptions.id"
-                                              style={ { modalItem: { color: "blue", backgroundColor: "red" } } }
+                                <DropDownMenu
+                                    options={ teamOptions }
+                                    selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
+                                    onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
+                                    titleProperty="name"
+                                    valueProperty="teamOptions.id"
+                                    style={ { modalItem: { color: "blue", backgroundColor: "red" } } }
                                 />
                             </View>
                         )],

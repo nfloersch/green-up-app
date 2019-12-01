@@ -55,8 +55,7 @@ const removeAllListeners = (): Promise<any> => (
                 });
             myListeners = {};
             resolve(true);
-        }
-        catch (e) {
+        } catch (e) {
             reject(e);
         }
     })
@@ -402,8 +401,7 @@ function setupTownListener(dispatch: Dispatch<ActionType>) {
             setTimeout(() => {
                 dispatch({ type: types.FETCH_TOWN_DATA_SUCCESS, data: towns });
             }, 1);
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error in setupTownListener: ", error);
             setTimeout(() => {
                 dispatch({ type: types.FETCH_TOWN_DATA_FAIL, error });
