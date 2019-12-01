@@ -8,7 +8,7 @@ import Town from "../models/town";
 import Message from "../models/message";
 import Invitation from "../models/invitation";
 import * as types from "../constants/action-types";
-import { firebaseConfig } from "./firebase-config";
+import { firebaseConfig } from "../firebase-config";
 import "firebase/firestore";
 import { curry } from "ramda";
 import * as messageTypes from "../constants/message-types";
