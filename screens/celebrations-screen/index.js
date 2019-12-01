@@ -7,7 +7,8 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Platform,
-    SafeAreaView, Text, Modal
+    SafeAreaView,
+    Modal
 } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -28,7 +29,7 @@ const iconStyle = {
     color: "white",
     textAlign: "center"
 };
-const searchableFields = ["name", "townName","description", "address", "townId"];
+const searchableFields = ["name", "townName", "description", "address", "townId"];
 type PropsType = {
     celebrationEvents: Array<Object>,
     userLocation: Object

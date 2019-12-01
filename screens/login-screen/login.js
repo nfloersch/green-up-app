@@ -12,13 +12,10 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    TouchableOpacity,
     View
 } from "react-native";
 import * as actionCreators from "../../action-creators/session-action-creators";
-import logo from "../../assets/images/green-up-logo.png";
-import facebookLogo from "../../assets/images/facebook-logo.png";
-// import googleLogo from "../../assets/images/google-logo.png";
+import logo from "../../assets/images/gu-50-logo.png";
 import LoginForm from "../../components/login-form";
 import { defaultStyles } from "../../styles/default-styles";
 
@@ -83,95 +80,56 @@ type PropsType = {
     navigation: Object
 };
 
-const Login = ({ actions, loginError, navigation }: PropsType): React$Element<any> => {
-
-    // const googleLogin = (): Promise<any> => {
-    //     actions.isLoggingInViaSSO(true);
-    //     return actions.googleLogin();
-    // };
-
-
-    const facebookLogin = (): Promise<any> => {
-        actions.isLoggingInViaSSO(true);
-        return actions.facebookLogin();
-    };
-
-    return (
-        <View style={ styles.frame }>
-            { loginError
-                ? Alert.alert(
-                    "",
-                    (loginError.message || "Login Failed"),
-                    [
-                        {
-                            text: "OK", onPress: () => {
-                            }
+const Login = ({ actions, loginError, navigation }: PropsType): React$Element<any> => (
+    <View style={ styles.frame }>
+        { loginError
+            ? Alert.alert(
+                "",
+                (loginError.message || "Login Failed"),
+                [
+                    {
+                        text: "OK", onPress: () => {
                         }
-                    ],
-                    { cancelable: false }
-                ) : null
-            }
-            <View style={ styles.container }>
-                <ScrollView style={ styles.scroll }>
-                    <View style={ { paddingLeft: 20, paddingRight: 20 } }>
-                        <View style={ styles.logo }>
-                            <Image source={ logo } style={ { height: 120, width: 120 } }/>
-                        </View>
-
-                        <KeyboardAvoidingView
-                            style={ styles.form }
-                            behavior={ Platform.OS === "ios" ? "padding" : null }
-                        >
-                            <View style={ { width: "100%" } }>
-                                <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                                <TouchableHighlight
-                                    style={ styles.link }
-                                    onPress={ () => {
-                                        navigation.navigate("ForgotPassword");
-                                    } }>
-                                    <Text style={ [styles.linkText, { fontSize: 16 }] }>I forgot my password</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={ styles.link }
-                                    onPress={ () => {
-                                        navigation.navigate("CreateNewAccount");
-                                    } }>
-                                    <Text style={ [styles.linkText, { fontSize: 16 }] }>Create a new account</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </KeyboardAvoidingView>
-                        <Text style={ [styles.text, { textAlign: "center", marginTop: 10 }] }> - OR - </Text>
-                        {/* <TouchableOpacity*/ }
-                        {/* style={styles.socialLoginButton}*/ }
-                        {/* onPress={googleLogin}>*/ }
-                        {/* <View style={[styles.socialLoginLogo, {backgroundColor: 'white'}]}>*/ }
-                        {/* <Image source={googleLogo} style={styles.logos}/>*/ }
-                        {/* </View>*/ }
-                        {/* <View style={[styles.socialLogin, {backgroundColor: '#4688f1'}]}>*/ }
-                        {/* <Text style={styles.socialLoginText}>Log in with Google</Text>*/ }
-                        {/* </View>*/ }
-                        {/* </TouchableOpacity>*/ }
-                        <TouchableOpacity
-                            style={ styles.socialLoginButton }
-                            onPress={ facebookLogin }>
-                            <View style={ [styles.socialLoginLogo, {
-                                backgroundColor: "#415893"
-                            }] }>
-                                <Image style={ styles.logos } source={ facebookLogo }/>
-                            </View>
-                            <View style={ [styles.socialLogin, { backgroundColor: "#2d3f67" }] }>
-                                <Text style={ [styles.socialLoginText, { alignSelf: "stretch" }] }>
-                                    Log in with Facebook
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                    }
+                ],
+                { cancelable: false }
+            ) : null
+        }
+        <View style={ styles.container }>
+            <ScrollView style={ styles.scroll }>
+                <View style={ { paddingLeft: 20, paddingRight: 20 } }>
+                    <View style={ styles.logo }>
+                        <Image source={ logo } style={ { height: 120, width: 120 } }/>
                     </View>
-                    <View style={ defaultStyles.padForIOSKeyboard }/>
-                </ScrollView>
-            </View>
+
+                    <KeyboardAvoidingView
+                        style={ styles.form }
+                        behavior={ Platform.OS === "ios" ? "padding" : null }
+                    >
+                        <View style={ { width: "100%" } }>
+                            <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
+                            <TouchableHighlight
+                                style={ styles.link }
+                                onPress={ () => {
+                                    navigation.navigate("ForgotPassword");
+                                } }>
+                                <Text style={ [styles.linkText, { fontSize: 16 }] }>I forgot my password</Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                style={ styles.link }
+                                onPress={ () => {
+                                    navigation.navigate("CreateNewAccount");
+                                } }>
+                                <Text style={ [styles.linkText, { fontSize: 16 }] }>Create a new account</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </KeyboardAvoidingView>
+                </View>
+                <View style={ defaultStyles.padForIOSKeyboard }/>
+            </ScrollView>
         </View>
-    );
-};
+    </View>
+);
 
 
 Login.navigationOptions = {

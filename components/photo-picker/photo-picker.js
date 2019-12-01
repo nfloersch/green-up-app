@@ -1,9 +1,6 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import {
-    Image,
-    TouchableOpacity
-} from "react-native";
+import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import Constants from "expo-constants";
@@ -19,7 +16,7 @@ type PropsType = {
     onChange: any => void,
     onCancel: any => void,
     imagePickerProps: any => void,
-    style: object
+    style: Object
 };
 
 const resize = async (height: number, width: number, rotate: number, image: Object): Object => {
@@ -31,8 +28,8 @@ const resize = async (height: number, width: number, rotate: number, image: Obje
     return newImage;
 };
 
-const getPermissionAsync = async (callback: boolean => any): void => {
-    if (Constants.platform.ios) {
+const getPermissionAsync = async (callback: boolean => any): Promise<any> => {
+    if ((Constants.platform || {}).ios) {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         if (status !== "granted") {
             alert("Sorry, we need camera roll permissions to make this work!");
@@ -43,7 +40,7 @@ const getPermissionAsync = async (callback: boolean => any): void => {
     }
 };
 
-export const PhotoPicker = ({ maxHeight = 200, maxWidth = 200, onCancel, onError, onChange, style, format = ImageManipulator.SaveFormat.PNG, children }: PropsType) => {
+export const PhotoPicker = ({ maxHeight = 200, maxWidth = 200, onCancel, onError, onChange, style, children }: PropsType) => {
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [hasCameraRollPermissions, setCameraRollPermission] = useState(false);
 

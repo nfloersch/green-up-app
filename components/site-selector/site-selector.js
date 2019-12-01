@@ -1,19 +1,13 @@
 // @flow
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import {
     SafeAreaView,
     Text,
     View,
-    TouchableHighlight,
-    TouchableOpacity,
-    StyleSheet,
-    ScrollView,
     Dimensions
 } from "react-native";
 import MiniMap from "../mini-map";
-import Address from "../../models/address";
 import { getClosestSite } from "../../libs/geo-helpers";
-import { defaultStyles } from "../../styles/default-styles";
 import ButtonBar from "../button-bar";
 import Site from "../site";
 
@@ -22,22 +16,16 @@ type PropsType = {
     onCancel: any => void,
     userLocation: LocationType,
     sites: ?Array<any>,
-    towns: Array<Town>,
-    value?: Object,
+    towns: Array<Object>,
+    value?: Object
 };
-
-const myStyles = {};
-
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-
-const styles = StyleSheet.create(combinedStyles);
 
 export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, value }: PropsType): React$Element<any> => {
     const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, userLocation.coordinates).site);
 
     const pins = (sites || []).filter(site => Boolean(site.coordinates)).map(site => ({
         coordinates: site.coordinates,
-        title: (towns.find(t => t.townId === site.townId) || {}).townName || "",
+        title: (towns.find((t: { townId: string }): boolean => t.townId === site.townId) || {}).townName || "",
         id: site.id,
         description: site.name,
         onPress: () => {
@@ -46,7 +34,7 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, v
         color: "yellow"
     }));
 
-    const town = towns.find(t => t.townId === selectedSite.townId);
+    const town = towns.find((t: { townId: string }): boolean => (t.townId === selectedSite.townId));
     const headerButtons = [
         {
             text: "Select",
@@ -58,7 +46,6 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, v
     ];
 
     return (
-
         <SafeAreaView>
             <ButtonBar buttonConfigs={ headerButtons }/>
             <View style={ { height: Dimensions.get("window").height - 60 } }>

@@ -57,7 +57,7 @@ export const DisposalSite = ({ item }: PropsType): React$Element<any> => (
                     </View>
                 ))
             }
-                </View>
+        </View>
             }
     </View>
 );
