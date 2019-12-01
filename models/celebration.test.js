@@ -1,4 +1,3 @@
-/* global it jest describe expect */
 import "react-native";
 import Celebration from "./celebration";
 

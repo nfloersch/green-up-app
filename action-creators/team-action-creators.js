@@ -32,7 +32,7 @@ export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
 
         // Ask for permission to query contacts.
         Permissions.askAsync(Permissions.CONTACTS)
-            .then((permission): void => {
+            .then((permission) => {
                 if (permission.status !== "granted") {
                     // Permission was denied...
                     dispatch({
@@ -44,7 +44,7 @@ export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
                     getContactsAsync(_pageSize);
                 }
             })
-            .catch((error): void => {
+            .catch((error) => {
                 dispatch({ type: types.RETRIEVE_CONTACTS_FAIL, error });
             });
     }

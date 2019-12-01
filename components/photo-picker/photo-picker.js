@@ -68,8 +68,7 @@ export const PhotoPicker = ({ maxHeight = 200, maxWidth = 200, onCancel, onError
                 onChange(resized);
             }
 
-        }
-        catch (error) {
+        } catch (error) {
             if (onError) {
                 onError(error);
             }

@@ -1,4 +1,3 @@
-/* global it jest describe expect */
 import "react-native";
 import React from "react";
 import MemberIcon from "./index";
