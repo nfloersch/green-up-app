@@ -27,7 +27,7 @@ const firebaseConfig = {
 
 const fileContents = `export const firebaseConfig = ${JSON.stringify(firebaseConfig)};`;
 
-fs.writeFile("./data-sources/firebase-config.js", fileContents, (err) => {
+fs.writeFile("./firebase-config.js", fileContents, (err) => {
     if (err) {
         throw err;
     }
