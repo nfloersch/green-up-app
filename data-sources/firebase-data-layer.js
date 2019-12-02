@@ -482,11 +482,33 @@ function setupSupplyDistributionSiteListener(dispatch: Dispatch<ActionType>) {
     addListener("supplyDistributionSites", db.collection("supplyDistributionSites").onSnapshot(gotSnapShot, snapShotError));
 }
 
+function setupUpdatesListener(dispatch: Dispatch<ActionType>) {
+    const gotSnapShot = (querySnapshot: QuerySnapshot) => {
+        const data = {};
+        querySnapshot.forEach((doc: Object) => {
+            data[doc.id] = doc.data();
+        });
+        setTimeout(() => {
+            dispatch({ type: types.FETCH_UPDATES_SUCCESS, data });
+        }, 1);
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("Error in setupUpdatesListener: ", error);
+        setTimeout(() => {
+            dispatch({ type: types.FETCH_UPDATES_FAIL, error });
+        }, 1);
+    };
+    debugger;
+    addListener("updates", db.collection("updates").onSnapshot(gotSnapShot, snapShotError));
+}
+
 // Initialize or de-initialize a user
 const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) => {
+    setupUpdatesListener(dispatch);
     fetchEventInfo(dispatch);
     setupProfileListener(user, dispatch);
-    setupMessageListener(user.uid, dispatch);
     setupTrashDropListener(dispatch);
     setupInvitationListener(user.email, dispatch);
     setupCelebrationsListener(dispatch);
@@ -494,6 +516,7 @@ const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) =>
     setupTrashCollectionSiteListener(dispatch);
     setupSupplyDistributionSiteListener(dispatch);
     setupTeamsListener(user, dispatch);
+    setupMessageListener(user.uid, dispatch);
     setupMyTeamsListener(user, dispatch);
     dispatch(dataLayerActions.userAuthenticated(User.create(user)));
     dispatch({ type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false });

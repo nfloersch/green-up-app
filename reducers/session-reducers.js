@@ -4,6 +4,10 @@ import initialState from "./initial-state";
 
 export const sessionReducers = (state: Object = initialState.loading, action: ActionType): Object => {
     switch (action.type) {
+        case types.FETCH_UPDATES_FAIL:
+            return { ...state, updates: { ...state.updates, error: action.error } };
+        case types.FETCH_UPDATES_SUCCESS:
+            return { ...state, updates: { data: action.data, error: null } };
         case types.LOGIN_SUCCESSFUL :
             return { ...state, userIsLoggedIn: true };
         case types.FETCH_MESSAGES_SUCCESS:
