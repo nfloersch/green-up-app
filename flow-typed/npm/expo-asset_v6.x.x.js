@@ -45,6 +45,6 @@ declare module 'expo-asset' {
     static fromURI(uri: string): Asset;
     // https://github.com/facebook/react-native/blob/654868da336ab34ea851cada943492932009ec5d/Libraries/Image/ImageSource.js#L87-L91
     // number === require('a.png')
-    static loadAsync(moduleId: string | Array<string>): Promise<Array<void>>;
+    static loadAsync(moduleId: number | Array<number>): Promise<Array<void>>;
   }
 }

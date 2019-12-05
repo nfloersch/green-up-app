@@ -57,18 +57,18 @@ export function loginWithEmailPassword(email: string, password: string): ThunkTy
 //             if (result.type === "success") {
 //                 firebaseDataLayer.googleAuth(result.idToken, dispatch).catch((error: Error) => {
 //                     dispatch({
-//                         type: types.LOGIN_FAIL,
+//                         type: actionTypes.LOGIN_FAIL,
 //                         error
 //                     });
 //                 });
 //             } else {
 //                 dispatch({
-//                     type: types.LOGIN_FAIL,
+//                     type: actionTypes.LOGIN_FAIL,
 //                     error: "Google authentication failed"
 //                 });
 //             }
 //         } catch (error) {
-//             dispatch({ type: types.LOGIN_FAIL, error });
+//             dispatch({ type: actionTypes.LOGIN_FAIL, error });
 //         }
 //     };
 // }
@@ -83,13 +83,13 @@ export function loginWithEmailPassword(email: string, password: string): ThunkTy
 //         if (type === "success") {
 //             firebaseDataLayer.facebookAuth(token, dispatch).catch((error: Error) => {
 //                 dispatch({
-//                     type: types.LOGIN_FAIL,
+//                     type: actionTypes.LOGIN_FAIL,
 //                     error
 //                 });
 //             });
 //         } else {
 //             dispatch({
-//                 type: types.LOGIN_FAIL,
+//                 type: actionTypes.LOGIN_FAIL,
 //                 session: {
 //                     facebook: null,
 //                     user: null
@@ -119,9 +119,9 @@ export function resetPassword(emailAddress: string): ThunkType {
     return thunk;
 }
 
-export function isLoggingInViaSSO(_isLoggingInViaSSO: boolean): Object {
-    return { type: types.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO };
-}
+// export function isLoggingInViaSSO(_isLoggingInViaSSO: boolean): Object {
+//     return { type: actionTypes.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: _isLoggingInViaSSO };
+// }
 
 export const initialize = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
@@ -131,3 +131,79 @@ export const initialize = (): ThunkType => {
     thunk.interceptOnOffline = true;
     return thunk;
 };
+
+
+export const fetchEventInfo = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchEventInfo(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+export const fetchTeams = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchTeams(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+export const fetchCelebrations = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchCelebrations(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+
+export const fetchSupplyDistributionSites = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchSupplyDistributionSites(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+
+export const fetchTrashCollectionSites = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchTrashCollectionSites(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+
+export const fetchTowns = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchTowns(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+
+
+export const fetchTrashDrops = (): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        firebaseDataLayer.fetchTrashDrops(dispatch);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+
+};
+

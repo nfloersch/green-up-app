@@ -22,7 +22,7 @@ export function profileReducers(state: Object = initialState.profile, action: Ac
                 teams: action.data
             };
         case types.RESET:
-            return { ...state, profile: initialState.profile };
+            return initialState.profile;
         default:
             return state;
     }

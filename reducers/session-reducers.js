@@ -2,8 +2,12 @@
 import * as types from "../constants/action-types";
 import initialState from "./initial-state";
 
-export const sessionReducers = (state: Object = initialState.loading, action: ActionType): Object => {
+export const sessionReducers = (state: Object = initialState.session, action: ActionType): Object => {
     switch (action.type) {
+        case types.FETCH_UPDATES_FAIL:
+            return { ...state, updates: { ...state.updates, error: action.error } };
+        case types.FETCH_UPDATES_SUCCESS:
+            return { ...state, updates: { data: action.data, error: null } };
         case types.LOGIN_SUCCESSFUL :
             return { ...state, userIsLoggedIn: true };
         case types.FETCH_MESSAGES_SUCCESS:
@@ -17,12 +21,7 @@ export const sessionReducers = (state: Object = initialState.loading, action: Ac
         case types.TEAM_MEMBER_FETCH_SUCCESS :
             return { ...state, setupMyTeamsListener: true };
         case types.RESET:
-            return {
-                ...state,
-                initialAuthChecked: false,
-                userIsLoggedIn: false,
-                isInitialized: false
-            };
+            return initialState.session;
         case types.NO_TEAMS_TO_LOAD:
             return {
                 ...state,

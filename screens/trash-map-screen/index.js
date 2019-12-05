@@ -362,8 +362,8 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
-    const drops = (state.trashTracker.trashDrops || [])
-        .filter((drop: TrashDrop): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
+    const drops = Object.values(state.trashTracker.trashDrops || [])
+        .filter((drop: any): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
     const townData = state.towns.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;

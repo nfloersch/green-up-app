@@ -1,6 +1,5 @@
 // @flow
 import * as types from "../constants/action-types";
-import Team from "../models/team";
 import TrashDrop from "../models/trash-drop";
 import Message from "../models/message";
 
@@ -32,11 +31,6 @@ export function userFailedLogOut(error: any): ActionType {
 
 export function userFailedAuthentication(error: any): ActionType {
     return { type: types.LOGIN_FAIL, error };
-}
-
-export function teamFetchSuccessful(_teams: Object): ActionType {
-    const teams = Object.keys(_teams || {}).reduce((teamObj: Object, key: string): Object => (Object.assign({}, teamObj, { [key]: Team.create(_teams[key], key) })), {});
-    return { type: types.FETCH_TEAMS_SUCCESS, data: teams };
 }
 
 export function townDataFetchFail(): ActionType {

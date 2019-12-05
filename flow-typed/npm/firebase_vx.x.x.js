@@ -154,10 +154,6 @@ declare module 'firebase/firebase' {
   declare module.exports: any;
 }
 
-declare module 'firebase/firestore' {
-    declare module.exports: any;
-}
-
 declare module 'firebase/firestore/dist/index.cjs' {
   declare module.exports: any;
 }

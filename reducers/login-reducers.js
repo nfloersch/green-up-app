@@ -57,13 +57,13 @@ export const loginReducers = (state: Object = initialState.login, action: Action
                 loginError: null,
                 creatingUser: false
             };
-        case types.IS_LOGGING_IN_VIA_SSO:
-            return {
-                ...state,
-                initialAuthChecked: true,
-                createUserError: null,
-                isLoggingInViaSSO: action.data
-            };
+        // case actionTypes.IS_LOGGING_IN_VIA_SSO:
+        //     return {
+        //         ...state,
+        //         initialAuthChecked: true,
+        //         createUserError: null,
+        //         isLoggingInViaSSO: action.data
+        //     };
         default:
             return state;
     }

@@ -15,6 +15,8 @@ export const userLocationReducers = (state: Object = initialState.userLocation, 
                 ...state,
                 error: action.error
             };
+        case types.RESET:
+            return initialState.userLocation;
         default:
             return state;
     }

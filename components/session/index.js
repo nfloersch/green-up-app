@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import LoginScreen from "../../screens/login-screen/index";
 // import MarketingPermissionsScreen from "../../screens/marketing-permissions";
@@ -19,22 +19,39 @@ const styles = StyleSheet.create({
 });
 
 type PropsType = {
-    actions: { initialize: () => void },
+    actions: { initialize: Object => void },
     children: React$Element<any>,
     appIsInitialized: boolean,
-//     marketingPermissionsGranted: boolean,
-    userIsLoggedIn: boolean
+    updates: Object,
+    userIsLoggedIn: boolean,
+    user: Object
 };
 
-const Session = ({ actions, children, appIsInitialized, userIsLoggedIn }: PropsType): React$Element<View> => {
+const Session = ({ actions, children, appIsInitialized, updates, userIsLoggedIn, user }: PropsType): React$Element<View> => {
+
+    const [cachedUpdates, setCachedUpdate] = useState((updates || {}).data || {});
 
     useEffect(() => {
         if (
             !appIsInitialized) {
-            actions.initialize();
+            actions.initialize(user);
         }
     }, []);
 
+
+    useEffect(() => {
+        if (!updates.error) {
+            const updatesData = (updates || {}).data || {};
+            Object.keys(updatesData).forEach(key => {
+                const actionKey = `fetch${ key[0].toUpperCase() }${ key.slice(1) }`;
+                if (actions[actionKey] && (cachedUpdates[key] !== updatesData[key])) {
+                    actions[actionKey]();
+                }
+            });
+            setCachedUpdate(updatesData);
+        }
+        // TODO: Handle Error
+    }, [updates]);
 
     const content = userIsLoggedIn ? (<Fragment>{ children }</Fragment>) : (<LoginScreen/>);
 
@@ -55,7 +72,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
  * @returns {{appInitialized: (boolean|*), userIsLoggedIn: (boolean|*)}} - state
  */
 const mapStateToProps = (state: Object): Object => ({
-    userIsLoggedIn: Boolean(state.login.user)
+    user: state.login.user,
+    userIsLoggedIn: Boolean(state.login.user),
+    updates: state.session.updates || {}
 });
 
 // $FlowFixMe

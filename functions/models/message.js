@@ -1,5 +1,5 @@
 const deconstruct = require("./libs/deconstruct");
-const messageTypes = require("../constants/message-types");
+const messageTypes = require("../constants/message-actionTypes");
 const isValidDate = require("./validators").isValidDate;
 const TeamMember = require("./team-member");
 
