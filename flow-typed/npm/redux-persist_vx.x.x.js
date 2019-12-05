@@ -6,7 +6,7 @@
  *
  *   'redux-persist'
  *
- * Fill this stub out by replacing all the `any` types.
+ * Fill this stub out by replacing all the `any` actionTypes.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -356,7 +356,7 @@ declare module 'redux-persist/es/storage/session.js' {
   declare module.exports: $Exports<'redux-persist/es/storage/session'>;
 }
 declare module 'redux-persist/es/types.js' {
-  declare module.exports: $Exports<'redux-persist/es/types'>;
+  declare module.exports: $Exports<'redux-persist/es/actionTypes'>;
 }
 declare module 'redux-persist/lib/constants.js' {
   declare module.exports: $Exports<'redux-persist/lib/constants'>;
@@ -425,7 +425,7 @@ declare module 'redux-persist/lib/storage/session.js' {
   declare module.exports: $Exports<'redux-persist/lib/storage/session'>;
 }
 declare module 'redux-persist/lib/types.js' {
-  declare module.exports: $Exports<'redux-persist/lib/types'>;
+  declare module.exports: $Exports<'redux-persist/lib/actionTypes'>;
 }
 declare module 'redux-persist/src/constants.js' {
   declare module.exports: $Exports<'redux-persist/src/constants'>;
@@ -494,5 +494,5 @@ declare module 'redux-persist/src/storage/session.js' {
   declare module.exports: $Exports<'redux-persist/src/storage/session'>;
 }
 declare module 'redux-persist/src/types.js' {
-  declare module.exports: $Exports<'redux-persist/src/types'>;
+  declare module.exports: $Exports<'redux-persist/src/actionTypes'>;
 }

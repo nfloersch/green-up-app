@@ -98,7 +98,7 @@ LeaderboardScreen.navigationOptions = {
 const mapStateToProps = (state: Object): Object => {
 
     const teams = state.teams.teams;
-    const bagDrops = state.trashTracker.trashDrops;
+    const bagDrops = Object.values(state.trashTracker.trashDrops);
     const rankings = R.compose(
         R.addIndex(R.map)((ranking, index) => ({
             ...ranking,

@@ -1725,7 +1725,7 @@ declare module ramda {
       & ((B, Oa) => Ob)
     ))
     & (<A, B, Oa, Ob>(lens: LensObj<Oa, A, B>, B, Oa) => Ob)
-    // NOTE: Other functor types might need to be directly supported here.
+    // NOTE: Other functor actionTypes might need to be directly supported here.
     & (<A, B, Fa: Array<A>>(lens: Lens<A, B, Fa, Array<B>>) => (
       & (B => Fa => Array<B>)
       & ((B, Fa) => Array<B>)

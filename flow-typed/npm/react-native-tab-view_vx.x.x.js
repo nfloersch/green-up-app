@@ -6,7 +6,7 @@
  *
  *   'react-native-tab-view'
  *
- * Fill this stub out by replacing all the `any` types.
+ * Fill this stub out by replacing all the `any` actionTypes.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -145,7 +145,7 @@ declare module 'react-native-tab-view/lib/commonjs/TouchableItem.js' {
   declare module.exports: $Exports<'react-native-tab-view/lib/commonjs/TouchableItem'>;
 }
 declare module 'react-native-tab-view/lib/commonjs/types.js' {
-  declare module.exports: $Exports<'react-native-tab-view/lib/commonjs/types'>;
+  declare module.exports: $Exports<'react-native-tab-view/lib/commonjs/actionTypes'>;
 }
 declare module 'react-native-tab-view/lib/module/index' {
   declare module.exports: $Exports<'react-native-tab-view/lib/module'>;
@@ -181,5 +181,5 @@ declare module 'react-native-tab-view/lib/module/TouchableItem.js' {
   declare module.exports: $Exports<'react-native-tab-view/lib/module/TouchableItem'>;
 }
 declare module 'react-native-tab-view/lib/module/types.js' {
-  declare module.exports: $Exports<'react-native-tab-view/lib/module/types'>;
+  declare module.exports: $Exports<'react-native-tab-view/lib/module/actionTypes'>;
 }

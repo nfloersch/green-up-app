@@ -15,7 +15,7 @@ export const trashTrackerReducers = (state: Object = initialState.trashTracker, 
                 [(action.data || {}).toggle]: (action.data || {}).value
             };
         case types.RESET:
-            return { ...state, trashTracker: initialState.trashTracker };
+            return initialState.trashTracker;
         default:
             return state;
     }

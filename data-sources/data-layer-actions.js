@@ -34,11 +34,6 @@ export function userFailedAuthentication(error: any): ActionType {
     return { type: types.LOGIN_FAIL, error };
 }
 
-export function teamFetchSuccessful(_teams: Object): ActionType {
-    const teams = Object.keys(_teams || {}).reduce((teamObj: Object, key: string): Object => (Object.assign({}, teamObj, { [key]: Team.create(_teams[key], key) })), {});
-    return { type: types.FETCH_TEAMS_SUCCESS, data: teams };
-}
-
 export function townDataFetchFail(): ActionType {
     return { type: types.FETCH_TEAMS_FAIL };
 }

@@ -16,6 +16,7 @@ import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import * as R from "ramda";
 import DisplayText from "../../components/display-text";
 import * as colors from "../../styles/constants";
+import Team from "../../models/team";
 
 /**
  * scores a string according to how many search terms it contains
@@ -93,39 +94,6 @@ const styles = StyleSheet.create(combinedStyles);
 
 type SearchItemType = { item: { teamId: string, toDetail: ()=>void, team: { isPublic: boolean, location: ?string, name: ?string, town: string, owner: { displayName: string } } } };
 
-const SearchItem = ({ item }: SearchItemType): React$Element<TouchableHighlight> => (
-    <TouchableHighlight
-        key={ item.teamId }
-        onPress={ item.toDetail }
-        style={ { margin: 5, backgroundColor: colors.colorButton, padding: 10 } }
-    >
-        <View styles={ { flex: 1, justifyItems: "center" } }>
-            <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
-                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
-                    { item.team.town }
-                </Text>
-                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
-                    { item.team.isPublic ? "Public" : "Private" }
-                </Text>
-            </View>
-            <View style={ styles.teamNameWrapper }>
-                <DisplayText
-                    style={ styles.teamName }>
-                    { item.team.name }
-                </DisplayText>
-            </View>
-            <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
-                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
-                    { item.team.location }
-                </Text>
-                <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
-                    { item.team.owner.displayName }
-                </Text>
-            </View>
-        </View>
-    </TouchableHighlight>
-);
-
 type PropsType = {
     actions: Object,
     closeModal: () => void,
@@ -133,10 +101,11 @@ type PropsType = {
     teams: Object,
     navigation: Object,
     searchResults: Array<Object>,
-    currentUser: Object
+    currentUser: Object,
+    towns: Object
 };
 
-const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: PropsType): React$Element<any> => {
+const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, towns }: PropsType): React$Element<any> => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -189,6 +158,45 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
     // ));
 
     const hasTeams = searchResults.length > 0;
+
+
+    const SearchItem = ({ item }: SearchItemType): React$Element<TouchableHighlight> => {
+        const team = Team.create((item || {}).team); // hedge against bad data;
+        return (
+            <TouchableHighlight
+                key={ item.teamId }
+                onPress={ item.toDetail }
+                style={ { margin: 5, backgroundColor: colors.colorButton, padding: 10 } }
+            >
+                <View styles={ { flex: 1, justifyItems: "center" } }>
+                    <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
+                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                            { (towns[team.townId] || {}).name }
+                        </Text>
+                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                            { team.isPublic ? "Public" : "Private" }
+                        </Text>
+                    </View>
+                    <View style={ styles.teamNameWrapper }>
+                        <DisplayText
+                            style={ styles.teamName }>
+                            { team.name }
+                        </DisplayText>
+                    </View>
+                    <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
+                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                            { team.location }
+                        </Text>
+                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                            { team.owner.displayName }
+                        </Text>
+                    </View>
+                </View>
+            </TouchableHighlight>
+        );
+    };
+
+
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ styles.searchHeader }>
@@ -226,7 +234,7 @@ const TeamSearch = ({ actions, teamMembers, teams, navigation, currentUser }: Pr
     );
 };
 
-TeamSearch.navigationOptions = {
+FindTeamScreen.navigationOptions = {
     title: "Find a Team",
     headerStyle: {
         backgroundColor: "#FFF"
@@ -241,14 +249,17 @@ TeamSearch.navigationOptions = {
 };
 
 const mapStateToProps = (state: Object): Object => ({
+    towns: state.towns.townData,
     teams: state.teams.teams || {},
     teamMembers: state.teams.teamMembers || {},
     currentUser: state.login.user
 });
 
+
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
+
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(TeamSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(FindTeamScreen);

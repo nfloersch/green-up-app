@@ -23,7 +23,7 @@ export const messageReducers = (state: Object = initialState.messages, action: A
                 teamsLoaded: true
             };
         case types.RESET:
-            return { ...state, messages: initialState.messages };
+            return initialState.messages;
         default:
             return state;
     }

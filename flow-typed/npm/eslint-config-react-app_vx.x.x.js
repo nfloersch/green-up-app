@@ -6,7 +6,7 @@
  *
  *   'eslint-config-react-app'
  *
- * Fill this stub out by replacing all the `any` types.
+ * Fill this stub out by replacing all the `any` actionTypes.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:

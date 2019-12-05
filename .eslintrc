@@ -152,7 +152,7 @@
     "no-eq-null": 2,
     // disallow use of eval()
     "no-eval": 2,
-    // disallow adding to native types
+    // disallow adding to native actionTypes
     "no-extend-native": 2,
     // disallow unnecessary function binding
     "no-extra-bind": 2,

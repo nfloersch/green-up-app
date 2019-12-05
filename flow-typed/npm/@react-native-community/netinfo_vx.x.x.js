@@ -6,7 +6,7 @@
  *
  *   '@react-native-community/netinfo'
  *
- * Fill this stub out by replacing all the `any` types.
+ * Fill this stub out by replacing all the `any` actionTypes.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -112,7 +112,7 @@ declare module '@react-native-community/netinfo/lib/commonjs/internal/subscripti
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/subscriptions'>;
 }
 declare module '@react-native-community/netinfo/lib/commonjs/internal/types.js' {
-  declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/types'>;
+  declare module.exports: $Exports<'@react-native-community/netinfo/lib/commonjs/internal/actionTypes'>;
 }
 declare module '@react-native-community/netinfo/lib/module/index' {
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module'>;
@@ -139,5 +139,5 @@ declare module '@react-native-community/netinfo/lib/module/internal/subscription
   declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/subscriptions'>;
 }
 declare module '@react-native-community/netinfo/lib/module/internal/types.js' {
-  declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/types'>;
+  declare module.exports: $Exports<'@react-native-community/netinfo/lib/module/internal/actionTypes'>;
 }

@@ -82,12 +82,7 @@ export const teamsReducers = (state: Object = initialState.teams, action: Action
             };
         }
         case types.RESET:
-            return {
-                ...state,
-                teamMembers: initialState.teamMembers,
-                selectedTeam: initialState.selectedTeam,
-                teams: initialState.teams
-            };
+            return initialState.teams;
         default:
             return state;
     }

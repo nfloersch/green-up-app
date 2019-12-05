@@ -40,14 +40,27 @@ export default {
     networkStatus: { isOnline: null },
     profile: {},
     selectedTeam: null,
-    session: {},
+    session: {
+        initialAuthChecked: false,
+        userIsLoggedIn: false,
+        isInitialized: false,
+        updates: {
+            data: {
+                celebrations: null,
+                trashCollectionSites: null,
+                teams: null,
+                supplyDistributionSites: null,
+                towns: null
+            }, error: null
+        }
+    },
     supplyDistributionSites: { sites: {}, error: null },
     teamMembers: {},
     teamMembersLoaded: false,
     teamRequests: {},
     teams: { teams: {}, teamMembers: {}, contact: [], selectedTeam: null, locations: [] },
     teamSearchResults: [],
-    towns: { townData: {} },
+    towns: { townData: {}, error: null },
     trashCollectionSites: { sites: {}, error: null },
     trashTracker: {
         trashDrops: [],

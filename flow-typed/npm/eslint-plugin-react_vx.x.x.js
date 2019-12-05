@@ -6,7 +6,7 @@
  *
  *   'eslint-plugin-react'
  *
- * Fill this stub out by replacing all the `any` types.
+ * Fill this stub out by replacing all the `any` actionTypes.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -448,7 +448,7 @@ declare module 'eslint-plugin-react/lib/rules/button-has-type.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/button-has-type'>;
 }
 declare module 'eslint-plugin-react/lib/rules/default-props-match-prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/default-props-match-prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/default-props-match-prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/destructuring-assignment.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/destructuring-assignment'>;
@@ -466,10 +466,10 @@ declare module 'eslint-plugin-react/lib/rules/forbid-elements.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/forbid-elements'>;
 }
 declare module 'eslint-plugin-react/lib/rules/forbid-foreign-prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/forbid-foreign-prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/forbid-foreign-prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/forbid-prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/forbid-prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/forbid-prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/jsx-boolean-value.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/jsx-boolean-value'>;
@@ -640,7 +640,7 @@ declare module 'eslint-plugin-react/lib/rules/no-unsafe.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/no-unsafe'>;
 }
 declare module 'eslint-plugin-react/lib/rules/no-unused-prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/no-unused-prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/no-unused-prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/no-unused-state.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/no-unused-state'>;
@@ -658,7 +658,7 @@ declare module 'eslint-plugin-react/lib/rules/prefer-stateless-function.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/prefer-stateless-function'>;
 }
 declare module 'eslint-plugin-react/lib/rules/prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/react-in-jsx-scope.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/react-in-jsx-scope'>;
@@ -679,7 +679,7 @@ declare module 'eslint-plugin-react/lib/rules/sort-comp.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/sort-comp'>;
 }
 declare module 'eslint-plugin-react/lib/rules/sort-prop-types.js' {
-  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/sort-prop-types'>;
+  declare module.exports: $Exports<'eslint-plugin-react/lib/rules/sort-prop-actionTypes'>;
 }
 declare module 'eslint-plugin-react/lib/rules/state-in-constructor.js' {
   declare module.exports: $Exports<'eslint-plugin-react/lib/rules/state-in-constructor'>;

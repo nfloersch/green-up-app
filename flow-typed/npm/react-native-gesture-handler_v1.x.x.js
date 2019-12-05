@@ -1,7 +1,7 @@
 // flow-typed signature: 6a23c8ddaf07480ea74ff74320570ac1
 // flow-typed version: a5104a7a2f/react-native-gesture-handler_v1.x.x/flow_>=v0.104.x
 
-// Since now there is no possibility to import types from other libraries I had to use such a crutch
+// Since now there is no possibility to import actionTypes from other libraries I had to use such a crutch
 declare module 'react-native-gesture-handler/@react-native' {
   // https://github.com/facebook/react-native/blob/1151c096dab17e5d9a6ac05b61aacecd4305f3db/flow/Stringish.js#L14
   declare export type Stringish = string;

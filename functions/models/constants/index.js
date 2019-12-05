@@ -6,7 +6,7 @@ const INVITED = 'INVITED';
 const OWNER = 'OWNER';
 
 
-/** Message types **/
+/** Message actionTypes **/
 const INVITATION = 'INVITATION';
 const TEAM_MESSAGE = 'TEAM_MESSAGE';
 const GLOBAL_MESSAGE = 'GLOBAL_MESSAGE';
