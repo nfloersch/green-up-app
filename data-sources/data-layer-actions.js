@@ -1,6 +1,5 @@
 // @flow
 import * as types from "../constants/action-types";
-import Team from "../models/team";
 import TrashDrop from "../models/trash-drop";
 import Message from "../models/message";
 

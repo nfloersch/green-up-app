@@ -71,13 +71,11 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
  * @param {Object} state - app state
  * @returns {{appInitialized: (boolean|*), userIsLoggedIn: (boolean|*)}} - state
  */
-const mapStateToProps = (state: Object): Object => {
-    return ({
-        user: state.login.user,
-        userIsLoggedIn: Boolean(state.login.user),
-        updates: state.session.updates || {}
-    });
-};
+const mapStateToProps = (state: Object): Object => ({
+    user: state.login.user,
+    userIsLoggedIn: Boolean(state.login.user),
+    updates: state.session.updates || {}
+});
 
 // $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(Session);

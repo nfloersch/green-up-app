@@ -6,7 +6,7 @@
  *
  *   'firebase'
  *
- * Fill this stub out by replacing all the `any` actionTypes.
+ * Fill this stub out by replacing all the `any` types.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -152,10 +152,6 @@ declare module 'firebase/firebase-storage' {
 
 declare module 'firebase/firebase' {
   declare module.exports: any;
-}
-
-declare module 'firebase/firestore' {
-    declare module.exports: any;
 }
 
 declare module 'firebase/firestore/dist/index.cjs' {

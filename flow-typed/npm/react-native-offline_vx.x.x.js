@@ -6,7 +6,7 @@
  *
  *   'react-native-offline'
  *
- * Fill this stub out by replacing all the `any` actionTypes.
+ * Fill this stub out by replacing all the `any` types.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -136,7 +136,7 @@ declare module 'react-native-offline/src/redux/sagas.js' {
   declare module.exports: $Exports<'react-native-offline/src/redux/sagas'>;
 }
 declare module 'react-native-offline/src/types.js' {
-  declare module.exports: $Exports<'react-native-offline/src/actionTypes'>;
+  declare module.exports: $Exports<'react-native-offline/src/types'>;
 }
 declare module 'react-native-offline/src/utils/checkConnectivityInterval.js' {
   declare module.exports: $Exports<'react-native-offline/src/utils/checkConnectivityInterval'>;

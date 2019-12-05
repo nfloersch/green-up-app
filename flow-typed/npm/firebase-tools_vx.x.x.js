@@ -6,7 +6,7 @@
  *
  *   'firebase-tools'
  *
- * Fill this stub out by replacing all the `any` actionTypes.
+ * Fill this stub out by replacing all the `any` types.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -1629,7 +1629,7 @@ declare module 'firebase-tools/lib/emulator/emulatorServer.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/emulatorServer'>;
 }
 declare module 'firebase-tools/lib/emulator/events/types.js' {
-  declare module.exports: $Exports<'firebase-tools/lib/emulator/events/actionTypes'>;
+  declare module.exports: $Exports<'firebase-tools/lib/emulator/events/types'>;
 }
 declare module 'firebase-tools/lib/emulator/firestoreEmulator.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/firestoreEmulator'>;
@@ -1656,7 +1656,7 @@ declare module 'firebase-tools/lib/emulator/registry.js' {
   declare module.exports: $Exports<'firebase-tools/lib/emulator/registry'>;
 }
 declare module 'firebase-tools/lib/emulator/types.js' {
-  declare module.exports: $Exports<'firebase-tools/lib/emulator/actionTypes'>;
+  declare module.exports: $Exports<'firebase-tools/lib/emulator/types'>;
 }
 declare module 'firebase-tools/lib/ensureApiEnabled.js' {
   declare module.exports: $Exports<'firebase-tools/lib/ensureApiEnabled'>;

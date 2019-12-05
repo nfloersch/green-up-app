@@ -991,7 +991,7 @@ declare module 'react-navigation' {
     removeClippedSubviews?: boolean,
     containerOptions?: void,
   |};
-  /* TODO: fix the config for each of these tab navigator actionTypes */
+  /* TODO: fix the config for each of these tab navigator types */
   declare export function createBottomTabNavigator(
     routeConfigs: NavigationRouteConfigMap,
     config?: _TabNavigatorConfig

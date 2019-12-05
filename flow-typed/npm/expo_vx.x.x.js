@@ -6,7 +6,7 @@
  *
  *   'expo'
  *
- * Fill this stub out by replacing all the `any` actionTypes.
+ * Fill this stub out by replacing all the `any` types.
  *
  * Once filled out, we encourage you to share your work with the
  * community by sending a pull request to:
@@ -401,7 +401,7 @@ declare module 'expo/build/launch/withExpoRoot.js' {
   declare module.exports: $Exports<'expo/build/launch/withExpoRoot'>;
 }
 declare module 'expo/build/launch/withExpoRoot.types.js' {
-  declare module.exports: $Exports<'expo/build/launch/withExpoRoot.actionTypes'>;
+  declare module.exports: $Exports<'expo/build/launch/withExpoRoot.types'>;
 }
 declare module 'expo/build/launch/withExpoRoot.web.js' {
   declare module.exports: $Exports<'expo/build/launch/withExpoRoot.web'>;
@@ -410,7 +410,7 @@ declare module 'expo/build/Linking/Linking.js' {
   declare module.exports: $Exports<'expo/build/Linking/Linking'>;
 }
 declare module 'expo/build/Linking/Linking.types.js' {
-  declare module.exports: $Exports<'expo/build/Linking/Linking.actionTypes'>;
+  declare module.exports: $Exports<'expo/build/Linking/Linking.types'>;
 }
 declare module 'expo/build/Linking/LinkingModule.js' {
   declare module.exports: $Exports<'expo/build/Linking/LinkingModule'>;
@@ -446,7 +446,7 @@ declare module 'expo/build/Notifications/Notifications.js' {
   declare module.exports: $Exports<'expo/build/Notifications/Notifications'>;
 }
 declare module 'expo/build/Notifications/Notifications.types.js' {
-  declare module.exports: $Exports<'expo/build/Notifications/Notifications.actionTypes'>;
+  declare module.exports: $Exports<'expo/build/Notifications/Notifications.types'>;
 }
 declare module 'expo/build/Payments.js' {
   declare module.exports: $Exports<'expo/build/Payments'>;
@@ -470,7 +470,7 @@ declare module 'expo/build/ScreenOrientation/ScreenOrientation.js' {
   declare module.exports: $Exports<'expo/build/ScreenOrientation/ScreenOrientation'>;
 }
 declare module 'expo/build/ScreenOrientation/ScreenOrientation.types.js' {
-  declare module.exports: $Exports<'expo/build/ScreenOrientation/ScreenOrientation.actionTypes'>;
+  declare module.exports: $Exports<'expo/build/ScreenOrientation/ScreenOrientation.types'>;
 }
 declare module 'expo/build/StoreReview/ExponentStoreReview.js' {
   declare module.exports: $Exports<'expo/build/StoreReview/ExponentStoreReview'>;
