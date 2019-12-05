@@ -36,7 +36,7 @@ class Message {
             : new Date();
     }
 
-    static create(args = {})  {
+    static create(args = {}) {
         return deconstruct(new Message(args));
     }
 

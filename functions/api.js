@@ -1,4 +1,4 @@
-"use strict";
+
 
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
@@ -49,11 +49,11 @@ const validateFirebaseIdToken = async (req, res, next) => {
     try {
         const decodedIdToken = await admin.auth().verifyIdToken(idToken);
         console.log("ID Token correctly decoded", decodedIdToken);
-        req.user = decodedIdToken;
+        // eslint-disable-next-line require-atomic-updates
+        req.user = decodedIdToken; // not a possible race condition because middle-ware is forced to be synchronous?
         next();
         return void 0;
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error while verifying Firebase ID token:", error);
         res.status(403).send("Unauthorized");
         return void 0;
@@ -69,13 +69,13 @@ app.use(validateFirebaseIdToken);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/*** Hello ***/
+/** * Hello ***/
 
 app.get("/hello", (req, res) => {
-    res.json({ "greeting": `Hello ${ req.user.email }` });
+    res.json({ greeting: `Hello ${ req.user.email }` });
 });
 
-/*** Towns ***/
+/** * Towns ***/
 
 app.get("/towns", async (req, res) => {
     const db = admin.firestore();
@@ -106,9 +106,9 @@ app.get("/towns/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
-            } else {
-                return res.status(400).send(`Cannot get town: ${ req.params.id }`);
             }
+            return res.status(400).send(`Cannot get town: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot get town: ${ error }`));
 });
@@ -125,15 +125,11 @@ app.patch("/towns/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 const newTown = Town.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
-                return docRef.set(newTown).then(() => {
-                    return docRef.get()
-                        .then(doc => {
-                            return res.status(200).send(doc.data());
-                        });
-                });
-            } else {
-                return res.status(404).send(`Cannot find town: ${ req.params.id }`);
+                return docRef.set(newTown).then(() => docRef.get()
+                    .then(_doc => res.status(200).send(_doc.data())));
             }
+            return res.status(404).send(`Cannot find town: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot update town: ${ error }`));
 });
@@ -141,7 +137,7 @@ app.patch("/towns/:id", (req, res) => {
 // Bulk upload of town data
 app.put("/towns", (req, res) => {
 
-    //const blackListedFields = ["updated"];
+    // const blackListedFields = ["updated"];
     const collection = admin.firestore().collection("towns");
     let data = {};
     try {
@@ -156,14 +152,13 @@ app.put("/towns", (req, res) => {
                 return res.status(200).send({ towns });
             })
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
 });
 
-/*** Trash Collection Sites ***/
+/** * Trash Collection Sites ***/
 
 app.get("/trash_collection_sites", async (req, res) => {
     const db = admin.firestore();
@@ -193,9 +188,9 @@ app.get("/trash_collection_sites/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
-            } else {
-                return res.status(400).send(`Cannot get trashCollectionSite: ${ req.params.id }`);
             }
+            return res.status(400).send(`Cannot get trashCollectionSite: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot get trashCollectionSite: ${ error }`));
 });
@@ -205,12 +200,8 @@ app.post("/trash_collection_sites", (req, res) => {
     const newSite = TrashCollectionSite.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
     db.collection("trashCollectionSites")
         .add(newSite)
-        .then((docRef) => {
-            return docRef.get()
-                .then(doc => {
-                    return res.status(200).send({ [docRef.id]: doc.data() });
-                });
-        })
+        .then((docRef) => docRef.get()
+            .then(doc => res.status(200).send({ [docRef.id]: doc.data() })))
         .catch(error => res.status(400).send(`Cannot create trashCollectionSite: ${ error }`));
 });
 
@@ -226,15 +217,11 @@ app.patch("/trash_collection_sites/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 const newSite = TrashCollectionSite.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
-                return docRef.set(newSite).then(() => {
-                    return docRef.get()
-                        .then(doc => {
-                            return res.status(200).send({ [doc.id]: doc.data() });
-                        });
-                });
-            } else {
-                return res.status(404).send(`Cannot find trashCollectionSite: ${ req.params.id }`);
+                return docRef.set(newSite).then(() => docRef.get()
+                    .then(_doc => res.status(200).send({ [_doc.id]: _doc.data() })));
             }
+            return res.status(404).send(`Cannot find trashCollectionSite: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot update trashCollectionSite: ${ error }`));
 });
@@ -246,9 +233,7 @@ app.delete("/trash_collection_sites/:id", (req, res) => {
             const result = { id: req.params.id };
             return res.status(200).send(result);
         })
-        .catch(error => {
-            return res.status(400).send(error);
-        });
+        .catch(error => res.status(400).send(error));
 });
 
 // Bulk upload of Trash Collection Sites data
@@ -259,18 +244,15 @@ app.put("/trash_collection_sites", (req, res) => {
         const data = R.map(site => TrashCollectionSite.create(site), Object.values(JSON.parse(req.body.trashCollectionSites)));
         const records = data.map(site => collection.add(site));
         Promise.all(records)
-            .then(results => {
-                return res.status(200).send({ results });
-            })
+            .then(results => res.status(200).send({ results }))
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
 });
 
-/*** Supply Distribution Sites ***/
+/** * Supply Distribution Sites ***/
 
 app.get("/supply_distribution_sites", async (req, res) => {
     const db = admin.firestore();
@@ -300,9 +282,9 @@ app.get("/supply_distribution_sites/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
-            } else {
-                return res.status(400).send(`Cannot get Supply Distribution Site: ${ req.params.id }`);
             }
+            return res.status(400).send(`Cannot get Supply Distribution Site: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot get Supply Distribution Site: ${ error }`));
 });
@@ -313,12 +295,8 @@ app.post("/supply_distribution_sites", (req, res) => {
 
     db.collection("supplyDistributionSites")
         .add(newSite)
-        .then((docRef) => {
-            return docRef.get()
-                .then(doc => {
-                    return res.status(200).send({ [docRef.id]: doc.data() });
-                });
-        })
+        .then((docRef) => docRef.get()
+            .then(doc => res.status(200).send({ [docRef.id]: doc.data() })))
         .catch(error => res.status(400).send(`Cannot create Supply Distribution Site: ${ error }`));
 });
 
@@ -334,15 +312,11 @@ app.patch("/supply_distribution_sites/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 const newSite = SupplyDistributionSite.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
-                return docRef.set(newSite).then(() => {
-                    return docRef.get()
-                        .then(doc => {
-                            return res.status(200).send({ [doc.id]: doc.data() });
-                        });
-                });
-            } else {
-                return res.status(404).send(`Cannot find  supply distribution : ${ req.params.id }`);
+                return docRef.set(newSite).then(() => docRef.get()
+                    .then(_doc => res.status(200).send({ [_doc.id]: _doc.data() })));
             }
+            return res.status(404).send(`Cannot find  supply distribution : ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot update  supply distribution : ${ error }`));
 });
@@ -354,9 +328,7 @@ app.delete("/supply_distribution_sites/:id", (req, res) => {
             const result = { id: req.params.id };
             return res.status(200).send(result);
         })
-        .catch(error => {
-            return res.status(400).send(error);
-        });
+        .catch(error => res.status(400).send(error));
 });
 
 // Bulk upload of Supply Distribution Sites data
@@ -366,17 +338,14 @@ app.put("/supply_distribution_sites", (req, res) => {
         const data = R.map(site => SupplyDistributionSite.create(site), Object.values(JSON.parse(req.body.supplyDistributionSites)));
         const records = data.map(site => collection.add(site));
         Promise.all(records)
-            .then(results => {
-                return res.status(200).send({ results });
-            })
+            .then(results => res.status(200).send({ results }))
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
 
-/*** Celebrations ***/
+/** * Celebrations ***/
 
 app.get("/celebrations", async (req, res) => {
     const db = admin.firestore();
@@ -406,9 +375,9 @@ app.get("/celebrations/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
-            } else {
-                return res.status(400).send(`Cannot get supply distribution site: ${ req.params.id }`);
             }
+            return res.status(400).send(`Cannot get supply distribution site: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot get  supply distribution site: ${ error }`));
 });
@@ -418,12 +387,8 @@ app.post("/celebrations", (req, res) => {
     const celebration = Celebration.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
     db.collection("celebrations")
         .add(celebration)
-        .then((docRef) => {
-            return docRef.get()
-                .then(doc => {
-                    return res.status(200).send({ [docRef.id]: doc.data() });
-                });
-        })
+        .then((docRef) => docRef.get()
+            .then(doc => res.status(200).send({ [docRef.id]: doc.data() })))
         .catch(error => res.status(400).send(`Cannot create Celebration: ${ error }`));
 });
 
@@ -439,15 +404,11 @@ app.patch("/celebrations/:id", (req, res) => {
         .then(doc => {
             if (doc.exists) {
                 const newSite = Celebration.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
-                return docRef.set(newSite).then(() => {
-                    return docRef.get()
-                        .then(doc => {
-                            return res.status(200).send({ [doc.id]: doc.data() });
-                        });
-                });
-            } else {
-                return res.status(404).send(`Cannot find celebration: ${ req.params.id }`);
+                return docRef.set(newSite).then(() => docRef.get()
+                    .then(_doc => res.status(200).send({ [_doc.id]: _doc.data() })));
             }
+            return res.status(404).send(`Cannot find celebration: ${ req.params.id }`);
+
         })
         .catch(error => res.status(400).send(`Cannot update celebration: ${ error }`));
 });
@@ -459,9 +420,7 @@ app.delete("/celebrations/:id", (req, res) => {
             const result = { id: req.params.id };
             return res.status(200).send(result);
         })
-        .catch(error => {
-            return res.status(400).send(error);
-        });
+        .catch(error => res.status(400).send(error));
 });
 
 // Bulk upload of Celebrations data
@@ -471,12 +430,9 @@ app.put("/celebrations", (req, res) => {
         const data = R.map(event => Celebration.create(event), Object.values(req.body.celebrations));
         const records = data.map(event => collection.add(event));
         Promise.all(records)
-            .then(results => {
-                return res.status(200).send({ results });
-            })
+            .then(results => res.status(200).send({ results }))
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 

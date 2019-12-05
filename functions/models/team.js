@@ -10,7 +10,7 @@ const defaultDate = moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do Y
 
 class Team {
 
-     constructor(args = {}) {
+    constructor(args = {}) {
         this.active = typeof args.active === "boolean"
             ? args.active
             : true;

@@ -14,7 +14,7 @@ class MapPin {
         this.title = typeof args.title === "string" ? args.title : null;
     }
 
-    static create(args = {})  {
+    static create(args = {}) {
         return deconstruct(new MapPin(args));
     }
 

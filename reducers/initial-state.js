@@ -47,10 +47,12 @@ export default {
         updates: {
             data: {
                 celebrations: null,
-                trashCollectionSites: null,
-                teams: null,
+                eventInfo: null,
                 supplyDistributionSites: null,
-                towns: null
+                teams: null,
+                towns: null,
+                trashCollectionSites: null,
+                trashDrops: null
             }, error: null
         }
     },

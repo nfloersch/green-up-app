@@ -132,7 +132,6 @@ export const initialize = (): ThunkType => {
     return thunk;
 };
 
-
 export const fetchEventInfo = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.fetchEventInfo(dispatch);
@@ -163,7 +162,6 @@ export const fetchCelebrations = (): ThunkType => {
 
 };
 
-
 export const fetchSupplyDistributionSites = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.fetchSupplyDistributionSites(dispatch);
@@ -173,7 +171,6 @@ export const fetchSupplyDistributionSites = (): ThunkType => {
     return thunk;
 
 };
-
 
 export const fetchTrashCollectionSites = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
@@ -185,7 +182,6 @@ export const fetchTrashCollectionSites = (): ThunkType => {
 
 };
 
-
 export const fetchTowns = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.fetchTowns(dispatch);
@@ -196,7 +192,6 @@ export const fetchTowns = (): ThunkType => {
 
 };
 
-
 export const fetchTrashDrops = (): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         firebaseDataLayer.fetchTrashDrops(dispatch);
@@ -206,4 +201,3 @@ export const fetchTrashDrops = (): ThunkType => {
     return thunk;
 
 };
-

@@ -1,5 +1,5 @@
 const deconstruct = require("./libs/deconstruct");
-const  isValidDate = require("./validators");
+const isValidDate = require("./validators");
 const md5 = require("md5-hash");
 const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
 const getGravatar = (email) => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${ md5(email.trim().toLowerCase()) }?d=mm`);

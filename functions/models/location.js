@@ -1,6 +1,6 @@
 const deconstruct = require("./libs/deconstruct");
 const Coordinates = require("./coordinates");
-const  isValidDate = require("./validators").isValidDate;
+const isValidDate = require("./validators").isValidDate;
 
 class Location {
 
@@ -13,7 +13,7 @@ class Location {
         this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
     }
 
-    static create(args = {})  {
+    static create(args = {}) {
         return deconstruct(new Location(args));
     }
 }

@@ -5,8 +5,8 @@ function getEmail(email) {
     switch (true) {
         case Array.isArray(emails):
             return emails
-                .filter((email) => Boolean(email) && validateEmail(email.email))
-                .map((email) => email.email.toLowerCase())[0] || null;
+                .filter((_email) => Boolean(_email) && validateEmail(_email.email))
+                .map((_email) => _email.email.toLowerCase())[0] || null;
         case typeof emails === "string" && validateEmail(emails):
             return emails.toLowerCase();
         default:
