@@ -35,7 +35,7 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
                     autoCapitalize="none"
                     keyBoardType="email-address"
                     autoCorrect={ false }
-                    placeholder="you@domain.com"
+                    placeholder="janedoe@example.com"
                     value={ email }
                     onChangeText={ setEmail }
                 />

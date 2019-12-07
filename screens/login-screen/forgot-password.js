@@ -1,12 +1,18 @@
 // @flow
 
-import React, { useState } from "react";
-import { Alert, TouchableOpacity, TouchableHighlight, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState, Fragment } from "react";
+import {
+    Alert,
+    StyleSheet,
+    SafeAreaView
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail } from "../../libs/validators";
 import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
+import { Button, Text, Title, Subtitle, TextInput, View } from "@shoutem/ui";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const myStyles = {};
@@ -33,47 +39,69 @@ const ForgotPassword = ({ actions, navigation }: PropsType): React$Element<any> 
     };
 
     return (
-        <View style={ styles.frame }>
-            <View style={ [styles.container, {
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingBottom: 20,
-                paddingTop: "20%"
-            }] }>
+        <SafeAreaView style={ styles.container }>
+            <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 } }>
                 { passwordResetSent
                     ? (
-                        <View style={ [styles.container, { paddingTop: "30%" }] }>
-                            <Text style={ [styles.text, { textAlign: "center" }] }>{ "Check your email" }</Text>
-                            <TouchableHighlight style={ styles.link } onPress={ () => {
-                                navigation.goBack();
-                            } }>
-                                <Text style={ styles.linkText }>{ "< Back to Login" }</Text>
-                            </TouchableHighlight>
-                        </View>
+                        <Fragment>
+                            <View style={ { ...styles.formControl, marginBottom: 40 } }>
+                                <Title style={ {
+                                    textAlign: "left",
+                                    color: "#FFF"
+                                } }>
+                                    { "A link to reset your password has been sent to your email." }
+                                </Title>
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Button
+                                    styleName={ "secondary" }
+                                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                                    onPress={ () => {
+                                        navigation.goBack();
+                                    } }
+                                >
+                                    <Subtitle styleName={ "bold" }
+                                        style={ {
+                                            textAlign: "center",
+                                            color: "#FFF"
+                                        } }>{ "RETURN TO LOGIN" }</Subtitle>
+                                </Button>
+                            </View>
+                        </Fragment>
                     )
                     : (
-                        <View style={ styles.container }>
-                            <Text style={ styles.label }>{ "Email Address" }</Text>
-                            <TextInput
-                                autoCorrect={ false }
-                                value={ email }
-                                keyBoardType="email-address"
-                                placeholder="you@domain.com"
-                                onChangeText={ setEmail }
-                                style={ styles.textInput }
-                                underlineColorAndroid={ "transparent" }
-                            />
-                            <TouchableOpacity
-                                style={ styles.button }
-                                onPress={ onButtonPress }
-                            >
-                                <Text style={ styles.buttonText }>{ "Reset Password" }</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <Fragment>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "Email Address" }</Text>
+                                <TextInput
+                                    autoCorrect={ false }
+                                    value={ email }
+                                    keyBoardType="email-address"
+                                    placeholder="you@domain.com"
+                                    onChangeText={ setEmail }
+                                    underlineColorAndroid={ "transparent" }
+                                />
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Button onPress={ onButtonPress }
+                                    styleName={ "primary" }
+                                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                                >
+                                    <MaterialCommunityIcons name={ "account-plus" } style={ { marginRight: 10 } }
+                                        size={ 25 } color="#555"/>
+                                    <Subtitle
+                                        styleName={ "bold" }
+                                        style={ { textAlign: "center", color: "#555" } }
+                                    >
+                                        { "RESET PASSWORD" }
+                                    </Subtitle>
+                                </Button>
+                            </View>
+                        </Fragment>
                     )
                 }
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 
