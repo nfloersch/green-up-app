@@ -6,25 +6,23 @@ import { connect } from "react-redux";
 import {
     Alert,
     Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
     StyleSheet,
-    Text,
-    TouchableHighlight,
-    View
+    SafeAreaView
 } from "react-native";
+import { View, Button, Text, Divider } from "@shoutem/ui";
 import * as actionCreators from "../../action-creators/session-action-creators";
 import logo from "../../assets/images/gu-50-logo.png";
 import LoginForm from "../../components/login-form";
 import { defaultStyles } from "../../styles/default-styles";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     logo: {
         justifyContent: "center",
         alignItems: "center",
-        paddingBottom: 5
+        paddingBottom: 5,
+        marginTop: 50
     },
     logoText: {
         fontSize: 24,
@@ -68,6 +66,9 @@ const myStyles = {
     form: {
         flex: 1,
         justifyContent: "space-between"
+    },
+    headerStyles: {
+        backgroundColor: constants.backgroundColorDark
     }
 };
 
@@ -81,7 +82,7 @@ type PropsType = {
 };
 
 const Login = ({ actions, loginError, navigation }: PropsType): React$Element<any> => (
-    <View style={ styles.frame }>
+    <SafeAreaView style={ styles.container }>
         { loginError
             ? Alert.alert(
                 "",
@@ -95,45 +96,61 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                 { cancelable: false }
             ) : null
         }
-        <View style={ styles.container }>
-            <ScrollView style={ styles.scroll }>
-                <View style={ { paddingLeft: 20, paddingRight: 20 } }>
-                    <View style={ styles.logo }>
-                        <Image source={ logo } style={ { height: 120, width: 120 } }/>
-                    </View>
 
-                    <KeyboardAvoidingView
-                        style={ styles.form }
-                        behavior={ Platform.OS === "ios" ? "padding" : null }
+        <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1 } }>
+            <View style={ styles.logo }>
+                <Image source={ logo } style={ { height: 120, width: 120 } }/>
+            </View>
+            <View style={ { width: "100%" } }>
+                <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
+                <Divider styleName="line"/>
+                <View style={ { marginTop: 40 } } styleName="horizontal">
+                    <Button
+                        onPress={ () => {
+                            navigation.navigate("ForgotPassword");
+                        } }
+                        style={ { paddingLeft: 20, paddingRight: 20 } }
+                        styleName="confirmation secondary"
                     >
-                        <View style={ { width: "100%" } }>
-                            <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                            <TouchableHighlight
-                                style={ styles.link }
-                                onPress={ () => {
-                                    navigation.navigate("ForgotPassword");
-                                } }>
-                                <Text style={ [styles.linkText, { fontSize: 16 }] }>I forgot my password</Text>
-                            </TouchableHighlight>
-                            <TouchableHighlight
-                                style={ styles.link }
-                                onPress={ () => {
-                                    navigation.navigate("CreateNewAccount");
-                                } }>
-                                <Text style={ [styles.linkText, { fontSize: 16 }] }>Create a new account</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </KeyboardAvoidingView>
+                        <MaterialCommunityIcons
+                            name={ "account-convert" }
+                            size={ 25 }
+                            style={ { marginRight: 10 } }
+                            color="#FFF"
+                        />
+                        <Text>RESET PASSWORD</Text>
+                    </Button>
+                    <Button
+                        onPress={ () => {
+                            navigation.navigate("CreateNewAccount");
+                        } }
+                        style={ { paddingLeft: 20, paddingRight: 20 } }
+                        styleName="confirmation secondary"
+                    >
+                        <MaterialCommunityIcons
+                            name={ "account-plus" }
+                            size={ 25 }
+                            style={ { marginRight: 10 } }
+                            color="#FFF"
+                        />
+                        <Text>CREATE ACCOUNT</Text>
+                    </Button>
                 </View>
-                <View style={ defaultStyles.padForIOSKeyboard }/>
-            </ScrollView>
+            </View>
         </View>
-    </View>
+    </SafeAreaView>
 );
 
 
 Login.navigationOptions = {
-    title: "Log In"
+    title: "Log In",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold"
+    }
 };
 
 const mapStateToProps = (state: Object): Object => ({

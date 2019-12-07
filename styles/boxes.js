@@ -6,6 +6,7 @@ export const boxes = {
         flex: 1,
         backgroundColor: constants.colorBackgroundDark
     },
+    formControl: { marginTop: 10, marginBottom: 10 },
     fieldset: {
         borderWidth: 2,
         borderColor: "#000",
@@ -14,11 +15,12 @@ export const boxes = {
         flex: 1,
         marginBottom: 5
     },
-    modalFrame:{
+    modalFrame: {
         paddingTop: 60,
         backgroundColor: constants.colorBackgroundDark,
         height: "100%",
-        width: "100%" },
+        width: "100%"
+    },
     frame: {
         backgroundColor: constants.colorBackgroundDark,
         height: "100%",
@@ -37,7 +39,7 @@ export const boxes = {
         shadowRadius: 0,
         marginBottom: 1
     },
-    infoBlockNoDivider:{
+    infoBlockNoDivider: {
         paddingBottom: 8,
         borderBottomWidth: 1,
         backgroundColor: "#EEE",

@@ -243,7 +243,7 @@ HomeScreen.navigationOptions = {
         fontFamily: "sriracha",
         fontWeight: "bold",
         fontSize: 20,
-        color: "#55683A"
+        color: constants.HeaderColor
     }
 };
 

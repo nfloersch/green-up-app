@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
     homeButtonText: {
         padding: 2,
-        color: "#55683A",
+        color: constants.colorButtonText,
         fontSize: 22,
         textAlign: "center",
         fontWeight: "bold",
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     homeButtonContainer: {
         shadowOffset: { width: 0, height: 1 },
-        shadowColor: "#55683A",
+        shadowColor: constants.buttonShadowColor,
         shadowOpacity: 0.2,
         shadowRadius: 0,
         borderStyle: "solid",
