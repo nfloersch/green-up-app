@@ -1,12 +1,14 @@
 // @flow
 
 import React from "react";
-import { StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CreateAccountForm from "../../components/create-account-form";
 import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
+import { View } from "@shoutem/ui";
+import * as constants from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -19,28 +21,27 @@ type PropsType = {
 
 
 const CreateNewAccount = ({ actions, createUserError }: PropsType): React$Element<any> => (
-    <KeyboardAvoidingView
-        style={ defaultStyles.frame }
-        behavior={ Platform.OS === "ios" ? "padding" : null }
-    >
-        <ScrollView style={ styles.scroll }>
+    <SafeAreaView style={ styles.container }>
+        <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 } }>
             <CreateAccountForm
                 buttonText="Create Account"
                 createUserError={ createUserError }
                 createAccount={ actions.createUser }
             />
-            {
-                Platform.OS === "ios"
-                    ? (<View style={ defaultStyles.padForIOSKeyboardBig }/>)
-                    : null
-            }
-        </ScrollView>
-    </KeyboardAvoidingView>
+        </View>
+    </SafeAreaView>
 );
 
 
 CreateNewAccount.navigationOptions = {
-    title: "Create New Account"
+    title: "Create New Account",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold"
+    }
 };
 
 const mapStateToProps = (state: Object): Object => ({

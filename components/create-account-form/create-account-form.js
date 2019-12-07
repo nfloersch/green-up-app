@@ -1,8 +1,10 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { Alert, TouchableOpacity, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { isValidEmail } from "../../libs/validators";
 import { defaultStyles } from "../../styles/default-styles";
+import { Button, Text, Subtitle, TextInput, View } from "@shoutem/ui";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -36,25 +38,19 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
 
 
     return (
-        <View style={ [styles.container, {
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingBottom: 20,
-            paddingTop: "20%"
-        }] }>
-            <View>
+        <View>
+            <View style={ styles.formControl }>
                 <Text style={ styles.label }>{ "Email" }</Text>
                 <TextInput
                     autoCapitalize="none"
                     autoCorrect={ false }
-                    placeholder="you@domain.com"
+                    placeholder="janedoe@example.com"
                     value={ email }
                     onChangeText={ setEmail }
-                    style={ styles.textInput }
                     underlineColorAndroid={ "transparent" }
                 />
             </View>
-            <View>
+            <View style={ styles.formControl }>
                 <Text style={ styles.label }>Password</Text>
                 <TextInput
                     autoCapitalize="none"
@@ -64,32 +60,32 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
                     value={ password }
                     onChangeText={ setPassword }
                     underlineColorAndroid={ "transparent" }
-
-                    style={ styles.textInput }/>
+                    />
             </View>
-            <View>
+            <View style={ styles.formControl }>
                 <Text style={ styles.label }>Name</Text>
                 <TextInput
                     autoCorrect={ false }
                     placeholder={ "Jane Doe" }
                     value={ displayName }
                     onChangeText={ setDisplayName }
-                    style={ styles.textInput }
                     underlineColorAndroid={ "transparent" }
                 />
             </View>
-            <TouchableOpacity
-                style={ styles.button }
-                onPress={ onButtonPress }>
-                <Text style={ styles.buttonText }>
-                    { buttonText || "Create Account" }
-                </Text>
-            </TouchableOpacity>
+            <View style={ styles.formControl }>
+                <Button onPress={ onButtonPress}
+                        styleName={ "primary" }
+                        style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                >
+                    <MaterialCommunityIcons name={ "account-plus" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
+                    <Subtitle
+                        styleName={ "bold" }
+                        style={ { textAlign: "center", color: "#555" } }
+                    >
+                        { buttonText ? buttonText.toUpperCase() : "CREATE ACCOUNT" }
+                    </Subtitle>
+                </Button>
+            </View>
         </View>
     );
-};
-
-
-CreateAccountForm.navigationOptions = {
-    title: "Create New Account"
 };
