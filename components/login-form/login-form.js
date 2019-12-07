@@ -1,8 +1,10 @@
 // @flow
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { isValidEmail } from "../../libs/validators";
 import { defaultStyles } from "../../styles/default-styles";
+import { Button, Text, Subtitle, TextInput } from "@shoutem/ui";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -27,7 +29,7 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
 
     return (
         <View style={ { marginBottom: 10 } }>
-            <View>
+            <View style={ styles.formControl }>
                 <Text style={ styles.label }>{ "Email" }</Text>
                 <TextInput
                     autoCapitalize="none"
@@ -36,11 +38,9 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
                     placeholder="you@domain.com"
                     value={ email }
                     onChangeText={ setEmail }
-                    style={ styles.textInput }
-                    underlineColorAndroid={ "transparent" }
                 />
             </View>
-            <View>
+            <View style={ styles.formControl }>
                 <Text style={ styles.label }>{ "Password" }</Text>
                 <TextInput
                     autoCapitalize="none"
@@ -50,13 +50,22 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
                     secureTextEntry={ true }
                     value={ password }
                     onChangeText={ setPassword }
-                    style={ styles.textInput }
-                    underlineColorAndroid={ "transparent" }
                 />
             </View>
-            <TouchableOpacity style={ styles.button } onPress={ handleButtonPress }>
-                <Text style={ styles.buttonText }>{ buttonText || "Login" }</Text>
-            </TouchableOpacity>
+            <View style={ styles.formControl }>
+                <Button onPress={ handleButtonPress }
+                        styleName={ "primary" }
+                        style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                >
+                    <MaterialCommunityIcons name={ "login" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
+                    <Subtitle
+                        styleName={ "bold" }
+                        style={ { textAlign: "center", color: "#555" } }
+                    >
+                        { buttonText ? buttonText.toUpperCase() : "LOG IN" }
+                    </Subtitle>
+                </Button>
+            </View>
         </View>
     );
 };

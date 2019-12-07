@@ -1,6 +1,10 @@
+const darkGreen = "#55683A";
+const brightOrange = "#FA774E";
+const darkOrange = "#FF55";
+const orange = "#FFA500";
 export const colorButton = "#FA774E";
-export const colorBackgroundHome = "#55683A";
-export const colorTextThemeDark = "#55683A";
+export const colorBackgroundLight = "#AAA";
+export const colorTextThemeDark = "#AAA";
 export const colorTextThemeLight = "#FFFFFF";
 export const colorTextThemeAlt = "#FA774E";
 export const colorBackgroundHeader = "#EFEFEF";
