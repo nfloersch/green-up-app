@@ -95,12 +95,12 @@ service cloud.firestore {
     }
 
    match /trashDrops/{dropId} {
-           allow read: if true;
-					 allow write: if isAuthed();
+        allow read: if true;
+        allow write: if isAuthed();
     }
 
     match /admins/{userId} {
-           allow read, write: if isAdmin();
+        allow read, write: if isAdmin();
     }
 
     match /eventInfo/{id} {
@@ -109,18 +109,23 @@ service cloud.firestore {
     }
 
    match /trashCollectionSites/{id} {
-           allow read: if true;
-					 allow write: if true;
+        allow read: if true;
+        allow write: if true;
     }
 
    match /supplyDistributionSites/{id} {
-           allow read: if true;
-					 allow write: if true;
+        allow read: if true;
+        allow write: if true;
     }
 
     match /celebrations/{id} {
-           allow read: if true;
-					 allow write: if true;
+        allow read: if true;
+        allow write: if true;
+    }
+
+    match /updates/{id}{
+        allow read: if true;
+        allow write: if isAdmin();
     }
   }
 }
