@@ -53,9 +53,10 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
                 />
             </View>
             <View style={ styles.formControl }>
-                <Button onPress={ handleButtonPress }
-                        styleName={ "primary" }
-                        style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                <Button
+                    onPress={ handleButtonPress }
+                    styleName={ "primary" }
+                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
                 >
                     <MaterialCommunityIcons name={ "login" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
                     <Subtitle

@@ -60,7 +60,7 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
                     value={ password }
                     onChangeText={ setPassword }
                     underlineColorAndroid={ "transparent" }
-                    />
+                />
             </View>
             <View style={ styles.formControl }>
                 <Text style={ styles.label }>Name</Text>
@@ -73,9 +73,9 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
                 />
             </View>
             <View style={ styles.formControl }>
-                <Button onPress={ onButtonPress}
-                        styleName={ "primary" }
-                        style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                <Button onPress={ onButtonPress }
+                    styleName={ "primary" }
+                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
                 >
                     <MaterialCommunityIcons name={ "account-plus" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
                     <Subtitle

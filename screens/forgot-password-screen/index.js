@@ -13,6 +13,7 @@ import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import { Button, Text, Title, Subtitle, TextInput, View } from "@shoutem/ui";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as constants from "../../styles/constants";
 
 
 const myStyles = {};
@@ -24,7 +25,7 @@ type PropsType = {
     navigation: { goBack: any => void }
 };
 
-const ForgotPassword = ({ actions, navigation }: PropsType): React$Element<any> => {
+const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
 
     const [email, setEmail] = useState("");
     const [passwordResetSent, setPasswordResetSent] = useState(false);
@@ -87,7 +88,7 @@ const ForgotPassword = ({ actions, navigation }: PropsType): React$Element<any> 
                                     styleName={ "primary" }
                                     style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
                                 >
-                                    <MaterialCommunityIcons name={ "account-plus" } style={ { marginRight: 10 } }
+                                    <MaterialCommunityIcons name={ "account-convert" } style={ { marginRight: 10 } }
                                         size={ 25 } color="#555"/>
                                     <Subtitle
                                         styleName={ "bold" }
@@ -106,8 +107,15 @@ const ForgotPassword = ({ actions, navigation }: PropsType): React$Element<any> 
 };
 
 
-ForgotPassword.navigationOptions = {
-    title: "Forgot Password"
+Index.navigationOptions = {
+    title: "Forgot Password",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontWeight: "bold"
+    }
 };
 
 const mapStateToProps = (state: Object): Object => ({ session: state.login.session });
@@ -117,4 +125,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
 });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
