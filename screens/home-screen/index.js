@@ -180,9 +180,9 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                                 fontFamily: "sriracha"
 
                             } }
-                                  styleName="md-gutter-bottom">{ rowData[0].label }</Text>
+                            styleName="md-gutter-bottom">{ rowData[0].label }</Text>
                             <Text style={ { color: "white", fontSize: 20, fontFamily: "sriracha" } }
-                                  styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
+                                styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
 
                         </Tile>
                     </ImageBackground>
@@ -198,7 +198,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 styleName="flexible"
             >
                 <Card styleName="flexible"
-                      style={ { borderColor: "#CCC", borderBottomWidth: 1} }
+                    style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
                 >
                     <Image
                         styleName="medium-wide"
@@ -206,10 +206,10 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                     />
                     <View style={ { padding: 5 } } styleName="content">
                         <Subtitle style={ { fontFamily: "sriracha", fontSize: 20 } }
-                                  numberOfLines={ 1 }>{ item.label }</Subtitle>
+                            numberOfLines={ 1 }>{ item.label }</Subtitle>
                         <View styleName="horizontal">
                             <Text style={ { fontFamily: "sriracha" } }
-                                  styleName="collapsible">{ item.description }</Text>
+                                styleName="collapsible">{ item.description }</Text>
                         </View>
                     </View>
                 </Card>
