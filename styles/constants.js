@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const darkGreen = "#55683A";
 const brightOrange = "#FA774E";
 const darkOrange = "#FF55";

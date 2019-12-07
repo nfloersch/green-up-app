@@ -1,7 +1,7 @@
 // @flow
 import React, { useEffect, useState, Fragment } from "react";
 import { bindActionCreators } from "redux";
-import LoginScreen from "../../screens/login-screen/index";
+import LoginScreen from "../../navigation/login-stack";
 // import MarketingPermissionsScreen from "../../screens/marketing-permissions";
 import * as actionCreators from "../../action-creators/session-action-creators";
 import { connect } from "react-redux";

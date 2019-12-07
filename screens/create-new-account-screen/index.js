@@ -20,7 +20,7 @@ type PropsType = {
 };
 
 
-const CreateNewAccount = ({ actions, createUserError }: PropsType): React$Element<any> => (
+const Index = ({ actions, createUserError }: PropsType): React$Element<any> => (
     <SafeAreaView style={ styles.container }>
         <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 } }>
             <CreateAccountForm
@@ -33,7 +33,7 @@ const CreateNewAccount = ({ actions, createUserError }: PropsType): React$Elemen
 );
 
 
-CreateNewAccount.navigationOptions = {
+Index.navigationOptions = {
     title: "Create New Account",
     headerStyle: {
         backgroundColor: constants.colorBackgroundDark
@@ -54,4 +54,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
 });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

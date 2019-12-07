@@ -180,9 +180,9 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                                 fontFamily: "sriracha"
 
                             } }
-                            styleName="md-gutter-bottom">{ rowData[0].label }</Text>
+                                  styleName="md-gutter-bottom">{ rowData[0].label }</Text>
                             <Text style={ { color: "white", fontSize: 20, fontFamily: "sriracha" } }
-                                styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
+                                  styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
 
                         </Tile>
                     </ImageBackground>
@@ -195,18 +195,21 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
             <TouchableOpacity
                 key={ id }
                 onPress={ item.onPress }
-                styleName="flexible">
-                <Card styleName="flexible">
+                styleName="flexible"
+            >
+                <Card styleName="flexible"
+                      style={ { borderColor: "#CCC", borderBottomWidth: 1} }
+                >
                     <Image
                         styleName="medium-wide"
                         source={ item.backgroundImage }
                     />
                     <View style={ { padding: 5 } } styleName="content">
                         <Subtitle style={ { fontFamily: "sriracha", fontSize: 20 } }
-                            numberOfLines={ 1 }>{ item.label }</Subtitle>
+                                  numberOfLines={ 1 }>{ item.label }</Subtitle>
                         <View styleName="horizontal">
                             <Text style={ { fontFamily: "sriracha" } }
-                                styleName="collapsible">{ item.description }</Text>
+                                  styleName="collapsible">{ item.description }</Text>
                         </View>
                     </View>
                 </Card>
@@ -214,7 +217,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         ));
 
         return (
-            <GridRow style={ { backgroundColor: "#BBB" } } columns={ 2 }>
+            <GridRow style={ { backgroundColor: "#EEE" } } columns={ 2 }>
                 { cellViews }
             </GridRow>
         );
@@ -222,13 +225,12 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
 
 
     return (
-        <SafeAreaView style={ { backgroundColor: colors.colorBackgroundHome } }>
+        <SafeAreaView style={ { backgroundColor: colors.colorBackgroundDark } }>
             <ListView
                 style={ { backgroundColor: constants.colorBackgroundDark, marginBottom: 10 } }
                 data={ groupedData }
                 renderRow={ renderRow }
             />
-
         </SafeAreaView>
     );
 };
