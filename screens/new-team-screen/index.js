@@ -217,6 +217,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
+
                 <View style={ styles.formControl }>
                     <Text style={ styles.label }>
                         { state.team.isPublic ? "Anyone can join your team" : "Only people you inite can join your team." }
@@ -246,33 +247,38 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         </Button>
                     </View>
                 </View>
-                <View style={ styles.formControl }>
-                    <TownSelector
-                        onSelect={ (town: Town) => {
-                            nextTextInput.focus();
-                            setTeamValue("townId")(town.id);
-                        } }
-                        value={ (vermontTowns.find((town: Town): boolean => town.id === state.team.townId) || {}).name || "" }
-                        towns={ vermontTowns }/>
-                </View>
-                <View style={ styles.formControl }>
+                <Divider styleName={ "line" }/>
+                <View style={ { ...styles.formControl, marginTop: 20 } }>
                     <Text style={ styles.label }>{ "Clean Up Site" }</Text>
                     <TextInput
                         keyBoardType={ "default" }
                         onChangeText={ setTeamValue("location") }
                         placeholder={ "The park, school, or road name" }
-                        ref={ (input: any) => {
-                            nextTextInput = input;
-                        } }
                         value={ state.team.location }
+                        style={ { backgroundColor: "white", padding: 20 } }
                         underlineColorAndroid={ "transparent" }
                     />
+                </View>
+                <View style={ styles.formControl }>
+                    <Text style={ { ...styles.statusBar, maxHeight: 63 } }>
+                        { "Place a marker where you want your team to work." }
+                    </Text>
+                    <MiniMap
+                        pinsConfig={ pinsConfig }
+                        onMapClick={ handleMapClick }
+                    />
+
+                    <TouchableOpacity style={ styles.button } onPress={ removeLastMarker }>
+                        <Text style={ styles.buttonText }>{ "remove marker" }</Text>
+                    </TouchableOpacity>
                 </View>
                 <Divider styleName={ "line" }/>
                 <View style={ styles.formControl }>
                     <Text style={ { ...styles.alertInfo, textAlign: "left" } }>
                         { dateRangeMessage }
                     </Text>
+                </View>
+                <View style={ styles.formControl }>
                     <Text style={ styles.label }>Date</Text>
                     <View>
                         <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
@@ -325,6 +331,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         />
                     </View>
                 </View>
+
+                <Divider styleName={ "line" }/>
                 <View style={ styles.formControl }>
                     <Text style={ styles.label }>{ "Team Description" }</Text>
                     <TextInput
@@ -339,19 +347,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
-
-
-                <Text style={ { ...styles.statusBar, maxHeight: 63 } }>
-                    { "Place a marker where you want your team to work." }
-                </Text>
-                <MiniMap
-                    pinsConfig={ pinsConfig }
-                    onMapClick={ handleMapClick }
-                />
-                <TouchableOpacity style={ styles.button } onPress={ removeLastMarker }>
-                    <Text style={ styles.buttonText }>{ "remove marker" }</Text>
-                </TouchableOpacity>
-
             </ScrollView>
         </SafeAreaView>
     );
