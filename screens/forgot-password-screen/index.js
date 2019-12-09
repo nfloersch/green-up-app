@@ -62,10 +62,10 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
                                     } }
                                 >
                                     <Subtitle styleName={ "bold" }
-                                              style={ {
-                                                  textAlign: "center",
-                                                  color: "#FFF"
-                                              } }>{ "RETURN TO LOGIN" }</Subtitle>
+                                        style={ {
+                                            textAlign: "center",
+                                            color: "#FFF"
+                                        } }>{ "RETURN TO LOGIN" }</Subtitle>
                                 </Button>
                             </View>
                         </Fragment>
@@ -85,12 +85,12 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
                             </View>
                             <View style={ styles.formControl }>
                                 <Button onPress={ onButtonPress }
-                                        styleName={ "primary" }
-                                        style={ {
-                                            padding: 10,
-                                            paddingLeft: 20,
-                                            paddingRight: 20
-                                        } }
+                                    styleName={ "primary" }
+                                    style={ {
+                                        padding: 10,
+                                        paddingLeft: 20,
+                                        paddingRight: 20
+                                    } }
                                 >
                                     <MaterialCommunityIcons
                                         name={ "account-convert" }

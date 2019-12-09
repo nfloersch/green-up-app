@@ -133,7 +133,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                             style={ { marginRight: 10 } }
                             color="#FFF"
                         />
-                        <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
+                        <Text style={ styles.buttonText }>CREATE ACCOUNT</Text>
                     </Button>
                 </View>
             </View>

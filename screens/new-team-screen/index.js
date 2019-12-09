@@ -10,7 +10,7 @@ import {
     SafeAreaView
 } from "react-native";
 
-import { View, Button, TextInput, Text, SubTitle, Divider } from "@shoutem/ui";
+import { View, Button, TextInput, Text, Divider } from "@shoutem/ui";
 import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import { bindActionCreators } from "redux";
@@ -163,11 +163,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
         setState({ endDateTimePickerVisible: false })();
     };
 
-    const setIsPublic = (isPublic: boolean) => {
-        dispatch({ type: "SET_TEAM_STATE", data: { isPublic } });
-    };
-
-
     // DateTimePicker
     const dateIsSelected = state.team.date === null;
     const endIsSelected = state.team.end === null;
@@ -269,7 +264,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                     />
 
                     <Button styleName={ "secondary" }
-                            onPress={ removeLastMarker }>
+                        onPress={ removeLastMarker }>
                         <Text>{ "REMOVE MARKER" }</Text>
                     </Button>
                 </View>
@@ -354,7 +349,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
-                <View style={ { height: 120 } }></View>
+                <View style={ { height: 120 } } />
             </ScrollView>
         </SafeAreaView>
     );
