@@ -1,18 +1,15 @@
-const alertFontSize = 12;
+const alertFontSize = 14;
 
 export const text = {
     alertInfo: {
         fontSize: alertFontSize,
         color: "#004085",
-        backgroundColor: "#cce5ff",
-        borderColor: "#b8daff",
-        padding: 3,
+        backgroundColor: "#EEE",
         marginBottom: 5,
         marginTop: 5,
-        borderWidth: 1,
-        borderRadius: 5,
         overflow: "hidden",
-        textAlign: "center"
+        textAlign: "left",
+        padding: 20
     },
     alertSuccess: {
         fontSize: alertFontSize,
@@ -58,7 +55,8 @@ export const text = {
     },
     label: {
         color: "#DDD",
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: "Rubik-Regular"
     },
     labelDark: {
         color: "#333",

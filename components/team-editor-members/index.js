@@ -20,6 +20,7 @@ import TeamMemberDetails from "../../components/team-member-details";
 import { partial } from "ramda";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../../action-creators/team-action-creators";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     member: {
@@ -179,7 +180,23 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
 
 TeamEditorMembers.navigationOptions = {
     title: "Team Members",
-    tabBarLabel: "Members"
+    tabBarLabel: "Members",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

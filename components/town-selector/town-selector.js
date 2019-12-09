@@ -1,7 +1,9 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text } from "@shoutem/ui";
 import Autocomplete from "react-native-autocomplete-input";
+import { defaultStyles } from "../../styles/default-styles";
 
 const myStyles = {
     autocompleteContainer: {
@@ -29,8 +31,8 @@ const myStyles = {
         borderBottomWidth: 1
     }
 };
-
-const styles = StyleSheet.create(myStyles);
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
     onSelect: Town => void,
@@ -55,9 +57,12 @@ export const TownSelector = ({ value, towns, onSelect }: PropsType): React$Eleme
     }, [value]);
     return (
         <View style={ { zIndex: 1, marginTop: 10 } }>
-            <Text style={ styles.labelDark }>{ "Select Town/City" }</Text>
+            <Text style={ styles.label }>{ "Select Town/City" }</Text>
             <Autocomplete
-                inputContainerStyle={ { borderColor: "#000" } }
+                inputContainerStyle={ {
+                    padding: 10,
+                    backgroundColor: "white"
+                } }
                 data={ data }
                 defaultValue={ query }
                 onChangeText={ setQuery }

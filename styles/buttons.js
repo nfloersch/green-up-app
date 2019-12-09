@@ -15,9 +15,7 @@ export const buttons = {
         shadowRadius: 2
     },
     buttonText: {
-        color: "white",
-        fontSize: 18,
-        textAlign: "center"
+        fontFamily: "Rubik-Regular"
     },
 
     altButton: {

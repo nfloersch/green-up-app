@@ -62,10 +62,10 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
                                     } }
                                 >
                                     <Subtitle styleName={ "bold" }
-                                        style={ {
-                                            textAlign: "center",
-                                            color: "#FFF"
-                                        } }>{ "RETURN TO LOGIN" }</Subtitle>
+                                              style={ {
+                                                  textAlign: "center",
+                                                  color: "#FFF"
+                                              } }>{ "RETURN TO LOGIN" }</Subtitle>
                                 </Button>
                             </View>
                         </Fragment>
@@ -85,14 +85,26 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
                             </View>
                             <View style={ styles.formControl }>
                                 <Button onPress={ onButtonPress }
-                                    styleName={ "primary" }
-                                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
+                                        styleName={ "primary" }
+                                        style={ {
+                                            padding: 10,
+                                            paddingLeft: 20,
+                                            paddingRight: 20
+                                        } }
                                 >
-                                    <MaterialCommunityIcons name={ "account-convert" } style={ { marginRight: 10 } }
-                                        size={ 25 } color="#555"/>
+                                    <MaterialCommunityIcons
+                                        name={ "account-convert" }
+                                        style={ { marginRight: 10 } }
+                                        size={ 25 }
+                                        color="#555"
+                                    />
                                     <Subtitle
                                         styleName={ "bold" }
-                                        style={ { textAlign: "center", color: "#555" } }
+                                        style={ {
+                                            textAlign: "center",
+                                            color: "#555",
+                                            fontFamily: "Rubik-Regular"
+                                        } }
                                     >
                                         { "RESET PASSWORD" }
                                     </Subtitle>
@@ -114,7 +126,16 @@ Index.navigationOptions = {
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
-        fontWeight: "bold"
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
     }
 };
 

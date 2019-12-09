@@ -1,13 +1,12 @@
 // @flow
 // A higher order component for adding geo-location functionality
 import React, { Fragment, useEffect, useState } from "react";
-import * as turf from "@turf/helpers";
-import booleanWithin from "@turf/boolean-within";
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import * as actionCreators from "../../action-creators/user-location-action-creators";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 type MapLocationType = {
     coords: {|
@@ -31,16 +30,6 @@ const _WatchGeoLocation = ({ children, actions }: PropsType): React$Element<any>
     const [removeListener, setRemoveListener] = useState(() => {
     });
 
-    const getTown = (myLocation: MapLocationType): string => {
-        const townPolygonsData = require("../../libs/VT_Boundaries__town_polygons.json");
-        const currentLocation = turf.point([myLocation.coords.longitude, myLocation.coords.latitude]);
-        const town = townPolygonsData.features
-            .find((f: Object): boolean => {
-                const feature = turf.feature(f.geometry);
-                return booleanWithin(currentLocation, feature);
-            });
-        return town ? town.properties.TOWNNAME : "";
-    };
 
     const getLocationAsync = async () => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -50,13 +39,16 @@ const _WatchGeoLocation = ({ children, actions }: PropsType): React$Element<any>
                 actions.userLocationError("Access to the device location is required. Please make sure you have location services on and you grant access when requested.");
             } else {
                 const myLocation: MapLocationType = await Location.getCurrentPositionAsync({});
-                const newLocation = { coordinates: myLocation.coords, townId: getTown(myLocation) };
+                const newLocation = {
+                    coordinates: myLocation.coords,
+                    townId: findTownIdByCoordinates(myLocation.coords)
+                };
                 actions.userLocationUpdate(newLocation);
                 const removeMePromise = Location.watchPositionAsync({
                     timeInterval: 3000,
                     distanceInterval: 20
                 }, (loc: Object) => {
-                    const newNewLocation = { coordinates: loc.coords, townId: getTown(loc) };
+                    const newNewLocation = { coordinates: loc.coords, townId: findTownIdByCoordinates(loc.coords) };
                     actions.userLocationUpdate(newNewLocation);
                 });
                 removeMePromise.then(obj => {

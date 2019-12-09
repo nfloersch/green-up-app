@@ -5,6 +5,7 @@ import logo from "../../assets/images/gu-50-logo.png";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../../action-creators/session-action-creators";
+import * as constants from "../../styles/constants";
 
 const styles = StyleSheet.create({
     container: {
@@ -44,7 +45,23 @@ const ABienTot = ({ actions }: PropsType): React$Element<View> => {
 };
 
 ABienTot.navigationOptions = {
-    drawerLabel: "Logout"
+    drawerLabel: "Logout",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => ({ session: state.login.session });

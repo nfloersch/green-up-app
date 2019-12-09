@@ -6,6 +6,10 @@ export const boxes = {
         flex: 1,
         backgroundColor: constants.colorBackgroundDark
     },
+    containerLight: {
+        flex: 1,
+        backgroundColor: constants.colorBackgroundLight
+    },
     formControl: { marginTop: 10, marginBottom: 10 },
     fieldset: {
         borderWidth: 2,

@@ -19,6 +19,7 @@ import User from "../../models/user";
 import { defaultStyles } from "../../styles/default-styles";
 import { removeNulls } from "../../libs/remove-nulls";
 import PhotoPicker from "../../components/photo-picker";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     aboutMeInput: {
@@ -133,7 +134,23 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
 };
 
 Profile.navigationOptions = {
-    title: "My Profile"
+    title: "My Profile",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

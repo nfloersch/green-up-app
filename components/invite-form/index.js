@@ -19,6 +19,7 @@ import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
+import * as constants from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -135,7 +136,23 @@ const InviteForm = ({ actions, currentUser, closeModal, selectedTeam, teamMember
 };
 
 InviteForm.navigationOptions = {
-    title: "Invite Team Members"
+    title: "Invite Team Members",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

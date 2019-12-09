@@ -133,7 +133,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                             style={ { marginRight: 10 } }
                             color="#FFF"
                         />
-                        <Text>CREATE ACCOUNT</Text>
+                        <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
                     </Button>
                 </View>
             </View>
@@ -149,7 +149,16 @@ Login.navigationOptions = {
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
-        fontWeight: "bold"
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
     }
 };
 

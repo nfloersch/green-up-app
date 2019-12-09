@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import TownItem from "../../components/town-item";
 import * as R from "ramda";
+import * as constants from "../../styles/constants";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -65,7 +66,23 @@ const TownInfo = ({ towns }: PropsType): React$Element<any> => {
 
 
 TownInfo.navigationOptions = {
-    title: "Find Bags, Gloves, and Other Stuff"
+    title: "Find Bags, Gloves, and Other Stuff",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 function mapStateToProps(state: Object): Object {

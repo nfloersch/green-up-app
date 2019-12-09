@@ -6,6 +6,7 @@ import { defaultStyles } from "../../styles/default-styles";
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+import * as constants from "../../styles/constants";
 
 export const Privacy = (): React$Element<View> => (
     <View style={ styles.frame }>
@@ -298,5 +299,21 @@ export const Privacy = (): React$Element<View> => (
 );
 
 Privacy.navigationOptions = {
-    title: "Privacy Policy"
+    title: "Privacy Policy",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };

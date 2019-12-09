@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Image, Text, ScrollView, View } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
+import * as constants from "../../styles/constants";
 
 const myStyles = { messageHeader: { margin: 5 } };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -73,7 +74,23 @@ const MessageDetailsScreen = ({ messages, navigation, teams }: PropsType): React
 };
 
 MessageDetailsScreen.navigationOptions = {
-    title: "Message Details"
+    title: "Message Details",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

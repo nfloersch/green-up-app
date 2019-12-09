@@ -16,6 +16,7 @@ import { bindActionCreators } from "redux";
 import TrashDropForm from "../../components/trash-drop-form";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
+import * as constants from "../../styles/constants";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -158,11 +159,27 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
 };
 
 TrashDisposalScreen.navigationOptions = {
-    title: "Trash Disposal"
+    title: "Trash Disposal",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {
-    const trashCollectionSites = Object.values(state.trashCollectionSites.sites).filter(site => {
+    const trashCollectionSites = Object.values(state.trashCollectionSites.sites).filter((site: Object) => {
         const hasLatitude = typeof (site.coordinates || {}).latitude === "number";
         const hasLongitude = typeof (site.coordinates || {}).longitude === "number";
         return hasLatitude && hasLongitude;
@@ -191,5 +208,5 @@ const mapStateToProps = (state: Object): Object => {
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
-
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TrashDisposalScreen);

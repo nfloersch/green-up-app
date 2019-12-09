@@ -8,13 +8,15 @@ export const controls = {
         justifyContent: "flex-start"
     },
     textInput: {
-        borderColor: "#000",
-        borderWidth: 1,
         backgroundColor: "white",
-        height: 40,
         textAlign: "left",
-        padding: 5
+        padding: 20
     },
     picker: { backgroundColor: "white", marginTop: 5 },
-    modalFrame: {}
+    modalFrame: {},
+    datePickerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontSize: 20,
+        color: "#000"
+    }
 };

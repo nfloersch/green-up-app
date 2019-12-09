@@ -40,7 +40,16 @@ Index.navigationOptions = {
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
-        fontWeight: "bold"
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
     }
 };
 

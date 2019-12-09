@@ -9,6 +9,7 @@ import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search-score";
 import SupplyDistributionSite from "../../models/supply-distribution-site";
+import * as constants from "../../styles/constants";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -88,11 +89,26 @@ const FreeSupplies = ({ pickupSpots, userLocation }: PropsType): React$Element<a
 };
 
 FreeSupplies.navigationOptions = {
-    title: "Find Bags, Gloves, and Other Stuff"
+    title: "Find Bags, Gloves, and Other Stuff",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {
-
     const pickupSpots = R.compose(
         R.map(entry => SupplyDistributionSite.create(entry[1], entry[0])),
         Object.entries
@@ -103,4 +119,5 @@ const mapStateToProps = (state: Object): Object => {
     });
 };
 
+// $FlowFixMe
 export default connect(mapStateToProps)(FreeSupplies);
