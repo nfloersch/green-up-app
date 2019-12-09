@@ -262,7 +262,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                         pinsConfig={ pinsConfig }
                         onMapClick={ handleMapClick }
                     />
-
                     <Button styleName={ "secondary" }
                         onPress={ removeLastMarker }>
                         <Text>{ "REMOVE MARKER" }</Text>
