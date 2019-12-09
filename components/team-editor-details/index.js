@@ -291,7 +291,7 @@ const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns,
                         />
                     </View>
                     <View style={ { marginTop: 10 } }>
-                        <Text style={ [styles.alertInfo, { textAlign: "left" }] }>
+                        <Text style={ styles.alertInfo }>
                             { dateRangeMessage }
                         </Text>
                         <Text style={ styles.labelDark }>{ "Date" }</Text>
@@ -395,7 +395,23 @@ const TeamEditorDetails = ({ actions, navigation, otherCleanAreas, vermontTowns,
 
 TeamEditorDetails.navigationOptions = {
     title: "Team Details",
-    tabBarLabel: "Details"
+    tabBarLabel: "Details",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 type PinType<T> = ?(Array<T> | T);

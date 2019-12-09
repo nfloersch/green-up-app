@@ -20,7 +20,7 @@ import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
-
+import * as constants from "../../styles/constants";
 import { offsetLocations } from "../../libs/geo-helpers";
 import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
@@ -337,7 +337,23 @@ const TrashMap = (
 };
 
 TrashMap.navigationOptions = {
-    title: "Trash Map"
+    title: "Trash Map",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

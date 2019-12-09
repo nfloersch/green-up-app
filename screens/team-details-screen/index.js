@@ -10,6 +10,7 @@ import User from "../../models/user";
 import MemberIcon from "../../components/member-icon";
 import TownItem from "../../components/town-item";
 import MiniMap from "../../components/mini-map";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     memberStatusBanner: {
@@ -365,7 +366,25 @@ const mapStateToProps = (state: Object): Object => {
     });
 };
 
-TeamDetailsScreen.navigationOptions = { title: "Team Details" };
+TeamDetailsScreen.navigationOptions = {
+    title: "Team Details",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
+};
 
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({

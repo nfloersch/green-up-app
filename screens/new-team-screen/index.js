@@ -24,14 +24,13 @@ import TeamMember from "../../models/team-member";
 import * as statuses from "../../constants/team-member-statuses";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
-import * as colors from "../../styles/constants";
 import { TownLocation } from "../../models/town";
 import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as constants from "../../styles/constants";
-import TownSelector from "../../components/town-selector";
 import * as R from "ramda";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 const myStyles = {
     selected: {
@@ -77,15 +76,17 @@ type PropsType = {
     vermontTowns: Array<Object>
 };
 
-const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsType): React$Element<any> => {
+const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$Element<any> => {
 
     const [state, dispatch] = useReducer(reducer, freshState(currentUser));
 
     const handleMapClick = (coordinates: Object) => {
         Keyboard.dismiss();
+        const town = findTownIdByCoordinates(coordinates);
         dispatch({
             type: "SET_TEAM_STATE",
             data: {
+                town,
                 locations: state.team.locations.concat({
                     title: "Clean Area",
                     description: "tap to remove",
@@ -191,7 +192,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
         }))
         .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
 
-    let nextTextInput;
     return (
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
@@ -247,8 +247,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                         </Button>
                     </View>
                 </View>
-                <Divider styleName={ "line" }/>
-                <View style={ { ...styles.formControl, marginTop: 20 } }>
+                <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                <View style={ styles.formControl }>
                     <Text style={ styles.label }>{ "Clean Up Site" }</Text>
                     <TextInput
                         keyBoardType={ "default" }
@@ -260,30 +260,31 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                     />
                 </View>
                 <View style={ styles.formControl }>
-                    <Text style={ { ...styles.statusBar, maxHeight: 63 } }>
-                        { "Place a marker where you want your team to work." }
+                    <Text style={ { ...styles.label, maxHeight: 63 } }>
+                        { "Mark your spot(s)" }
                     </Text>
                     <MiniMap
                         pinsConfig={ pinsConfig }
                         onMapClick={ handleMapClick }
                     />
 
-                    <TouchableOpacity style={ styles.button } onPress={ removeLastMarker }>
-                        <Text style={ styles.buttonText }>{ "remove marker" }</Text>
-                    </TouchableOpacity>
+                    <Button styleName={ "secondary" }
+                            onPress={ removeLastMarker }>
+                        <Text>{ "REMOVE MARKER" }</Text>
+                    </Button>
                 </View>
-                <Divider styleName={ "line" }/>
+                <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
                 <View style={ styles.formControl }>
-                    <Text style={ { ...styles.alertInfo, textAlign: "left" } }>
+                    <Text style={ styles.alertInfo }>
                         { dateRangeMessage }
                     </Text>
                 </View>
                 <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Date</Text>
+                    <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
                     <View>
                         <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
                             <Text style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>
-                                { state.team.date || "Select a Date" }
+                                { state.team.date || "Which day will your team be cleaning?" }
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -294,15 +295,17 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             isVisible={ state.datePickerVisible }
                             onConfirm={ handleDatePicked }
                             onCancel={ setState({ datePickerVisible: false }) }
+                            titleIOS={ "Which day is your team cleaning?" }
+                            titleStyle={ styles.datePickerTitleStyle }
                         />
                     </View>
                 </View>
                 <View style={ styles.formControl }>
-                    <Text style={ styles.label }>Start Time</Text>
+                    <Text style={ styles.label }>{ "What time will your team start?" }</Text>
                     <View>
                         <TouchableOpacity onPress={ setState({ startDateTimePickerVisible: true }) }>
                             <Text style={ { ...styles.textInput, ...(startIsSelected ? styles.selected : {}) } }>
-                                { state.team.start || "Select a Time" }
+                                { state.team.start || "Pick a Starting Time" }
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -311,15 +314,17 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             onConfirm={ handleStartDatePicked }
                             onCancel={ setState({ startDateTimePickerVisible: false }) }
                             is24Hour={ false }
+                            titleIOS={ "Pick a starting time." }
+                            titleStyle={ styles.datePickerTitleStyle }
                         />
                     </View>
                 </View>
                 <View style={ styles.formControl }>
-                    <Text style={ styles.label }>End Time</Text>
+                    <Text style={ styles.label }>{ "What time will your team end?" }</Text>
                     <View>
                         <TouchableOpacity onPress={ setState({ endDateTimePickerVisible: true }) }>
                             <Text style={ { ...styles.textInput, ...(endIsSelected ? styles.selected : {}) } }>
-                                { state.team.end || "Select a Time" }
+                                { state.team.end || "Pick an Ending Time" }
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
@@ -328,25 +333,28 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, vermontTowns }: PropsT
                             onConfirm={ handleEndDatePicked }
                             onCancel={ setState({ endDateTimePickerVisible: false }) }
                             is24Hour={ false }
+                            titleIOS={ "Pick an ending time." }
+                            titleStyle={ styles.datePickerTitleStyle }
                         />
                     </View>
                 </View>
 
-                <Divider styleName={ "line" }/>
+                <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
                 <View style={ styles.formControl }>
-                    <Text style={ styles.label }>{ "Team Description" }</Text>
+                    <Text style={ styles.label }>{ "Team Information" }</Text>
                     <TextInput
                         keyBoardType={ "default" }
                         multiline={ true }
                         numberOfLines={ 10 }
                         textAlignVertical="top"
                         onChangeText={ setTeamValue("description") }
-                        placeholder={ "Tell us about your team" }
+                        placeholder={ "Add important information here" }
                         style={ styles.textArea }
                         value={ state.team.description }
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
+                <View style={ { height: 120 } }></View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -359,7 +367,16 @@ NewTeam.navigationOptions = {
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
-        fontWeight: "bold"
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
     }
 };
 
@@ -383,7 +400,6 @@ const mapStateToProps = (state: Object): Object => {
                 .filter((l: PinType<any>): boolean => Boolean(l))
                 .map((l: Object): mixed => mapToPinData(l, teamName))
         ],
-
         [
             R.T,
             (location: any, teamName: any): Object => ({
@@ -401,14 +417,14 @@ const mapStateToProps = (state: Object): Object => {
         Object.values
     )(state.teams.teams);
 
-    // $FlowFixMe
-    const vermontTowns = R.compose(
-        R.sort((a: TeamType, b: TeamType): number => ((a.name || "").toLowerCase() < (b.name || "").toLowerCase()) ? 1 : -1),
-        R.filter((town: Town): boolean => Boolean(town.name)), // hedge against bad data.
-        Object.values
-    )(state.towns.townData);
+    // // $FlowFixMe
+    // const vermontTowns = R.compose(
+    //     R.sort((a: TeamType, b: TeamType): number => ((a.name || "").toLowerCase() < (b.name || "").toLowerCase()) ? 1 : -1),
+    //     R.filter((town: Town): boolean => Boolean(town.name)), // hedge against bad data.
+    //     Object.values
+    // )(state.towns.townData);
 
-    return { owner, currentUser, otherCleanAreas, vermontTowns };
+    return { owner, currentUser, otherCleanAreas };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object =>

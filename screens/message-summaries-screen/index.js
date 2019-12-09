@@ -19,6 +19,7 @@ import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import coveredBridge from "../../assets/images/covered-bridge2.jpg";
 import * as R from "ramda";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     message: {
@@ -244,7 +245,23 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
 
 MessageSummariesScreen.navigationOptions = {
     title: "Message Board",
-    tabBarLabel: "Messages"
+    tabBarLabel: "Messages",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 type MessageHashType = { [key: string]: MessageType };

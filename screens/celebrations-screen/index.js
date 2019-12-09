@@ -167,7 +167,23 @@ const CelebrationsScreen = ({ celebrationEvents, userLocation }: PropsType): Rea
 };
 
 CelebrationsScreen.navigationOptions = {
-    title: "Celebrate Green Up"
+    title: "Celebrate Green Up",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

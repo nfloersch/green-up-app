@@ -5,6 +5,7 @@ const darkOrange = "#FF55";
 const orange = "#FFA500";
 export const colorButton = "#FA774E";
 export const colorBackgroundLight = "#AAA";
+export const colorHeaderText = "#FFF";
 export const colorTextThemeDark = "#AAA";
 export const colorTextThemeLight = "#EEE";
 export const colorTextThemeAlt = "#FA774E";

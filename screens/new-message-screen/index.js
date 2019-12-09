@@ -19,6 +19,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as messageTypes from "../../constants/message-types";
 import { removeNulls } from "../../libs/remove-nulls";
 import Team from "../../models/team";
+import * as constants from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -138,7 +139,23 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
 
 
 NewMessageScreen.navigationOptions = {
-    title: "Send A Message"
+    title: "Send A Message",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

@@ -15,8 +15,8 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as teamMemberStatuses from "../../constants/team-member-statuses";
 import * as R from "ramda";
 import DisplayText from "../../components/display-text";
-import * as colors from "../../styles/constants";
 import Team from "../../models/team";
+import * as constants from "../../styles/constants";
 
 /**
  * scores a string according to how many search terms it contains
@@ -62,14 +62,14 @@ const myStyles = {
     },
     noTeamsFoundText: {
         fontSize: 30,
-        color: colors.colorTextThemeLight,
-        textShadowColor: `${ colors.colorTextThemeDark }`,
+        color: constants.colorTextThemeLight,
+        textShadowColor: `${ constants.colorTextThemeDark }`,
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 4,
         lineHeight: 36
     },
     teamDetail: {
-        color: colors.colorTextThemeLight,
+        color: constants.colorTextThemeLight,
         fontSize: 14
     },
     teamNameWrapper: {
@@ -80,7 +80,7 @@ const myStyles = {
     },
     teamName: {
         fontSize: 30,
-        color: colors.colorTextThemeLight,
+        color: constants.colorTextThemeLight,
         textShadowColor: "#a74b2e",
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 4,
@@ -166,14 +166,14 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
             <TouchableHighlight
                 key={ item.teamId }
                 onPress={ item.toDetail }
-                style={ { margin: 5, backgroundColor: colors.colorButton, padding: 10 } }
+                style={ { margin: 5, backgroundColor: constants.colorButton, padding: 10 } }
             >
                 <View styles={ { flex: 1, justifyItems: "center" } }>
                     <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
-                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                        <Text style={ [styles.teamDetail, { color: constants.colorTextThemeLight }] }>
                             { (towns[team.townId] || {}).name }
                         </Text>
-                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                        <Text style={ [styles.teamDetail, { color: constants.colorTextThemeLight }] }>
                             { team.isPublic ? "Public" : "Private" }
                         </Text>
                     </View>
@@ -184,10 +184,10 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
                         </DisplayText>
                     </View>
                     <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between" } }>
-                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                        <Text style={ [styles.teamDetail, { color: constants.colorTextThemeLight }] }>
                             { team.location }
                         </Text>
-                        <Text style={ [styles.teamDetail, { color: colors.colorTextThemeLight }] }>
+                        <Text style={ [styles.teamDetail, { color: constants.colorTextThemeLight }] }>
                             { team.owner.displayName }
                         </Text>
                     </View>
@@ -237,14 +237,20 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
 FindTeamScreen.navigationOptions = {
     title: "Find a Team",
     headerStyle: {
-        backgroundColor: "#FFF"
+        backgroundColor: constants.colorBackgroundDark
     },
-    headerTintColor: colors.colorTextThemeDark,
+    headerTintColor: "#fff",
     headerTitleStyle: {
-        fontFamily: "sriracha",
+        fontFamily: "Rubik-Regular",
         fontWeight: "bold",
-        fontSize: 26,
-        color: colors.colorTextThemeDark
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
     }
 };
 

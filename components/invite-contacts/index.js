@@ -17,6 +17,7 @@ import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import { isValidEmail, isInTeam } from "../../libs/validators";
 import * as R from "ramda";
+import * as constants from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -147,7 +148,23 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
 
 
 InviteContacts.navigationOptions = {
-    title: "Invite Contacts"
+    title: "Invite Contacts",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 
 const mapStateToProps = (state: Object): Object => {

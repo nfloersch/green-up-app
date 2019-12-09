@@ -7,6 +7,7 @@ import Anchor from "../../components/anchor";
 import { defaultStyles } from "../../styles/default-styles";
 import { isValidDate } from "../../libs/validators";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import * as constants from "../../styles/constants";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -76,7 +77,23 @@ const About = ({ eventDescription, contactUs, eventName, eventDate, faqs }: Prop
 
 
 About.navigationOptions = {
-    title: "About"
+    title: "About",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
 };
 const mapStateToProps = (state: Object): Object => {
     const eventDate = state.about.date || null;
