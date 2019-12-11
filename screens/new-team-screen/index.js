@@ -54,6 +54,12 @@ const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null
     start: null,
     initialMapLocation
 });
+const setTime = (date: Date, time: string): Date => {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getYear() + 1900;
+    return new Date(`${ month }/${ day }/${ year } ${ time }`);
+};
 
 function reducer(state: Object, action: Object): Object {
     switch (action.type) {
@@ -164,6 +170,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
     };
 
     // DateTimePicker
+
     const dateIsSelected = state.team.date === null;
     const endIsSelected = state.team.end === null;
     const startIsSelected = state.team.start === null;
@@ -175,7 +182,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
     const eventDate = getCurrentGreenUpDay();
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
-    const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Cancel", onClick: cancel }];
+    const defaultStartTime = getCurrentGreenUpDay();
+    const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
 
     const pinsConfig = state.team.locations
         .map(l => ({
@@ -191,13 +199,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
             <ScrollView
-                style={ [styles.scroll, {
-                    borderTopWidth: 10,
-                    borderTopColor: constants.colorBackgroundDark,
-                    borderTopStyle: "solid",
-                    paddingLeft: 20,
-                    paddingRight: 20
-                }] }
+                style={ [styles.scroll, { padding: 20 }] }
                 automaticallyAdjustContentInsets={ false }
                 scrollEventThrottle={ 200 }
                 keyboardShouldPersistTaps={ "always" }
@@ -262,8 +264,10 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                         pinsConfig={ pinsConfig }
                         onMapClick={ handleMapClick }
                     />
-                    <Button styleName={ "secondary" }
-                        onPress={ removeLastMarker }>
+                    <Button
+                        styleName={ "secondary" }
+                        onPress={ removeLastMarker }
+                    >
                         <Text>{ "REMOVE MARKER" }</Text>
                     </Button>
                 </View>
@@ -303,6 +307,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
+                            date={ setTime(eventDate, (state.team.start || "9:00 AM")) }
                             mode="time"
                             isVisible={ state.startDateTimePickerVisible }
                             onConfirm={ handleStartDatePicked }
@@ -322,6 +327,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                             </Text>
                         </TouchableOpacity>
                         <DateTimePicker
+                            date={ setTime(eventDate, (state.team.end || "5:00 PM")) }
                             mode="time"
                             isVisible={ state.endDateTimePickerVisible }
                             onConfirm={ handleEndDatePicked }
@@ -348,7 +354,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
-                <View style={ { height: 120 } } />
+                <View style={ { height: 120 } }/>
             </ScrollView>
         </SafeAreaView>
     );

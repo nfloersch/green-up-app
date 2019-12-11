@@ -2,7 +2,7 @@
 import { getCurrentGreenUpDay } from "../libs/green-up-day-calucators";
 import moment from "moment";
 
-export default {
+const initialState =  {
     about: {
         date: moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY"),
         marketingPermissions: {
@@ -76,3 +76,6 @@ export default {
     },
     userLocation: { coordinates: { latitude: null, longitude: null }, townId: null }
 };
+
+
+export default initialState;
