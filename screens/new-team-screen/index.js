@@ -57,6 +57,7 @@ const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null
 const setTime = (date: Date, time: string): Date => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
+    // $FlowFixMe
     const year = date.getYear() + 1900;
     return new Date(`${ month }/${ day }/${ year } ${ time }`);
 };
@@ -182,7 +183,6 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
     const eventDate = getCurrentGreenUpDay();
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(eventDate, 6);
-    const defaultStartTime = getCurrentGreenUpDay();
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
 
     const pinsConfig = state.team.locations
