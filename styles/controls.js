@@ -12,7 +12,7 @@ export const controls = {
         textAlign: "left",
         padding: 20
     },
-    picker: { backgroundColor: "rgba(255,255,255, 100)", marginTop: 5 , padding: 0 },
+    picker: { backgroundColor: "rgba(255,255,255, 100)", marginTop: 5, padding: 0 },
     modalFrame: {},
     datePickerTitleStyle: {
         fontFamily: "Rubik-Regular",

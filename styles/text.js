@@ -70,7 +70,7 @@ export const text = {
     largeText: {
         marginTop: 10,
         fontSize: 20,
-        color: "#FFF",
+        color: "#FFF"
     },
     statusMessage: {
         color: "#444",

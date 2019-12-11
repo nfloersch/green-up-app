@@ -105,4 +105,4 @@ const mapStateToProps = (state: Object): Object => {
 
 // $FlowFixMe
 export default connect(mapStateToProps)(MessageDetailsScreen);
-;
+
