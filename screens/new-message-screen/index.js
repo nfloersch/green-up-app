@@ -1,14 +1,11 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
-    Picker, Platform,
+    Picker,
     ScrollView,
     StyleSheet,
-    Text,
-    TextInput,
-    TouchableHighlight,
-    View
+    SafeAreaView
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -20,10 +17,10 @@ import * as messageTypes from "../../constants/message-types";
 import { removeNulls } from "../../libs/remove-nulls";
 import Team from "../../models/team";
 import * as constants from "../../styles/constants";
+import { View, Text, TextInput } from "@shoutem/ui";
+import ButtonBar from "../../components/button-bar";
 
-const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
     actions: { sendTeamMessage: (teamId: string, message: MessageType) => void },
@@ -69,50 +66,46 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
     };
 
     const items = teamList.map((team: TeamType): React$Element<any> => (
-        <Picker.Item key={ team.id } label={ team.name } value={ team.id }/>
+        <Picker.Item key={ team.id } itemStyle={ { backgrounColor: "white" } } label={ team.name } value={ team.id }/>
     ));
 
     return (
-        <View style={ styles.frame }>
-            <View style={ styles.buttonBarHeader }>
-                <View style={ styles.buttonBar }>
-                    <TouchableHighlight
-                        style={ styles.headerButton }
-                        onPress={ sendMessage }>
-                        <Text style={ styles.headerButtonText }>{ "Send Message" }</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={ styles.headerButton } onPress={ cancelMessage }>
-                        <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
-                    </TouchableHighlight>
-                </View>
-            </View>
+        <SafeAreaView style={ styles.container }>
+            <ButtonBar buttonConfigs={
+                [
+                    { text: "Send Message", onClick: sendMessage },
+                    { text: "Cancel", onClick: cancelMessage }
+                ]
+            }/>
 
-            <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
-                    {
-
-                        <View style={ { marginBottom: 5 } }>
-                            <Text style={ styles.labelDark }>{ "Send a Message To Team:" }</Text>
-                            { teamList.length > 1
-                                ? (
-                                    <Picker
-                                        style={ styles.picker }
-                                        selectedValue={ currentTeamId }
-                                        onValueChange={ (teamId: string) => {
-                                            setCurrentTeamId(teamId);
-                                        } }>
-                                        { items }
-                                    </Picker>
-                                )
-                                : (
-
-                                    <Text style={ styles.largeText }>{ (teamHash[currentTeamId] || {}).name }</Text>
-                                )
-                            }
-                        </View>
-
-
+            <ScrollView
+                style={ [styles.scroll, {
+                    padding: 20
+                }] }
+                automaticallyAdjustContentInsets={ false }
+                scrollEventThrottle={ 200 }
+                keyboardShouldPersistTaps={ "always" }>
+                <View style={ styles.formControl }>
+                    { teamList.length > 1
+                        ? (
+                            <Fragment>
+                                <Text style={ styles.label }>{ "To:" }</Text>
+                                <Picker
+                                    selectedValue={ currentTeamId }
+                                    itemStyle={ { backgroundColor: "#FFFFFF99", color: "black" } }
+                                    onValueChange={ (teamId: string) => {
+                                        setCurrentTeamId(teamId);
+                                    } }>
+                                    { items }
+                                </Picker>
+                            </Fragment>
+                        )
+                        : (<Text style={ styles.largeText }>{ `To: ${ (teamHash[currentTeamId] || {}).name }` }</Text>)
                     }
+                </View>
+                <View style={ styles.formControl }>
+                    <Text style={ styles.label }>{ "Your Message" }</Text>
+
                     <TextInput
                         keyBoardType={ "default" }
                         multiline={ true }
@@ -126,14 +119,10 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
-                {
-                    Platform.OS === "ios"
-                        ? (<View style={ defaultStyles.padForIOSKeyboardBig }/>)
-                        : null
-                }
+
             </ScrollView>
 
-        </View>
+        </SafeAreaView>
     );
 };
 

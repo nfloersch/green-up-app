@@ -2,14 +2,9 @@
 import React from "react";
 import {
     Image,
-    ScrollView,
     StyleSheet,
-    Text,
-    TouchableHighlight,
-    ImageBackground,
-    TouchableOpacity,
-    View,
-    FlatList
+    SafeAreaView,
+    TouchableOpacity
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -17,9 +12,12 @@ import * as messageTypes from "../../constants/message-types";
 import * as actionCreators from "../../action-creators/message-action-creators";
 import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
-import coveredBridge from "../../assets/images/covered-bridge2.jpg";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
+import { Button, ListView, View, Text, Title, Subtitle } from "@shoutem/ui";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import ButtonBar from "../../components/button-bar";
+
 
 const myStyles = {
     message: {
@@ -48,23 +46,20 @@ const myStyles = {
     oldMsg: {
         color: "#888",
         fontSize: 16,
-        shadowColor: "#FFF",
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 1
+        height: 60,
+        fontFamily: "Rubik-Regular"
     },
     newMsg: {
         fontWeight: "bold",
         color: "#111",
         fontSize: 16,
-        shadowColor: "#FFF",
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 1
+        height: 60,
+        fontFamily: "Rubik-Regular"
     },
     loadingScreen: {
         justifyContent: "center",
         alignItems: "center"
+
     }
 };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -75,36 +70,37 @@ type ItemPropsType = {
     toDetail: any => any
 };
 
-const MessageItem = ({ item, toDetail }: ItemPropsType): React$Element<any> => {
+const MessageSummary = ({ item, toDetail }: ItemPropsType): React$Element<any> => {
     const sender = item.sender || {};
+    const messageStyle = item.read ? styles.oldMsg : styles.newMsg;
     return (
         <TouchableOpacity key={ item.id } onPress={ toDetail }>
-            <View style={ [styles.row, { height: 85 }] }>
-                <View style={ { flex: 1, flexDirection: "row" } }>
-                    <Image
-                        style={ { width: 50, height: 50, marginRight: 10 } }
-                        source={ { uri: sender.photoURL } }
-                    />
-                    <View style={ { flex: 1, flexDirection: "column", alignItems: "stretch" } }>
-                        <Text style={ [item.read ? styles.read : styles.unread, {
-                            fontSize: 10,
-                            textAlign: "left",
-                            fontWeight: "bold",
-                            height: 13
-                        }] }
-                        >{ item.teamName }</Text>
-                        <Text style={ [{ height: 40 }, item.read
-                            ? styles.oldMsg : styles.newMsg] }>
+            <View style={ {
+                flex: 1,
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "#AAA"
+            } }>
+                <Image
+                    style={ { width: 80, height: 80 } }
+                    source={ { uri: sender.photoURL } }
+                />
+                <View style={ { flex: 1, flexDirection: "column", alignItems: "stretch" } }>
+                    <View style={ { flex: 1, justifyContent: "center", padding: 10 } }>
+                        <Text style={ messageStyle }>
                             { (item.text || "").length > 80
                                 ? `${ (item.text || "").slice(0, 80) }...`
                                 : item.text }
                         </Text>
-                        <Text style={ [item.read ? styles.read : styles.unread, {
-                            fontSize: 10,
-                            textAlign: "right"
-                        }] }>
-                            { `--${ sender.displayName || sender.email || "" }` }
-                        </Text>
+                    </View>
+                </View>
+                <View>
+                    <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
+                        <SimpleLineIcons
+                            name={ "arrow-right" }
+                            size={ 20 }
+                            color="#333"
+                        />
                     </View>
                 </View>
             </View>
@@ -154,91 +150,113 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
         .map((entry: [string, Object]): MessageType => Message.create(entry[1], entry[0]))
         .sort((a: MessageType, b: MessageType): number => (b.created || 0).valueOf() - (a.created || 0).valueOf());
 
-    return userHasTeams || myMessages.length > 0 ? (
-        <View style={ styles.frame }>
+
+    const getHeader = R.cond([
+        [(hasTeams, hasMessages) => (!hasTeams && !hasMessages), () => (null)],
+        [(hasTeams, hasMessages) => (!hasTeams && hasMessages), () => (
             <View style={ styles.singleButtonHeader }>
-                {
-                    userHasTeams
-                        ? (
-                            <TouchableHighlight
-                                style={ styles.headerButton }
-                                onPress={ () => {
-                                    navigation.navigate("NewMessage");
-                                } }>
-                                <Text style={ styles.headerButtonText }>{ "New Message" }</Text>
-                            </TouchableHighlight>
-                        )
-                        : (
-                            <View style={ styles.headerButton }>
-                                <Text style={ styles.headerButtonText }>
-                                    { "Join or create a team to send messages." }
-                                </Text>
-                            </View>
-                        )
-                }
-            </View>
-            { myMessages.length > 0
-                ? (
-                    <ScrollView style={ styles.scroll }>
-                        <View style={ styles.infoBlockContainer }>
-                            <FlatList
-                                data={ myMessages }
-                                keyExtractor={ (item: Object): string => item.id }
-                                renderItem={ ({ item }: { item: Object }): React$Element<any> => (
-                                    <MessageItem
-                                        item={ item }
-                                        toDetail={ toMessageDetail(item) }/>) }
-                                style={ styles.infoBlockContainer }
-                            />
-                        </View>
-                    </ScrollView>
-                )
-                : (
-                    <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
-                        <View style={ {
-                            marginTop: "20%",
-                            paddingLeft: 20,
-                            paddingRight: 20,
-                            paddingTop: 50,
-                            paddingBottom: 50,
-                            backgroundColor: "rgba(255,255,255, 0.85)"
-                        } }>
-                            <Text style={ [styles.textDark, {
-                                textAlign: "center",
-                                height: 30
-                            }] }>{ "Sorry, no messages yet." }</Text>
-                        </View>
-                    </ImageBackground>
-                ) }
-        </View>
-    ) : (
-        <View style={ styles.frame }>
-            <ImageBackground source={ coveredBridge } style={ styles.backgroundImage }>
-                <View style={ {
-                    marginTop: "20%",
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    paddingTop: 50,
-                    paddingBottom: 50,
-                    backgroundColor: "rgba(255,255,255, 0.85)"
-                } }>
-                    <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                        { "All your messages will be listed here." }
+                <View style={ styles.headerButton }>
+                    <Text style={ styles.headerButtonText }>
+                        { "To send messages, join or create a team." }
                     </Text>
-                    <Text style={ [styles.textDark, { textAlign: "justify" }] }>
-                        { "Before you can send or receive messages you will need to join or create a team." }
-                    </Text>
-                    <TouchableOpacity
-                        style={ styles.button }
-                        onPress={ () => {
-                            navigation.navigate("Teams");
-                        } }
-                    >
-                        <Text style={ styles.buttonText }>{ "Go to \"My Teams\" >" }</Text>
-                    </TouchableOpacity>
                 </View>
-            </ImageBackground>
-        </View>
+            </View>
+        )],
+        [
+            R.T,
+            () => (
+                <ButtonBar
+                    buttonConfigs={ [
+                        {
+                            text: "New Message",
+                            onClick: () => {
+                                navigation.navigate("NewMessage");
+                            }
+                        }
+                    ] }/>
+            )]
+    ]);
+
+
+    const getContent = R.cond(
+        [
+            [
+                (_messages, hasTeams) => (hasTeams && _messages.length === 0),
+                () => (
+                    <View style={ { backgroundColor: "white", padding: 30, margin: 30 } }>
+                        <Title style={ {
+                            textAlign: "center",
+                            color: "#000",
+                            marginBottom: 20
+                        } }>
+                            { "Sorry, no messages yet." }
+                        </Title>
+                        <Title style={ {
+                            textAlign: "center",
+                            color: "#000"
+                        } }>
+                            { "Click the \"New Message\" button to send one to your team." }
+                        </Title>
+                    </View>
+
+                )
+            ],
+            [
+                (_messages, hasTeams) => (!hasTeams && _messages.length === 0),
+                () => (
+                    <View style={ { padding: 10, marginTop: 30 } }>
+                        <View style={ { backgroundColor: "white", padding: 10, marginTop: 30 } }>
+                            <Title style={ { marginBottom: 20, textAlign: "center" } }>
+                                { "Your messages will appear here." }
+                            </Title>
+                            <Subtitle style={ { textAlign: "center" } }>
+                                { "To send messages, join or create a team." }
+                            </Subtitle>
+                        </View>
+                        <View styleName="horizontal" style={ { marginTop: 30 } }>
+                            <Button
+                                onPress={ () => {
+                                    navigation.navigate("FindTeam");
+                                } }
+                                styleName="confirmation">
+                                <Text>JOIN A TEAM</Text>
+                            </Button>
+
+                            <Button
+                                onPress={ () => {
+                                    navigation.navigate("NewTeam");
+                                } }
+                                styleName="confirmation secondary">
+                                <Text>CREATE A TEAM</Text>
+                            </Button>
+                        </View>
+                    </View>
+                )
+            ],
+            [
+                R.T,
+                (_messages) => (
+                    <ListView
+                        data={ _messages }
+                        renderRow={ message => (
+                            <MessageSummary item={ message } toDetail={ toMessageDetail(message) }/>) }
+                    />
+                )
+            ]
+        ]);
+
+
+    return (
+        <SafeAreaView style={ styles.container }>
+            { getHeader(userHasTeams, messages.length > 0) }
+            <View style={ {
+                flex: 1,
+                backgroundColor: constants.colorBackgroundLight
+            } }>
+                { getContent(myMessages, userHasTeams) }
+            </View>
+
+        </SafeAreaView>
     );
 };
 
@@ -284,13 +302,11 @@ const mapStateToProps = (state: Object): Object => {
         .reduce((obj: Object, queue: Object): MessageHashType => ({ ...obj, ...addTeamNamesToMessages(queue) }), {});
 
     const userHasTeams = Object.keys((state.profile || {}).teams || {}).length > 0;
-    const userHasMessages = state.messages.length > 0;
     return {
         currentUser: state.login.user,
         messages: messages,
         messagesLoaded: state.messages.loaded,
-        userHasTeams,
-        userHasMessages
+        userHasTeams
     };
 };
 
@@ -299,4 +315,5 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
     actions: bindActionCreators(actionCreators, dispatch)
 });
 
+// $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSummariesScreen);
