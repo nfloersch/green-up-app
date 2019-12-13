@@ -1,14 +1,15 @@
 // @flow
 /* eslint-disable new-cap */
 import React, { useState } from "react";
-import { Dimensions } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
-import TeamEditorDetails from "../../components/team-editor-details";
-import TeamEditorMembers from "../../components/team-editor-members";
+import { Dimensions, Text } from "react-native";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import TeamEditorDetails from "../../components/team-details-editor";
+import TeamEditorMembers from "../../components/team-members-editor";
+import * as constants from "../../styles/constants";
 
 const routes = [
-    { key: "first", title: "Details" },
-    { key: "second", title: "Members" }
+    { key: "members", title: "Members" },
+    { key: "details", title: "Details" }
 ];
 
 const TeamEditorScreen = (): React$Element<any> => {
@@ -17,15 +18,55 @@ const TeamEditorScreen = (): React$Element<any> => {
     const navState = { index: activeTab, routes };
     return (
         <TabView
+            renderTabBar={ props =>
+                <TabBar
+                    { ...props }
+                    indicatorStyle={ {
+                        backgroundColor: constants.colorBackgroundDark,
+                        color: constants.colorBackgroundDark
+                    } }
+                    style={ { backgroundColor: constants.colorBackgroundHeader } }
+                    renderLabel={ ({ route, focused, color }) => {
+                        return (
+                            <Text style={ { margin: 8, color: (focused ? "black" : "#555") } }>
+                                { (route.title || "").toUpperCase() }
+                            </Text>
+                        );
+                    } }
+                />
+            }
+
             navigationState={ navState }
             renderScene={ SceneMap({
-                first: TeamEditorDetails,
-                second: TeamEditorMembers
+                details: TeamEditorDetails,
+                members: TeamEditorMembers
             }) }
             onIndexChange={ setActiveTab }
             initialLayout={ { width: Dimensions.get("window").width } }
         />
     );
 };
+
+
+TeamEditorScreen.navigationOptions = {
+    title: "Manage Your Team",
+    headerStyle: {
+        backgroundColor: constants.colorBackgroundDark
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    },
+    headerBackTitleStyle: {
+        fontFamily: "Rubik-Regular",
+        fontWeight: "bold",
+        fontSize: 20,
+        color: constants.colorHeaderText
+    }
+};
+
 
 export default TeamEditorScreen;

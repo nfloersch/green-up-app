@@ -2,11 +2,9 @@
 import React, { useState } from "react";
 import {
     StyleSheet,
-    FlatList,
     Image,
     Modal,
     Text,
-    ScrollView,
     TouchableOpacity,
     View,
     SafeAreaView
@@ -21,6 +19,10 @@ import { partial } from "ramda";
 import { bindActionCreators } from "redux";
 import * as actionCreators from "../../action-creators/team-action-creators";
 import * as constants from "../../styles/constants";
+import ButtonBar from "../button-bar/";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { ListView } from "@shoutem/ui";
+import { getGravatar } from "../../models/user";
 
 const myStyles = {
     member: {
@@ -51,33 +53,6 @@ const styles = StyleSheet.create(combinedStyles);
 
 type MemberPropsType = { item: Object };
 
-const MemberItem = ({ item }: MemberPropsType): React$Element<any> => (
-    <TouchableOpacity
-        key={ item.key }
-        onPress={ item.toDetail }
-        style={ styles.row }
-    >
-        <View style={ [styles.member, { flex: 1, flexDirection: "row", justifyContent: "space-between" }] }>
-            <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
-                <Image
-                    style={ { width: 50, height: 50, marginRight: 10 } }
-                    source={ { uri: item.photoURL } }
-                />
-                <Text style={ [styles.memberEmail, {
-                    flex: 1,
-                    paddingTop: 12,
-                    alignItems: "stretch"
-                }] }>{ item.displayName && item.displayName.trim() || item.email || "" }</Text>
-            </View>
-            <MemberIcon
-                memberStatus={ item.memberStatus }
-                style={ { paddingTop: 10, height: 50, width: 50 } }
-                isOwner={ true }/>
-        </View>
-    </TouchableOpacity>
-);
-
-
 type PropsType = {
     actions: Object,
     invitations: Object,
@@ -86,7 +61,65 @@ type PropsType = {
     team: Object
 };
 
-const TeamEditorMembers = ({ actions, team, members, requests, invitations }: PropsType): React$Element<any> => {
+
+const MemberItem = ({ item }: MemberPropsType): React$Element<any> => {
+    return (
+        <TouchableOpacity key={ item.id } onPress={ item.toDetail }>
+            <View style={ {
+                flex: 1,
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "#AAA"
+            } }>
+                <View style={ {
+                    flex: 1,
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 40,
+                    maxWidth: 40,
+                    marginLeft: 10
+                } }>
+                    <MemberIcon
+                        memberStatus={ item.memberStatus }
+                        isOwner={ item.isOwner }/>
+                </View>
+                <Image
+                    style={ { width: 80, height: 80 } }
+                    source={ { uri: (item.photoURL || getGravatar(item.email)) } }
+                />
+                <View style={ {
+                    flex: 1,
+                    flexDirection: "column",
+                    padding: 10,
+                    justifyContent: "center",
+                    alignItems: "center"
+                } }>
+                    <Text style={ {
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "#111",
+                        fontSize: 16,
+                        fontFamily: "Rubik-Regular"
+                    } }>
+                        { item.displayName && item.displayName.trim() || item.email || "" }
+                    </Text>
+                </View>
+                <View>
+                    <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
+                        <SimpleLineIcons
+                            name={ "arrow-right" }
+                            size={ 20 }
+                            color="#333"
+                        />
+                    </View>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+const TeamMembersEditor = ({ actions, team, members, requests, invitations }: PropsType): React$Element<any> => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(<Text>FOO</Text>);
@@ -125,45 +158,29 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
         };
     };
 
-    const memberButtons = [].concat([], Object.values(requests), Object.values(members), Object.values(invitations))
+    const memberRowData = [].concat([], Object.values(requests), Object.values(members), Object.values(invitations))
         .map((member: Object, i: number): Object => ({
             key: i.toString(),
             ...member,
+            isOwner: (team.owner || {}).uid === member.id,
             toDetail: toMemberDetails(team, member)
         }));
 
+    const headerButtons = [
+        { text: "Invite A Friend", onClick: inviteForm(team) },
+        { text: "Add From Contacts", onClick: inviteContacts(team) }
+    ];
+
+
     return (
         <SafeAreaView style={ styles.frame }>
-            <View style={ styles.buttonBarHeader }>
-                <View style={ styles.buttonBar }>
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableOpacity
-                            style={ styles.headerButton }
-                            onPress={ inviteForm(team) }>
-                            <Text style={ styles.headerButtonText }>
-                                { "Invite A Friend" }
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableOpacity
-                            style={ styles.headerButton }
-                            onPress={ inviteContacts(team) }>
-                            <Text style={ styles.headerButtonText }>
-                                { "From Contacts" }
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-            <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
-                    <FlatList
-                        data={ memberButtons }
-                        renderItem={ ({ item }: Object): React$Element<any> => (<MemberItem item={ item }/>) }
-                    />
-                </View>
-            </ScrollView>
+            <ButtonBar buttonConfigs={ headerButtons }/>
+
+            <ListView
+                data={ memberRowData }
+                renderRow={ item => (<MemberItem item={ item }/>) }
+            />
+
             <Modal
                 animationType={ "slide" }
                 onRequestClose={ (): string => ("this function is required. Who knows why?") }
@@ -178,7 +195,7 @@ const TeamEditorMembers = ({ actions, team, members, requests, invitations }: Pr
 };
 
 
-TeamEditorMembers.navigationOptions = {
+TeamMembersEditor.navigationOptions = {
     title: "Team Members",
     tabBarLabel: "Members",
     headerStyle: {
@@ -210,4 +227,4 @@ const mapStateToProps = (state: Object): Object => {
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(TeamEditorMembers);
+export default connect(mapStateToProps, mapDispatchToProps)(TeamMembersEditor);

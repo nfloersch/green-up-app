@@ -1,6 +1,11 @@
 // @flow
 import React from "react";
-import { View, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+    View,
+    SafeAreaView,
+    TouchableOpacity,
+    StyleSheet
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -9,7 +14,6 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import { daysUntilCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as R from "ramda";
-import * as colors from "../../styles/constants";
 import { connectStyle } from "@shoutem/theme";
 import { selectTeam } from "../../action-creators/team-action-creators";
 import * as constants from "../../styles/constants";
@@ -25,9 +29,7 @@ import {
     Tile
 } from "@shoutem/ui";
 
-
-const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(defaultStyles);
 
 const homeTitle = R.cond(
     [
@@ -124,7 +126,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 actions.selectTeam(team);
             },
             label: team.name || "My Team",
-            description: "Who, Where and When",
+            description:isOwner(teams, currentUser, (team.id || "foo")) ? "Manage Your Team" : "About Your Team",
             backgroundImage: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-wide.jpg") : require("../../assets/images/man-boy-wide.jpg"),
             backgroundImageLarge: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-large.jpg") : require("../../assets/images/man-boy-large.jpg")
         }
@@ -180,14 +182,14 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                                 fontFamily: "Rubik-Regular",
                                 fontWeight: "bold"
                             } }
-                            styleName="md-gutter-bottom">{ rowData[0].label.toUpperCase() }</Text>
+                                  styleName="md-gutter-bottom">{ rowData[0].label.toUpperCase() }</Text>
                             <Text style={ {
                                 color: "white",
                                 fontSize: 20,
                                 fontFamily: "Rubik-Regular",
                                 fontWeight: "bold"
                             } }
-                            styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
+                                  styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
 
                         </Tile>
                     </ImageBackground>
@@ -203,7 +205,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 styleName="flexible"
             >
                 <Card styleName="flexible"
-                    style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
+                      style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
                 >
                     <Image
                         styleName="medium-wide"
@@ -226,7 +228,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                         </Subtitle>
                         <View styleName="horizontal">
                             <Text style={ { fontFamily: "Rubik-Regular", textAlign: "center" } }
-                                styleName="collapsible">{ item.description }</Text>
+                                  styleName="collapsible">{ item.description }</Text>
                         </View>
                     </View>
                 </Card>
@@ -242,10 +244,11 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
 
 
     return (
-        <SafeAreaView style={ { backgroundColor: colors.colorBackgroundDark } }>
+        <SafeAreaView style={ [styles.container, { backgroundColor: "#d5dbd5" }] }>
             <ListView
                 data={ groupedData }
                 renderRow={ renderRow }
+                contentContainerStyle={ { backgroundColor: "red" } }
                 renderFooter={ () => (<View style={ { width: "100%", height: 10, backgroundColor: "#d5dbd5" } }/>) }
             />
         </SafeAreaView>
@@ -284,4 +287,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({
 });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(connectStyle("org.greenup.HomeScreen", combinedStyles)(HomeScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

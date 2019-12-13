@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import * as R from "ramda";
-import colors from "../../constants/colors";
+import * as constants from "../../styles/constants";
 
 const icons = {
     [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === "ios" ? "ios-person-add" : "md-person-add",
@@ -28,14 +28,14 @@ type PropsType = { memberStatus: string, style?: Object, isOwner?: boolean };
 export const MemberIcon = ({ memberStatus, style = {}, isOwner }: PropsType): React$Element<Ionicons> => {
     const status = memberStatus === memberStatuses.REQUEST_TO_JOIN && !isOwner ? "IS_REQUESTING_TO_JOIN" : memberStatus;
     const iconStyle = Object.assign({
-        height: 30,
-        width: 30,
-        color: colors.iconColor
+        height: 35,
+        width: 35,
+        color: constants.colorIcon
     }, style);
     return (
         <Ionicons
             name={ getIconName({ status, isOwner: Boolean(isOwner) }) }
-            size={ 30 }
+            size={ 35 }
             style={ iconStyle }/>
     );
 };

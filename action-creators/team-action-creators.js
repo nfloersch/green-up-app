@@ -13,7 +13,6 @@ import * as Permissions from "expo-permissions";
 
 export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
-
         // recursively get all contacts
         async function getContactsAsync(pageSize: number, pageOffset: number = 0): Promise<any> {
             const data = await Contacts.getContactsAsync({
@@ -25,7 +24,7 @@ export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
             });
             const contacts = data.data.map((contact: ContactType): ContactType => Contact.create(contact));
             dispatch({ type: types.RETRIEVE_CONTACTS_SUCCESS, data: contacts });
-            return (data.hasNextPage !== 0)
+            return (data.hasNextPage)
                 ? contacts.concat(getContactsAsync(pageSize, pageOffset + pageSize))
                 : contacts;
         }

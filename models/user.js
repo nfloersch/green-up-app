@@ -2,8 +2,8 @@
 import { isValidDate } from "../libs/validators";
 import md5 from "md5-hash";
 
-const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
-const getGravatar = (email: string): string => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${ md5(email.trim().toLowerCase()) }?d=mm`);
+export const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=da7c12cd-5439-4d8b-ab37-b08b69a334a8";
+export const getGravatar = (email: string): string => (!email ? defaultAvatar : `https://www.gravatar.com/avatar/${ md5(email.trim().toLowerCase()) }?d=mm`);
 
 export default class User {
     uid: ?string;
@@ -53,4 +53,6 @@ export default class User {
         }
         return new User(_args);
     }
+
+
 }

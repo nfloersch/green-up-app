@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
         height: 55,
         backgroundColor: constants.colorBackgroundHeader,
         borderBottomWidth: 1,
-        borderColor: "black"
+        borderColor: "black",
+        borderTopWidth: 1,
+        borderTopColor: constants.colorBackgroundDark
     }
 
 });

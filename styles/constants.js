@@ -15,9 +15,11 @@ export const colorBackgroundDark = "#55683A";
 export const colorTabIconDefault = "#FFF";
 export const colorTabBarBackground = "#4A4B4C";
 export const colorTabIconSelected = "orange";
-export const colorBackGroundLight = "#EFEFEF";
+export const colorBackGroundLight = "#d5dbd5";
 export const colorButtonBackgroundHome = "#FA774E55";
 export const colorTextError = "#F55";
+export const colorIcon = "#555";
+
 export const boxShadow = {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
