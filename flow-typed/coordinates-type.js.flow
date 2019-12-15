@@ -2,5 +2,5 @@
 declare type CoordinatesType = {
     latitude: ?number;
     longitude: ?number;
-    id: ?string;
+    id?: string;
 };

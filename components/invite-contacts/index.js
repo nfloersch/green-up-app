@@ -3,21 +3,20 @@ import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     View,
-    ScrollView,
-    TouchableHighlight,
     Text,
-    CheckBox,
-    Platform
+    SafeAreaView, TouchableOpacity
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import IOSCheckBox from "react-native-checkbox";
 import * as actionCreators from "../../action-creators/team-action-creators";
 import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import { isValidEmail, isInTeam } from "../../libs/validators";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
+import { ButtonBar } from "../button-bar/button-bar";
+import { ListView } from "@shoutem/ui";
+import { FontAwesome } from "@expo/vector-icons";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -40,22 +39,17 @@ type PropsType = {
 
 const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTeam, teamMembers }: PropsType): React$Element<View> => {
 
-    const [myContacts, setMyContacts] = useState([]);
     const [selectedContacts, setSelectedContacts] = useState([]);
-
-    useEffect(() => {
-        setMyContacts(contacts || []);
-    }, [contacts]);
-
 
     useEffect(() => {
         actions.retrieveContacts();
     }, []);
 
+    const isSelected = email => selectedContacts.includes(email);
 
     function inviteToTeam() {
-        const _teamMembers = myContacts
-            .filter((contact: ContactType): boolean => selectedContacts.indexOf(contact.email) > -1)
+        const _teamMembers = contacts
+            .filter((contact: ContactType): boolean => isSelected(contact.email))
             .map((contact: ContactType): TeamMemberType => TeamMember.create(Object.assign({}, contact, {
                 displayName: `${ contact.firstName || "" } ${ contact.lastName || "" }`,
                 memberStatus: TeamMember.memberStatuses.INVITED
@@ -66,8 +60,7 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
 
 
     const toggleContact = (email: ?string = ""): (()=>void) => () => {
-        const hasContact = selectedContacts.indexOf(email) > -1;
-        const newContacts = hasContact
+        const newContacts = isSelected(email)
             ? R.filter((_email: string): boolean => (_email !== email))(selectedContacts)
             : selectedContacts.concat(email);
         // $FlowFixMe - not sure why this is an error.
@@ -75,7 +68,7 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
     };
 
 
-    const _myContacts = myContacts
+    const filterSortContacts = myContacts => myContacts
         .filter((contact: ContactType): boolean => isValidEmail(contact.email || "") && !isInTeam(teamMembers[selectedTeam.id], contact.email))
         .sort((a: ContactType, b: ContactType): number => {
             const bDisplay = (`${ b.firstName || "" }${ b.lastName || "" }${ b.email || "" }`).toLowerCase();
@@ -88,61 +81,45 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
                 default:
                     return 0;
             }
-        })
-        .map((contact: ContactType, i: number): React$Element<any> => (Platform.OS === "ios")
-            ? (
-                <View key={ i }>
-                    <IOSCheckBox
-                        checked={ (selectedContacts.indexOf(contact.email) > -1) }
-                        label={ getDisplayName(contact) }
-                        onChange={ toggleContact(contact.email) }
-                    />
+        });
+
+
+    const renderRow = (contact: ContactType): React$Element<any> => (
+        <TouchableOpacity
+            onPress={ toggleContact(contact.email) }>
+            <View style={ {
+                flex: 1,
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                padding: 20
+            } }>
+                <View style={ { width: 40, alignItems: "center", justifyContent: "center" } }>
+                    <FontAwesome size={ 30 } name={ isSelected(contact.email) ? "envelope" : "plus-square" }/>
                 </View>
-            )
-            : (
-                <TouchableHighlight key={ i } onPress={ toggleContact(contact.email) }>
-                    <View style={ { flex: 1, flexDirection: "row", marginTop: 10 } }>
-                        <CheckBox value={ (selectedContacts.indexOf(contact.email) > -1) }/>
-                        <Text style={ { fontSize: 20, marginLeft: 10 } }>{ getDisplayName(contact) }</Text>
-                    </View>
-                </TouchableHighlight>
-            )
-        );
+                <Text style={ { fontSize: 20, marginLeft: 10 } }>{ getDisplayName(contact) }</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+
+    const headerButtons = [{ text: "Invite to Team", onClick: inviteToTeam }, { text: "Close", onClick: closeModal }];
+
 
     return (
-        <View style={ [styles.frame, { paddingTop: 30 }] }>
-            <View style={ [styles.buttonBarHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                <View style={ styles.buttonBar }>
-
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ inviteToTeam }
-                        >
-                            <Text style={ styles.headerButtonText }>
-                                { "Invite to Team" }</Text>
-                        </TouchableHighlight>
-                    </View>
-
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ closeModal }
-                        >
-                            <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                        </TouchableHighlight>
-                    </View>
-                </View>
+        <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
+            <ButtonBar buttonConfigs={ headerButtons }/>
+            <View style={ {
+                flex: 1,
+                backgroundColor: constants.colorBackgroundLight
+            } }>
+                <ListView
+                    contentContainerStyle={ { backgroundColor: constants.colorBackgroundLight } }
+                    data={ filterSortContacts(contacts) }
+                    renderRow={ renderRow }
+                />
             </View>
-
-            <ScrollView
-                style={ styles.scroll }
-                keyboardShouldPersistTaps="never">
-                <View style={ styles.infoBlockContainer }>
-                    { _myContacts }
-                </View>
-            </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

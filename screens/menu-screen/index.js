@@ -1,66 +1,77 @@
 // @flow
 import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
+import { Text, Button, View } from "@shoutem/ui";
+import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+const fontSize = 25;
 
 type PropsType = {
     actions: Object,
     navigation: Object
 };
 
+
 const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => (
-    <View style={ styles.frame }>
-        <ScrollView style={ [styles.scroll, { paddingTop: 20, paddingLeft: 20, paddingRight: 20 }] }>
-            <TouchableOpacity
-                style={ styles.button }
-                onPress={ () => {
-                    navigation.navigate("Towns");
-                } }
-            >
-                <Text style={ styles.buttonText }>{ "Town Info" }</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={ styles.button }
-                onPress={ () => {
-                    navigation.navigate("About");
-                } }
-            >
-                <Text style={ styles.buttonText }>{ "About Green Up Day" }</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={ styles.button }
+    <SafeAreaView style={ styles.container }>
+        <View style={ { margin: 20 } }>
+
+            <Button
+                styleName="primary"
                 onPress={ () => {
                     navigation.navigate("Profile");
                 } }
             >
-                <Text style={ styles.buttonText }>{ "My Profile" }</Text>
-            </TouchableOpacity>
+                <MaterialCommunityIcons
+                    name="account-box"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
+            </Button>
+        </View>
+        <View style={ { margin: 20 } }>
+            <Button
+                styleName="primary"
 
-            <TouchableOpacity
-                style={ styles.button }
                 onPress={ () => {
                     navigation.navigate("Legal");
                 } }
             >
-                <Text style={ styles.buttonText }>{ "Legal" }</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={ styles.button }
+                <Octicons
+                    name="law"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "Legal Stuff" }</Text>
+            </Button>
+        </View>
+        <View style={ { margin: 20 } }>
+
+            <Button
+                styleName="primary"
                 onPress={ actions.logout }
             >
-                <Text style={ styles.buttonText }>{ "Log Out" }</Text>
-            </TouchableOpacity>
-            <View style={ { height: 20 } }/>
-        </ScrollView>
-    </View>
+                <MaterialCommunityIcons
+                    name="logout"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
+            </Button>
+        </View>
+    </SafeAreaView>
 );
 
 MenuScreen.navigationOptions = {

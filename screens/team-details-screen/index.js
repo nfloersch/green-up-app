@@ -287,29 +287,29 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                         </Text>
                         <View style={ { width: "100%" } }>
                             <Text style={ styles.dataBlock }>
-                                <Text style={ styles.labelDark }>{ "Owner: " }</Text>
+                                <Text style={ styles.label }>{ "Owner: " }</Text>
                                 <Text style={ styles.dataDark }>{ selectedTeam.owner.displayName }</Text>
                             </Text>
                             <Text style={ styles.dataBlock }>
-                                <Text style={ styles.labelDark }>{ "Where: " }</Text>
+                                <Text style={ styles.label }>{ "Where: " }</Text>
                                 <Text
                                     style={ styles.dataDark }>{ `${ selectedTeam.location || "" }${ !selectedTeam.location || !selectedTeam.town ? "" : ", " }${ selectedTeam.town || "" }` }</Text>
                             </Text>
                             <Text style={ styles.dataBlock }>
-                                <Text style={ styles.labelDark }>{ "Date: " }</Text>
+                                <Text style={ styles.label }>{ "Date: " }</Text>
                                 <Text style={ styles.dataDark }>{ selectedTeam.date }</Text>
                             </Text>
                             <Text style={ styles.dataBlock }>
-                                <Text style={ styles.labelDark }>{ "Starts: " }</Text>
+                                <Text style={ styles.label }>{ "Starts: " }</Text>
                                 <Text style={ styles.dataDark }>{ selectedTeam.start }</Text>
                             </Text>
                             <Text style={ styles.dataBlock }>
-                                <Text style={ styles.labelDark }>{ "Ends: " }</Text>
+                                <Text style={ styles.label }>{ "Ends: " }</Text>
                                 <Text style={ styles.dataDark }>{ selectedTeam.end }</Text>
                             </Text>
                             { !selectedTeam.notes ? null
                                 : <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.labelDark }>{ "Description: " }</Text>
+                                    <Text style={ styles.label }>{ "Description: " }</Text>
                                     <Text>{ selectedTeam.notes }</Text>
                                 </Text>
                             }

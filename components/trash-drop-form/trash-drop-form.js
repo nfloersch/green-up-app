@@ -51,7 +51,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
     const [drop, setDrop] = useState({
         id: null,
         active: true,
-        teamId: defaultTeam.id,
+        teamId: (defaultTeam || {}).id || null,
         collectionSiteId: null,
         created: new Date(),
         wasCollected: false,
@@ -101,7 +101,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
             </View>
             <ScrollView style={ styles.scroll }>
                 <View style={ { flex: 1, justifyContent: "flex-start" } }>
-                    <Text style={ styles.labelDark }>Number of Bags</Text>
+                    <Text style={ styles.label }>Number of Bags</Text>
                     <TextInput
                         underlineColorAndroid="transparent"
                         value={ (drop.bagCount || "").toString() }
@@ -115,7 +115,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                             });
                         } }
                     />
-                    <Text style={ styles.labelDark }>Other Items</Text>
+                    <Text style={ styles.label }>Other Items</Text>
                     <View style={ styles.fieldset }>
                         <CheckBox
                             label="Needles/Bio-Waste"
@@ -197,7 +197,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                             setModal(null);
                         } }
                         sites={ trashCollectionSites || [] }
-                        userLocation={ userLocation }
+                        userLocation={ userLocation || {} }
                         towns={ townData }
                         onCancel={ () => {
                             setModal(null);
