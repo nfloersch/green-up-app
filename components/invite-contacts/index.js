@@ -15,7 +15,7 @@ import { isValidEmail, isInTeam } from "../../libs/validators";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
 import { ButtonBar } from "../button-bar/button-bar";
-import { ListView, Button } from "@shoutem/ui";
+import { ListView } from "@shoutem/ui";
 import { FontAwesome } from "@expo/vector-icons";
 
 const myStyles = {};

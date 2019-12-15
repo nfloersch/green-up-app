@@ -4,7 +4,7 @@ export const controls = {
         borderWidth: 1,
         padding: 5,
         height: 150,
-        backgroundColor: "white",
+        backgroundColor: "white"
     },
     textInput: {
         backgroundColor: "white",

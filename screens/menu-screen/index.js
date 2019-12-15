@@ -1,13 +1,14 @@
 // @flow
 import React from "react";
-import { TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
-import { Text, Button, View, Divider } from "@shoutem/ui";
+import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
+
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
