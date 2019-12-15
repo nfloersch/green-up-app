@@ -119,7 +119,7 @@ const setupInvitedTeamMemberListener = (teamIds: Array<string>, dispatch: Dispat
         querySnapshot.forEach((_doc: Object) => {
             data.push({ ..._doc.data(), id: _doc.id });
         });
-        const invitees = data.reduce((obj, member): Object => ({ ...obj, [member.uid]: member }), {});
+        const invitees = data.reduce((obj, member): Object => ({ ...obj, [member.id]: member }), {});
         dispatch(dataLayerActions.inviteesFetchSuccessful(invitees, teamId));
     };
     const onError = ((error: Object | string) => {
@@ -304,7 +304,7 @@ function setupProfileListener(user: UserType, dispatch: Dispatch<ActionType>) {
 function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
     const { uid } = user;
 
-    const gotSnapshot = (querySnapshot: QuerySnapshot) => {
+    const gotSnapshot = (querySnapshot: Object) => {
         const data = [];
         const ids = [];
         querySnapshot.forEach((doc: Object) => {

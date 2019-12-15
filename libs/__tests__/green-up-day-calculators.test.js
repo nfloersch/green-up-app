@@ -33,7 +33,6 @@ describe("getGreenUpDayByYear", () => {
     it("returns the Green Up Day for a future year", () => {
         expect(getGreenUpDayByYear(2025).toUTCString()).toBe(new Date("2025-05-03T00:00:00.000Z").toUTCString());
     });
-
     it("returns the Green Up Day for a past year", () => {
         expect(getGreenUpDayByYear(2000).toUTCString()).toBe(new Date("2000-05-06T00:00:00.000Z").toUTCString());
     });

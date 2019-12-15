@@ -18,7 +18,6 @@ import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";
 import User from "../../models/user";
-import { TownLocation } from "../../models/town";
 import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -118,7 +117,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
             Alert.alert("Please give your team a name.");
         } else {
             onSave(myTeam);
-            const newState = freshState(currentUser);
+            const newState = freshState(currentUser, team ? myTeam : Team.create());
             dispatch({ type: "RESET_STATE", data: newState });
         }
     };

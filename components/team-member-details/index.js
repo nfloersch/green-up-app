@@ -1,9 +1,11 @@
 // @flow
 import React from "react";
-import { Alert, StyleSheet, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
+import { Alert, StyleSheet, ScrollView, Text, View, Image, SafeAreaView } from "react-native";
 import MemberIcon from "../../components/member-icon";
 import * as status from "../../constants/team-member-statuses";
 import { defaultStyles } from "../../styles/default-styles";
+import * as constants from "../../styles/constants";
+import { ButtonBar } from "../button-bar/button-bar";
 
 const myStyles = {
     statusBar: {
@@ -84,98 +86,36 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
     };
 
 
-    const getButtons = (_team: Object, _teamMember: Object, closeMembersModal: () => void): React$Element<any> => {
+    const getButtons = (_team: Object, _teamMember: Object, closeMembersModal: () => void): Array<Object> => {
         switch (_teamMember.memberStatus) {
             case status.REQUEST_TO_JOIN :
-                return (
-                    <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                        <View style={ styles.buttonBar }>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ removeThisTeamMember }>
-                                    <Text style={ styles.headerButtonText }>{ "Ignore" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ () => {
-                                        addAnotherTeamMember();
-                                    } }>
-                                    <Text style={ styles.headerButtonText }>{ "Add" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ closeMembersModal }
-                                >
-                                    <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </View>
-                );
+                return [
+                    { text: "Ignore", onClick: removeThisTeamMember },
+                    {
+                        text: "Add",
+                        onClick: addAnotherTeamMember
+                    },
+                    { text: "Close", onClick: closeMembersModal }
+                ];
             case status.ACCEPTED :
-                return (
-                    <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                        <View style={ styles.buttonBar }>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ removeThisTeamMember }
-                                >
-                                    <Text style={ styles.headerButtonText }>{ "Remove" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ closeMembersModal }
-                                >
-                                    <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </View>
-                );
+                return [
+                    { text: "Remove", onClick: removeThisTeamMember },
+                    {
+                        text: "Close",
+                        onClick: closeMembersModal
+                    }
+                ];
             case status.INVITED :
-                return (
-                    <View style={ [styles.buttonBarHeaderModal, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                        <View style={ styles.buttonBar }>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ unInvite }
-                                >
-                                    <Text style={ styles.headerButtonText }>{ "Revoke Invitation" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ closeMembersModal }
-                                >
-                                    <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </View>
-                );
+                return [
+                    { text: "Revoke Invitation", onClick: unInvite },
+                    {
+                        text: "Close",
+                        onClick: closeMembersModal
+                    }
+                ];
             default :
-                return (
-                    <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                        <View style={ styles.buttonBarButton }>
-                            <TouchableHighlight
-                                style={ styles.headerButton }
-                                onPress={ closeMembersModal }
-                            >
-                                <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                );
+                return [{ text: "Close", onClick: closeMembersModal }];
+
         }
     };
 
@@ -240,30 +180,31 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
     };
 
     return (
-        <View style={ [styles.frame, { paddingTop: 30 }] }>
-            { getButtons(team, teamMember, closeModal) }
-            <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
-                    <View style={ styles.profileHeader }>
-                        <Image
-                            style={ { width: 50, height: 50 } }
-                            source={ { uri: teamMember.photoURL } }
-                        />
-                        <Text style={ [styles.profileName, styles.heading] }>
-                            { `${ teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "" }` }
-                        </Text>
-                    </View>
-                    <View>
-                        { getStatus(teamMember) }
-                    </View>
-                    <View style={ { marginTop: 10 } }>
-                        <Text
-                            style={ styles.labelDark }>{ `About ${ teamMember.displayName && teamMember.displayName.trim() || "" }: ` }</Text>
-                        <Text style={ { marginTop: 5 } }>{ teamMember.bio || "" }</Text>
-                    </View>
+        <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
+            <ButtonBar buttonConfigs={ getButtons(team, teamMember, closeModal) }/>
+            <ScrollView
+                style={ [styles.scroll, { padding: 20 }] }
+                automaticallyAdjustContentInsets={ false }
+                scrollEventThrottle={ 200 }
+                keyboardShouldPersistTaps={ "always" }
+            >
+                <View style={ styles.profileHeader }>
+                    <Image
+                        style={ { width: 50, height: 50 } }
+                        source={ { uri: teamMember.photoURL } }
+                    />
+                    <Text style={ [styles.profileName, styles.heading] }>
+                        { `${ teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "" }` }
+                    </Text>
+                </View>
+                <View>
+                    { getStatus(teamMember) }
+                </View>
+                <View style={ { marginTop: 10 } }>
+                    <Text style={ styles.label }>{ teamMember.bio || "" }</Text>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -165,7 +165,6 @@ const TeamMembersEditor = ({ actions, team, members, requests, invitations }: Pr
             isOwner: (team.owner || {}).uid === member.id,
             toDetail: toMemberDetails(team, member)
         }));
-
     const headerButtons = [
         { text: "Invite A Friend", onClick: inviteForm(team) },
         { text: "Add From Contacts", onClick: inviteContacts(team) }
@@ -175,20 +174,21 @@ const TeamMembersEditor = ({ actions, team, members, requests, invitations }: Pr
     return (
         <SafeAreaView style={ styles.frame }>
             <ButtonBar buttonConfigs={ headerButtons }/>
-
-            <ListView
-                data={ memberRowData }
-                renderRow={ item => (<MemberItem item={ item }/>) }
-            />
-
+            <View style={ {
+                flex: 1,
+                backgroundColor: constants.colorBackgroundLight
+            } }>
+                <ListView
+                    data={ memberRowData }
+                    renderRow={ item => (<MemberItem item={ item }/>) }
+                />
+            </View>
             <Modal
                 animationType={ "slide" }
                 onRequestClose={ (): string => ("this function is required. Who knows why?") }
                 transparent={ false }
                 visible={ isModalVisible }>
-                <View>
-                    { modalContent }
-                </View>
+                { modalContent }
             </Modal>
         </SafeAreaView>
     );

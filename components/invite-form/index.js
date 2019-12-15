@@ -2,14 +2,9 @@
 import React, { useState } from "react";
 import {
     Alert,
-    TouchableHighlight,
     StyleSheet,
-    Text,
-    TextInput,
-    View,
-    ScrollView,
-    KeyboardAvoidingView,
-    Platform
+    SafeAreaView,
+    ScrollView
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -19,6 +14,8 @@ import TeamMember from "../../models/team-member";
 import { defaultStyles } from "../../styles/default-styles";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
+import { ButtonBar } from "../button-bar/button-bar";
+import { View, Text, TextInput } from "@shoutem/ui";
 import * as constants from "../../styles/constants";
 
 const myStyles = {};
@@ -64,96 +61,54 @@ const InviteForm = ({ actions, currentUser, closeModal, selectedTeam, teamMember
     };
 
     const myTeamMembers = teamMembers[selectedTeam.id];
+    const headerButtons = [{ text: "Invite to Team", onClick: inviteToTeam }, { text: "Close", onClick: closeModal }];
     return (
-
-        <View style={ [styles.frame, { paddingTop: 30 }] }>
-            <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-                <View style={ styles.buttonBar }>
-
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ inviteToTeam }
-                        >
-                            <Text style={ styles.headerButtonText }>{ "Invite to Team" }</Text>
-                        </TouchableHighlight>
-                    </View>
-
-
-                    <View style={ styles.buttonBarButton }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ closeModal }
-                        >
-                            <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                        </TouchableHighlight>
-                    </View>
-                </View>
-            </View>
-
-            <KeyboardAvoidingView
-                style={ styles.frame }
-                behavior={ Platform.OS === "ios" ? "padding" : null }
+        <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
+            <ButtonBar buttonConfigs={ headerButtons }/>
+            <ScrollView
+                style={ [styles.scroll, { padding: 20 }] }
+                automaticallyAdjustContentInsets={ false }
+                scrollEventThrottle={ 200 }
+                keyboardShouldPersistTaps={ "always" }
             >
-                <ScrollView style={ styles.scroll }>
-                    <View style={ styles.infoBlockContainer }>
-                        <Text style={ styles.labelDark }>{ "Invitee's Email" }</Text>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={ styles.textInput }
-                            placeholder="john@example.com"
-                            value={ email || "" }
-                            onChangeText={ setEmail }
-                            underlineColorAndroid={ "transparent" }
-                        />
-                        <Text>{ isInTeam(myTeamMembers, email) ? "That person is already on the team" : " " }</Text>
-                        <Text style={ styles.labelDark }>{ "First Name" }</Text>
-                        <TextInput
-                            style={ styles.textInput }
-                            value={ firstName }
-                            onChangeText={ setFirstName }
-                            placeholder="First"
-                            underlineColorAndroid={ "transparent" }
-                        />
-                        <Text style={ styles.labelDark }>{ "Last Name" }</Text>
-                        <TextInput
-                            style={ styles.textInput }
-                            value={ lastName }
-                            onChangeText={ setLastName }
-                            placeholder="Last"
-                            underlineColorAndroid={ "transparent" }
-                        />
-                    </View>
-                    {
-                        Platform.OS === "ios"
-                            ? (<View style={ defaultStyles.padForIOSKeyboard }/>)
-                            : null
-                    }
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </View>
+                <View style={ styles.formControl }>
+                    <Text style={ styles.label }>{ "Invitee's Email" }</Text>
+                    <TextInput
+                        autoCapitalize="none"
+                        style={ styles.textInput }
+                        placeholder="john@example.com"
+                        value={ email || "" }
+                        onChangeText={ setEmail }
+                        underlineColorAndroid={ "transparent" }
+                    />
+                    <Text>{ isInTeam(myTeamMembers, email) ? "That person is already on the team" : " " }</Text>
+                </View>
+                <View style={ styles.formControl }>
+                    <Text style={ styles.label }>{ "First Name" }</Text>
+                    <TextInput
+                        style={ styles.textInput }
+                        value={ firstName }
+                        onChangeText={ setFirstName }
+                        placeholder="First"
+                        underlineColorAndroid={ "transparent" }
+                    />
+                </View>
+                <View style={ styles.formControl }>
+
+                    <Text style={ styles.label }>{ "Last Name" }</Text>
+                    <TextInput
+                        style={ styles.textInput }
+                        value={ lastName }
+                        onChangeText={ setLastName }
+                        placeholder="Last"
+                        underlineColorAndroid={ "transparent" }
+                    />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
-InviteForm.navigationOptions = {
-    title: "Invite Team Members",
-    headerStyle: {
-        backgroundColor: constants.colorBackgroundDark
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-        fontFamily: "Rubik-Regular",
-        fontWeight: "bold",
-        fontSize: 20,
-        color: constants.colorHeaderText
-    },
-    headerBackTitleStyle: {
-        fontFamily: "Rubik-Regular",
-        fontWeight: "bold",
-        fontSize: 20,
-        color: constants.colorHeaderText
-    }
-};
 
 const mapStateToProps = (state: Object): Object => {
     const selectedTeam = state.teams.selectedTeam;

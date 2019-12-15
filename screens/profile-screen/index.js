@@ -95,7 +95,7 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                             </Text>
                         </View>
                         <View style={ { marginTop: 20 } }>
-                            <Text style={ styles.labelDark }>{ "My Name" }</Text>
+                            <Text style={ styles.label }>{ "My Name" }</Text>
                             <TextInput
                                 style={ styles.textInput }
                                 keyBoardType={ "default" }
@@ -110,7 +110,7 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                             />
                         </View>
                         <View style={ { marginTop: 20 } }>
-                            <Text style={ styles.labelDark }>About Me</Text>
+                            <Text style={ styles.label }>About Me</Text>
                             <TextInput
                                 style={ [styles.textInput, styles.aboutMeInput] }
                                 keyBoardType={ "default" }

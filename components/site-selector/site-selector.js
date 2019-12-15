@@ -14,14 +14,14 @@ import Site from "../site";
 type PropsType = {
     onSelect: any => void,
     onCancel: any => void,
-    userLocation: LocationType,
+    userLocation: ?LocationType,
     sites: ?Array<any>,
     towns: Array<Object>,
     value?: Object
 };
 
 export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, value }: PropsType): React$Element<any> => {
-    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, userLocation.coordinates).site);
+    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, ((userLocation || {}).coordinates) || {}).site);
 
     const pins = (sites || []).filter(site => Boolean(site.coordinates)).map(site => ({
         coordinates: site.coordinates,
