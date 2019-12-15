@@ -26,13 +26,11 @@ const TeamEditorScreen = (): React$Element<any> => {
                         color: constants.colorBackgroundDark
                     } }
                     style={ { backgroundColor: constants.colorBackgroundHeader } }
-                    renderLabel={ ({ route, focused, color }) => {
-                        return (
-                            <Text style={ { margin: 8, color: (focused ? "black" : "#555") } }>
-                                { (route.title || "").toUpperCase() }
-                            </Text>
-                        );
-                    } }
+                    renderLabel={ ({ route, focused }) => (
+                        <Text style={ { margin: 8, color: (focused ? "black" : "#555") } }>
+                            { (route.title || "").toUpperCase() }
+                        </Text>
+                    ) }
                 />
             }
 

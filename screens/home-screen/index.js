@@ -14,7 +14,6 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import { daysUntilCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as R from "ramda";
-import { connectStyle } from "@shoutem/theme";
 import { selectTeam } from "../../action-creators/team-action-creators";
 import * as constants from "../../styles/constants";
 import {
@@ -182,14 +181,14 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                                 fontFamily: "Rubik-Regular",
                                 fontWeight: "bold"
                             } }
-                                  styleName="md-gutter-bottom">{ rowData[0].label.toUpperCase() }</Text>
+                            styleName="md-gutter-bottom">{ rowData[0].label.toUpperCase() }</Text>
                             <Text style={ {
                                 color: "white",
                                 fontSize: 20,
                                 fontFamily: "Rubik-Regular",
                                 fontWeight: "bold"
                             } }
-                                  styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
+                            styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
 
                         </Tile>
                     </ImageBackground>
@@ -205,7 +204,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 styleName="flexible"
             >
                 <Card styleName="flexible"
-                      style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
+                    style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
                 >
                     <Image
                         styleName="medium-wide"
@@ -228,7 +227,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                         </Subtitle>
                         <View styleName="horizontal">
                             <Text style={ { fontFamily: "Rubik-Regular", textAlign: "center" } }
-                                  styleName="collapsible">{ item.description }</Text>
+                                styleName="collapsible">{ item.description }</Text>
                         </View>
                     </View>
                 </Card>

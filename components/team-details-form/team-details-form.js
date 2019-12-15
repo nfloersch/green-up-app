@@ -18,7 +18,6 @@ import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";
 import User from "../../models/user";
-import { TownLocation } from "../../models/town";
 import ButtonBar from "../../components/button-bar";
 import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

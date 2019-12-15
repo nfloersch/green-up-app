@@ -62,62 +62,60 @@ type PropsType = {
 };
 
 
-const MemberItem = ({ item }: MemberPropsType): React$Element<any> => {
-    return (
-        <TouchableOpacity key={ item.id } onPress={ item.toDetail }>
+const MemberItem = ({ item }: MemberPropsType): React$Element<any> => (
+    <TouchableOpacity key={ item.id } onPress={ item.toDetail }>
+        <View style={ {
+            flex: 1,
+            flexDirection: "row",
+            borderBottomWidth: 1,
+            borderColor: "#AAA"
+        } }>
             <View style={ {
                 flex: 1,
-                flexDirection: "row",
-                borderBottomWidth: 1,
-                borderColor: "#AAA"
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: 40,
+                maxWidth: 40,
+                marginLeft: 10
             } }>
-                <View style={ {
-                    flex: 1,
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 40,
-                    maxWidth: 40,
-                    marginLeft: 10
+                <MemberIcon
+                    memberStatus={ item.memberStatus }
+                    isOwner={ item.isOwner }/>
+            </View>
+            <Image
+                style={ { width: 80, height: 80 } }
+                source={ { uri: (item.photoURL || getGravatar(item.email)) } }
+            />
+            <View style={ {
+                flex: 1,
+                flexDirection: "column",
+                padding: 10,
+                justifyContent: "center",
+                alignItems: "center"
+            } }>
+                <Text style={ {
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    color: "#111",
+                    fontSize: 16,
+                    fontFamily: "Rubik-Regular"
                 } }>
-                    <MemberIcon
-                        memberStatus={ item.memberStatus }
-                        isOwner={ item.isOwner }/>
-                </View>
-                <Image
-                    style={ { width: 80, height: 80 } }
-                    source={ { uri: (item.photoURL || getGravatar(item.email)) } }
-                />
-                <View style={ {
-                    flex: 1,
-                    flexDirection: "column",
-                    padding: 10,
-                    justifyContent: "center",
-                    alignItems: "center"
-                } }>
-                    <Text style={ {
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        color: "#111",
-                        fontSize: 16,
-                        fontFamily: "Rubik-Regular"
-                    } }>
-                        { item.displayName && item.displayName.trim() || item.email || "" }
-                    </Text>
-                </View>
-                <View>
-                    <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
-                        <SimpleLineIcons
-                            name={ "arrow-right" }
-                            size={ 20 }
-                            color="#333"
-                        />
-                    </View>
+                    { item.displayName && item.displayName.trim() || item.email || "" }
+                </Text>
+            </View>
+            <View>
+                <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
+                    <SimpleLineIcons
+                        name={ "arrow-right" }
+                        size={ 20 }
+                        color="#333"
+                    />
                 </View>
             </View>
-        </TouchableOpacity>
-    );
-};
+        </View>
+    </TouchableOpacity>
+);
 
 const TeamMembersEditor = ({ actions, team, members, requests, invitations }: PropsType): React$Element<any> => {
 
