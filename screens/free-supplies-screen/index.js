@@ -7,7 +7,7 @@ import PickupLocation from "../../components/pickup-location";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
-import { searchArray } from "../../libs/search-score";
+import { searchArray } from "../../libs/search";
 import SupplyDistributionSite from "../../models/supply-distribution-site";
 import * as constants from "../../styles/constants";
 

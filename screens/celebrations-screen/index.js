@@ -16,7 +16,7 @@ import CelebrationDetails from "../../components/celebration-details";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
-import { searchArray } from "../../libs/search-score";
+import { searchArray } from "../../libs/search";
 import { ListView, GridRow, ImageBackground, Tile, Subtitle, Title, Divider, Card, Image, Caption } from "@shoutem/ui";
 import * as constants from "../../styles/constants";
 import Celebration from "../../models/celebration";
@@ -199,4 +199,5 @@ const mapStateToProps = (state: Object): Object => {
         });
 };
 
+// $FlowFixMe
 export default connect(mapStateToProps)(CelebrationsScreen);
