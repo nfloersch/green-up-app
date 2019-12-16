@@ -108,106 +108,105 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
 
     const hasTeams = searchResults.length > 0;
 
+   type ItemType = { item: { team: TeamType, toDetail: any => void } };
 
-    const TeamItem = ({ item }): React$Element<any> => {
-        return (
-            <TouchableOpacity key={ item.team.id } onPress={ item.toDetail }>
-                <View style={ {
-                    flex: 1,
-                    flexDirection: "row",
-                    borderBottomWidth: 1,
-                    borderColor: "#AAA",
-                    paddingTop: 10,
-                    paddingBottom: 10
-                } }>
-                    <View style={ {
-                        flex: 1,
-                        justifyContent: "center",
-                        width: 40,
-                        maxWidth: 40,
-                        marginRight: 20,
-                        marginLeft: 10
-                    } }>
-                        <MaterialCommunityIcons name={ item.team.isPublic ? "earth" : "earth-off" } size={ 40 }/>
-                    </View>
+   const TeamItem = ({ item }: ItemType): React$Element<any> => (
+       <TouchableOpacity key={ item.team.id } onPress={ item.toDetail }>
+           <View style={ {
+               flex: 1,
+               flexDirection: "row",
+               borderBottomWidth: 1,
+               borderColor: "#AAA",
+               paddingTop: 10,
+               paddingBottom: 10
+           } }>
+               <View style={ {
+                   flex: 1,
+                   justifyContent: "center",
+                   width: 40,
+                   maxWidth: 40,
+                   marginRight: 20,
+                   marginLeft: 10
+               } }>
+                   <MaterialCommunityIcons name={ item.team.isPublic ? "earth" : "earth-off" } size={ 40 }/>
+               </View>
 
-                    <View style={ {
-                        flex: 1,
-                        flexDirection: "column",
-                        padding: 10,
-                        justifyContent: "center",
-                        alignItems: "center"
-                    } }>
-                        <View>
-                            <Text style={ {
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#111",
-                                fontSize: 16,
-                                fontFamily: "Rubik-Regular"
-                            } }>
-                                { item.team.name || "" }
-                            </Text>
-                        </View>
-                        <View>
-                            <Text style={ {
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#111",
-                                fontSize: 12,
-                                fontFamily: "Rubik-Regular"
-                            } }>
-                                { (towns[item.team.townId] || {}).name || "" }
-                            </Text>
-                        </View>
-                    </View>
-                    <View>
-                        <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
-                            <SimpleLineIcons
-                                name={ "arrow-right" }
-                                size={ 20 }
-                                color="#333"
-                            />
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+               <View style={ {
+                   flex: 1,
+                   flexDirection: "column",
+                   padding: 10,
+                   justifyContent: "center",
+                   alignItems: "center"
+               } }>
+                   <View>
+                       <Text style={ {
+                           textAlign: "center",
+                           fontWeight: "bold",
+                           color: "#111",
+                           fontSize: 16,
+                           fontFamily: "Rubik-Regular"
+                       } }>
+                           { item.team.name || "" }
+                       </Text>
+                   </View>
+                   <View>
+                       <Text style={ {
+                           textAlign: "center",
+                           fontWeight: "bold",
+                           color: "#111",
+                           fontSize: 12,
+                           fontFamily: "Rubik-Regular"
+                       } }>
+                           { (towns[item.team.townId] || {}).name || "" }
+                       </Text>
+                   </View>
+               </View>
+               <View>
+                   <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>
+                       <SimpleLineIcons
+                           name={ "arrow-right" }
+                           size={ 20 }
+                           color="#333"
+                       />
+                   </View>
+               </View>
+           </View>
+       </TouchableOpacity>
+   );
 
 
-    return (
-        <SafeAreaView style={ styles.container }>
-            <WatchGeoLocation/>
-            <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
-            { hasTeams
-                ? (
+   return (
+       <SafeAreaView style={ styles.container }>
+           <WatchGeoLocation/>
+           <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
+           { hasTeams
+               ? (
 
-                    <View style={ {
-                        flex: 1,
-                        backgroundColor: constants.colorBackgroundLight
-                    } }>
-                        <ListView
-                            data={ searchResults }
-                            renderRow={ item => (<TeamItem item={ item }/>) }
-                        />
-                    </View>
-                )
-                : (
-                    <View style={ styles.noTeamsFound }>
-                        <View style={ styles.noTeamsFoundWrapper }>
-                            <DisplayText style={ styles.noTeamsFoundText }>
-                                { "Sorry, we couldn't find any teams for you." }
-                            </DisplayText>
-                            <DisplayText style={ { ...styles.noTeamsFoundText, marginTop: 10 } }>
-                                { "Try starting your own!" }
-                            </DisplayText>
-                        </View>
-                    </View>
-                )
-            }
-        </SafeAreaView>
-    );
+                   <View style={ {
+                       flex: 1,
+                       backgroundColor: constants.colorBackgroundLight
+                   } }>
+                       <ListView
+                           data={ searchResults }
+                           renderRow={ item => (<TeamItem item={ item }/>) }
+                       />
+                   </View>
+               )
+               : (
+                   <View style={ styles.noTeamsFound }>
+                       <View style={ styles.noTeamsFoundWrapper }>
+                           <DisplayText style={ styles.noTeamsFoundText }>
+                               { "Sorry, we couldn't find any teams for you." }
+                           </DisplayText>
+                           <DisplayText style={ { ...styles.noTeamsFoundText, marginTop: 10 } }>
+                               { "Try starting your own!" }
+                           </DisplayText>
+                       </View>
+                   </View>
+               )
+           }
+       </SafeAreaView>
+   );
 };
 
 FindTeamScreen.navigationOptions = {

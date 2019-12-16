@@ -35,12 +35,12 @@ type PropsType = {
 export const SearchBar = ({ userLocation, searchTerm = "", search }: PropsType): React$Element<View> => (
     <View style={ styles.searchBar }>
         <View style={ { flex: 1, flexDirection: "row", alignItems: "top", justifyContent: "center" } }>
-            <View style={ { flex: 1, flexDirection: "column", justifyContent:"center", paddingTop: 2 } }>
+            <View style={ { flex: 1, flexDirection: "column", justifyContent: "center", paddingTop: 2 } }>
                 <TextInput
                     keyBoardType={ "default" }
                     onChangeText={ search }
                     placeholder={ "Search" }
-                    style={ styles.searchTerm}
+                    style={ styles.searchTerm }
                     value={ searchTerm }
                     underlineColorAndroid={ "transparent" }
                 />
@@ -59,7 +59,7 @@ export const SearchBar = ({ userLocation, searchTerm = "", search }: PropsType):
                 onPress={ () => {
                     search(userLocation.townId || "");
                 } }
-                style={ { height:36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2,  marginLeft: 2 } }>
+                style={ { height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 } }>
                 <Ionicons
                     name={ Platform.OS === "ios" ? "md-locate" : "md-locate" }
                     size={ 36 }

@@ -38,7 +38,6 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
             ...Ionicons.font,
             "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf"),
             "rubicon-icon-font": require("./assets/fonts/Rubik/rubicon-icon-font.ttf")
-
         })
     ]);
 

@@ -280,9 +280,11 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     { selectedTeam.name }
                 </Title>
                 { getMemberStatus() }
-                <Divider styleName="section-header"
-                         style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }>
-                    <Caption>INFORMATION</Caption>
+                <Divider
+                    styleName="section-header"
+                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                >
+                    <Caption>{ "INFORMATION" }</Caption>
                 </Divider>
                 <View style={ { width: "100%", backgroundColor: "white", padding: 20 } }>
                     <Text style={ styles.dataBlock }>
@@ -314,8 +316,10 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     }
                 </View>
 
-                <Divider styleName="section-header"
-                         style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }>
+                <Divider
+                    styleName="section-header"
+                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                >
                     <Caption>   { "CLEANING LOCATION" }</Caption>
                 </Divider>
 
