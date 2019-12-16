@@ -11,16 +11,28 @@ import MemberIcon from "../../components/member-icon";
 import TownItem from "../../components/town-item";
 import MiniMap from "../../components/mini-map";
 import * as constants from "../../styles/constants";
+import { Divider, Caption, Title } from "@shoutem/ui";
+import ButtonBar from "../../components/button-bar";
 
 const myStyles = {
     memberStatusBanner: {
         paddingTop: 5,
         paddingBottom: 5
     },
+    memberStatusMessage: {
+        color: "white"
+    },
+    membership: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
     teamMember: {
         height: 30,
         marginTop: 15
-    }
+    },
+    text: { color: "black", fontSize: 20, fontFamily: "Rubik-Regular" }
 };
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -157,79 +169,51 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
     const isTeamMember = memberStatus === teamMemberStatuses.OWNER || memberStatus === teamMemberStatuses.ACCEPTED;
 
-    const getStatusButtons = (): ?React$Element<any> => {
+    const headerButtons = () => {
         switch (true) {
             case memberStatus === teamMemberStatuses.INVITED:
-                return (
-                    <View style={ styles.buttonBarHeader }>
-                        <View style={ styles.buttonBar }>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ () => {
-                                        acceptInvitation(selectedTeam.id, currentUser);
-                                    } }>
-                                    <Text style={ styles.headerButtonText }>
-                                        { "Accept Invitation" }
-                                    </Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={ styles.buttonBarButton }>
-                                <TouchableHighlight
-                                    style={ styles.headerButton }
-                                    onPress={ () => {
-                                        declineInvitation(selectedTeam.id, currentUser.email);
-                                    } }>
-                                    <Text style={ styles.headerButtonText }>
-                                        { "Decline Invitation" }
-                                    </Text>
-                                </TouchableHighlight>
-                            </View>
-                        </View>
-                    </View>
-                );
+                return [
+                    {
+                        text: "Accept Invitation",
+                        onClick: () => {
+                            acceptInvitation(selectedTeam.id, currentUser);
+                        }
+                    },
+                    {
+                        text: "Decline Invitation",
+                        onClick: () => {
+                            declineInvitation(selectedTeam.id, currentUser.email);
+                        }
+                    }
+                ];
+
             case selectedTeam.owner.uid === currentUser.uid :
-                return null;
+                return [];
             case memberStatus === teamMemberStatuses.ACCEPTED :
-                return (
-                    <View style={ styles.singleButtonHeader }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => {
-                                leaveTeam(selectedTeam.id, currentUser);
-                            } }>
-                            <Text style={ styles.headerButtonText }>
-                                { "Leave Team" }
-                            </Text>
-                        </TouchableHighlight>
-                    </View>
-                );
+                return [
+                    {
+                        text: "Leave Team", onClick: () => {
+                            leaveTeam(selectedTeam.id, currentUser);
+                        }
+                    }
+                ];
             case memberStatus === teamMemberStatuses.REQUEST_TO_JOIN :
-                return (
-                    <View style={ styles.singleButtonHeader }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => {
-                                removeRequest(selectedTeam.id, currentUser);
-                            } }>
-                            <Text style={ styles.headerButtonText }>
-                                { "Remove Request" }
-                            </Text>
-                        </TouchableHighlight>
-                    </View>
-                );
+                return [
+                    {
+                        text: "Remove Request", onClick: () => {
+                            removeRequest(selectedTeam.id, currentUser);
+                        }
+                    }
+                ];
+
             default :
-                return (
-                    <View style={ styles.singleButtonHeader }>
-                        <TouchableHighlight
-                            style={ styles.headerButton }
-                            onPress={ () => {
-                                askToJoin(selectedTeam, currentUser);
-                            } }>
-                            <Text style={ styles.headerButtonText }>{ "Ask to join this team" }</Text>
-                        </TouchableHighlight>
-                    </View>
-                );
+                return [
+                    {
+                        text: "Ask to join this team", onClick: () => {
+                            askToJoin(selectedTeam, currentUser);
+                        }
+                    }
+                ];
         }
     };
 
@@ -237,35 +221,48 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         switch (true) {
             case memberStatus === teamMemberStatuses.INVITED:
                 return (
-                    <View style={ styles.statusBar }>
-                        <MemberIcon memberStatus={ teamMemberStatuses.INVITED }/>
-                        <Text style={ styles.statusMessage }>
+                    <View style={ styles.membership }>
+                        <MemberIcon
+                            memberStatus={ teamMemberStatuses.INVITED }
+                            size={ 20 }
+                            style={ { color: "white" } }
+                        />
+                        <Text style={ styles.memberStatusMessage }>
                             { "You have been invited to this team" }
                         </Text>
                     </View>
                 );
             case selectedTeam.owner.uid === currentUser.uid :
                 return (
-                    <View style={ styles.statusBar }>
-                        <MemberIcon memberStatus={ teamMemberStatuses.OWNER }/>
-                        <Text style={ styles.statusMessage }>
+                    <View style={ styles.membership }>
+                        <MemberIcon
+                            memberStatus={ teamMemberStatuses.OWNER
+                            } size={ 20 }
+                            style={ { color: "white" } }/>
+                        <Text style={ styles.memberStatusMessage }>
                             { "You are the owner of this team" }
                         </Text>
                     </View>
                 );
             case memberStatus === teamMemberStatuses.ACCEPTED :
                 return (
-                    <View style={ styles.statusBar }>
-                        <MemberIcon memberStatus={ teamMemberStatuses.ACCEPTED }/>
-                        <Text style={ styles.statusMessage }>
+                    <View style={ styles.membership }>
+                        <MemberIcon
+                            memberStatus={ teamMemberStatuses.ACCEPTED }
+                            size={ 20 }
+                            style={ { color: "white" } }/>
+                        <Text style={ styles.memberStatusMessage }>
                             { "You are a member of this team." }
                         </Text>
                     </View>);
             case memberStatus === teamMemberStatuses.REQUEST_TO_JOIN :
                 return (
-                    <View style={ styles.statusBar }>
-                        <MemberIcon memberStatus={ teamMemberStatuses.REQUEST_TO_JOIN }/>
-                        <Text style={ styles.statusMessage }>
+                    <View style={ styles.membership }>
+                        <MemberIcon
+                            memberStatus={ teamMemberStatuses.REQUEST_TO_JOIN }
+                            size={ 20 }
+                            style={ { color: "white" } }/>
+                        <Text style={ styles.memberStatusMessage }>
                             { "Waiting on owner approval" }
                         </Text>
                     </View>
@@ -277,74 +274,79 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
     return (
         <SafeAreaView style={ styles.container }>
-            { getStatusButtons() }
-            <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
-                    { getMemberStatus() }
-                    <View style={ styles.block }>
-                        <Text style={ [styles.textDark, { textAlign: "center" }] }>
-                            { selectedTeam.name }
+            <ButtonBar buttonConfigs={ headerButtons() }/>
+            <ScrollView style={ [styles.scroll, { padding: 20 }] }>
+                <Title style={ { textAlign: "center", color: "white" } }>
+                    { selectedTeam.name }
+                </Title>
+                { getMemberStatus() }
+                <Divider styleName="section-header"
+                         style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }>
+                    <Caption>INFORMATION</Caption>
+                </Divider>
+                <View style={ { width: "100%", backgroundColor: "white", padding: 20 } }>
+                    <Text style={ styles.dataBlock }>
+                        <Text style={ styles.text }>{ "Owner: " }</Text>
+                        <Text style={ styles.text }>{ selectedTeam.owner.displayName }</Text>
+                    </Text>
+                    <Text style={ styles.dataBlock }>
+                        <Text style={ styles.text }>{ "Where: " }</Text>
+                        <Text
+                            style={ styles.text }>{ `${ selectedTeam.location || "" }${ !selectedTeam.location || !selectedTeam.town ? "" : ", " }${ selectedTeam.town || "" }` }</Text>
+                    </Text>
+                    <Text style={ styles.dataBlock }>
+                        <Text style={ styles.text }>{ "Date: " }</Text>
+                        <Text style={ styles.text }>{ selectedTeam.date }</Text>
+                    </Text>
+                    <Text style={ styles.dataBlock }>
+                        <Text style={ styles.text }>{ "Starts: " }</Text>
+                        <Text style={ styles.text }>{ selectedTeam.start }</Text>
+                    </Text>
+                    <Text style={ styles.dataBlock }>
+                        <Text style={ styles.text }>{ "Ends: " }</Text>
+                        <Text style={ styles.text }>{ selectedTeam.end }</Text>
+                    </Text>
+                    { !selectedTeam.notes ? null
+                        : <Text style={ styles.dataBlock }>
+                            <Text style={ styles.text }>{ "Description: " }</Text>
+                            <Text>{ selectedTeam.notes }</Text>
                         </Text>
-                        <View style={ { width: "100%" } }>
-                            <Text style={ styles.dataBlock }>
-                                <Text style={ styles.label }>{ "Owner: " }</Text>
-                                <Text style={ styles.dataDark }>{ selectedTeam.owner.displayName }</Text>
-                            </Text>
-                            <Text style={ styles.dataBlock }>
-                                <Text style={ styles.label }>{ "Where: " }</Text>
-                                <Text
-                                    style={ styles.dataDark }>{ `${ selectedTeam.location || "" }${ !selectedTeam.location || !selectedTeam.town ? "" : ", " }${ selectedTeam.town || "" }` }</Text>
-                            </Text>
-                            <Text style={ styles.dataBlock }>
-                                <Text style={ styles.label }>{ "Date: " }</Text>
-                                <Text style={ styles.dataDark }>{ selectedTeam.date }</Text>
-                            </Text>
-                            <Text style={ styles.dataBlock }>
-                                <Text style={ styles.label }>{ "Starts: " }</Text>
-                                <Text style={ styles.dataDark }>{ selectedTeam.start }</Text>
-                            </Text>
-                            <Text style={ styles.dataBlock }>
-                                <Text style={ styles.label }>{ "Ends: " }</Text>
-                                <Text style={ styles.dataDark }>{ selectedTeam.end }</Text>
-                            </Text>
-                            { !selectedTeam.notes ? null
-                                : <Text style={ styles.dataBlock }>
-                                    <Text style={ styles.label }>{ "Description: " }</Text>
-                                    <Text>{ selectedTeam.notes }</Text>
-                                </Text>
-                            }
-                        </View>
-                    </View>
-                    <View style={ [styles.block, { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.2)" }] }>
-                        <Text style={ [styles.textDark, { textAlign: "center" }] }>
-                            { "Clean Up Location" }
-                        </Text>
-
-                        {
-                            (locations || []).length > 0
-                                ? (<MiniMap pins={ selectedTeam.locations }/>)
-                                : (<Text style={ [styles.textDark, { fontSize: 14, textAlign: "left" }] }>
-                                    { "The team owner has yet to designate a clean up location." }
-                                </Text>)
-                        }
-                    </View>
-                    {
-                        Boolean(town)
-                            ? (
-                                <View style={ styles.block }>
-                                    <TownItem item={ town }/>
-                                </View>)
-                            : null
                     }
-                    <View style={ [styles.block, {
-                        borderTopWidth: 1,
-                        borderBottomWidth: 0,
-                        borderTopColor: "rgba(255,255,255,0.2)"
-                    }] }>
-                        { isTeamMember ? teamMemberList : null }
-                    </View>
                 </View>
-                <View style={ defaultStyles.padForIOSKeyboard }/>
+
+                <Divider styleName="section-header"
+                         style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }>
+                    <Caption>   { "CLEANING LOCATION" }</Caption>
+                </Divider>
+
+                {
+                    (locations || []).length > 0
+                        ? (<MiniMap pinsConfig={ selectedTeam.locations }/>)
+                        : (<Text style={ {
+                            fontSize: 14,
+                            textAlign: "left",
+                            padding: 20,
+                            backgroundColor: "white",
+                            color: "black"
+                        } }>
+                            { "The team owner has yet to designate a clean up location." }
+                        </Text>)
+                }
+                {
+                    Boolean(town)
+                        ? (
+                            <View style={ styles.block }>
+                                <TownItem item={ town }/>
+                            </View>)
+                        : null
+                }
+                <View style={ [styles.block, {
+                    borderTopWidth: 1,
+                    borderBottomWidth: 0,
+                    borderTopColor: "rgba(255,255,255,0.2)"
+                }] }>
+                    { isTeamMember ? teamMemberList : null }
+                </View>
             </ScrollView>
         </SafeAreaView>
     );

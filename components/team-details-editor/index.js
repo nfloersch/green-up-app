@@ -10,7 +10,6 @@ import {
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
 import * as actionCreators from "../../action-creators/team-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import TeamMember from "../../models/team-member";

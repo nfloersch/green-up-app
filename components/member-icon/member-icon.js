@@ -23,19 +23,19 @@ const getIconName = R.cond([
     [R.T, (): string => icons.DEFAULT]
 ]);
 
-type PropsType = { memberStatus: string, style?: Object, isOwner?: boolean };
+type PropsType = { memberStatus: string, style?: Object, isOwner?: boolean, size?: number };
 
-export const MemberIcon = ({ memberStatus, style = {}, isOwner }: PropsType): React$Element<Ionicons> => {
+export const MemberIcon = ({ memberStatus, style = {}, isOwner, size = 35 }: PropsType): React$Element<Ionicons> => {
     const status = memberStatus === memberStatuses.REQUEST_TO_JOIN && !isOwner ? "IS_REQUESTING_TO_JOIN" : memberStatus;
     const iconStyle = Object.assign({
-        height: 35,
-        width: 35,
+        height: size,
+        width: size,
         color: constants.colorIcon
     }, style);
     return (
         <Ionicons
             name={ getIconName({ status, isOwner: Boolean(isOwner) }) }
-            size={ 35 }
+            size={ size }
             style={ iconStyle }/>
     );
 };

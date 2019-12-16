@@ -6,7 +6,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
-import { searchArray } from "../../libs/search-score";
+import { searchArray } from "../../libs/search";
 import { DisposalSite } from "../../components/disposal-site/disposal-site";
 import moment from "moment";
 import { dateIsInCurrentEventWindow, getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
