@@ -1,95 +1,123 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, View, FlatList, TextInput, TouchableHighlight, Platform } from "react-native";
+import {
+    StyleSheet,
+    SafeAreaView, Modal
+} from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import PickupLocation from "../../components/pickup-location";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
-import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search";
 import SupplyDistributionSite from "../../models/supply-distribution-site";
 import * as constants from "../../styles/constants";
+import SearchBar from "../../components/search-bar";
+import { ListView, View, Subtitle } from "@shoutem/ui";
+import SupplyDistributionSiteDetails from "../../components/supply-distribution-site-details";
 
-const styles = StyleSheet.create(defaultStyles);
-const iconStyle = {
-    height: 40,
-    width: 40,
-    padding: 2,
-    color: "white",
-    textAlign: "center"
+const myStyles = {
+    details: {
+        fontWeight: "bold"
+    },
+    noTeamsFound: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    noTeamsFoundWrapper: {
+        backgroundColor: "#FFFFFF44",
+        width: "100%",
+        padding: 20
+    },
+    noTeamsFoundText: {
+        fontSize: 30,
+        color: constants.colorTextThemeLight,
+        textShadowColor: `${ constants.colorTextThemeDark }`,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 4,
+        lineHeight: 36
+    },
+    teamDetail: {
+        color: constants.colorTextThemeLight,
+        fontSize: 14
+    }
 };
-const searchableFields = ["name", "townName", "address", "townId"];
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
+
+const searchableFields = ["name", "address", "townId"];
 type PropsType = {
     pickupSpots: Array<Object>,
-    userLocation: Object
+    userLocation: Object,
+    towns: Object
 };
 
-const FreeSupplies = ({ pickupSpots, userLocation }: PropsType): React$Element<any> => {
+const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$Element<any> => {
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [searchResults, setSearchResults] = useState(pickupSpots);
     const [searchTerm, setSearchTerm] = useState("");
-
+    const [selectedSite, setSelectedSite] = useState(null);
 
     useEffect(() => {
         const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm);
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
-    return (
-        <View style={ styles.frame }>
-            <WatchGeoLocation/>
-            <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
-                <View style={ { flex: 1, flexDirection: "row", justifyContent: "flexStart" } }>
-                    <View style={ { flex: 1, flexDirection: "column" } }>
-                        <TextInput
-                            keyBoardType={ "default" }
-                            onChangeText={ setSearchTerm }
-                            placeholder={ "Search" }
-                            style={ [styles.textInput, { alignSelf: "stretch" }] }
-                            value={ searchTerm }
-                            underlineColorAndroid={ "transparent" }
-                        />
-                    </View>
-                    <TouchableHighlight
-                        onPress={ () => {
-                            setSearchTerm("");
-                        } }
-                        style={ { height: 40, width: 40, padding: 1, marginLeft: 2 } }>
-                        <Ionicons
-                            name={ Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline" }
-                            size={ 36 }
-                            style={ iconStyle }/>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        onPress={ () => {
-                            setSearchTerm(userLocation.townId || "");
-                        } }
-                        style={ { height: 40, width: 40, padding: 1, marginLeft: 2 } }>
-                        <Ionicons
-                            name={ Platform.OS === "ios" ? "md-locate" : "md-locate" }
-                            size={ 36 }
-                            style={ iconStyle }/>
-                    </TouchableHighlight>
-                </View>
-            </View>
-            <ScrollView style={ styles.scroll }>
-                <View style={ styles.infoBlockContainer }>
-                    <FlatList
-                        style={ styles.infoBlockContainer }
-                        data={ searchTerm ? searchResults : pickupSpots }
-                        keyExtractor={ (item: Object, index: number): string => `location-${ index }` }
-                        renderItem={ ({ item }: { item: Town }): React$Element<any> => (
-                            <PickupLocation item={ item }/>) }/>
-                </View>
+    const hasResults = searchResults.length > 0;
 
-            </ScrollView>
-        </View>
+    return (
+        <SafeAreaView style={ styles.container }>
+            <WatchGeoLocation/>
+            <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
+            <View style={ {
+                flex: 1,
+                backgroundColor: constants.colorBackgroundLight
+            } }>
+                { hasResults
+                    ? (
+                        <ListView
+                            data={ searchResults }
+                            renderRow={ item => (
+                                <PickupLocation
+                                    item={ item }
+                                    onClick={ () => {
+                                        setSelectedSite(item);
+                                        setIsModalVisible(true);
+                                    } }/>
+                            ) }
+                        />
+                    )
+                    : (
+                        <View>
+                            <Subtitle style={ styles.noTeamsFoundText }>
+                                { "Sorry, we couldn't find any matching supply sites." }
+                            </Subtitle>
+                            <Subtitle style={ { marginTop: 10 } }>
+                                { "Try a different search" }
+                            </Subtitle>
+                        </View>
+                    )
+                }
+            </View>
+            <Modal
+                animationType={ "slide" }
+                onRequestClose={ (): string => ("this function is required. Who knows why?") }
+                transparent={ false }
+                visible={ isModalVisible }>
+                <SupplyDistributionSiteDetails
+                    site={ selectedSite }
+                    closeModal={ () => {
+                        setIsModalVisible(false);
+                    } }
+                    towns={ towns }/>
+            </Modal>
+        </SafeAreaView>
     );
 };
 
 FreeSupplies.navigationOptions = {
-    title: "Find Bags, Gloves, and Other Stuff",
+    title: "Bags, Gloves and Stuff",
     headerStyle: {
         backgroundColor: constants.colorBackgroundDark
     },
@@ -115,7 +143,8 @@ const mapStateToProps = (state: Object): Object => {
     )(state.supplyDistributionSites.sites);
     return ({
         pickupSpots,
-        userLocation: state.userLocation
+        userLocation: state.userLocation,
+        towns: state.towns
     });
 };
 
