@@ -57,7 +57,8 @@ const removeAllListeners = (): Promise<any> => (
                 });
             myListeners = {};
             resolve(true);
-        } catch (e) {
+        }
+        catch (e) {
             reject(e);
         }
     })
@@ -306,15 +307,16 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
 
     const gotSnapshot = (querySnapshot: Object) => {
         const data = [];
-        const ids = [];
         querySnapshot.forEach((doc: Object) => {
             data.push({ ...doc.data(), id: doc.id });
-            ids.push(doc.id);
         });
         const myTeams = data.reduce((obj: Object, team: TeamType): Object => ({ ...obj, [team.id]: team }), {});
         dispatch({ type: actionTypes.FETCH_MY_TEAMS_SUCCESS, data: myTeams });
-        setupTeamMessageListener(ids, dispatch);
-        setupTeamMemberListener(ids, dispatch);
+        const joinedTeams = data
+            .filter((team: TeamType): boolean => Boolean(team.id && team.isMember))
+            .map((team: TeamType): string => (team.id || ""));
+        setupTeamMessageListener(joinedTeams, dispatch);
+        setupTeamMemberListener(joinedTeams, dispatch);
         // Add additional listeners for team owners
         const ownedTeamIds = data
             .filter((team: TeamType): boolean => Boolean(team.id && team.owner && team.owner.uid === uid))

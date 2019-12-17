@@ -208,7 +208,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
 
                 <View style={ styles.formControl }>
                     <Text style={ styles.label }>
-                        { state.team.isPublic ? "Anyone can join your team" : "Only people you inite can join your team." }
+                        { state.team.isPublic ? "Anyone can join your team" : "You control who joins your team" }
                     </Text>
                     <View styleName="horizontal flexible">
                         <Button
