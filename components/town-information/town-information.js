@@ -19,6 +19,7 @@ export const TownInformation = ({ townInfo, town }: PropsType): React$Element<an
         padding: 5,
         height: 60,
         width: "100%",
+        marginTop: 20,
         backgroundColor: "rgba(255,255,255, 0.8)"
     } }>
         { typeof townInfo.roadsideDropOffAllowed === "undefined" && (

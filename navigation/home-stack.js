@@ -10,7 +10,7 @@ import GreenUpFactsScreen from "../screens/green-up-facts-screen";
 import TeamDetailsScreen from "../screens/team-details-screen";
 import TeamEditorScreen from "../screens/team-editor-screen";
 import CelebrationDetailsScreen from "../components/celebration-details";
-import RecordTrashScreen from "../screens/record-trash-screen";
+import RecordTrashScreen from "../screens/record-trash-screen";e
 
 const HomeStack = createStackNavigator({
     Home: { screen: HomeScreen },
