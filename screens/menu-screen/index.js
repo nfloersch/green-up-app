@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, Alert } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
@@ -20,8 +20,15 @@ type PropsType = {
 };
 
 
-const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => (
-    <SafeAreaView style={ styles.container }>
+const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => {
+    const logoutHandler = () => {
+        Alert.alert("Warning", "Are you sure you want to logout?", [
+            { text: "No", style: "cancel" },
+            { text: "Yes", style: "destructive", onPress: actions.logout }
+        ]);
+    };
+
+    return (<SafeAreaView style={ styles.container }>
         <View style={ { margin: 20 } }>
 
             <Button
@@ -60,7 +67,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
 
             <Button
                 styleName="primary"
-                onPress={ actions.logout }
+                onPress={ logoutHandler }
             >
                 <MaterialCommunityIcons
                     name="logout"
@@ -71,8 +78,8 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
             </Button>
         </View>
-    </SafeAreaView>
-);
+    </SafeAreaView>);
+    }
 
 MenuScreen.navigationOptions = {
     title: "Menu",
