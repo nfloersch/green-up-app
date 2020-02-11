@@ -57,8 +57,6 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
         navigation.goBack();
     };
 
-    const cancel = navigation.goBack;
-
     return (
         <View style={ styles.frame }>
             <View style={ styles.buttonBarHeader }>
@@ -69,7 +67,7 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                         </TouchableOpacity>
                     </View>
                     <View style={ styles.buttonBarButton }>
-                        <TouchableOpacity style={ styles.headerButton } onPress={ cancel }>
+                        <TouchableOpacity style={ styles.headerButton } onPress={ () => navigation.goBack() }>
                             <Text style={ styles.headerButtonText }>{ "Cancel" }</Text>
                         </TouchableOpacity>
                     </View>
