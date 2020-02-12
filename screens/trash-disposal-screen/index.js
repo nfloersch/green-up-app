@@ -86,7 +86,7 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                         <Text>{ "Each town handles trash bags differently.  Find the rules for your town" }</Text>
                     </View>
                     <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
-                        <View style={ { flex: 1, flexDirection: "row", justifyContent: "flexStart" } }>
+                        <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
                             <View style={ { flex: 1, flexDirection: "column" } }>
                                 <TextInput
                                     keyBoardType={ "default" }

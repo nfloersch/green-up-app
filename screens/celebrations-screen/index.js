@@ -115,7 +115,7 @@ const CelebrationsScreen = ({ celebrationEvents, userLocation }: PropsType): Rea
         <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
             <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
-                <View style={ { flex: 1, flexDirection: "row", justifyContent: "flexStart" } }>
+                <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
                     <View style={ { flex: 1, flexDirection: "column" } }>
                         <TextInput
                             keyBoardType={ "default" }
