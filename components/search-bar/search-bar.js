@@ -34,7 +34,7 @@ type PropsType = {
 
 export const SearchBar = ({ userLocation, searchTerm = "", search }: PropsType): React$Element<View> => (
     <View style={ styles.searchBar }>
-        <View style={ { flex: 1, flexDirection: "row", alignItems: "top", justifyContent: "center" } }>
+        <View style={ { flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "center" } }>
             <View style={ { flex: 1, flexDirection: "column", justifyContent: "center", paddingTop: 2 } }>
                 <TextInput
                     keyBoardType={ "default" }
