@@ -202,7 +202,6 @@ function setupMessageListener(uid: ?string = "", dispatch: Dispatch<ActionType>)
     ));
 }
 
-
 function setupTeamMemberListener(teamIds: Array<string> = [], dispatch: Dispatch<ActionType>) {
 
     const addTeamMemberListener = (teamId: string) => {
@@ -334,7 +333,6 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
 
     addListener("myTeams", db.collection(`profiles/${ (uid || "") }/teams`).onSnapshot(gotSnapshot, snapShotError));
 }
-
 
 const getCollection = R.curry((Model: any, path: string, dispatchSuccessType: string, dispatchErrorType: string, dispatch: Dispatch<any>) => {
 
