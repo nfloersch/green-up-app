@@ -1,6 +1,6 @@
 // @flow
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, TextInput, TouchableHighlight, Platform, Text } from "react-native";
+import React, { useState, useEffect, Fragment } from "react";
+import { StyleSheet, View, FlatList, TextInput, TouchableHighlight, Platform, Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
@@ -17,6 +17,7 @@ import TrashDropForm from "../../components/trash-drop-form";
 import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
+import Coordinates from "../../models/coordinates";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -51,12 +52,7 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
     const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
 
     const initialMapLocation = userLocation
-        ? {
-            latitude: Number(userLocation.coordinates.latitude),
-            longitude: Number(userLocation.coordinates.longitude),
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-        }
+        ? Coordinates.create(userLocation.coordinates)
         : null;
 
     const contents = R.cond([
@@ -76,7 +72,7 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
         [
             () => !dateIsInCurrentEventWindow(guStart.toDate()),
             () => (
-                <View style={ { flex: 1 } }>
+                <Fragment>
                     <View style={ { margin: 2 } }>
                         <Text style={ { textAlign: "center" } }>
                             { `Record your trash bags for your team from ${ guStart.format("dddd MM/DD/YYYY") } until ${ guEnd.format("dddd MM/DD/YYYY") }` }
@@ -133,7 +129,7 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                                 <DisposalSite item={ item }/>
                             ) }/>
                     </View>
-                </View>
+                </Fragment>
             )
         ],
         [
@@ -151,10 +147,10 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
     ])();
 
     return (
-        <View style={ styles.frame }>
+        <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
             { contents }
-        </View>
+        </SafeAreaView>
     );
 };
 

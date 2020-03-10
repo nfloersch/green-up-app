@@ -35,3 +35,4 @@ export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
     const daysUntilGreenUpDay = daysUntilCurrentGreenUpDay(myToday);
     return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
 };
+

@@ -35,8 +35,6 @@ export const DisposalSite = ({ item }: PropsType): React$Element<any> => (
             }
         </Text>
         <Text style={ styles.townName }>{ item.dropOffInstructions }</Text>
-
-
         <View>
 
             {

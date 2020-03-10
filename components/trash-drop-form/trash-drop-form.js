@@ -2,21 +2,26 @@
 import React, { useState, useEffect } from "react";
 import {
     TouchableHighlight,
+    TouchableOpacity,
     StyleSheet,
     TextInput,
     View,
-    ScrollView, Modal
+    ScrollView,
+    Modal
 } from "react-native";
-import { DropDownMenu, Text, Title } from "@shoutem/ui";
+import { DropDownMenu, Text, Title, Subtitle } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
-import { SafeAreaView, TouchableOpacity } from "react-native";
-import CheckBox from "react-native-checkbox";
+import { SafeAreaView } from "react-native";
 import * as turf from "@turf/helpers";
 import booleanWithin from "@turf/boolean-within";
 import TownInformation from "../town-information";
 import SiteSelector from "../site-selector";
 import * as R from "ramda";
 import Site from "../site";
+import ButtonBar from "../button-bar";
+import { Button } from "@shoutem/ui";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import TagToggle from "../../components/tag-toggle";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number } };
 
@@ -87,71 +92,113 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
     const selectedTown = townData.find(t => t.townId === (selectedSite || {}).townId);
     return (
         <SafeAreaView style={ styles.container }>
-            <View style={ styles.buttonBarHeader }>
-                <View style={ styles.buttonBar }>
-                    <TouchableOpacity
-                        style={ styles.headerButton }
-                        onPress={ () => onSave(drop) }
-                    >
-                        <Text style={ styles.headerButtonText }>
-                            { "Save" }
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <ButtonBar buttonConfigs={ [{ text: "SAVE", onClick: () => onSave(drop) }] }/>
+
             <ScrollView style={ styles.scroll }>
+
                 <View style={ { flex: 1, justifyContent: "flex-start" } }>
-                    <Text style={ styles.label }>Number of Bags</Text>
-                    <TextInput
-                        underlineColorAndroid="transparent"
-                        value={ (drop.bagCount || "").toString() }
-                        keyboardType="numeric"
-                        placeholder="1"
-                        style={ styles.textInput }
-                        onChangeText={ (text: string) => {
-                            setDrop({
-                                ...drop,
-                                bagCount: Number(text)
-                            });
-                        } }
-                    />
-                    <Text style={ styles.label }>Other Items</Text>
-                    <View style={ styles.fieldset }>
-                        <CheckBox
-                            label="Needles/Bio-Waste"
-                            checked={ (drop.tags || []).indexOf("bio-waste") > -1 }
-                            onChange={ toggleTag("bio-waste") }/>
-                        <CheckBox
-                            label="Tires"
-                            checked={ (drop.tags || []).indexOf("tires") > -1 }
-                            onChange={ toggleTag("tires") }/>
-                        <CheckBox
-                            label="Large Object"
-                            checked={ (drop.tags || []).indexOf("large") > -1 }
-                            onChange={ toggleTag("large") }/>
-                    </View>
-
-
-                    { R.cond([
-                        [() => teamOptions.length > 1, () => (
-                            <View style={ { flex: 1, flexDirection: "row" } }>
-                                <Title>{ "This drop is for team:" }</Title>
+                    <View style={ { marginTop: 20, backgroundColor: "white" } }>
+                        <Subtitle style={ { textAlign: "center" } }>{ "This drop is for team:" }</Subtitle>
+                        { R.cond([
+                            [() => teamOptions.length > 1, () => (
                                 <DropDownMenu
                                     options={ teamOptions }
                                     selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
                                     onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
                                     titleProperty="name"
                                     valueProperty="teamOptions.id"
-                                    style={ { modalItem: { color: "blue", backgroundColor: "red" } } }
+                                    styleName="horizontal"
+                                    style={ {
+                                        modal: { backgroundColor: "#F00", color: "red" },
+                                        selectedOption: {
+                                            marginTop: 0,
+                                            height: 90,
+                                            "shoutem.ui.Text": {
+                                                color: "#333",
+                                                fontSize: 20
+                                            }
+                                        }
+                                    } }
                                 />
-                            </View>
-                        )],
-                        [() => teamOptions.length === 1, () => (
-                            <Title>{ `These bags coun for team: ${ teamOptions[0].name }` }</Title>
-                        )],
-                        [R.T, () => null]
-                    ])() }
+                            )],
+                            [() => teamOptions.length === 1, () => (
+                                <Title> { teamOptions[0].name } </Title>
+                            )],
+                            [R.T, () => null]
+                        ])() }
+                    </View>
+                    <View style={ { height: 100 } }>
+                        <Text style={ {
+                            lineHeight: 60,
+                            height: 60,
+                            color: "white",
+                            textAlign: "center"
+                        } }>{ "How many bags are you dropping?" }</Text>
+                        <View style={ { flex: 1, justifyContent: "center", flexDirection: "row" } }>
+                            <TouchableOpacity
+                                onPress={ (text: string) => {
+                                    const foo = {
+                                        ...drop,
+                                        bagCount: Number(text) < 2 ? 1 : Number(text) - 1
+                                    };
+                                    setDrop(foo);
+                                } }
+                                style={ { height: 100, marginRight: 10 } }>
+                                <MaterialCommunityIcons
+                                    size={ 40 }
+                                    style={ { color: "#EEE" } }
+                                    name={ "chevron-down-circle" }
+                                />
+                            </TouchableOpacity>
+                            <TextInput
+                                underlineColorAndroid="transparent"
+                                value={ (drop.bagCount || "").toString() }
+                                keyboardType="numeric"
+                                placeholder="1"
+                                style={ [styles.textInput, { color: "#333", width: 80, textAlign: "center" }] }
+                                onChangeText={ (text: string) => {
+                                    setDrop({
+                                        ...drop,
+                                        bagCount: Number(text)
+                                    });
+                                } }
+                            />
+                            <TouchableOpacity
+                                onPress={ (text: string) => {
+                                    setDrop({
+                                        ...drop,
+                                        bagCount: Number(text) < 1 ? 1 : Number(text) + 1
+                                    });
+                                } }
+                                style={ { height: 100, marginLeft: 10 } }>
+                                <MaterialCommunityIcons
+                                    size={ 40 } style={ { color: "#EEE" } }
+                                    name={ "chevron-up-circle" }/>
+                            </TouchableOpacity>
 
+                        </View>
+                    </View>
+
+                    <Text style={ styles.label }>Other Items</Text>
+
+                    <TagToggle
+                        tag={ "bio-waste" }
+                        text={ "Needles/Bio-Waste" }
+                        drop={ drop }
+                        onToggle={ toggleTag("bio-waste") }/>
+
+
+                    <TagToggle
+                        tag={ "tires" }
+                        text={ "Tires" }
+                        drop={ drop }
+                        onToggle={ toggleTag("tires") }/>
+
+                    <TagToggle
+                        tag={ "large" }
+                        text={ "Large Object" }
+                        drop={ drop }
+                        onToggle={ toggleTag("large") }/>
 
                     <TownInformation townInfo={ townInfo } town={ town }/>
                     {
@@ -178,10 +225,10 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                     </View>
                     { drop.collectionSiteId ? (
                         <View style={ styles.fieldset }>
-                            <Site site={ selectedSite } town={ selectedTown }/></View>
+                            <Site site={ selectedSite } town={ selectedTown }/>
+                        </View>
                     ) : null }
                 </View>
-
             </ScrollView>
             <Modal
                 animationType={ "slide" }
@@ -207,6 +254,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                 </SafeAreaView>
             </Modal>
         </SafeAreaView>
-    );
+    )
+        ;
 };
 

@@ -119,9 +119,7 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                         underlineColorAndroid={ "transparent" }
                     />
                 </View>
-
             </ScrollView>
-
         </SafeAreaView>
     );
 };
