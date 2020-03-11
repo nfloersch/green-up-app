@@ -79,7 +79,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             </Button>
         </View>
     </SafeAreaView>);
-    }
+};
 
 MenuScreen.navigationOptions = {
     title: "Menu",
