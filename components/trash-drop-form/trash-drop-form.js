@@ -19,7 +19,7 @@ import SiteSelector from "../site-selector";
 import * as R from "ramda";
 import Site from "../site";
 import ButtonBar from "../button-bar";
-import { Button } from "@shoutem/ui";
+// import { Button } from "@shoutem/ui";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
 
@@ -255,6 +255,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
             </Modal>
         </SafeAreaView>
     )
-        ;
+    ;
 };
 
