@@ -1,18 +1,54 @@
-# Contributing to the Green Up App
+# Contributing Code
 
-The Green Up App is a [Code for BTV](http://codeforbtv.org/projects/greenup-app) project. Contributions to this projects are always welcome.
 
-Join [#green-up](https://codeforbtv.slack.com/messages/green-up/) on [Slack](https://cfbtv-slackin.herokuapp.com/) to get in touch with the team actively contributing to this project.
+## First Steps
 
-## What to contribute
+1) **Phone a friend**: The first step is always to chat up folks on [#green-up](https://codeforbtv.slack.com/messages/green-up/) on Slack. Visit our channel [here](https://codeforbtv.slack.com) or if it's your first time, get an invitation [here](https://cfbtv-slackin.herokuapp.com/). 
 
-Active open issues are available under [issues](https://github.com/codeforbtv/green-up-app/issues) and they are organized under [projects](https://github.com/codeforbtv/green-up-app/projects). 
+2) **Get a Dev Environment Running**: We've got a super simple setup working through GitPod - an online, container based development environment that is litterally a 1-step setup. 
 
-If you're new to the project, look for those labeled as ['good first issue'](https://github.com/codeforbtv/green-up-app/labels/good%20first%20issue).
+3) **Check the Project Board**: We have our open softwre tickets organized under [projects](https://github.com/codeforbtv/green-up-app/projects). If you're new to the project, look for those labeled as ['good first issue'](https://github.com/codeforbtv/green-up-app/labels/good%20first%20issue). 
 
-If you notice an issue that is not logged feel free to create one or submit a pull request with a fix and a description.
+4) **Dial Tech Support**: If you have trouble at any point we have a dedicated slack channel for that.  Join the [#tech-support](https://codeforbtv.slack.com/messages/tech-support/) channel and someone will help you out asap.
 
-## How to contribute
+5) **Get to work!** See [How to Contribute Your Work](#How-to-Contribute-Your-Work) below.
+
+## Environment Setup
+
+### Quickstart: using GitPod
+
+1) **Launch a Gitpod Workspace**: The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
+(https://gitpod.io/#https://github.com/codeforbtv/green-up-app). It always takes a few minutes, so do this step first.
+
+2) **Get a Config File**: You won't be able to run the code without a firebase-config.js file. The fastest approach is to use our shared dev environment (..which we share, so please treat it kindly). There is one pinned to the [#green-up Slack channel](https://codeforbtv.slack.com/messages/green-up/) for our dev environment. If you have trouble finding it, just ask anyone in the channel. Save your firebase-config.js in the root of the project.
+
+3) **Download the Expo App**: The Green Up app is configured to be run on your physical phone inside the Expo mobile app (aka the "Expo Client"). Expo is a shell that runs the unpublished mobile app.
+   * [Download for iPhones](https://apps.apple.com/us/app/expo-client/id982107779)
+   * [Download for Android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
+
+4) **Restart Expo**: When the GitPod workspace starts a config file in the project instructs it to install the Green Up app, and then it opens a terminal in the editor, runs the `expo start` command to launch the expo cli. Use `ctrl+c` to kill the cli tool, and type `expo start --host tunnel` to restart it with the new config information.
+
+5) **Profit!** When the giant QR code appears in the editor...
+    * **iPhones**: point your camera at the QR code and the app will launch in expo
+    * **Android**: open the Expo mobile app and click "Scan QR Code"
+    
+    This will open the app on your phone. Now create an account and begin exploring!
+
+### A Full Local Environment
+
+1) [**TODO**: *add steps for full local setup*]
+
+1) **(Optional) Use Your Own Firebase Account**: Setup a Firebase app and use those app settings to configure environment.js,    
+Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack](https://codeforbtv.slack.com/) and we'll gladly share ours. Not on our Slack board?  [Get an invitation.](https://cfbtv-slackin.herokuapp.com/) 
+ 
+Install the [expo client](https://expo.io/tools#client) on your phone
+
+Run the project in the root folder.
+
+```expo start```
+
+
+## How to Contribute Your Work
 
 To contribute, send us a pull request. Our team will do our best to review it on time and merge it to master. 
 

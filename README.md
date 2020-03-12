@@ -6,29 +6,25 @@
 
 This repository contains the source code for the Green Up App, a mobile app for Vermont's Green Up Day. Green Up App is an official Code for America Project. More information about the motivation and context of this project is available on the [Code for BTV Website](http://codeforbtv.org/projects/greenup-app).
 
-## How to contribute
+# How to Help
 
-See the [CONTRIBUTING](./CONTRIBUTING.md) page for details on how to contribute.
+* For developers, see [CONTRIBUTING.md](./CONTRIBUTING.md)
+* For testers, see [Our Testing Wiki](https://github.com/codeforbtv/green-up-app/wiki/Testing-Protocol)
 
-## Setting up your development environment
-The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
-(https://gitpod.io/#https://github.com/codeforbtv/green-up-app)
+# Try it now!
+Every time a commit is pushed to master we use Circle CI to test the code and – if all goes well – deploy the most recent updates to our testing apps.  This is ideal for testing & QA, but also great for just experimenting with the new app before it reaches stores.
 
-You won't be able to run the code without a environment.js file. and template for this file can be found in environment.example.js 
-Setup a Firebase app and use those app settings to configure environment.js,    
-Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack](https://codeforbtv.slack.com/) and we'll gladly share ours. Not on our Slack board?  [Get an invitation.](https://cfbtv-slackin.herokuapp.com/) 
- 
-Install the [expo client](https://expo.io/tools#client) on your phone
+* **iPhones**: Download the [TestFlight app](https://apps.apple.com/us/app/testflight/id899247664) and [go to this page](https://testflight.apple.com/join/MkX4AdZm)
+* **Androids**: Download the [Expo Client app](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www) and [scan the QR code here](https://expo.io/@c4btv/Green-Up-Vermont?release-channel=qa)
 
-Run the project in the root folder.
+# Download the Live App
+*Note*: The 2020 app isn't expected to launch until the end of March 2020 so no promises before that time:
 
-```expo start```
+|  |  |
+|---|---|
+| [<img src="https://marketing-image-production.s3.amazonaws.com/uploads/f6b617affe48b29f9e8e0cd4a2f00f8a689d4af60644ecb4815df27a6dfeded92347f4846b4f51c48ba3e1db61bb074baa745bb002c4a0bda12ec99213fc7f93.png" width=200/>](https://play.google.com/store/apps/details?id=org.greenupvermont.app) | [<img src="https://marketing-image-production.s3.amazonaws.com/uploads/b4e302ed648152b727e7dc9bd648e5ab962c68e414be6220b31e8013080f9fbd86cb9f9358cf8a3bcd3a00af309034c6ec68cb7ce1dfa7317e9b97d07cd4bbc6.png" width=220/>](https://itunes.apple.com/us/app/green-up-vermont/id1364770239?mt=8) |
 
-## Licensing
+
+# Licensing
 
 See the [LICENSE](./LICENSE.md) page for details on the license.
-
-## Download the app from your favorite App Store
-[![Google Play](https://marketing-image-production.s3.amazonaws.com/uploads/f6b617affe48b29f9e8e0cd4a2f00f8a689d4af60644ecb4815df27a6dfeded92347f4846b4f51c48ba3e1db61bb074baa745bb002c4a0bda12ec99213fc7f93.png "Download in Google Play")](https://play.google.com/store/apps/details?id=org.greenupvermont.app)
-
-[![Apple Store](https://marketing-image-production.s3.amazonaws.com/uploads/b4e302ed648152b727e7dc9bd648e5ab962c68e414be6220b31e8013080f9fbd86cb9f9358cf8a3bcd3a00af309034c6ec68cb7ce1dfa7317e9b97d07cd4bbc6.png "Download in Apple Store")](https://itunes.apple.com/us/app/green-up-vermont/id1364770239?mt=8)
