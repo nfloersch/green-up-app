@@ -117,8 +117,6 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
             Alert.alert("Please give your team a name.");
         } else {
             onSave(myTeam);
-            const newState = freshState(currentUser, team ? myTeam : Team.create());
-            dispatch({ type: "RESET_STATE", data: newState });
         }
     };
 
