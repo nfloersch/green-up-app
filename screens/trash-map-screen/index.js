@@ -114,7 +114,9 @@ const TrashMap = (
         Object.values
     )(supplyDistributionSites);
 
-    const initialMapLocation = userLocation
+    const locationExists = userLocation && userLocation.coordinates && userLocation.coordinates.latitude && userLocation.coordinates.longitude;
+
+    const initialMapLocation = locationExists
         ? {
             latitude: Number(userLocation.coordinates.latitude),
             longitude: Number(userLocation.coordinates.longitude),
