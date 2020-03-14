@@ -47,7 +47,7 @@ type PropsType = {
     onSave: Object => void,
     currentUser: UserType,
     townData: Object,
-    trashCollectionSites: Object,
+    trashCollectionSites: Array<Object>,
     userLocation?: LocationType
 };
 
@@ -88,8 +88,8 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
         id: entry[0],
         name: entry[1].name
     }));
-    const selectedSite = Object.values(trashCollectionSites).find(site => site.id === drop.collectionSiteId);
-    const selectedTown = Object.values(townData).find(t => t.townId === (selectedSite || {}).townId);
+    const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
+    const selectedTown = townData.find(t => t.townId === (selectedSite || {}).townId);
     return (
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ [{ text: "SAVE", onClick: () => onSave(drop) }] }/>
