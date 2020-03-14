@@ -91,13 +91,13 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     };
 
     const removeRequest = (teamId: string, user: Object) => {
-        navigation.navigate("Home");
         actions.removeTeamRequest(teamId, user);
+        navigation.navigate("Home");
     };
 
     const askToJoin = (team: Object, user: Object) => {
-        navigation.navigate("Home");
         actions.askToJoinTeam(team, user);
+        navigation.navigate("Home");
     };
 
     const toMemberDetails = (teamId: string, membershipId: string) => {
