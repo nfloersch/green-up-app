@@ -90,6 +90,7 @@ export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
 
 export const removeTeamRequest = (teamId: string, user: Object): ThunkType => {
     function thunk() {
+        // TODO: determine if we need something more than deleting request silently
         firebaseDataLayer.removeTeamRequest(teamId, user);
     }
 
