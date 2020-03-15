@@ -56,6 +56,7 @@ const TeamDetailsEditor = ({ actions, currentUser, navigation, otherCleanAreas, 
 
     const saveTeam = (team) => {
         actions.saveTeam(team);
+        navigation.goBack();
     };
 
     const deleteTeam = () => {
