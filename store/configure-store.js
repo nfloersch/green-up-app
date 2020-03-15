@@ -1,6 +1,7 @@
 // @flow
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web and AsyncStorage for react-native
+//import storage from "redux-persist/lib/storage"; // defaults to localStorage for web and AsyncStorage for react-native
+import { AsyncStorage } from 'react-native';
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "../reducers/index";
 import thunk from "redux-thunk";
@@ -12,7 +13,7 @@ import { createNetworkMiddleware } from "react-native-offline";
 
 const persistConfig = {
     key: "root",
-    storage: storage,
+    storage: AsyncStorage,
     stateReconciler: autoMergeLevel2,
     blacklist: ["modals", "networkStatus"] // Add top-level store keys here to avoid persistence
 };

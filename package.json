@@ -29,6 +29,7 @@
   "dependencies": {
     "@expo/samples": "3.0.3",
     "@expo/vector-icons": "^10.0.0",
+    "@react-native-community/async-storage": "^1.8.1",
     "@react-native-community/netinfo": "~3.2.1",
     "@sendgrid/mail": "^6.3.1",
     "@shoutem/animation": "^0.12.3",

@@ -68,7 +68,7 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
     };
 
 
-    const filterSortContacts = myContacts => myContacts
+    const filterSortContacts = myContacts => (myContacts || [])
         .filter((contact: ContactType): boolean => isValidEmail(contact.email || "") && !isInTeam(teamMembers[selectedTeam.id], contact.email))
         .sort((a: ContactType, b: ContactType): number => {
             const bDisplay = (`${ b.firstName || "" }${ b.lastName || "" }${ b.email || "" }`).toLowerCase();
