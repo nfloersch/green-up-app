@@ -62,30 +62,134 @@ jobs:
           name: Install Firebase Function Deps
           command: cd functions && npm install
 
+     #Deploy firebase functions, one at a time (DEV environment)
       - run:
-          name: Deploy Master to DEV Firebase Functions
-          command: ./node_modules/.bin/firebase deploy -P dev --only functions --token=$FIREBASE_DEPLOY_TOKEN
+          name: Deploy Master to DEV Firebase Functions - onInvitationCreate
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onInvitationCreate --token=$FIREBASE_DEPLOY_TOKEN
 
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onTeamDelete
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamDelete --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run: 
+          name: Deploy Master to DEV Firebase Functions - onTeamMemberRemove
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN          
+
+      - run:  
+          name: Deploy Master to DEV Firebase Functions - onTeamRequestRemove
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN                    
+
+      - run:  
+          name: Deploy Master to DEV Firebase Functions - onTeamInvitationRemove
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamInvitationRemove --token=$FIREBASE_DEPLOY_TOKEN
+    
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onTeamsWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onCelebrationsWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onCelebrationsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onTrashDropsWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTrashDropsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onSupplyDistributionSitesWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onSupplyDistributionSitesWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onTrashCollectionSitesWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTrashCollectionSitesWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onEventInfoWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onEventInfoWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - onTownsWrite
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTownsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to DEV Firebase Functions - api
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:api --token=$FIREBASE_DEPLOY_TOKEN          
+
+    #Deploy Firebase Storage Rules (DEV environment)
       - run:
           name: Deploy Master to DEV Firebase Storage Rules
           command: ./node_modules/.bin/firebase deploy -P dev --only storage --token=$FIREBASE_DEPLOY_TOKEN
-
+    
+    #Deploy Firebase Security Rules (DEV environment)
       - run:
           name: Deploy Master to DEV Firestore Security Rules
           command: ./node_modules/.bin/firebase deploy -P dev --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
 
+    #Deploy firebase functions, one at a time (QA environment)
       - run:
-          name: Deploy Master to QA Firebase Functions
-          command: ./node_modules/.bin/firebase deploy -P qa --only functions --token=$FIREBASE_DEPLOY_TOKEN
+          name: Deploy Master to QA Firebase Functions - onInvitationCreate
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onInvitationCreate --token=$FIREBASE_DEPLOY_TOKEN
 
+      - run:
+          name: Deploy Master to QA Firebase Functions - onTeamDelete
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamDelete --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run: 
+          name: Deploy Master to QA Firebase Functions - onTeamMemberRemove
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN          
+
+      - run:  
+          name: Deploy Master to QA Firebase Functions - onTeamRequestRemove
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN                    
+
+      - run:  
+          name: Deploy Master to QA Firebase Functions - onTeamInvitationRemove
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamInvitationRemove --token=$FIREBASE_DEPLOY_TOKEN
+    
+      - run:
+          name: Deploy Master to QA Firebase Functions - onTeamsWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onCelebrationsWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onCelebrationsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onTrashDropsWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTrashDropsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onSupplyDistributionSitesWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onSupplyDistributionSitesWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onTrashCollectionSitesWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTrashCollectionSitesWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onEventInfoWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onEventInfoWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - onTownsWrite
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTownsWrite --token=$FIREBASE_DEPLOY_TOKEN
+
+      - run:
+          name: Deploy Master to QA Firebase Functions - api
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:api --token=$FIREBASE_DEPLOY_TOKEN          
+
+    
+    #Deploy Firebase Storage Rules (QA environment)
       - run:
           name: Deploy Master to QA Firebase Storage Rules
           command: ./node_modules/.bin/firebase deploy -P qa --only storage --token=$FIREBASE_DEPLOY_TOKEN
 
+    #Deploy Firebase Security Rules (QA environment)
       - run:
           name: Deploy Master to QA Firestore Security Rules
           command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
-
+    
+    #Publish app to expo
       - run:
           name: Login into Expo
           command: npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
