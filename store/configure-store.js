@@ -15,7 +15,8 @@ const persistConfig = {
     key: "root",
     storage: AsyncStorage,
     stateReconciler: autoMergeLevel2,
-    blacklist: ["modals", "networkStatus"] // Add top-level store keys here to avoid persistence
+    blacklist: ["modals", "networkStatus"], // Add top-level store keys here to avoid persistence,
+    timeout: 30000
 };
 
 const networkMiddleware = createNetworkMiddleware({
@@ -32,7 +33,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default (): Object => {
     // eslint-disable-next-line no-undefined
-    const store = createStore(persistedReducer, undefined, composeWithDevTools(applyMiddleware(...middlewares)));
+    const store = createStore(
+        persistedReducer, 
+        undefined, 
+        composeWithDevTools(applyMiddleware(...middlewares))
+    );
     // $FlowFixMe
     const persistor = persistStore(store);
     return { store, persistor };
