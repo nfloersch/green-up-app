@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
     TouchableHighlight,
     TouchableOpacity,
@@ -19,7 +19,6 @@ import SiteSelector from "../site-selector";
 import * as R from "ramda";
 import Site from "../site";
 import ButtonBar from "../button-bar";
-// import { Button } from "@shoutem/ui";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
 
@@ -79,7 +78,7 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
     };
 
     useEffect(() => {
-        setDrop({ ...trashDrop, location });
+        setDrop({ ...drop, location });
     }, [trashDrop, location]);
 
     // const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
@@ -93,33 +92,34 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
     return (
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ [{ text: "SAVE", onClick: () => onSave(drop) }] }/>
-
             <ScrollView style={ styles.scroll }>
 
                 <View style={ { flex: 1, justifyContent: "flex-start" } }>
                     <View style={ { marginTop: 20, backgroundColor: "white" } }>
-                        <Subtitle style={ { textAlign: "center" } }>{ "This drop is for team:" }</Subtitle>
                         { R.cond([
                             [() => teamOptions.length > 1, () => (
-                                <DropDownMenu
-                                    options={ teamOptions }
-                                    selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
-                                    onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
-                                    titleProperty="name"
-                                    valueProperty="teamOptions.id"
-                                    styleName="horizontal"
-                                    style={ {
-                                        modal: { backgroundColor: "#F00", color: "red" },
-                                        selectedOption: {
-                                            marginTop: 0,
-                                            height: 90,
-                                            "shoutem.ui.Text": {
-                                                color: "#333",
-                                                fontSize: 20
+                                <Fragment>
+                                    <Subtitle style={ { textAlign: "center" } }>{ "This drop is for team:" }</Subtitle>
+                                    <DropDownMenu
+                                        options={ teamOptions }
+                                        selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
+                                        onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
+                                        titleProperty="name"
+                                        valueProperty="teamOptions.id"
+                                        styleName="horizontal"
+                                        style={ {
+                                            modal: { backgroundColor: "#F00", color: "red" },
+                                            selectedOption: {
+                                                marginTop: 0,
+                                                height: 90,
+                                                "shoutem.ui.Text": {
+                                                    color: "#333",
+                                                    fontSize: 20
+                                                }
                                             }
-                                        }
-                                    } }
-                                />
+                                        } }
+                                    />
+                                </Fragment>
                             )],
                             [() => teamOptions.length === 1, () => (
                                 <Title> { teamOptions[0].name } </Title>
@@ -136,12 +136,12 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                         } }>{ "How many bags are you dropping?" }</Text>
                         <View style={ { flex: 1, justifyContent: "center", flexDirection: "row" } }>
                             <TouchableOpacity
-                                onPress={ (text: string) => {
-                                    const foo = {
+                                onPress={ () => {
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 2 ? 1 : Number(drop.bagCount) - 1);
+                                    setDrop({
                                         ...drop,
-                                        bagCount: Number(text) < 2 ? 1 : Number(text) - 1
-                                    };
-                                    setDrop(foo);
+                                        bagCount
+                                    });
                                 } }
                                 style={ { height: 100, marginRight: 10 } }>
                                 <MaterialCommunityIcons
@@ -152,22 +152,25 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                             </TouchableOpacity>
                             <TextInput
                                 underlineColorAndroid="transparent"
-                                value={ (drop.bagCount || "").toString() }
+                                value={ isNaN(drop.bagCount) ? "" : drop.bagCount.toString() }
                                 keyboardType="numeric"
-                                placeholder="1"
-                                style={ [styles.textInput, { color: "#333", width: 80, textAlign: "center" }] }
+                                placeholder="#"
+                                style={ { color: "#000", width: 80, textAlign: "center", backgroundColor: "white", fontSize: 20} }
                                 onChangeText={ (text: string) => {
+                                    const bagCount = isNaN(Number(text)) ? 1 : Number(text);
                                     setDrop({
                                         ...drop,
-                                        bagCount: Number(text)
+                                        bagCount
                                     });
+
                                 } }
                             />
                             <TouchableOpacity
-                                onPress={ (text: string) => {
+                                onPress={ () => {
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 1 ? 1 : Number(drop.bagCount) + 1);
                                     setDrop({
                                         ...drop,
-                                        bagCount: Number(text) < 1 ? 1 : Number(text) + 1
+                                        bagCount
                                     });
                                 } }
                                 style={ { height: 100, marginLeft: 10 } }>
@@ -255,6 +258,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
             </Modal>
         </SafeAreaView>
     )
-    ;
+        ;
 };
 
