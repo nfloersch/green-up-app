@@ -114,6 +114,8 @@ const TrashMap = (
         Object.values
     )(supplyDistributionSites);
 
+    const townDataList = R.compose(Object.values)(townData)
+
     const locationExists = userLocation && userLocation.coordinates && userLocation.coordinates.latitude && userLocation.coordinates.longitude;
 
     const initialMapLocation = locationExists
@@ -322,8 +324,8 @@ const TrashMap = (
                     location={ userLocation }
                     onSave={ saveTrashDrop }
                     onCancel={ closeModal }
-                    townData={ townData }
-                    trashCollectionSites={ trashCollectionSites }
+                    townData={ townDataList }
+                    trashCollectionSites={ collectionSites }
                     trashDrop={ drop }
                 />
             </Modal>
