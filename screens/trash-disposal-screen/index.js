@@ -33,11 +33,12 @@ type PropsType = {
     currentUser: UserType,
     trashCollectionSites: Array<Object>,
     townInfo: Array<Object>,
-    userLocation: Object
+    userLocation: Object,
+    navigation: Object
 };
 
 
-const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
 
     const [searchResults, setSearchResults] = useState(townInfo);
     const [searchTerm, setSearchTerm] = useState("");
@@ -138,7 +139,10 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                 <TrashDropForm
                     currentUser={ currentUser }
                     location={ userLocation }
-                    onSave={ actions.dropTrash }
+                    onSave={ (drop) => {
+                        actions.dropTrash(drop);
+                        navigation.goBack();
+                    } }
                     townData={ townInfo }
                     trashCollectionSites={ trashCollectionSites }
                     userLocation={ userLocation }
@@ -202,7 +206,12 @@ const mapStateToProps = (state: Object): Object => {
         });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch
+<
+Object >
+):
+Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TrashDisposalScreen);
+;
