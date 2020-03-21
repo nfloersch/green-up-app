@@ -7,7 +7,8 @@ import {
     Alert,
     Image,
     StyleSheet,
-    SafeAreaView
+    SafeAreaView,
+    ScrollView
 } from "react-native";
 import { View, Button, Text, Divider } from "@shoutem/ui";
 import * as actionCreators from "../../action-creators/session-action-creators";
@@ -83,61 +84,63 @@ type PropsType = {
 
 const Login = ({ actions, loginError, navigation }: PropsType): React$Element<any> => (
     <SafeAreaView style={ styles.container }>
-        { loginError
-            ? Alert.alert(
-                "",
-                (loginError.message || "Login Failed"),
-                [
-                    {
-                        text: "OK", onPress: () => {
+        <ScrollView keyboardShouldPersistTaps="handled" scrollEnabled={ false }>
+            { loginError
+                ? Alert.alert(
+                    "",
+                    (loginError.message || "Login Failed"),
+                    [
+                        {
+                            text: "OK", onPress: () => {
+                            }
                         }
-                    }
-                ],
-                { cancelable: false }
-            ) : null
-        }
+                    ],
+                    { cancelable: false }
+                ) : null
+            }
 
-        <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1 } }>
-            <View style={ styles.logo }>
-                <Image source={ logo } style={ { height: 120, width: 120 } }/>
-            </View>
-            <View style={ { width: "100%" } }>
-                <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                <Divider styleName="line"/>
-                <View style={ { marginTop: 40 } } styleName="horizontal">
-                    <Button
-                        onPress={ () => {
-                            navigation.navigate("ForgotPassword");
-                        } }
-                        style={ { paddingLeft: 20, paddingRight: 20 } }
-                        styleName="confirmation secondary"
-                    >
-                        <MaterialCommunityIcons
-                            name={ "account-convert" }
-                            size={ 25 }
-                            style={ { marginRight: 10 } }
-                            color="#FFF"
-                        />
-                        <Text>RESET PASSWORD</Text>
-                    </Button>
-                    <Button
-                        onPress={ () => {
-                            navigation.navigate("CreateNewAccount");
-                        } }
-                        style={ { paddingLeft: 20, paddingRight: 20 } }
-                        styleName="confirmation secondary"
-                    >
-                        <MaterialCommunityIcons
-                            name={ "account-plus" }
-                            size={ 25 }
-                            style={ { marginRight: 10 } }
-                            color="#FFF"
-                        />
-                        <Text style={ styles.buttonText }>CREATE ACCOUNT</Text>
-                    </Button>
+            <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1 } }>
+                <View style={ styles.logo }>
+                    <Image source={ logo } style={ { height: 120, width: 120 } }/>
+                </View>
+                <View style={ { width: "100%" } }>
+                    <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
+                    <Divider styleName="line"/>
+                    <View style={ { marginTop: 40 } } styleName="horizontal">
+                        <Button
+                            onPress={ () => {
+                                navigation.navigate("ForgotPassword");
+                            } }
+                            style={ { paddingLeft: 20, paddingRight: 20 } }
+                            styleName="confirmation secondary"
+                        >
+                            <MaterialCommunityIcons
+                                name={ "account-convert" }
+                                size={ 25 }
+                                style={ { marginRight: 10 } }
+                                color="#FFF"
+                            />
+                            <Text>RESET PASSWORD</Text>
+                        </Button>
+                        <Button
+                            onPress={ () => {
+                                navigation.navigate("CreateNewAccount");
+                            } }
+                            style={ { paddingLeft: 20, paddingRight: 20 } }
+                            styleName="confirmation secondary"
+                        >
+                            <MaterialCommunityIcons
+                                name={ "account-plus" }
+                                size={ 25 }
+                                style={ { marginRight: 10 } }
+                                color="#FFF"
+                            />
+                            <Text style={ styles.buttonText }>CREATE ACCOUNT</Text>
+                        </Button>
+                    </View>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     </SafeAreaView>
 );
 
