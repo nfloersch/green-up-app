@@ -271,6 +271,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
             </Modal>
         </SafeAreaView>
     )
-        ;
+    ;
 };
 
