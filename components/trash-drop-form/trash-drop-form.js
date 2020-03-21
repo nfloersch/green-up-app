@@ -9,7 +9,7 @@ import {
     ScrollView,
     Modal
 } from "react-native";
-import { DropDownMenu, Text, Title, Subtitle } from "@shoutem/ui";
+import { DropDownMenu, Text, Button, Title, Subtitle, Divider } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
 import * as turf from "@turf/helpers";
@@ -155,7 +155,13 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                                 value={ isNaN(drop.bagCount) ? "" : drop.bagCount.toString() }
                                 keyboardType="numeric"
                                 placeholder="#"
-                                style={ { color: "#000", width: 80, textAlign: "center", backgroundColor: "white", fontSize: 20} }
+                                style={ {
+                                    color: "#000",
+                                    width: 80,
+                                    textAlign: "center",
+                                    backgroundColor: "white",
+                                    fontSize: 20
+                                } }
                                 onChangeText={ (text: string) => {
                                     const bagCount = isNaN(Number(text)) ? 1 : Number(text);
                                     setDrop({
@@ -178,7 +184,6 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                                     size={ 40 } style={ { color: "#EEE" } }
                                     name={ "chevron-up-circle" }/>
                             </TouchableOpacity>
-
                         </View>
                     </View>
 
@@ -188,24 +193,24 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                         tag={ "bio-waste" }
                         text={ "Needles/Bio-Waste" }
                         drop={ drop }
+                        style={ { margin: 0, padding: 0, height: 100 } }
                         onToggle={ toggleTag("bio-waste") }/>
-
-
                     <TagToggle
                         tag={ "tires" }
                         text={ "Tires" }
                         drop={ drop }
+                        style={ { margin: 0, padding: 0, height: 100 } }
                         onToggle={ toggleTag("tires") }/>
-
                     <TagToggle
                         tag={ "large" }
                         text={ "Large Object" }
                         drop={ drop }
+                        style={ { margin: 0, padding: 0, height: 100 } }
                         onToggle={ toggleTag("large") }/>
 
-                    <TownInformation townInfo={ townInfo } town={ town }/>
+                    <TownInformation townInfo={ townInfo } town={ town } hideOnError={ true }/>
                     {
-                        !drop.id && townInfo.roadsideDropOffAllowed === true && (
+                        !drop.id && townInfo.roadsideDropOffAllowed === true ? (
                             <View style={ { width: "100%", height: 60 } }>
                                 <TouchableHighlight
                                     style={ [styles.button, { width: "100%" }] }
@@ -214,20 +219,28 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                                     <Text style={ styles.buttonText }>{ "Drop trash right here" }</Text>
                                 </TouchableHighlight>
                             </View>
-                        )
+                        ) : null
                     }
+                    <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+
                     <View style={ { width: "100%", height: 60 } }>
-                        <TouchableHighlight
-                            stle={ styles.button }
+                        <Button
+                            styleName={ "full-width  secondary" }
                             onPress={ () => {
                                 setModal("site-selector");
-                            } }
-                        >
+                            } }>
+                            <MaterialCommunityIcons
+                                name="earth"
+                                size={ 25 }
+                                style={ { marginRight: 10 } }
+                                color={ "#555" }
+                            />
                             <Text>{ "Find a trash collection site" }</Text>
-                        </TouchableHighlight>
+                        </Button>
                     </View>
                     { drop.collectionSiteId ? (
-                        <View style={ styles.fieldset }>
+                        <View style={ { backgroundColor: "white", padding: 10, marginTop: 10 } }>
+                            <Text style={ { fontSize: 20, marginBottom: 10 } }>{ "I'm taking my trash here:" }</Text>
                             <Site site={ selectedSite } town={ selectedTown }/>
                         </View>
                     ) : null }
