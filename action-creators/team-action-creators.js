@@ -88,6 +88,16 @@ export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
     return thunk;
 };
 
+export const removeTeamRequest = (teamId: string, user: Object): ThunkType => {
+    function thunk() {
+        // TODO: determine if we need something more than deleting request silently
+        firebaseDataLayer.removeTeamRequest(teamId, user);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
 export const acceptInvitation = (teamId: string, user: Object): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
         const newTeamMember = TeamMember.create(Object.assign({}, user, { memberStatus: memberStatus.ACCEPTED }));
