@@ -114,8 +114,6 @@ const TrashMap = (
         Object.values
     )(supplyDistributionSites);
 
-    const townDataList = R.compose(Object.values)(townData)
-
     const locationExists = userLocation && userLocation.coordinates && userLocation.coordinates.latitude && userLocation.coordinates.longitude;
 
     const initialMapLocation = locationExists
@@ -131,9 +129,8 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
-                // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
-                coordinate={ d.location }
+                coordinate={d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view collected trash" }
                 onCalloutPress={ () => {
@@ -148,9 +145,8 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
-                // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view, edit or collect" }
                 onCalloutPress={ () => {
@@ -166,9 +162,8 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
-                // image={uncollectedTrashIcon}
                 pinColor={ "red" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view or collect" }
                 onCalloutPress={ () => {
@@ -183,7 +178,6 @@ const TrashMap = (
         .map((d: Object, i: number): React$Element<any> => (
             <MapView.Marker
                 key={ `dropOffLocation${ i }.map((d, i) => (` }
-                // image={trashDropOffLocationIcon}
                 pinColor={ "blue" }
                 coordinate={ d.coordinates }
                 stopPropagation={ true }>
@@ -324,7 +318,7 @@ const TrashMap = (
                     location={ userLocation }
                     onSave={ saveTrashDrop }
                     onCancel={ closeModal }
-                    townData={ townDataList }
+                    townData={ townData }
                     trashCollectionSites={ collectionSites }
                     trashDrop={ drop }
                 />
@@ -382,9 +376,12 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
+    console.log('drops before transform:', state.trashTracker.trashDrops)
     const drops = Object.values(state.trashTracker.trashDrops || [])
-        .filter((drop: any): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
-    const townData = state.towns.townData;
+        .filter((drop: any): boolean => Boolean(drop.location && drop.location.coordinates && drop.location.coordinates.longitude && drop.location.coordinates.latitude));
+    
+    console.log('drops', drops)
+    const townData = Object.values(state.towns.townData || []);
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;
