@@ -49,7 +49,17 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, v
         <SafeAreaView>
             <ButtonBar buttonConfigs={ headerButtons }/>
             <View style={ { height: Dimensions.get("window").height - 60 } }>
-                <View style={ { backgroundColor: "green" } }>
+                <View style={ {
+                    backgroundColor: "white",
+                    borderTopWidth: 1,
+                    borderBottomWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: "#EEE",
+                    paddingTop: 10,
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    height: 80
+                } }>
                     {
                         !selectedSite
                             ? <Text>"Select A Trash Collection Site"</Text>
