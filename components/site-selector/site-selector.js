@@ -21,7 +21,7 @@ type PropsType = {
 };
 
 export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, value }: PropsType): React$Element<any> => {
-    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, ((userLocation || {}).coordinates) || {}).site);
+    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, (userLocation || {}).coordinates || {}).site);
 
     const pins = (sites || []).filter(site => Boolean(site.coordinates)).map(site => ({
         coordinates: site.coordinates,

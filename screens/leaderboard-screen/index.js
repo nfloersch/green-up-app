@@ -1,10 +1,9 @@
 // @flow
 import React, { useState } from "react";
-import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
-import { Tile, Divider, ListView, Text } from "@shoutem/ui";
 import * as constants from "../../styles/constants";
 
 const styles = StyleSheet.create(defaultStyles);
@@ -13,32 +12,64 @@ type PropsType = {
     rankings: Array<Object>
 };
 
-const renderRow = (ranking) => {
-
-    if (!ranking) {
-        return null;
-    }
-
+const renderRow = ({ item }) => {
     return (
-        <Tile style={ { flex: 1, flexDirection: "row", justifyContent: "space-between", width: "100%" } }>
-            <View style={ { marginLeft: 10, marginRight: 10 } }>
-                <Text styleName="md-gutter-bottom">{ ranking.rank }</Text>
+        <View style={ {
+            backgroundColor: "white",
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            height: 50
+        } }>
+            <View style={ {
+                flexBasis: 50,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: "#EEE",
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center" } }>{ item.rank || 0 }</Text>
             </View>
             <View style={ {
-                flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "auto",
                 justifyContent: "center",
-                alignSelf: "stretch",
-                margin: 5
+                alignSelf: "center",
+                height: 50,
+                backgroundColor: "#FFF",
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
             } }>
-                <Text styleName="sm-gutter-horizontal" style={ { alignSelf: "stretch" } }>{ ranking.teamName }</Text>
+                <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
             </View>
-            <View style={ { paddingLeft: 10, paddingRight: 10 } }>
-                <Text styleName="md-gutter-bottom">{ ranking.bagCount }</Text>
+            <View style={ {
+                flexBasis: 50,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: "#EEE",
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderBottomColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center" } }>{ item.bagCount || "0" }</Text>
             </View>
-            <Divider styleName="line"/>
-        </Tile>
+        </View>
     );
 };
 
@@ -57,37 +88,67 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
         ]
     ])(sortBy);
     return (
-        <SafeAreaView style={ styles.container }>
-            <View style={ { height: 50, width: "100%", backgroundColor: "#EEE" } }>
-                <View style={ { flex: 1, flexDirection: "row", justifyContent: "space-between", width: "100%" } }>
-                    <View style={ { marginLeft: 10, marginRight: 10 } }>
-                        <TouchableOpacity onPress={ () => {
-                            setSortBy("rank");
-                        } }>
-                            <Text>{ "Rank" }</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ {
-                        flex: 1,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignSelf: "stretch",
-                        margin: 5
+        <View style={ { flex: 1, justifyContent: "flex-start", position: "relative", width: "100%" } }>
+            <View style={ {
+                backgroundColor: "white",
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                height: 50,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "black",
+                position: "absolute",
+                width: "100%"
+            } }>
+                <View style={ {
+                    flexBasis: 50,
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    justifyContent: "center",
+                    height: 50,
+                    alignSelf: "center",
+                    backgroundColor: "#EEE"
+                } }>
+                    <TouchableOpacity onPress={ () => {
+                        setSortBy("rank");
                     } }>
-                        <TouchableOpacity onPress={ () => {
-                            setSortBy("teamName");
-                        } }>
-                            <Text>{ "Team" }</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ { paddingLeft: 10, paddingRight: 10 } }>
-                        <Text styleName="md-gutter-bottom">{ "Bags" }</Text>
-                    </View>
+                        <Text style={ { textAlign: "center" } }>{ "Rank" }</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={ {
+                    flexGrow: 1,
+                    flexShrink: 1,
+                    flexBasis: "auto",
+                    justifyContent: "center",
+                    alignSelf: "center",
+                    height: 50,
+                    backgroundColor: "#FFF"
+                } }>
+                    <TouchableOpacity onPress={ () => {
+                        setSortBy("teamName");
+                    } }>
+                        <Text style={ { textAlign: "center" } }>{ "Team" }</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={ {
+                    flexBasis: 50,
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    justifyContent: "center",
+                    height: 50,
+                    alignSelf: "center",
+                    backgroundColor: "#EEE"
+                } }>
+                    <Text style={ { textAlign: "center" } }>{ "Bags" }</Text>
                 </View>
             </View>
-            <ListView data={ sortedRanks } renderRow={ renderRow }/>
-        </SafeAreaView>
+            <FlatList
+                style={ { marginTop: 51 } }
+                data={ sortedRanks }
+                renderItem={ renderRow }
+            />
+        </View>
     );
 };
 
@@ -116,22 +177,25 @@ const mapStateToProps = (state: Object): Object => {
 
     const teams = state.teams.teams;
     const bagDrops = Object.values(state.trashTracker.trashDrops);
+    const teamHash = R.map(team => ({ teamId: team.id, teamName: team.name || "Anonymous Team", bagCount: 0 }))(teams);
     const rankings = R.compose(
         R.addIndex(R.map)((ranking, index) => ({
             ...ranking,
-            rank: index
+            rank: index + 1
         })),
         R.sort((a, b) => (b.bagCount - a.bagCount)),
-        counts => Object
-            .entries(teams || {})
-            .map(entry => ({
-                teamName: (entry[1] || {}).name || "Anonymous Team",
-                teamId: entry[0],
-                bagCount: counts[entry[0]] || 0
-            })),
-        R.reduce((a, b) => ({ ...a, [b.teamId]: (a[b.teamId] || 0) + (b.bagCount || 0) }), {})
+        Object.values,
+        R.reduce((acc, drop) => ({ // sum the bag drops for each team.
+            ...acc,
+            [drop.teamId]: {
+                ...acc[drop.teamId],
+                bagCount: ((teams[drop.teamId] || {}).bagCount || 0) + drop.bagCount
+            }
+        }), teamHash),
+        R.filter(drops => Boolean(drops.teamId))
     )(bagDrops);
     return ({ rankings });
 };
 
+// $FlowFixMe
 export default connect(mapStateToProps)(LeaderboardScreen);
