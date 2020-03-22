@@ -92,11 +92,6 @@ const TrashMap = (
                 pinColor={ "turquoise" }
                 coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
-                description={ "Tap to view collected trash" }
-                onCalloutPress={ () => {
-                    setModalVisible(true);
-                    setDrop(d);
-                } }
                 stopPropagation={ true }/>
         ));
 
@@ -109,11 +104,6 @@ const TrashMap = (
                 pinColor={ "yellow" }
                 coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
-                description={ "Tap to view, edit or collect" }
-                onCalloutPress={ () => {
-                    setModalVisible(true);
-                    setDrop(d);
-                } }
                 stopPropagation={ true }
             />
         ));
@@ -127,11 +117,6 @@ const TrashMap = (
                 pinColor={ "red" }
                 coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
-                description={ "Tap to view or collect" }
-                onCalloutPress={ () => {
-                    setModalVisible(true);
-                    setDrop(d);
-                } }
                 stopPropagation={ true }
             />
         ));
@@ -252,7 +237,7 @@ const TrashMap = (
                                             color="#888"
                                         />
                                     </Button>) }
-                                backgroundColor	={ 'rgba(52, 52, 52, 0.8)' }
+                                backgroundColor	={ "rgba(52, 52, 52, 0.8)" }
                                 pinchToZoom={ false }
                                 renderContent={ () => (<TrashToggles/>) }>
                                 <View
