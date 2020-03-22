@@ -1,20 +1,20 @@
 // @flow
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import MapView from "react-native-maps";
 import * as R from "ramda";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Lightbox, Button } from "@shoutem/ui";
+
 import EnableLocationServices from "../../components/enable-location-services";
 import {
     SafeAreaView,
-    TouchableHighlight,
-    Modal,
     StyleSheet,
     Text,
     View,
     Platform
 } from "react-native";
-import TrashToggles from "../../components/trash-toggles/trash-toggles";
+import TrashToggles from "../../components/trash-toggles";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
@@ -22,7 +22,6 @@ import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
 import * as constants from "../../styles/constants";
 import { offsetLocations } from "../../libs/geo-helpers";
-import TrashDropForm from "../../components/trash-drop-form";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import Address from "../../models/address";
 
@@ -47,7 +46,6 @@ type PropsType = {
 
 const TrashMap = (
     {
-        actions,
         cleanAreas,
         cleanAreasToggle,
         collectedTrashToggle,
@@ -56,51 +54,12 @@ const TrashMap = (
         myTrashToggle,
         supplyDistributionSites,
         supplyPickupToggle,
-        townData,
         trashCollectionSites,
         trashDropOffToggle,
         uncollectedTrashToggle,
         userLocation
     }: PropsType): React$Element<any> => {
 
-    const [drop, setDrop] = useState({
-        id: null,
-        location: {},
-        tags: [],
-        bagCount: 1,
-        wasCollected: false,
-        createdBy: { uid: currentUser.uid, email: currentUser.email }
-    });
-
-    const [modalVisible, setModalVisible] = useState(false);
-
-    const [toggleModalVisible, setToggleModalVisible] = useState(false);
-
-    const closeModal = () => {
-        const newDrop = TrashDrop.create({
-            id: null,
-            location: {},
-            tags: [],
-            bagCount: 1,
-            wasCollected: false,
-            createdBy: { uid: currentUser.uid, email: currentUser.email }
-        });
-        setModalVisible(false);
-        setDrop(newDrop);
-    };
-
-    const closeToggleModal = () => {
-        setToggleModalVisible(false);
-    };
-
-    const saveTrashDrop = (myDrop: Object) => {
-        if (myDrop.id) {
-            actions.updateTrashDrop(myDrop);
-        } else {
-            actions.dropTrash(TrashDrop.create(myDrop));
-        }
-        closeModal();
-    };
 
     // $FlowFixMe
     const collectionSites = R.compose(
@@ -129,8 +88,9 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
+                // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
-                coordinate={d.location.coordinates }
+                coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view collected trash" }
                 onCalloutPress={ () => {
@@ -145,8 +105,9 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
+                // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
-                coordinate={ d.location.coordinates }
+                coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view, edit or collect" }
                 onCalloutPress={ () => {
@@ -162,8 +123,9 @@ const TrashMap = (
         .map((d: TrashDrop): React$Element<any> => (
             <MapView.Marker
                 key={ d.id }
+                // image={uncollectedTrashIcon}
                 pinColor={ "red" }
-                coordinate={ d.location.coordinates }
+                coordinate={ d.location }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 description={ "Tap to view or collect" }
                 onCalloutPress={ () => {
@@ -178,6 +140,7 @@ const TrashMap = (
         .map((d: Object, i: number): React$Element<any> => (
             <MapView.Marker
                 key={ `dropOffLocation${ i }.map((d, i) => (` }
+                // image={trashDropOffLocationIcon}
                 pinColor={ "blue" }
                 coordinate={ d.coordinates }
                 stopPropagation={ true }>
@@ -241,50 +204,6 @@ const TrashMap = (
                         </View>)],
                     [R.T, () => (
                         <Fragment>
-                            <View style={ {
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                height: 50,
-                                width: "100%",
-                                flex: 1,
-                                flexDirection: "row",
-                                padding: 0,
-                                justifyContent: "flex-end"
-                            } }>
-                                <TouchableHighlight
-                                    style={ [styles.headerButton, {
-                                        backgroundColor: "#EEE",
-                                        paddingTop: 13,
-                                        height: 50,
-                                        flex: 1
-                                    }] }
-                                    onPress={ () => {
-                                        setModalVisible(true);
-                                    } }>
-                                    <Text style={ styles.headerButtonText }>
-                                        { "Record Your Trash" }
-                                    </Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={ {
-                                        height: 50,
-                                        width: 50,
-                                        padding: 5,
-                                        backgroundColor: "rgba(255,255,255,0.8)"
-                                    } }
-                                    onPress={ () => {
-                                        setToggleModalVisible(true);
-                                    } }
-                                >
-
-                                    <Ionicons
-                                        name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
-                                        size={ 42 }
-                                        color="#333"
-                                    />
-                                </TouchableHighlight>
-                            </View>
                             <MapView
                                 initialRegion={ initialMapLocation }
                                 showsUserLocation={ true }
@@ -292,7 +211,7 @@ const TrashMap = (
                                 showsCompass={ true }
                                 style={ {
                                     position: "absolute",
-                                    top: 50,
+                                    top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
@@ -304,32 +223,72 @@ const TrashMap = (
                             >
                                 { allMarkers }
                             </MapView>
+                            <Lightbox
+                                renderHeader={ (close) => (
+                                    <Button style={ {
+                                        position: "absolute",
+                                        top: 40,
+                                        right: 10,
+                                        borderStyle: "solid",
+                                        borderColor: "#AAA",
+                                        borderRadius: "50%",
+                                        borderWidth: 1,
+                                        backgroundColor: "#FFF",
+                                        padding: 10,
+                                        height: 50,
+                                        width: 50,
+                                        shadowColor: "#000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 3.84,
+                                        elevation: 5
+                                    } } onPress={ close }>
+                                        <Ionicons
+                                            name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
+                                            size={ 30 }
+                                            color="#888"
+                                        />
+                                    </Button>) }
+                                backgroundColor	={ 'rgba(52, 52, 52, 0.8)' }
+                                pinchToZoom={ false }
+                                renderContent={ () => (<TrashToggles/>) }>
+                                <View
+                                    style={ {
+                                        position: "absolute",
+                                        top: 10,
+                                        right: 10,
+                                        borderStyle: "solid",
+                                        borderColor: "#AAA",
+                                        borderRadius: "50%",
+                                        borderWidth: 1,
+                                        backgroundColor: "#FFF",
+                                        padding: 10,
+                                        height: 50,
+                                        width: 50,
+                                        shadowColor: "#000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 3.84,
+                                        elevation: 5
+                                    } }
+                                >
+                                    <Ionicons
+                                        name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
+                                        size={ 30 }
+                                        color="#888"
+                                    />
+                                </View>
+                            </Lightbox>
                         </Fragment>)
                     ]
                 ])()
             }
-            <Modal
-                animationType={ "slide" }
-                transparent={ false }
-                visible={ modalVisible }
-                onRequestClose={ closeModal }>
-                <TrashDropForm
-                    currentUser={ currentUser }
-                    location={ userLocation }
-                    onSave={ saveTrashDrop }
-                    onCancel={ closeModal }
-                    townData={ townData }
-                    trashCollectionSites={ collectionSites }
-                    trashDrop={ drop }
-                />
-            </Modal>
-            <Modal
-                animationType={ "slide" }
-                transparent={ false }
-                visible={ toggleModalVisible }
-                onRequestClose={ closeToggleModal }>
-                <TrashToggles close={ closeToggleModal }/>
-            </Modal>
         </SafeAreaView>
     );
 };
@@ -376,12 +335,9 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
-    console.log('drops before transform:', state.trashTracker.trashDrops)
     const drops = Object.values(state.trashTracker.trashDrops || [])
-        .filter((drop: any): boolean => Boolean(drop.location && drop.location.coordinates && drop.location.coordinates.longitude && drop.location.coordinates.latitude));
-    
-    console.log('drops', drops)
-    const townData = Object.values(state.towns.townData || []);
+        .filter((drop: any): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
+    const townData = state.towns.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
     const uncollectedTrashToggle = state.trashTracker.uncollectedTrashToggle;

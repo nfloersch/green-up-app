@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import Toggle from "../toggle";
 import circleTurquoise from "../../assets/images/circle-turquoise.png";
 import circleBlue from "../../assets/images/circle-blue.png";
@@ -13,7 +13,7 @@ import circleYellow from "../../assets/images/circle-yellow.png";
 import circleGreen from "../../assets/images/circle-green.png";
 import circleOrange from "../../assets/images/circle-orange.png";
 
-const myStyles = { toggle: { height: 50 } };
+const myStyles = { toggle: { height: 70, width: "100%" } };
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
@@ -29,10 +29,9 @@ type PropsType = {
 };
 
 
-const TrashToggles = (
+const Toggles = (
     {
         actions,
-        close,
         supplyPickupToggle,
         uncollectedTrashToggle,
         trashDropOffToggle,
@@ -40,18 +39,24 @@ const TrashToggles = (
         collectedTrashToggle,
         cleanAreasToggle
     }: PropsType): React$Element<any> => (
-    <View style={ [styles.frame, { paddingTop: 30 }] }>
-        <View style={ [styles.singleButtonHeader, { backgroundColor: "#EEE", marginTop: 10 }] }>
-            <View style={ styles.buttonBar }>
-                <View style={ styles.buttonBarButton }>
-                    <TouchableOpacity style={ styles.headerButton } onPress={ close }>
-                        <Text style={ styles.headerButtonText }>{ "Close" }</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
+    <SafeAreaView style={ {
+        flex: 1,
+        marginRight: 20,
+        marginLeft: 20,
+        justifyContent: "center",
+        backgroundColor: "transparent",
+        alignContent: "center",
+        alignItems: "center"
+    } }>
+        <View style={ {
+            height: 300,
+            width: "100%",
+            backgroundColor: "#FFF",
+            padding: 30,
+            flex: 0.4,
+            justifyContent: "space-between"
 
-        <View style={ [styles.infoBlockContainer, { height: 300 }] }>
+        } }>
             <Toggle
                 style={ styles.toggle }
                 icon={ circleYellow }
@@ -101,7 +106,7 @@ const TrashToggles = (
                     actions.toggleTrashData("cleanAreasToggle", !cleanAreasToggle);
                 } }/>
         </View>
-    </View>
+    </SafeAreaView>
 );
 
 
@@ -120,4 +125,4 @@ const mapStateToProps = (state: Object): Object => {
 const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(TrashToggles);
+export const TrashToggles = connect(mapStateToProps, mapDispatchToProps)(Toggles);

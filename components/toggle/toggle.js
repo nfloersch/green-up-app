@@ -12,19 +12,21 @@ const styles = {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 10,
-        height: 50
+        backgroundColor: "#FFF",
+        padding: 10
     },
     icon: {
         height: 40,
-        width: 40,
-        margin: 5
+        width: 40
     },
     label: {
         marginLeft: 3,
         color: "#333",
         fontSize: 18,
-        lineHeight: 50
+        padding: 0,
+        width: 200,
+        lineHeight: 40,
+        backgroundColor: "transparent"
     }
 };
 
@@ -38,16 +40,21 @@ type PropsType = {
 
 export const Toggle = ({ icon, label, value, onValueChange }: PropsType): React$Element<View> => (
     <View style={ styles.toggle }>
-        <View style={ { justifyContent: "flex-start", flex: 1, flexDirection: "row" } }>
+        <View style={ { justifyContent: "flex-start", flex: 1, flexDirection: "row", alignItems: "flex-start" } }>
             <Image style={ styles.icon } source={ icon }/>
-            <Text style={ styles.label }>{ label }</Text>
+            <View style={ { flex: 1, justifyContent: "center", alignItems: "flex-start" } }>
+                <Text style={ styles.label }>{ label }</Text>
+            </View>
         </View>
-        <Switch
-            style={ { marginTop: 5, transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] } }
-            value={ value }
-            onValueChange={ (v: string) => {
-                onValueChange(v);
-            } }
-        />
+        <View style={ { flex: 1, justifyContent: "center", alignItems: "flex-end" } }>
+
+            <Switch
+                style={ { transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] } }
+                value={ value }
+                onValueChange={ (v: string) => {
+                    onValueChange(v);
+                } }
+            />
+        </View>
     </View>
 );
