@@ -4,7 +4,6 @@ import React from "react";
 import {
     StyleSheet,
     SafeAreaView,
-    ScrollView,
     TouchableWithoutFeedback,
     Platform,
     KeyboardAvoidingView,
