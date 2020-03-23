@@ -1,77 +1,78 @@
 // @flow
+// TODO: Remove inline styles (JN)
 import React, { useState } from "react";
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
+import { View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
-import { defaultStyles } from "../../styles/default-styles";
+// import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
 
-const styles = StyleSheet.create(defaultStyles);
+// const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
     rankings: Array<Object>
 };
+type ItemPropsType = { rank: number, teamName: string, bagCount: number };
+type RowPropsType = { item: ItemPropsType };
 
-const renderRow = ({ item }) => {
-    return (
+const renderRow = ({ item }: RowPropsType): React$Element<any> => (
+    <View style={ {
+        backgroundColor: "white",
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        height: 50
+    } }>
         <View style={ {
-            backgroundColor: "white",
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            height: 50
+            flexBasis: 50,
+            flexGrow: 0,
+            flexShrink: 0,
+            justifyContent: "center",
+            height: 50,
+            alignSelf: "center",
+            backgroundColor: "#EEE",
+            borderStyle: "solid",
+            borderBottomWidth: 1,
+            borderColor: "#AAA",
+            borderTopWidth: 1,
+            borderTopColor: "#FFF"
         } }>
-            <View style={ {
-                flexBasis: 50,
-                flexGrow: 0,
-                flexShrink: 0,
-                justifyContent: "center",
-                height: 50,
-                alignSelf: "center",
-                backgroundColor: "#EEE",
-                borderStyle: "solid",
-                borderBottomWidth: 1,
-                borderColor: "#AAA",
-                borderTopWidth: 1,
-                borderTopColor: "#FFF"
-            } }>
-                <Text style={ { textAlign: "center" } }>{ item.rank || 0 }</Text>
-            </View>
-            <View style={ {
-                flexGrow: 1,
-                flexShrink: 1,
-                flexBasis: "auto",
-                justifyContent: "center",
-                alignSelf: "center",
-                height: 50,
-                backgroundColor: "#FFF",
-                borderStyle: "solid",
-                borderBottomWidth: 1,
-                borderColor: "#AAA",
-                borderTopWidth: 1,
-                borderTopColor: "#FFF"
-            } }>
-                <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
-            </View>
-            <View style={ {
-                flexBasis: 50,
-                flexGrow: 0,
-                flexShrink: 0,
-                justifyContent: "center",
-                height: 50,
-                alignSelf: "center",
-                backgroundColor: "#EEE",
-                borderStyle: "solid",
-                borderBottomWidth: 1,
-                borderBottomColor: "#AAA",
-                borderTopWidth: 1,
-                borderTopColor: "#FFF"
-            } }>
-                <Text style={ { textAlign: "center" } }>{ item.bagCount || "0" }</Text>
-            </View>
+            <Text style={ { textAlign: "center" } }>{ item.rank || 0 }</Text>
         </View>
-    );
-};
+        <View style={ {
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "auto",
+            justifyContent: "center",
+            alignSelf: "center",
+            height: 50,
+            backgroundColor: "#FFF",
+            borderStyle: "solid",
+            borderBottomWidth: 1,
+            borderColor: "#AAA",
+            borderTopWidth: 1,
+            borderTopColor: "#FFF"
+        } }>
+            <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
+        </View>
+        <View style={ {
+            flexBasis: 50,
+            flexGrow: 0,
+            flexShrink: 0,
+            justifyContent: "center",
+            height: 50,
+            alignSelf: "center",
+            backgroundColor: "#EEE",
+            borderStyle: "solid",
+            borderBottomWidth: 1,
+            borderBottomColor: "#AAA",
+            borderTopWidth: 1,
+            borderTopColor: "#FFF"
+        } }>
+            <Text style={ { textAlign: "center" } }>{ item.bagCount || "0" }</Text>
+        </View>
+    </View>
+);
 
 
 const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
@@ -88,7 +89,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
         ]
     ])(sortBy);
     return (
-        <View style={ { flex: 1, justifyContent: "flex-start", position: "relative", width: "100%" } }>
+        <SafeAreaView style={ { flex: 1, justifyContent: "flex-start", position: "relative", width: "100%" } }>
             <View style={ {
                 backgroundColor: "white",
                 flex: 1,
@@ -148,7 +149,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                 data={ sortedRanks }
                 renderItem={ renderRow }
             />
-        </View>
+        </SafeAreaView>
     );
 };
 
