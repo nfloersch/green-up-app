@@ -44,7 +44,8 @@ type PropsType = {
         leaveTeam: (string, UserType) => void,
         acceptInvitation: (string, UserType) => void,
         revokeInvitation: (string, string) => void,
-        askToJoinTeam: (TeamType, UserType) => void
+        askToJoinTeam: (TeamType, UserType) => void,
+        joinTeam: (TeamType, UserType) => void
     },
     currentUser: Object,
     invitations: Object,
@@ -99,7 +100,10 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         actions.askToJoinTeam(team, user);
         navigation.navigate("Home");
     };
-
+    const joinTeam = (team: Object, user: Object) => {
+        actions.joinTeam(team, user);
+        navigation.navigate("Home");
+    };
     const toMemberDetails = (teamId: string, membershipId: string) => {
         navigation.navigate("TeamMemberDetails", { teamId, membershipId });
     };
@@ -207,6 +211,14 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     }
                 ];
 
+            case selectedTeam.isPublic :
+                return [
+                    {
+                        text: "Join this team", onClick: () => {
+                            joinTeam(selectedTeam, currentUser);
+                        }
+                    }
+                ];
             default :
                 return [
                     {

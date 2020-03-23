@@ -88,6 +88,24 @@ export const askToJoinTeam = (team: Object, user: Object): ThunkType => {
     return thunk;
 };
 
+export const joinTeam = (team: Object, user: Object): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        const message = Message.create({
+            text: `${ user.displayName || user.email } has joined ${ team.name } `,
+            sender: user,
+            teamId: team.id,
+            type: messageTypes.REQUEST_TO_JOIN
+        });
+        const teamId = typeof team === "string" ? team : team.id;
+        firebaseDataLayer.addTeamMember(teamId, user, "ACCEPTED", dispatch);
+        firebaseDataLayer.sendUserMessage(team.owner.uid, message);
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
+
 export const removeTeamRequest = (teamId: string, user: Object): ThunkType => {
     function thunk() {
         // TODO: determine if we need something more than deleting request silently
