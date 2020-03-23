@@ -1,7 +1,15 @@
 // @flow
 
 import React from "react";
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+    StyleSheet,
+    SafeAreaView,
+    ScrollView,
+    TouchableWithoutFeedback,
+    Platform,
+    KeyboardAvoidingView,
+    Keyboard
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CreateAccountForm from "../../components/create-account-form";
@@ -21,17 +29,23 @@ type PropsType = {
 
 
 const Index = ({ actions, createUserError }: PropsType): React$Element<any> => (
-    <SafeAreaView style={ styles.container }>
-        <ScrollView keyboardShouldPersistTaps="handled" scrollEnabled={ false }>
-            <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 } }>
-                <CreateAccountForm
-                    buttonText="Create Account"
-                    createUserError={ createUserError }
-                    createAccount={ actions.createUser }
-                />
-            </View>
-        </ScrollView>
-    </SafeAreaView>
+    <KeyboardAvoidingView
+        behavior={ Platform.OS === "ios" ? "padding" : null }
+        style={ { flex: 1 } }
+    >
+        <SafeAreaView style={ styles.container }>
+            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+                <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, marginTop: 20, justifyContent: "flex-end" } }>
+                    <CreateAccountForm
+                        buttonText="Create Account"
+                        createUserError={ createUserError }
+                        createAccount={ actions.createUser }
+                    />
+                    <View style={ { flex: 1 } }/>
+                </View>
+            </TouchableWithoutFeedback>
+        </SafeAreaView>
+    </KeyboardAvoidingView>
 );
 
 
