@@ -109,12 +109,15 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     justifyContent: "center",
                     height: 50,
                     alignSelf: "center",
-                    backgroundColor: "#EEE"
+                    backgroundColor: "#CCC"
                 } }>
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
                     } }>
-                        <Text style={ { textAlign: "center" } }>{ "Rank" }</Text>
+                        <Text style={ { 
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        } }>{ "Rank" }</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={ {
@@ -124,12 +127,15 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     justifyContent: "center",
                     alignSelf: "center",
                     height: 50,
-                    backgroundColor: "#FFF"
+                    backgroundColor: "#EEE"
                 } }>
                     <TouchableOpacity onPress={ () => {
                         setSortBy("teamName");
                     } }>
-                        <Text style={ { textAlign: "center" } }>{ "Team" }</Text>
+                        <Text style={ { 
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        } }>{ "Team" }</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={ {
@@ -139,9 +145,16 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     justifyContent: "center",
                     height: 50,
                     alignSelf: "center",
-                    backgroundColor: "#EEE"
+                    backgroundColor: "#CCC"
                 } }>
-                    <Text style={ { textAlign: "center" } }>{ "Bags" }</Text>
+                    <TouchableOpacity onPress={ () => {
+                        setSortBy("rank");
+                    } }>
+                        <Text style={ { 
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        } }>{ "Bags" }</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             <FlatList
