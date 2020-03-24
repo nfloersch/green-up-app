@@ -162,6 +162,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                 style={ { marginTop: 51 } }
                 data={ sortedRanks }
                 renderItem={ renderRow }
+                keyExtractor={(teamRow) => teamRow.teamId }
             />
         </SafeAreaView>
     );
