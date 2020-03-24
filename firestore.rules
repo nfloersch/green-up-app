@@ -18,7 +18,7 @@ service cloud.firestore {
 
      //True if team is public
   	function isTeamPublic(teamId){
-      return request.auth.uid == get(/databases/$(database)/documents/teams/$(teamId)).data.isPublic;
+      return  get(/databases/$(database)/documents/teams/$(teamId)).data.isPublic;
   	}
 
 
@@ -79,13 +79,14 @@ service cloud.firestore {
       allow read, create: if isAuthed();
 			allow delete, update: if resource.data.owner.uid == request.auth.uid  || isAdmin();
 			match /messages/{messageId} {
-       allow read, create: if isAuthed() && isTeamPubic(teamId) || isTeamMember(teamId);
+       allow create: if isAuthed() && isTeamMember(teamId);
+       allow read: if isAuthed() && isTeamPubic(teamId) || isTeamMember(teamId);
        allow delete, update: if isAuthed() && isTeamMember(teamId) && resource.data.sender.uid == request.auth.uid || isAdmin();
       }
       match /members/{uid} {
          allow read: if isAuthed();
 				 allow delete: if isTeamOwner(teamId) || isOwner(uid) || isAdmin();
-      	 allow create: if isTeamOwner(teamId) || isAdmin() || isInvited(teamId) || isTeamPublicc(teamId);
+      	 allow create: if isTeamPublic(teamId) || isTeamOwner(teamId) || isAdmin() || isInvited(teamId);
       }
       match /invitations/{email}{
       	allow read, write: if true;
@@ -102,7 +103,7 @@ service cloud.firestore {
 
    match /trashDrops/{dropId} {
         allow read: if true;
-        allow write: if isAuthed();
+        allow write: if istAuthed();
     }
 
     match /admins/{userId} {

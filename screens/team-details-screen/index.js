@@ -156,10 +156,11 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     );
 
     const getTeamMemberStatus = (): string => {
+        const members = teamMembers[selectedTeam.id];
         switch (true) {
-            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
+            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
                 return teamMemberStatuses.OWNER;
-            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
+            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
                 return teamMemberStatuses.ACCEPTED;
             case hasInvitation:
                 return teamMemberStatuses.INVITED;
