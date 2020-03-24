@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
+import { FontAwesome } from "@expo/vector-icons";
 // import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
@@ -24,7 +25,7 @@ const renderRow = ({ item }: RowPropsType): React$Element<any> => (
         height: 50
     } }>
         <View style={ {
-            flexBasis: 50,
+            flexBasis: 65,
             flexGrow: 0,
             flexShrink: 0,
             justifyContent: "center",
@@ -56,7 +57,7 @@ const renderRow = ({ item }: RowPropsType): React$Element<any> => (
             <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
         </View>
         <View style={ {
-            flexBasis: 50,
+            flexBasis: 65,
             flexGrow: 0,
             flexShrink: 0,
             justifyContent: "center",
@@ -103,7 +104,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                 width: "100%"
             } }>
                 <View style={ {
-                    flexBasis: 50,
+                    flexBasis: 65,
                     flexGrow: 0,
                     flexShrink: 0,
                     justifyContent: "center",
@@ -114,10 +115,10 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
                     } }>
-                        <Text style={ { 
-                            textAlign: "center",
-                            fontWeight: "bold",
-                        } }>{ "Rank" }</Text>
+                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                            <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
+                            { "  Rank" }
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={ {
@@ -132,14 +133,14 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("teamName");
                     } }>
-                        <Text style={ { 
-                            textAlign: "center",
-                            fontWeight: "bold",
-                        } }>{ "Team" }</Text>
+                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                            <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
+                            { "  Team" }
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={ {
-                    flexBasis: 50,
+                    flexBasis: 65,
                     flexGrow: 0,
                     flexShrink: 0,
                     justifyContent: "center",
@@ -150,10 +151,10 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
                     } }>
-                        <Text style={ { 
-                            textAlign: "center",
-                            fontWeight: "bold",
-                        } }>{ "Bags" }</Text>
+                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                            <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
+                            { "  Bags" }
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
