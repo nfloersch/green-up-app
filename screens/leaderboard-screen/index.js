@@ -115,7 +115,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
                     } }>
-                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                        <Text style={ { textAlign: "center", fontWeight: "bold" } }>
                             <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
                             { "  Rank" }
                         </Text>
@@ -133,7 +133,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("teamName");
                     } }>
-                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                        <Text style={ { textAlign: "center", fontWeight: "bold" } }>
                             <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
                             { "  Team" }
                         </Text>
@@ -151,7 +151,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                     <TouchableOpacity onPress={ () => {
                         setSortBy("rank");
                     } }>
-                        <Text style={ {  textAlign: "center", fontWeight: "bold" } }>
+                        <Text style={ { textAlign: "center", fontWeight: "bold" } }>
                             <FontAwesome size={ 15 } name={ "sort" } style={ { color: "#555" } }/>
                             { "  Bags" }
                         </Text>
@@ -162,7 +162,7 @@ const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
                 style={ { marginTop: 51 } }
                 data={ sortedRanks }
                 renderItem={ renderRow }
-                keyExtractor={(teamRow) => teamRow.teamId }
+                keyExtractor={ (teamRow) => teamRow.teamId }
             />
         </SafeAreaView>
     );
