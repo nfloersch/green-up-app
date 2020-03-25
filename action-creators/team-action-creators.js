@@ -105,7 +105,6 @@ export const joinTeam = (team: Object, user: Object): ThunkType => {
     return thunk;
 };
 
-
 export const removeTeamRequest = (teamId: string, user: Object): ThunkType => {
     function thunk() {
         // TODO: determine if we need something more than deleting request silently
@@ -125,7 +124,6 @@ export const acceptInvitation = (teamId: string, user: Object): ThunkType => {
     thunk.interceptOnOffline = true;
     return thunk;
 };
-
 
 export const sendGroupMessage = (messageRecipients: Array<{ uid: string }>, message: MessageType): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
@@ -277,11 +275,12 @@ export const selectTeamById = (teamId: string): ActionType => ({ type: types.SEL
 
 export const leaveTeam = (teamId: string, user: Object): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
-        firebaseDataLayer.leaveTeam(teamId, user).then(() => {
-            dispatch({ type: types.DELETE_MESSAGE_SUCCESS });
-        })
+        firebaseDataLayer.leaveTeam(teamId, user)
+            .then(() => {
+                dispatch({ type: types.LEAVE_TEAM_SUCCESS, data: teamId });
+            })
             .catch((error: Error) => {
-                dispatch({ type: types.DELETE_MESSAGE_FAIL, error });
+                dispatch({ type: types.LEAVE_TEAM_FAIL, error });
             });
     }
 

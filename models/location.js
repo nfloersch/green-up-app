@@ -22,6 +22,6 @@ export default class Location {
     }
 
     static create(args: Object = {}): LocationType {
-        return new Location(args);
+        return JSON.parse(JSON.stringify(new Location(args)));
     }
 }

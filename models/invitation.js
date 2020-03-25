@@ -31,6 +31,6 @@ export default class Invitation {
         if (Boolean(id)) {
             _args.id = id;
         }
-        return new Invitation(_args);
+        return JSON.parse(JSON.stringify(new Invitation(_args)));
     }
 }

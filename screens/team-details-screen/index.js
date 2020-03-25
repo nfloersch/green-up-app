@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -60,6 +60,19 @@ type PropsType = {
 
 const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navigation, selectedTeam, teamMembers, town }: PropsType): React$Element<any> => {
 
+
+    // Handle bad team reference
+    if (!selectedTeam || !selectedTeam.id) {
+        return (
+            <SafeAreaView style={ styles.container }>
+                <View style={ { flex: 1, flexDirection: "row", marginTop: 50, justifyContent: "center" } }>
+                    <Text style={ { color: "white", fontSize: 18 } }>{ "Sorry we couldn't find that team" }</Text>
+                </View>
+            </SafeAreaView>
+        );
+    }
+
+
     const declineInvitation = (teamId: string, membershipId: string) => {
         actions.revokeInvitation(teamId, membershipId);
     };
@@ -100,10 +113,12 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
         actions.askToJoinTeam(team, user);
         navigation.navigate("Home");
     };
+
     const joinTeam = (team: Object, user: Object) => {
         actions.joinTeam(team, user);
         navigation.navigate("Home");
     };
+
     const toMemberDetails = (teamId: string, membershipId: string) => {
         navigation.navigate("TeamMemberDetails", { teamId, membershipId });
     };
@@ -114,7 +129,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
     const teamMemberList = (
         <View style={ { width: "100%" } }>
-            <Text style={ [styles.textDark, { textAlign: "center" }] }>
+            <Text style={ { fontSize: 20, color: "white", textAlign: "center", marginTop: 10 } }>
                 { "Team Members" }
             </Text>
             {
@@ -156,16 +171,16 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     );
 
     const getTeamMemberStatus = (): string => {
-        const members = teamMembers[selectedTeam.id];
+        const members = teamMembers[selectedTeam.id] || {};
         switch (true) {
-            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
-                return teamMemberStatuses.OWNER;
-            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
-                return teamMemberStatuses.ACCEPTED;
             case hasInvitation:
                 return teamMemberStatuses.INVITED;
             case ((currentUser.teams || {})[selectedTeam.id] || {}).isMember === false :
                 return teamMemberStatuses.REQUEST_TO_JOIN;
+            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
+                return teamMemberStatuses.OWNER;
+            case (members[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
+                return teamMemberStatuses.ACCEPTED;
             default:
                 return teamMemberStatuses.NOT_INVITED;
         }
@@ -366,16 +381,17 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     { isTeamMember ? teamMemberList : null }
                 </View>
             </ScrollView>
+
         </SafeAreaView>
     );
 };
-
 
 const mapStateToProps = (state: Object): Object => {
     const selectedTownName = ((state.teams.selectedTeam || {}).town || "").toLowerCase();
     const town = Object
         .values((state.towns.townData || {}))
         .find((_town: Object): boolean => (_town.name || "").toLowerCase() === selectedTownName);
+
     return ({
         locations: state.teams.locations,
         invitations: state.teams.myInvitations || {},
