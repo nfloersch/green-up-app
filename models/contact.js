@@ -64,6 +64,6 @@ export default class Contact {
         if (Boolean(uid)) {
             _args.uid = uid;
         }
-        return new Contact(_args);
+        return JSON.parse(JSON.stringify(new Contact(_args)));
     }
 }

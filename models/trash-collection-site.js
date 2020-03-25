@@ -36,6 +36,6 @@ export default class TrashCollectionSite {
         if (Boolean(id)) {
             _args.id = id;
         }
-        return new TrashCollectionSite(_args);
+        return JSON.parse(JSON.stringify(new TrashCollectionSite(_args)));
     }
 }

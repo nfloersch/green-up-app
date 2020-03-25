@@ -62,6 +62,6 @@ export default class Town {
         if (Boolean(id)) {
             _args.id = id;
         }
-        return new Town(_args);
+        return JSON.parse(JSON.stringify(new Town(args)));
     }
 }

@@ -18,7 +18,7 @@ export default class Address {
     }
 
     static create(args: Object = {}): Address {
-        return new Address(args);
+        return JSON.parse(JSON.stringify(new Address(args)));
     }
 
     static toString(address: Address): string {
@@ -26,16 +26,16 @@ export default class Address {
         const street = (add => {
             switch (true) {
                 case Boolean(add.street && add.street2):
-                    return `${ add.street.trim() } / ${ add.street2.trim() } `;
+                    return `${ (add.street || "").trim() } / ${ (add.street2 || "").trim() } `;
                 case add.street2 && !add.street:
-                    return `${ add.street2.trim() } `;
+                    return `${ (add.street2 || "").trim() } `;
                 case add.street && !add.street2:
-                    return `${ add.street.trim() } `;
+                    return `${ (add.street || "").trim() } `;
                 default:
                     return "";
             }
         })(a);
-        return (`${ street }${ a.city } ${ a.state } ${ a.zip }`).trim();
+        return (`${ street }${ a.city || "" } ${ a.state || "" } ${ a.zip || "" }`).trim();
 
     }
 }
