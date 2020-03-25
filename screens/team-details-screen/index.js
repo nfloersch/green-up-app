@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, SafeAreaView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
