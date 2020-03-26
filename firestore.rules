@@ -80,7 +80,7 @@ service cloud.firestore {
 			allow delete, update: if resource.data.owner.uid == request.auth.uid  || isAdmin();
 			match /messages/{messageId} {
        allow create: if isAuthed() && isTeamMember(teamId);
-       allow read: if isAuthed() && isTeamPubic(teamId) || isTeamMember(teamId);
+       allow read: if isAuthed() && isTeamPublic(teamId) || isTeamMember(teamId);
        allow delete, update: if isAuthed() && isTeamMember(teamId) && resource.data.sender.uid == request.auth.uid || isAdmin();
       }
       match /members/{uid} {

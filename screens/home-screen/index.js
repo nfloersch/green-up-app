@@ -98,14 +98,14 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
             backgroundImage: require("../../assets/images/car-wide.jpg"),
             backgroundImageLarge: require("../../assets/images/car-large.jpg")
         },
-        celebrations: {
-            order: 402,
-            navigation: "Celebrations",
-            label: "Celebrations",
-            description: "Fun things to do",
-            backgroundImage: require("../../assets/images/party-wide.jpg"),
-            backgroundImageLarge: require("../../assets/images/party-large.jpg")
-        },
+        // celebrations: {
+        //     order: 402,
+        //     navigation: "Celebrations",
+        //     label: "Celebrations",
+        //     description: "Fun things to do",
+        //     backgroundImage: require("../../assets/images/party-wide.jpg"),
+        //     backgroundImageLarge: require("../../assets/images/party-large.jpg")
+        // },
         greenUpFacts: {
             order: 403,
             navigation: "GreenUpFacts",
