@@ -6,6 +6,7 @@ import * as status from "../../constants/team-member-statuses";
 import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
 import { ButtonBar } from "../button-bar/button-bar";
+import { defaultGravatar } from "../../libs/avatars";
 
 const myStyles = {
     statusBar: {
@@ -15,10 +16,13 @@ const myStyles = {
         alignItems: "center",
         backgroundColor: "#FFE",
         marginBottom: 10,
+        marginTop: 5,
         padding: 10,
-        borderWidth: 1,
-        borderColor: "#FDFDFE",
-        width: "100%"
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        borderColor: "#AAA"
     },
     statusBarText: { fontSize: 12, textAlign: "left" }
 };
@@ -85,7 +89,6 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
 
     };
 
-
     const getButtons = (_team: Object, _teamMember: Object, closeMembersModal: () => void): Array<Object> => {
         switch (_teamMember.memberStatus) {
             case status.REQUEST_TO_JOIN :
@@ -125,10 +128,13 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
                 return (
                     <View style={ styles.statusBar }>
                         <MemberIcon memberStatus={ status.OWNER }/>
-                        <Text style={ styles.statusBarText }>
-                            { `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email }` } is
-                            the owner of this team
-                        </Text>
+                        <View>
+                            <Text style={ styles.statusBarText }>
+                                {
+                                    `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } is  the owner of this team`
+                                }
+                            </Text>
+                        </View>
                     </View>
                 );
             case status.REQUEST_TO_JOIN :
@@ -138,30 +144,39 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
                             memberStatus={ status.REQUEST_TO_JOIN }
                             isOwner={ _teamMember.memberStatus === status.OWNER }
                         />
-                        <Text style={ styles.statusBarText }>
-                            { _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } wants
-                            to
-                            join this team
-                        </Text>
+                        <View>
+                            <Text style={ styles.statusBarText }>
+                                {
+                                    `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } wants to join this team`
+                                }
+                            </Text>
+                        </View>
                     </View>
                 );
             case status.ACCEPTED :
                 return (
                     <View style={ styles.statusBar }>
                         <MemberIcon memberStatus={ status.ACCEPTED }/>
-                        <Text style={ styles.statusBarText }>
-                            { _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } is a
-                            member of this team.
-                        </Text>
+                        <View>
+                            <Text style={ styles.statusBarText }>
+                                {
+                                    `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } is a member of this team.`
+                                }
+                            </Text>
+                        </View>
                     </View>
                 );
             case status.INVITED :
                 return (
                     <View style={ styles.statusBar }>
                         <MemberIcon memberStatus={ status.INVITED }/>
-                        <Text style={ styles.statusBarText }>
-                            { `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } has not yet accepted the invitation` }
-                        </Text>
+                        <View>
+                            <Text style={ styles.statusBarText }>
+                                {
+                                    `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email } has not yet accepted the invitation`
+                                }
+                            </Text>
+                        </View>
                     </View>
                 );
 
@@ -169,11 +184,13 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
                 return (
                     <View style={ styles.statusBar }>
                         <MemberIcon memberStatus={ status.NOT_INVITED }/>
-                        <Text style={ styles.statusBarText }>
-                            { _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email || "This person" } is
-                            not a member of this
-                            team
-                        </Text>
+                        <View>
+                            <Text style={ styles.statusBarText }>
+                                {
+                                    `${ _teamMember.displayName && _teamMember.displayName.trim() || _teamMember.email || "This person" } is not a member of this team`
+                                }
+                            </Text>
+                        </View>
                     </View>
                 );
         }
@@ -183,23 +200,24 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
         <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
             <ButtonBar buttonConfigs={ getButtons(team, teamMember, closeModal) }/>
             <ScrollView
-                style={ [styles.scroll, { padding: 20 }] }
+                style={ { padding: 0, margin: 0 } }
                 automaticallyAdjustContentInsets={ false }
                 scrollEventThrottle={ 200 }
                 keyboardShouldPersistTaps={ "always" }
             >
+
+                { getStatus(teamMember) }
+
                 <View style={ styles.profileHeader }>
                     <Image
                         style={ { width: 50, height: 50 } }
-                        source={ { uri: teamMember.photoURL } }
+                        source={ { uri: teamMember.photoURL || defaultGravatar } }
                     />
                     <Text style={ [styles.profileName, styles.heading] }>
                         { `${ teamMember.displayName && teamMember.displayName.trim() || teamMember.email || "" }` }
                     </Text>
                 </View>
-                <View>
-                    { getStatus(teamMember) }
-                </View>
+
                 <View style={ { marginTop: 10 } }>
                     <Text style={ styles.label }>{ teamMember.bio || "" }</Text>
                 </View>

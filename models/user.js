@@ -52,7 +52,7 @@ export default class User {
         if (Boolean(uid)) {
             _args.uid = uid;
         }
-        return new User(_args);
+        return JSON.parse(JSON.stringify(new User(_args)));
     }
 
 

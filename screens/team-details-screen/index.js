@@ -44,11 +44,11 @@ type PropsType = {
         leaveTeam: (string, UserType) => void,
         acceptInvitation: (string, UserType) => void,
         revokeInvitation: (string, string) => void,
-        askToJoinTeam: (TeamType, UserType) => void
+        askToJoinTeam: (TeamType, UserType) => void,
+        joinTeam: (TeamType, UserType) => void
     },
     currentUser: Object,
     invitations: Object,
-    locations: Array<Object>,
     navigation: Object,
     selectedTeam: Object,
     teamMembers: Object,
@@ -57,7 +57,20 @@ type PropsType = {
     otherCleanAreas: Array<Object>
 };
 
-const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navigation, selectedTeam, teamMembers, town }: PropsType): React$Element<any> => {
+const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, selectedTeam, teamMembers, town }: PropsType): React$Element<any> => {
+
+
+    // Handle bad team reference
+    if (!selectedTeam || !selectedTeam.id) {
+        return (
+            <SafeAreaView style={ styles.container }>
+                <View style={ { flex: 1, flexDirection: "row", marginTop: 50, justifyContent: "center" } }>
+                    <Text style={ { color: "white", fontSize: 18 } }>{ "Sorry we couldn't find that team" }</Text>
+                </View>
+            </SafeAreaView>
+        );
+    }
+
 
     const declineInvitation = (teamId: string, membershipId: string) => {
         actions.revokeInvitation(teamId, membershipId);
@@ -91,12 +104,18 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     };
 
     const removeRequest = (teamId: string, user: Object) => {
-        navigation.goBack();
         actions.removeTeamRequest(teamId, user);
+        navigation.goBack();
     };
 
     const askToJoin = (team: Object, user: Object) => {
         actions.askToJoinTeam(team, user);
+        navigation.navigate("Home");
+    };
+
+    const joinTeam = (team: Object, user: Object) => {
+        actions.joinTeam(team, user);
+        navigation.navigate("Home");
     };
 
     const toMemberDetails = (teamId: string, membershipId: string) => {
@@ -109,7 +128,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
     const teamMemberList = (
         <View style={ { width: "100%" } }>
-            <Text style={ [styles.textDark, { textAlign: "center" }] }>
+            <Text style={ { fontSize: 20, color: "white", textAlign: "center", marginTop: 10 } }>
                 { "Team Members" }
             </Text>
             {
@@ -152,14 +171,14 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
 
     const getTeamMemberStatus = (): string => {
         switch (true) {
-            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
-                return teamMemberStatuses.OWNER;
-            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
-                return teamMemberStatuses.ACCEPTED;
             case hasInvitation:
                 return teamMemberStatuses.INVITED;
             case ((currentUser.teams || {})[selectedTeam.id] || {}).isMember === false :
                 return teamMemberStatuses.REQUEST_TO_JOIN;
+            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.OWNER :
+                return teamMemberStatuses.OWNER;
+            case (teamMembers[memberKey] || {}).memberStatus === teamMemberStatuses.ACCEPTED :
+                return teamMemberStatuses.ACCEPTED;
             default:
                 return teamMemberStatuses.NOT_INVITED;
         }
@@ -206,6 +225,14 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                     }
                 ];
 
+            case selectedTeam.isPublic :
+                return [
+                    {
+                        text: "Join this team", onClick: () => {
+                            joinTeam(selectedTeam, currentUser);
+                        }
+                    }
+                ];
             default :
                 return [
                     {
@@ -324,7 +351,7 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
                 </Divider>
 
                 {
-                    (locations || []).length > 0
+                    (selectedTeam.locations || []).length > 0
                         ? (<MiniMap pinsConfig={ selectedTeam.locations }/>)
                         : (<Text style={ {
                             fontSize: 14,
@@ -356,18 +383,20 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, locations, navig
     );
 };
 
-
 const mapStateToProps = (state: Object): Object => {
     const selectedTownName = ((state.teams.selectedTeam || {}).town || "").toLowerCase();
     const town = Object
         .values((state.towns.townData || {}))
         .find((_town: Object): boolean => (_town.name || "").toLowerCase() === selectedTownName);
+    const selectedTeam = state.teams.selectedTeam || {};
+    const teamMembers = state.teams.teamMembers[selectedTeam.id] || {};
+    const currentUser = User.create({ ...state.login.user, ...state.profile });
+    const invitations = state.teams.myInvitations || {};
     return ({
-        locations: state.teams.locations,
-        invitations: state.teams.myInvitations || {},
-        selectedTeam: state.teams.selectedTeam,
-        currentUser: User.create({ ...state.login.user, ...state.profile }),
-        teamMembers: state.teams.teamMembers,
+        invitations,
+        selectedTeam,
+        currentUser,
+        teamMembers,
         town
     });
 };
