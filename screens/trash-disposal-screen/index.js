@@ -8,8 +8,7 @@ import {
     TouchableHighlight,
     Platform,
     Text,
-    SafeAreaView,
-    ScrollView
+    SafeAreaView
 } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -18,8 +17,7 @@ import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search";
 import { DisposalSite } from "../../components/disposal-site/disposal-site";
-import moment from "moment";
-import { dateIsInCurrentEventWindow, getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import { dateIsInCurrentEventWindow } from "../../libs/green-up-day-calucators";
 import EnableLocationServices from "../../components/enable-location-services/enable-location-services";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { bindActionCreators } from "redux";
@@ -28,7 +26,7 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
-import { Button, Divider, Lightbox } from "@shoutem/ui";
+import { Button, Lightbox } from "@shoutem/ui";
 import TrashInfo from "../../components/trash-info";
 
 const styles = StyleSheet.create(defaultStyles);
