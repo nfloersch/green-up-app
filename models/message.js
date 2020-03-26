@@ -51,7 +51,7 @@ export default class Message {
         if (Boolean(id)) {
             _args.id = id;
         }
-        return new Message(_args);
+        return JSON.parse(JSON.stringify( new Message(_args)));
     }
 
     static messageTypes = messageTypes;

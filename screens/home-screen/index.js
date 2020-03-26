@@ -50,7 +50,8 @@ type PropsType = {
 
 const isOwner = (teams, user: UserType, teamId: string): boolean => {
     const teamOwner = (teams[teamId] || {}).owner;
-    return teamOwner && teamOwner.uid === user.uid;
+    const userIsOwner = teamOwner && teamOwner.uid === user.uid;
+    return userIsOwner;
 };
 
 
@@ -97,14 +98,14 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
             backgroundImage: require("../../assets/images/car-wide.jpg"),
             backgroundImageLarge: require("../../assets/images/car-large.jpg")
         },
-        celebrations: {
-            order: 402,
-            navigation: "Celebrations",
-            label: "Celebrations",
-            description: "Fun things to do",
-            backgroundImage: require("../../assets/images/party-wide.jpg"),
-            backgroundImageLarge: require("../../assets/images/party-large.jpg")
-        },
+        // celebrations: {
+        //     order: 402,
+        //     navigation: "Celebrations",
+        //     label: "Celebrations",
+        //     description: "Fun things to do",
+        //     backgroundImage: require("../../assets/images/party-wide.jpg"),
+        //     backgroundImageLarge: require("../../assets/images/party-large.jpg")
+        // },
         greenUpFacts: {
             order: 403,
             navigation: "GreenUpFacts",
@@ -125,7 +126,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                 actions.selectTeam(team);
             },
             label: team.name || "My Team",
-            description:isOwner(teams, currentUser, (team.id || "foo")) ? "Manage Your Team" : "About Your Team",
+            description: isOwner(teams, currentUser, (team.id || "foo")) ? "Manage Your Team" : "About Your Team",
             backgroundImage: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-wide.jpg") : require("../../assets/images/man-boy-wide.jpg"),
             backgroundImageLarge: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-large.jpg") : require("../../assets/images/man-boy-large.jpg")
         }

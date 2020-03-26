@@ -36,6 +36,6 @@ export default class TrashDrop {
         if (Boolean(id)) {
             _args.id = id;
         }
-        return new TrashDrop(_args);
+        return JSON.parse(JSON.stringify(new TrashDrop(_args)));
     }
 }

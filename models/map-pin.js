@@ -24,7 +24,7 @@ export default class MapPin {
     }
 
     static create(args: Object = {}): MapPin {
-        return new MapPin(args);
+        return JSON.parse(JSON.stringify(new MapPin(args)));
     }
 
     static offset(pin: MapPin, distance: number = 1, azimuth: number = 45): MapPin {

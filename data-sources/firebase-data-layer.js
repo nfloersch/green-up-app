@@ -19,6 +19,7 @@ import SupplyDistributionSite from "../models/supply-distribution-site";
 import Celebration from "../models/celebration";
 import Team from "../models/team";
 import * as R from "ramda";
+import { defaultGravatar } from "../libs/avatars";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -465,7 +466,16 @@ export function createUser(email: string, password: string, displayName: string,
     return firebase
         .auth()
         .createUserWithEmailAndPassword(email, password).then(
-            (response: Object): Promise<any> => createProfile({ ...User.create(response.user), displayName }, dispatch)
+            (response: Object): Promise<any> => {
+                createProfile({
+                    ...User.create(response.user),
+                    displayName: displayName || response.user.displayName
+                }, dispatch);
+                return response.user.updateProfile({
+                    displayName: displayName || response.user.displayName,
+                    photoURL: response.user.photoURL || defaultGravatar
+                });
+            }
         );
 }
 
@@ -532,12 +542,13 @@ export function deleteMessage(userId: string, messageId: string): Promise<any> {
 
 export async function createTeam(team: Object = {}, user: ?Object = {}, dispatch: Dispatch<ActionType>): Promise<any> {
     const { uid } = (user || {});
-    const myTeam = deconstruct({ ...team, owner: TeamMember.create({ ...user, memberStatus: "OWNER" }) });
+    const owner = TeamMember.create({ ...user, memberStatus: "OWNER" });
+    const myTeam = deconstruct({ ...team, owner });
 
     const docRef = await db.collection("teams").add(myTeam);
     // TODO: Refactor to single Promise.all that is returned.
     await Promise.all([
-        db.collection(`teams/${ docRef.id }/members`).doc(team.owner.uid).set({ ...team.owner }),
+        db.collection(`teams/${ docRef.id }/members`).doc(owner.uid).set(owner),
         db.collection(`profiles/${ uid }/teams`).doc(docRef.id).set({ ...myTeam, isMember: true })
     ]);
 
