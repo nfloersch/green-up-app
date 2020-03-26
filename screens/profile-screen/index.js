@@ -82,8 +82,8 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                         <View style={ [styles.profileHeader, { backgroundColor: "white" }] }>
                             <PhotoPicker
                                 onChange={ (image: Object) => {
-                                dispatch({ type: "UPDATE_AVATAR", data: `data:image/png;base64,${image.base64}` });
-                            } }>
+                                    dispatch({ type: "UPDATE_AVATAR", data: `data:image/png;base64,${image.base64}` });
+                                } }>
                                 <Image
                                     style={ { width: 50, height: 50 } }
                                     source={ { uri: photoURL } }
