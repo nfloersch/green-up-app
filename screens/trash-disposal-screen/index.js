@@ -1,6 +1,16 @@
 // @flow
 import React, { useState, useEffect, Fragment } from "react";
-import { StyleSheet, View, FlatList, TextInput, TouchableHighlight, Platform, Text, SafeAreaView } from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    TextInput,
+    TouchableHighlight,
+    Platform,
+    Text,
+    SafeAreaView,
+    ScrollView
+} from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
@@ -18,6 +28,8 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
+import { Button, Divider, Lightbox } from "@shoutem/ui";
+import TrashInfo from "../../components/trash-info";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -48,10 +60,6 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
-
-    const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
-    const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
-
     const initialMapLocation = userLocation
         ? Coordinates.create(userLocation.coordinates)
         : null;
@@ -71,20 +79,49 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
                 </View>)
         ],
         [
-            () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(guStart.toDate()), // Hack to force GU Day window
+            () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(moment(getCurrentGreenUpDay()).subtract(1, "days").toDate()), // Hack to force GU Day window
             () => (
                 <Fragment>
-                    <View style={ { margin: 2 } }>
-                        <Text style={ { textAlign: "center" } }>
-                            { `Record your trash bags for your team from ${ guStart.format("dddd MM/DD/YYYY") } until ${ guEnd.format("dddd MM/DD/YYYY") }` }
-                        </Text>
-                    </View>
-                    <View style={ { margin: 2 } }>
-                        <Text>{ "Each town handles trash bags differently.  Find the rules for your town" }</Text>
-                    </View>
                     <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
                         <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
-                            <View style={ { flex: 1, flexDirection: "column" } }>
+                            <Lightbox
+                                renderHeader={ (close) => (
+                                    <Button style={ {
+                                        position: "absolute",
+                                        top: 40,
+                                        right: 10,
+                                        borderStyle: "solid",
+                                        borderColor: "#AAA",
+                                        borderRadius: 40,
+                                        borderWidth: 1,
+                                        backgroundColor: "#FFF",
+                                        padding: 10,
+                                        height: 50,
+                                        width: 50,
+                                        shadowColor: "#000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 3.84,
+                                        elevation: 5
+                                    } } onPress={ close }>
+                                        <Ionicons
+                                            name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
+                                            size={ 30 }
+                                            color="#888"
+                                        />
+                                    </Button>) }
+                                backgroundColor={ "rgba(52, 52, 52, 0.8)" }
+                                pinchToZoom={ false }
+                                renderContent={ () => (<TrashInfo/>) }>
+                                <Ionicons
+                                    name={ Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline" }
+                                    size={ 36 }
+                                    style={ iconStyle }/>
+                            </Lightbox>
+                            <View style={ { marginLeft: 10, flex: 1, flexDirection: "column" } }>
                                 <TextInput
                                     keyBoardType={ "default" }
                                     onChangeText={ setSearchTerm }
@@ -122,7 +159,13 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
                         justifyContent: "center",
                         alignSelf: "stretch"
                     } }>
-
+                        <FlatList
+                            style={ styles.infoBlockContainer }
+                            data={ searchTerm ? searchResults : townInfo }
+                            keyExtractor={ (item: Object): string => `${ item.id }` }
+                            renderItem={ ({ item }: { item: Object }): React$Element<any> => (
+                                <DisposalSite item={ item }/>
+                            ) }/>
                     </View>
                 </Fragment>
             )
@@ -200,8 +243,7 @@ const mapStateToProps = (state: Object): Object => {
         });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<
-Object>
+const mapDispatchToProps = (dispatch: Dispatch<Object>
 ): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
