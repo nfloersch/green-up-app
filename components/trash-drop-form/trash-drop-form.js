@@ -43,10 +43,10 @@ const getTown = (myLocation: LocationType): string => {
 type PropsType = {
     location: LocationType,
     trashDrop?: Object,
-    onSave: Object => void,
+    onSave: TrashDropType => void,
     currentUser: UserType,
     townData: Object,
-    trashCollectionSites: Array<Object>,
+    trashCollectionSites: Object, //Array<Object>,
     userLocation?: LocationType
 };
 
@@ -61,8 +61,8 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
         wasCollected: false,
         location: {},
         tags: [],
-        bagCount: 1,
-        createdBy: { uid: currentUser.uid, email: currentUser.email }
+        createdBy: { uid: currentUser.uid, email: currentUser.email },
+        bagCount: 1
     });
     const [modal, setModal] = useState(null);
     const town = location ? getTown(location) : "";
@@ -87,8 +87,25 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
         id: entry[0],
         name: entry[1].name
     }));
-    const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
-    const selectedTown = townData.find(t => t.townId === (selectedSite || {}).townId);
+    //const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
+    var selectedSite = {};
+    const siteKeys = Object.keys(trashCollectionSites);
+    siteKeys.some(siteKey => {
+        if (trashCollectionSites[siteKey].id === drop.collectionSiteId) {
+            selectedSite = trashCollectionSites[siteKey];
+            return true;
+        }
+    });
+
+    var selectedTown = {}; //townData.find(t => t.townId === (selectedSite || {}).townId);
+    const townKeys = Object.keys(townData);
+    townKeys.some(townKey => {
+        if (townData[townKey].townId === selectedSite.townId) {
+            selectedTown = townData[townKey];
+            return true;
+        }
+    });
+    
     return (
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ [{ text: "SAVE", onClick: () => onSave(drop) }] }/>

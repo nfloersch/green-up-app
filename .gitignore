@@ -1,4 +1,5 @@
 .env
+assets/**/*
 environment.js
 node_modules/**/*
 *.expo
