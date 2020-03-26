@@ -1,7 +1,6 @@
 // @flow
 import * as memberStati from "../constants/team-member-statuses";
-
-const defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/greenupvermont-de02b.appspot.com/o/anonymous.png?alt=media&token=5b617caf-fd05-4508-a820-f9f373b432fa";
+import { defaultGravatar } from "../libs/avatars";
 
 export default class TeamMember {
     uid: ?string;
@@ -27,7 +26,7 @@ export default class TeamMember {
             : null;
         this.photoURL = typeof args.photoURL === "string"
             ? args.photoURL
-            : defaultAvatar;
+            : defaultGravatar;
         this.memberStatus = typeof args.memberStatus === "string"
             ? args.memberStatus
             : memberStati.NOT_INVITED;
@@ -41,7 +40,7 @@ export default class TeamMember {
         if (Boolean(uid)) {
             _args.uid = uid;
         }
-        return new TeamMember(_args);
+        return JSON.parse(JSON.stringify(new TeamMember(_args)));
     }
 
     static memberStatuses = memberStati;

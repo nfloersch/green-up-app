@@ -80,10 +80,11 @@ type PropsType = {
     currentUser: User,
     locations: Array<TownLocation>,
     otherCleanAreas: Array<any>,
-    vermontTowns: Array<Object>
+    vermontTowns: Array<Object>,
+    navigation: Object
 };
 
-const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$Element<any> => {
+const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsType): React$Element<any> => {
 
     const [state, dispatch] = useReducer(reducer, freshState(currentUser));
 
@@ -126,8 +127,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas }: PropsType): React$El
             Alert.alert("Please give your team a name.");
         } else {
             actions.createTeam(team, currentUser);
-            const newState = freshState(currentUser);
-            dispatch({ type: "RESET_STATE", data: newState });
+            navigation.goBack();
         }
     };
 

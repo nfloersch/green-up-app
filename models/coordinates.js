@@ -14,6 +14,6 @@ export default class Coordinates {
     }
 
     static create(args: ?Object = {}): Coordinates {
-        return new Coordinates(args);
+        return JSON.parse(JSON.stringify(new Coordinates(args)));
     }
 }

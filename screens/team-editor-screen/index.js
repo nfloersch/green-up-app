@@ -2,6 +2,7 @@
 /* eslint-disable new-cap */
 import React, { useState } from "react";
 import { Dimensions, Text } from "react-native";
+import { withNavigation } from "react-navigation";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import TeamDetailsEditor from "../../components/team-details-editor";
 import TeamMembersEditor from "../../components/team-members-editor";
@@ -36,7 +37,7 @@ const TeamEditorScreen = (): React$Element<any> => {
 
             navigationState={ navState }
             renderScene={ SceneMap({
-                details: TeamDetailsEditor,
+                details: withNavigation(TeamDetailsEditor),
                 members: TeamMembersEditor
             }) }
             onIndexChange={ setActiveTab }

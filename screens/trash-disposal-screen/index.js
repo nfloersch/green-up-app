@@ -1,6 +1,15 @@
 // @flow
 import React, { useState, useEffect, Fragment } from "react";
-import { StyleSheet, View, FlatList, TextInput, TouchableHighlight, Platform, Text, SafeAreaView } from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    TextInput,
+    TouchableHighlight,
+    Platform,
+    Text,
+    SafeAreaView
+} from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
@@ -8,8 +17,7 @@ import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search";
 import { DisposalSite } from "../../components/disposal-site/disposal-site";
-import moment from "moment";
-import { dateIsInCurrentEventWindow, getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import { dateIsInCurrentEventWindow } from "../../libs/green-up-day-calucators";
 import EnableLocationServices from "../../components/enable-location-services/enable-location-services";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { bindActionCreators } from "redux";
@@ -18,6 +26,8 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
+import { Button, Lightbox } from "@shoutem/ui";
+import TrashInfo from "../../components/trash-info";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -33,11 +43,12 @@ type PropsType = {
     currentUser: UserType,
     trashCollectionSites: Array<Object>,
     townInfo: Array<Object>,
-    userLocation: Object
+    userLocation: Object,
+    navigation: Object
 };
 
 
-const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
 
     const [searchResults, setSearchResults] = useState(townInfo);
     const [searchTerm, setSearchTerm] = useState("");
@@ -46,10 +57,6 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
         const spotsFound = searchArray(searchableFields, townInfo, searchTerm);
         setSearchResults(spotsFound);
     }, [searchTerm]);
-
-
-    const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
-    const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
 
     const initialMapLocation = userLocation
         ? Coordinates.create(userLocation.coordinates)
@@ -70,20 +77,49 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                 </View>)
         ],
         [
-            () => !dateIsInCurrentEventWindow(guStart.toDate()),
+            () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(moment(getCurrentGreenUpDay()).subtract(1, "days").toDate()), // Hack to force GU Day window
             () => (
                 <Fragment>
-                    <View style={ { margin: 2 } }>
-                        <Text style={ { textAlign: "center" } }>
-                            { `Record your trash bags for your team from ${ guStart.format("dddd MM/DD/YYYY") } until ${ guEnd.format("dddd MM/DD/YYYY") }` }
-                        </Text>
-                    </View>
-                    <View style={ { margin: 2 } }>
-                        <Text>{ "Each town handles trash bags differently.  Find the rules for your town" }</Text>
-                    </View>
                     <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
                         <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
-                            <View style={ { flex: 1, flexDirection: "column" } }>
+                            <Lightbox
+                                renderHeader={ (close) => (
+                                    <Button style={ {
+                                        position: "absolute",
+                                        top: 40,
+                                        right: 10,
+                                        borderStyle: "solid",
+                                        borderColor: "#AAA",
+                                        borderRadius: 40,
+                                        borderWidth: 1,
+                                        backgroundColor: "#FFF",
+                                        padding: 10,
+                                        height: 50,
+                                        width: 50,
+                                        shadowColor: "#000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 3.84,
+                                        elevation: 5
+                                    } } onPress={ close }>
+                                        <Ionicons
+                                            name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
+                                            size={ 30 }
+                                            color="#888"
+                                        />
+                                    </Button>) }
+                                backgroundColor={ "rgba(52, 52, 52, 0.8)" }
+                                pinchToZoom={ false }
+                                renderContent={ () => (<TrashInfo/>) }>
+                                <Ionicons
+                                    name={ Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline" }
+                                    size={ 36 }
+                                    style={ iconStyle }/>
+                            </Lightbox>
+                            <View style={ { marginLeft: 10, flex: 1, flexDirection: "column" } }>
                                 <TextInput
                                     keyBoardType={ "default" }
                                     onChangeText={ setSearchTerm }
@@ -138,7 +174,10 @@ const TrashDisposalScreen = ({ actions, currentUser, townInfo, userLocation, tra
                 <TrashDropForm
                     currentUser={ currentUser }
                     location={ userLocation }
-                    onSave={ actions.dropTrash }
+                    onSave={ (drop) => {
+                        actions.dropTrash(drop);
+                        navigation.goBack();
+                    } }
                     townData={ townInfo }
                     trashCollectionSites={ trashCollectionSites }
                     userLocation={ userLocation }
@@ -202,7 +241,9 @@ const mapStateToProps = (state: Object): Object => {
         });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch<Object>
+): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
 export default connect(mapStateToProps, mapDispatchToProps)(TrashDisposalScreen);
+

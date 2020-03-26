@@ -37,6 +37,6 @@ export default class Celebration {
         if (id) {
             _args.id = id;
         }
-        return new Celebration(_args);
+        return JSON.parse(JSON.stringify(new Celebration(_args)));
     }
 }
