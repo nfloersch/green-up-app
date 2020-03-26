@@ -10,6 +10,8 @@
 
 const api = require("./api");
 
+const reports = require("./reports");
+
 const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
@@ -123,7 +125,6 @@ exports.onTeamRequestRemove = functions.firestore.document("teams/{teamId}/reque
 
 exports.onTeamInvitationRemove = functions.firestore.document("teams/{teamId}/invitations/{email}").onDelete((snap, context) => removeInvitation(context.params.email, context.params.teamId));
 
-
 exports.onTeamsWrite = functions.firestore.document("teams/{id}").onWrite((snap, context) => admin.firestore().doc("updates/teams").set({ updated: new Date() }));
 
 exports.onCelebrationsWrite = functions.firestore.document("celebrations/{id}").onWrite((snap, context) => admin.firestore().doc("updates/celebrations").set({ updated: new Date() }));
@@ -139,5 +140,7 @@ exports.onEventInfoWrite = functions.firestore.document("eventInfo/{id}").onWrit
 exports.onTownsWrite = functions.firestore.document("towns/{id}").onWrite((snap, context) => admin.firestore().doc("updates/towns").set({ updated: new Date() }));
 
 exports.api = api.app;
+
+exports.reports = reports;
 
 admin.initializeApp(functions.config().firebase);

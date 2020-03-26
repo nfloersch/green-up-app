@@ -10,7 +10,6 @@ const defaultDate = moment(getCurrentGreenUpDay()).utc().format("dddd, MMMM Do Y
 
 export default class Team {
     active: ?boolean;
-    autoAccept: boolean;
     created: Date;
     date: ?string;
     description: ?string;
@@ -30,9 +29,6 @@ export default class Team {
     constructor(args: Object = {}) {
         this.active = typeof args.active === "boolean"
             ? args.active
-            : true;
-        this.autoAccept = typeof args.autoAccept === "boolean"
-            ? args.autoAccept
             : true;
         this.created = isValidDate(new Date(args.created))
             ? new Date(args.created)

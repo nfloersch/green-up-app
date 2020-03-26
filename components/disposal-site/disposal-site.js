@@ -36,7 +36,6 @@ export const DisposalSite = ({ item }: PropsType): React$Element<any> => (
         </Text>
         <Text style={ styles.townName }>{ item.dropOffInstructions }</Text>
         <View>
-
             {
                 item.collectionSites.map(site => (
                     <View>
@@ -56,6 +55,5 @@ export const DisposalSite = ({ item }: PropsType): React$Element<any> => (
                 ))
             }
         </View>
-            }
     </View>
 );
