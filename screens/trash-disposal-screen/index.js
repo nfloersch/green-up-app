@@ -71,7 +71,7 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
                 </View>)
         ],
         [
-            () => !dateIsInCurrentEventWindow(guStart.toDate()),
+            () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(guStart.toDate()), // Hack to force GU Day window
             () => (
                 <Fragment>
                     <View style={ { margin: 2 } }>
@@ -122,13 +122,7 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
                         justifyContent: "center",
                         alignSelf: "stretch"
                     } }>
-                        <FlatList
-                            style={ styles.infoBlockContainer }
-                            data={ searchTerm ? searchResults : townInfo }
-                            keyExtractor={ (item: Object): string => `${ item.id }` }
-                            renderItem={ ({ item }: { item: Object }): React$Element<any> => (
-                                <DisposalSite item={ item }/>
-                            ) }/>
+
                     </View>
                 </Fragment>
             )
