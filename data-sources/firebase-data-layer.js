@@ -58,7 +58,8 @@ const removeAllListeners = (): Promise<any> => (
                 });
             myListeners = {};
             resolve(true);
-        } catch (e) {
+        }
+        catch (e) {
             reject(e);
         }
     })
@@ -463,9 +464,10 @@ export function initialize(dispatch: Dispatch<ActionType>) {
 /** *************** AUTHENTICATION *************** **/
 
 export function createUser(email: string, password: string, displayName: string, dispatch: Dispatch<ActionType>): Promise<any> {
+    const myEmail = (email || "").trim(); // Android adds an extra space on autofill;
     return firebase
         .auth()
-        .createUserWithEmailAndPassword(email, password).then(
+        .createUserWithEmailAndPassword(myEmail, password).then(
             (response: Object): Promise<any> => {
                 createProfile({
                     ...User.create(response.user),
@@ -480,9 +482,10 @@ export function createUser(email: string, password: string, displayName: string,
 }
 
 export function loginWithEmailPassword(_email: string, password: string, dispatch: Dispatch<ActionType>): Promise<any> {
+    const myEmail = (_email || "").trim(); // Android adds an extra space on autofill;
     return firebase
         .auth()
-        .signInWithEmailAndPassword(_email, password)
+        .signInWithEmailAndPassword(myEmail, password)
         .then((userInfo: { user: UserType }) => {
             const { uid, email, displayName, photoURL } = userInfo.user;
             db.collection("profiles").doc(uid).get().then(
