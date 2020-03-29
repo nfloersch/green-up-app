@@ -26,7 +26,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn run test-ci"
     }
   },
   "engines": {
