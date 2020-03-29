@@ -38,7 +38,7 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
     return (
         <Fragment>
             <SearchBar
-                help={ <TrashInfo greenUpStartDate={greenUpStartDate} greenUpEndDate={greenUpEndDate}/> }
+                help={ <TrashInfo greenUpStartDate={ greenUpStartDate } greenUpEndDate={ greenUpEndDate }/> }
                 searchTerm={ searchTerm }
                 search={ setSearchTerm }
                 userLocation={ userLocation }
