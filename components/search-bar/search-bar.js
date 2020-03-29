@@ -3,6 +3,8 @@ import React from "react";
 import { StyleSheet, View, TextInput, TouchableHighlight, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { defaultStyles } from "../../styles/default-styles";
+import { Button, Lightbox } from "@shoutem/ui";
+import TrashInfo from "../trash-info/trash-info";
 
 const localStyles = {
     searchBar: {
@@ -27,14 +29,53 @@ const localStyles = {
 const styles = StyleSheet.create(Object.assign({}, defaultStyles, localStyles));
 
 type PropsType = {
+    help?: React$Element<any>,
     searchTerm: ?string,
     search: string => void,
     userLocation: Object
 };
 
-export const SearchBar = ({ userLocation, searchTerm = "", search }: PropsType): React$Element<View> => (
+export const SearchBar = ({ help, userLocation, searchTerm = "", search }: PropsType): React$Element<View> => (
     <View style={ styles.searchBar }>
         <View style={ { flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "center" } }>
+            { Boolean(help) && (
+                <Lightbox
+                    renderHeader={ close => (
+                        <Button style={ {
+                            position: "absolute",
+                            top: 40,
+                            right: 10,
+                            borderStyle: "solid",
+                            borderColor: "#AAA",
+                            borderRadius: 40,
+                            borderWidth: 1,
+                            backgroundColor: "#FFF",
+                            padding: 10,
+                            height: 50,
+                            width: 50,
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 2
+                            },
+                            shadowOpacity: 0.25,
+                            shadowRadius: 3.84,
+                            elevation: 5
+                        } } onPress={ close }>
+                            <Ionicons
+                                name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
+                                size={ 30 }
+                                color="#888"
+                            />
+                        </Button>) }
+                    backgroundColor={ "rgba(52, 52, 52, 0.8)" }
+                    pinchToZoom={ false }
+                    renderContent={ () => (help) }>
+                    <Ionicons
+                        name={ Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline" }
+                        size={ 36 }
+                        style={ styles.iconStyle }/>
+                </Lightbox>) }
             <View style={ { flex: 1, flexDirection: "column", justifyContent: "center", paddingTop: 2 } }>
                 <TextInput
                     keyBoardType={ "default" }
