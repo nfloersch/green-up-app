@@ -1,4 +1,6 @@
 // @flow
+import moment from "moment";
+
 // Green Up Day is always the first Saturday in May
 
 // Calculates the Green Up day for the provided year.
@@ -36,3 +38,5 @@ export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
     return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
 };
 
+export const greenUpStartDate = moment(getCurrentGreenUpDay()).subtract(1, "days").format("dddd MM/DD/YYYY");
+export const greenUpEndDate = moment(getCurrentGreenUpDay()).add(4, "days").format("dddd MM/DD/YYYY");
