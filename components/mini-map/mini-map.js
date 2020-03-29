@@ -13,6 +13,7 @@ import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
+import type Coordinates from "../../models/coordinates";
 
 const myStyles = {
     selected: {
@@ -45,7 +46,7 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
         throw new Error("Location is not available");
     });
 
-const placePins = (pins?: Array<Object>): Array<React$Element<any>> => (
+const placePins = (pins: Array<Object> = []): Array<React$Element<any>> => (
     (pins || []).map((pin: Object, index: number): React$Element<any> => (
         <MapView.Marker
             coordinate={ pin.coordinates }
@@ -75,7 +76,7 @@ const placePins = (pins?: Array<Object>): Array<React$Element<any>> => (
 
 
 type PropsType = {
-    initialLocation?: LocationType,
+    initialLocation?: Coordinates,
     onMapClick?: Object => void,
     pinsConfig: ?Array<Object>,
     layers?: Array<Object>,

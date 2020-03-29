@@ -1,12 +1,8 @@
 // @flow
-import React, { useState, useEffect, Fragment } from "react";
+import React from "react";
 import {
     StyleSheet,
     View,
-    FlatList,
-    TextInput,
-    TouchableHighlight,
-    Platform,
     Text,
     SafeAreaView
 } from "react-native";
@@ -14,9 +10,6 @@ import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
-import { Ionicons } from "@expo/vector-icons";
-import { searchArray } from "../../libs/search";
-import { DisposalSite } from "../../components/disposal-site/disposal-site";
 import { dateIsInCurrentEventWindow } from "../../libs/green-up-day-calucators";
 import EnableLocationServices from "../../components/enable-location-services/enable-location-services";
 import * as actionCreators from "../../action-creators/map-action-creators";
@@ -26,18 +19,10 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
-import { Button, Lightbox } from "@shoutem/ui";
-import TrashInfo from "../../components/trash-info";
+import DisposalSiteSelector from "../../components/disposal-site-selector";
 
 const styles = StyleSheet.create(defaultStyles);
-const iconStyle = {
-    height: 40,
-    width: 40,
-    padding: 2,
-    color: "white",
-    textAlign: "center"
-};
-const searchableFields = ["name", "townName", "address", "townId"];
+
 type PropsType = {
     actions: Object,
     currentUser: UserType,
@@ -49,14 +34,6 @@ type PropsType = {
 
 
 const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
-
-    const [searchResults, setSearchResults] = useState(townInfo);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    useEffect(() => {
-        const spotsFound = searchArray(searchableFields, townInfo, searchTerm);
-        setSearchResults(spotsFound);
-    }, [searchTerm]);
 
     const initialMapLocation = userLocation
         ? Coordinates.create(userLocation.coordinates)
@@ -79,93 +56,7 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
         [
             () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(moment(getCurrentGreenUpDay()).subtract(1, "days").toDate()), // Hack to force GU Day window
             () => (
-                <Fragment>
-                    <View style={ { margin: 10, padding: 0, marginBottom: 2, height: 40 } }>
-                        <View style={ { flex: 1, flexDirection: "row", justifyContent: "flex-start" } }>
-                            <Lightbox
-                                renderHeader={ (close) => (
-                                    <Button style={ {
-                                        position: "absolute",
-                                        top: 40,
-                                        right: 10,
-                                        borderStyle: "solid",
-                                        borderColor: "#AAA",
-                                        borderRadius: 40,
-                                        borderWidth: 1,
-                                        backgroundColor: "#FFF",
-                                        padding: 10,
-                                        height: 50,
-                                        width: 50,
-                                        shadowColor: "#000",
-                                        shadowOffset: {
-                                            width: 0,
-                                            height: 2
-                                        },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 3.84,
-                                        elevation: 5
-                                    } } onPress={ close }>
-                                        <Ionicons
-                                            name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
-                                            size={ 30 }
-                                            color="#888"
-                                        />
-                                    </Button>) }
-                                backgroundColor={ "rgba(52, 52, 52, 0.8)" }
-                                pinchToZoom={ false }
-                                renderContent={ () => (<TrashInfo/>) }>
-                                <Ionicons
-                                    name={ Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline" }
-                                    size={ 36 }
-                                    style={ iconStyle }/>
-                            </Lightbox>
-                            <View style={ { marginLeft: 10, flex: 1, flexDirection: "column" } }>
-                                <TextInput
-                                    keyBoardType={ "default" }
-                                    onChangeText={ setSearchTerm }
-                                    placeholder={ "Search" }
-                                    style={ [styles.textInput, { alignSelf: "stretch" }] }
-                                    value={ searchTerm }
-                                    underlineColorAndroid={ "transparent" }
-                                />
-                            </View>
-                            <TouchableHighlight
-                                onPress={ () => {
-                                    setSearchTerm("");
-                                } }
-                                style={ { height: 40, width: 40, padding: 1, marginLeft: 2 } }>
-                                <Ionicons
-                                    name={ Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline" }
-                                    size={ 36 }
-                                    style={ iconStyle }/>
-                            </TouchableHighlight>
-                            <TouchableHighlight
-                                onPress={ () => {
-                                    setSearchTerm(userLocation.townId || "");
-                                } }
-                                style={ { height: 40, width: 40, padding: 1, marginLeft: 2 } }>
-                                <Ionicons
-                                    name={ Platform.OS === "ios" ? "md-locate" : "md-locate" }
-                                    size={ 36 }
-                                    style={ iconStyle }/>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                    <View style={ {
-                        flex: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignSelf: "stretch"
-                    } }>
-                        <FlatList
-                            style={ styles.infoBlockContainer }
-                            data={ searchTerm ? searchResults : townInfo }
-                            keyExtractor={ (item: Object): string => `${ item.id }` }
-                            renderItem={ ({ item }: { item: Object }): React$Element<any> => (
-                                <DisposalSite item={ item }/>
-                            ) }/>
-                    </View>
-                </Fragment>
+                <DisposalSiteSelector userLocation={ userLocation } townInfo={ townInfo }/>
             )
         ],
         [
@@ -225,6 +116,7 @@ const mapStateToProps = (state: Object): Object => {
             {
                 townId: entry[0],
                 townName: entry[1].name,
+                notes: entry[1].notes,
                 dropOffInstructions: entry[1].dropOffInstructions,
                 allowsRoadside: entry[1].roadsideDropOffAllowed,
                 collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
