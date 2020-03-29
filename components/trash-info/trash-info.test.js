@@ -4,6 +4,6 @@ import TrashInfo from "./index";
 import renderer from "react-test-renderer";
 
 it("renders correctly", () => {
-    const tree = renderer.create(<TrashInfo>Snapshot test!</TrashInfo>).toJSON();
+    const tree = renderer.create(<TrashInfo/>).toJSON();
     expect(tree).toMatchSnapshot();
 });
