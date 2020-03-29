@@ -160,10 +160,11 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                         <View style={ { flex: 1, justifyContent: "center", flexDirection: "row" } }>
                             <TouchableOpacity
                                 onPress={ () => {
-                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 2 ? 1 : Number(drop.bagCount) - 1);
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : Number(drop.bagCount);
+                                    const reducedBagCount = (bagCount < 2) ? 1 : bagCount - 1;
                                     setDrop({
                                         ...drop,
-                                        bagCount
+                                        bagCount: reducedBagCount
                                     });
                                 } }
                                 style={ { height: 100, marginRight: 10 } }>
@@ -196,10 +197,11 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
                             />
                             <TouchableOpacity
                                 onPress={ () => {
-                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 1 ? 1 : Number(drop.bagCount) + 1);
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : Number(drop.bagCount);
+                                    const incrementedBagCount = (bagCount < 1) ? 1 : bagCount + 1;
                                     setDrop({
                                         ...drop,
-                                        bagCount
+                                        bagCount: incrementedBagCount
                                     });
                                 } }
                                 style={ { height: 100, marginLeft: 10 } }>

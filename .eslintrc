@@ -127,7 +127,7 @@
     // treat var statements as if they were block scoped (off by default). 0: deep destructuring is not compatible https://github.com/eslint/eslint/issues/1863
     "block-scoped-var": 0,
     // specify the maximum cyclomatic complexity allowed in a program (off by default)
-    "complexity": [ 1, 20 ],
+    "complexity": [ 1, 30 ],
     // require return statements to either always or never specify values
     "consistent-return": [ 2, { "treatUndefinedAsUnspecified": false } ],
     // specify curly brace conventions for all control statements
@@ -141,7 +141,7 @@
     // make sure for-in loops have an if statement (off by default)
     "guard-for-in": 2,
     // disallow the use of alert, confirm, and prompt
-    "no-alert": 1,
+    "no-alert": 0,
     // disallow use of arguments.caller or arguments.callee
     "no-caller": 2,
     // disallow division operators explicitly at beginning of regular expression (off by default)
