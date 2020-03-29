@@ -46,7 +46,7 @@ type PropsType = {
     onSave: TrashDropType => void,
     currentUser: UserType,
     townData: Object,
-    trashCollectionSites: Object, //Array<Object>,
+    trashCollectionSites: Object, // Array<Object>,
     userLocation?: LocationType
 };
 
@@ -87,23 +87,29 @@ export const TrashDropForm = ({ location, trashDrop, onSave, currentUser, townDa
         id: entry[0],
         name: entry[1].name
     }));
-    //const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
-    var selectedSite = {};
+    
+    // Find selected site
+    // const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
+    let selectedSite = {};
     const siteKeys = Object.keys(trashCollectionSites);
     siteKeys.some(siteKey => {
-        if (trashCollectionSites[siteKey].id === drop.collectionSiteId) {
-            selectedSite = trashCollectionSites[siteKey];
-            return true;
-        }
+        const foundSelectedSite = trashCollectionSites[siteKey].id === drop.collectionSiteId
+            ? true
+            : false;
+        if(foundSelectedSite) { selectedSite = trashCollectionSites[siteKey]; }
+        return foundSelectedSite;
     });
 
-    var selectedTown = {}; //townData.find(t => t.townId === (selectedSite || {}).townId);
+    // Find selected town
+    // townData.find(t => t.townId === (selectedSite || {}).townId);
+    let selectedTown = {}; 
     const townKeys = Object.keys(townData);
     townKeys.some(townKey => {
-        if (townData[townKey].townId === selectedSite.townId) {
-            selectedTown = townData[townKey];
-            return true;
-        }
+        const foundSelectedTown = townData[townKey].townId === selectedSite.townId
+            ? true
+            : false;
+        if(foundSelectedTown) { selectedTown = townData[townKey]; }
+        return foundSelectedTown;
     });
     
     return (

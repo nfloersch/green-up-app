@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import { defaultStyles } from "../../styles/default-styles";
 import Address from "../../models/address";
 import { StyleSheet, ScrollView, View, SafeAreaView, Platform } from "react-native";
-import { Subtitle, Text, Title, Divider, Caption } from "@shoutem/ui";
+import { Subtitle, Text, Title, Divider } from "@shoutem/ui";
 import moment from "moment";
 import MiniMap from "../mini-map";
 import ButtonBar from "../button-bar/";

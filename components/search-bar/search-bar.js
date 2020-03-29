@@ -4,7 +4,6 @@ import { StyleSheet, View, TextInput, TouchableHighlight, Platform } from "react
 import { Ionicons } from "@expo/vector-icons";
 import { defaultStyles } from "../../styles/default-styles";
 import { Button, Lightbox } from "@shoutem/ui";
-import TrashInfo from "../trash-info/trash-info";
 
 const localStyles = {
     searchBar: {
