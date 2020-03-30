@@ -1,10 +1,11 @@
 // @flow
-import React from "react";
+import React, { useState } from "react";
 import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView
+    SafeAreaView,
+    Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -20,6 +21,7 @@ import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
 import DisposalSiteSelector from "../../components/disposal-site-selector";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -29,11 +31,19 @@ type PropsType = {
     trashCollectionSites: Array<Object>,
     townInfo: Array<Object>,
     userLocation: Object,
-    navigation: Object
+    navigation: Object,
+    teamOptions: { id: string, name: ?string }[]
 };
 
 
-const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+const routes = [
+    { key: "townInfo", title: "Town Info" },
+    { key: "bagTagger", title: "Bag Tagger" }
+];
+
+const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+    const [activeTab, setActiveTab] = useState(dateIsInCurrentEventWindow() ? 1 : 0);
+    const navState = { index: activeTab, routes };
 
     const initialMapLocation = userLocation
         ? Coordinates.create(userLocation.coordinates)
@@ -53,27 +63,46 @@ const TrashDisposalScreen = ({ actions, currentUser, navigation, townInfo, userL
                     </Text>
                 </View>)
         ],
-        [
-            () => !dateIsInCurrentEventWindow(), //   () => !dateIsInCurrentEventWindow(moment(getCurrentGreenUpDay()).subtract(1, "days").toDate()), // Hack to force GU Day window
-            () => (
-                <DisposalSiteSelector userLocation={ userLocation } townInfo={ townInfo }/>
-            )
-        ],
-        [
-            R.T,
-            () => (
-                <TrashDropForm
-                    currentUser={ currentUser }
-                    location={ userLocation }
-                    onSave={ (drop) => {
-                        actions.dropTrash(drop);
-                        navigation.goBack();
-                    } }
-                    townData={ townInfo }
-                    trashCollectionSites={ trashCollectionSites }
-                    userLocation={ userLocation }
-                />)
-        ]
+        [R.T, () => (
+            <TabView
+                renderTabBar={ props =>
+                    <TabBar
+                        { ...props }
+                        indicatorStyle={ {
+                            backgroundColor: constants.colorBackgroundDark,
+                            color: constants.colorBackgroundDark
+                        } }
+                        style={ { backgroundColor: constants.colorBackgroundHeader } }
+                        renderLabel={ ({ route, focused }) => (
+                            <Text style={ { margin: 8, color: (focused ? "black" : "#555") } }>
+                                { (route.title || "").toUpperCase() }
+                            </Text>
+                        ) }
+                    />
+                }
+
+                navigationState={ navState }
+                renderScene={ SceneMap({
+                    townInfo: () => (<DisposalSiteSelector userLocation={ userLocation } townInfo={ townInfo }/>),
+                    bagTagger: () => (
+                        <TrashDropForm
+                            currentUser={ currentUser }
+                            location={ userLocation }
+                            onSave={ (drop) => {
+                                actions.dropTrash(drop);
+                                navigation.goBack();
+                            } }
+                            townData={ townInfo }
+                            trashCollectionSites={ trashCollectionSites }
+                            userLocation={ userLocation }
+                            teamOptions={ teamOptions }
+                        />
+                    )
+                }) }
+                onIndexChange={ setActiveTab }
+                initialLayout={ { width: Dimensions.get("window").width } }
+            />
+        )]
     ])();
 
     return (
@@ -124,12 +153,19 @@ const mapStateToProps = (state: Object): Object => {
         Object.entries
     )(state.towns.townData);
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+
+    const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({
+        id: entry[0],
+        name: state.teams.teams[entry[0]].name
+    }));
+
     return (
         {
             currentUser,
             townInfo,
             userLocation: state.userLocation,
-            trashCollectionSites
+            trashCollectionSites,
+            teamOptions
         });
 };
 
