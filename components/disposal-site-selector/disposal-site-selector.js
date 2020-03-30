@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment, useEffect, useState } from "react";
-import { Modal } from "react-native";
+import { Modal, View } from "react-native";
 import { ListView } from "@shoutem/ui";
 import TrashInfo from "../trash-info";
 import { TownDisposalDetails } from "../town-disposal-details/town-disposal-details";
@@ -36,7 +36,7 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
     }, [searchTerm]);
 
     return (
-        <Fragment>
+        <View style={ { borderTopWidth: 2, borderColor: "white", borderStyle: "solid" } }>
             <SearchBar
                 help={ <TrashInfo greenUpStartDate={ greenUpStartDate } greenUpEndDate={ greenUpEndDate }/> }
                 searchTerm={ searchTerm }
@@ -61,14 +61,11 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
                 transparent={ false }
                 visible={ isModalVisible }>
                 <TownDisposalDetails
-                    town={ selectedTown }
                     closeModal={ () => {
                         setIsModalVisible(false);
                     } }
                 />
             </Modal>
-        </Fragment>
+        </View>
     );
 };
-
-

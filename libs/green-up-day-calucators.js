@@ -38,5 +38,12 @@ export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
     return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
 };
 
-export const greenUpStartDate = moment(getCurrentGreenUpDay()).subtract(1, "days").format("dddd MM/DD/YYYY");
-export const greenUpEndDate = moment(getCurrentGreenUpDay()).add(4, "days").format("dddd MM/DD/YYYY");
+ 
+export const greenUpWindowStart = () => moment(getCurrentGreenUpDay()).subtract(1, "days").toDate();
+export const greenUpWindowEnd = () => moment(getCurrentGreenUpDay()).add(4, "days").toDate();
+
+export const isInGreenUpWindow = (date: ?Date) => {
+    const myDate = date || new Date();
+    return myDate >= greenUpWindowStart() && myDate <= greenUpWindowEnd();
+};
+
