@@ -63,7 +63,7 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
         setDrop({ ...drop, tags });
     };
 
-
+ 
     const currentTown = townData.find(t => t.townId === currentTownId);
     const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
     const townHasSites = trashCollectionSites.some(site => site.townId = currentTownId);
@@ -140,7 +140,7 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                 </View>)
         ]
     ]);
-
+ 
     return (
         <Fragment>
             <SafeAreaView style={ {
@@ -206,10 +206,11 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                         <View style={ { flex: 1, justifyContent: "center", flexDirection: "row" } }>
                             <TouchableOpacity
                                 onPress={ () => {
-                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 2 ? 1 : Number(drop.bagCount) - 1);
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : Number(drop.bagCount);
+                                    const reducedBagCount = (bagCount < 2) ? 1 : bagCount - 1;
                                     setDrop({
                                         ...drop,
-                                        bagCount
+                                        bagCount: reducedBagCount
                                     });
                                 } }
                                 style={ { height: 100, marginRight: 10 } }>
@@ -242,10 +243,11 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                             />
                             <TouchableOpacity
                                 onPress={ () => {
-                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : (Number(drop.bagCount) < 1 ? 1 : Number(drop.bagCount) + 1);
+                                    const bagCount = isNaN(Number(drop.bagCount)) ? 1 : Number(drop.bagCount);
+                                    const incrementedBagCount = (bagCount < 1) ? 1 : bagCount + 1;
                                     setDrop({
                                         ...drop,
-                                        bagCount
+                                        bagCount: incrementedBagCount
                                     });
                                 } }
                                 style={ { height: 100, marginLeft: 10 } }>

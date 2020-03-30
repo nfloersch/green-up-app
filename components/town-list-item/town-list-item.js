@@ -17,7 +17,6 @@ export const TownListItem = ({ town, onClick }: PropsType): React$Element<any> =
             padding: 20,
             justifyContent: "flex-start"
         } }>
-
         <Text style={ {
             textAlign: "center",
             fontWeight: "bold",
@@ -33,8 +32,5 @@ export const TownListItem = ({ town, onClick }: PropsType): React$Element<any> =
             size={ 20 }
             color="#333"
         />
-
     </TouchableOpacity>
-)
-;
-
+);

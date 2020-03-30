@@ -37,6 +37,7 @@ const getPermissionAsync = async (callback: boolean => any): Promise<any> => {
             return;
         }
         callback(true);
+        return;
     }
 };
 
@@ -56,7 +57,7 @@ export const PhotoPicker = ({ maxHeight = 200, maxWidth = 200, onCancel, onError
             });
 
             if (cancelled) {
-                console.log("User cancelled image picker");
+                // console.log("User cancelled image picker");
                 if (onCancel) {
                     onCancel("User cancelled image picker");
                 }

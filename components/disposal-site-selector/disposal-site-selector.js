@@ -9,6 +9,7 @@ import { searchArray } from "../../libs/search";
 import SearchBar from "../search-bar";
 import TownListItem from "../town-list-item";
 import TrashCollectionSite from "../../models/trash-collection-site";
+import { greenUpEndDate, greenUpStartDate } from "../../libs/green-up-day-calucators";
 
 const searchableFields = ["name", "townName", "address", "townId"];
 
@@ -37,7 +38,7 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
     return (
         <View style={ { borderTopWidth: 2, borderColor: "white", borderStyle: "solid" } }>
             <SearchBar
-                help={ <TrashInfo/> }
+                help={ <TrashInfo greenUpStartDate={ greenUpStartDate } greenUpEndDate={ greenUpEndDate }/> }
                 searchTerm={ searchTerm }
                 search={ setSearchTerm }
                 userLocation={ userLocation }
@@ -63,7 +64,7 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
                     closeModal={ () => {
                         setIsModalVisible(false);
                     } }
-                    town={ selectedTown }/>
+                />
             </Modal>
         </View>
     );
