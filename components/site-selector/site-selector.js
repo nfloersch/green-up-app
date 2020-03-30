@@ -13,15 +13,15 @@ import Site from "../site";
 
 type PropsType = {
     onSelect: any => void,
-    onCancel: any => void,
+    close: any => void,
     userLocation: ?LocationType,
     sites: ?Array<any>,
     towns: Array<Object>,
     value?: Object
 };
 
-export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, value }: PropsType): React$Element<any> => {
-    const [selectedSite, setSelectedSite] = useState(value || getClosestSite(sites, (userLocation || {}).coordinates || {}).site);
+export const SiteSelector = ({ sites, towns, userLocation, onSelect, close, value }: PropsType): React$Element<any> => {
+    const [selectedSite, setSelectedSite] = useState(value);
 
     const pins = (sites || []).filter(site => Boolean(site.coordinates)).map(site => ({
         coordinates: site.coordinates,
@@ -34,15 +34,17 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, v
         color: "yellow"
     }));
 
-    const town = towns.find((t: { townId: string }): boolean => (t.townId === selectedSite.townId));
+    const town = towns.find((t: { townId: string }): boolean => (t.townId === (selectedSite || {}).townId));
     const headerButtons = [
         {
             text: "Select",
             onClick: () => {
-                onSelect(selectedSite);
+                if (selectedSite) {
+                    onSelect(selectedSite);
+                }
             }
         },
-        { text: "Cancel", onClick: onCancel }
+        { text: "Cancel", onClick: close }
     ];
 
     return (
@@ -62,15 +64,19 @@ export const SiteSelector = ({ sites, towns, userLocation, onSelect, onCancel, v
                 } }>
                     {
                         !selectedSite
-                            ? <Text>"Select A Trash Collection Site"</Text>
-                            : <Site
-                                site={ selectedSite }
-                                town={ town }/>
+                            ? (
+                                <View style={ { flex: 1, flexDirection: "row", justifyContent: "center", marginTop: 16 } }>
+                                    <Text style={ { fontSize: 20, textAlign: "center" } }>
+                                        { "Select A Trash Collection Site" }
+                                    </Text>
+                                </View>
+                            )
+                            : (<Site site={ selectedSite } town={ town }/>)
                     }
                 </View>
                 <MiniMap
                     initialLocation={ {
-                        ...selectedSite.coordinates,
+                        ...((selectedSite || {}).coordinates || getClosestSite(sites, (userLocation || {}).coordinates || {}).site.coordinates),
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421
                     } }

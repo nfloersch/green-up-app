@@ -1,7 +1,7 @@
 // @flow
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
+import MiniMap from "../mini-map";
 import {
-    TouchableHighlight,
     TouchableOpacity,
     StyleSheet,
     TextInput,
@@ -11,8 +11,6 @@ import {
 import { DropDownMenu, Text, Button, Title, Subtitle, Divider, View } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
-import * as turf from "@turf/helpers";
-import booleanWithin from "@turf/boolean-within";
 import TownInformation from "../town-information";
 import SiteSelector from "../site-selector";
 import * as R from "ramda";
@@ -21,7 +19,7 @@ import ButtonBar from "../button-bar";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
 import { isInGreenUpWindow } from "../../libs/green-up-day-calucators";
-import { findTownIdByCoordinates } from "../../libs/geo-helpers";
+import { findTownIdByCoordinates, getClosestSite } from "../../libs/geo-helpers";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number } };
 
@@ -31,7 +29,6 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
-    location: LocationType,
     trashDrop?: Object,
     onSave: TrashDropType => void,
     currentUser: UserType,
@@ -41,7 +38,7 @@ type PropsType = {
     teamOptions: { id: string, name: ?string }[]
 };
 
-export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0] || {};
     const [drop, setDrop] = useState({
         id: null,
@@ -50,13 +47,13 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
         collectionSiteId: null,
         created: new Date(),
         wasCollected: false,
-        location: {},
+        location: null,
         tags: [],
         createdBy: { uid: currentUser.uid, email: currentUser.email },
         bagCount: 1
     });
     const [modal, setModal] = useState(null);
-    const currentTownId = location && location.coordinates ? findTownIdByCoordinates(location.coordinates) : "";
+    const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
 
     const toggleTag = (tag: string): (any=>any) => () => {
         const hasTag = (drop.tags || []).indexOf(tag) > -1;
@@ -66,9 +63,6 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
         setDrop({ ...drop, tags });
     };
 
-    useEffect(() => {
-        setDrop({ ...drop, location });
-    }, [trashDrop, location]);
 
     const currentTown = townData.find(t => t.townId === currentTownId);
     const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
@@ -88,6 +82,7 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
                             justifyContent: "space-between"
                         } }
                         onPress={ () => {
+                            setDrop({ ...drop, location: userLocation });
                         } }>
                         <FontAwesome size={ 30 }
                                      style={ { color: "#DDD", marginRight: 10 } }
@@ -260,9 +255,7 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
                             </TouchableOpacity>
                         </View>
                     </View>
-
                     <Text style={ styles.label }>Other Items</Text>
-
                     <TagToggle
                         tag={ "bio-waste" }
                         text={ "Needles/Bio-Waste" }
@@ -289,15 +282,43 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
 
                     { getDropButtons() }
 
+                    { R.cond([
+                        [
+                            R.always(Boolean(drop.collectionSiteId)),
+                            () => (
+                                <View style={ { backgroundColor: "white", padding: 10, marginTop: 10 } }>
+                                    <Text
+                                        style={ {
+                                            fontSize: 20,
+                                            marginBottom: 10
+                                        } }>{ "I'm taking my trash here:" }</Text>
+                                    <Site site={ selectedSite } town={ currentTown }/>
+                                </View>
+                            )
+                        ],
+                        [
+                            R.T,
+                            () => (
+                                <MiniMap
+                                    initialLocation={ {
+                                        ...((drop.location || {}).coordinates || (userLocation || {}).coordinates),
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
+                                    } }
+                                    pinsConfig={ [(drop.location || {})] }
+                                    style={ {
+                                        flex: 1,
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        alignSelf: "stretch",
+                                        marginTop: 20
+                                    } }
+                                />
+                            )
+                        ]
+                    ])() }
 
-                    { drop.collectionSiteId ? (
-                        <View style={ { backgroundColor: "white", padding: 10, marginTop: 10 } }>
-                            <Text
-                                style={ { fontSize: 20, marginBottom: 10 } }>{ "I'm taking my trash here:" }</Text>
-                            <Site site={ selectedSite } town={ currentTown }/>
-                        </View>
-                    ) : null }
-                    <View style={ { height: 100 } }></View>
+                    <View style={ { height: 100 } }/>
                 </ScrollView>
                 <ButtonBar buttonConfigs={
                     [
@@ -321,19 +342,20 @@ export const TrashDropForm = ({ teamOptions, location, trashDrop, onSave, curren
                    transparent={ false }
                    visible={ modal === "site-selector" }>
                 <SafeAreaView>
-                    <SiteSelector onSelect={ site => {
-                        setDrop({ ...drop, collectionSiteId: site.id });
-                        setModal(null);
-                    }
-                    }
-                                  sites={ trashCollectionSites || [] }
-                                  userLocation={ userLocation || {} }
-                                  towns={ townData }
-                                  onCancel={ () => {
-                                      setModal(null);
-                                  }
-                                  }
-                                  value={ selectedSite }
+                    <SiteSelector
+                        onSelect={ site => {
+                            setDrop({ ...drop, collectionSiteId: site.id, location: null });
+                            setModal(null);
+                        }
+                        }
+                        sites={ trashCollectionSites || [] }
+                        userLocation={ userLocation || {} }
+                        towns={ townData }
+                        close={ () => {
+                            setModal(null);
+                        }
+                        }
+                        value={ selectedSite }
                     />
                 </SafeAreaView>
             </Modal>

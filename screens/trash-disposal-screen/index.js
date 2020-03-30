@@ -87,7 +87,6 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
                     bagTagger: () => (
                         <TrashDropForm
                             currentUser={ currentUser }
-                            location={ userLocation }
                             onSave={ (drop) => {
                                 actions.dropTrash(drop);
                                 navigation.goBack();
