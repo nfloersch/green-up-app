@@ -8,7 +8,7 @@ import {
     ScrollView,
     Modal
 } from "react-native";
-import { DropDownMenu, Text, Button, Title, Subtitle, Divider, View } from "@shoutem/ui";
+import { DropDownMenu, Text, Button, Title, Divider, View } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
 import TownInformation from "../town-information";
@@ -18,8 +18,8 @@ import Site from "../site";
 import ButtonBar from "../button-bar";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
-import { isInGreenUpWindow } from "../../libs/green-up-day-calucators";
-import { findTownIdByCoordinates, getClosestSite } from "../../libs/geo-helpers";
+// import { isInGreenUpWindow } from "../../libs/green-up-day-calucators"; // TODO: Add out of window warning
+import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number } };
 
@@ -29,7 +29,6 @@ const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 
 type PropsType = {
-    trashDrop?: Object,
     onSave: TrashDropType => void,
     currentUser: UserType,
     townData: Object,
@@ -38,7 +37,7 @@ type PropsType = {
     teamOptions: { id: string, name: ?string }[]
 };
 
-export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0] || {};
     const [drop, setDrop] = useState({
         id: null,
@@ -66,7 +65,7 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
 
     const currentTown = townData.find(t => t.townId === currentTownId);
     const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
-    const townHasSites = trashCollectionSites.some(site => site.townId = currentTownId);
+    const townHasSites = trashCollectionSites.some(site => site.townId === currentTownId);
 
     const getDropButtons = R.cond([
         [
@@ -85,8 +84,8 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                             setDrop({ ...drop, location: userLocation });
                         } }>
                         <FontAwesome size={ 30 }
-                                     style={ { color: "#DDD", marginRight: 10 } }
-                                     name={ "map-marker" }/>
+                            style={ { color: "#DDD", marginRight: 10 } }
+                            name={ "map-marker" }/>
                         <View style={ { flex: 1, justifyContent: "center" } }>
                             <Text style={ { color: "#DDD", flexWrap: "wrap" } }>Drop Bags Here</Text>
                         </View>
@@ -103,7 +102,7 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                             setModal("site-selector");
                         } }>
                         <FontAwesome style={ { color: "#DDD", marginRight: 10 } } size={ 30 }
-                                     name={ "map-signs" }/>
+                            name={ "map-signs" }/>
                         <View style={ { flex: 1, justifyContent: "center" } }>
                             <Text style={ { flex: 1, color: "#DDD", flexWrap: "wrap" } }>Find Collection Site</Text>
                         </View>
@@ -336,11 +335,11 @@ export const TrashDropForm = ({ teamOptions, trashDrop, onSave, currentUser, tow
                 </ButtonBar>
             </SafeAreaView>
             <Modal animationType={ "slide" }
-                   onRequestClose={ () => {
-                       setModal(null);
-                   } }
-                   transparent={ false }
-                   visible={ modal === "site-selector" }>
+                onRequestClose={ () => {
+                    setModal(null);
+                } }
+                transparent={ false }
+                visible={ modal === "site-selector" }>
                 <SafeAreaView>
                     <SiteSelector
                         onSelect={ site => {

@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, View } from "react-native";
 import { ListView } from "@shoutem/ui";
 import TrashInfo from "../trash-info";

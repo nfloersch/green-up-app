@@ -14,7 +14,7 @@ type PropsType = {
     hideOnError: ?boolean
 };
 
-export const TownInformation = ({ hideOnError = false, townInfo}: PropsType): React$Element<any> => {
+export const TownInformation = ({ hideOnError = false, townInfo }: PropsType): React$Element<any> => {
     const hasError = typeof townInfo.roadsideDropOffAllowed === "undefined";
     return hideOnError && hasError
         ? (<Fragment/>)
