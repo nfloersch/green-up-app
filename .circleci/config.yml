@@ -68,6 +68,31 @@ jobs:
           command:
             node update-publish-date.js
 
+      #Config Git
+      - run:
+          name: config git
+          command:
+            git config user.name $CIRCLE_USERNAME
+
+      #Commit the changes
+      - run:
+          name: push new version
+          command:
+            git add -A
+            git commit -m "update publish date"
+
+      #Bump version number
+      - run:
+          name: bump package version
+          command:
+            npm version patch -m "Bumped version number to %s"
+
+      #Push new version to master
+      - run:
+          name: push new version
+          command:
+            git push origin master
+
      #Deploy firebase functions, one at a time (DEV environment)
       - run:
           name: Deploy Master to DEV Firebase Functions - onInvitationCreate
@@ -194,27 +219,6 @@ jobs:
       - run:
           name: Deploy Master to QA Firestore Security Rules
           command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
-
-
-    #Config Git
-      - run:
-          name: config git
-          command:
-            git config user.name $CIRCLE_USERNAME
-
-    #Bump version number
-      - run:
-          name: bump package version
-          command:
-            npm version patch -m "Bumped version number to %s"
-
-
-    #Push new version to master
-      - run:
-          name: push new version
-          command:
-            git push origin master
-
 
     #Publish app to expo
       - run:
