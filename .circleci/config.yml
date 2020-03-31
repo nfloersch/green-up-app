@@ -43,14 +43,25 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      #Config Git
+      - run:
+          name: config git
+          command:
+            git config user.name $CIRCLE_USERNAME
+
+
       #Bump version number
       - run:
           name: bump package version
           command:
-            git config user.name $CIRCLE_USERNAME
             npm version patch -m "Bumped version number to %s [ci skip]"
+
+
+      #Push new version to master
+      - run:
+          name: push new version
+          command:
             git push origin master
-            git push --tags
 
       # lint the code
       - run:
