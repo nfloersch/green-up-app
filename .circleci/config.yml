@@ -192,8 +192,9 @@ jobs:
     #Bump version number
       - run:
           name: bump package version
-          command: |
-            npm version prerelease --preid=alpha -m "Bumped version number to %s [ci skip]"
+          command:
+            git config user.name $CIRCLE_USERNAME
+            npm version patch -m "Bumped version number to %s [ci skip]"
             git push origin master
             git push --tags
 
