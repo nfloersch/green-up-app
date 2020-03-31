@@ -43,26 +43,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      #Config Git
-      - run:
-          name: config git
-          command:
-            git config user.name $CIRCLE_USERNAME
-
-
-      #Bump version number
-      - run:
-          name: bump package version
-          command:
-            npm version patch -m "Bumped version number to %s [ci skip]"
-
-
-      #Push new version to master
-      - run:
-          name: push new version
-          command:
-            git push origin master
-
       # lint the code
       - run:
           name: Code Linting
@@ -208,6 +188,31 @@ jobs:
       - run:
           name: Deploy Master to QA Firestore Security Rules
           command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
+
+    #Config Git
+      - run:
+          name: config git
+          command:
+            git config user.name $CIRCLE_USERNAME
+
+    #Bump version number
+      - run:
+          name: bump package version
+          command:
+            npm version patch -m "Bumped version number to %s [ci skip]"
+
+    #Update Publish Date
+      - run:
+          name: update publish date
+          command:
+            node update-publish-date.js
+
+
+    #Push new version to master
+      - run:
+          name: push new version
+          command:
+            git push origin master
 
 
     #Publish app to expo
