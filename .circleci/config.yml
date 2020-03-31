@@ -71,18 +71,18 @@ jobs:
           name: Deploy Master to DEV Firebase Functions - onTeamDelete
           command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamDelete --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run: 
+      - run:
           name: Deploy Master to DEV Firebase Functions - onTeamMemberRemove
-          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN          
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run:  
+      - run:
           name: Deploy Master to DEV Firebase Functions - onTeamRequestRemove
-          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN                    
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run:  
+      - run:
           name: Deploy Master to DEV Firebase Functions - onTeamInvitationRemove
           command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamInvitationRemove --token=$FIREBASE_DEPLOY_TOKEN
-    
+
       - run:
           name: Deploy Master to DEV Firebase Functions - onTeamsWrite
           command: ./node_modules/.bin/firebase deploy -P dev --only functions:onTeamsWrite --token=$FIREBASE_DEPLOY_TOKEN
@@ -113,13 +113,13 @@ jobs:
 
       - run:
           name: Deploy Master to DEV Firebase Functions - api
-          command: ./node_modules/.bin/firebase deploy -P dev --only functions:api --token=$FIREBASE_DEPLOY_TOKEN          
+          command: ./node_modules/.bin/firebase deploy -P dev --only functions:api --token=$FIREBASE_DEPLOY_TOKEN
 
     #Deploy Firebase Storage Rules (DEV environment)
       - run:
           name: Deploy Master to DEV Firebase Storage Rules
           command: ./node_modules/.bin/firebase deploy -P dev --only storage --token=$FIREBASE_DEPLOY_TOKEN
-    
+
     #Deploy Firebase Security Rules (DEV environment)
       - run:
           name: Deploy Master to DEV Firestore Security Rules
@@ -134,18 +134,18 @@ jobs:
           name: Deploy Master to QA Firebase Functions - onTeamDelete
           command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamDelete --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run: 
+      - run:
           name: Deploy Master to QA Firebase Functions - onTeamMemberRemove
-          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN          
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamMemberRemove --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run:  
+      - run:
           name: Deploy Master to QA Firebase Functions - onTeamRequestRemove
-          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN                    
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamRequestRemove --token=$FIREBASE_DEPLOY_TOKEN
 
-      - run:  
+      - run:
           name: Deploy Master to QA Firebase Functions - onTeamInvitationRemove
           command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamInvitationRemove --token=$FIREBASE_DEPLOY_TOKEN
-    
+
       - run:
           name: Deploy Master to QA Firebase Functions - onTeamsWrite
           command: ./node_modules/.bin/firebase deploy -P qa --only functions:onTeamsWrite --token=$FIREBASE_DEPLOY_TOKEN
@@ -176,9 +176,9 @@ jobs:
 
       - run:
           name: Deploy Master to QA Firebase Functions - api
-          command: ./node_modules/.bin/firebase deploy -P qa --only functions:api --token=$FIREBASE_DEPLOY_TOKEN          
+          command: ./node_modules/.bin/firebase deploy -P qa --only functions:api --token=$FIREBASE_DEPLOY_TOKEN
 
-    
+
     #Deploy Firebase Storage Rules (QA environment)
       - run:
           name: Deploy Master to QA Firebase Storage Rules
@@ -188,7 +188,15 @@ jobs:
       - run:
           name: Deploy Master to QA Firestore Security Rules
           command: ./node_modules/.bin/firebase deploy -P qa --only firestore:rules --token=$FIREBASE_DEPLOY_TOKEN
-    
+
+    #Bump version number
+      - run:
+          name: bump package version
+          command: |
+            npm version prerelease --preid=alpha -m "Bumped version number to %s [ci skip]"
+            git push origin master
+            git push --tags
+
     #Publish app to expo
       - run:
           name: Login into Expo
