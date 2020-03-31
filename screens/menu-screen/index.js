@@ -8,7 +8,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
 import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
-import { publishDate } from "../../package.json";
+import { publishDate, version } from "../../package.json";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -80,7 +80,8 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             </Button>
         </View>
         <View style={ { margin: 20 } }>
-            <Text style={ { fontSize: 16, color:"#7fa54a", textAlign: "center" } }>{ `v${publishDate}` }</Text>
+            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ version }` }</Text>
+            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
         </View>
 
     </SafeAreaView>);
