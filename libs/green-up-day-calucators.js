@@ -2,13 +2,44 @@
 
 import moment from "moment";
 
-// Green Up Day is always the first Saturday in May
+export function getNextGreenUpDay() {
+    const today = moment();
+    const thisYear = today.get('year');
+    const is2020 = thisYear === 2020;
+    
+    // in 2020 GUDay was on May 30th
+    if(is2020){
+        const guDay2020 = '2020-05-30';
+        const isBeforeGreenUpDay = today.isBefore(guDay2020) || today.isSame(guDay2020, 'day')
+        return isBeforeGreenUpDay
+            ? moment(guDay2020).toDate()
+            : getGreenUpDayByYear(2021);
+    }
+    // otherwise it is always the first weekend of May
+    else {
+        const guDay = getGreenUpDayByYear(thisYear);
+        const isBeforeGUDay = today.isBefore(guDay) || today.isSame(guDay, 'day')
+        return isBeforeGUDay
+            ? guDay.toDate()
+            : getGreenUpDayByYear(2021);
+    }        
+}
 
-// Calculates the Green Up day for the provided year.
+// Calculates the Green Up day for the provided year (in format YYYY)
 export const getGreenUpDayByYear = (year: number): Date => {
-    const mayFirst = new Date(`${ year }-05-01T12:00:09.770Z`); // compensating for timezone
-    const day = (`0${ 6 - mayFirst.getDay() + mayFirst.getDate() }`).slice(-2);
-    return new Date(`${ year }-05-${ day }`);
+    // In 2020 Green Up day was held on May 30th due to the covid19 outbreak
+    if(year === 2020){
+        const guDay2020 = '2020-05-30';
+        return moment(guDay2020).toDate();
+    } 
+    // Otherwise, Green Up Day is always the first Saturday in May
+    else {
+        // get the monday at the beginning of the provided week with .startOf('isoWeek') 
+        // see: https://momentjs.com/docs/#/manipulating/start-of/
+        const mondayBeforeGUDay = moment(`${year}-05-01`).startOf('isoWeek');
+        const firstSaturdayInMay = mondayBeforeGUDay.add(5, 'days');
+        return firstSaturdayInMay.toDate();
+    }
 };
 
 const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
@@ -16,7 +47,7 @@ const addDays = (date: Date, days: number): number => new Date(date).setDate(new
 type TodayType = Date | string;
 
 // Calculate the current year's GreenUp Day if we are within 7 days
-export const getCurrentGreenUpDay = (today: ?TodayType): Date => {
+export const getCurrentGreenUpDay = (today?: Date): Date => {
     const myToday = new Date(today || (new Date()).toUTCString());
     const currentYear = myToday.getUTCFullYear();
     return addDays(getGreenUpDayByYear(currentYear), 7) > myToday
@@ -24,12 +55,11 @@ export const getCurrentGreenUpDay = (today: ?TodayType): Date => {
         : getGreenUpDayByYear(currentYear + 1);
 };
 
-// Calculate days until Green Up Day
+// Calculate days until next Green Up Day
 export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
-    const myToday = new Date(today || (new Date()).toUTCString());
-    const greenUpDay = getCurrentGreenUpDay();
-    const differenceInTime = greenUpDay.getTime() - myToday.getTime();
-    return Math.ceil(differenceInTime / (1000 * 3600 * 24));
+    const myToday = today == null ? moment() : moment(today);
+    const greenUpDay = moment(getNextGreenUpDay());
+    return greenUpDay.diff(myToday, 'days');
 };
 
 // Determine if we're in the Event period, Thur, Fri, Green Up Day (Sat), Sun, Mon, or Tue
