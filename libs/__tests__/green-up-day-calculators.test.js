@@ -30,18 +30,18 @@ describe("getNextGreenUpDay", () => {
 describe("getGreenUpDayByYear", () => {
     it("returns the Green Up Day for the given year", () => {
         const gu2019 = getGreenUpDayByYear(2019);
-        const expectedDateString = moment("2019-05-04").toDate();
-        expect(gu2019).toMatchObject(expectedDateString);
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(gu2019).toMatchObject(expectedDate);
     });
     it("returns the Green Up Day for a future year", () => {
         const gu2025 = getGreenUpDayByYear(2025);
-        const expectedDateString = moment("2025-05-03").toDate();
-        expect(gu2025).toMatchObject(expectedDateString);
+        const expectedDate = moment("2025-05-03").toDate();
+        expect(gu2025).toMatchObject(expectedDate);
     });
     it("returns the Green Up Day for a past year", () => {
         const gu2000 = getGreenUpDayByYear(2000);
-        const expectedDateString = moment("2000-05-06").toDate();
-        expect(gu2000).toMatchObject(expectedDateString);
+        const expectedDate = moment("2000-05-06").toDate();
+        expect(gu2000).toMatchObject(expectedDate);
     });
 });
 
