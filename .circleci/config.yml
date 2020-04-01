@@ -74,11 +74,16 @@ jobs:
           command:
             git config user.name $CIRCLE_USERNAME
 
-      #Commit the changes
+      #Git add
       - run:
-          name: push new version
+          name: add changes
           command:
             git add -A
+
+      #Commit the changes
+      - run:
+          name: commit changes
+          command:
             git commit -m "update publish date"
 
       #Bump version number
