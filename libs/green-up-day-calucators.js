@@ -2,6 +2,12 @@
 
 import moment from "moment";
 
+const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
+type TodayType = Date | string;
+
+/**
+ * Returns the next Green Up day. If today is Green Up day, it returns today.
+ */
 export function getNextGreenUpDay() {
     const today = moment();
     const thisYear = today.get('year');
@@ -42,11 +48,9 @@ export const getGreenUpDayByYear = (year: number): Date => {
     }
 };
 
-const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
-
-type TodayType = Date | string;
-
-// Calculate the current year's GreenUp Day if we are within 7 days
+/** Calculate the current year's GreenUp Day if we are within 7 days
+ *  @param today An optional date used only by tests
+ */
 export const getCurrentGreenUpDay = (today?: Date): Date => {
     const myToday = new Date(today || (new Date()).toUTCString());
     const currentYear = myToday.getUTCFullYear();
@@ -55,7 +59,9 @@ export const getCurrentGreenUpDay = (today?: Date): Date => {
         : getGreenUpDayByYear(currentYear + 1);
 };
 
-// Calculate days until next Green Up Day
+/** Calculate days until next Green Up Day
+ *  @param today An optional date used only by tests
+ */
 export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
     const myToday = today == null ? moment() : moment(today);
     const greenUpDay = moment(getNextGreenUpDay());
