@@ -9,6 +9,24 @@ import {
 
 const addDays = (date, days) => new Date(date).setDate(new Date(date).getDate() + days);
 
+describe("getCurrentGreenUpDay", () => {
+    it("returns this year's green up day if today if before Green Up Day", () => {
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-01-01"));
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(myGUDay).toMatchObject(expectedDate);
+    });
+    it("returns the Green Up Day for next year if today is more than a week later than this year's Green Up Day", () => {
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-07-01"));
+        const expectedDate = moment("2020-05-30").toDate(); // remember the 2020 GU day moved to the end of the month
+        expect(myGUDay).toMatchObject(expectedDate);
+    });
+    it("returns this year's Green Up Day today less than a week later than this year's Green Up Day", () => {
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-05-07"));
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(myGUDay).toMatchObject(expectedDate);
+    });
+});
+
 describe("getNextGreenUpDay", () => {
     it("on March 1st, 2017 the next green up day is March 6th, 2017", () => {
         const guDay = getNextGreenUpDay( moment("2017-05-01").toDate() );
