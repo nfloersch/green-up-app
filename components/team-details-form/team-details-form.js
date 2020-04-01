@@ -187,177 +187,181 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
         .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
 
     return (
-        <KeyboardAvoidingView
-            behavior={ Platform.OS === "ios" ? "padding" : null }
-            style={ { flex: 1 } }
-        >
-            <SafeAreaView style={ styles.container }>
-                <ButtonBar buttonConfigs={ headerButtons }/>
-                <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
-                    <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, justifyContent: "flex-end" } }>
-                <ScrollView
-                    style={ styles.scroll }
-                    automaticallyAdjustContentInsets={ false }
-                    scrollEventThrottle={ 200 }
+
+        <SafeAreaView style={ styles.container }>
+            <ButtonBar buttonConfigs={ headerButtons }/>
+            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+                <KeyboardAvoidingView
+                    keyboardVerticalOffset={ 100 }
+                    style={ { flex: 1 } }
+                    behavior={ Platform.OS === "ios" ? "padding" : null }
                 >
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "Team Name" }</Text>
-                        <TextInput
-                            keyBoardType={ "default" }
-                            onChangeText={ setTeamValue("name") }
-                            placeholder={ "Team Name" }
-                            value={ state.team.name }
-                            underlineColorAndroid={ "transparent" }
-                        />
-                    </View>
-
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>
-                            { state.team.isPublic ? "Anyone can join your team" : "You control who joins your team" }
-                        </Text>
-                        <View styleName="horizontal flexible">
-                            <Button
-                                onPress={ () => setTeamValue("isPublic")(true) }
-                                styleName={ `full-width${ !state.team.isPublic ? " secondary muted" : "" }` }>
-                                <MaterialCommunityIcons
-                                    name="earth"
-                                    size={ 25 }
-                                    style={ { marginRight: 10 } }
-                                    color={ !state.team.isPublic ? "#555" : "black" }
-                                />
-                                <Text>PUBLIC</Text>
-                            </Button>
-                            <Button
-                                onPress={ () => setTeamValue("isPublic")(false) }
-                                styleName={ `full-width${ state.team.isPublic ? " secondary muted" : "" }` }>
-                                <MaterialCommunityIcons
-                                    name="earth-off"
-                                    size={ 25 }
-                                    style={ { marginRight: 10 } }
-                                    color={ state.team.isPublic ? "#555" : "black" }
-                                />
-                                <Text>PRIVATE</Text>
-                            </Button>
-                        </View>
-                    </View>
-                    <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "Clean Up Site" }</Text>
-                        <TextInput
-                            keyBoardType={ "default" }
-                            onChangeText={ setTeamValue("location") }
-                            placeholder={ "The park, school, or road name" }
-                            value={ state.team.location }
-                            style={ { backgroundColor: "white", padding: 20 } }
-                            underlineColorAndroid={ "transparent" }
-                        />
-                    </View>
-                    <View style={ styles.formControl }>
-                        <Text style={ { ...styles.label, maxHeight: 63 } }>
-                            { "Mark your spot(s)" }
-                        </Text>
-                        <MiniMap
-                            pinsConfig={ pinsConfig }
-                            onMapClick={ handleMapClick }
-                        />
-                        <Button
-                            styleName={ "secondary" }
-                            onPress={ removeLastMarker }
+                    <View style={ { flex: 1, justifyContent: "flex-end" } }>
+                        <ScrollView
+                            style={ styles.scroll }
+                            automaticallyAdjustContentInsets={ false }
+                            scrollEventThrottle={ 200 }
                         >
-                            <Text>{ "REMOVE MARKER" }</Text>
-                        </Button>
-                    </View>
-                    <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.alertInfo }>
-                            { dateRangeMessage }
-                        </Text>
-                    </View>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
-                        <View>
-                            <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
-                                <Text style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>
-                                    { state.team.date || "Which day will your team be cleaning?" }
-                                </Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                mode="date"
-                                date={ eventDate }
-                                minimumDate={ minDate }
-                                maximumDate={ maxDate }
-                                isVisible={ state.datePickerVisible }
-                                onConfirm={ handleDatePicked }
-                                onCancel={ setState({ datePickerVisible: false }) }
-                                titleIOS={ "Which day is your team cleaning?" }
-                                titleStyle={ styles.datePickerTitleStyle }
-                            />
-                        </View>
-                    </View>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "What time will your team start?" }</Text>
-                        <View>
-                            <TouchableOpacity onPress={ setState({ startDateTimePickerVisible: true }) }>
-                                <Text style={ { ...styles.textInput, ...(startIsSelected ? styles.selected : {}) } }>
-                                    { state.team.start || "Pick a Starting Time" }
-                                </Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                date={ setTime(eventDate, (state.team.start || "9:00 AM")) }
-                                mode="time"
-                                isVisible={ state.startDateTimePickerVisible }
-                                onConfirm={ handleStartDatePicked }
-                                onCancel={ setState({ startDateTimePickerVisible: false }) }
-                                is24Hour={ false }
-                                titleIOS={ "Pick a starting time." }
-                                titleStyle={ styles.datePickerTitleStyle }
-                            />
-                        </View>
-                    </View>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "What time will your team end?" }</Text>
-                        <View>
-                            <TouchableOpacity onPress={ setState({ endDateTimePickerVisible: true }) }>
-                                <Text style={ { ...styles.textInput, ...(endIsSelected ? styles.selected : {}) } }>
-                                    { state.team.end || "Pick an Ending Time" }
-                                </Text>
-                            </TouchableOpacity>
-                            <DateTimePicker
-                                date={ setTime(eventDate, (state.team.end || "5:00 PM")) }
-                                mode="time"
-                                isVisible={ state.endDateTimePickerVisible }
-                                onConfirm={ handleEndDatePicked }
-                                onCancel={ setState({ endDateTimePickerVisible: false }) }
-                                is24Hour={ false }
-                                titleIOS={ "Pick an ending time." }
-                                titleStyle={ styles.datePickerTitleStyle }
-                            />
-                        </View>
-                    </View>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "Team Name" }</Text>
+                                <TextInput
+                                    keyBoardType={ "default" }
+                                    onChangeText={ setTeamValue("name") }
+                                    placeholder={ "Team Name" }
+                                    value={ state.team.name }
+                                    underlineColorAndroid={ "transparent" }
+                                />
+                            </View>
 
-                    <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
-                    <View style={ styles.formControl }>
-                        <Text style={ styles.label }>{ "Team Information" }</Text>
-                        <TextInput
-                            keyBoardType={ "default" }
-                            multiline={ true }
-                            numberOfLines={ 10 }
-                            textAlignVertical="top"
-                            onChangeText={ setTeamValue("description") }
-                            placeholder={ "Add important information here" }
-                            style={ styles.textArea }
-                            value={ state.team.description }
-                            underlineColorAndroid={ "transparent" }
-                        />
-                    </View>
-                    { children }
-                    <View style={ { height: 120 } }/>
-                </ScrollView>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>
+                                    { state.team.isPublic ? "Anyone can join your team" : "You control who joins your team" }
+                                </Text>
+                                <View styleName="horizontal flexible">
+                                    <Button
+                                        onPress={ () => setTeamValue("isPublic")(true) }
+                                        styleName={ `full-width${ !state.team.isPublic ? " secondary muted" : "" }` }>
+                                        <MaterialCommunityIcons
+                                            name="earth"
+                                            size={ 25 }
+                                            style={ { marginRight: 10 } }
+                                            color={ !state.team.isPublic ? "#555" : "black" }
+                                        />
+                                        <Text>PUBLIC</Text>
+                                    </Button>
+                                    <Button
+                                        onPress={ () => setTeamValue("isPublic")(false) }
+                                        styleName={ `full-width${ state.team.isPublic ? " secondary muted" : "" }` }>
+                                        <MaterialCommunityIcons
+                                            name="earth-off"
+                                            size={ 25 }
+                                            style={ { marginRight: 10 } }
+                                            color={ state.team.isPublic ? "#555" : "black" }
+                                        />
+                                        <Text>PRIVATE</Text>
+                                    </Button>
+                                </View>
+                            </View>
+                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "Clean Up Site" }</Text>
+                                <TextInput
+                                    keyBoardType={ "default" }
+                                    onChangeText={ setTeamValue("location") }
+                                    placeholder={ "The park, school, or road name" }
+                                    value={ state.team.location }
+                                    style={ { backgroundColor: "white", padding: 20 } }
+                                    underlineColorAndroid={ "transparent" }
+                                />
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Text style={ { ...styles.label, maxHeight: 63 } }>
+                                    { "Mark your spot(s)" }
+                                </Text>
+                                <MiniMap
+                                    pinsConfig={ pinsConfig }
+                                    onMapClick={ handleMapClick }
+                                />
+                                <Button
+                                    styleName={ "secondary" }
+                                    onPress={ removeLastMarker }
+                                >
+                                    <Text>{ "REMOVE MARKER" }</Text>
+                                </Button>
+                            </View>
+                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.alertInfo }>
+                                    { dateRangeMessage }
+                                </Text>
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
+                                <View>
+                                    <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
+                                        <Text
+                                            style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>
+                                            { state.team.date || "Which day will your team be cleaning?" }
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DateTimePicker
+                                        mode="date"
+                                        date={ eventDate }
+                                        minimumDate={ minDate }
+                                        maximumDate={ maxDate }
+                                        isVisible={ state.datePickerVisible }
+                                        onConfirm={ handleDatePicked }
+                                        onCancel={ setState({ datePickerVisible: false }) }
+                                        titleIOS={ "Which day is your team cleaning?" }
+                                        titleStyle={ styles.datePickerTitleStyle }
+                                    />
+                                </View>
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "What time will your team start?" }</Text>
+                                <View>
+                                    <TouchableOpacity onPress={ setState({ startDateTimePickerVisible: true }) }>
+                                        <Text
+                                            style={ { ...styles.textInput, ...(startIsSelected ? styles.selected : {}) } }>
+                                            { state.team.start || "Pick a Starting Time" }
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DateTimePicker
+                                        date={ setTime(eventDate, (state.team.start || "9:00 AM")) }
+                                        mode="time"
+                                        isVisible={ state.startDateTimePickerVisible }
+                                        onConfirm={ handleStartDatePicked }
+                                        onCancel={ setState({ startDateTimePickerVisible: false }) }
+                                        is24Hour={ false }
+                                        titleIOS={ "Pick a starting time." }
+                                        titleStyle={ styles.datePickerTitleStyle }
+                                    />
+                                </View>
+                            </View>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "What time will your team end?" }</Text>
+                                <View>
+                                    <TouchableOpacity onPress={ setState({ endDateTimePickerVisible: true }) }>
+                                        <Text
+                                            style={ { ...styles.textInput, ...(endIsSelected ? styles.selected : {}) } }>
+                                            { state.team.end || "Pick an Ending Time" }
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DateTimePicker
+                                        date={ setTime(eventDate, (state.team.end || "5:00 PM")) }
+                                        mode="time"
+                                        isVisible={ state.endDateTimePickerVisible }
+                                        onConfirm={ handleEndDatePicked }
+                                        onCancel={ setState({ endDateTimePickerVisible: false }) }
+                                        is24Hour={ false }
+                                        titleIOS={ "Pick an ending time." }
+                                        titleStyle={ styles.datePickerTitleStyle }
+                                    />
+                                </View>
+                            </View>
+
+                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <View style={ styles.formControl }>
+                                <Text style={ styles.label }>{ "Team Information" }</Text>
+                                <TextInput
+                                    keyBoardType={ "default" }
+                                    multiline={ true }
+                                    numberOfLines={ 10 }
+                                    textAlignVertical="top"
+                                    onChangeText={ setTeamValue("description") }
+                                    placeholder={ "Add important information here" }
+                                    style={ styles.textArea }
+                                    value={ state.team.description }
+                                    underlineColorAndroid={ "transparent" }
+                                />
+                            </View>
+                            { children }
+                        </ScrollView>
                         <View style={ { flex: 1 } }/>
                     </View>
-                </TouchableWithoutFeedback>
-            </SafeAreaView>
-        </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+        </SafeAreaView>
     );
 };
 
