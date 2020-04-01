@@ -1,5 +1,5 @@
 {
-  "version": "3.0.5",
+  "version": "3.0.6",
   "publishDate": "2020-4-1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
