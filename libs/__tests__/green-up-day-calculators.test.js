@@ -1,5 +1,6 @@
 import moment from "moment";
 import {
+    getNextGreenUpDay,
     getCurrentGreenUpDay,
     getGreenUpDayByYear,
     dateIsInCurrentEventWindow,
@@ -8,23 +9,22 @@ import {
 
 const addDays = (date, days) => new Date(date).setDate(new Date(date).getDate() + days);
 
-describe("getCurrentGreenUpDay", () => {
-    it("returns this year's green up day if today if before Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-01-01"));
-        const expectedDateString = moment("2019-05-04").toDate();
-        expect(myGUDay).toMatchObject(expectedDateString);
+describe("getNextGreenUpDay", () => {
+    it("on March 1st, 2017 the next green up day is March 6th, 2017", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-01").toDate() );
+        const expectedDate = moment("2017-05-06").toDate();
+        expect(guDay).toMatchObject(expectedDate);
     });
-    it("returns the Green Up Day for next year if today is more than a week later than this year's Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-07-01"));
-        const expectedDateString = moment("2020-05-30").toDate(); // remember 2020 changed due to covid-19
-        expect(myGUDay).toMatchObject(expectedDateString);
+    it("on March 6th, 2017 the next green up day is same day (March 6th, 2017)", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-06").toDate() );
+        const expectedDate = moment("2017-05-06").toDate();
+        expect(guDay).toMatchObject(expectedDate);
     });
-    it("returns this year's Green Up Day today less than a week later than this year's Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-05-07"));
-        const expectedDateString = moment("2019-05-04").toDate();
-        expect(myGUDay).toMatchObject(expectedDateString);
+    it("on March 7th, 2017 the next green up day is March 5th, 2018", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-07").toDate() );
+        const expectedDate = moment("2018-05-05").toDate();
+        expect(guDay).toMatchObject(expectedDate);
     });
-
 });
 
 describe("getGreenUpDayByYear", () => {

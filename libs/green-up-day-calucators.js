@@ -7,27 +7,28 @@ type TodayType = Date | string;
 
 /**
  * Returns the next Green Up day. If today is Green Up day, it returns today.
+ * @param today An optional date used only by tests
  */
-export function getNextGreenUpDay() {
-    const today = moment();
-    const thisYear = today.get('year');
+export function getNextGreenUpDay(today?: Date): Date {
+    const myToday = today == null ? moment() : moment(today);
+    const thisYear = myToday.get('year');
     const is2020 = thisYear === 2020;
     
     // in 2020 GUDay was on May 30th
     if(is2020){
         const guDay2020 = '2020-05-30';
-        const isBeforeGreenUpDay = today.isBefore(guDay2020) || today.isSame(guDay2020, 'day')
+        const isBeforeGreenUpDay = myToday.isBefore(guDay2020) || myToday.isSame(guDay2020, 'day');
         return isBeforeGreenUpDay
             ? moment(guDay2020).toDate()
             : getGreenUpDayByYear(2021);
     }
     // otherwise it is always the first weekend of May
     else {
-        const guDay = getGreenUpDayByYear(thisYear);
-        const isBeforeGUDay = today.isBefore(guDay) || today.isSame(guDay, 'day')
+        const guDay: Date = getGreenUpDayByYear(thisYear);
+        const isBeforeGUDay = myToday.isBefore(guDay) || myToday.isSame(guDay, 'day');
         return isBeforeGUDay
-            ? guDay.toDate()
-            : getGreenUpDayByYear(2021);
+            ? guDay
+            : getGreenUpDayByYear(thisYear + 1);
     }        
 }
 
