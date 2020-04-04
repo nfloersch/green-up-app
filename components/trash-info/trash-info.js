@@ -2,11 +2,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import moment from "moment";
-import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
-
-const guStart = moment(getCurrentGreenUpDay()).subtract(1, "days");
-const guEnd = moment(getCurrentGreenUpDay()).add(4, "days");
-
+import { greenUpWindowStart, greenUpWindowEnd } from "../../libs/green-up-day-calucators";
 
 export const TrashInfo = (): React$Element<any> => (
     <View style={ { backgroundColor: "white", padding: 20, margin: 10 } }>
@@ -14,7 +10,7 @@ export const TrashInfo = (): React$Element<any> => (
             { "Each town handles trash bags differently. Find the rules for your town" }
         </Text>
         <Text style={ { marginTop: 20, fontSize: 16 } }>
-            { `Trash bag tracking starts ${ guStart.format("dddd MM/DD/YYYY") } and ends ${ guEnd.format("dddd MM/DD/YYYY") }` }
+            { `Trash bag tracking starts ${ moment(greenUpWindowStart()).format("dddd MM/DD/YYYY") } and ends ${ moment(greenUpWindowEnd()).format("dddd MM/DD/YYYY") }` }
         </Text>
 
     </View>

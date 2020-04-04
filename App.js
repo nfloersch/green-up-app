@@ -27,16 +27,20 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
             require("./assets/images/circle-green.png"),
             require("./assets/images/circle-purple.png"),
             require("./assets/images/circle-orange.png"),
-            require("./assets/images/broom.png"),
-            require("./assets/images/google-logo.jpg"),
-            require("./assets/images/facebook-logo.png"),
-            require("./assets/images/green-up-logo.png"),
-            require("./assets/images/covered-bridge2.jpg")
+            require("./assets/images/green-up-logo.png")
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
             ...Ionicons.font,
             "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf"),
+            "Rubik-Medium": require("./assets/fonts/Rubik/Rubik-Medium.ttf"),
+            "Rubik-MediumItalic": require("./assets/fonts/Rubik/Rubik-MediumItalic.ttf"),
+            "Rubik-Bold": require("./assets/fonts/Rubik/Rubik-Bold.ttf"),
+            "Rubik-BoldItalic": require("./assets/fonts/Rubik/Rubik-BoldItalic.ttf"),
+            "Rubik-Black": require("./assets/fonts/Rubik/Rubik-Black.ttf"),
+            "Rubik-BlackItalic": require("./assets/fonts/Rubik/Rubik-BlackItalic.ttf"),
+            "Rubik-Light": require("./assets/fonts/Rubik/Rubik-Light.ttf"),
+            "Rubik-LightItalic": require("./assets/fonts/Rubik/Rubik-LightItalic.ttf"),
             "rubicon-icon-font": require("./assets/fonts/Rubik/rubicon-icon-font.ttf")
         })
     ]);
