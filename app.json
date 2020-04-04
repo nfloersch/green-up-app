@@ -4,14 +4,13 @@
     "description": "The Official App for Vermont's Green Up Day",
     "slug": "Green-Up-Vermont",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "owner": "c4btv",
     "githubUrl": "https://github.com/codeforbtv/green-up-app",
-    "version": "3.0.1",
+    "version": "3.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
@@ -50,7 +49,6 @@
         "googleSignIn": {
           "apiKey": "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU",
           "certificateHash": "A8241216BF89A3AD919A760FC12E2517C6BB362F"
-
         },
         "googleMaps": {
           "apiKey": "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU"

@@ -248,7 +248,7 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
 
     return (
         <SafeAreaView style={ styles.container }>
-            { getHeader(userHasTeams, messages.length > 0) }
+            { getHeader(userHasTeams, Object.keys(messages || {}).length > 0) }
             <View style={ {
                 flex: 1,
                 backgroundColor: constants.colorBackgroundLight

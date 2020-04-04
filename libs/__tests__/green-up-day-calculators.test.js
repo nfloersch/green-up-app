@@ -1,4 +1,6 @@
+import moment from "moment";
 import {
+    getNextGreenUpDay,
     getCurrentGreenUpDay,
     getGreenUpDayByYear,
     dateIsInCurrentEventWindow,
@@ -9,32 +11,55 @@ const addDays = (date, days) => new Date(date).setDate(new Date(date).getDate() 
 
 describe("getCurrentGreenUpDay", () => {
     it("returns this year's green up day if today if before Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-01-01").toUTCString());
-        const expectedDateString = (new Date("2019-05-04T00:00:00.000Z")).toUTCString();
-        expect(myGUDay.toUTCString()).toBe(expectedDateString);
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-01-01"));
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(myGUDay).toMatchObject(expectedDate);
     });
     it("returns the Green Up Day for next year if today is more than a week later than this year's Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-07-01").toUTCString());
-        const expectedDateString = (new Date("2020-05-02T00:00:00.000Z")).toUTCString();
-        expect(myGUDay.toUTCString()).toBe(expectedDateString);
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-07-01"));
+        const expectedDate = moment("2020-05-30").toDate(); // remember the 2020 GU day moved to the end of the month
+        expect(myGUDay).toMatchObject(expectedDate);
     });
     it("returns this year's Green Up Day today less than a week later than this year's Green Up Day", () => {
-        const myGUDay = getCurrentGreenUpDay(new Date("2019-05-07").toUTCString());
-        const expectedDateString = (new Date("2019-05-04T00:00:00.000Z")).toUTCString();
-        expect(myGUDay.toUTCString()).toBe(expectedDateString);
+        const myGUDay = getCurrentGreenUpDay(new Date("2019-05-07"));
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(myGUDay).toMatchObject(expectedDate);
     });
+});
 
+describe("getNextGreenUpDay", () => {
+    it("on March 1st, 2017 the next green up day is March 6th, 2017", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-01").toDate() );
+        const expectedDate = moment("2017-05-06").toDate();
+        expect(guDay).toMatchObject(expectedDate);
+    });
+    it("on March 6th, 2017 the next green up day is same day (March 6th, 2017)", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-06").toDate() );
+        const expectedDate = moment("2017-05-06").toDate();
+        expect(guDay).toMatchObject(expectedDate);
+    });
+    it("on March 7th, 2017 the next green up day is March 5th, 2018", () => {
+        const guDay = getNextGreenUpDay( moment("2017-05-07").toDate() );
+        const expectedDate = moment("2018-05-05").toDate();
+        expect(guDay).toMatchObject(expectedDate);
+    });
 });
 
 describe("getGreenUpDayByYear", () => {
     it("returns the Green Up Day for the given year", () => {
-        expect(getGreenUpDayByYear(2019).toUTCString()).toBe(new Date("2019-05-04T00:00:00.000Z").toUTCString());
+        const gu2019 = getGreenUpDayByYear(2019);
+        const expectedDate = moment("2019-05-04").toDate();
+        expect(gu2019).toMatchObject(expectedDate);
     });
     it("returns the Green Up Day for a future year", () => {
-        expect(getGreenUpDayByYear(2025).toUTCString()).toBe(new Date("2025-05-03T00:00:00.000Z").toUTCString());
+        const gu2025 = getGreenUpDayByYear(2025);
+        const expectedDate = moment("2025-05-03").toDate();
+        expect(gu2025).toMatchObject(expectedDate);
     });
     it("returns the Green Up Day for a past year", () => {
-        expect(getGreenUpDayByYear(2000).toUTCString()).toBe(new Date("2000-05-06T00:00:00.000Z").toUTCString());
+        const gu2000 = getGreenUpDayByYear(2000);
+        const expectedDate = moment("2000-05-06").toDate();
+        expect(gu2000).toMatchObject(expectedDate);
     });
 });
 
