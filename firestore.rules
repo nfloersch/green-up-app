@@ -103,7 +103,7 @@ service cloud.firestore {
 
    match /trashDrops/{dropId} {
         allow read: if true;
-        allow write: if istAuthed();
+        allow write: if isAuthed();
     }
 
     match /admins/{userId} {

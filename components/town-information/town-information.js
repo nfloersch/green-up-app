@@ -11,11 +11,10 @@ const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
     townInfo: Object,
-    town: string,
     hideOnError: ?boolean
 };
 
-export const TownInformation = ({ hideOnError = false, townInfo, town }: PropsType): React$Element<any> => {
+export const TownInformation = ({ hideOnError = false, townInfo }: PropsType): React$Element<any> => {
     const hasError = typeof townInfo.roadsideDropOffAllowed === "undefined";
     return hideOnError && hasError
         ? (<Fragment/>)
@@ -34,12 +33,12 @@ export const TownInformation = ({ hideOnError = false, townInfo, town }: PropsTy
                 ) }
                 { townInfo.roadsideDropOffAllowed === true && (
                     <Text style={ styles.statusBarText }>
-                        <Text>{ `You are in ${ town } and leaving trash bags on the roadside is allowed.` }</Text>
+                        <Text>{ `You are in ${ townInfo.name } and leaving trash bags on the roadside is allowed.` }</Text>
                     </Text>
                 ) }
                 { townInfo.roadsideDropOffAllowed === false && (
                     <View style={ styles.statusBarText }>
-                        <Text>{ `You are in ${ town } and leaving trash bags on the roadside is` }
+                        <Text>{ `You are in ${ townInfo.name } and leaving trash bags on the roadside is` }
                             <Text style={ { fontWeight: "bold" } }>
                                 { " not" }
                             </Text>
