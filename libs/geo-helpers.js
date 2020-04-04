@@ -4,7 +4,7 @@ import distance from "@turf/distance";
 import booleanWithin from "@turf/boolean-within";
 import * as R from "ramda";
 
-const townPolygonsData = require("../libs/VT_Boundaries__town_polygons.json");
+const townPolygonsData = require("../data-sources/town-data");
 const circumferenceOfTheEarth = 24901;
 
 export const getClosestSite = (sites: ?Array<LocationType>, userLocation: CoordinatesType): Object => {
@@ -58,5 +58,5 @@ export const findTownIdByCoordinates = (coordinates: CoordinatesType): string =>
             const feature = turf.feature(f.geometry);
             return booleanWithin(currentLocation, feature);
         });
-    return town ? town.properties.TOWNNAME : "";
+    return town ? town.properties.townId : "";
 };

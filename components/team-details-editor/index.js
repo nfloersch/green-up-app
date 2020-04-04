@@ -90,7 +90,7 @@ const TeamDetailsEditor = ({ actions, currentUser, navigation, otherCleanAreas, 
             otherCleanAreas={ otherCleanAreas }
             team={ selectedTeam }>
             <Divider styleName={ "line" }/>
-            <View style={ { marginTop: 20 } }>
+            <View style={ { marginTop: 20, marginBottom: 40 } }>
                 <TouchableHighlight
                     style={ styles.danger }
                     onPress={ deleteTeam }
