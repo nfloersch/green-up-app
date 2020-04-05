@@ -22,62 +22,69 @@ type PropsType = {
     faqs: Array<{ question: string, answer: string }>
 };
 
-const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs }: PropsType): React$Element<View> => (
-    <View style={ styles.frame }>
-        <ScrollView style={ styles.scroll }>
-            <View style={ styles.infoBlockContainer }>
-                <View style={ styles.infoBlockHeader }>
-                    <Text style={ styles.headerText }>{ eventName }</Text>
-                    <Text style={ styles.headerText }>
-                        { moment(isValidDate(eventDate) ? eventDate : getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY") }
-                    </Text>
+const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs }: PropsType): React$Element<View> => {
+    const displayFaqs = Array.isArray(faqs) && faqs.length > 0;
+    return (
+        <View style={ styles.frame }>
+            <ScrollView style={ styles.scroll }>
+                <View style={ styles.infoBlockContainer }>
+                    <View style={ styles.infoBlockHeader }>
+                        <Text style={ styles.headerText }>{ eventName }</Text>
+                        <Text style={ styles.headerText }>
+                            { moment(isValidDate(eventDate) ? eventDate : getCurrentGreenUpDay()).utc().format("dddd, MMMM Do YYYY") }
+                        </Text>
+                    </View>
+                    <Text
+                        style={ [styles.textDark, {
+                            textAlign: "justify",
+                            fontSize: 16
+                        }] }>{ eventDescription }</Text>
                 </View>
-                <Text
-                    style={ [styles.textDark, {
-                        textAlign: "justify",
-                        fontSize: 16
-                    }] }>{ eventDescription }</Text>
-            </View>
-            <View style={ styles.infoBlockContainer }>
-                <Text style={ styles.infoBlockHeader }>FAQ's</Text>
-                <View>
-                    {
-                        faqs.map(
-                            (faq: Object, i: number): React$Element<View> => (
-                                <View key={ i } style={ styles.infoBlock }>
-                                    <Text style={ [styles.textDark, {
-                                        textAlign: "justify",
-                                        fontSize: 18
-                                    }] }>{ faq.question }</Text>
-                                    <Text style={ [styles.textDark, {
-                                        textAlign: "justify",
-                                        fontSize: 16
-                                    }] }>{ faq.answer }</Text>
-                                </View>
-                            )
-                        )
-                    }
+                { 
+                    displayFaqs && (
+                        <View style={ styles.infoBlockContainer }>
+                            <Text style={ styles.infoBlockHeader }>FAQ's</Text>
+                            <View>
+                                {
+                                    faqs.map(
+                                        (faq: Object, i: number): React$Element<View> => (
+                                            <View key={ i } style={ styles.infoBlock }>
+                                                <Text style={ [styles.textDark, {
+                                                    textAlign: "justify",
+                                                    fontSize: 18
+                                                }] }>{ faq.question }</Text>
+                                                <Text style={ [styles.textDark, {
+                                                    textAlign: "justify",
+                                                    fontSize: 16
+                                                }] }>{ faq.answer }</Text>
+                                            </View>
+                                        )
+                                    )
+                                }
+                            </View>
+                        </View>
+                    )
+                }
+                <View style={ styles.infoBlockContainer }>
+                    <Text style={ styles.infoBlockHeader }>Contact Us</Text>
+                    <View style={ styles.infoBlock }>
+                        <Text style={ [styles.textDark, { fontSize: 18 }] }>{ contactUs.fullName }</Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>Phone: <Anchor
+                            style={ [styles.textDark, { fontSize: 16, textDecorationLine: "underline" }] }
+                            href={ `tel:${ contactUs.phoneNumber }` }>{ contactUs.phoneNumber }</Anchor></Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>Email: <Anchor
+                            style={ [styles.textDark, { fontSize: 16, textDecorationLine: "underline" }] }
+                            href={ `mailto:${ contactUs.email }` }>{ contactUs.email }</Anchor></Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>By mail: </Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.fullName }</Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.addressLine1 }</Text>
+                        <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.addressLine2 }</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={ styles.infoBlockContainer }>
-                <Text style={ styles.infoBlockHeader }>Contact Us</Text>
-                <View style={ styles.infoBlock }>
-                    <Text style={ [styles.textDark, { fontSize: 18 }] }>{ contactUs.fullName }</Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>Phone: <Anchor
-                        style={ [styles.textDark, { fontSize: 16, textDecorationLine: "underline" }] }
-                        href={ `tel:${ contactUs.phoneNumber }` }>{ contactUs.phoneNumber }</Anchor></Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>Email: <Anchor
-                        style={ [styles.textDark, { fontSize: 16, textDecorationLine: "underline" }] }
-                        href={ `mailto:${ contactUs.email }` }>{ contactUs.email }</Anchor></Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>By mail: </Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.fullName }</Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.addressLine1 }</Text>
-                    <Text style={ [styles.textDark, { fontSize: 16 }] }>{ contactUs.addressLine2 }</Text>
-                </View>
-            </View>
-        </ScrollView>
-    </View>
-);
+            </ScrollView>
+        </View>
+    );
+};
 
 
 GreenUpFacts.navigationOptions = {
