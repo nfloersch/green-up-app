@@ -20,8 +20,10 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const handleButtonPress = () => {
-        if (isValidEmail(email)) {
-            onButtonPress(email, password);
+		// Remove leading/trailing whitespace before processing email
+        const trimmedEmail = email.trim();
+        if (isValidEmail(trimmedEmail)) {
+            onButtonPress(trimmedEmail, password);
         } else {
             Alert.alert("Please enter a valid email address");
         }
