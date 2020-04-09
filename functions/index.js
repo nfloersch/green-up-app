@@ -1,7 +1,7 @@
 /**
- *  A SendGrid API key must be set using the firestore cli in the terminal by running:
+ *  A SendGrid API key, email and template id must be set using the firestore cli in the terminal by running:
  *
- *        firebase functions:config:set sendgrid.apikey="my-api-key"
+ *        firebase functions:config:set sendgrid.apikey="my-api-key" sendgrid.fromemail="greenup-sender-email" sendgrid.templateid="sendgrid-template-id"
  *
  *  Afterwards deploy your functions for the change to take effect by running
  *
@@ -38,7 +38,7 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     const sender = invitation.sender.displayName;
     const from = {
         name: "Green Up Vermont",
-        email: "app@greenupvermont.org"
+        email: functions.config().sendgrid.fromemail
     };
     // Build Text Body
     const noNameText = "A friend has invited you to participate in Green Up Day";
@@ -62,10 +62,9 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
         subject,
         text,
         html,
-        templateId: "93b4cee5-a954-4704-ae0b-965196dc05b1",
+        templateId: functions.config().sendgrid.templateid,
         substitutions: { teaminfo: teamInfo }
     };
-
     return sgMail.send(message);
 }
 
