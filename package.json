@@ -64,6 +64,8 @@
     "react-native-checkbox": "^2.0.0",
     "react-native-fs": "^2.16.1",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-hide-with-keyboard": "^1.2.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-linear-gradient": "~2.5.6",
     "react-native-maps": "0.26.1",
     "react-native-modal-datetime-picker": "^7.5.0",
