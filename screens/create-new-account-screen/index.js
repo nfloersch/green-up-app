@@ -6,12 +6,12 @@ import {
     SafeAreaView,
     TouchableWithoutFeedback,
     Platform,
-    KeyboardAvoidingView,
     Keyboard
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CreateAccountForm from "../../components/create-account-form";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as actionCreators from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import { View } from "@shoutem/ui";
@@ -28,10 +28,7 @@ type PropsType = {
 
 
 const Index = ({ actions, createUserError }: PropsType): React$Element<any> => (
-    <KeyboardAvoidingView
-        behavior={ Platform.OS === "ios" ? "padding" : null }
-        style={ { flex: 1 } }
-    >
+    <KeyboardAwareScrollView style={{ backgroundColor: constants.colorBackgroundDark }}>
         <SafeAreaView style={ styles.container }>
             <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
                 <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, marginTop: 20, justifyContent: "flex-end" } }>
@@ -44,7 +41,7 @@ const Index = ({ actions, createUserError }: PropsType): React$Element<any> => (
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
 );
 
 
