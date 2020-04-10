@@ -29,8 +29,10 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
     }, [createUserError]);
 
     const onButtonPress = () => {
-        if (isValidEmail(email)) {
-            createAccount(email, password, displayName);
+		// Remove leading/trailing whitespace before processing email
+        const trimmedEmail = email.trim();
+        if (isValidEmail(trimmedEmail)) {
+            createAccount(trimmedEmail, password, displayName);
         } else {
             Alert.alert("Please enter a valid email address");
         }
