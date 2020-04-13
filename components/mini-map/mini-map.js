@@ -47,31 +47,28 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
     });
 
 const placePins = (pins: Array<Object> = []): Array<React$Element<any>> => (
-    (pins || []).map((pin: Object, index: number): React$Element<any> => (
-        <MapView.Marker
-            coordinate={ pin.coordinates }
-            key={ `pin${ index }` }
-            pinColor={ pin.color || "red" }
-            stopPropagation={ true }
-            onPress={ () => {
-                if (pin.onPress) {
-                    pin.onPress(index);
+    (pins || []).map(
+        (pin: Object, index: number): React$Element<any> => (
+            <MapView.Marker
+                coordinate={ pin.coordinates }
+                key={ `pin${ index }` }
+                pinColor={ pin.color || "red" }
+                stopPropagation={ true }
+                onPress={ () => { if (pin.onPress) { pin.onPress(index); } } }>
+                { pin.callout ||
+                    <MultiLineMapCallout
+                        onPress={ () => {
+                            if (pin.onCalloutPress) {
+                                pin.onCalloutPress(index);
+                            }
+                        } }
+                        title={ pin.title }
+                        description={ typeof pin.description === "string" ? pin.description : "" }
+                    />
                 }
-            } }
-        >
-            { pin.callout ||
-            <MultiLineMapCallout
-                onPress={ () => {
-                    if (pin.onCalloutPress) {
-                        pin.onCalloutPress(index);
-                    }
-                } }
-                title={ pin.title }
-                description={ typeof pin.description === "string" ? pin.description : "" }
-            />
-            }
-        </MapView.Marker>
-    ))
+            </MapView.Marker>
+        )
+    )
 );
 
 
@@ -126,7 +123,9 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style }:
                 initialRegion={ initialMapLocation }
                 onPress={ handleMapClick }
             >
-                { placePins(pinsConfig) }
+                { 
+                    placePins(pinsConfig) 
+                }
             </MapView>
         )
         : (
