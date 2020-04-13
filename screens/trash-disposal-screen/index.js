@@ -48,6 +48,7 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
     const initialMapLocation = userLocation
         ? Coordinates.create(userLocation.coordinates)
         : null;
+    
 
     const contents = R.cond([
         [
@@ -153,10 +154,29 @@ const mapStateToProps = (state: Object): Object => {
     )(state.towns.townData);
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
 
-    const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({
-        id: entry[0],
-        name: state.teams.teams[entry[0]].name
-    }));
+    // const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({
+    //     id: entry[0],
+    //     name: state.teams.teams[entry[0]].name
+    // }));
+    const teamOptionsOrig = Object.entries(currentUser.teams || {});
+    const teamOptions = [];
+    for (var i in teamOptionsOrig) {
+        try {
+            let tid = (teamOptionsOrig[i])[0];
+            let team = state.teams.teams[tid];
+            let tname = team.name;
+            teamOptions.push(
+                {
+                    id: tid,
+                    name: tname
+                }
+            )
+        }
+        catch (err) {
+            console.log("Error generating team option.");
+        }
+    }
+
 
     return (
         {
