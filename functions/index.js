@@ -47,27 +47,29 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
     const html = `<div><p>${ !sender || !invitation.displayName ? noNameText : withNameText }</p></div>`;
 
     // Build Team Info
-    const where = team.location ? `<p>Where : <strong>${ team.location }</strong></p>` : "";
-    const date = team.date ? `<p>When : <strong>${ team.date }</strong></p>` : "";
-    const start = team.start ? `<p>Start Time : <strong>${ team.start }</strong></p>` : "";
-    const end = team.end ? `<p>End Time : <strong>${ team.end }</strong></p>` : "";
-    const teamName = `<p>Team Name: <strong>${ team.name }</strong></p>`;
-    const owner = team.owner.displayName ? `<p>Team Captain : <strong>${ team.owner.displayName }</strong>` : "";
-    const town = team.townId ? `<p>Town : <strong>${ team.townId }</strong></p>` : "";
-    const notes = team.notes ? `<p>Description : <strong>${ team.notes }</strong></p>` : "";
+    const where = team.location ? ` Where : ${ team.location }` : "";
+    const date = team.date ? ` When : ${ team.date }` : "";
+    const start = team.start ? ` Start Time : ${ team.start }` : "";
+    const end = team.end ? ` End Time : ${ team.end }` : "";
+    const teamName = `Team Name: ${ team.name }`;
+    const owner = team.owner.displayName ? ` Team Captain : ${ team.owner.displayName }` : "";
+    const town = team.townId ? ` Town : ${ team.townId }` : "";
+    const notes = team.notes ? ` Description : ${ team.notes }` : "";
     const teamInfo = `${ teamName }${ owner }${ date }${ start }${ end }${ town }${ where }${ notes }`;
     const message = {
         to,
         from,
-        subject,
         text,
         html,
         templateId: functions.config().sendgrid.templateid,
-        substitutions: { teaminfo: teamInfo }
+        dynamic_template_data: { 
+            teamInfo: teamInfo,
+            subject: subject
+            }
     };
     return sgMail.send(message);
 }
-
+    
 /**
  * User setup after an invitation create
  * Sends a invitation email to an invited user.
