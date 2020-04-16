@@ -22,6 +22,7 @@ import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
 import DisposalSiteSelector from "../../components/disposal-site-selector";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -45,9 +46,12 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
     const [activeTab, setActiveTab] = useState(dateIsInCurrentEventWindow() ? 1 : 0);
     const navState = { index: activeTab, routes };
 
-    const initialMapLocation = userLocation
-        ? Coordinates.create(userLocation.coordinates)
-        : null;
+    // const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
+    // if (currentTownId == "") {
+    //     userLocation.coordinates.latitude = -72.5754;
+    //     userLocation.coordinates.longitude = 44.2601;
+    // }
+    const initialMapLocation = userLocation? Coordinates.create(userLocation.coordinates): null;
     
 
     const contents = R.cond([
@@ -140,18 +144,33 @@ const mapStateToProps = (state: Object): Object => {
         return hasLatitude && hasLongitude;
     });
 
-    const townInfo = R.compose(
-        R.map((entry): Object => (
-            {
-                townId: entry[0],
-                townName: entry[1].name,
-                notes: entry[1].notes,
-                dropOffInstructions: entry[1].dropOffInstructions,
-                allowsRoadside: entry[1].roadsideDropOffAllowed,
-                collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
-            })),
-        Object.entries
-    )(state.towns.townData);
+    const townInfo = 
+    R.filter(
+        (townEntry) => {
+            // Filter out bad town data.
+            if (!townEntry) return false;
+            if (!(townEntry.townId)) return false;
+            if (!(townEntry.townName)) return false;
+            if (!(townEntry.hasOwnProperty('allowsRoadside'))) return false;
+            return true;
+        },
+        R.compose(
+            R.map(
+                (entry): Object => (
+                    {
+                        townId: entry[0],
+                        townName: entry[1].name,
+                        notes: entry[1].notes,
+                        dropOffInstructions: entry[1].dropOffInstructions,
+                        allowsRoadside: entry[1].roadsideDropOffAllowed,
+                        collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
+                    }
+                )
+            ),
+            Object.entries
+        )(state.towns.townData)
+    )
+    
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
 
     // const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({

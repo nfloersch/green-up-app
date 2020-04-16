@@ -6,7 +6,8 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    Modal
+    Modal,
+    Picker
 } from "react-native";
 import EnableLocationServices from "../../components/enable-location-services";
 import { DropDownMenu, Text, Button, Title, Divider, View } from "@shoutem/ui";
@@ -174,13 +175,9 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                 { "This drop is for team:" }
                                             </Text>
                                             <View style={ { backgroundColor: "white", padding: 20 } }>
-                                                <DropDownMenu
-                                                    options={ teamOptions }
-                                                    selectedOption={ drop.teamId ? teamOptions.find(t => (t.id === drop.teamId)) : teamOptions[0] }
-                                                    onOptionSelected={ (team) => setDrop({ ...drop, teamId: team.id }) }
-                                                    titleProperty="name"
-                                                    valueProperty="teamOptions.id"
-                                                    styleName="horizontal"
+                                                <Picker
+                                                    selectedValue={drop.teamId}
+                                                    onValueChange={ (pvalue,pidx) => setDrop({ ...drop, teamId: pvalue }) }
                                                     style={ {
                                                         modal: { backgroundColor: "#F00", color: "red" },
                                                         selectedOption: {
@@ -191,8 +188,16 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                 fontSize: 20
                                                             }
                                                         }
-                                                    } }
-                                                />
+                                                    } }>
+                                                    { 
+                                                        teamOptions.map(
+                                                            (entry: Object): React$Element<any> => (
+                                                                <Picker.Item label={entry.name} value={entry.id}/>
+                                                            )
+                                                        )
+                                                    }
+                                                </Picker>
+                                                
                                             </View>
                                         </Fragment>
                                     )
