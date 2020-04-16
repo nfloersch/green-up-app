@@ -1,5 +1,3 @@
-
-
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const firebaseHelper = require("firebase-functions-helper");
@@ -53,7 +51,8 @@ const validateFirebaseIdToken = async (req, res, next) => {
         req.user = decodedIdToken; // not a possible race condition because middle-ware is forced to be synchronous?
         next();
         return void 0;
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Error while verifying Firebase ID token:", error);
         res.status(403).send("Unauthorized");
         return void 0;
@@ -152,7 +151,8 @@ app.put("/towns", (req, res) => {
                 return res.status(200).send({ towns });
             })
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
@@ -246,11 +246,38 @@ app.put("/trash_collection_sites", (req, res) => {
         Promise.all(records)
             .then(results => res.status(200).send({ results }))
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    } catch (error) {
+    }
+    catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
 });
+
+app.put("/trash_collection_sites", async (req, res) => {
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+
+    try {
+        const collection = db.collection("trashCollectionSites");
+        const trashCollectionSites = R.map(datum => Celebration.create(datum))(JSON.parse(req.body.trashCollectionSites));
+        const newIds = Object.keys(trashCollectionSites);
+        const setNewDocs = newIds.map(key => collection.doc(key).set(trashCollectionSites[key]));
+        await Promise.all(setNewDocs);
+        const oldAndNew = await firebaseHelper.firestore.backup(db, "trashCollectionSites");
+        const oldIds = Object.keys(oldAndNew.trashCollectionSites).filter(id => (newIds.indexOf(id) < 0));
+        const deletions = oldIds.map(id => db.collection("trashCollectionSites").doc(id).delete());
+        await Promise.all(deletions);
+        return res.status(200).send({ trashCollectionSites });
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
+});
+
 
 /** * Supply Distribution Sites ***/
 
@@ -332,18 +359,32 @@ app.delete("/supply_distribution_sites/:id", (req, res) => {
 });
 
 // Bulk upload of Supply Distribution Sites data
-app.put("/supply_distribution_sites", (req, res) => {
-    const collection = admin.firestore().collection("supplyDistributionSites");
+app.put("/supply_distribution_sites", async (req, res) => {
+
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+
     try {
-        const data = R.map(site => SupplyDistributionSite.create(site), Object.values(JSON.parse(req.body.supplyDistributionSites)));
-        const records = data.map(site => collection.add(site));
-        Promise.all(records)
-            .then(results => res.status(200).send({ results }))
-            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    } catch (error) {
+        const collection = db.collection("supplyDistributionSites");
+        const supplyDistributionSites = R.map(datum => SupplyDistributionSite.create(datum))(JSON.parse(req.body.supplyDistributionSites));
+        const newIds = Object.keys(supplyDistributionSites);
+        const setNewDocs = newIds.map(key => collection.doc(key).set(supplyDistributionSites[key]));
+        await Promise.all(setNewDocs);
+        const oldAndNew = await firebaseHelper.firestore.backup(db, "supplyDistributionSites");
+        const oldIds = Object.keys(oldAndNew.supplyDistributionSites).filter(id => (newIds.indexOf(id) < 0));
+        const deletions = oldIds.map(id => db.collection("supplyDistributionSites").doc(id).delete());
+        await Promise.all(deletions);
+        return res.status(200).send({ supplyDistributionSites });
+    }
+    catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
+
 
 /** * Celebrations ***/
 
@@ -424,18 +465,30 @@ app.delete("/celebrations/:id", (req, res) => {
 });
 
 // Bulk upload of Celebrations data
-app.put("/celebrations", (req, res) => {
-    const collection = admin.firestore().collection("celebrations");
-    try {
-        const data = R.map(event => Celebration.create(event), Object.values(req.body.celebrations));
-        const records = data.map(event => collection.add(event));
-        Promise.all(records)
-            .then(results => res.status(200).send({ results }))
-            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    } catch (error) {
-        return res.status(400).send(`An error occurred: ${ error }`);
+app.put("/celebrations", async (req, res) => {
+
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
     }
 
+    try {
+        const collection = db.collection("celebrations");
+        const celebrations = R.map(datum => Celebration.create(datum))(JSON.parse(req.body.celebrations));
+        const newIds = Object.keys(celebrations);
+        const setNewDocs = newIds.map(key => collection.doc(key).set(celebrations[key]));
+        await Promise.all(setNewDocs);
+        const oldAndNew = await firebaseHelper.firestore.backup(db, "celebrations");
+        const oldIds = Object.keys(oldAndNew.celebrations).filter(id => (newIds.indexOf(id) < 0));
+        const deletions = oldIds.map(id => db.collection("celebrations").doc(id).delete());
+        await Promise.all(deletions);
+        return res.status(200).send({ celebrations });
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
 });
 
 module.exports.app = functions.https.onRequest(app);
