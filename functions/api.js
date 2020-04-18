@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const firebaseHelper = require("firebase-functions-helper");
 const express = require("express");
 const cookieParser = require("cookie-parser")();
-const cors = require("cors")({ origin: true });
+const cors = require("cors");
 const app = express();
 const R = require("ramda");
 const bodyParser = require("body-parser");
@@ -11,7 +11,8 @@ const Town = require("./models/town");
 const TrashCollectionSite = require("./models/trash-collection-site");
 const SupplyDistributionSite = require("./models/supply-distribution-site");
 const Celebration = require("./models/celebration");
-
+const EventSettings = require("./models/event-settings");
+const FAQ = require("./models/faq");
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
 // `Authorization: Bearer <Firebase ID Token>`.
@@ -59,20 +60,174 @@ const validateFirebaseIdToken = async (req, res, next) => {
     }
 };
 
-app.use(cors);
+app.use(cors({ origin: true }));
 app.use(cookieParser);
 // These HTTPS endpoints can only be accessed by your Firebase Users.
 // Requests need to be authorized by providing an `Authorization` HTTP header
 // with value `Bearer <Firebase ID Token>`.
 app.use(validateFirebaseIdToken);
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.text({ limit: "50mb" }));
+
 
 /** * Hello ***/
 
 app.get("/hello", (req, res) => {
     res.json({ greeting: `Hello ${ req.user.email }` });
 });
+
+/** Event Info **/
+app.get("/event-settings", (req, res) => {
+    const docRef = admin.firestore().collection("eventInfo").doc("settings");
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            }
+            return res.status(404).send("Cannot get event info");
+
+        })
+        .catch(error => res.status(400).send("Cannot get event settings"));
+});
+
+app.patch("/event-settings", async (req, res) => {
+    try {
+        const db = admin.firestore();
+        const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+        const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+        if (!isAllowed) {
+            return res.status(401).send(`Unauthorized`);
+        }
+        const blackListedFields = ["updated", "created"];
+        const fieldsToMerge = R.compose(
+            R.fromPairs,
+            R.filter(entry => !blackListedFields.includes(entry[0])),
+            Object.entries)(req.body);
+
+        const docRef = db.collection("eventInfo").doc("settings");
+        const doc = await docRef.get();
+        const newEventSettings = EventSettings.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+        await docRef.set(newEventSettings);
+        const response = await docRef.get();
+        res.status(200).send({ "eventSettings": doc.data() });
+    }
+    catch (error) {
+        res.status(400).send(`Cannot find eventSettings: ${ error }`);
+    }
+});
+
+
+app.get("/faqs", async (req, res) => {
+    const db = admin.firestore();
+    firebaseHelper.firestore
+        .backup(db, "faqs")
+        .then(data => res.status(200).send({ faqs: data.faqs }))
+        .catch(error => res.status(400).send(`Cannot get faqs: ${ error }`));
+});
+
+app.get("/faqs/:id", (req, res) => {
+    const docRef = admin.firestore().collection("faqs").doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                return res.status(200).send(doc.data());
+            }
+            return res.status(400).send(`Cannot get faq: ${ req.params.id }`);
+
+        })
+        .catch(error => res.status(400).send(`Cannot get faq: ${ error }`));
+});
+
+app.post("/faq", async (req, res) => {
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+    const newFAQ = FAQ.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
+    db.collection("faq")
+        .add(newFAQ)
+        .then((docRef) => docRef.get()
+            .then(doc => res.status(200).send({ [docRef.id]: doc.data() })))
+        .catch(error => res.status(400).send(`Cannot create faq: ${ error }`));
+});
+
+app.patch("/faqs/:id", async (req, res) => {
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+    const blackListedFields = ["id", "updated", "created"];
+    const fieldsToMerge = R.compose(
+        R.fromPairs,
+        R.filter(entry => !blackListedFields.includes(entry[0])),
+        Object.entries)(req.body);
+    const docRef = db.collection("faqs").doc(req.params.id);
+    docRef
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                const newFaq = Faq.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+                return docRef.set(newFaq).then(() => docRef.get()
+                    .then(_doc => res.status(200).send(_doc.data())));
+            }
+            return res.status(404).send(`Cannot find faq: ${ req.params.id }`);
+
+        })
+        .catch(error => res.status(400).send(`Cannot update faq: ${ error }`));
+});
+
+app.delete("/faq/:id", async (req, res) => {
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+    const docRef = db.collection("faq").doc(req.params.id);
+    docRef.delete()
+        .then(() => {
+            const result = { id: req.params.id };
+            return res.status(200).send(result);
+        })
+        .catch(error => res.status(400).send(error));
+});
+
+// Bulk upload of faq data
+app.put("/faqs", async (req, res) => {
+    const db = admin.firestore();
+    const userPermissions = await db.collection("admins").doc(req.user.uid).get();
+    const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
+    if (!isAllowed) {
+        return res.status(401).send(`Unauthorized`);
+    }
+    const collection = db.collection("faqs");
+    let data = {};
+    try {
+        data = Object
+            .entries(req.body.faqs)
+            .map(entry => Faq.create(entry[1], entry[0]));
+
+        const records = data.map(faq => collection.doc(faq.id).set(faq).then(() => faq));
+        Promise.all(records)
+            .then(results => {
+                const faqs = results.reduce((obj, faq) => ({ ...obj, [faq.id]: faq }), {});
+                return res.status(200).send({ faqs });
+            })
+            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
+    }
+    catch (error) {
+        return res.status(400).send(`An error occurred: ${ error }`);
+    }
+
+});
+
 
 /** * Towns ***/
 
@@ -141,7 +296,7 @@ app.put("/towns", (req, res) => {
     let data = {};
     try {
         data = Object
-            .entries(JSON.parse(req.body.towns))
+            .entries(req.body.towns)
             .map(entry => Town.create(entry[1], entry[0]));
 
         const records = data.map(town => collection.doc(town.id).set(town).then(() => town));
@@ -160,7 +315,7 @@ app.put("/towns", (req, res) => {
 
 /** * Trash Collection Sites ***/
 
-app.get("/trash_collection_sites", async (req, res) => {
+app.get("/faq", async (req, res) => {
     const db = admin.firestore();
     const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
@@ -237,22 +392,6 @@ app.delete("/trash_collection_sites/:id", (req, res) => {
 });
 
 // Bulk upload of Trash Collection Sites data
-app.put("/trash_collection_sites", (req, res) => {
-
-    const collection = admin.firestore().collection("trashCollectionSites");
-    try {
-        const data = R.map(site => TrashCollectionSite.create(site), Object.values(JSON.parse(req.body.trashCollectionSites)));
-        const records = data.map(site => collection.add(site));
-        Promise.all(records)
-            .then(results => res.status(200).send({ results }))
-            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
-        return res.status(400).send(`An error occurred: ${ error }`);
-    }
-
-});
-
 app.put("/trash_collection_sites", async (req, res) => {
     const db = admin.firestore();
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
@@ -263,7 +402,7 @@ app.put("/trash_collection_sites", async (req, res) => {
 
     try {
         const collection = db.collection("trashCollectionSites");
-        const trashCollectionSites = R.map(datum => Celebration.create(datum))(JSON.parse(req.body.trashCollectionSites));
+        const trashCollectionSites = R.map(datum => Celebration.create(datum))(req.body.trashCollectionSites);
         const newIds = Object.keys(trashCollectionSites);
         const setNewDocs = newIds.map(key => collection.doc(key).set(trashCollectionSites[key]));
         await Promise.all(setNewDocs);
@@ -277,7 +416,6 @@ app.put("/trash_collection_sites", async (req, res) => {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
-
 
 /** * Supply Distribution Sites ***/
 
@@ -370,7 +508,7 @@ app.put("/supply_distribution_sites", async (req, res) => {
 
     try {
         const collection = db.collection("supplyDistributionSites");
-        const supplyDistributionSites = R.map(datum => SupplyDistributionSite.create(datum))(JSON.parse(req.body.supplyDistributionSites));
+        const supplyDistributionSites = R.map(datum => SupplyDistributionSite.create(datum))(req.body.supplyDistributionSites);
         const newIds = Object.keys(supplyDistributionSites);
         const setNewDocs = newIds.map(key => collection.doc(key).set(supplyDistributionSites[key]));
         await Promise.all(setNewDocs);
@@ -384,7 +522,6 @@ app.put("/supply_distribution_sites", async (req, res) => {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
-
 
 /** * Celebrations ***/
 
@@ -476,8 +613,10 @@ app.put("/celebrations", async (req, res) => {
 
     try {
         const collection = db.collection("celebrations");
-        const celebrations = R.map(datum => Celebration.create(datum))(JSON.parse(req.body.celebrations));
+
+        const celebrations = R.map(datum => Celebration.create(datum))(req.body.celebrations);
         const newIds = Object.keys(celebrations);
+
         const setNewDocs = newIds.map(key => collection.doc(key).set(celebrations[key]));
         await Promise.all(setNewDocs);
         const oldAndNew = await firebaseHelper.firestore.backup(db, "celebrations");
