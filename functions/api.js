@@ -135,13 +135,13 @@ app.get("/faqs/:id", (req, res) => {
             if (doc.exists) {
                 return res.status(200).send(doc.data());
             }
-            return res.status(400).send(`Cannot get faq: ${ req.params.id }`);
+            return res.status(400).send(`Cannot get FAQ ${ req.params.id }`);
 
         })
-        .catch(error => res.status(400).send(`Cannot get faq: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot get FAQ: ${ error }`));
 });
 
-app.post("/faq", async (req, res) => {
+app.post("/faqs", async (req, res) => {
     const db = admin.firestore();
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
@@ -149,11 +149,11 @@ app.post("/faq", async (req, res) => {
         return res.status(401).send(`Unauthorized`);
     }
     const newFAQ = FAQ.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
-    db.collection("faq")
+    db.collection("faqs")
         .add(newFAQ)
         .then((docRef) => docRef.get()
             .then(doc => res.status(200).send({ [docRef.id]: doc.data() })))
-        .catch(error => res.status(400).send(`Cannot create faq: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot create FAQ: ${ error }`));
 });
 
 app.patch("/faqs/:id", async (req, res) => {
@@ -173,24 +173,24 @@ app.patch("/faqs/:id", async (req, res) => {
         .get()
         .then(doc => {
             if (doc.exists) {
-                const newFaq = Faq.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
+                const newFaq = FAQ.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
                 return docRef.set(newFaq).then(() => docRef.get()
                     .then(_doc => res.status(200).send(_doc.data())));
             }
-            return res.status(404).send(`Cannot find faq: ${ req.params.id }`);
+            return res.status(404).send(`Cannot find FAQ: ${ req.params.id }`);
 
         })
-        .catch(error => res.status(400).send(`Cannot update faq: ${ error }`));
+        .catch(error => res.status(400).send(`Cannot update FAQ: ${ error }`));
 });
 
-app.delete("/faq/:id", async (req, res) => {
+app.delete("/faqs/:id", async (req, res) => {
     const db = admin.firestore();
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
         return res.status(401).send(`Unauthorized`);
     }
-    const docRef = db.collection("faq").doc(req.params.id);
+    const docRef = db.collection("faqs").doc(req.params.id);
     docRef.delete()
         .then(() => {
             const result = { id: req.params.id };
@@ -207,20 +207,18 @@ app.put("/faqs", async (req, res) => {
     if (!isAllowed) {
         return res.status(401).send(`Unauthorized`);
     }
-    const collection = db.collection("faqs");
-    let data = {};
-    try {
-        data = Object
-            .entries(req.body.faqs)
-            .map(entry => Faq.create(entry[1], entry[0]));
 
-        const records = data.map(faq => collection.doc(faq.id).set(faq).then(() => faq));
-        Promise.all(records)
-            .then(results => {
-                const faqs = results.reduce((obj, faq) => ({ ...obj, [faq.id]: faq }), {});
-                return res.status(200).send({ faqs });
-            })
-            .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
+    try {
+        const collection = db.collection("faqs");
+        const faqs = R.map(datum => Celebration.create(datum))(req.body.faqs);
+        const newIds = Object.keys(faqs);
+        const setNewDocs = newIds.map(key => collection.doc(key).set(faqs[key]));
+        await Promise.all(setNewDocs);
+        const oldAndNew = await firebaseHelper.firestore.backup(db, "faqs");
+        const oldIds = Object.keys(oldAndNew.faqs).filter(id => (newIds.indexOf(id) < 0));
+        const deletions = oldIds.map(id => db.collection("faqs").doc(id).delete());
+        await Promise.all(deletions);
+        return res.status(200).send({ faqs });
     }
     catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
