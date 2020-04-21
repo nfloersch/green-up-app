@@ -29,7 +29,7 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
     }, [createUserError]);
 
     const onButtonPress = () => {
-		// Remove leading/trailing whitespace before processing email
+        // Remove leading/trailing whitespace before processing email
         const trimmedEmail = email.trim();
         if (isValidEmail(trimmedEmail)) {
             createAccount(trimmedEmail, password, displayName);
