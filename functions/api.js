@@ -52,8 +52,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
         req.user = decodedIdToken; // not a possible race condition because middle-ware is forced to be synchronous?
         next();
         return void 0;
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error while verifying Firebase ID token:", error);
         res.status(403).send("Unauthorized");
         return void 0;
@@ -98,7 +97,7 @@ app.patch("/event-settings", async (req, res) => {
         const userPermissions = await db.collection("admins").doc(req.user.uid).get();
         const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
         if (!isAllowed) {
-            return res.status(401).send(`Unauthorized`);
+            return res.status(401).send("Unauthorized");
         }
         const blackListedFields = ["updated", "created"];
         const fieldsToMerge = R.compose(
@@ -111,9 +110,8 @@ app.patch("/event-settings", async (req, res) => {
         const newEventSettings = EventSettings.create(Object.assign({}, doc.data(), fieldsToMerge, { updated: Date() }));
         await docRef.set(newEventSettings);
         const response = await docRef.get();
-        res.status(200).send({ "eventSettings": doc.data() });
-    }
-    catch (error) {
+        res.status(200).send({ eventSettings: doc.data() });
+    } catch (error) {
         res.status(400).send(`Cannot find eventSettings: ${ error }`);
     }
 });
@@ -146,7 +144,7 @@ app.post("/faqs", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
     const newFAQ = FAQ.create(Object.assign({}, req.body, { updated: Date(), created: Date() }));
     db.collection("faqs")
@@ -161,7 +159,7 @@ app.patch("/faqs/:id", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
     const blackListedFields = ["id", "updated", "created"];
     const fieldsToMerge = R.compose(
@@ -188,7 +186,7 @@ app.delete("/faqs/:id", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
     const docRef = db.collection("faqs").doc(req.params.id);
     docRef.delete()
@@ -205,7 +203,7 @@ app.put("/faqs", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
 
     try {
@@ -219,8 +217,7 @@ app.put("/faqs", async (req, res) => {
         const deletions = oldIds.map(id => db.collection("faqs").doc(id).delete());
         await Promise.all(deletions);
         return res.status(200).send({ faqs });
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
@@ -304,8 +301,7 @@ app.put("/towns", (req, res) => {
                 return res.status(200).send({ towns });
             })
             .catch(error => res.status(400).send(`An error occurred: ${ JSON.stringify(error) }`));
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 
@@ -395,7 +391,7 @@ app.put("/trash_collection_sites", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
 
     try {
@@ -409,8 +405,7 @@ app.put("/trash_collection_sites", async (req, res) => {
         const deletions = oldIds.map(id => db.collection("trashCollectionSites").doc(id).delete());
         await Promise.all(deletions);
         return res.status(200).send({ trashCollectionSites });
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
@@ -501,7 +496,7 @@ app.put("/supply_distribution_sites", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
 
     try {
@@ -515,8 +510,7 @@ app.put("/supply_distribution_sites", async (req, res) => {
         const deletions = oldIds.map(id => db.collection("supplyDistributionSites").doc(id).delete());
         await Promise.all(deletions);
         return res.status(200).send({ supplyDistributionSites });
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
@@ -606,7 +600,7 @@ app.put("/celebrations", async (req, res) => {
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
     const isAllowed = userPermissions.exists && userPermissions.data().isAdmin;
     if (!isAllowed) {
-        return res.status(401).send(`Unauthorized`);
+        return res.status(401).send("Unauthorized");
     }
 
     try {
@@ -622,8 +616,7 @@ app.put("/celebrations", async (req, res) => {
         const deletions = oldIds.map(id => db.collection("celebrations").doc(id).delete());
         await Promise.all(deletions);
         return res.status(200).send({ celebrations });
-    }
-    catch (error) {
+    } catch (error) {
         return res.status(400).send(`An error occurred: ${ error }`);
     }
 });
