@@ -96,8 +96,14 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                     key={ `pin${ index }` }
                     pinColor={ pin.color || "red" }
                     stopPropagation={ true }
-                    onPress={ () => { if (pin.onPress) { pin.onPress(index); } } }>
-                    { pin.callout ||
+                    onPress={ () => { 
+                        if (pin.onPress) { 
+                            pin.onPress(index); 
+                        } 
+                    } }>
+                    { 
+                        pin.callout 
+                        ||
                         <MultiLineMapCallout
                             onPress={ () => {
                                 if (pin.onCalloutPress) {
@@ -113,6 +119,7 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
         ).concat(
             [
                 <MapView.Marker 
+                    key="userLocation"
                     coordinate={{latitude: (initialMapLocation.latitude || 0.0), longitude: (initialMapLocation.longitude || 0.0)}} 
                     pinColor={"blue"}/>
             ]
