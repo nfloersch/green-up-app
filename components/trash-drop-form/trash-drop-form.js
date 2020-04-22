@@ -78,6 +78,20 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
 
     const currentTown = townData.find(t => t.townId === currentTownId);
+    if (currentTown === undefined) return (
+        <Fragment>
+            <SafeAreaView style={ {
+                borderTopWidth: 1,
+                borderStyle: "solid",
+                borderColor: "white",
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "flex-end"
+            } }>
+            Having trouble locating you. Please try again in a bit!
+            </SafeAreaView>
+        </Fragment>
+    )
     const selectedSite = trashCollectionSites.find(site => site.id === drop.collectionSiteId);
     const townHasSites = trashCollectionSites.some(site => site.townId === currentTownId);
 
@@ -353,7 +367,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                     () => (
                                         <MiniMap
                                             initialLocation={ {
-                                                ...((drop || {}).coordinates || (userLocation || {}).coordinates),
+                                                ...((userLocation || {coordinates: {latitude: 0.0, longitude: 0.0}}).coordinates),
                                                 latitudeDelta: 0.0922,
                                                 longitudeDelta: 0.0421
                                             } }
