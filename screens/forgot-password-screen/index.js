@@ -31,8 +31,10 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
     const [passwordResetSent, setPasswordResetSent] = useState(false);
 
     const onButtonPress = () => {
-        if (isValidEmail(email)) {
-            actions.resetPassword(email);
+		// Remove leading/trailing whitespace before processing email
+        const trimmedEmail = email.trim();
+        if (isValidEmail(trimmedEmail)) {
+            actions.resetPassword(trimmedEmail);
             setPasswordResetSent(true);
         } else {
             Alert.alert("Please enter a valid email address");
