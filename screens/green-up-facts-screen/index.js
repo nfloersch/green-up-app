@@ -40,7 +40,7 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                             fontSize: 16
                         }] }>{ eventDescription }</Text>
                 </View>
-                { 
+                {
                     displayFaqs && (
                         <View style={ styles.infoBlockContainer }>
                             <Text style={ styles.infoBlockHeader }>FAQ's</Text>
