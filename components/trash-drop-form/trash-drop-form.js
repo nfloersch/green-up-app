@@ -48,11 +48,13 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
         collectionSiteId: null,
         created: new Date(),
         wasCollected: false,
-        location: null,
+        location: userLocation.coordinates,
+        coordinates: userLocation.coordinates,
         tags: [],
         createdBy: { uid: currentUser.uid, email: currentUser.email },
         bagCount: 1
     });
+    const [refKey,setRefKey] = useState(0);
     const [modal, setModal] = useState(null);
     const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
 
@@ -154,6 +156,16 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
         ]
     ]);
 
+    //setRefKey(0);
+
+    const clickOnMap = (loc) => {
+        drop.coordinates = loc;
+        drop.location = loc;
+        //alert(JSON.stringify(loc));
+        setDrop(drop);
+        setRefKey(refKey + 1);
+    };
+
     return (
         <Fragment>
             <SafeAreaView style={ {
@@ -191,8 +203,8 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                     } }>
                                                     { 
                                                         teamOptions.map(
-                                                            (entry: Object): React$Element<any> => (
-                                                                <Picker.Item label={entry.name} value={entry.id}/>
+                                                            (entry: Object, index: Number): React$Element<any> => (
+                                                                <Picker.Item key={index} label={entry.name} value={entry.id}/>
                                                             )
                                                         )
                                                     }
@@ -341,11 +353,13 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                     () => (
                                         <MiniMap
                                             initialLocation={ {
-                                                ...((drop.location || {}).coordinates || (userLocation || {}).coordinates),
+                                                ...((drop || {}).coordinates || (userLocation || {}).coordinates),
                                                 latitudeDelta: 0.0922,
                                                 longitudeDelta: 0.0421
                                             } }
-                                            pinsConfig={ [(drop.location || {id: null, name: "", coordinates: { longitude: 0, latitude: 0 }})] }
+                                            pinsConfig={ [drop] }
+                                            onMapClick={clickOnMap}
+                                            refKey={refKey}
                                             style={ {
                                                 flex: 1,
                                                 alignItems: "center",
