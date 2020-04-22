@@ -475,36 +475,51 @@
     // Enforce props alphabetical sorting
     "react/jsx-uses-react": 2,
     // Prevent React to be incorrectly marked as unused
-    "react/jsx-uses-vars": 2,
     // Prevent variables used in JSX to be incorrectly marked as unused
-    "react/no-danger": 2,
+    "react/jsx-uses-vars": 2,
+
     // Prevent usage of dangerous JSX properties
-    "react/no-did-mount-set-state": 2,
+    "react/no-danger": 2,
+
     // Prevent usage of setState in componentDidMount
-    "react/no-did-update-set-state": 2,
+    "react/no-did-mount-set-state": 2,
+
     // Prevent usage of setState in componentDidUpdate
-    "react/no-direct-mutation-state": 2,
+    "react/no-did-update-set-state": 2,
+
     // Prevent direct mutation of this.state
-    "react/no-multi-comp": 0,
+    "react/no-direct-mutation-state": 2,
+
     // Prevent multiple component definition per file
-    "react/no-set-state": 0,
+    "react/no-multi-comp": 0,
+
     // Prevent usage of setState
-    "react/no-unknown-property": 2,
+    "react/no-set-state": 0,
+
     // Prevent usage of unknown DOM property
-    "react/prefer-es6-class": 2,
+    "react/no-unknown-property": 2,
+
     // Prefer es6 class instead of createClass for React Components
-    "react/prop-types": 2,
+    "react/prefer-es6-class": 2,
+
     // Prevent missing props validation in a React component definition
-    "react/react-in-jsx-scope": 2,
+    "react/prop-types": 2,
+
     // Prevent missing React when using JSX
-    "react/require-extension": 0,
+    "react/react-in-jsx-scope": 2,
+
     // Restrict file extensions that may be required
-    "react/self-closing-comp": 2,
+    "react/require-extension": 0,
+
     // Prevent extra closing tags for components without children
-    "react/sort-comp": 2,
+    "react/self-closing-comp": 2,
+
+
     // Enforce component methods order
-    "react/wrap-multilines": 0
+    "react/sort-comp": 2,
     // Prevent missing parentheses around multilines JSX
+    "react/wrap-multilines": 0
+
  },
   "overrides": [{
     "files": "functions/*/*.js",
