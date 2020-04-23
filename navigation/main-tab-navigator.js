@@ -2,8 +2,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createBottomTabNavigator } from "react-navigation";
-import { TabBarIcon } from "../components/tab-bar-icon/tab-bar-icon";
-import MessagesIconWithBadge from "../components/tab-bar-icon/messages-icon-with-badge";
+import TabBarIcon from "../components/tab-bar-icon";
 import MenuStack from "./menu-stack";
 import MessagesStack from "./messages-stack";
 import TrashTrackerStack from "./trash-tracker-stack";
@@ -31,12 +30,12 @@ HomeStack.navigationOptions = {
 /** * Messages ***/
 MessagesStack.navigationOptions = {
     tabBarLabel: "Messages",
-    tabBarIcon: (args): React$Element<any> => (
-        <MessagesIconWithBadge
-            focused={ args.focused }
+    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
+        <TabBarIcon
+            focused={ focused }
             name={
                 Platform.OS === "ios"
-                    ? `ios-chatbubbles${ args.focused ? "" : "" }`
+                    ? `ios-chatbubbles${ focused ? "" : "" }`
                     : "md-chatbubbles"
             }
         />
