@@ -116,13 +116,15 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                     }
                 </MapView.Marker>
             )
-        ).concat(
+        ).concat(initialMapLocation ?
             [
                 <MapView.Marker 
                     key="userLocation"
                     coordinate={{latitude: (initialMapLocation.latitude || 0.0), longitude: (initialMapLocation.longitude || 0.0)}} 
                     pinColor={"blue"}/>
             ]
+            :
+            []
         )
     );
 
