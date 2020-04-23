@@ -309,7 +309,7 @@ app.put("/towns", (req, res) => {
 
 /** * Trash Collection Sites ***/
 
-app.get("/faq", async (req, res) => {
+app.get("/trash_collection_sites", async (req, res) => {
     const db = admin.firestore();
     const filterByName = data => R.filter(datum => (datum.name || "").toLowerCase().includes((req.query.name || "").toLowerCase()), data);
     const userPermissions = await db.collection("admins").doc(req.user.uid).get();
