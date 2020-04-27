@@ -10,7 +10,7 @@
     ],
     "owner": "c4btv",
     "githubUrl": "https://github.com/codeforbtv/green-up-app",
-    "version": "3.0.18",
+    "version": "5.0.19",
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
@@ -38,7 +38,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 3,
+      "versionCode": 5,
       "permissions": [
         "READ_CONTACTS",
         "ACCESS_FINE_LOCATION",
@@ -47,11 +47,11 @@
       ],
       "config": {
         "googleSignIn": {
-          "apiKey": "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU",
-          "certificateHash": "A8241216BF89A3AD919A760FC12E2517C6BB362F"
+          "apiKey" : "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU",
+          "certificateHash" : "A8241216BF89A3AD919A760FC12E2517C6BB362F"
         },
-        "googleMaps": {
-          "apiKey": "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU"
+        "googleMaps" : {
+          "apiKey" : "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU"
         }
       }
     },
