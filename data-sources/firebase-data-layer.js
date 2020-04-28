@@ -377,7 +377,7 @@ export const fetchTeams = getCollection(Team)("teams")(actionTypes.FETCH_TEAMS_S
 
 // Fetch Green Up Event Info
 export function fetchEventInfo(dispatch: Dispatch<ActionType>) {
-    db.collection("eventInfo").doc("eventSettings").get().then(
+    db.collection("eventInfo").doc("settings").get().then(
         (doc: Object) => {
             if (!doc.exists) {
                 throw Error("Failed to retrieve event info");
