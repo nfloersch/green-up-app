@@ -1,6 +1,6 @@
 {
-  "version": "3.0.12",
-  "publishDate": "2020-4-8",
+  "version": "5.0.19",
+  "publishDate": "2020-04-27",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -51,7 +51,7 @@
     "expo-intent-launcher": "~8.1.0",
     "expo-location": "~8.1.0",
     "expo-module-scripts": "^1.0.1",
-    "firebase": "^6.3.5",
+    "firebase": "^7.9.0",
     "md5-hash": "^1.0.1",
     "moment": "^2.24.0",
     "node-gyp": "^5.0.3",
@@ -78,7 +78,7 @@
     "react-native-status-bar-height": "^2.4.0",
     "react-native-tab-view": "^2.10.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webview": "^7.5.0",
+    "react-native-webview": "^8.1.1",
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.1",
     "react-test-renderer": "16.8.6",

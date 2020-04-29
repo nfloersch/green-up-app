@@ -39,17 +39,17 @@ const Toggles = (
         flex: 1,
         marginRight: 10,
         marginLeft: 10,
-        justifyContent: "center",
-        backgroundColor: "transparent",
+        justifyContent: "flex-start",
         alignContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.0)"
     } }>
         <View style={ {
             width: "100%",
-            backgroundColor: "#FFF",
+            backgroundColor: "transparent",
             flex: 0.4,
             justifyContent: "space-between",
-            padding: 20
+            padding: 10
         } }>
             <Toggle
                 icon={ circleYellow }

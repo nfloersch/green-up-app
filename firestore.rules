@@ -134,5 +134,10 @@ service cloud.firestore {
         allow read: if true;
         allow write: if isAdmin();
     }
+
+    match /faqs/{faqId} {
+        allow read: if isAuthed();
+        allow write: if isAdmin();
+     }
   }
 }
