@@ -54,7 +54,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
             { Boolean(town.notes) &&
             (
                 <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
-                    <Text style={ { color: "black" } }>{ town.notes }</Text>
+                    <Text style={ { color: "black" } }>Notes: </Text><Text style={ { color: "black" } }>{ town.notes }</Text>
                 </View>
             )
             }
@@ -66,7 +66,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                         <FontAwesome style={ { color: "#555", position: "absolute", top: 15, left: 12 } } size={ 30 }
                             name={ "road" }/>
                     </View>
-                    <View style={ { flexGrow: 1, marginLeft: 5 } }>
+                    <View style={ { flexGrow: 1, flexShrink: 1, marginLeft: 5 } }>
                         <View style={ { flex: 1, justifyContent: "center" } }>
                             <Text style={ { fontSize: 19 } }>
                                 { town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest colletion site." }
