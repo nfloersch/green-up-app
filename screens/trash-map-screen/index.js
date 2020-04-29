@@ -12,7 +12,8 @@ import {
     StyleSheet,
     Text,
     View,
-    Platform
+    Platform,
+    TouchableOpacity
 } from "react-native";
 import TrashToggles from "../../components/trash-toggles";
 import TrashDrop from "../../models/trash-drop";
@@ -41,7 +42,8 @@ type PropsType = {
     trashDropOffToggle: boolean,
     myTrashToggle: boolean,
     uncollectedTrashToggle: boolean,
-    userLocation: Object
+    userLocation: Object,
+    navigation: Object,
 };
 
 const TrashMap = (
@@ -57,7 +59,8 @@ const TrashMap = (
         trashCollectionSites,
         trashDropOffToggle,
         uncollectedTrashToggle,
-        userLocation
+        userLocation,
+        navigation
     }: PropsType): React$Element<any> => {
 
 
@@ -83,6 +86,9 @@ const TrashMap = (
             longitudeDelta: 0.0421
         }
         : null;
+
+    const parentNavigator = navigation.dangerouslyGetParent();
+
     const collectedTrashMarkers = (collectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => d.wasCollected === true)
         .map((d: TrashDrop): React$Element<any> => (
@@ -173,7 +179,7 @@ const TrashMap = (
         .concat(cleanAreaMarkers);
 
     return (
-        <SafeAreaView style={ styles.container }>
+        <SafeAreaView style={ {flex: 1, backgroundColor: constants.colorBackgroundDark} }>
             <WatchGeoLocation/>
             {
                 R.cond([
@@ -181,96 +187,74 @@ const TrashMap = (
                         () => Boolean(userLocation.error),
                         () => (<EnableLocationServices errorMessage={ userLocation.error }/>)
                     ],
-                    [() => !Boolean(initialMapLocation), () => (
-                        <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
-                            <Text style={ { fontSize: 20, color: "white", textAlign: "center" } }>
-                                { "...Locating You" }
-                            </Text>
-                        </View>)],
-                    [R.T, () => (
-                        <Fragment>
-                            <MapView
-                                initialRegion={ initialMapLocation }
-                                showsUserLocation={ true }
-                                showsMyLocationButton={ true }
-                                showsCompass={ true }
-                                style={ {
-                                    position: "absolute",
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    height: "100%",
-                                    width: "100%",
-                                    margin: 0,
-                                    padding: 0
-                                } }
-                            >
-                                { allMarkers }
-                            </MapView>
-                            <Lightbox
-                                renderHeader={ (close) => (
-                                    <Button style={ {
-                                        position: "absolute",
-                                        top: 40,
-                                        right: 10,
-                                        borderStyle: "solid",
-                                        borderColor: "#AAA",
-                                        borderRadius: 40,
-                                        borderWidth: 1,
-                                        backgroundColor: "#FFF",
-                                        padding: 10,
-                                        height: 50,
-                                        width: 50,
-                                        shadowColor: "#000",
-                                        shadowOffset: {
-                                            width: 0,
-                                            height: 2
-                                        },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 3.84,
-                                        elevation: 5
-                                    } } onPress={ close }>
-                                        <Ionicons
-                                            name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
-                                            size={ 30 }
-                                            color="#888"
-                                        />
-                                    </Button>) }
-                                backgroundColor	={ "rgba(52, 52, 52, 0.8)" }
-                                pinchToZoom={ false }
-                                renderContent={ () => (<TrashToggles/>) }>
-                                <View
-                                    style={ {
-                                        position: "absolute",
-                                        top: 10,
-                                        right: 10,
-                                        borderStyle: "solid",
-                                        borderColor: "#AAA",
-                                        borderRadius: 40,
-                                        borderWidth: 1,
-                                        backgroundColor: "#FFF",
-                                        padding: 10,
-                                        height: 50,
-                                        width: 50,
-                                        shadowColor: "#000",
-                                        shadowOffset: {
-                                            width: 0,
-                                            height: 2
-                                        },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 3.84,
-                                        elevation: 5
-                                    } }
+                    [
+                        () => !Boolean(initialMapLocation), 
+                        () => (
+                            <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
+                                <Text style={ { fontSize: 20, color: "white", textAlign: "center" } }>
+                                    { "...Locating You" }
+                                </Text>
+                            </View>
+                        )
+                    ],
+                    [
+                        R.T,
+                        () => (
+                            <Fragment>
+                                <MapView
+                                    initialRegion={ initialMapLocation }
+                                    showsUserLocation={ true }
+                                    showsMyLocationButton={ true }
+                                    showsCompass={ true }
+                                    style={ 
+                                        {
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            right: 0,
+                                            bottom: 0,
+                                            height: "100%",
+                                            width: "100%",
+                                            margin: 0,
+                                            padding: 0
+                                        } 
+                                    }
                                 >
+                                    { allMarkers }
+                                </MapView>
+                                <TouchableOpacity
+                                    style={ 
+                                        {
+                                            position: "absolute",
+                                            top: 10,
+                                            right: 10,
+                                            borderStyle: "solid",
+                                            borderColor: "#000",
+                                            borderRadius: 40,
+                                            borderWidth: 1,
+                                            backgroundColor: "#FFF",
+                                            padding: 10,
+                                            height: 50,
+                                            width: 50,
+                                            shadowColor: "#000",
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2
+                                            },
+                                            shadowOpacity: 0.25,
+                                            shadowRadius: 3.84,
+                                            elevation: 5
+                                        } 
+                                    }
+                                    onPress={() => navigation.navigate('TrashTrackerModal')}>
                                     <Ionicons
                                         name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
                                         size={ 30 }
                                         color="#888"
                                     />
-                                </View>
-                            </Lightbox>
-                        </Fragment>)
+                                </TouchableOpacity>
+                            </Fragment>
+                        )
                     ]
                 ])()
             }

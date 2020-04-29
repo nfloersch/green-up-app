@@ -46,33 +46,7 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
         throw new Error("Location is not available");
     });
 
-const placePins = (pins: Array<Object> = []): Array<React$Element<any>> => (
-    (pins || []).map((pin: Object, index: number): React$Element<any> => (
-        <MapView.Marker
-            coordinate={ pin.coordinates }
-            key={ `pin${ index }` }
-            pinColor={ pin.color || "red" }
-            stopPropagation={ true }
-            onPress={ () => {
-                if (pin.onPress) {
-                    pin.onPress(index);
-                }
-            } }
-        >
-            { pin.callout ||
-            <MultiLineMapCallout
-                onPress={ () => {
-                    if (pin.onCalloutPress) {
-                        pin.onCalloutPress(index);
-                    }
-                } }
-                title={ pin.title }
-                description={ typeof pin.description === "string" ? pin.description : "" }
-            />
-            }
-        </MapView.Marker>
-    ))
-);
+
 
 
 type PropsType = {
@@ -83,7 +57,7 @@ type PropsType = {
     style?: Object
 };
 
-export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style }: PropsType): React$Element<any> => {
+export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, refKey }: PropsType): React$Element<any> => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [initialMapLocation, setInitialMapLocation] = useState(initialLocation);
     useEffect(() => {
@@ -114,9 +88,51 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style }:
         }
     }, []);
 
+    const placePins = (pins: Array<Object> = []): Array<React$Element<any>> => (
+        (pins || []).map(
+            (pin: Object, index: number): React$Element<any> => (
+                <MapView.Marker
+                    coordinate={ pin.coordinates }
+                    key={ `pin${ index }` }
+                    pinColor={ pin.color || "red" }
+                    stopPropagation={ true }
+                    onPress={ () => { 
+                        if (pin.onPress) { 
+                            pin.onPress(index); 
+                        } 
+                    } }>
+                    { 
+                        pin.callout 
+                        ||
+                        <MultiLineMapCallout
+                            onPress={ () => {
+                                if (pin.onCalloutPress) {
+                                    pin.onCalloutPress(index);
+                                }
+                            } }
+                            title={ pin.title }
+                            description={ typeof pin.description === "string" ? pin.description : "" }
+                        />
+                    }
+                </MapView.Marker>
+            )
+        ).concat(initialMapLocation ?
+            [
+                <MapView.Marker 
+                    key="userLocation"
+                    coordinate={{latitude: (initialMapLocation.latitude || 0.0), longitude: (initialMapLocation.longitude || 0.0)}} 
+                    pinColor={"blue"}/>
+            ]
+            :
+            []
+        )
+    );
+
     const handleMapClick = (e: SyntheticEvent<any, any>) => {
         if (onMapClick) {
+            //alert(`map clicked! refKey ${refKey}`);
             onMapClick(e.nativeEvent.coordinate);
+            placePins(pinsConfig);
         }
     };
     return !errorMessage
@@ -125,8 +141,10 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style }:
                 style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
                 initialRegion={ initialMapLocation }
                 onPress={ handleMapClick }
-            >
-                { placePins(pinsConfig) }
+                refKey={refKey}>
+                { 
+                    placePins(pinsConfig) 
+                }
             </MapView>
         )
         : (
