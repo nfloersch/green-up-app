@@ -1,6 +1,6 @@
 {
-  "version": "5.0.19",
-  "publishDate": "2020-04-27",
+  "version": "5.0.20",
+  "publishDate": "2020-04-29",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
