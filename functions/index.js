@@ -1,7 +1,7 @@
 /**
  *  A SendGrid API key, email and template id must be set using the firestore cli in the terminal by running:
  *
- *        firebase functions:config:set sendgrid.apikey="my-api-key" sendgrid.fromemail="greenup-sender-email" sendgrid.templateid="sendgrid-template-id"
+ *        firebase functions:config:set sendgrid.apikey="my-api-key" sendgrid.fromemail="greenup-sender-email" sendgrid.teaminvitetemplateid="invitation-template-id" sendgrid.joinrequesttemplateid="join-request-template-id"
  *
  *  Afterwards deploy your functions for the change to take effect by running
  *
@@ -26,50 +26,23 @@ const removeFromProfile = (uid, teamId) => functions.firestore.document(`profile
 
 const removeInvitation = (membershipKey, teamId) => functions.firestore.document(`invitations/${ membershipKey }/${ teamId }`).delete();
 
-function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
+function sendEmailWithSendGrid (templateId, to, dynamicTemplateData) {
+    const apiKey = functions.config().sendgrid.apikey;
     sgMail.setApiKey(apiKey);
     sgMail.setSubstitutionWrappers("{{", "}}"); // Configure the substitution tag wrappers globally
-
-    const teamMember = invitation.teamMember;
-    const team = invitation.team || {};
-    const to = email;
-    const toName = teamMember.displayName;
-    const subject = "You have been invited to Green Up Day";
-    const sender = invitation.sender.displayName;
     const from = {
         name: "Green Up Vermont",
         email: functions.config().sendgrid.fromemail
     };
-    // Build Text Body
-    const noNameText = "A friend has invited you to participate in Green Up Day";
-    const withNameText = `Hey ${ invitation.displayName || "" }! ${ sender } has invited you to participate in Green Up Day.`;
-    const text = `${ !sender || !invitation.displayName ? noNameText : withNameText }`;
-    const html = `<div><p>${ !sender || !invitation.displayName ? noNameText : withNameText }</p></div>`;
-
-    // Build Team Info
-    const where = team.location ? ` Where : ${ team.location }` : "";
-    const date = team.date ? ` When : ${ team.date }` : "";
-    const start = team.start ? ` Start Time : ${ team.start }` : "";
-    const end = team.end ? ` End Time : ${ team.end }` : "";
-    const teamName = `Team Name: ${ team.name }`;
-    const owner = team.owner.displayName ? ` Team Captain : ${ team.owner.displayName }` : "";
-    const town = team.townId ? ` Town : ${ team.townId }` : "";
-    const notes = team.notes ? ` Description : ${ team.notes }` : "";
-    const teamInfo = `${ teamName }${ owner }${ date }${ start }${ end }${ town }${ where }${ notes }`;
     const message = {
         to,
         from,
-        text,
-        html,
-        templateId: functions.config().sendgrid.templateid,
-        dynamic_template_data: { 
-            teamInfo: teamInfo,
-            subject: subject
-            }
-    };
+        templateId: templateId,
+        dynamic_template_data: dynamicTemplateData
+        };
     return sgMail.send(message);
 }
-    
+
 /**
  * User setup after an invitation create
  * Sends a invitation email to an invited user.
@@ -77,11 +50,70 @@ function sendInvitationEmailSendGrid(apiKey, invitation, email, teamId) {
 
 exports.onInvitationCreate = functions.firestore.document("invitations/{email}/teams/{teamId}").onCreate(
     (snap, context) => {
+        //Collect needed information from db
         const invitation = snap.data();
         const email = context.params.email;
+        const team = invitation.team || {};
+        const to = email;
+        const subject = "You have been invited to Green Up Day";
+        const sender = invitation.sender.displayName;
+        const reciever = invitation.teamMember.displayName        
+        
+        // Build information to be sent in the email notification
+        const greeting = `Hey ${reciever  || ""}! ${ sender || "A friend"} has invited you to participate in Green Up Day.`;
+        const where = team.location ? ` Where : ${ team.location }` : "";
+        const date = team.date ? ` When : ${ team.date }` : "";
+        const start = team.start ? ` Start Time : ${ team.start }` : "";
+        const end = team.end ? ` End Time : ${ team.end }` : "";
+        const teamName = `Team Name: ${ team.name }`;
+        const owner = team.owner.displayName ? ` Team Captain : ${ team.owner.displayName }` : "";
+        const town = team.townId ? ` Town : ${ team.townId }` : "";
+        const notes = team.notes ? ` Description : ${ team.notes }` : "";
+        
+        const templateId = functions.config().sendgrid.teaminvitetemplateid;
+        dynamicTemplateData = {
+            greeting: greeting,
+            teamName: teamName,
+            owner: owner,
+            date: date,
+            start: start,
+            end: end,
+            town: town,
+            where: where,
+            notes: notes,
+            subject: subject
+        }
+        return sendEmailWithSendGrid (templateId, to, dynamicTemplateData);
+    });
+/**
+ * After user requests to join a team
+ * Sends a an email to the team owner.
+ */
+
+exports.onJoinRequestCreate = functions.firestore.document("teams/{teamId}/requests/{userId}").onCreate(
+    (snap, context) => {
         const teamId = context.params.teamId;
-        const apiKey = functions.config().sendgrid.apikey;
-        return sendInvitationEmailSendGrid(apiKey, invitation, email, teamId);
+        let requesterName = snap.data().displayName;
+        if (!requesterName) {
+            requesterName = "Someone";
+        }
+        const templateId = functions.config().sendgrid.joinrequesttemplateid;
+        const subject = requesterName + " would like to join your team";
+        const db = admin.firestore();
+        db.collection('teams').doc(teamId).get()
+        .then((doc) => {
+                const teamOwnerEmail = doc.data().owner.email;
+                const greeting = `Hey ${doc.data().owner.displayName || ""}!`;
+                dynamicTemplateData = {
+                    requesterName: requesterName,
+                    greeting: greeting,
+                    subject: subject
+                }
+                return sendEmailWithSendGrid (templateId, teamOwnerEmail, dynamicTemplateData)
+            })               
+        .catch((err) => {
+            console.error(err);            
+            });
     });
 
 exports.onTeamDelete = functions.firestore.document("teams/{teamId}").onDelete((snap, context) => {
