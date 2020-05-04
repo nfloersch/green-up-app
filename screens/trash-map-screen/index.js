@@ -4,7 +4,6 @@ import MapView from "react-native-maps";
 import * as R from "ramda";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Lightbox, Button } from "@shoutem/ui";
 
 import EnableLocationServices from "../../components/enable-location-services";
 import {
@@ -15,7 +14,6 @@ import {
     Platform,
     TouchableOpacity
 } from "react-native";
-import TrashToggles from "../../components/trash-toggles";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
@@ -43,7 +41,7 @@ type PropsType = {
     myTrashToggle: boolean,
     uncollectedTrashToggle: boolean,
     userLocation: Object,
-    navigation: Object,
+    navigation: Object
 };
 
 const TrashMap = (
@@ -86,8 +84,6 @@ const TrashMap = (
             longitudeDelta: 0.0421
         }
         : null;
-
-    const parentNavigator = navigation.dangerouslyGetParent();
 
     const collectedTrashMarkers = (collectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => d.wasCollected === true)
@@ -179,7 +175,7 @@ const TrashMap = (
         .concat(cleanAreaMarkers);
 
     return (
-        <SafeAreaView style={ {flex: 1, backgroundColor: constants.colorBackgroundDark} }>
+        <SafeAreaView style={ { flex: 1, backgroundColor: constants.colorBackgroundDark } }>
             <WatchGeoLocation/>
             {
                 R.cond([
@@ -188,7 +184,7 @@ const TrashMap = (
                         () => (<EnableLocationServices errorMessage={ userLocation.error }/>)
                     ],
                     [
-                        () => !Boolean(initialMapLocation), 
+                        () => !Boolean(initialMapLocation),
                         () => (
                             <View style={ [styles.frame, { display: "flex", justifyContent: "center" }] }>
                                 <Text style={ { fontSize: 20, color: "white", textAlign: "center" } }>
@@ -206,7 +202,7 @@ const TrashMap = (
                                     showsUserLocation={ true }
                                     showsMyLocationButton={ true }
                                     showsCompass={ true }
-                                    style={ 
+                                    style={
                                         {
                                             position: "absolute",
                                             top: 0,
@@ -217,13 +213,13 @@ const TrashMap = (
                                             width: "100%",
                                             margin: 0,
                                             padding: 0
-                                        } 
+                                        }
                                     }
                                 >
                                     { allMarkers }
                                 </MapView>
                                 <TouchableOpacity
-                                    style={ 
+                                    style={
                                         {
                                             position: "absolute",
                                             top: 10,
@@ -244,9 +240,9 @@ const TrashMap = (
                                             shadowOpacity: 0.25,
                                             shadowRadius: 3.84,
                                             elevation: 5
-                                        } 
+                                        }
                                     }
-                                    onPress={() => navigation.navigate('TrashTrackerModal')}>
+                                    onPress={ () => navigation.navigate("TrashTrackerModal") }>
                                     <Ionicons
                                         name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
                                         size={ 30 }

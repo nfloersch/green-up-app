@@ -47,14 +47,13 @@ const getLocationAsync = (): Promise<any> => Permissions.askAsync(Permissions.LO
     });
 
 
-
-
 type PropsType = {
     initialLocation?: Coordinates,
     onMapClick?: Object => void,
     pinsConfig: ?Array<Object>,
     layers?: Array<Object>,
-    style?: Object
+    style?: Object,
+    refKey: any
 };
 
 export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, refKey }: PropsType): React$Element<any> => {
@@ -96,14 +95,13 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                     key={ `pin${ index }` }
                     pinColor={ pin.color || "red" }
                     stopPropagation={ true }
-                    onPress={ () => { 
-                        if (pin.onPress) { 
-                            pin.onPress(index); 
-                        } 
+                    onPress={ () => {
+                        if (pin.onPress) {
+                            pin.onPress(index);
+                        }
                     } }>
-                    { 
-                        pin.callout 
-                        ||
+                    {
+                        pin.callout ||
                         <MultiLineMapCallout
                             onPress={ () => {
                                 if (pin.onCalloutPress) {
@@ -116,21 +114,19 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                     }
                 </MapView.Marker>
             )
-        ).concat(initialMapLocation ?
-            [
-                <MapView.Marker 
+        ).concat(initialMapLocation
+            ? [
+                <MapView.Marker
                     key="userLocation"
-                    coordinate={{latitude: (initialMapLocation.latitude || 0.0), longitude: (initialMapLocation.longitude || 0.0)}} 
-                    pinColor={"blue"}/>
+                    coordinate={ { latitude: (initialMapLocation.latitude || 0.0), longitude: (initialMapLocation.longitude || 0.0) } }
+                    pinColor={ "blue" }/>
             ]
-            :
-            []
+            : []
         )
     );
 
     const handleMapClick = (e: SyntheticEvent<any, any>) => {
         if (onMapClick) {
-            //alert(`map clicked! refKey ${refKey}`);
             onMapClick(e.nativeEvent.coordinate);
             placePins(pinsConfig);
         }
@@ -141,9 +137,9 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                 style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
                 initialRegion={ initialMapLocation }
                 onPress={ handleMapClick }
-                refKey={refKey}>
-                { 
-                    placePins(pinsConfig) 
+                refKey={ refKey }>
+                {
+                    placePins(pinsConfig)
                 }
             </MapView>
         )
