@@ -22,7 +22,6 @@ import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
 import DisposalSiteSelector from "../../components/disposal-site-selector";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -51,8 +50,8 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
     //     userLocation.coordinates.latitude = -72.5754;
     //     userLocation.coordinates.longitude = 44.2601;
     // }
-    const initialMapLocation = userLocation? Coordinates.create(userLocation.coordinates): null;
-    
+    const initialMapLocation = userLocation ? Coordinates.create(userLocation.coordinates) : null;
+
 
     const contents = R.cond([
         [
@@ -144,33 +143,41 @@ const mapStateToProps = (state: Object): Object => {
         return hasLatitude && hasLongitude;
     });
 
-    const townInfo = 
-    R.filter(
-        (townEntry) => {
-            // Filter out bad town data.
-            if (!townEntry) return false;
-            if (!(townEntry.townId)) return false;
-            if (!(townEntry.townName)) return false;
-            if (!(townEntry.hasOwnProperty('allowsRoadside'))) return false;
-            return true;
-        },
-        R.compose(
-            R.map(
-                (entry): Object => (
-                    {
-                        townId: entry[0],
-                        townName: entry[1].name,
-                        notes: entry[1].notes,
-                        dropOffInstructions: entry[1].dropOffInstructions,
-                        allowsRoadside: entry[1].roadsideDropOffAllowed,
-                        collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
-                    }
-                )
-            ),
-            Object.entries
-        )(state.towns.townData)
-    )
-    
+    const townInfo =
+        R.filter(
+            (townEntry) => {
+                // Filter out bad town data.
+                if (!townEntry) {
+                    return false;
+                }
+                if (!(townEntry.townId)) {
+                    return false;
+                }
+                if (!(townEntry.townName)) {
+                    return false;
+                }
+                if (!(townEntry.hasOwnProperty("allowsRoadside"))) {
+                    return false;
+                }
+                return true;
+            },
+            R.compose(
+                R.map(
+                    (entry): Object => (
+                        {
+                            townId: entry[0],
+                            townName: entry[1].name,
+                            notes: entry[1].notes,
+                            dropOffInstructions: entry[1].dropOffInstructions,
+                            allowsRoadside: entry[1].roadsideDropOffAllowed,
+                            collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
+                        }
+                    )
+                ),
+                Object.entries
+            )(state.towns.townData)
+        );
+
     const currentUser = User.create({ ...state.login.user, ...removeNulls(state.profile) });
 
     // const teamOptions = Object.entries(currentUser.teams || {}).map((entry: [string, Object]) => ({
@@ -179,19 +186,20 @@ const mapStateToProps = (state: Object): Object => {
     // }));
     const teamOptionsOrig = Object.entries(currentUser.teams || {});
     const teamOptions = [];
-    for (var i in teamOptionsOrig) {
+    // TODO: Refactor this for loop
+    // eslint-disable-next-line guard-for-in
+    for (const i in teamOptionsOrig) {
         try {
-            let tid = (teamOptionsOrig[i])[0];
-            let team = state.teams.teams[tid];
-            let tname = team.name;
+            const tid = (teamOptionsOrig[i])[0];
+            const team = state.teams.teams[tid];
+            const tname = team.name;
             teamOptions.push(
                 {
                     id: tid,
                     name: tname
                 }
-            )
-        }
-        catch (err) {
+            );
+        } catch (err) {
             console.log("Error generating team option.");
         }
     }
