@@ -8,6 +8,7 @@ firebase-config.js
 firebase-config.qa.js
 firebase-config.dev.js
 firebase-config.prod.js
+
 ### Linux ###
 *~
 coverage
