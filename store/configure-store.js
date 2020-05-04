@@ -26,7 +26,7 @@ const networkMiddleware = createNetworkMiddleware({
 const middlewares = [networkMiddleware, thunk];
 
 if (__DEV__) {
-    //middlewares.push(createLogger());
+    middlewares.push(createLogger());
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -34,8 +34,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export default (): Object => {
     // eslint-disable-next-line no-undefined
     const store = createStore(
-        persistedReducer, 
-        undefined, 
+        persistedReducer,
+        // eslint-disable-next-line no-undefined
+        undefined,
         composeWithDevTools(applyMiddleware(...middlewares))
     );
     // $FlowFixMe
