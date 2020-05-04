@@ -31,7 +31,7 @@ class Message {
             ? args.type
             : null;
         this.teamName = args.teamName || null;
-        this.created = isValidDate(new Date(args.created))
+        this.created = isValidDate(args.created)
             ? new Date(args.created)
             : new Date();
     }

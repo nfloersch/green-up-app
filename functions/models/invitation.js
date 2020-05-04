@@ -15,7 +15,7 @@ class Invitation {
         this.sender = typeof args.sender === "object"
             ? TeamMember.create(args.sender)
             : null;
-        this.created = isValidDate(new Date(args.created))
+        this.created = isValidDate(args.created)
             ? new Date(args.created)
             : new Date();
     }
