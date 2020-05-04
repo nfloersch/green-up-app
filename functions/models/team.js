@@ -17,7 +17,7 @@ class Team {
         this.autoAccept = typeof args.autoAccept === "boolean"
             ? args.autoAccept
             : true;
-        this.created = isValidDate(new Date(args.created))
+        this.created = isValidDate(args.created)
             ? new Date(args.created)
             : new Date();
         this.date = typeof args.date === "string"
