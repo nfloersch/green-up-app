@@ -14,6 +14,7 @@ import MapView from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import type Coordinates from "../../models/coordinates";
+import {bbox, centroid} from "@turf/distance";
 
 const myStyles = {
     selected: {
@@ -61,18 +62,27 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
     const [initialMapLocation, setInitialMapLocation] = useState(initialLocation);
     useEffect(() => {
         if (!initialMapLocation) {
-            if (Platform.OS === "android" && !Constants.isDevice) {
+            if (Platform.OS === "android" && !Constants.isDevice && false) {
                 setErrorMessage("Oops, MiniMap will not work on Sketch or an Android emulator. Try it again on your device!");
-            } else {
+            } 
+            else {
                 getLocationAsync()
-                    .then((location: Object) => {
-                        setInitialMapLocation({
-                            latitude: Number(location.latitude),
-                            longitude: Number(location.longitude),
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        });
-                    })
+                    .then(
+                        (location: Object) => {
+                            //var allMarkers = pinsConfig.push({latitude: location.latitude, longitude: location.longitude});
+                            // var initBBpoly = bbox(allMarkers);
+                            // var initBBcentroid = centroid(initBBpoly);
+
+                            setInitialMapLocation(
+                                {
+                                    latitude: Number(location.latitude),
+                                    longitude: Number(location.longitude),
+                                    latitudeDelta: 0.0922,
+                                    longitudeDelta: 0.0421
+                                }
+                            );
+                        }
+                    )
                     .catch((e: Error) => {
                         // Fail gracefully and set initial location to the Vermont Green Up HQ in Montpelier
                         setInitialMapLocation({
@@ -137,9 +147,10 @@ export const MiniMap = ({ initialLocation, onMapClick, pinsConfig = [], style, r
                 style={ { minHeight: 300, minWidth: "100%", ...(style || {}) } }
                 initialRegion={ initialMapLocation }
                 onPress={ handleMapClick }
-                refKey={ refKey }>
-                {
-                    placePins(pinsConfig)
+                pitchEnabled={false}
+                refKey={refKey}>
+                { 
+                    placePins(pinsConfig) 
                 }
             </MapView>
         )
