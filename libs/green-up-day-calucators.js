@@ -79,6 +79,10 @@ export const greenUpWindowEnd = () => moment(getCurrentGreenUpDay()).add(4, "day
 
 export const isInGreenUpWindow = (date: ?Date) => {
     const myDate = date || new Date();
-    return myDate >= greenUpWindowStart() && myDate <= greenUpWindowEnd();
+    const guws = greenUpWindowStart();
+    const guwe = greenUpWindowEnd();
+    const afterStart = myDate >= guws;
+    const beforeEnd = myDate <= guwe;
+    return afterStart && beforeEnd;
 };
 
