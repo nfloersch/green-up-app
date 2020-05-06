@@ -11,7 +11,7 @@ class TrashDrop {
         this.status = typeof args.status === "string" ? args.status : null;
         this.active = typeof args.active === "boolean" ? args.active : true;
         this.location = Coordinates.create(args.location);
-        this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : new Date();
+        this.created = isValidDate(args.created) ? new Date(args.created) : new Date();
         this.wasCollected = typeof args.wasCollected === "boolean" ? args.wasCollected : false;
         this.createdBy = typeof args.createdBy === "object" ? args.createdBy : null;
         this.collectedBy = typeof args.collectedBy === "object" ? args.collectedBy : null;

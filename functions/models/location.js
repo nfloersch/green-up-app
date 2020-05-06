@@ -10,7 +10,7 @@ class Location {
         this.status = typeof args.status === "string" ? args.status : null;
         this.active = typeof args.active === "boolean" ? args.active : true;
         this.coordinates = Coordinates.create(args.coordinates);
-        this.created = isValidDate(new Date(args.created)) ? new Date(args.created) : null;
+        this.created = isValidDate(args.created) ? new Date(args.created) : null;
     }
 
     static create(args = {}) {
