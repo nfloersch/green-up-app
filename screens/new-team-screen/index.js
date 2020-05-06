@@ -199,7 +199,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
 
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
-            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+            
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={ 100 }
                     style={ { flex: 1 } }
@@ -371,7 +371,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                         <View style={ { flex: 1 } }/>
                     </View>
                 </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
+            
         </SafeAreaView>
     );
 };

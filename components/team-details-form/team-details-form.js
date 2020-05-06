@@ -190,7 +190,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
 
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
-            <TouchableWithoutFeedback onPress={ Keyboard.dismiss }>
+            
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={ 100 }
                     style={ { flex: 1 } }
@@ -360,7 +360,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                         <View style={ { flex: 1 } }/>
                     </View>
                 </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
+            
         </SafeAreaView>
     );
 };
