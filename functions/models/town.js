@@ -35,10 +35,10 @@ class Town {
         this.dropOffInstructions = args.dropOffInstructions || null;
         this.pickupInstructions = args.pickupInstructions || null;
         this.roadsideDropOffAllowed = typeof args.roadsideDropOffAllowed === "boolean" ? args.roadsideDropOffAllowed : false;
-        this.created = isValidDate(new Date(args.created))
+        this.created = isValidDate(args.created)
             ? new Date(args.created)
             : new Date();
-        this.updated = isValidDate(new Date(args.updated))
+        this.updated = isValidDate(args.updated)
             ? new Date(args.updated)
             : new Date();
     }

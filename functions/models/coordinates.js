@@ -3,8 +3,8 @@ const deconstruct = require("./libs/deconstruct");
 class Coordinates {
 
     constructor(args) {
-        this.latitude = typeof (args || {}).latitude === "number" ? (args || {}).latitude : null;
-        this.longitude = typeof (args || {}).longitude === "number" ? (args || {}).longitude : null;
+        this.latitude = isNaN(parseFloat(args.latitude)) ? null : parseFloat(args.latitude);
+        this.longitude = isNaN(parseFloat(args.longitude)) ? null : parseFloat(args.longitude);
     }
 
     static create(args = {}) {

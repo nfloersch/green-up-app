@@ -29,7 +29,7 @@ const styles = {
         color: "#333",
         fontSize: 18,
         paddingTop: 0,
-        
+
         backgroundColor: "transparent"
     }
 };
@@ -45,10 +45,10 @@ type PropsType = {
 export const Toggle = ({ icon, label, value, onValueChange }: PropsType): React$Element<View> => (
     <View style={ styles.toggle }>
         <View style={ { justifyContent: "flex-start", flex: 1, flexDirection: "row", alignItems: "center", borderWidth: 0, borderColor: "#F00" } }>
-            <View style={ { justifyContent: "center", alignContent: "center", flexBasis: 50, flexGrow: 0, alignItems: "center", borderWidth: 0, borderColor: "#0F0"  } }>
+            <View style={ { justifyContent: "center", alignContent: "center", flexBasis: 50, flexGrow: 0, alignItems: "center", borderWidth: 0, borderColor: "#0F0" } }>
                 <Image style={ styles.icon } source={ icon }/>
             </View>
-            <View style={ { flex: 1, justifyContent: "center", alignItems: "flex-start", borderWidth: 0, borderColor: "#00F"  } }>
+            <View style={ { flex: 1, justifyContent: "center", alignItems: "flex-start", borderWidth: 0, borderColor: "#00F" } }>
                 <Text style={ styles.label }>{ label }</Text>
             </View>
         </View>
