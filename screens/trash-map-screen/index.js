@@ -92,7 +92,7 @@ const TrashMap = (
                 key={ d.id }
                 // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 stopPropagation={ true }/>
         ));
@@ -104,7 +104,7 @@ const TrashMap = (
                 key={ d.id }
                 // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 stopPropagation={ true }
             />
@@ -117,7 +117,7 @@ const TrashMap = (
                 key={ d.id }
                 // image={uncollectedTrashIcon}
                 pinColor={ "red" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 stopPropagation={ true }
             />
@@ -223,7 +223,7 @@ const TrashMap = (
                                         {
                                             position: "absolute",
                                             top: 10,
-                                            right: 10,
+                                            left: 10,
                                             borderStyle: "solid",
                                             borderColor: "#000",
                                             borderRadius: 40,
@@ -300,8 +300,14 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
-    const drops = Object.values(state.trashTracker.trashDrops || [])
-        .filter((drop: any): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
+    const drops = Object.values(state.trashTracker.trashDrops).filter(
+        (drop: any): boolean => Boolean(
+            drop.location && 
+            drop.location.coordinates && 
+            drop.location.coordinates.longitude && 
+            drop.location.coordinates.latitude
+        )
+    );
     const townData = state.towns.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;
