@@ -180,10 +180,10 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
     // setRefKey(0);
 
     const clickOnMap = (loc) => {
-        drop.coordinates = loc;
-        drop.location = loc;
+        //drop.coordinates = loc;
+        //drop.location = loc;
         // alert(JSON.stringify(loc));
-        setDrop(drop);
+        setDrop({ ...drop, collectionSiteId: null, location: {...(drop.location), coordinates: loc} });
         setRefKey(refKey + 1);
     };
 
@@ -440,7 +440,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                     latitudeDelta: 0.0922,
                                                                     longitudeDelta: 0.0421
                                                                 } }
-                                                                pinsConfig={ [drop] }
+                                                                pinsConfig={ [{...drop, coordinates: drop.location.coordinates }] }
                                                                 onMapClick={ clickOnMap }
                                                                 refKey={ refKey }
                                                                 style={ {
