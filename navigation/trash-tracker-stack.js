@@ -2,11 +2,13 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import TrashTrackerScreen from "../screens/trash-map-screen";
 import TrashTrackerModalScreen from "../screens/trash-map-modal-screen";
+import BagTaggerScreen from "../screens/trash-map-bag-tagger-screen";
 
 const TrashTrackerStack = createStackNavigator(
     {
         TrashTracker: { screen: TrashTrackerScreen },
-        TrashTrackerModal: { screen: TrashTrackerModalScreen }
+        TrashTrackerModal: { screen: TrashTrackerModalScreen },
+        TrashTaggerModal: { screen: BagTaggerScreen }
     },
     {
         screenOptions: {

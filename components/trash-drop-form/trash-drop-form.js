@@ -39,23 +39,24 @@ type PropsType = {
     teamOptions: { id: string, name: ?string }[]
 };
 
-export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, trashCollectionSites, userLocation, existingDrop }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0] || {};
     const [drop, setDrop] = useState({
-        id: null,
-        active: true,
-        teamId: (defaultTeam || {}).id || null,
-        collectionSiteId: null,
-        created: new Date(),
-        wasCollected: false,
-        location: userLocation.coordinates,
-        coordinates: userLocation.coordinates,
-        tags: [],
-        createdBy: { uid: currentUser.uid, email: currentUser.email },
-        bagCount: 1
+        id: existingDrop ? existingDrop.id : null,
+        active: existingDrop ? existingDrop.active : true,
+        teamId: existingDrop ? existingDrop.teamId : (defaultTeam || {}).id || null,
+        collectionSiteId: existingDrop ? existingDrop.collectionSiteId : null,
+        created: existingDrop ? existingDrop.created : new Date(),
+        wasCollected: existingDrop ? existingDrop.wasCollected : false,
+        location: existingDrop ? existingDrop.location : userLocation.coordinates,
+        coordinates: existingDrop ? existingDrop.coordinates : userLocation.coordinates,
+        tags: existingDrop ? existingDrop.tags : [],
+        createdBy: existingDrop ? existingDrop.createdBy : { uid: currentUser.uid, email: currentUser.email },
+        bagCount: existingDrop ? existingDrop.bagCount : 1
     });
     const [refKey, setRefKey] = useState(0);
     const [modal, setModal] = useState(null);
+
     const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
 
     const locationExists = userLocation && userLocation.coordinates && userLocation.coordinates.latitude && userLocation.coordinates.longitude;
@@ -466,7 +467,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                     onSave(drop);
                                                 }),
 
-                                                text: "Save"
+                                                text: existingDrop ? "Update" : "Save"
                                             }
                                         ] }>
                                         <Text>Tag My Bag</Text>

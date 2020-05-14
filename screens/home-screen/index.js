@@ -85,8 +85,8 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         trashDisposal: {
             order: 400,
             navigation: "TrashDisposal",
-            label: "Trash Disposal",
-            description: "Tag your bags",
+            label: "Town Information",
+            description: "Cleanup Details",
             backgroundImage: require("../../assets/images/dump-truck-wide.jpg"),
             backgroundImageLarge: require("../../assets/images/dump-truck-large.jpg")
         },
