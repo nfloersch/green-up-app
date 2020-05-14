@@ -105,9 +105,14 @@ const TrashMap = (
                 // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
                 coordinate={ d.location.coordinates }
-                title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
-                stopPropagation={ true }
-            />
+                //title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
+                stopPropagation={ true }>
+                <MultiLineMapCallout
+                    title="I Collected..."
+                    description={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
+                    onPress={() => navigation.navigate("TrashTaggerModal", {existingDrop: d})}
+                    />
+            </MapView.Marker>
         ));
 
     const uncollectedTrashMakers = (uncollectedTrashToggle ? drops : [])
@@ -247,6 +252,38 @@ const TrashMap = (
                                         name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
                                         size={ 30 }
                                         color="#888"
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={
+                                        {
+                                            position: "absolute",
+                                            top: 80,
+                                            left: 10,
+                                            borderStyle: "solid",
+                                            borderColor: "#000",
+                                            borderRadius: 40,
+                                            borderWidth: 1,
+                                            backgroundColor: "#FFF",
+                                            padding: 10,
+                                            height: 50,
+                                            width: 50,
+                                            shadowColor: "#000",
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2
+                                            },
+                                            shadowOpacity: 0.25,
+                                            shadowRadius: 3.84,
+                                            elevation: 5
+                                        }
+                                    }
+                                    onPress={ () => navigation.navigate("TrashTaggerModal") }>
+                                    <Ionicons
+                                        name={ Platform.OS === "ios" ? "ios-add" : "md-add" }
+                                        size={ 30 }
+                                        color="#888"
+                                        style={{textAlign: "center"}}
                                     />
                                 </TouchableOpacity>
                             </Fragment>
