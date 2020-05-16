@@ -95,10 +95,19 @@ const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, townIn
                                     () => (
                                         <TrashDropForm
                                             currentUser={ currentUser }
-                                            onSave={ (drop) => {
-                                                actions.dropTrash(drop);
+                                            onSave={ (drop, mode) => {
+                                                if (mode === "new") {
+                                                    actions.dropTrash(drop);    
+                                                }
+                                                if (mode === "update") {
+                                                    actions.updateTrashDrop(drop);
+                                                }
+                                                if (mode === "delete") {
+                                                    actions.removeTrashDrop(drop);    
+                                                }
                                                 navigation.goBack();
                                             } }
+                                            on
                                             townData={ townInfo }
                                             trashCollectionSites={ trashCollectionSites }
                                             userLocation={ userLocation }
@@ -112,8 +121,16 @@ const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, townIn
                                     () => (
                                         <TrashDropForm
                                             currentUser={ currentUser }
-                                            onSave={ (drop) => {
-                                                actions.dropTrash(drop);
+                                            onSave={ (drop, mode) => {
+                                                if (mode === "new") {
+                                                    actions.dropTrash(drop);    
+                                                }
+                                                if (mode === "update") {
+                                                    actions.updateTrashDrop(drop);
+                                                }
+                                                if (mode === "delete") {
+                                                    actions.removeTrashDrop(drop);    
+                                                }
                                                 navigation.goBack();
                                             } }
                                             townData={ townInfo }

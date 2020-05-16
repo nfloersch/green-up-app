@@ -35,6 +35,22 @@ export const updateTrashDrop = (trashDrop: TrashDrop): ThunkType => {
     return thunk;
 };
 
+export const removeTrashDrop = (trashDrop: TrashDrop): ThunkType => {
+    function thunk(dispatch: Dispatch<ActionType>) {
+        const drop = TrashDrop.create(trashDrop);
+        firebaseDataLayer.removeTrashDrop(drop)
+            .then((data: mixed) => {
+                dispatch({ type: types.TRASH_DROP_SUCCESS, data });
+            })
+            .catch((error: Error) => {
+                dispatch({ type: types.TRASH_DROP_FAIL, error, data: drop });
+            });
+    }
+
+    thunk.interceptOnOffline = true;
+    return thunk;
+};
+
 export const locationUpdated = (location: LocationType): ActionType => (
     {
         type: types.USER_LOCATION_UPDATED,
