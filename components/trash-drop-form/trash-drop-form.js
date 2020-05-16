@@ -48,8 +48,8 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
         collectionSiteId: existingDrop ? existingDrop.collectionSiteId : null,
         created: existingDrop ? existingDrop.created : new Date(),
         wasCollected: existingDrop ? existingDrop.wasCollected : false,
-        location: existingDrop ? existingDrop.location : userLocation.coordinates,
-        coordinates: existingDrop ? existingDrop.coordinates : userLocation.coordinates,
+        location: existingDrop ? existingDrop.location : {coordinates: {latitude: userLocation.coordinates.latitude, longitude: userLocation.coordinates.longitude}},
+        coordinates: existingDrop ? existingDrop.location.coordinates : {latitude: userLocation.coordinates.latitude, longitude: userLocation.coordinates.longitude},
         tags: existingDrop ? existingDrop.tags : [],
         createdBy: existingDrop ? existingDrop.createdBy : { uid: currentUser.uid, email: currentUser.email },
         bagCount: existingDrop ? existingDrop.bagCount : 1
@@ -183,7 +183,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
     const clickOnMap = (loc) => {
         //drop.coordinates = loc;
         //drop.location = loc;
-        // alert(JSON.stringify(loc));
+        //alert(JSON.stringify(loc));
         setDrop({ ...drop, collectionSiteId: null, location: {...(drop.location), coordinates: loc} });
         setRefKey(refKey + 1);
     };
@@ -441,7 +441,16 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                     latitudeDelta: 0.0922,
                                                                     longitudeDelta: 0.0421
                                                                 } }
-                                                                pinsConfig={ [{...drop, coordinates: drop.location.coordinates }] }
+                                                                pinsConfig={ 
+                                                                    [
+                                                                        {   
+                                                                            ...drop, 
+                                                                            coordinates: drop.location.coordinates,
+                                                                            title: "Drop Here",
+                                                                            description: `${drop.bagCount} bag${(drop.bagCount > 1?"s":"")}`
+                                                                        }
+                                                                    ] 
+                                                                }
                                                                 onMapClick={ clickOnMap }
                                                                 refKey={ refKey }
                                                                 style={ {
