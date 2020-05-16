@@ -666,3 +666,7 @@ export function updateTrashDrop(trashDrop: TrashDrop): Promise<any> {
         location: { ...trashDrop.location }
     }));
 }
+
+export function removeTrashDrop(trashDrop: TrashDrop): Promise<any> {
+    return db.collection("trashDrops").doc(trashDrop.id).delete();
+}

@@ -180,6 +180,27 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
     // setRefKey(0);
 
+    let saveBtn = {
+        onClick: (() => {
+            let mode = "new";
+            if (existingDrop) {
+                mode = "update";
+            }
+            onSave(drop, mode);
+        }),
+
+        text: existingDrop ? "Update" : "Save"
+    };
+    let deleteBtn = {
+        onClick: (() => {
+            onSave(drop, "delete");
+        }),
+
+        text: "Remove"
+    };
+    let btnConfig = [saveBtn];
+    if (existingDrop) btnConfig.push(deleteBtn);
+    
     const clickOnMap = (loc) => {
         //drop.coordinates = loc;
         //drop.location = loc;
@@ -469,16 +490,9 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
                                         <View style={ { height: 100 } }/>
                                     </ScrollView>
-                                    <ButtonBar buttonConfigs={
-                                        [
-                                            {
-                                                onClick: (() => {
-                                                    onSave(drop);
-                                                }),
-
-                                                text: existingDrop ? "Update" : "Save"
-                                            }
-                                        ] }>
+                                    <ButtonBar buttonConfigs={ 
+                                        btnConfig
+                                    }>
                                         <Text>Tag My Bag</Text>
                                     </ButtonBar>
                                 </SafeAreaView>

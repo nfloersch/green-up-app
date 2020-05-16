@@ -167,7 +167,7 @@ const mapStateToProps = (state: Object): Object => {
                         {
                             townId: entry[0],
                             townName: entry[1].name,
-                            notes: entry[1].notes,
+                            notes: entry[1].description,
                             dropOffInstructions: entry[1].dropOffInstructions,
                             allowsRoadside: entry[1].roadsideDropOffAllowed,
                             collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
