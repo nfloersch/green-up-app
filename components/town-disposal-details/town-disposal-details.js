@@ -51,14 +51,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 style={ { color: "white", textAlign: "center", marginTop: 20 } }>
                 { town.townName }
             </Title>
-            { Boolean(town.notes) &&
-            (
-                <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
-                    <Text style={ { color: "black" } }>Notes: </Text><Text style={ { color: "black" } }>{ town.notes }</Text>
-                </View>
-            )
-            }
-            <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
+            <View style={ { padding: 10, backgroundColor: "white", marginTop: 10, borderTopRightRadius: 20, borderTopLeftRadius: 20 } }>
                 <View style={ { flex: 1, flexDirection: "row" } }>
                     <View style={ { position: "relative", height: 60, width: 60 } }>
                         { !town.allowsRoadside &&
@@ -69,7 +62,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                     <View style={ { flexGrow: 1, flexShrink: 1, marginLeft: 5 } }>
                         <View style={ { flex: 1, justifyContent: "center" } }>
                             <Text style={ { fontSize: 19 } }>
-                                { town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest colletion site." }
+                                { town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site." }
                             </Text>
                         </View>
                     </View>
@@ -77,10 +70,27 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 { Boolean(town.dropOffInstructions) &&
                 (
                     <View style={ { marginTop: 10 } }>
-                        <Text>{ town.dropOffInstructions }</Text>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Drop Off Instructions: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.dropOffInstructions }</Text>
                     </View>)
                 }
             </View>
+            { Boolean(town.description) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
+                    </View>
+                )
+            }
+            { Boolean(town.notes) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Notes: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.notes }</Text>
+                    </View>
+                )
+            }
             {
                 (town.collectionSites || []).length > 0
                     ? (
@@ -134,6 +144,14 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                         </Fragment>
                     )
                     : null
+            }
+            { Boolean(town.updated) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10, borderBottomLeftRadius: 20, borderBottomRightRadius: 20 } }>
+                        <Text style={ { fontSize: 12, fontWeight: "bold", textAlign: "left", color: "black", textAlign: "center" } }>Last Updated: <Text style={ { color: "black", fontSize: 12 } }>{ town.updated }</Text></Text>
+                        
+                    </View>
+                )
             }
         </ScrollView>
     </SafeAreaView>);
