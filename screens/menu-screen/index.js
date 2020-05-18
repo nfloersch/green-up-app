@@ -9,7 +9,8 @@ import * as constants from "../../styles/constants";
 import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { publishDate, version } from "../../package.json";
-import { firebaseConfig, getEnvString } from "../../firebase-config.js";
+// import { firebaseConfig } from "../../firebase-config.js";
+import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -29,15 +30,8 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             { text: "Yes", style: "destructive", onPress: actions.logout }
         ]);
     };    
-    function getEnvString(str){
-        switch(firebaseConfig.projectId){
-            case 'greenupvermont-qa': return 'QA';
-            case 'greenupvermont-dev': return 'Dev';
-            case 'greenupvermont-de02b': return 'Prod';
-            default: return 'unknown';
-        }
-    }
-    const envString = getEnvString();
+    
+    const envString = getReleaseEnvironment();
 
     return (<SafeAreaView style={ styles.container }>
         <View style={ { margin: 20 } }>
