@@ -10,6 +10,7 @@ import ButtonBar from "../button-bar/";
 import Coordinates from "../../models/coordinates";
 import TrashCollectionSite from "../../models/trash-collection-site";
 import { FontAwesome } from "@expo/vector-icons";
+import * as constants from "../../styles/constants";
 
 const myStyles = {
     location: {
@@ -46,12 +47,39 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
     <SafeAreaView style={ styles.container }>
         <ButtonBar buttonConfigs={ [{ text: "CLOSE", onClick: closeModal }] }/>
         <ScrollView style={ styles.scroll }>
+            
+            <View style={{backgroundColor: "white", height: 30, borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop: 20}}>
             <Title
                 styleName="sm-gutter-horizontal"
-                style={ { color: "white", textAlign: "center", marginTop: 20 } }>
+                style={ { color: constants.colorBackgroundDark, textAlign: "center", fontFamily: "Rubik-Bold", marginTop: 5, fontSize: 24} }>
                 { town.townName }
             </Title>
-            <View style={ { padding: 10, backgroundColor: "white", marginTop: 10, borderTopRightRadius: 20, borderTopLeftRadius: 20 } }>
+            </View>
+            { Boolean(town.description) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
+                    </View>
+                )
+            }
+            { Boolean(town.notes) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Notes: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.notes }</Text>
+                    </View>
+                )
+            }
+            { Boolean(town.pickupInstructions) &&
+                (
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Pickup Instructions: </Text>
+                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.pickupInstructions }</Text>
+                    </View>
+                )
+            }
+            <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
                 <View style={ { flex: 1, flexDirection: "row" } }>
                     <View style={ { position: "relative", height: 60, width: 60 } }>
                         { !town.allowsRoadside &&
@@ -75,40 +103,16 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                     </View>)
                 }
             </View>
-            { Boolean(town.description) &&
-                (
-                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
-                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
-                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
-                    </View>
-                )
-            }
-            { Boolean(town.notes) &&
-                (
-                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
-                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Notes: </Text>
-                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.notes }</Text>
-                    </View>
-                )
-            }
+            
             {
                 (town.collectionSites || []).length > 0
                     ? (
                         <Fragment>
-                            <Divider style={ {
-                                backgroundColor: "#888",
-                                marginTop: 10,
-                                height: 2,
-                                borderColor: "#AAA",
-                                borderTopWidth: 1,
-                                borderStyle: "solid",
-                                padding: 0
-                            } }/>
-                            <View style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
-                                <Text>{ "Please drop trash off at one of the following locations:" }</Text>
+                            <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                                <Text style={{marginLeft: "auto", marginRight: "auto", width: 300, textAlign: "center", fontFamily: "Rubik-Bold", marginTop: 5, fontSize: 18}}>{ "Please drop trash off at one of the following locations:" }</Text>
                             </View>
                             { (town.collectionSites || []).map(site => (
-                                <View key={ site.id } style={ { padding: 10, backgroundColor: "white", marginTop: 10 } }>
+                                <View key={ site.id } style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
                                     <Subtitle>{ site.name }</Subtitle>
                                     {
                                         Boolean(site.start || site.end) && (
@@ -147,7 +151,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
             }
             { Boolean(town.updated) &&
                 (
-                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 10, borderBottomLeftRadius: 20, borderBottomRightRadius: 20 } }>
+                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5, borderBottomLeftRadius: 20, borderBottomRightRadius: 20 } }>
                         <Text style={ { fontSize: 12, fontWeight: "bold", textAlign: "left", color: "black", textAlign: "center" } }>Last Updated: <Text style={ { color: "black", fontSize: 12 } }>{ town.updated }</Text></Text>
                         
                     </View>

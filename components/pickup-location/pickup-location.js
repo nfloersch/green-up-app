@@ -22,7 +22,7 @@ export const PickupLocation = ({ item, onClick }: PropsType): React$Element<any>
             <View style={ {
                 flex: 1,
                 flexDirection: "column",
-                padding: 10,
+                padding: 5,
                 justifyContent: "center",
                 alignItems: "center"
             } }>
@@ -30,54 +30,23 @@ export const PickupLocation = ({ item, onClick }: PropsType): React$Element<any>
                         textAlign: "center",
                         fontWeight: "bold",
                         color: "#111",
-                        fontSize: 16,
+                        fontSize: 18,
                         fontFamily: "Rubik-Regular"
                     } }>
                     { item.townName || "" }
                 </Text>
-                <Text style={ {
+                {
+                <View>
+                    <Text style={ {
                         textAlign: "center",
                         fontWeight: "bold",
                         color: "#111",
-                        fontSize: 12,
+                        fontSize: 16,
                         fontFamily: "Rubik-Regular"
                     } }>
-                    { `[NOTES] ${item.notes}` || "" }
-                </Text>
-                <Text style={ {
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        color: "#111",
-                        fontSize: 12,
-                        fontFamily: "Rubik-Regular"
-                    } }>
-                    { `[DESCRIPTION] ${item.description}` || "" }
-                </Text>
-                {
-                // <View>
-                //     <Text style={ {
-                //         textAlign: "center",
-                //         fontWeight: "bold",
-                //         color: "#111",
-                //         fontSize: 16,
-                //         fontFamily: "Rubik-Regular"
-                //     } }>
-                //         { item.name || "" }
-                //     </Text>
-                // </View>
-                }
-                {
-                // <View>
-                //     <Text style={ {
-                //         textAlign: "center",
-                //         fontWeight: "bold",
-                //         color: "#111",
-                //         fontSize: 12,
-                //         fontFamily: "Rubik-Regular"
-                //     } }>
-                //         { Address.toString(item.address) || "" }
-                //     </Text>
-                // </View>
+                        { item.name || "" }
+                    </Text>
+                </View>
                 }
             </View>
             <View>
