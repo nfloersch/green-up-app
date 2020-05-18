@@ -85,8 +85,8 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         trashDisposal: {
             order: 400,
             navigation: "TrashDisposal",
-            label: "Trash Disposal",
-            description: "Tag your bags",
+            label: "Town Information",
+            description: "Cleanup Details",
             backgroundImage: require("../../assets/images/dump-truck-wide.jpg"),
             backgroundImageLarge: require("../../assets/images/dump-truck-large.jpg")
         },
@@ -236,7 +236,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         ));
 
         return (
-            <GridRow style={ { backgroundColor: "#d5dbd5" } } columns={ 2 }>
+            <GridRow style={ { backgroundColor: constants.colorBackgroundDark } } columns={ 2 }>
                 { cellViews }
             </GridRow>
         );
@@ -244,12 +244,12 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
 
 
     return (
-        <SafeAreaView style={ [styles.container, { backgroundColor: "#d5dbd5" }] }>
+        <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
             <ListView
                 data={ groupedData }
                 renderRow={ renderRow }
                 contentContainerStyle={ { backgroundColor: "red" } }
-                renderFooter={ () => (<View style={ { width: "100%", height: 10, backgroundColor: "#d5dbd5" } }/>) }
+                renderFooter={ () => (<View style={ { width: "100%", height: 10, backgroundColor: constants.colorBackgroundDark } }/>) }
             />
         </SafeAreaView>
     );

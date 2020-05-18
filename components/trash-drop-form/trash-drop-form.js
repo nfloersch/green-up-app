@@ -39,23 +39,24 @@ type PropsType = {
     teamOptions: { id: string, name: ?string }[]
 };
 
-export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, trashCollectionSites, userLocation }: PropsType): React$Element<View> => {
+export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, trashCollectionSites, userLocation, existingDrop }: PropsType): React$Element<View> => {
     const defaultTeam = Object.values(currentUser.teams || {})[0] || {};
     const [drop, setDrop] = useState({
-        id: null,
-        active: true,
-        teamId: (defaultTeam || {}).id || null,
-        collectionSiteId: null,
-        created: new Date(),
-        wasCollected: false,
-        location: userLocation.coordinates,
-        coordinates: userLocation.coordinates,
-        tags: [],
-        createdBy: { uid: currentUser.uid, email: currentUser.email },
-        bagCount: 1
+        id: existingDrop ? existingDrop.id : null,
+        active: existingDrop ? existingDrop.active : true,
+        teamId: existingDrop ? existingDrop.teamId : (defaultTeam || {}).id || null,
+        collectionSiteId: existingDrop ? existingDrop.collectionSiteId : null,
+        created: existingDrop ? existingDrop.created : new Date(),
+        wasCollected: existingDrop ? existingDrop.wasCollected : false,
+        location: existingDrop ? existingDrop.location : {coordinates: {latitude: userLocation.coordinates.latitude, longitude: userLocation.coordinates.longitude}},
+        coordinates: existingDrop ? existingDrop.location.coordinates : {latitude: userLocation.coordinates.latitude, longitude: userLocation.coordinates.longitude},
+        tags: existingDrop ? existingDrop.tags : [],
+        createdBy: existingDrop ? existingDrop.createdBy : { uid: currentUser.uid, email: currentUser.email },
+        bagCount: existingDrop ? existingDrop.bagCount : 1
     });
     const [refKey, setRefKey] = useState(0);
     const [modal, setModal] = useState(null);
+
     const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
 
     const locationExists = userLocation && userLocation.coordinates && userLocation.coordinates.latitude && userLocation.coordinates.longitude;
@@ -179,11 +180,32 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
     // setRefKey(0);
 
+    let saveBtn = {
+        onClick: (() => {
+            let mode = "new";
+            if (existingDrop) {
+                mode = "update";
+            }
+            onSave(drop, mode);
+        }),
+
+        text: existingDrop ? "Update" : "Save"
+    };
+    let deleteBtn = {
+        onClick: (() => {
+            onSave(drop, "delete");
+        }),
+
+        text: "Remove"
+    };
+    let btnConfig = [saveBtn];
+    if (existingDrop) btnConfig.push(deleteBtn);
+    
     const clickOnMap = (loc) => {
-        drop.coordinates = loc;
-        drop.location = loc;
-        // alert(JSON.stringify(loc));
-        setDrop(drop);
+        //drop.coordinates = loc;
+        //drop.location = loc;
+        //alert(JSON.stringify(loc));
+        setDrop({ ...drop, collectionSiteId: null, location: {...(drop.location), coordinates: loc} });
         setRefKey(refKey + 1);
     };
 
@@ -440,7 +462,16 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                     latitudeDelta: 0.0922,
                                                                     longitudeDelta: 0.0421
                                                                 } }
-                                                                pinsConfig={ [drop] }
+                                                                pinsConfig={ 
+                                                                    [
+                                                                        {   
+                                                                            ...drop, 
+                                                                            coordinates: drop.location.coordinates,
+                                                                            title: "Drop Here",
+                                                                            description: `${drop.bagCount} bag${(drop.bagCount > 1?"s":"")}`
+                                                                        }
+                                                                    ] 
+                                                                }
                                                                 onMapClick={ clickOnMap }
                                                                 refKey={ refKey }
                                                                 style={ {
@@ -459,16 +490,9 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
                                         <View style={ { height: 100 } }/>
                                     </ScrollView>
-                                    <ButtonBar buttonConfigs={
-                                        [
-                                            {
-                                                onClick: (() => {
-                                                    onSave(drop);
-                                                }),
-
-                                                text: "Save"
-                                            }
-                                        ] }>
+                                    <ButtonBar buttonConfigs={ 
+                                        btnConfig
+                                    }>
                                         <Text>Tag My Bag</Text>
                                     </ButtonBar>
                                 </SafeAreaView>

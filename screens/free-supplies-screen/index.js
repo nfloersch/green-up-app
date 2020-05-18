@@ -60,7 +60,13 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
     const [selectedSite, setSelectedSite] = useState(null);
 
     useEffect(() => {
-        const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm);
+        const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm).sort((a, b) => {
+            if (a.townId.toLowerCase() < b.townId.toLowerCase()) {
+                
+                return 1;
+            }
+            return -1;
+        });
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
@@ -70,10 +76,14 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
         <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
             <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
-            <View style={ {
-                flex: 1,
-                backgroundColor: constants.colorBackgroundLight
-            } }>
+            <View 
+                style={ 
+                    {
+                        flex: 1,
+                        backgroundColor: constants.colorBackgroundLight
+                    } 
+                }
+            >
                 { hasResults
                     ? (
                         <ListView

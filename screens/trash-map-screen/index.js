@@ -92,7 +92,7 @@ const TrashMap = (
                 key={ d.id }
                 // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 stopPropagation={ true }/>
         ));
@@ -104,10 +104,15 @@ const TrashMap = (
                 key={ d.id }
                 // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
-                coordinate={ d.location }
-                title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
-                stopPropagation={ true }
-            />
+                coordinate={ d.location.coordinates }
+                //title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
+                stopPropagation={ true }>
+                <MultiLineMapCallout
+                    title="I Collected..."
+                    description={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
+                    onPress={() => navigation.navigate("TrashTaggerModal", {existingDrop: d})}
+                    />
+            </MapView.Marker>
         ));
 
     const uncollectedTrashMakers = (uncollectedTrashToggle ? drops : [])
@@ -117,7 +122,7 @@ const TrashMap = (
                 key={ d.id }
                 // image={uncollectedTrashIcon}
                 pinColor={ "red" }
-                coordinate={ d.location }
+                coordinate={ d.location.coordinates }
                 title={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                 stopPropagation={ true }
             />
@@ -223,7 +228,7 @@ const TrashMap = (
                                         {
                                             position: "absolute",
                                             top: 10,
-                                            right: 10,
+                                            left: 10,
                                             borderStyle: "solid",
                                             borderColor: "#000",
                                             borderRadius: 40,
@@ -247,6 +252,38 @@ const TrashMap = (
                                         name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
                                         size={ 30 }
                                         color="#888"
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={
+                                        {
+                                            position: "absolute",
+                                            top: 80,
+                                            left: 10,
+                                            borderStyle: "solid",
+                                            borderColor: "#000",
+                                            borderRadius: 40,
+                                            borderWidth: 1,
+                                            backgroundColor: "#FFF",
+                                            padding: 10,
+                                            height: 50,
+                                            width: 50,
+                                            shadowColor: "#000",
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2
+                                            },
+                                            shadowOpacity: 0.25,
+                                            shadowRadius: 3.84,
+                                            elevation: 5
+                                        }
+                                    }
+                                    onPress={ () => navigation.navigate("TrashTaggerModal") }>
+                                    <Ionicons
+                                        name={ Platform.OS === "ios" ? "ios-add" : "md-add" }
+                                        size={ 30 }
+                                        color="#888"
+                                        style={{textAlign: "center"}}
                                     />
                                 </TouchableOpacity>
                             </Fragment>
@@ -300,8 +337,14 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
-    const drops = Object.values(state.trashTracker.trashDrops || [])
-        .filter((drop: any): boolean => Boolean(drop.location && drop.location.longitude && drop.location.latitude));
+    const drops = Object.values(state.trashTracker.trashDrops).filter(
+        (drop: any): boolean => Boolean(
+            drop.location && 
+            drop.location.coordinates && 
+            drop.location.coordinates.longitude && 
+            drop.location.coordinates.latitude
+        )
+    );
     const townData = state.towns.townData;
     const collectedTrashToggle = state.trashTracker.collectedTrashToggle;
     const supplyPickupToggle = state.trashTracker.supplyPickupToggle;

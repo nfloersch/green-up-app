@@ -32,24 +32,22 @@ type PropsType = {
     townInfo: Array<Object>,
     userLocation: Object,
     navigation: Object,
+    trashDrops: Object,
     teamOptions: { id: string, name: ?string }[]
 };
 
 
 const routes = [
-    { key: "townInfo", title: "Town Info" }//,
-    //{ key: "bagTagger", title: "Bag Tagger" }
+    { key: "bagTagger", title: "Bag Tagger" }
 ];
 
-const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
+const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites, trashDrops }: PropsType): React$Element<any> => {
     const [activeTab, setActiveTab] = useState(dateIsInCurrentEventWindow() ? 1 : 0);
     const navState = { index: activeTab, routes };
+    const existingDrop = navigation.getParam("existingDrop", null);
 
-    // const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";
-    // if (currentTownId == "") {
-    //     userLocation.coordinates.latitude = -72.5754;
-    //     userLocation.coordinates.longitude = 44.2601;
-    // }
+
+
     const initialMapLocation = userLocation ? Coordinates.create(userLocation.coordinates) : null;
 
 
@@ -67,7 +65,9 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
                     </Text>
                 </View>)
         ],
-        [R.T, () => (
+        [
+            R.T, 
+            () => (
             <TabView
                 renderTabBar={ props =>
                     <TabBar
@@ -87,20 +87,62 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
 
                 navigationState={ navState }
                 renderScene={ SceneMap({
-                    townInfo: () => (<DisposalSiteSelector userLocation={ userLocation } townInfo={ townInfo }/>),
-                    bagTagger: () => (
-                        <TrashDropForm
-                            currentUser={ currentUser }
-                            onSave={ (drop) => {
-                                actions.dropTrash(drop);
-                                navigation.goBack();
-                            } }
-                            townData={ townInfo }
-                            trashCollectionSites={ trashCollectionSites }
-                            userLocation={ userLocation }
-                            teamOptions={ teamOptions }
-                        />
-                    )
+                    bagTagger: 
+                        R.cond(
+                            [
+                                [
+                                    () => Boolean(existingDrop),
+                                    () => (
+                                        <TrashDropForm
+                                            currentUser={ currentUser }
+                                            onSave={ (drop, mode) => {
+                                                if (mode === "new") {
+                                                    actions.dropTrash(drop);    
+                                                }
+                                                if (mode === "update") {
+                                                    actions.updateTrashDrop(drop);
+                                                }
+                                                if (mode === "delete") {
+                                                    actions.removeTrashDrop(drop);    
+                                                }
+                                                navigation.goBack();
+                                            } }
+                                            on
+                                            townData={ townInfo }
+                                            trashCollectionSites={ trashCollectionSites }
+                                            userLocation={ userLocation }
+                                            teamOptions={ teamOptions }
+                                            existingDrop={ trashDrops[existingDrop.id] }
+                                        />
+                                    )
+                                ],
+                                [
+                                    () => R.T,
+                                    () => (
+                                        <TrashDropForm
+                                            currentUser={ currentUser }
+                                            onSave={ (drop, mode) => {
+                                                if (mode === "new") {
+                                                    actions.dropTrash(drop);    
+                                                }
+                                                if (mode === "update") {
+                                                    actions.updateTrashDrop(drop);
+                                                }
+                                                if (mode === "delete") {
+                                                    actions.removeTrashDrop(drop);    
+                                                }
+                                                navigation.goBack();
+                                            } }
+                                            townData={ townInfo }
+                                            trashCollectionSites={ trashCollectionSites }
+                                            userLocation={ userLocation }
+                                            teamOptions={ teamOptions }
+                                        />
+                                    )
+                                ]
+                            ]
+                        )
+                    
                 }) }
                 onIndexChange={ setActiveTab }
                 initialLayout={ { width: Dimensions.get("window").width } }
@@ -116,8 +158,8 @@ const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, to
     );
 };
 
-TrashDisposalScreen.navigationOptions = {
-    title: "Town Information",
+BagTaggerScreen.navigationOptions = {
+    title: "Bag Tagger",
     headerStyle: {
         backgroundColor: constants.colorBackgroundDark
     },
@@ -167,7 +209,7 @@ const mapStateToProps = (state: Object): Object => {
                         {
                             townId: entry[0],
                             townName: entry[1].name,
-                            notes: entry[1].description,
+                            notes: entry[1].notes,
                             dropOffInstructions: entry[1].dropOffInstructions,
                             allowsRoadside: entry[1].roadsideDropOffAllowed,
                             collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
@@ -186,6 +228,7 @@ const mapStateToProps = (state: Object): Object => {
     // }));
     const teamOptionsOrig = Object.entries(currentUser.teams || {});
     const teamOptions = [];
+    const trashDrops = state.trashTracker.trashDrops;
     // TODO: Refactor this for loop
     // eslint-disable-next-line guard-for-in
     for (const i in teamOptionsOrig) {
@@ -211,13 +254,13 @@ const mapStateToProps = (state: Object): Object => {
             townInfo,
             userLocation: state.userLocation,
             trashCollectionSites,
-            teamOptions
+            teamOptions,
+            trashDrops
         });
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Object>
-): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
+const mapDispatchToProps = (dispatch: Dispatch<Object>): Object => ({ actions: bindActionCreators(actionCreators, dispatch) });
 
 // $FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(TrashDisposalScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(BagTaggerScreen);
 
