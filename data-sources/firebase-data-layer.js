@@ -649,7 +649,15 @@ export function removeTeamRequest(teamId: string, teamMember: UserType): Promise
 /** *************** TRASH DROPS *************** **/
 
 export function dropTrash(trashDrop: TrashDrop): Promise<any> {
-    return db.collection("trashDrops").add(deconstruct({ ...trashDrop, location: { ...trashDrop.location } }));
+    let newDrop = deconstruct(
+        { 
+            ...trashDrop, 
+            location: { 
+                ...trashDrop.location 
+            } 
+        }
+    );
+    return db.collection("trashDrops").add(newDrop);
 }
 
 export function updateTrashDrop(trashDrop: TrashDrop): Promise<any> {
@@ -657,4 +665,8 @@ export function updateTrashDrop(trashDrop: TrashDrop): Promise<any> {
         ...trashDrop,
         location: { ...trashDrop.location }
     }));
+}
+
+export function removeTrashDrop(trashDrop: TrashDrop): Promise<any> {
+    return db.collection("trashDrops").doc(trashDrop.id).delete();
 }
