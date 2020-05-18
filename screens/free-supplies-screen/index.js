@@ -63,10 +63,11 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
         const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm).sort((a, b) => {
             if (a.townId.toLowerCase() < b.townId.toLowerCase()) {
                 
-                return 1;
+                return -1;
             }
-            return -1;
+            return 1;
         });
+        R.forEach((item) => {item.townName = towns.townData[item.townId].name}, spotsFound);
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
@@ -147,10 +148,13 @@ FreeSupplies.navigationOptions = {
 };
 
 const mapStateToProps = (state: Object): Object => {
-    const pickupSpots = R.compose(
-        R.map(entry => SupplyDistributionSite.create(entry[1], entry[0])),
-        Object.entries
-    )(state.supplyDistributionSites.sites);
+    const sortByTown = R.sortBy(R.compose(R.toLower,R.prop('townId')));
+    const pickupSpotsList = R.compose(
+        R.map(
+            entry => SupplyDistributionSite.create(entry[1], entry[0])),
+            Object.entries
+        )(state.supplyDistributionSites.sites);
+    const pickupSpots = sortByTown(pickupSpotsList);
     return ({
         pickupSpots,
         userLocation: state.userLocation,

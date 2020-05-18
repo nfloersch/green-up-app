@@ -3,19 +3,22 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Address from "../../models/address";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import * as constants from "../../styles/constants";
 
 type PropsType = { item: Object, onClick: any => void };
 
 export const PickupLocation = ({ item, onClick }: PropsType): React$Element<any> => (
     <TouchableOpacity onPress={ onClick }>
-        <View style={ {
-            flex: 1,
-            flexDirection: "row",
-            borderBottomWidth: 1,
-            borderColor: "#AAA",
-            paddingTop: 10,
-            paddingBottom: 10
-        } }>
+        <View style={ 
+                {
+                    flex: 1,
+                    flexDirection: "row",
+                    borderBottomWidth: 1,
+                    borderColor: constants.colorBackgroundDark,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                } 
+            }>
             <View style={ {
                 flex: 1,
                 flexDirection: "column",
@@ -23,28 +26,59 @@ export const PickupLocation = ({ item, onClick }: PropsType): React$Element<any>
                 justifyContent: "center",
                 alignItems: "center"
             } }>
-                <View>
-                    <Text style={ {
+                <Text style={ {
                         textAlign: "center",
                         fontWeight: "bold",
                         color: "#111",
                         fontSize: 16,
                         fontFamily: "Rubik-Regular"
                     } }>
-                        { item.name || "" }
-                    </Text>
-                </View>
-                <View>
-                    <Text style={ {
+                    { item.townName || "" }
+                </Text>
+                <Text style={ {
                         textAlign: "center",
                         fontWeight: "bold",
                         color: "#111",
                         fontSize: 12,
                         fontFamily: "Rubik-Regular"
                     } }>
-                        { Address.toString(item.address) || "" }
-                    </Text>
-                </View>
+                    { `[NOTES] ${item.notes}` || "" }
+                </Text>
+                <Text style={ {
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "#111",
+                        fontSize: 12,
+                        fontFamily: "Rubik-Regular"
+                    } }>
+                    { `[DESCRIPTION] ${item.description}` || "" }
+                </Text>
+                {
+                // <View>
+                //     <Text style={ {
+                //         textAlign: "center",
+                //         fontWeight: "bold",
+                //         color: "#111",
+                //         fontSize: 16,
+                //         fontFamily: "Rubik-Regular"
+                //     } }>
+                //         { item.name || "" }
+                //     </Text>
+                // </View>
+                }
+                {
+                // <View>
+                //     <Text style={ {
+                //         textAlign: "center",
+                //         fontWeight: "bold",
+                //         color: "#111",
+                //         fontSize: 12,
+                //         fontFamily: "Rubik-Regular"
+                //     } }>
+                //         { Address.toString(item.address) || "" }
+                //     </Text>
+                // </View>
+                }
             </View>
             <View>
                 <View style={ { flex: 1, justifyContent: "center", marginLeft: 20, marginRight: 10 } }>

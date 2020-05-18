@@ -16,6 +16,7 @@ class SupplyDistributionSite {
         this.townId = typeof args.townId === "string" ? args.townId : null;
         this.created = args.created || null;
         this.updated = args.updated || null;
+        this.siteType = typeof args || {}.siteType === "string" ? (args || {}).siteType : null;
     }
 
     static create(args = {}) {
