@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, SafeAreaView, Alert } from "react-native";
+import { StyleSheet, SafeAreaView, Alert, Linking } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
@@ -49,6 +49,49 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                     color={ "#555" }
                 />
                 <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
+            </Button>
+        </View>
+        <View style={ { margin: 20 } }>
+            <Button 
+                styleName="primary"
+                title="Share Feedback" 
+                onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
+                >
+                <Octicons
+                    name="question"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
+                </Button>
+        </View>
+        <View style={ { margin: 20 } }>
+            <Button
+                styleName="primary"
+                onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Yzww3g')}} 
+            >
+                <MaterialCommunityIcons
+                    name="charity"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
+            </Button>
+        </View>
+        <View style={ { margin: 20 } }>
+            <Button
+                styleName="primary"
+                onPress={ ()=>{ Linking.openURL('https://raw.githubusercontent.com/codeforbtv/green-up-app/master/contributorsGreatAndSmall.md')}} 
+            >
+                <MaterialCommunityIcons
+                    name="account-group"
+                    size={ 30 }
+                    style={ { marginRight: 10 } }
+                    color={ "#555" }
+                />
+                <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This App?" }</Text>
             </Button>
         </View>
         <View style={ { margin: 20 } }>
