@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, SafeAreaView, Alert } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -9,7 +9,7 @@ import * as constants from "../../styles/constants";
 import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { publishDate, version } from "../../package.json";
-import { firebaseConfig } from "../../firebase-config.js";
+import { firebaseConfig, getEnvString } from "../../firebase-config.js";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -28,7 +28,16 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             { text: "No", style: "cancel" },
             { text: "Yes", style: "destructive", onPress: actions.logout }
         ]);
-    };
+    };    
+    function getEnvString(str){
+        switch(firebaseConfig.projectId){
+            case 'greenupvermont-qa': return 'QA';
+            case 'greenupvermont-dev': return 'Dev';
+            case 'greenupvermont-de02b': return 'Prod';
+            default: return 'unknown';
+        }
+    }
+    const envString = getEnvString();
 
     return (<SafeAreaView style={ styles.container }>
         <View style={ { margin: 20 } }>
@@ -81,9 +90,13 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             </Button>
         </View>
         <View style={ { margin: 20 } }>
-            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ version }` }</Text>
-            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
-            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Firebase Target: ${ firebaseConfig.projectId }` }</Text>
+            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ version }` }</Text>
+            { (envString !== 'Prod') && (
+                <Fragment>
+                    <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
+                    <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Environment: ${ envString }` }</Text>
+                </Fragment>
+            )}
         </View>
 
     </SafeAreaView>);
