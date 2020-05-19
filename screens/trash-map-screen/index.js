@@ -19,6 +19,7 @@ import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import MultiLineMapCallout from "../../components/multi-line-map-callout";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as constants from "../../styles/constants";
 import { offsetLocations } from "../../libs/geo-helpers";
 import WatchGeoLocation from "../../components/watch-geo-location";
@@ -258,16 +259,16 @@ const TrashMap = (
                                     style={
                                         {
                                             position: "absolute",
-                                            top: 80,
-                                            left: 10,
+                                            bottom: '5%',
+                                            left: '15%',
                                             borderStyle: "solid",
                                             borderColor: "#000",
-                                            borderRadius: 40,
+                                            borderRadius: 20,
                                             borderWidth: 1,
                                             backgroundColor: "#FFF",
                                             padding: 10,
                                             height: 50,
-                                            width: 50,
+                                            width: '70%',
                                             shadowColor: "#000",
                                             shadowOffset: {
                                                 width: 0,
@@ -275,16 +276,20 @@ const TrashMap = (
                                             },
                                             shadowOpacity: 0.25,
                                             shadowRadius: 3.84,
-                                            elevation: 5
+                                            elevation: 5,
                                         }
                                     }
-                                    onPress={ () => navigation.navigate("TrashTaggerModal") }>
-                                    <Ionicons
-                                        name={ Platform.OS === "ios" ? "ios-add" : "md-add" }
-                                        size={ 30 }
-                                        color="#888"
-                                        style={{textAlign: "center"}}
-                                    />
+                                    onPress={ () => navigation.navigate("TrashTaggerModal") }
+                                >
+                                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                                    <MaterialCommunityIcons
+                                        name="sack"
+                                        size={28}
+                                        color={constants.colorBackgroundDark}
+                                        style={{textAlign: 'left'}}
+                                        />
+                                    <Text style={{fontSize: 22, marginLeft:5}}>Record Trash Bags</Text>
+                                </View>
                                 </TouchableOpacity>
                             </Fragment>
                         )
