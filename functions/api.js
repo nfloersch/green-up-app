@@ -419,10 +419,10 @@ app.get("/supply_distribution_sites", async (req, res) => {
     const isCoordinator = userPermissions.exists && (userPermissions.data().isCoordinator || userPermissions.data().isAdmin);
     const permittedTowns = isCoordinator ? userPermissions.data().towns || [] : [];
     const filterEditable = R.cond([
-        [editable => typeof editable === "string" && editable.toLowerCase() === "false", () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
-        [editable => typeof editable === "string" && editable.toLowerCase() === "true", () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
-        [editable => editable === false, () => R.filter(trashCollectionSite => !permittedTowns.includes(trashCollectionSite.townId))],
-        [editable => editable === true, () => R.filter(trashCollectionSite => permittedTowns.includes(trashCollectionSite.townId))],
+        [editable => typeof editable === "string" && editable.toLowerCase() === "false", () => R.filter(supplySite => !permittedTowns.includes(supplySite.townId))],
+        [editable => typeof editable === "string" && editable.toLowerCase() === "true", () => R.filter(supplySite => permittedTowns.includes(supplySite.townId))],
+        [editable => editable === false, () => R.filter(supplySite => !permittedTowns.includes(supplySite.townId))],
+        [editable => editable === true, () => R.filter(supplySite => permittedTowns.includes(supplySite.townId))],
         [R.T, () => R.filter(R.T)]
     ]);
     const filterAll = R.compose(filterByName, filterEditable(req.query.editable));
