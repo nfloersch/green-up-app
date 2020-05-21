@@ -10,7 +10,7 @@
     ],
     "owner": "c4btv",
     "githubUrl": "https://github.com/codeforbtv/green-up-app",
-    "version": "5.0.26",
+    "version": "5.0.28",
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
@@ -25,7 +25,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "11",
+      "buildNumber": "16",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
@@ -39,7 +39,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 11,
+      "versionCode": 16,
       "permissions": [
         "READ_CONTACTS",
         "ACCESS_FINE_LOCATION",
