@@ -1,12 +1,12 @@
-Greenup Project firestore-rules issue
+# Greenup Project firestore-rules issue
 
-The problem: 
+# The problem: 
 
 We discovered that most of the data from the firebase api was suddenly no longer being imported into the PROD version of the GreenUp app. 
 
 Simultaneously, no one with admin permissions was able to log in to the PROD version of the Greenup Admin tool.
 
-Steps to solve the problem:
+# Troubleshooting the issue:
 
 At first and for a long time, it was not clear whether the two issues were related, although we noted that similar permissions error logs were being generated from both the Admin tool login screen and the App api get requests.
 
@@ -21,7 +21,7 @@ We then compared the new firestore-rules with the older ones, and then the older
 
 We decided to redeploy the older rules, which immediately solved the Admin login issues and restored data to the App.
 
-Explanation:
+# Explanation:
 
 When the Admin tool was deployed, it was a full deployment, which included the api functions and the firestore-rules along with simple hosting. The functions did not pass as they were inconsistent with the functions in firebase, but the rules overwrote the existing rules stored in firebase.
 
