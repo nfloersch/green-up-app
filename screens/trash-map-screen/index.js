@@ -342,7 +342,7 @@ const mapStateToProps = (state: Object): Object => {
     const trashCollectionSites = state.trashCollectionSites.sites;
     const supplyDistributionSites = state.supplyDistributionSites.sites;
     const cleanAreas = getTeamLocations(state.teams.teams || {});
-    const drops = Object.values(state.trashTracker.trashDrops).filter(
+    const drops = Object.values(state.trashTracker.trashDrops || {}).filter(
         (drop: any): boolean => Boolean(
             drop.location && 
             drop.location.coordinates && 

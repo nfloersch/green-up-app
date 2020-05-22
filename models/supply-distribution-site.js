@@ -15,6 +15,7 @@ export default class SupplyDistributionSite {
     start: ?Date;
     townId: ?string;
     updated: ?string;
+    siteType: ?string;
 
     constructor(args: ?Object) {
         this.active = (args || {}).active !== false;
@@ -28,6 +29,7 @@ export default class SupplyDistributionSite {
         this.start = isValidDate((args || {}).start) ? (args || {}).start : null;
         this.townId = typeof args || {}.townId === "string" ? (args || {}).townId : null;
         this.updated = (args || {}).updated || null;
+        this.siteType = typeof args || {}.siteType === "string" ? (args || {}).siteType : null;
     }
 
     static create(args: Object = {}, id?: string): SupplyDistributionSite {

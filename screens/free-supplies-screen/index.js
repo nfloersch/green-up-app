@@ -60,13 +60,25 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
     const [selectedSite, setSelectedSite] = useState(null);
 
     useEffect(() => {
-        const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm).sort((a, b) => {
-            if (a.townId.toLowerCase() < b.townId.toLowerCase()) {
-                
+        const spotsFound = searchArray(searchableFields, pickupSpots, searchTerm).sort(
+            (a, b) => {
+                if (a.townId.toLowerCase() < b.townId.toLowerCase()) {
+                    return -1;
+                }
                 return 1;
             }
-            return -1;
-        });
+        );
+        R.forEach(
+            (item) => {
+                try {
+                    item.townName = towns.townData[item.townId].name;
+                }
+                catch (ex) {
+                    console.log("Error " + JSON.stringify(ex,null,'  ') + "\n ITEM: " + JSON.stringify(item));
+                }
+            }, 
+            spotsFound
+        );
         setSearchResults(spotsFound);
     }, [searchTerm]);
 
@@ -147,10 +159,23 @@ FreeSupplies.navigationOptions = {
 };
 
 const mapStateToProps = (state: Object): Object => {
-    const pickupSpots = R.compose(
-        R.map(entry => SupplyDistributionSite.create(entry[1], entry[0])),
-        Object.entries
-    )(state.supplyDistributionSites.sites);
+    const validSites = R.filter(
+        (n) => {
+            if (n.hasOwnProperty("townId")) {
+                if (n.townId != null) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    );
+    const sortByTown = R.compose(validSites);
+    const pickupSpotsList = R.compose(
+        R.map(
+            entry => SupplyDistributionSite.create(entry[1], entry[0])),
+            Object.entries
+        )(state.supplyDistributionSites.sites);
+    const pickupSpots = sortByTown(pickupSpotsList);
     return ({
         pickupSpots,
         userLocation: state.userLocation,
