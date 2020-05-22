@@ -127,8 +127,8 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
             },
             label: team.name || "My Team",
             description: isOwner(teams, currentUser, (team.id || "foo")) ? "Manage Your Team" : "About Your Team",
-            backgroundImage: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-wide.jpg") : require("../../assets/images/man-boy-wide.jpg"),
-            backgroundImageLarge: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-large.jpg") : require("../../assets/images/man-boy-large.jpg")
+            backgroundImage: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-wide.jpg") : require("../../assets/images/govenor-wide.jpg"),
+            backgroundImageLarge: (index % 2 > 0) ? require("../../assets/images/royalton-bandstand-large.jpg") : require("../../assets/images/govenor-large.jpg")
         }
     }), {});
 
@@ -169,31 +169,72 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         // so we need to remap it into cells and pass to GridRow
         if (rowData.length === 1) {
             return (
-                <TouchableOpacity key={ index } onPress={ rowData[0].onPress }>
+                <TouchableOpacity 
+                    key={ index } 
+                    onPress={ rowData[0].onPress } 
+                    style={{
+                        borderLeftWidth: 5,
+                        borderRightWidth: 5,
+                        borderColor: constants.colorBackgroundDark
+                    }}
+                    >
                     <ImageBackground
-                        styleName="large-wide"
+                        style={{height: 120, borderWidth: 0, borderColor: "red"}}
+                        imageStyle={{
+                            resizeMode: "cover",
+                            height: 200, // the image height
+                            top: 0
+                        }}
                         source={ rowData[0].backgroundImageLarge }
                     >
-                        <Tile>
-
-                            <Text style={ {
-                                color: "white",
-                                fontSize: 30,
-                                fontFamily: "Rubik-Regular",
-                                fontWeight: "bold"
-                            } }
-                            styleName="md-gutter-bottom">{ rowData[0].label.toUpperCase() }</Text>
-                            <Text style={ {
-                                color: "white",
-                                fontSize: 20,
-                                fontFamily: "Rubik-Regular",
-                                fontWeight: "bold"
-                            } }
-                            styleName="sm-gutter-horizontal">{ rowData[0].description }</Text>
+                        <Tile style={
+                                {
+                                    borderWidth: 0, 
+                                    borderColor: "yellow",
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                    paddingLeft: 10,
+                                    paddingRight: 10
+                                }
+                            }
+                        >
+                            <Text style={ 
+                                    {
+                                        color: "white",
+                                        fontSize: 30,
+                                        fontFamily: "Rubik-Bold",
+                                        borderWidth: 0, 
+                                        borderColor: "blue",
+                                        paddingTop: 0,
+                                        paddingBottom: 0,
+                                        marginTop: 0,
+                                        marginBottom: 0
+                                    } 
+                                } 
+                            >
+                                Team { rowData[0].label.toUpperCase() }
+                            </Text>
+                            <Text style={ 
+                                    {
+                                        color: "white",
+                                        fontSize: 20,
+                                        fontFamily: "Rubik-Regular",
+                                        fontWeight: "bold",
+                                        borderWidth: 0, 
+                                        borderColor: "green",
+                                        paddingTop: 0,
+                                        paddingBottom: 0,
+                                        marginTop: 0,
+                                        marginBottom: 0
+                                    } 
+                                }
+                            >
+                                { rowData[0].description }
+                            </Text>
 
                         </Tile>
                     </ImageBackground>
-                    <Divider styleName="line"/>
+                    
                 </TouchableOpacity>
             );
         }
@@ -258,7 +299,8 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
 HomeScreen.navigationOptions = {
     title: homeTitle,
     headerStyle: {
-        backgroundColor: constants.colorBackgroundDark
+        backgroundColor: constants.colorBackgroundDark,
+        borderWidth: 0
     },
     headerTintColor: "#fff",
     headerTitleStyle: {

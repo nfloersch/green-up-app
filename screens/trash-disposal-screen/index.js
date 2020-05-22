@@ -167,10 +167,13 @@ const mapStateToProps = (state: Object): Object => {
                         {
                             townId: entry[0],
                             townName: entry[1].name,
-                            notes: entry[1].description,
-                            dropOffInstructions: entry[1].dropOffInstructions,
+                            notes: entry[1].notes || "[No Notes]",
+                            description: entry[1].description || "[No Description]",
+                            dropOffInstructions: entry[1].dropOffInstructions || "[ No Drop Off Instructions]",
                             allowsRoadside: entry[1].roadsideDropOffAllowed,
-                            collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0])
+                            collectionSites: trashCollectionSites.filter((site: Object) => site.townId === entry[0]),
+                            pickupInstructions: entry[1].pickupInstructions || "[No Pickup Instructions]",
+                            updated: entry[1].updated
                         }
                     )
                 ),
