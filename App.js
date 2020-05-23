@@ -8,11 +8,12 @@ import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
 import { YellowBox } from "react-native";
-
+// This and the following two lines account for missing base64 support in some versions of Node
 import {decode, encode} from 'base-64'
-window.addEventListener = x => x;
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
+// Some versions of Firebase assume access to a Window object that react-native does not have
+window.addEventListener = x => x;
 
 // Stop annoying Android users with useless warnings.
 YellowBox.ignoreWarnings(["Setting a timer"]);
