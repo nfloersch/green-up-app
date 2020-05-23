@@ -10,3 +10,8 @@ This is a probably incomplete list. Please feel free to add people if they are m
 * Irit
 * Anis
 * Katrina
+* Anahi
+* Thomas
+* Mike P.
+* Samuel
+* 

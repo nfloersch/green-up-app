@@ -14,7 +14,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
-      "image": "./assets/images/loading.png",
+      "image": "./assets/images/loading-poster.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
