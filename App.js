@@ -58,7 +58,15 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
     };
 
     const handleFinishLoading = () => {
-        setIsLoadingComplete(true);
+            // This pause lets a user see the loading screen longer,
+            // which is good because it has a winning poster picture on it.
+            // The pause is long enough that people can see the poster,
+            // and short enough it shouldn't bother anyone.
+            setTimeout(() => {
+                setIsLoadingComplete(true);
+            }, 
+            4000
+        );
     };
 
     const load = (
