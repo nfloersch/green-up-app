@@ -52,6 +52,9 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             </Button>
         </View>
         {
+            // These items were inspired by Micah's input on the idea of a Feedback form.
+            // While that exact method he proposed has not yet been implemented, these buttons
+            // were added here to make a screen shot that could be shared with Kate at Green Up.
             // <View style={ { margin: 20 } }>
             //     <Button
             //         styleName="primary"

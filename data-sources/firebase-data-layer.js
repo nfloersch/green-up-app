@@ -339,6 +339,10 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
     addListener("myTeams", db.collection(`profiles/${ (uid || "") }/teams`).onSnapshot(gotSnapshot, snapShotError));
 }
 
+// Nick added this to explore why trash drop pins did not show up on the map when they were dropped
+// while the device was offline. Upon adding this, Nick found that the map started showing dropped pins
+// immediatley. So this listener appears to trigger a refresh on state or something. Nick does not
+// entirely know why this works, but is presently ok with that.
 function setupTrashDropListener(user: UserType, dispatch: Dispatch<ActionType>) {
     const { uid } = user;
 
@@ -459,7 +463,7 @@ const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) =>
     // setupTeamsListener(user, dispatch);
     setupMessageListener(user.uid, dispatch);
     setupMyTeamsListener(user, dispatch);
-    setupTrashDropListener(user, dispatch);
+    setupTrashDropListener(user, dispatch); // Nick added this as part of trying to get map pins on the map during offline mode.
     // dispatch({ type: actionTypes.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false });
 });
 
