@@ -31,7 +31,11 @@ db.settings({});
 
 let myListeners = {};
 
-const deconstruct = (obj: Object): Object => JSON.parse(JSON.stringify(obj));
+const deconstruct = (obj: Object): Object => {
+    let objAsString = JSON.stringify(obj);
+    let objAsObj = JSON.parse(objAsString);
+    return objAsObj;
+}
 
 const removeListener = (key: string) => {
     if (myListeners[key]) {
@@ -335,6 +339,30 @@ function setupMyTeamsListener(user: UserType, dispatch: Dispatch<ActionType>) {
     addListener("myTeams", db.collection(`profiles/${ (uid || "") }/teams`).onSnapshot(gotSnapshot, snapShotError));
 }
 
+function setupTrashDropListener(user: UserType, dispatch: Dispatch<ActionType>) {
+    const { uid } = user;
+
+    const gotSnapshot = (querySnapshot: Object) => {
+        const data = [];
+        console.log("trash drop listener - got snapshot");
+        querySnapshot.forEach((doc: Object) => {
+            data.push({ ...doc.data(), id: doc.id });
+        });
+        const trashDrops = data.reduce((obj: Object, drop: TrashDropType): Object => ({ ...obj, [drop.id]: drop }), {});
+        dispatch({ type: actionTypes.FETCH_TRASH_DROPS_SUCCESS, data: trashDrops });
+    };
+
+    const snapShotError = (error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error("setupTrashDropListener error", error);
+        setTimeout(() => {
+            dispatch({ type: actionTypes.FETCH_TRASH_DROPS_FAIL, error });
+        }, 1);
+    };
+
+    addListener("trashDrops", db.collection(`trashDrops`).onSnapshot(gotSnapshot, snapShotError));
+}
+
 const getCollection = R.curry((Model: any, path: string, dispatchSuccessType: string, dispatchErrorType: string, dispatch: Dispatch<any>) => {
 
     const snapShot = (querySnapshot: QuerySnapshot) => {
@@ -431,6 +459,7 @@ const initializeUser = curry((dispatch: Dispatch<ActionType>, user: UserType) =>
     // setupTeamsListener(user, dispatch);
     setupMessageListener(user.uid, dispatch);
     setupMyTeamsListener(user, dispatch);
+    setupTrashDropListener(user, dispatch);
     // dispatch({ type: actionTypes.IS_LOGGING_IN_VIA_SSO, isLoggingInViaSSO: false });
 });
 
@@ -657,6 +686,7 @@ export function dropTrash(trashDrop: TrashDrop): Promise<any> {
             } 
         }
     );
+    
     return db.collection("trashDrops").add(newDrop);
 }
 

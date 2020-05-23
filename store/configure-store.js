@@ -26,7 +26,7 @@ const networkMiddleware = createNetworkMiddleware({
 const middlewares = [networkMiddleware, thunk];
 
 if (__DEV__) {
-    middlewares.push(createLogger());
+    //middlewares.push(createLogger());
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
