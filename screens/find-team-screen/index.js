@@ -95,7 +95,7 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
         navigation.navigate("TeamDetails");
     };
 
-    const searchableFields = ["name", "townName", "description", "address", "teamName", "townId"];
+    const searchableFields = ["name", "description", "townId"];
 
     useEffect(() => {
         const teamsFound = searchArray(searchableFields, notMyTeams, searchTerm);
