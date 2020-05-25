@@ -13,6 +13,7 @@ import MiniMap from "../../components/mini-map";
 import * as constants from "../../styles/constants";
 import { Divider, Caption, Title } from "@shoutem/ui";
 import ButtonBar from "../../components/button-bar";
+import * as R from "ramda";
 
 const myStyles = {
     memberStatusBanner: {
@@ -352,7 +353,15 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
 
                 {
                     (selectedTeam.locations || []).length > 0
-                        ? (<MiniMap pinsConfig={ selectedTeam.locations }/>)
+                        ? (<MiniMap 
+                            initialLocation={ 
+                                {...selectedTeam.locations[0].coordinates,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                                } 
+                            }
+                            pinsConfig={ R.map(R.merge({title: selectedTeam.name, description: "team cleaning area", color: "orange"}),selectedTeam.locations) }
+                            />)
                         : (<Text style={ {
                             fontSize: 14,
                             textAlign: "left",
