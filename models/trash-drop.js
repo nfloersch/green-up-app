@@ -36,6 +36,8 @@ export default class TrashDrop {
         if (Boolean(id)) {
             _args.id = id;
         }
+        //console.log("((Created TrashDrop {" + JSON.stringify(_args) + "}))");
+        //console.log("((Created TrashDrop))");
         return JSON.parse(JSON.stringify(new TrashDrop(_args)));
     }
 }

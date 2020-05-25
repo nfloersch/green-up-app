@@ -51,7 +51,53 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
             </Button>
         </View>
-        
+        {
+            // These items were inspired by Micah's input on the idea of a Feedback form.
+            // While that exact method he proposed has not yet been implemented, these buttons
+            // were added here to make a screen shot that could be shared with Kate at Green Up.
+            // <View style={ { margin: 20 } }>
+            //     <Button
+            //         styleName="primary"
+            //         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Yzww3g')}} 
+            //     >
+            //         <MaterialCommunityIcons
+            //             name="charity"
+            //             size={ 30 }
+            //             style={ { marginRight: 10 } }
+            //             color={ "#555" }
+            //         />
+            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
+            //     </Button>
+            // </View>
+            // <View style={ { margin: 20 } }>
+            //     <Button
+            //         styleName="primary"
+            //         onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
+            //     >
+            //         <MaterialCommunityIcons
+            //             name="comment-alert"
+            //             size={ 30 }
+            //             style={ { marginRight: 10 } }
+            //             color={ "#555" }
+            //         />
+            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
+            //     </Button>
+            // </View>
+            // <View style={ { margin: 20 } }>
+            //     <Button
+            //         styleName="primary"
+            //         onPress={ ()=>{ Linking.openURL('http://www.codeforbtv.org/projects/green-up-app')}} 
+            //     >
+            //         <MaterialCommunityIcons
+            //             name="account-group"
+            //             size={ 30 }
+            //             style={ { marginRight: 10 } }
+            //             color={ "#555" }
+            //         />
+            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This?" }</Text>
+            //     </Button>
+            // </View>
+        }
         <View style={ { margin: 20 } }>
             <Button
                 styleName="primary"

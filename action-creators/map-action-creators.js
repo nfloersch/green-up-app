@@ -5,12 +5,15 @@ import * as types from "../constants/action-types";
 
 export const dropTrash = (trashDrop: TrashDrop): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
+        console.log("[ACTION] dropTrash ...");
         const drop = TrashDrop.create(trashDrop);
         firebaseDataLayer.dropTrash(drop)
             .then((data: mixed) => {
+                console.log("{{DISPATCH: TRASH_DROP_SUCCESS >> \n" + JSON.stringify(data,null,'  ') + "\n }}");
                 dispatch({ type: types.TRASH_DROP_SUCCESS, data });
             })
             .catch((error: Error) => {
+                console.log("{{DISPATCH: TRASH_DROP_FAIL >> \n" + JSON.stringify(error,null,'  ') + "\n }}");
                 dispatch({ type: types.TRASH_DROP_FAIL, error, data: drop });
             });
     }
