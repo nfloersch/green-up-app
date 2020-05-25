@@ -47,7 +47,7 @@ const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null
     endDateTimePickerVisible: false,
     datePickerVisible: false,
     query: "",
-    town: "",
+    townId: "",
     locations: [],
     date: null,
     end: null,
@@ -94,10 +94,11 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         dispatch({
             type: "SET_TEAM_STATE",
             data: {
-                town,
+                townId: town,
                 locations: state.team.locations.concat({
                     title: "Clean Area",
                     description: "tap to remove",
+                    townId: town,
                     coordinates
                 })
             }
