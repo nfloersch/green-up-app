@@ -97,7 +97,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                 townId: town,
                 locations: state.team.locations.concat({
                     title: "Clean Area",
-                    description: "tap to remove",
+                    description: state.team.name,
                     townId: town,
                     coordinates
                 })
