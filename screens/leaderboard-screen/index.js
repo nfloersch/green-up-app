@@ -189,27 +189,31 @@ LeaderboardScreen.navigationOptions = {
     }
 };
 
-const mapStateToProps = (state: Object): Object => {
+function getRankingData(trashDrops, teams){
+    // only consider trashdrops belonging to current teams
+    const teamIds = Object.keys(teams);
+    const dropsForTeams = Object.values(trashDrops).filter(drop => teamIds.includes(drop.teamId));
 
-    const teams = state.teams.teams;
-    const bagDrops = Object.values(state.trashTracker.trashDrops);
-    const teamHash = R.map(team => ({ teamId: team.id, teamName: team.name || "Anonymous Team", bagCount: 0 }))(teams);
-    const rankings = R.compose(
-        R.addIndex(R.map)((ranking, index) => ({
-            ...ranking,
-            rank: index + 1
-        })),
-        R.sort((a, b) => (b.bagCount - a.bagCount)),
-        Object.values,
-        R.reduce((acc, drop) => ({ // sum the bag drops for each team.
-            ...acc,
-            [drop.teamId]: {
-                ...acc[drop.teamId],
-                bagCount: ((teams[drop.teamId] || {}).bagCount || 0) + drop.bagCount
-            }
-        }), teamHash),
-        R.filter(drops => Boolean(drops.teamId))
-    )(bagDrops);
+    // populate rankings & bag counts
+    const blankRankings = teamIds.map(id => ({teamId: id, teamName: teams[id].name || "Anonymous", bagCount: 0}))
+    const summedRankings = blankRankings.map( ranking => {
+        const teamDrops = dropsForTeams.filter( drop => drop.teamId === ranking.teamId);
+        const count = teamDrops.reduce( (sum, drop) => sum += drop.bagCount, 0);
+        return {...ranking, bagCount: count }
+    });
+
+    // sort and add "rank" property
+    const sortedRankings = summedRankings.sort((a, b) => (b.bagCount - a.bagCount));
+    const rankings = sortedRankings.map((ranking, index) => ({
+        ...ranking,
+        rank: index + 1
+    }));
+    return rankings;
+};  
+
+
+const mapStateToProps = (state: Object): Object => {
+    const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams);
     return ({ rankings });
 };
 
