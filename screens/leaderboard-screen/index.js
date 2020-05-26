@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
+import { getUsersTeams } from "../../libs/team-helpers";
+import User from "../../models/user";
+import { removeNulls } from "../../libs/remove-nulls";
 // import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
@@ -11,6 +14,7 @@ import * as constants from "../../styles/constants";
 // const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
+    myTeams: Array<Object>,
     rankings: Array<Object>
 };
 type ItemPropsType = { rank: number, teamName: string, bagCount: number };
@@ -76,7 +80,7 @@ const renderRow = ({ item }: RowPropsType): React$Element<any> => (
 );
 
 
-const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
+const LeaderboardScreen = ({ myTeams, rankings }: PropsType): React$Element<any> => {
     const [sortBy, setSortBy] = useState("rank");
 
     const sortedRanks = R.cond([
@@ -213,8 +217,10 @@ function getRankingData(trashDrops, teams){
 
 
 const mapStateToProps = (state: Object): Object => {
+    const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+    const myTeams = getUsersTeams(user, state.teams.teams);
     const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams);
-    return ({ rankings });
+    return ({ myTeams, rankings });
 };
 
 // $FlowFixMe
