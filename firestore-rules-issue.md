@@ -23,7 +23,8 @@ Our hypotheses centered on config/ api key issues, admin / authorization issues 
 
 We quickly dropped the api keys from consideration due largely to the fact that incorrect config files would prevent **_any data_** at all from being visible.
 
-We created a new Admin SDK; using it however did not affect any behaviors.
+We created a new Firebase Admin SDK service account. The theory behind this was based on comparing the QA and Production environments. The Admin SDK service account in the QA environment was the newer type of service account while PROD had the older, legacy type account (which uses keys for authentication). Using it however did not affect any behaviors
+Note: Since the new account did not appear to change anything, we left it as the active account in PROD and disable the legacy account.
 
 We then compared the new firestore-rules with the older ones, and then the older PROD rules with the most current QA firestore-rules (which were deployed the same day as the older PROD rules), and discovered that the two sets of older rules were identical and significantly different from the updated PROD rules.
 
