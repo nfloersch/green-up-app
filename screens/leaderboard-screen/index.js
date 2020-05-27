@@ -193,7 +193,7 @@ LeaderboardScreen.navigationOptions = {
     }
 };
 
-function getRankingData(trashDrops, teams){
+function getRankingData(trashDrops, teams, myTeams){
     // only consider trashdrops belonging to current teams
     const teamIds = Object.keys(teams);
     const dropsForTeams = Object.values(trashDrops).filter(drop => teamIds.includes(drop.teamId));
@@ -208,18 +208,26 @@ function getRankingData(trashDrops, teams){
 
     // sort and add "rank" property
     const sortedRankings = summedRankings.sort((a, b) => (b.bagCount - a.bagCount));
-    const rankings = sortedRankings.map((ranking, index) => ({
+    const rankedRankings = sortedRankings.map((ranking, index) => ({
         ...ranking,
         rank: index + 1
     }));
-    return rankings;
+
+    // add flag to show whether user belongs to team
+    const myTeamIds = myTeams.map( t => t.id);
+    const userAwareRankings = rankedRankings.map( (ranking) => ({
+        ...ranking,
+        isMyTeam: myTeamIds.includes(ranking.teamId)
+    }));
+
+    return userAwareRankings;
 };  
 
 
 const mapStateToProps = (state: Object): Object => {
     const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
     const myTeams = getUsersTeams(user, state.teams.teams);
-    const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams);
+    const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams, myTeams);
     return ({ myTeams, rankings });
 };
 
