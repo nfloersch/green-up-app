@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
+import { getUsersTeams } from "../../libs/team-helpers";
+import User from "../../models/user";
+import { removeNulls } from "../../libs/remove-nulls";
 // import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
@@ -11,72 +14,79 @@ import * as constants from "../../styles/constants";
 // const styles = StyleSheet.create(defaultStyles);
 
 type PropsType = {
+    myTeams: Array<Object>,
     rankings: Array<Object>
 };
 type ItemPropsType = { rank: number, teamName: string, bagCount: number };
 type RowPropsType = { item: ItemPropsType };
 
-const renderRow = ({ item }: RowPropsType): React$Element<any> => (
-    <View style={ {
-        backgroundColor: "white",
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        height: 50
-    } }>
+const renderRow = ({ item }: RowPropsType): React$Element<any> => {
+    const greyBgColor = item.isMyTeam ? constants.colorGreenHighlight : "#EEE";
+    const teamBgColor = item.isMyTeam ? constants.colorLightGreenHighlight : "#FFF";
+    const textColor = item.isMyTeam ? "white" : "black";
+    
+    return (
         <View style={ {
-            flexBasis: 65,
-            flexGrow: 0,
-            flexShrink: 0,
-            justifyContent: "center",
-            height: 50,
-            alignSelf: "center",
-            backgroundColor: "#EEE",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
+            backgroundColor: "white",
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            height: 50
         } }>
-            <Text style={ { textAlign: "center" } }>{ item.rank || 0 }</Text>
+            <View style={ {
+                flexBasis: 65,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: greyBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.rank || 0 }</Text>
+            </View>
+            <View style={ {
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "auto",
+                justifyContent: "center",
+                alignSelf: "center",
+                height: 50,
+                backgroundColor: teamBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.teamName || "Anon" }</Text>
+            </View>
+            <View style={ {
+                flexBasis: 65,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: greyBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderBottomColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.bagCount || "0" }</Text>
+            </View>
         </View>
-        <View style={ {
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: "auto",
-            justifyContent: "center",
-            alignSelf: "center",
-            height: 50,
-            backgroundColor: "#FFF",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
-        } }>
-            <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
-        </View>
-        <View style={ {
-            flexBasis: 65,
-            flexGrow: 0,
-            flexShrink: 0,
-            justifyContent: "center",
-            height: 50,
-            alignSelf: "center",
-            backgroundColor: "#EEE",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderBottomColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
-        } }>
-            <Text style={ { textAlign: "center" } }>{ item.bagCount || "0" }</Text>
-        </View>
-    </View>
-);
+    )
+};
 
 
-const LeaderboardScreen = ({ rankings }: PropsType): React$Element<any> => {
+const LeaderboardScreen = ({ myTeams, rankings }: PropsType): React$Element<any> => {
     const [sortBy, setSortBy] = useState("rank");
 
     const sortedRanks = R.cond([
@@ -189,7 +199,7 @@ LeaderboardScreen.navigationOptions = {
     }
 };
 
-function getRankingData(trashDrops, teams){
+function getRankingData(trashDrops, teams, myTeams){
     // only consider trashdrops belonging to current teams
     const teamIds = Object.keys(teams);
     const dropsForTeams = Object.values(trashDrops).filter(drop => teamIds.includes(drop.teamId));
@@ -204,17 +214,27 @@ function getRankingData(trashDrops, teams){
 
     // sort and add "rank" property
     const sortedRankings = summedRankings.sort((a, b) => (b.bagCount - a.bagCount));
-    const rankings = sortedRankings.map((ranking, index) => ({
+    const rankedRankings = sortedRankings.map((ranking, index) => ({
         ...ranking,
         rank: index + 1
     }));
-    return rankings;
+
+    // add flag to show whether user belongs to team
+    const myTeamIds = myTeams.map( t => t.id);
+    const userAwareRankings = rankedRankings.map( (ranking) => ({
+        ...ranking,
+        isMyTeam: myTeamIds.includes(ranking.teamId)
+    }));
+
+    return userAwareRankings;
 };  
 
 
 const mapStateToProps = (state: Object): Object => {
-    const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams);
-    return ({ rankings });
+    const user = User.create({ ...state.login.user, ...removeNulls(state.profile) });
+    const myTeams = getUsersTeams(user, state.teams.teams);
+    const rankings = getRankingData(state.trashTracker.trashDrops, state.teams.teams, myTeams);
+    return ({ myTeams, rankings });
 };
 
 // $FlowFixMe
