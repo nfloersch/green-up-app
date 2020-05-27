@@ -20,64 +20,70 @@ type PropsType = {
 type ItemPropsType = { rank: number, teamName: string, bagCount: number };
 type RowPropsType = { item: ItemPropsType };
 
-const renderRow = ({ item }: RowPropsType): React$Element<any> => (
-    <View style={ {
-        backgroundColor: "white",
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        height: 50
-    } }>
+const renderRow = ({ item }: RowPropsType): React$Element<any> => {
+    const greyBgColor = item.isMyTeam ? constants.colorGreenHighlight : "#EEE";
+    const teamBgColor = item.isMyTeam ? constants.colorLightGreenHighlight : "#FFF";
+    const textColor = item.isMyTeam ? "white" : "black";
+    
+    return (
         <View style={ {
-            flexBasis: 65,
-            flexGrow: 0,
-            flexShrink: 0,
-            justifyContent: "center",
-            height: 50,
-            alignSelf: "center",
-            backgroundColor: "#EEE",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
+            backgroundColor: "white",
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            height: 50
         } }>
-            <Text style={ { textAlign: "center" } }>{ item.rank || 0 }</Text>
+            <View style={ {
+                flexBasis: 65,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: greyBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.rank || 0 }</Text>
+            </View>
+            <View style={ {
+                flexGrow: 1,
+                flexShrink: 1,
+                flexBasis: "auto",
+                justifyContent: "center",
+                alignSelf: "center",
+                height: 50,
+                backgroundColor: teamBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.teamName || "Anon" }</Text>
+            </View>
+            <View style={ {
+                flexBasis: 65,
+                flexGrow: 0,
+                flexShrink: 0,
+                justifyContent: "center",
+                height: 50,
+                alignSelf: "center",
+                backgroundColor: greyBgColor,
+                borderStyle: "solid",
+                borderBottomWidth: 1,
+                borderBottomColor: "#AAA",
+                borderTopWidth: 1,
+                borderTopColor: "#FFF"
+            } }>
+                <Text style={ { textAlign: "center", color: textColor } }>{ item.bagCount || "0" }</Text>
+            </View>
         </View>
-        <View style={ {
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: "auto",
-            justifyContent: "center",
-            alignSelf: "center",
-            height: 50,
-            backgroundColor: "#FFF",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
-        } }>
-            <Text style={ { textAlign: "center" } }>{ item.teamName || "Anon" }</Text>
-        </View>
-        <View style={ {
-            flexBasis: 65,
-            flexGrow: 0,
-            flexShrink: 0,
-            justifyContent: "center",
-            height: 50,
-            alignSelf: "center",
-            backgroundColor: "#EEE",
-            borderStyle: "solid",
-            borderBottomWidth: 1,
-            borderBottomColor: "#AAA",
-            borderTopWidth: 1,
-            borderTopColor: "#FFF"
-        } }>
-            <Text style={ { textAlign: "center" } }>{ item.bagCount || "0" }</Text>
-        </View>
-    </View>
-);
+    )
+};
 
 
 const LeaderboardScreen = ({ myTeams, rankings }: PropsType): React$Element<any> => {
