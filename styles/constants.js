@@ -1,24 +1,42 @@
 /* eslint-disable no-unused-vars */
-const darkGreen = "#55683A";
+
+// orange
 const brightOrange = "#FA774E";
 const darkOrange = "#FF55";
 const orange = "#FFA500";
-export const colorButton = "#FA774E";
-export const colorBackgroundLight = "#AAA";
-export const colorHeaderText = "#FFF";
-export const colorTextThemeDark = "#AAA";
-export const colorTextThemeLight = "#EEE";
+export const colorButton = "#FA774E";  //
 export const colorTextThemeAlt = "#FA774E";
-export const colorBackgroundHeader = "#EFEFEF";
-export const colorBorderHeader = "#333";
-export const colorBackgroundDark = "#55683A";
-export const colorTabIconDefault = "#FFF";
-export const colorTabBarBackground = "#4A4B4C";
-export const colorTabIconSelected = "orange";
-export const colorBackGroundLight = "#d5dbd5";
 export const colorButtonBackgroundHome = "#FA774E55";
-export const colorTextError = "#F55";
+export const colorTabIconSelected = "orange";
+
+// grey
+export const colorBackgroundLight = "#AAA";
+export const colorTextThemeDark = "#AAA";
+
+// light greys
+export const colorTextThemeLight = "#EEE";
+export const colorBackgroundHeader = "#EFEFEF";
+export const colorBackGroundLight = "#d5dbd5";
+
+// dark greys
+export const colorBorderHeader = "#333";
 export const colorIcon = "#555";
+export const colorTabBarBackground = "#4A4B4C";
+
+// white
+export const colorHeaderText = "#FFF";
+export const colorTabIconDefault = "#FFF";
+
+// Green Up dark green
+const darkGreen = "#55683A";
+export const colorBackgroundDark = "#55683A";
+
+// Green Up highlight green
+export const colorGreenHighlight = "#778F4C";
+export const colorLightGreenHighlight = "#9DB677";
+
+// salmon red
+export const colorTextError = "#F55";
 
 export const boxShadow = {
     shadowColor: "#000",
