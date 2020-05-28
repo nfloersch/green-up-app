@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
-    SafeAreaView, Modal
+    SafeAreaView, 
+    Modal,
+    Linking
 } from "react-native";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
@@ -13,7 +15,7 @@ import { searchArray } from "../../libs/search";
 import SupplyDistributionSite from "../../models/supply-distribution-site";
 import * as constants from "../../styles/constants";
 import SearchBar from "../../components/search-bar";
-import { ListView, View, Subtitle } from "@shoutem/ui";
+import { ListView, View, Text, Subtitle } from "@shoutem/ui";
 import SupplyDistributionSiteDetails from "../../components/supply-distribution-site-details";
 
 const myStyles = {
@@ -87,6 +89,16 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
     return (
         <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
+            <Text 
+                onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/client_media/GreenUpDay-HealthTips.pdf')}}
+                style={ { fontSize: 18, fontFamily: "Rubik-Bold", textAlign: "center", color: "white", marginLeft: 10, marginTop: 10, marginRight: 10 } }>
+                Tap Here For Saftey Information!
+            </Text>
+            <Text 
+                onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/client_media/GreenUpDay-HealthTips.pdf')}}
+                style={ { fontSize: 18, fontFamily: "Rubik-Regular", textAlign: "center", color: "white", marginLeft: 30, marginTop: 5, marginRight: 30 } }>
+                Remember to wear a mask, work in small groups of 10 or fewer, and keep a 6 foot distance from strangers
+            </Text>
             <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
             <View 
                 style={ 
@@ -139,7 +151,7 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
 };
 
 FreeSupplies.navigationOptions = {
-    title: "Bags, Gloves and Stuff",
+    title: "Bags / Supplies",
     headerStyle: {
         backgroundColor: constants.colorBackgroundDark
     },

@@ -12,7 +12,8 @@ import {
     Text,
     View,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    PixelRatio
 } from "react-native";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
@@ -26,6 +27,18 @@ import WatchGeoLocation from "../../components/watch-geo-location";
 import Address from "../../models/address";
 
 const styles = StyleSheet.create(defaultStyles);
+
+const buttonText = 22; // this is the value currently being used
+
+if (PixelRatio.get() <= 2) {
+    buttonText = 16 // this is an arbitrary smaller value that might need to be adjusted
+}
+
+const buttonStyle = StyleSheet.create({
+        fontSize: buttonText,
+        marginLeft: 5 // this is the value already in the code
+    });
+
 
 type PropsType = {
     actions: Object,
@@ -288,7 +301,7 @@ const TrashMap = (
                                         color={constants.colorBackgroundDark}
                                         style={{textAlign: 'left'}}
                                         />
-                                    <Text style={{fontSize: 22, marginLeft:5}}>Record Trash Bags</Text>
+                                    <Text style={ buttonStyle }>Record Trash Bags</Text>
                                 </View>
                                 </TouchableOpacity>
                             </Fragment>
