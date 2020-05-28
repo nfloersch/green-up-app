@@ -15,7 +15,7 @@ import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-const fontSize = 25;
+var fontSize = 25;
 
 type PropsType = {
     actions: Object,
