@@ -28,7 +28,7 @@ import Address from "../../models/address";
 
 const styles = StyleSheet.create(defaultStyles);
 
-const buttonText = 22; // this is the value currently being used
+var buttonText = 22; // this is the value currently being used
 
 if (PixelRatio.get() <= 2) {
     buttonText = 16 // this is an arbitrary smaller value that might need to be adjusted
