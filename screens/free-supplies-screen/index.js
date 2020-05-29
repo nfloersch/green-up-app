@@ -96,8 +96,8 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
             </Text>
             <Text 
                 onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/client_media/GreenUpDay-HealthTips.pdf')}}
-                style={ { fontSize: 18, fontFamily: "Rubik-Regular", textAlign: "center", color: "white", marginLeft: 30, marginTop: 5, marginRight: 30 } }>
-                Remember to wear a mask, work in small groups of 10 or fewer, and keep a 6 foot distance from strangers
+                style={ { fontSize: 16, fontFamily: "Rubik-Bold", textAlign: "center", color: "white", marginLeft: 30, marginTop: 5, marginRight: 30 } }>
+                Remember! Clean up Vermont with safe social distance, gloves and masks.
             </Text>
             <SearchBar searchTerm={ searchTerm } search={ setSearchTerm } userLocation={ userLocation }/>
             <View 

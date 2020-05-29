@@ -87,7 +87,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
-                        onPress={ ()=>{ Linking.openURL('http://www.codeforbtv.org/projects/green-up-app')}} 
+                        onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/wiki/Contributors-Great-and-Small...')}} 
                     >
                         <MaterialCommunityIcons
                             name="account-group"
