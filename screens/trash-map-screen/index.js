@@ -242,7 +242,7 @@ const TrashMap = (
                                         {
                                             position: "absolute",
                                             top: 10,
-                                            left: 10,
+                                            left: 50,
                                             borderStyle: "solid",
                                             borderColor: "#000",
                                             borderRadius: 40,

@@ -34,7 +34,7 @@ const homeTitle = R.cond(
     [
         [(days: number): boolean => days > 1, (days: number): string => `${ days } days until Green Up Day`],
         [(days: number): boolean => days === 1, (): string => "Tomorrow is Green Up Day!"],
-        [(days: number): boolean => days === 0, (): string => "It's Green Up Day!"],
+        [(days: number): boolean => days === 0, (): string => "Green Up Today!"],
         [(days: number): boolean => days < 0, (): string => "Keep on Greening"]
     ]
 )(daysUntilCurrentGreenUpDay());
