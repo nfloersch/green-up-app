@@ -8,6 +8,12 @@ import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import AppNavigator from "./navigation/app-navigator";
 import { YellowBox } from "react-native";
+// This and the following two lines account for missing base64 support in some versions of Node
+import {decode, encode} from 'base-64'
+if (!global.btoa) { global.btoa = encode }
+if (!global.atob) { global.atob = decode }
+// Some versions of Firebase assume access to a Window object that react-native does not have
+window.addEventListener = x => x;
 
 // Stop annoying Android users with useless warnings.
 YellowBox.ignoreWarnings(["Setting a timer"]);
@@ -52,7 +58,15 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
     };
 
     const handleFinishLoading = () => {
-        setIsLoadingComplete(true);
+            // This pause lets a user see the loading screen longer,
+            // which is good because it has a winning poster picture on it.
+            // The pause is long enough that people can see the poster,
+            // and short enough it shouldn't bother anyone.
+            setTimeout(() => {
+                setIsLoadingComplete(true);
+            }, 
+            4000
+        );
     };
 
     const load = (
