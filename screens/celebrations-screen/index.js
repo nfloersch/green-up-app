@@ -7,9 +7,9 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Platform,
-    SafeAreaView,
     Modal
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import CelebrationDetails from "../../components/celebration-details";

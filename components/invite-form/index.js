@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import {
     Alert,
     StyleSheet,
-    SafeAreaView,
     ScrollView
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail, isInTeam } from "../../libs/validators";

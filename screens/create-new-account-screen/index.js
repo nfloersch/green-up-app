@@ -3,10 +3,10 @@
 import React from "react";
 import {
     StyleSheet,
-    SafeAreaView,
     TouchableWithoutFeedback,
     Keyboard
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import CreateAccountForm from "../../components/create-account-form";

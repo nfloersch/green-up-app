@@ -4,8 +4,8 @@ import React, { useState, Fragment } from "react";
 import {
     Alert,
     StyleSheet,
-    SafeAreaView
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isValidEmail } from "../../libs/validators";

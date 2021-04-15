@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
-import { Image, StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { Image, StyleSheet, Text, View} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import logo from "../../assets/images/green-up-logo.png";
 import { defaultStyles } from "../../styles/default-styles";
 

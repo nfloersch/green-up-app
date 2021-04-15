@@ -716,3 +716,10 @@ fastlane/Preview.html
 fastlane/screenshots
 
 .pnp.js
+
+app.json
+
+firebase-config.prod.js
+firebase-config.qa.js
+firebase-config.dev.js
+firebase-config.js

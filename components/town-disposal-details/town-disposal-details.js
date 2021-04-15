@@ -2,7 +2,8 @@
 import React, { Fragment } from "react";
 import { defaultStyles } from "../../styles/default-styles";
 import Address from "../../models/address";
-import { StyleSheet, ScrollView, View, SafeAreaView } from "react-native";
+import { StyleSheet, ScrollView, View} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Subtitle, Text, Title, Divider } from "@shoutem/ui";
 import moment from "moment";
 import MiniMap from "../mini-map";
@@ -55,13 +56,14 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 { town.townName }
             </Title>
             </View>
-            { Boolean(town.description) &&
-                (
-                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
-                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
-                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
-                    </View>
-                )
+            { 
+                // Boolean(town.description) &&
+                // (
+                //     <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                //         <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
+                //         <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
+                //     </View>
+                // )
             }
             { Boolean(town.notes) &&
                 (

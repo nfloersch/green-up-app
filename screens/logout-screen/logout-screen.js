@@ -1,6 +1,7 @@
 // @flow
 import React, { useEffect } from "react";
-import { Image, StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { Image, StyleSheet, Text, View} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import logo from "../../assets/images/gu-50-logo.png";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
