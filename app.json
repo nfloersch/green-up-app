@@ -4,13 +4,14 @@
     "description": "The Official App for Vermont's Green Up Day",
     "slug": "Green-Up-Vermont",
     "privacy": "public",
+    "sdkVersion": "37.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "owner": "c4btv",
     "githubUrl": "https://github.com/codeforbtv/green-up-app",
-    "version": "5.0.31",
+    "version": "5.0.37",
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
@@ -25,7 +26,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "19",
+      "buildNumber": "32",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
@@ -39,7 +40,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 19,
+      "versionCode": 33,
       "permissions": [
         "READ_CONTACTS",
         "ACCESS_FINE_LOCATION",
@@ -48,11 +49,11 @@
       ],
       "config": {
         "googleSignIn": {
-          "apiKey" : "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU",
-          "certificateHash" : "A8241216BF89A3AD919A760FC12E2517C6BB362F"
+          "apiKey" : "AIzaSyCOrCzO_pJ3_OVw3ScpwP2Fl6-h4wJ8IOA",
+          "certificateHash" : "DB62BE57BA941E929F0FBD9FA394EA18D25A6C35"
         },
         "googleMaps" : {
-          "apiKey" : "AIzaSyBv0LTM1nQ00jjSTV0F16mFKAHPW-BmmiU"
+          "apiKey" : "AIzaSyCOrCzO_pJ3_OVw3ScpwP2Fl6-h4wJ8IOA"
         }
       }
     },

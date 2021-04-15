@@ -172,8 +172,8 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
         return result;
     };
     const eventDate = getCurrentGreenUpDay();
-    const minDate = applyDateOffset(eventDate, -6);
-    const maxDate = applyDateOffset(eventDate, 6);
+    const minDate = new Date(); //applyDateOffset(eventDate, -6);
+    const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
 
     const pinsConfig = state.team.locations

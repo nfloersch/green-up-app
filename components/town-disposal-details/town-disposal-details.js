@@ -55,13 +55,14 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 { town.townName }
             </Title>
             </View>
-            { Boolean(town.description) &&
-                (
-                    <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
-                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
-                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
-                    </View>
-                )
+            { 
+                // Boolean(town.description) &&
+                // (
+                //     <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
+                //         <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Description: </Text>
+                //         <Text style={ { color: "black", marginLeft: 20 } }>{ town.description }</Text>
+                //     </View>
+                // )
             }
             { Boolean(town.notes) &&
                 (

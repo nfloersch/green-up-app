@@ -12,7 +12,8 @@ import {
     Text,
     View,
     Platform,
-    TouchableOpacity
+    TouchableOpacity,
+    PixelRatio
 } from "react-native";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
@@ -26,6 +27,18 @@ import WatchGeoLocation from "../../components/watch-geo-location";
 import Address from "../../models/address";
 
 const styles = StyleSheet.create(defaultStyles);
+
+var buttonText = 22; // this is the value currently being used
+
+if (PixelRatio.get() <= 2) {
+    buttonText = 16 // this is an arbitrary smaller value that might need to be adjusted
+}
+
+const buttonStyle = StyleSheet.create({
+        fontSize: buttonText,
+        marginLeft: 5 // this is the value already in the code
+    });
+
 
 type PropsType = {
     actions: Object,
@@ -203,6 +216,7 @@ const TrashMap = (
                         R.T,
                         () => (
                             <Fragment>
+                            
                                 <MapView
                                     initialRegion={ initialMapLocation }
                                     showsUserLocation={ true }
@@ -229,7 +243,7 @@ const TrashMap = (
                                         {
                                             position: "absolute",
                                             top: 10,
-                                            left: 10,
+                                            left: 50,
                                             borderStyle: "solid",
                                             borderColor: "#000",
                                             borderRadius: 40,
@@ -259,6 +273,34 @@ const TrashMap = (
                                     style={
                                         {
                                             position: "absolute",
+                                            bottom: '1%',
+                                            left: '2%',
+                                            borderStyle: "solid",
+                                            borderColor: "#000",
+                                            borderRadius: 2,
+                                            borderWidth: 1,
+                                            backgroundColor: "#FFF",
+                                            padding: 3,
+                                            width: '96%',
+                                            shadowColor: "#000",
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 2
+                                            },
+                                            shadowOpacity: 0.25,
+                                            shadowRadius: 3.84,
+                                            elevation: 5,
+                                        }
+                                    }
+                                    >
+                                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                                        <Text style={ {fontSize: 11, fontWeight: "bold"} }>Notice: Recording a trash drop shares your location with Greenup</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={
+                                        {
+                                            position: "absolute",
                                             bottom: '5%',
                                             left: '15%',
                                             borderStyle: "solid",
@@ -279,17 +321,16 @@ const TrashMap = (
                                             elevation: 5,
                                         }
                                     }
-                                    onPress={ () => navigation.navigate("TrashTaggerModal") }
-                                >
-                                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                                    <MaterialCommunityIcons
-                                        name="sack"
-                                        size={28}
-                                        color={constants.colorBackgroundDark}
-                                        style={{textAlign: 'left'}}
-                                        />
-                                    <Text style={{fontSize: 22, marginLeft:5}}>Record Trash Bags</Text>
-                                </View>
+                                    onPress={ () => navigation.navigate("TrashTaggerModal") }>
+                                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                                        <MaterialCommunityIcons
+                                            name="sack"
+                                            size={28}
+                                            color={constants.colorBackgroundDark}
+                                            style={{textAlign: 'left'}}
+                                            />
+                                        <Text style={ buttonStyle }>Record Trash Bags</Text>
+                                    </View>
                                 </TouchableOpacity>
                             </Fragment>
                         )
