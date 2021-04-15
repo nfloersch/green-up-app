@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
-    SafeAreaView, 
     Modal,
     Linking
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import PickupLocation from "../../components/pickup-location";

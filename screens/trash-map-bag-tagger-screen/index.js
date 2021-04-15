@@ -4,9 +4,9 @@ import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     Dimensions
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";

@@ -1,6 +1,7 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, SafeAreaView, Image, ScrollView } from "react-native";
+import { StyleSheet, Image, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";

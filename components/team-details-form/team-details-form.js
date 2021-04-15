@@ -7,11 +7,10 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Button, TextInput, Text, Divider } from "@shoutem/ui";
 import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";

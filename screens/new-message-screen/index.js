@@ -5,8 +5,8 @@ import {
     Picker,
     ScrollView,
     StyleSheet,
-    SafeAreaView
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import User from "../../models/user";
