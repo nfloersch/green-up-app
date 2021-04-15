@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
-import { StyleSheet, ScrollView, View, SafeAreaView } from "react-native";
+import { StyleSheet, ScrollView, View} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Subtitle, Text, Title, Divider, Caption } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import moment from "moment";

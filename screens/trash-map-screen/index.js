@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 
 import EnableLocationServices from "../../components/enable-location-services";
 import {
-    SafeAreaView,
     StyleSheet,
     Text,
     View,
@@ -15,6 +14,7 @@ import {
     TouchableOpacity,
     PixelRatio
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import TrashDrop from "../../models/trash-drop";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
