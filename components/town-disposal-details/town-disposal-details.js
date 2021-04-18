@@ -84,25 +84,30 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
             <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
                 <View style={ { flex: 1, flexDirection: "row" } }>
                     <View style={ { position: "relative", height: 60, width: 60 } }>
-                        { !town.allowsRoadside &&
-                        <FontAwesome style={ { color: "#AAA", position: "absolute" } } size={ 65 } name={ "ban" }/> }
-                        <FontAwesome style={ { color: "#555", position: "absolute", top: 15, left: 12 } } size={ 30 }
-                            name={ "road" }/>
+                        { 
+                            !(town.allowsRoadside) &&
+                            <FontAwesome style={ { color: "#AAA", position: "absolute" } } size={ 65 } name={ "ban" }/> 
+                        }
+                        <FontAwesome style={ { color: "#555", position: "absolute", top: 15, left: 12 } } size={ 30 } name={ "road" }/>
                     </View>
                     <View style={ { flexGrow: 1, flexShrink: 1, marginLeft: 5 } }>
                         <View style={ { flex: 1, justifyContent: "center" } }>
                             <Text style={ { fontSize: 19 } }>
-                                { town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site." }
+                                { 
+                                    town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site." 
+                                }
                             </Text>
                         </View>
                     </View>
                 </View>
-                { Boolean(town.dropOffInstructions) &&
-                (
-                    <View style={ { marginTop: 10 } }>
-                        <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Drop Off Instructions: </Text>
-                        <Text style={ { color: "black", marginLeft: 20 } }>{ town.dropOffInstructions }</Text>
-                    </View>)
+                { 
+                    town.dropOffInstructions &&
+                    (
+                        <View style={ { marginTop: 10 } }>
+                            <Text style={ { fontSize: 18, fontWeight: "bold", textAlign: "left", color: "black" } }>Drop Off Instructions: </Text>
+                            <Text style={ { color: "black", marginLeft: 20 } }>{ town.dropOffInstructions }</Text>
+                        </View>
+                    )
                 }
             </View>
             

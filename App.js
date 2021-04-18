@@ -17,7 +17,7 @@ window.addEventListener = x => x;
 
 // Stop annoying Android users with useless warnings.
 //LogBox.ignoreLogs(["Setting a timer", "Calling `getNode()`"]);
-LogBox.ignoreAllLogs();
+//LogBox.ignoreAllLogs();
 
 type PropsType = { skipLoadingScreen: boolean };
 // Bootstrapping the app

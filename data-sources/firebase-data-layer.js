@@ -598,6 +598,28 @@ export function saveTeam(team: TeamType): Promise<any> {
 }
 
 export function deleteTeam(teamId: string): Promise<any> {
+   
+    let members = [];
+    const getTeamsRef = db.collection(`teams/${ teamId }/members`);
+    const getTeams = getTeamsRef.get().then(
+        (snapshot) => {
+            snapshot.forEach(
+                (doc) => {
+                    console.log(doc.data());
+                    removeTeamMember(teamId, doc.data());
+                }
+            ).catch((error) => {
+                console.log("ForEach error: " + error);
+            })
+        }
+    ).catch(
+        (error) => {
+            console.log("error: " + error);
+        }
+    );
+    // return new Promise(function(r) {
+    //     setTimeout(() => { r('blah'); }, 2000);
+    //   }); 
     return db.collection("teams").doc(teamId).delete();
 }
 
@@ -625,12 +647,35 @@ export function removeInvitation(teamId: string, email: string): Promise<any> {
 }
 
 export async function addTeamMember(teamId: string, user: Object, status: string = "ACCEPTED", dispatch: Dispatch<ActionType>): Promise<any> {
+    const collRef = db.collection('teams'); 
+    const myteamRef = collRef.doc(teamId);
+    let myteam = null;
     const email = user.email.toLowerCase().trim();
     const teamMember = TeamMember.create(Object.assign({}, user, { memberStatus: status }));
-    const addToTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct(teamMember));
+    const addToTeam = await db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(teamMember).then(
+        (val) => {
+            console.log("value: " + val);
+        }
+    ).catch((error) => {
+        console.log("Error adding team member:", error);
+    });
+    const getTeam = await myteamRef.get().then(
+        (doc) => {
+            if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                    myteam = doc.data();
+                    
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }
+    ).catch((error) => {
+        console.log("Error getting document:", error);
+    });
     const removeRequest = db.collection(`teams/${ teamId }/requests`).doc(teamMember.uid).delete();
-    const addTeamToProfile = db.collection(`profiles/${ user.uid }/teams`).doc(teamId).set({ isMember: true });
-    const results = await Promise.all([addToTeam, addTeamToProfile, removeRequest]).then((): Promise<any> => removeInvitation(teamId, email));
+    const addTeamToProfile = db.collection(`profiles/${ user.uid }/teams`).doc(teamId).set({ ...myteam, isMember: true });
+    const results = await Promise.all([addTeamToProfile, removeRequest]).then((): Promise<any> => removeInvitation(teamId, email));
     if (dispatch) { // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
         setupTeamMemberListener([teamId], dispatch);
         setupTeamMessageListener([teamId], dispatch);
@@ -643,9 +688,13 @@ export function updateTeamMember(teamId: string, teamMember: TeamMemberType): Pr
 }
 
 export function removeTeamMember(teamId: string, teamMember: UserType): Promise<any> {
+    console.log("Removed Team Member " + teamMember.uid + " from team " + teamId);
     const deleteFromTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
     const deleteFromProfile = db.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
     return Promise.all([deleteFromTeam, deleteFromProfile]);
+    return new Promise(function(r) {
+        setTimeout(() => { r('blah'); }, 2000);
+      });; // db.collection("teams").doc(teamId).delete();
 }
 
 export function leaveTeam(teamId: string, teamMember: UserType): Promise<any> {
