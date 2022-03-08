@@ -9,8 +9,8 @@ import TeamMembersEditor from "../../components/team-members-editor";
 import * as constants from "../../styles/constants";
 
 const routes = [
-    { key: "members", title: "Members" },
-    { key: "details", title: "Details" }
+    { key: "details", title: "Details" },
+    { key: "members", title: "Members" }
 ];
 
 const TeamEditorScreen = (): React$Element<any> => {

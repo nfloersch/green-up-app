@@ -16,7 +16,7 @@ if (!global.atob) { global.atob = decode }
 window.addEventListener = x => x;
 
 // Stop annoying Android users with useless warnings.
-//LogBox.ignoreLogs(["Setting a timer", "Calling `getNode()`"]);
+LogBox.ignoreLogs(["Setting a timer for a long period of time", "getNode"]);
 //LogBox.ignoreAllLogs();
 
 type PropsType = { skipLoadingScreen: boolean };
