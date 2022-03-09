@@ -2,7 +2,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import TrashToggles from "../../components/trash-toggles";
 import * as actionCreators from "../../action-creators/map-action-creators";
 import * as constants from "../../styles/constants";

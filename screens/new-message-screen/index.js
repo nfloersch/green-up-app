@@ -5,8 +5,8 @@ import {
     Picker,
     ScrollView,
     StyleSheet,
-    SafeAreaView
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import User from "../../models/user";
@@ -31,9 +31,17 @@ type PropsType = {
 
 const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: PropsType): React$Element<View> => {
     const teamHash = (currentUser.teams || {}) || {};
-    const teamList = Object
-        .entries(teamHash)
-        .map((entry: [string, Object]): TeamType => Team.create(entry[1], entry[0]));
+    const teamHashList = Object.entries(teamHash);
+    const teamFilterList = teamHashList.filter((entry) => {
+        if ('name' in entry[1]) {
+            return entry[1].name != null
+        }
+        return false;
+        }
+    );
+    const teamList = teamFilterList.map(
+        (entry: [string, Object]): TeamType => Team.create(entry[1], entry[0])
+    );
 
     const [currentTeamId, setCurrentTeamId] = useState(navigation.selectedTeamid || selectedTeamId || (teamList[0] || {}).id || null);
 

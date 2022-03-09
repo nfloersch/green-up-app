@@ -1,11 +1,11 @@
 // @flow
 import React, { useState } from "react";
 import {
-    SafeAreaView,
     Text,
     View,
     Dimensions
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import MiniMap from "../mini-map";
 import { getClosestSite } from "../../libs/geo-helpers";
 import ButtonBar from "../button-bar";

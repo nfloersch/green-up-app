@@ -1,6 +1,7 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, SafeAreaView, Alert, Linking, ScrollView, PixelRatio } from "react-native";
+import { StyleSheet, Alert, Linking, ScrollView, PixelRatio } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
@@ -59,7 +60,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
-                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Yzww3g')}} 
+                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Sp517f')}} 
                     >
                         <MaterialCommunityIcons
                             name="charity"
@@ -87,7 +88,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
-                        onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/wiki/Contributors-Great-and-Small...')}} 
+                        onPress={ ()=>{ Linking.openURL('https://codeforbtv.github.io/green-up-app/contributorsGreatAndSmall')}} 
                     >
                         <MaterialCommunityIcons
                             name="account-group"
