@@ -1,5 +1,5 @@
 .env
-assets/**/*
+assets/fonts/*
 environment.js
 node_modules/**/*
 *.expo
