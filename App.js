@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from "react";
-import { AppLoading } from "expo-app-loading";
+import AppLoading from "expo-app-loading";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import AppState from "./components/app-state";
