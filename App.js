@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from "react";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import AppState from "./components/app-state";
@@ -16,8 +16,8 @@ if (!global.atob) { global.atob = decode }
 window.addEventListener = x => x;
 
 // Stop annoying Android users with useless warnings.
-//LogBox.ignoreLogs(["Setting a timer", "Calling `getNode()`"]);
-LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(["Setting a timer for a long period of time", "getNode"]);
+//LogBox.ignoreAllLogs();
 
 type PropsType = { skipLoadingScreen: boolean };
 // Bootstrapping the app
@@ -65,7 +65,7 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
             // and short enough it shouldn't bother anyone.
             setTimeout(() => {
                 setIsLoadingComplete(true);
-            }, 
+            },
             4000
         );
     };

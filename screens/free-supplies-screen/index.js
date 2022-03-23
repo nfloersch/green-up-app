@@ -90,12 +90,12 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
         <SafeAreaView style={ styles.container }>
             <WatchGeoLocation/>
             <Text 
-                onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/client_media/GreenUpDay-HealthTips.pdf')}}
+                onPress={ ()=>{ Linking.openURL('https://greenup.powershift.info/wp-content/uploads/2021/03/Safety-Card.jpg')}}
                 style={ { fontSize: 18, fontFamily: "Rubik-Bold", textAlign: "center", color: "white", marginLeft: 10, marginTop: 10, marginRight: 10 } }>
                 Tap Here For Saftey Information!
             </Text>
             <Text 
-                onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/client_media/GreenUpDay-HealthTips.pdf')}}
+                onPress={ ()=>{ Linking.openURL('https://greenup.powershift.info/wp-content/uploads/2021/03/Safety-Card.jpg')}}
                 style={ { fontSize: 16, fontFamily: "Rubik-Bold", textAlign: "center", color: "white", marginLeft: 30, marginTop: 5, marginRight: 30 } }>
                 Remember! Clean up Vermont with safe social distance, gloves and masks.
             </Text>
