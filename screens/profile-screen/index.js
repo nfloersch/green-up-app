@@ -80,15 +80,12 @@ const Profile = ({ actions, currentUser, navigation }: PropsType): React$Element
                 <ScrollView style={ styles.scroll }>
                     <View style={ [styles.infoBlockContainer, { height: 400 }] }>
                         <View style={ [styles.profileHeader, { backgroundColor: "white" }] }>
-                            <PhotoPicker
-                                onChange={ (image: Object) => {
-                                    dispatch({ type: "UPDATE_AVATAR", data: `data:image/png;base64,${image.base64}` });
-                                } }>
+                            
                                 <Image
                                     style={ { width: 50, height: 50 } }
                                     source={ { uri: photoURL } }
                                 />
-                            </PhotoPicker>
+                            
                             <Text style={ [styles.profileName, styles.heading] }>
                                 { displayName || "" }
                             </Text>

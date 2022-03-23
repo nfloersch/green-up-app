@@ -6,9 +6,9 @@ import {
     Modal,
     Text,
     TouchableOpacity,
-    View,
-    SafeAreaView
+    View
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import MemberIcon from "../../components/member-icon";
 import { defaultStyles } from "../../styles/default-styles";

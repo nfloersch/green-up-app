@@ -6,14 +6,14 @@ import { connect } from "react-redux";
 import {
     Alert,
     Image,
-    StyleSheet,
-    SafeAreaView
+    StyleSheet
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Button, Text, Divider } from "@shoutem/ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 import * as actionCreators from "../../action-creators/session-action-creators";
-import logo from "../../assets/images/gu-50-logo.png";
+import logo from "../../assets/images/2021_sticker_glowed.png";
 import LoginForm from "../../components/login-form";
 import { defaultStyles } from "../../styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

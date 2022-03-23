@@ -7,9 +7,9 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback
+    KeyboardAvoidingView, TouchableWithoutFeedback
 } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Button, TextInput, Text, Divider } from "@shoutem/ui";
 import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
@@ -182,8 +182,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         return result;
     };
     const eventDate = getCurrentGreenUpDay();
-    const minDate = applyDateOffset(eventDate, -6);
-    const maxDate = applyDateOffset(eventDate, 6);
+    const minDate = new Date(); //applyDateOffset(eventDate, -6);
+    const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
 
     const pinsConfig = state.team.locations

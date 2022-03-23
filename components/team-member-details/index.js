@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
-import { Alert, StyleSheet, ScrollView, Text, View, Image, SafeAreaView } from "react-native";
+import { Alert, StyleSheet, ScrollView, Text, View, Image} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import MemberIcon from "../../components/member-icon";
 import * as status from "../../constants/team-member-statuses";
 import { defaultStyles } from "../../styles/default-styles";

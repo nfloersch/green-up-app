@@ -1,6 +1,7 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, SafeAreaView, Alert, Linking } from "react-native";
+import { StyleSheet, Alert, Linking, ScrollView, PixelRatio } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
@@ -15,13 +16,16 @@ import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
-const fontSize = 25;
+var fontSize = 25;
 
 type PropsType = {
     actions: Object,
     navigation: Object
 };
 
+if (PixelRatio.get() <= 2) {
+    fontSize = 16 // this is an arbitrary smaller value that might need to be adjusted
+}
 
 const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => {
     const logoutHandler = () => {
@@ -34,112 +38,110 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
     const envString = getReleaseEnvironment();
 
     return (<SafeAreaView style={ styles.container }>
-        <View style={ { margin: 20 } }>
+        <ScrollView style={ styles.scroll }>
+            <View style={ { margin: 20 } }>
 
-            <Button
-                styleName="primary"
-                onPress={ () => {
-                    navigation.navigate("Profile");
-                } }
-            >
-                <MaterialCommunityIcons
-                    name="account-box"
-                    size={ 30 }
-                    style={ { marginRight: 10 } }
-                    color={ "#555" }
-                />
-                <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
-            </Button>
-        </View>
-        {
-            // These items were inspired by Micah's input on the idea of a Feedback form.
-            // While that exact method he proposed has not yet been implemented, these buttons
-            // were added here to make a screen shot that could be shared with Kate at Green Up.
-            // <View style={ { margin: 20 } }>
-            //     <Button
-            //         styleName="primary"
-            //         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Yzww3g')}} 
-            //     >
-            //         <MaterialCommunityIcons
-            //             name="charity"
-            //             size={ 30 }
-            //             style={ { marginRight: 10 } }
-            //             color={ "#555" }
-            //         />
-            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
-            //     </Button>
-            // </View>
-            // <View style={ { margin: 20 } }>
-            //     <Button
-            //         styleName="primary"
-            //         onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
-            //     >
-            //         <MaterialCommunityIcons
-            //             name="comment-alert"
-            //             size={ 30 }
-            //             style={ { marginRight: 10 } }
-            //             color={ "#555" }
-            //         />
-            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
-            //     </Button>
-            // </View>
-            // <View style={ { margin: 20 } }>
-            //     <Button
-            //         styleName="primary"
-            //         onPress={ ()=>{ Linking.openURL('http://www.codeforbtv.org/projects/green-up-app')}} 
-            //     >
-            //         <MaterialCommunityIcons
-            //             name="account-group"
-            //             size={ 30 }
-            //             style={ { marginRight: 10 } }
-            //             color={ "#555" }
-            //         />
-            //         <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This?" }</Text>
-            //     </Button>
-            // </View>
-        }
-        <View style={ { margin: 20 } }>
-            <Button
-                styleName="primary"
+                <Button
+                    styleName="primary"
+                    onPress={ () => {
+                        navigation.navigate("Profile");
+                    } }
+                >
+                    <MaterialCommunityIcons
+                        name="account-box"
+                        size={ 30 }
+                        style={ { marginRight: 10 } }
+                        color={ "#555" }
+                    />
+                    <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
+                </Button>
+            </View>
 
-                onPress={ () => {
-                    navigation.navigate("Legal");
-                } }
-            >
-                <Octicons
-                    name="law"
-                    size={ 30 }
-                    style={ { marginRight: 10 } }
-                    color={ "#555" }
-                />
-                <Text style={ { ...styles.buttonText, fontSize } }>{ "Legal Stuff" }</Text>
-            </Button>
-        </View>
-        <View style={ { margin: 20 } }>
+                <View style={ { margin: 20 } }>
+                    <Button
+                        styleName="primary"
+                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Sp517f')}} 
+                    >
+                        <MaterialCommunityIcons
+                            name="charity"
+                            size={ 30 }
+                            style={ { marginRight: 10 } }
+                            color={ "#555" }
+                        />
+                        <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
+                    </Button>
+                </View>
+                <View style={ { margin: 20 } }>
+                    <Button
+                        styleName="primary"
+                        onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
+                    >
+                        <MaterialCommunityIcons
+                            name="comment-alert"
+                            size={ 30 }
+                            style={ { marginRight: 10 } }
+                            color={ "#555" }
+                        />
+                        <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
+                    </Button>
+                </View>
+                <View style={ { margin: 20 } }>
+                    <Button
+                        styleName="primary"
+                        onPress={ ()=>{ Linking.openURL('https://codeforbtv.github.io/green-up-app/contributorsGreatAndSmall')}} 
+                    >
+                        <MaterialCommunityIcons
+                            name="account-group"
+                            size={ 30 }
+                            style={ { marginRight: 10 } }
+                            color={ "#555" }
+                        />
+                        <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This?" }</Text>
+                    </Button>
+                </View>
 
-            <Button
-                styleName="primary"
-                onPress={ logoutHandler }
-            >
-                <MaterialCommunityIcons
-                    name="logout"
-                    size={ 30 }
-                    style={ { marginRight: 10 } }
-                    color={ "#555" }
-                />
-                <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
-            </Button>
-        </View>
-        <View style={ { margin: 20 } }>
-            <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ version }` }</Text>
-            { (envString !== 'Prod') && (
-                <Fragment>
-                    <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
-                    <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Environment: ${ envString }` }</Text>
-                </Fragment>
-            )}
-        </View>
+            <View style={ { margin: 20 } }>
+                <Button
+                    styleName="primary"
 
+                    onPress={ () => {
+                        navigation.navigate("Legal");
+                    } }
+                >
+                    <Octicons
+                        name="law"
+                        size={ 30 }
+                        style={ { marginRight: 10 } }
+                        color={ "#555" }
+                    />
+                    <Text style={ { ...styles.buttonText, fontSize } }>{ "Legal Stuff" }</Text>
+                </Button>
+            </View>
+            <View style={ { margin: 20 } }>
+
+                <Button
+                    styleName="primary"
+                    onPress={ logoutHandler }
+                >
+                    <MaterialCommunityIcons
+                        name="logout"
+                        size={ 30 }
+                        style={ { marginRight: 10 } }
+                        color={ "#555" }
+                    />
+                    <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
+                </Button>
+            </View>
+            <View style={ { margin: 20 } }>
+                <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ version }` }</Text>
+                { (envString !== 'Prod') && (
+                    <Fragment>
+                        <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
+                        <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Environment: ${ envString }` }</Text>
+                    </Fragment>
+                )}
+            </View>
+        </ScrollView>
     </SafeAreaView>);
 };
 

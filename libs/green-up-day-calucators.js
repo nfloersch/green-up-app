@@ -71,6 +71,7 @@ export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
 
 // Determine if we're in the Event period, Thur, Fri, Green Up Day (Sat), Sun, Mon, or Tue
 export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
+    return true;
     const myToday = new Date(today || (new Date()).toUTCString());
     const daysUntilGreenUpDay = daysUntilCurrentGreenUpDay(myToday);
     if (envString !== 'Prod') return true;    
@@ -81,6 +82,7 @@ export const greenUpWindowStart = () => moment(getCurrentGreenUpDay()).subtract(
 export const greenUpWindowEnd = () => moment(getCurrentGreenUpDay()).add(4, "days").toDate();
 
 export const isInGreenUpWindow = (date: ?Date) => {
+    return true;
     const myDate = date || new Date();
     const guws = greenUpWindowStart();
     const guwe = greenUpWindowEnd();

@@ -1,7 +1,8 @@
 // @flow
 // TODO: Remove inline styles (JN)
 import React, { useState } from "react";
-import { View, SafeAreaView, TouchableOpacity, FlatList, Text } from "react-native";
+import { View, TouchableOpacity, FlatList, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { FontAwesome } from "@expo/vector-icons";
 import { getUsersTeams } from "../../libs/team-helpers";

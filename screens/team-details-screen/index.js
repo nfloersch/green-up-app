@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
-import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert, SafeAreaView } from "react-native";
+import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "../../action-creators/team-action-creators";
