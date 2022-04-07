@@ -6,6 +6,9 @@ import * as Font from "expo-font";
 import AppState from "./components/app-state";
 import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
+//import { Ionicons } from "react-native-vector-icons";
+
+
 import AppNavigator from "./navigation/app-navigator";
 import { LogBox } from "react-native";
 // This and the following two lines account for missing base64 support in some versions of Node
@@ -18,6 +21,7 @@ window.addEventListener = x => x;
 // Stop annoying Android users with useless warnings.
 LogBox.ignoreLogs(["Setting a timer for a long period of time", "getNode"]);
 //LogBox.ignoreAllLogs();
+
 
 type PropsType = { skipLoadingScreen: boolean };
 // Bootstrapping the app
@@ -39,6 +43,7 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
         Font.loadAsync({
             // This is the font that we are using for our tab bar
             ...Ionicons.font,
+            "Ionicons": require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf'),
             "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf"),
             "Rubik-Medium": require("./assets/fonts/Rubik/Rubik-Medium.ttf"),
             "Rubik-MediumItalic": require("./assets/fonts/Rubik/Rubik-MediumItalic.ttf"),

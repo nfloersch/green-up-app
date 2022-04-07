@@ -1,5 +1,7 @@
 // @flow
-import { createStackNavigator, createAppContainer } from "react-navigation";
+// import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 import TrashTrackerScreen from "../screens/trash-map-screen";
 import TrashTrackerModalScreen from "../screens/trash-map-modal-screen";
 import BagTaggerScreen from "../screens/trash-map-bag-tagger-screen";

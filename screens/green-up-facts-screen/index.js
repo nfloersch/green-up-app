@@ -57,6 +57,77 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                             textAlign: "justify",
                             fontSize: 16
                         }] }>
+                        The 2022 Winning Narrative
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                            textAlign: "justify",
+                            fontSize: 14,
+                            fontFamily: "Rubik-Bold"
+                        }] }>
+                        By Kellan Kendall, 6th Grade, St. Johnsbury Academy
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                            textAlign: "justify",
+                            fontSize: 16,
+                            fontFamily: "Rubik-Bold"
+                        }] }>
+                        Green Up Green Mountain State
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        All Vermonters,{"\n"}
+                        Let us lead the way!{"\n"}
+                        Clean up bike paths,{"\n"}
+                        and roadsides every day!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Make the green mountains clean,{"\n"}
+                        Toss trash in the bins.{"\n"}
+                        Pick up after ourselves,{"\n"}
+                        Every Vermonter wins!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Keep our awesome state clean,{"\n"}
+                        Our rivers, ponds, and lakes.{"\n"}
+                        Give our loons, trout, and deer,{"\n"}
+                        Safe places to live, for all our sakes!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Keep the environment healthy,{"\n"}
+                        Let us do our best.{"\n"}
+                        Show the country why Vermont,{"\n"}
+                        Is better than the rest!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Plant trees and gardens,{"\n"}
+                        Recycle old stuff.{"\n"}
+                        Take care of the Earth,{"\n"}
+                        our planet does enough!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Vermonters stop and listen!{"\n"}
+                        Waste has its place.{"\n"}
+                        Put it in the garbage,{"\n"}
+                        or in the recycling space.{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Reduce, Reuse, and Recycle,{"\n"}
+                        Be responsible and care.{"\n"}
+                        We are excited to clean Vermont up,{"\n"}
+                        Litterbugs, BEWARE!{"\n"}
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Let's clean up together,{"\n"}
+                        It's what we want!{"\n"}
+                        Treat our state like a champ,{"\n"}
+                        Green up the State of Vermont!{"\n"}
+                    </Text>
+                </View>
+
+                <View style={ styles.infoBlockContainer }>
+                    <Text style={ [styles.textDark, {
+                            textAlign: "justify",
+                            fontSize: 16
+                        }] }>
                         The 2021 Winning Essay
                     </Text>
                     <Text style={ [styles.textDark, {

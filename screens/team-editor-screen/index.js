@@ -41,7 +41,7 @@ const TeamEditorScreen = (): React$Element<any> => {
                 members: TeamMembersEditor
             }) }
             onIndexChange={ setActiveTab }
-            initialLayout={ { width: Dimensions.get("window").width } }
+            initialLayout={ { width: Dimensions.get("window").width || "100%" } }
         />
     );
 };

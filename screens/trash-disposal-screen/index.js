@@ -42,7 +42,7 @@ const routes = [
 ];
 
 const TrashDisposalScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites }: PropsType): React$Element<any> => {
-    const [activeTab, setActiveTab] = useState(dateIsInCurrentEventWindow() ? 1 : 0);
+    const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
 
     // const currentTownId = userLocation && userLocation.coordinates ? findTownIdByCoordinates(userLocation.coordinates) : "";

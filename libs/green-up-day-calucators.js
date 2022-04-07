@@ -17,7 +17,8 @@ export const getGreenUpDayByYear = (year: number): Date => {
     // Otherwise, Green Up Day is always the first Saturday in May
     // Note: get the monday at the beginning of the provided week with .startOf("isoWeek")
     // see: https://momentjs.com/docs/#/manipulating/start-of/
-    const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("isoWeek");
+    //const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("isoWeek"); // Prior to 2022 this worked?
+    const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("week");
     const firstSaturdayInMay = mondayBeforeGUDay.add(5, "days");
     return firstSaturdayInMay.toDate();
 };

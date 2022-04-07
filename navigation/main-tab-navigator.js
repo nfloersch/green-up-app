@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import { Platform } from "react-native";
-import { createBottomTabNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import TabBarIcon from "../components/tab-bar-icon";
 import MenuStack from "./menu-stack";
 import MessagesStack from "./messages-stack";
@@ -43,7 +43,6 @@ MessagesStack.navigationOptions = {
 };
 
 
-/** * Messages ***/
 LeaderboardStack.navigationOptions = {
     tabBarLabel: "Leaderboard",
     tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (

@@ -1,5 +1,7 @@
 // @flow
-import { createStackNavigator, createAppContainer } from "react-navigation";
+// import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 import NewMessageScreen from "../screens/new-message-screen";
 import MessagesSummariesScreen from "../screens/message-summaries-screen";
 import MessageDetailsScreen from "../screens/message-details-screen";

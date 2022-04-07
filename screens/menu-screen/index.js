@@ -60,7 +60,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
-                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/Sp517f')}} 
+                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/G00jvf')}}
                     >
                         <MaterialCommunityIcons
                             name="charity"
@@ -88,7 +88,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
-                        onPress={ ()=>{ Linking.openURL('https://codeforbtv.github.io/green-up-app/contributorsGreatAndSmall')}} 
+                        onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/blob/master/docs/contributorsGreatAndSmall.md')}} 
                     >
                         <MaterialCommunityIcons
                             name="account-group"
