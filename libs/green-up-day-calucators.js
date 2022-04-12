@@ -18,8 +18,15 @@ export const getGreenUpDayByYear = (year: number): Date => {
     // Note: get the monday at the beginning of the provided week with .startOf("isoWeek")
     // see: https://momentjs.com/docs/#/manipulating/start-of/
     //const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("isoWeek"); // Prior to 2022 this worked?
-    const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("week");
-    const firstSaturdayInMay = mondayBeforeGUDay.add(5, "days");
+    let firstSaturdayInMay = {};
+    const firstOfMay = moment(`${year}-05-01`);
+    if (firstOfMay == moment().day("Saturday")) {
+        firstSaturdayInMay = firstOfMay;
+    }
+    else {
+        const mondayBeforeGUDay = moment(`${year}-05-01`).startOf("week");
+        firstSaturdayInMay = mondayBeforeGUDay.add(6, "days");
+    }
     return firstSaturdayInMay.toDate();
 };
 

@@ -1,6 +1,6 @@
 {
-  "version": "5.0.47",
-  "publishDate": "2022-04-07",
+  "version": "5.0.48",
+  "publishDate": "2022-04-10",
   "main": "node_modules/expo/AppEntry.js",
   "name": "green-up-vermont-mobile-app",
   "scripts": {

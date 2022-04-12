@@ -50,8 +50,8 @@ LeaderboardStack.navigationOptions = {
             focused={ focused }
             name={
                 Platform.OS === "ios"
-                    ? `ios-list-box${ focused ? "" : "" }`
-                    : "md-list-box"
+                    ? `ios-list-circle${ focused ? "" : "" }`
+                    : "md-list-circle"
             }
         />
     )
@@ -64,7 +64,7 @@ TrashTrackerStack.navigationOptions = {
         <TabBarIcon
             focused={ focused }
             name={
-                Platform.OS === "ios" ? `ios-pin${ focused ? "" : "" }` : "md-pin"
+                Platform.OS === "ios" ? `ios-location${ focused ? "" : "" }` : "md-location"
             }
         />
     )

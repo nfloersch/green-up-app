@@ -71,6 +71,22 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
                     </Button>
                 </View>
+                
+                <View style={ { margin: 20 } }>
+                    <Button
+                        styleName="primary"
+                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/2g6ckf')}}
+                    >
+                        <MaterialCommunityIcons
+                            name="tshirt-crew"
+                            size={ 30 }
+                            style={ { marginRight: 10 } }
+                            color={ "#555" }
+                        />
+                        <Text style={ { ...styles.buttonText, fontSize } }>{ "Get Green Up Gear!" }</Text>
+                    </Button>
+                </View>
+
                 <View style={ { margin: 20 } }>
                     <Button
                         styleName="primary"
