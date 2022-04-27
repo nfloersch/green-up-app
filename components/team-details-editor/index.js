@@ -21,6 +21,7 @@ import * as constants from "../../styles/constants";
 import * as R from "ramda";
 import TeamDetailsForm from "../team-details-form";
 import { Divider } from "@shoutem/ui";
+import {  Button, TextInput } from "@shoutem/ui";
 
 const myStyles = {
     danger: {

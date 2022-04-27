@@ -1,7 +1,8 @@
 // @flow
 /* eslint-disable new-cap */
 import React, { useState } from "react";
-import { Dimensions, Text } from "react-native";
+
+import { Dimensions, Text, View } from "react-native";
 import { withNavigation } from "react-navigation";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import TeamDetailsEditor from "../../components/team-details-editor";
@@ -18,6 +19,9 @@ const TeamEditorScreen = (): React$Element<any> => {
     const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
     return (
+        
+        
+        
         <TabView
             renderTabBar={ props =>
                 <TabBar

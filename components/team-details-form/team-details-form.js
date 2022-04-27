@@ -189,7 +189,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
 
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
-            
+
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={ 100 }
                     style={ { flex: 1 } }
@@ -198,7 +198,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                     <View style={ { flex: 1, justifyContent: "flex-end" } }>
                         <ScrollView
                             style={ styles.scroll }
-                            automaticallyAdjustContentInsets={ false }
+                            // automaticallyAdjustContentInsets={ false }
                             scrollEventThrottle={ 200 }
                         >
                             <View style={ styles.formControl }>
@@ -226,7 +226,10 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             style={ { marginRight: 10 } }
                                             color={ !state.team.isPublic ? "#555" : "black" }
                                         />
-                                        <Text>PUBLIC</Text>
+                                        <Text 
+                                            style={state.team.isPublic ? {color:"black"} : {color: "white"}}>
+                                            PUBLIC
+                                        </Text>
                                     </Button>
                                     <Button
                                         onPress={ () => setTeamValue("isPublic")(false) }
@@ -237,7 +240,10 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             style={ { marginRight: 10 } }
                                             color={ state.team.isPublic ? "#555" : "black" }
                                         />
-                                        <Text>PRIVATE</Text>
+                                        <Text 
+                                            style={state.team.isPublic ? {color:"white"} : {color: "black"}}>
+                                            PRIVATE
+                                        </Text>
                                     </Button>
                                 </View>
                             </View>
@@ -356,10 +362,10 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                             </View>
                             { children }
                         </ScrollView>
+                        
                         <View style={ { flex: 1 } }/>
                     </View>
                 </KeyboardAvoidingView>
-            
         </SafeAreaView>
     );
 };
