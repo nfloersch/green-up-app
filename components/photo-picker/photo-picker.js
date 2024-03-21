@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import Constants from "expo-constants";
-import * as Permissions from "expo-permissions";
+import * as Camera from "expo-camera";
 
 type PropsType = {
     children: any,
@@ -30,7 +30,7 @@ const resize = async (height: number, width: number, rotate: number, image: Obje
 
 const getPermissionAsync = async (callback: boolean => any): Promise<any> => {
     if ((Constants.platform || {}).ios) {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const { status }  = await Camera.requestCameraPermissionsAsync();
         if (status !== "granted") {
             alert("Sorry, we need camera roll permissions to make this work!");
             callback(false);
@@ -95,5 +95,3 @@ export const PhotoPicker = ({ maxHeight = 200, maxWidth = 200, onCancel, onError
     );
 
 };
-
-

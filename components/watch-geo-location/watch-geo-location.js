@@ -1,7 +1,6 @@
 // @flow
 // A higher order component for adding geo-location functionality
 import React, { Fragment, useEffect, useState } from "react";
-import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import * as actionCreators from "../../action-creators/user-location-action-creators";
 import { bindActionCreators } from "redux";
@@ -32,7 +31,7 @@ const _WatchGeoLocation = ({ children, actions }: PropsType): React$Element<any>
 
 
     const getLocationAsync = async () => {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        const { status } = await Location.requestForegroundPermissionsAsync()
         if (status === "granted") {
             const locationProviderStatus = await Location.getProviderStatusAsync();
             if (locationProviderStatus.locationServicesEnabled === false) {

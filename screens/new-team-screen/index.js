@@ -15,7 +15,8 @@ import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import DateTimePicker from "react-native-modal-datetime-picker";
+//import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker"
 import * as actionCreators from "../../action-creators/team-action-creators";
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
@@ -59,7 +60,8 @@ const setTime = (date: Date, time: string): Date => {
     const day = date.getDate();
     // $FlowFixMe
     const year = date.getYear() + 1900;
-    return new Date(`${ month }/${ day }/${ year } ${ time }`);
+    return new Date(`${ year }-${ month }-${ day }T${ time }:00`);
+    //return new Date(year, month, day, );
 };
 
 function reducer(state: Object, action: Object): Object {
@@ -146,14 +148,14 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         });
     };
 
-    const handleDatePicked = (pickedDate: Date) => {
+    const handleDatePicked = (event: Event, pickedDate: Date) => {
         const arr = pickedDate.toString().split(" ");
         const date = `${ arr[0] } ${ arr[1] } ${ arr[2] } ${ arr[3] }`;
         setTeamValue("date")(date);
         setState({ datePickerVisible: false })();
     };
 
-    const handleStartDatePicked = (date: Date) => {
+    const handleStartDatePicked = (event: Event, date: Date) => {
         let start = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             start = fixAndroidTime(start);
@@ -162,7 +164,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         setState({ startDateTimePickerVisible: false })();
     };
 
-    const handleEndDatePicked = (date: Date) => {
+    const handleEndDatePicked = (event: Event, date: Date) => {
         let end = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             end = fixAndroidTime(end);
@@ -182,7 +184,9 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         return result;
     };
     const eventDate = getCurrentGreenUpDay();
-    const minDate = new Date(); //applyDateOffset(eventDate, -6);
+    const defaultStartTime = setTime( eventDate, (state.team.start || "09:00"));
+    const defaultEndTime = setTime( eventDate, (state.team.start || "17:00"));
+    const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
 
@@ -200,7 +204,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
 
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons }/>
-            
+
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={ 100 }
                     style={ { flex: 1 } }
@@ -298,12 +302,13 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                     </TouchableOpacity>
                                     <DateTimePicker
                                         mode="date"
-                                        date={ eventDate }
+                                        value={ eventDate }
                                         minimumDate={ minDate }
                                         maximumDate={ maxDate }
-                                        isVisible={ state.datePickerVisible }
-                                        onConfirm={ handleDatePicked }
-                                        onCancel={ setState({ datePickerVisible: false }) }
+                                        display={ state.datePickerVisible }
+                                        // onConfirm={ handleDatePicked }
+                                        onChange={ handleDatePicked }
+                                        // onCancel={ setState({ datePickerVisible: false }) }
                                         titleIOS={ "Which day is your team cleaning?" }
                                         titleStyle={ styles.datePickerTitleStyle }
                                     />
@@ -319,11 +324,13 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                         </Text>
                                     </TouchableOpacity>
                                     <DateTimePicker
-                                        date={ setTime(eventDate, (state.team.start || "9:00 AM")) }
                                         mode="time"
-                                        isVisible={ state.startDateTimePickerVisible }
-                                        onConfirm={ handleStartDatePicked }
-                                        onCancel={ setState({ startDateTimePickerVisible: false }) }
+                                        value={ defaultStartTime }
+                                        display={ state.startDateTimePickerVisible }
+                                        // onConfirm={ handleStartDatePicked }
+                                        onChange={ handleStartDatePicked }
+                                        // onCancel={ setState({ startDateTimePickerVisible: false }) }
+                                        onError={ setState({ startDateTimePickerVisible: false }) }
                                         is24Hour={ false }
                                         titleIOS={ "Pick a starting time." }
                                         titleStyle={ styles.datePickerTitleStyle }
@@ -340,11 +347,13 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                         </Text>
                                     </TouchableOpacity>
                                     <DateTimePicker
-                                        date={ setTime(eventDate, (state.team.end || "5:00 PM")) }
                                         mode="time"
-                                        isVisible={ state.endDateTimePickerVisible }
-                                        onConfirm={ handleEndDatePicked }
-                                        onCancel={ setState({ endDateTimePickerVisible: false }) }
+                                        value={ defaultEndTime }
+                                        display={ state.endDateTimePickerVisible }
+                                        // onConfirm={ handleEndDatePicked }
+                                        onChange={ handleEndDatePicked }
+                                        // onCancel={ setState({ endDateTimePickerVisible: false }) }
+                                        onError={ setState({ endDateTimePickerVisible: false }) }
                                         is24Hour={ false }
                                         titleIOS={ "Pick an ending time." }
                                         titleStyle={ styles.datePickerTitleStyle }
@@ -372,7 +381,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                         <View style={ { flex: 1 } }/>
                     </View>
                 </KeyboardAvoidingView>
-            
+
         </SafeAreaView>
     );
 };

@@ -9,7 +9,6 @@ import Message from "../models/message";
 import Team from "../models/team";
 import * as Contacts from "expo-contacts";
 import Contact from "../models/contact";
-import * as Permissions from "expo-permissions";
 
 export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
     function thunk(dispatch: Dispatch<ActionType>) {
@@ -17,7 +16,7 @@ export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
         async function getContactsAsync(pageSize: number, pageOffset: number = 0): Promise<any> {
             const data = await Contacts.getContactsAsync({
                 fields: [
-                    Contacts.PHONE_NUMBERS, Contacts.EMAILS, Contacts.PHONETIC_FIRST_NAME, Contacts.PHONETIC_LAST_NAME
+                    Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails, Contacts.Fields.PhoneticFirstName, Contacts.Fields.PhoneticLastName
                 ],
                 pageSize,
                 pageOffset
@@ -30,7 +29,7 @@ export const retrieveContacts = (_pageSize: number = 40): ThunkType => {
         }
 
         // Ask for permission to query contacts.
-        Permissions.askAsync(Permissions.CONTACTS)
+        Contacts.requestPermissionsAsync()
             .then((permission) => {
                 if (permission.status !== "granted") {
                     // Permission was denied...

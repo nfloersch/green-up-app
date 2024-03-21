@@ -15,6 +15,7 @@ import { View, Button, TextInput, Text, Divider } from "@shoutem/ui";
 import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import DateTimePicker from "react-native-modal-datetime-picker";
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { defaultStyles } from "../../styles/default-styles";
 import Team from "../../models/team";

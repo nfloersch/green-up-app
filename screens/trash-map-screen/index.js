@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment } from "react";
-import MapView from "react-native-maps";
+import MapView, { Marker } from 'react-native-maps';
 import * as R from "ramda";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -35,9 +35,9 @@ if (PixelRatio.get() <= 2) {
 }
 
 const buttonStyle = StyleSheet.create({
-        fontSize: buttonText,
-        marginLeft: 5 // this is the value already in the code
-    });
+    fontSize: buttonText,
+    marginLeft: 5 // this is the value already in the code
+});
 
 
 type PropsType = {
@@ -102,7 +102,7 @@ const TrashMap = (
     const collectedTrashMarkers = (collectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => d.wasCollected === true)
         .map((d: TrashDrop): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ d.id }
                 // image={collectedTrashIcon}
                 pinColor={ "turquoise" }
@@ -114,7 +114,7 @@ const TrashMap = (
     const myTrashMarkers = (drops || [])
         .filter((d: TrashDrop): boolean => Boolean(myTrashToggle && !d.wasCollected && d.createdBy && d.createdBy.uid === currentUser.uid))
         .map((d: TrashDrop): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ d.id }
                 // image={myUncollectedTrashIcon}
                 pinColor={ "yellow" }
@@ -125,14 +125,14 @@ const TrashMap = (
                     title="I Collected..."
                     description={ `${ d.bagCount || "0" } bag(s)${ (d.tags || []).length > 0 ? " & other trash" : "" }` }
                     onPress={() => navigation.navigate("TrashTaggerModal", {existingDrop: d})}
-                    />
-            </MapView.Marker>
+                />
+            </Marker>
         ));
 
     const uncollectedTrashMakers = (uncollectedTrashToggle ? drops : [])
         .filter((d: TrashDrop): boolean => Boolean(!d.wasCollected && d.createdBy && d.createdBy.uid !== currentUser.uid))
         .map((d: TrashDrop): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ d.id }
                 // image={uncollectedTrashIcon}
                 pinColor={ "red" }
@@ -144,7 +144,7 @@ const TrashMap = (
 
     const collectionSiteMarkers = offsetLocations((supplyPickupToggle ? distributionSites : []), trashDropOffToggle ? collectionSites : [])
         .map((d: Object, i: number): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ `dropOffLocation${ i }.map((d, i) => (` }
                 // image={trashDropOffLocationIcon}
                 pinColor={ "blue" }
@@ -154,12 +154,12 @@ const TrashMap = (
                     title="Drop Off Location"
                     description={ `${ d.name }, ${ Address.toString(d.address) }` }
                 />
-            </MapView.Marker>
+            </Marker>
         ));
 
     const distributionSiteMarkers = (supplyPickupToggle ? distributionSites : [])
         .map((d: Object, i: number): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ `supplyPickup${ i }` }
                 // image={supplyPickupLocationIcon}
                 pinColor={ "green" }
@@ -169,12 +169,12 @@ const TrashMap = (
                     title="Supply Pickup Location"
                     description={ `${ d.name }, ${ Address.toString(d.address) }` }
                 />
-            </MapView.Marker>
+            </Marker>
         ));
 
     const cleanAreaMarkers = (cleanAreasToggle ? cleanAreas : [])
         .map((d: Object, i: number): React$Element<any> => (
-            <MapView.Marker
+            <Marker
                 key={ `cleanArea${ i }` }
                 pinColor={ "orange" }
                 coordinate={ d.coordinates }
@@ -183,7 +183,7 @@ const TrashMap = (
                     title={ `${ d.title }` }
                     description={ `${ d.description }` }
                 />
-            </MapView.Marker>
+            </Marker>
         ));
 
     const allMarkers = distributionSiteMarkers
@@ -216,7 +216,7 @@ const TrashMap = (
                         R.T,
                         () => (
                             <Fragment>
-                            
+
                                 <MapView
                                     initialRegion={ initialMapLocation }
                                     showsUserLocation={ true }
@@ -292,7 +292,7 @@ const TrashMap = (
                                             elevation: 5,
                                         }
                                     }
-                                    >
+                                >
                                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                                         <Text style={ {fontSize: 11, fontWeight: "bold"} }>Notice: Recording a trash drop shares your location with Greenup</Text>
                                     </View>
@@ -328,7 +328,7 @@ const TrashMap = (
                                             size={28}
                                             color={constants.colorBackgroundDark}
                                             style={{textAlign: 'left'}}
-                                            />
+                                        />
                                         <Text style={ buttonStyle }>Record Trash Bags</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -385,9 +385,9 @@ const mapStateToProps = (state: Object): Object => {
     const cleanAreas = getTeamLocations(state.teams.teams || {});
     const drops = Object.values(state.trashTracker.trashDrops || {}).filter(
         (drop: any): boolean => Boolean(
-            drop.location && 
-            drop.location.coordinates && 
-            drop.location.coordinates.longitude && 
+            drop.location &&
+            drop.location.coordinates &&
+            drop.location.coordinates.longitude &&
             drop.location.coordinates.latitude
         )
     );

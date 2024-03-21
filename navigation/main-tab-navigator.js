@@ -1,89 +1,75 @@
+/* eslint-disable react/prop-types */
 // @flow
 import React from "react";
 import { Platform } from "react-native";
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import TabBarIcon from "../components/tab-bar-icon";
-import MenuStack from "./menu-stack";
-import MessagesStack from "./messages-stack";
-import TrashTrackerStack from "./trash-tracker-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import HomeStack from "./home-stack";
+import MessagesStack from "./messages-stack";
 import LeaderboardStack from "./leaderboard-stack";
+import TrashTrackerStack from "./trash-tracker-stack";
+import MenuStack from "./menu-stack";
 
-type FocusedType = { focused: boolean };
+import TabBarIcon from "../components/tab-bar-icon";
 
-/** Home **/
-HomeStack.navigationOptions = {
-    tabBarLabel: "Home",
-    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
-        <TabBarIcon
-            focused={ focused }
-            name={
-                Platform.OS === "ios"
-                    ? `ios-home${ focused ? "" : "" }`
-                    : "md-home"
-            }
-        />
-    )
-};
+const BottomTabs = createBottomTabNavigator();
 
-
-/** * Messages ***/
-MessagesStack.navigationOptions = {
-    tabBarLabel: "Messages",
-    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
-        <TabBarIcon
-            focused={ focused }
-            name={
-                Platform.OS === "ios"
-                    ? `ios-chatbubbles${ focused ? "" : "" }`
-                    : "md-chatbubbles"
-            }
-        />
-    )
-};
-
-
-LeaderboardStack.navigationOptions = {
-    tabBarLabel: "Leaderboard",
-    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
-        <TabBarIcon
-            focused={ focused }
-            name={
-                Platform.OS === "ios"
-                    ? `ios-list-circle${ focused ? "" : "" }`
-                    : "md-list-circle"
-            }
-        />
-    )
-};
-
-
-TrashTrackerStack.navigationOptions = {
-    tabBarLabel: "Trash",
-    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
-        <TabBarIcon
-            focused={ focused }
-            name={
-                Platform.OS === "ios" ? `ios-location${ focused ? "" : "" }` : "md-location"
-            }
-        />
-    )
-};
-
-MenuStack.navigationOptions = {
-    tabBarLabel: "Menu",
-    tabBarIcon: ({ focused }: FocusedType): React$Element<any> => (
-        <TabBarIcon
-            focused={ focused }
-            name={ Platform.OS === "ios" ? "ios-menu" : "md-menu" }
-        />
-    )
-};
-
-export default createBottomTabNavigator({
-    HomeStack,
-    MessagesStack,
-    TrashTrackerStack,
-    LeaderboardStack,
-    MenuStack
-});
+export default function MainTabNavigator() {
+    return (
+        <BottomTabs.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+            <BottomTabs.Screen
+                name="_Home"
+                component={HomeStack}
+                options={{
+                    tabBarLabel: "Home",
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-home" : "md-home"} />
+                    )
+                }}
+            />
+            <BottomTabs.Screen
+                name="_Messages"
+                component={MessagesStack}
+                options={{
+                    tabBarLabel: "Messages",
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon
+                            focused={focused}
+                            name={Platform.OS === "ios" ? "ios-chatbubbles" : "md-chatbubbles"}
+                        />
+                    )
+                }}
+            />
+            <BottomTabs.Screen
+                name="Leaderboard"
+                component={LeaderboardStack}
+                options={{
+                    tabBarLabel: "Leaderboard",
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-list" : "md-list"} />
+                    )
+                }}
+            />
+            <BottomTabs.Screen
+                name="Trash"
+                component={TrashTrackerStack}
+                options={{
+                    tabBarLabel: "Trash",
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-pin" : "md-pin"} />
+                    )
+                }}
+            />
+            <BottomTabs.Screen
+                name="_Menu"
+                component={MenuStack}
+                options={{
+                    tabBarLabel: "Menu",
+                    tabBarIcon: ({ focused }) => (
+                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-menu" : "md-menu"} />
+                    )
+                }}
+            />
+        </BottomTabs.Navigator>
+    );
+}

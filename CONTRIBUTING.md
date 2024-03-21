@@ -5,7 +5,7 @@
 
 1) **Phone a friend**: The first step is always to chat up folks on [#green-up][3] on Slack. Visit our channel [here][4] or if it's your first time, get an invitation [here][5].
 
-2) **Get a Dev Environment Running**: We've got a super simple setup working through GitPod - an online, container based development environment that is literally a 1-step setup.
+2) **Get a Dev Environment Running**: Our "Full Local Environment" setup is up to date as of 03 April 2022.
 
 3) **Check the Project Board**: We have our open software tickets organized under [projects](https://github.com/codeforbtv/green-up-app/projects). If you're new to the project, look for those labeled as ['good first issue'](https://github.com/codeforbtv/green-up-app/labels/good%20first%20issue).
 
@@ -15,41 +15,27 @@
 
 ## Environment Setup
 
-### Quickstart: using GitPod
-
-1) **Launch a Gitpod Workspace**: The easiest way to start contributing is by skipping the setup process and using GitPod in your browser by clicking here:
-(https://gitpod.io/#https://github.com/codeforbtv/green-up-app). It always takes a few minutes, so do this step first.
-
-2) **Get a Config File**: You won't be able to run the code without a firebase-config.js file. The fastest approach is to use our shared dev environment (..which we share, so please treat it kindly). There is one pinned to the [#green-up Slack channel][3] for our dev environment. If you have trouble finding it, just ask anyone in the channel. Save your firebase-config.js in the root of the project.
-
-3) **Download the Expo App**: The Green Up app is configured to be run on your physical phone inside the Expo mobile app (aka the "Expo Client"). Expo is a shell that runs the unpublished mobile app.
-    * [Download for iPhones][1]
-    * [Download for Android][2]
-
-4) **Restart Expo**: When the GitPod workspace starts a config file in the project instructs it to install the Green Up app, and then it opens a terminal in the editor, runs the `expo start` command to launch the expo cli. Use `ctrl+c` to kill the cli tool, and type `expo start --host tunnel` to restart it with the new config information.
-
-5) **Profit!** When the giant QR code appears in the editor...
-    * **iPhones**: point your camera at the QR code and the app will launch in expo
-    * **Android**: open the Expo mobile app and click "Scan QR Code"
-
-    This will open the app on your phone. Now create an account and begin exploring!
-
 ### A Full Local Environment
 
 1) **Get a Config File**: You won't be able to run the code without a firebase-config.js file. The fastest approach is to use our shared dev environment (..which we share, so please treat it kindly). There is one pinned to the [#green-up Slack channel][3] for our dev environment. If you have trouble finding it, just ask anyone in the channel. Save your firebase-config.js in the root of the project.
 
-1) **(Optional) Use Your Own Firebase Account**: Setup a Firebase app and use those app settings to configure firebase-config.js,    
-Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack][4] and we'll gladly share ours. Not on our Slack board?  [Get an invitation.][5]
+1) **(Optional) Use Your Own Firebase Account**: Setup a Firebase app and use those app settings to configure firebase-config.js,
+   Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack][4] and we'll gladly share ours. Not on our Slack board?  [Get an invitation.][5]
 
 2) **Ensure you have `nvm` installed**: Do this by running `nvm ls`. If you see a list of `node` versions printed to your console, then you're all set. Otherwise, follow the [setup instructions](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 3) **Install Project Dependencies**:
+   `.nvmrc` file should drive the correct node version to use without specifying it explicitly.
+
 ```bash
-nvm install v10
-nvm use v10
-npm install
-npm install -g expo-cli@3.13.3
+nvm install
+nvm use
+# optional nvm alias green-up v18.19.1
+yarn install
+# flow
 npm install -g flow
+# or
+yarn global add flow
 ```
 
 4) **Download the Expo App**: The Green Up app is configured to be run on your physical phone inside the Expo mobile app (aka the "Expo Client"). Expo is a shell that runs the unpublished mobile app.
@@ -59,14 +45,18 @@ npm install -g flow
 5) **Start the Application**: Run the project in the root folder.
 
 ```bash
-expo start
+npx expo start
+# or
+yarn start
+# or
+npm start
 ```
 
 6) **Profit!** When the giant QR code appears in the editor...
     * **iPhones**: point your camera at the QR code and the app will launch in expo
     * **Android**: open the Expo mobile app and click "Scan QR Code"
 
-    This will open the app on your phone. Now create an account and begin exploring!
+   This will open the app on your phone. Now create an account and begin exploring!
 
 ## How to Contribute Your Work
 

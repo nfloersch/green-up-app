@@ -1,24 +1,22 @@
-// @flow
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from "../screens/login-screen";
 import CreateNewAccount from "../screens/create-new-account-screen";
 import ForgotPassword from "../screens/forgot-password-screen";
-// import { createStackNavigator, createAppContainer } from "react-navigation";
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
 
-const AppNavigator = createStackNavigator({
-    Login: {
-        screen: Login
-    },
-    CreateNewAccount: {
-        screen: CreateNewAccount
-    },
-    ForgotPassword: {
-        screen: ForgotPassword
-    }
-});
+const Stack = createStackNavigator();
 
-// $FlowFixMe
-export default createAppContainer(AppNavigator);
-
+export default function AppNavigator() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Login" component={Login} options={Login.navigationOptions} />
+            <Stack.Screen
+                name="CreateNewAccount"
+                component={CreateNewAccount}
+                options={CreateNewAccount.navigationOptions}
+            />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={ForgotPassword.navigationOptions} />
+        </Stack.Navigator>
+    );
+}
