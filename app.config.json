@@ -10,7 +10,7 @@
     ],
     "owner": "c4btv",
     "githubUrl": "https://github.com/codeforbtv/green-up-app",
-    "version": "6.0.01",
+    "version": "2024.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
     "splash": {
@@ -30,10 +30,11 @@
       }
     },
     "ios": {
-      "buildNumber": "32",
+      "buildNumber": "2024.0.1",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
+        "googleMapsApiKey": "<env>"
       },
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We use your location to mark where you leave your trash bags"
@@ -41,7 +42,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 33,
+      "versionCode": 202401,
       "permissions": [
         "READ_CONTACTS",
         "ACCESS_FINE_LOCATION",

@@ -11,6 +11,13 @@ export default ({ config }) => {
                 projectId: process.env.EAS_PROJECT_ID
             }
         },
+        ios: {
+            ...config.ios,
+            config: {
+                ...config.ios.config,
+                googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
+            }
+        },
         android: {
             ...config.android,
             config: {
