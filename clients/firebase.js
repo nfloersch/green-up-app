@@ -6,12 +6,12 @@ import { initializeFirestore, getFirestore } from "@firebase/firestore";
 
 const createFirebaseApp = (config = {}) => {
     if (getApps().length === 0) {
-        console.log('initializing firebase app with config:', firebaseConfig)
+        console.log('initializing firebase app with config:', config)
         const app = initializeApp(config)
         initializeAuth(app, {
             persistence: getReactNativePersistence(ReactNativeAsyncStorage)
         })
-        initializeFirestore(app, {}, firebaseConfig.databaseID)
+        initializeFirestore(app, {}, config.databaseID)
         return app
     }
 
