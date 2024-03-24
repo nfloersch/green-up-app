@@ -12,20 +12,24 @@
       "distribution": "internal",
       "developmentClient": false, // May be worthwhile in the future, but for now Expo Go is fine
       "env": {
-        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_DEV"
+        "ENVIRONMENT": "dev"
       }
     },
     "qa": {
       "extends": "base",
       "distribution": "internal",
       "env": {
-        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_QA"
+        "ENVIRONMENT": "qa"
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "extends": "base",
+      "distribution": "store",
       "env": {
-        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_PROD"
+        "ENVIRONMENT": "production"
       }
     }
   },
