@@ -7,17 +7,26 @@
       "node": "18.19.1",
       "env": {}
     },
-    "development": {
+    "dev": {
       "extends": "base",
-      "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "developmentClient": false, // May be worthwhile in the future, but for now Expo Go is fine
+      "env": {
+        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_DEV"
+      }
     },
-    "preview": {
+    "qa": {
       "extends": "base",
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_QA"
+      }
     },
     "production": {
-      "extends": "base"
+      "extends": "base",
+      "env": {
+        "FIREBASE_CONFIG_FILE": "FIREBASE_CONFIG_PROD"
+      }
     }
   },
   "submit": {

@@ -1,13 +1,34 @@
-.env
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
 assets/fonts/*
 environment.js
-node_modules/**/*
-*.expo
-.expo/**/*
-firebase-config.js
-firebase-config.qa.js
-firebase-config.dev.js
-firebase-config.prod.js
+
+# Firebase
+firebase-config*.js
+firebase-config*.json
+
+!firebase-config.example.js
+!firebase-config.example.json
+
+# Env
+.env*
+!.env.example
 
 ### Linux ###
 *~

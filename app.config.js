@@ -1,4 +1,5 @@
 require('dotenv').config();
+const firebaseConfig = require(process.env.FIREBASE_CONFIG_FILE)
 
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
 export default ({ config }) => {
@@ -6,6 +7,7 @@ export default ({ config }) => {
         ...config,
         extra: {
             ...config.extra,
+            firebase: firebaseConfig,
             eas: {
                 ...config.extra.eas,
                 projectId: process.env.EAS_PROJECT_ID
@@ -29,6 +31,8 @@ export default ({ config }) => {
             }
         }
     }
-    //console.log('new dynamic config:', JSON.stringify(newConfig, null, 2))
+    // To debug/show config, use either:
+    //   npx expo config
+    //   npx expo config --type public
     return newConfig
 }
