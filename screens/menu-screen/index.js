@@ -9,9 +9,10 @@ import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
 import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
-import { publishDate, version } from "../../package.json";
-// import { firebaseConfig } from "../../firebase-config.js";
+import { publishDate } from "../../package.json";
+import Constants from "expo-constants";
 import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
+import * as Application from "expo-application";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -35,7 +36,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
         ]);
     };    
     
-    const envString = getReleaseEnvironment();
+    const envString = getReleaseEnvironment(Constants.expoConfig.extra.firebase.projectId);
 
     return (<SafeAreaView style={ styles.container }>
         <ScrollView style={ styles.scroll }>
@@ -149,10 +150,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 </Button>
             </View>
             <View style={ { margin: 20 } }>
-                <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ version }` }</Text>
+                <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ Application.nativeApplicationVersion }` }</Text>
                 { (envString !== 'Prod') && (
                     <Fragment>
-                        <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `${ publishDate }` }</Text>
+                        <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Build: ${ Application.nativeBuildVersion }` }</Text>
+                        <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Published: ${ publishDate }` }</Text>
+                        {/* Replace with eas update channels ^ */}
                         <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `Environment: ${ envString }` }</Text>
                     </Fragment>
                 )}
