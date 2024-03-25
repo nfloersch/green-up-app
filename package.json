@@ -12,6 +12,7 @@
     "lint": "eslint ./",
     "postinstall": "patch-package",
     "doctor": "npx expo-doctor",
+    "eas:config": "dotenv -- eas config",
     "build:dev": "dotenv -- eas build --profile dev",
     "build:dev:android": "dotenv -- eas build --profile dev --platform android",
     "build:dev:ios": "dotenv -- eas build --profile dev --platform ios"
@@ -71,6 +72,7 @@
     "expo-intent-launcher": "~10.7.0",
     "expo-location": "~16.1.0",
     "expo-splash-screen": "~0.20.5",
+    "expo-updates": "~0.18.19",
     "md5-hash": "^1.0.1",
     "moment": "^2.24.0",
     "node-gyp": "^5.0.3",

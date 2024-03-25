@@ -12,6 +12,10 @@ module.exports = ({ config }) => {
 
     return {
         ...config,
+        updates: {
+            ...config.updates,
+            url: process.env.EXPO_UPDATE_URL
+        },
         extra: {
             ...config.extra,
             firebase: {

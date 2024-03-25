@@ -9,6 +9,7 @@
     "dev": {
       "extends": "base",
       "distribution": "internal",
+      "channel": "dev",
       "developmentClient": false, // May be worthwhile in the future, but for now Expo Go is fine
       "env": {
         "ENVIRONMENT": "dev"
@@ -17,6 +18,7 @@
     "qa": {
       "extends": "base",
       "distribution": "internal",
+      "channel": "qa",
       "env": {
         "ENVIRONMENT": "qa"
       },
@@ -27,6 +29,7 @@
     "production": {
       "extends": "base",
       "distribution": "store",
+      "channel": "production",
       "env": {
         "ENVIRONMENT": "production"
       }
