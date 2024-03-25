@@ -1,27 +1,22 @@
-// To assist with local dev setup, we load .env configs
-require('dotenv').config();
-const fs = require('fs');
-
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
-export default ({ config }) => {
-    let firebaseTarget = ''
+module.exports = ({ config }) => {
+    let firebaseTarget = {}
     // ENVIRONMENT is set from eas.json to set the build environment context
     if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'local') {
-        firebaseTarget = process.env.FIREBASE_CONFIG_DEV || ''
+        firebaseTarget = require('./firebase-config.dev.js')
     } else if (process.env.ENVIRONMENT === 'qa') {
-        firebaseTarget = process.env.FIREBASE_CONFIG_QA || ''
+        firebaseTarget = require('./firebase-config.qa.js')
     } else if (process.env.ENVIRONMENT === 'prod') {
-        firebaseTarget = process.env.FIREBASE_CONFIG_PROD || ''
+        firebaseTarget = require('./firebase-config.prod.js')
     }
 
-    console.log(`path=(${firebaseTarget})`)
-    const firebaseConfig = firebaseTarget ? JSON.parse(fs.readFileSync(firebaseTarget)) : {}
-    console.log(`value=(${JSON.stringify(firebaseConfig, null, 2)})`)
-    const newConfig = {
+    return {
         ...config,
         extra: {
             ...config.extra,
-            firebase: firebaseConfig,
+            firebase: {
+                ...firebaseTarget
+            },
             eas: {
                 ...config.extra.eas,
                 projectId: process.env.EAS_PROJECT_ID
@@ -45,8 +40,4 @@ export default ({ config }) => {
             }
         }
     }
-    // To debug/show config, use either:
-    //   npx expo config
-    //   npx expo config --type public
-    return newConfig
 }

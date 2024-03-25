@@ -5,6 +5,11 @@
 !.gitignore
 !.easignore
 
+# Include configs
+!firebase-config.dev.js
+!firebase-config.qa.js
+!firebase-config.prod.js
+
 # Include all app code to be deployed
 !/action-creators
 !/assets
@@ -35,3 +40,4 @@
 !package.json
 !tsconfig.json
 !yarn.lock
+!.nvmrc

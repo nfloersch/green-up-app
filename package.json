@@ -10,7 +10,11 @@
     "test": "jest --watchAll --coverage",
     "test-ci": "jest",
     "lint": "eslint ./",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "doctor": "npx expo-doctor",
+    "build:dev": "dotenv -- eas build --profile dev",
+    "build:dev:android": "dotenv -- eas build --profile dev --platform android",
+    "build:dev:ios": "dotenv -- eas build --profile dev --platform ios"
   },
   "jest": {
     "preset": "jest-expo",
@@ -53,6 +57,7 @@
     "@types/react-navigation": "^3.0.8",
     "@types/redux-logger": "^3.0.13",
     "deprecated-react-native-prop-types": "^5.0.0",
+    "dotenv-cli": "^7.4.1",
     "expo": "^49.0.0",
     "expo-application": "~5.3.0",
     "expo-asset": "~8.10.1",
