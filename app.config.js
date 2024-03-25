@@ -1,5 +1,6 @@
 // To assist with local dev setup, we load .env configs
 require('dotenv').config();
+const fs = require('fs');
 
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
 export default ({ config }) => {
@@ -13,8 +14,9 @@ export default ({ config }) => {
         firebaseTarget = process.env.FIREBASE_CONFIG_PROD || ''
     }
 
-    const firebaseConfig = require(firebaseTarget)
-
+    console.log(`path=(${firebaseTarget})`)
+    const firebaseConfig = firebaseTarget ? JSON.parse(fs.readFileSync(firebaseTarget)) : {}
+    console.log(`value=(${JSON.stringify(firebaseConfig, null, 2)})`)
     const newConfig = {
         ...config,
         extra: {

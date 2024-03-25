@@ -1,1 +1,37 @@
-.env*
+# Ignore everything by default
+/*
+
+# Include ignores
+!.gitignore
+!.easignore
+
+# Include all app code to be deployed
+!/action-creators
+!/assets
+!/clients
+!/components
+!/constants
+!/data-sources
+!/libs
+!/models
+!/navigation
+!/patches
+!/reducers
+!/screens
+!/store
+!/styles
+!.babelrc
+!.eslintrc
+!.firebaserc
+!app.config.js
+!app.config.json
+!babel.config.js
+!eas.json
+!firebase.json
+!firestore.indexes.json
+!firestore.rules
+!LICENSE.md
+!metro.config.js
+!package.json
+!tsconfig.json
+!yarn.lock
