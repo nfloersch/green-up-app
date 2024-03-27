@@ -19,9 +19,9 @@ const TeamEditorScreen = (): React$Element<any> => {
     const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
     return (
-        
-        
-        
+
+
+
         <TabView
             renderTabBar={ props =>
                 <TabBar
@@ -42,6 +42,7 @@ const TeamEditorScreen = (): React$Element<any> => {
             navigationState={ navState }
             renderScene={ SceneMap({
                 details: withNavigation(TeamDetailsEditor),
+                //details: TeamDetailsEditor,
                 members: TeamMembersEditor
             }) }
             onIndexChange={ setActiveTab }

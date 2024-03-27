@@ -126,6 +126,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
 
     const createTeam = () => {
         const team = Team.create({ ...state.team });
+        console.log("Team: ", team);
         if (!team.name) {
             Alert.alert("Please give your team a name.");
         } else {
@@ -160,7 +161,8 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         if (Platform.OS === "android") {
             start = fixAndroidTime(start);
         }
-        setTeamValue("start")(start);
+        console.log("new start: " + start);
+        setTeamValue("startdate")(start);
         setState({ startDateTimePickerVisible: false })();
     };
 
@@ -169,6 +171,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         if (Platform.OS === "android") {
             end = fixAndroidTime(end);
         }
+        console.log("new end: " + end);
         setTeamValue("end")(end);
         setState({ endDateTimePickerVisible: false })();
     };
@@ -320,7 +323,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                     <TouchableOpacity onPress={ setState({ startDateTimePickerVisible: true }) }>
                                         <Text
                                             style={ { ...styles.textInput, ...(startIsSelected ? styles.selected : {}) } }>
-                                            { state.team.start || "Pick a Starting Time" }
+                                            { state.team.startdate || "Pick a Starting Time" }
                                         </Text>
                                     </TouchableOpacity>
                                     <DateTimePicker

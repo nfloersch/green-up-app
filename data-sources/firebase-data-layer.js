@@ -939,7 +939,11 @@ export async function createTeam(team: Object = {}, user: ?Object = {}, dispatch
 
 export function saveTeam(team: TeamType): Promise<any> {
     const _team = deconstruct({ ...team, owner: { ...team.owner } });
-    return setDoc(doc(firestore, `teams/${ team.id }`, docRef.id), _team)
+    return setDoc(
+        //doc(firestore, `teams/${ team.id }`, docRef.id),
+        doc(firestore, `teams/${ team.id }`),
+        _team
+    )
     // return db.collection("teams").doc(team.id).set(_team);
 }
 
