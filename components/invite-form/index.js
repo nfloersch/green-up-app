@@ -105,6 +105,7 @@ const InviteForm = ({ actions, currentUser, closeModal, selectedTeam, teamMember
                     />
                 </View>
             </ScrollView>
+            <ButtonBar buttonConfigs={ headerButtons }/>
         </SafeAreaView>
     );
 };

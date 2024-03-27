@@ -9,7 +9,19 @@ import {
 
 } from '@firebase/auth';
 import { firebaseAuth, firestore } from "../clients/firebase"
-import { collection, doc, onSnapshot, getDoc, updateDoc, setDoc, getDocs, query, addDoc, deleteDoc } from '@firebase/firestore'
+import {
+    collection,
+    doc,
+    onSnapshot,
+    getDoc,
+    updateDoc,
+    setDoc,
+    getDocs,
+    query,
+    addDoc,
+    deleteDoc,
+    where
+} from "@firebase/firestore";
 import * as dataLayerActions from "./data-layer-actions";
 import User from "../models/user";
 import TeamMember from "../models/team-member";
@@ -1037,12 +1049,17 @@ export async function addTeamMember(teamId: string, user: Object, status: string
     const myteamRef = doc(firestore, 'teams', teamId);
     let myteam = null;
     const getTeam = getDoc(myteamRef).then(
-        (doc) => {
-            if (doc.exists()) {
-                console.log("Document data:", doc.data());
-                myteam = doc.data();
+        (thedoc) => {
+            if (thedoc.exists()) {
+                myteam = thedoc.data();
+                console.log("Document data:", myteam);
+                const profileDoc = doc(firestore, `profiles/${user.uid}/teams`, teamId);
+                const teamInfoToAdd = {...myteam,isMember:true};
+                console.log("myteam",myteam);
+                console.log("teamInfoToAdd",teamInfoToAdd);
+                const addTeamToProfile = setDoc(profileDoc, teamInfoToAdd);
             } else {
-// doc.data() will be undefined in this case
+                // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
         }
@@ -1053,10 +1070,8 @@ export async function addTeamMember(teamId: string, user: Object, status: string
     const removeRequestDoc = doc(firestore, `teams/${teamId}/requests`, teamMember.uid);
     const removeRequest = deleteDoc(removeRequestDoc);
 
-    const profileDoc = doc(firestore, `profiles/${user.uid}/teams`, teamId);
-    const addTeamToProfile = setDoc(profileDoc, { ...myteam, isMember: true });
 
-    const results = await Promise.all([addTeamToProfile, removeRequest]).then((): Promise<any> => removeInvitation(teamId, email));
+    const results = await Promise.all([removeRequest]).then((): Promise<any> => removeInvitation(teamId, email));
 
     if (dispatch) { // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
         setupTeamMemberListener([teamId], dispatch);
@@ -1064,50 +1079,17 @@ export async function addTeamMember(teamId: string, user: Object, status: string
     }
 
     return results;
-    // const collRef = db.collection('teams');
-    // const myteamRef = collRef.doc(teamId);
-    // let myteam = null;
-    // const email = user.email.toLowerCase().trim();
-    // const teamMember = TeamMember.create(Object.assign({}, user, { memberStatus: status }));
-    // const addToTeam = await db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(teamMember).then(
-    //     (val) => {
-    //         console.log("value: " + val);
-    //     }
-    // ).catch((error) => {
-    //     console.log("Error adding team member:", error);
-    // });
-    // const getTeam = await myteamRef.get().then(
-    //     (doc) => {
-    //         if (doc.exists) {
-    //                 console.log("Document data:", doc.data());
-    //                 myteam = doc.data();
-
-    //         } else {
-    //             // doc.data() will be undefined in this case
-    //             console.log("No such document!");
-    //         }
-    //     }
-    // ).catch((error) => {
-    //     console.log("Error getting document:", error);
-    // });
-    // const removeRequest = db.collection(`teams/${ teamId }/requests`).doc(teamMember.uid).delete();
-    // const addTeamToProfile = db.collection(`profiles/${ user.uid }/teams`).doc(teamId).set({ ...myteam, isMember: true });
-    // const results = await Promise.all([addTeamToProfile, removeRequest]).then((): Promise<any> => removeInvitation(teamId, email));
-    // if (dispatch) { // If dispatch is defined we are adding current user and need to setup listeners. TODO: Fix this hack.
-    //     setupTeamMemberListener([teamId], dispatch);
-    //     setupTeamMessageListener([teamId], dispatch);
-    // }
-    // return results;
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMemberType): Promise<any> {
-    return firestore.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
+    return collection(firestore,`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
 }
 
-export function removeTeamMember(teamId: string, teamMember: UserType): Promise<any> {
+export async function removeTeamMember(teamId: string, teamMember: UserType): Promise<any> {
     console.log("Removed Team Member " + teamMember.uid + " from team " + teamId);
-    const deleteFromTeam = firestore.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
-    const deleteFromProfile = firestore.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
+    const deleteFromTeam = deleteDoc(doc(firestore, `teams/${ teamId }/members`, teamMember.uid));
+    const deleteFromProfile= deleteDoc(doc(firestore, `profiles/${ teamMember.uid || "" }/teams`, teamId));
+    const deleteFromInvites= deleteDoc(doc(firestore, `invitations`, teamMember.email));
     return Promise.all([deleteFromTeam, deleteFromProfile]);
     return new Promise(function(r) {
         setTimeout(() => { r('blah'); }, 2000);

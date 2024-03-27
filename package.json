@@ -94,7 +94,7 @@
     "react-native-photo-view": "shoutem/react-native-photo-view#0ffa1481f6b6cb8663cb291b7db1d6644440584d",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-reanimated": "~3.3.0",
-    "react-native-safe-area-context": "4.9.0",
+    "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-status-bar-height": "^2.4.0",
     "react-native-tab-view": "^3.5.2",

@@ -146,23 +146,49 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
     };
 
     const handleStartDatePicked = (event: Event, date: Date) => {
-        let start = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
-        if (Platform.OS === "android") {
-            start = fixAndroidTime(start);
+        if (event.type == "set") {
+            console.log("Time Set");
+            let newstart = date.toLocaleTimeString("en-GB"); // date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+            let start = null;
+            console.log("Platform", Platform.OS);
+            if (Platform.OS === "android") {
+                console.log("new start", newstart);
+                start = newstart.split(":")[0] + ":" + newstart.split(":")[1]
+                console.log("fixed new start", start);
+            }
+            else {
+                start = newstart;
+            }
+            console.log("cleaned new start: " + start);
+            setTeamValue("startdate")(start);
+            setState({ startDateTimePickerVisible: false })();
         }
-        console.log("new start: " + start);
-        setTeamValue("startdate")(start);
-        setState({ startDateTimePickerVisible: false })();
+        if (event.type == "dismissed") {
+            console.log("Time Dismissed");
+        }
     };
 
     const handleEndDatePicked = (event: Event, date: Date) => {
-        let end = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
-        if (Platform.OS === "android") {
-            end = fixAndroidTime(end);
+        if (event.type == "set") {
+            console.log("Time Set");
+            let newend = date.toLocaleTimeString("en-GB"); // date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
+            let end = null;
+            console.log("Platform", Platform.OS);
+            if (Platform.OS === "android") {
+                console.log("new end", newend);
+                end = newend.split(":")[0] + ":" + newend.split(":")[1]
+                console.log("fixed new end", end);
+            }
+            else {
+                end = newend;
+            }
+            console.log("cleaned new end: " + end);
+            setTeamValue("end")(end);
+            setState({ endDateTimePickerVisible: false })();
         }
-        console.log("new end: " + end);
-        setTeamValue("end")(end);
-        setState({ endDateTimePickerVisible: false })();
+        if (event.type == "dismissed") {
+            console.log("Time Dismissed");
+        }
     };
 
     // DateTimePicker
@@ -177,11 +203,11 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
     };
     const eventDate = getCurrentGreenUpDay();
     const defaultStartTime = setTime( eventDate, (state.team.startdate || "09:00"));
-    console.log("state.team.startdate:",state.team.startdate);
-    console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
+    // console.log("state.team.startdate:",state.team.startdate);
+    // console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
     const defaultEndTime = setTime( eventDate, (state.team.end || "17:00"));
-    console.log("state.team.end:",state.team.end);
-    console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
+    // console.log("state.team.end:",state.team.end);
+    // console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
     const minDate = new Date(); //applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
@@ -300,20 +326,16 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             { state.team.date || "Which day will your team be cleaning?" }
                                         </Text>
                                     </TouchableOpacity>
-                                    <DateTimePicker
+                                    { state.datePickerVisible && <DateTimePicker
                                         mode="date"
                                         value={ eventDate }
                                         minimumDate={ minDate }
                                         maximumDate={ maxDate }
-                                        display={ state.datePickerVisible }
-                                        // onConfirm={ handleDatePicked }
-                                        // onCancel={ setState({ datePickerVisible: false }) }
-                                        // onConfirm={ handleDatePicked }
                                         onChange={ handleDatePicked }
-                                        // onCancel={ setState({ datePickerVisible: false }) }
+                                        onCancel={ setState({ datePickerVisible: false }) }
                                         titleIOS={ "Which day is your team cleaning?" }
                                         titleStyle={ styles.datePickerTitleStyle }
-                                    />
+                                    /> }
                                 </View>
                             </View>
                             <View style={ styles.formControl }>
@@ -325,20 +347,15 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             { state.team.startdate || "Pick a Starting Time" }
                                         </Text>
                                     </TouchableOpacity>
-                                    <DateTimePicker
+                                    { state.startDateTimePickerVisible && <DateTimePicker
                                         mode="time"
                                         value={ defaultStartTime }
-                                        display={ state.startDateTimePickerVisible }
-                                        // onConfirm={ handleStartDatePicked }
-                                        // onCancel={ setState({ startDateTimePickerVisible: false }) }
-                                        // onConfirm={ handleStartDatePicked }
                                         onChange={ handleStartDatePicked }
-                                        // onCancel={ setState({ startDateTimePickerVisible: false }) }
                                         onError={ setState({ startDateTimePickerVisible: false }) }
-                                        is24Hour={ false }
+                                        is24Hour={ true }
                                         titleIOS={ "Pick a starting time." }
                                         titleStyle={ styles.datePickerTitleStyle }
-                                    />
+                                    /> }
                                 </View>
                             </View>
                             <View style={ styles.formControl }>
@@ -350,20 +367,16 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             { state.team.end || "Pick an Ending Time" }
                                         </Text>
                                     </TouchableOpacity>
-                                    <DateTimePicker
+                                    { state.endDateTimePickerVisible && <DateTimePicker
                                         mode="time"
                                         value={ defaultEndTime }
                                         display={ state.endDateTimePickerVisible }
-                                        // onConfirm={ handleEndDatePicked }
-                                        // onCancel={ setState({ endDateTimePickerVisible: false }) }
-                                        // onConfirm={ handleEndDatePicked }
                                         onChange={ handleEndDatePicked }
-                                        // onCancel={ setState({ endDateTimePickerVisible: false }) }
                                         onError={ setState({ endDateTimePickerVisible: false }) }
-                                        is24Hour={ false }
+                                        is24Hour={ true }
                                         titleIOS={ "Pick an ending time." }
                                         titleStyle={ styles.datePickerTitleStyle }
-                                    />
+                                    /> }
                                 </View>
                             </View>
 

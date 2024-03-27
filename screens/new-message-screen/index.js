@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, Fragment } from "react";
 import {
-    Picker,
     ScrollView,
     StyleSheet,
 } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
