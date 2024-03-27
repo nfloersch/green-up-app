@@ -17,7 +17,7 @@ const myStyles = {
         alignItems: "center",
         backgroundColor: "#FFE",
         marginBottom: 10,
-        marginTop: 5,
+        marginTop: 15,
         padding: 10,
         borderBottomWidth: 1,
         borderTopWidth: 1,
@@ -30,6 +30,9 @@ const myStyles = {
 
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
+
+
+
 
 type PropsType = {
     addTeamMember: () => void,
@@ -211,7 +214,7 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
 
                 <View style={ styles.profileHeader }>
                     <Image
-                        style={ { width: 50, height: 50 } }
+                        style={ { width: 50, height: 50, margin: 5 } }
                         source={ { uri: teamMember.photoURL || defaultGravatar } }
                     />
                     <Text style={ [styles.profileName, styles.heading] }>
@@ -223,6 +226,7 @@ const TeamMemberDetails = ({ addTeamMember, closeModal, team, revokeInvitation, 
                     <Text style={ styles.label }>{ teamMember.bio || "" }</Text>
                 </View>
             </ScrollView>
+            <ButtonBar buttonConfigs={ getButtons(team, teamMember, closeModal) }/>
         </SafeAreaView>
     );
 };

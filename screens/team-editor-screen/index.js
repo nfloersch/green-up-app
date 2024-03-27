@@ -1,14 +1,18 @@
 // @flow
 /* eslint-disable new-cap */
 import React, { useState } from "react";
-
-import { Dimensions, Text, View } from "react-native";
-import { withNavigation } from "react-navigation";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
+import { withNavigation } from '@react-navigation/compat';
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import TeamDetailsEditor from "../../components/team-details-editor";
 import TeamMembersEditor from "../../components/team-members-editor";
 import * as constants from "../../styles/constants";
+import {defaultStyles} from "../../styles/default-styles";
 
+const myStyles = {};
+const combinedStyles = Object.assign({}, defaultStyles, myStyles);
+const styles = StyleSheet.create(combinedStyles);
 const routes = [
     { key: "details", title: "Details" },
     { key: "members", title: "Members" }
@@ -21,7 +25,7 @@ const TeamEditorScreen = (): React$Element<any> => {
     return (
 
 
-
+        <SafeAreaView style={ styles.container }>
         <TabView
             renderTabBar={ props =>
                 <TabBar
@@ -48,6 +52,7 @@ const TeamEditorScreen = (): React$Element<any> => {
             onIndexChange={ setActiveTab }
             initialLayout={ { width: Dimensions.get("window").width || "100%" } }
         />
+        </SafeAreaView>
     );
 };
 

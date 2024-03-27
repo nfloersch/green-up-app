@@ -58,14 +58,14 @@ const isOwner = (teams, user: UserType, teamId: string): boolean => {
 const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsType): React$Element<any> => {
 
     const menuConfig = {
-        messages: {
-            order: 100,
-            navigation: "Messages",
-            label: "Messages",
-            description: "Chat with your team.",
-            backgroundImage: require("../../assets/images/horse-wide.jpg"),
-            backgroundImageLarge: require("../../assets/images/horse-large.jpg")
-        },
+        // messages: {
+        //     order: 100,
+        //     navigation: "Messages",
+        //     label: "Messages",
+        //     description: "Chat with your team.",
+        //     backgroundImage: require("../../assets/images/horse-wide.jpg"),
+        //     backgroundImageLarge: require("../../assets/images/horse-large.jpg")
+        // },
         findATeam: {
             order: myTeams.length === 0 ? 1 : 200,
             navigation: "FindTeam",
@@ -169,9 +169,9 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
         // so we need to remap it into cells and pass to GridRow
         if (rowData.length === 1) {
             return (
-                <TouchableOpacity 
-                    key={ index } 
-                    onPress={ rowData[0].onPress } 
+                <TouchableOpacity
+                    key={ index }
+                    onPress={ rowData[0].onPress }
                     style={{
                         borderLeftWidth: 5,
                         borderRightWidth: 5,
@@ -189,7 +189,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                     >
                         <Tile style={
                                 {
-                                    borderWidth: 0, 
+                                    borderWidth: 0,
                                     borderColor: "yellow",
                                     paddingTop: 0,
                                     paddingBottom: 0,
@@ -198,35 +198,35 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
                                 }
                             }
                         >
-                            <Text style={ 
+                            <Text style={
                                     {
                                         color: "white",
                                         fontSize: 30,
                                         fontFamily: "Rubik-Bold",
-                                        borderWidth: 0, 
+                                        borderWidth: 0,
                                         borderColor: "blue",
                                         paddingTop: 0,
                                         paddingBottom: 0,
                                         marginTop: 0,
                                         marginBottom: 0
-                                    } 
-                                } 
+                                    }
+                                }
                             >
                                 Team { rowData[0].label.toUpperCase() }
                             </Text>
-                            <Text style={ 
+                            <Text style={
                                     {
                                         color: "white",
                                         fontSize: 20,
                                         fontFamily: "Rubik-Regular",
                                         fontWeight: "bold",
-                                        borderWidth: 0, 
+                                        borderWidth: 0,
                                         borderColor: "green",
                                         paddingTop: 0,
                                         paddingBottom: 0,
                                         marginTop: 0,
                                         marginBottom: 0
-                                    } 
+                                    }
                                 }
                             >
                                 { rowData[0].description }
@@ -234,7 +234,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
 
                         </Tile>
                     </ImageBackground>
-                    
+
                 </TouchableOpacity>
             );
         }

@@ -48,7 +48,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
     <SafeAreaView style={ styles.container }>
         <ButtonBar buttonConfigs={ [{ text: "CLOSE", onClick: closeModal }] }/>
         <ScrollView style={ styles.scroll }>
-            
+
             <View style={{backgroundColor: "white", height: 30, borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop: 20}}>
             <Title
                 styleName="sm-gutter-horizontal"
@@ -56,7 +56,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 { town.townName }
             </Title>
             </View>
-            { 
+            {
                 // Boolean(town.description) &&
                 // (
                 //     <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
@@ -82,7 +82,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 )
             }
             <View style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
-                { 
+                {
                     town.dropOffInstructions &&
                     (
                         <View style={ { marginTop: 10 } }>
@@ -93,25 +93,25 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 }
                 <View style={ { flex: 1, flexDirection: "row" } }>
                     <View style={ { position: "relative", height: 60, width: 60 } }>
-                        { 
+                        {
                             !(town.allowsRoadside) &&
-                            <FontAwesome style={ { color: "#AAA", position: "absolute" } } size={ 65 } name={ "ban" }/> 
+                            <FontAwesome style={ { color: "#AAA", position: "absolute" } } size={ 65 } name={ "ban" }/>
                         }
                         <FontAwesome style={ { color: "#555", position: "absolute", top: 15, left: 12 } } size={ 30 } name={ "road" }/>
                     </View>
                     <View style={ { flexGrow: 1, flexShrink: 1, marginLeft: 5 } }>
                         <View style={ { flex: 1} }>
                             <Text style={ { fontSize: 19 } }>
-                                { 
-                                    town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site." 
+                                {
+                                    town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site."
                                 }
                             </Text>
                         </View>
                     </View>
                 </View>
-                
+
             </View>
-            
+
             {
                 (town.collectionSites || []).length > 0
                     ? (
@@ -161,10 +161,11 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                 (
                     <View style={ { padding: 10, backgroundColor: "white", marginTop: 5, borderBottomLeftRadius: 20, borderBottomRightRadius: 20 } }>
                         <Text style={ { fontSize: 12, fontWeight: "bold", textAlign: "left", color: "black", textAlign: "center" } }>Last Updated: <Text style={ { color: "black", fontSize: 12 } }>{ town.updated }</Text></Text>
-                        
+
                     </View>
                 )
             }
         </ScrollView>
+        <ButtonBar buttonConfigs={ [{ text: "CLOSE", onClick: closeModal }] }/>
     </SafeAreaView>);
 
