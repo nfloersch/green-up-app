@@ -28,7 +28,7 @@ import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 
 const myStyles = {
     selected: {
-        opacity: 0.5
+        opacity: 1
     }
 };
 
@@ -45,7 +45,7 @@ const freshState = (owner: UserType, team: ?TeamType, initialMapLocation: ?Coord
     locations: [],
     date: null,
     end: null,
-    start: null,
+    startdate: null,
     initialMapLocation
 });
 const setTime = (date: Date, time: string): Date => {
@@ -146,7 +146,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
     };
 
     const handleStartDatePicked = (event: Event, date: Date) => {
-        let start = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        let start = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             start = fixAndroidTime(start);
         }
@@ -156,7 +156,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
     };
 
     const handleEndDatePicked = (event: Event, date: Date) => {
-        let end = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        let end = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             end = fixAndroidTime(end);
         }
@@ -169,15 +169,19 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
 
     const dateIsSelected = state.team.date === null;
     const endIsSelected = state.team.end === null;
-    const startIsSelected = state.team.start === null;
+    const startIsSelected = state.team.startdate === null;
     const applyDateOffset = (date: Date, days: number): Date => {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     };
     const eventDate = getCurrentGreenUpDay();
-    const defaultStartTime = setTime( eventDate, (state.team.start || "09:00"));
-    const defaultEndTime = setTime( eventDate, (state.team.start || "17:00"));
+    const defaultStartTime = setTime( eventDate, (state.team.startdate || "09:00"));
+    console.log("state.team.startdate:",state.team.startdate);
+    console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
+    const defaultEndTime = setTime( eventDate, (state.team.end || "17:00"));
+    console.log("state.team.end:",state.team.end);
+    console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
     const minDate = new Date(); //applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
@@ -347,8 +351,8 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                         </Text>
                                     </TouchableOpacity>
                                     <DateTimePicker
-                                        value={ defaultEndTime }
                                         mode="time"
+                                        value={ defaultEndTime }
                                         display={ state.endDateTimePickerVisible }
                                         // onConfirm={ handleEndDatePicked }
                                         // onCancel={ setState({ endDateTimePickerVisible: false }) }

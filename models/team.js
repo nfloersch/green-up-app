@@ -23,7 +23,7 @@ export default class Team {
     name: ?string;
     notes: ?Array<string>;
     owner: TeamMemberType;
-    start: ?string;
+    startdate: ?string;
     townId: ?string;
 
     constructor(args: Object = {}) {
@@ -65,8 +65,8 @@ export default class Team {
             ? args.notes
             : null;
         this.owner = TeamMember.create(args.owner);
-        this.start = typeof args.start === "string"
-            ? args.start
+        this.startdate = typeof args.startdate === "string"
+            ? args.startdate
             : null;
         this.townId = typeof args.townId === "string"
             ? args.townId

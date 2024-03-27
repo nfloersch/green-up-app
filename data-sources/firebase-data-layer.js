@@ -950,7 +950,7 @@ export function saveTeam(team: TeamType): Promise<any> {
 export function deleteTeam(teamId: string): Promise<any> {
 
     let members = [];
-    const getTeamsRef = collection(db, `teams/${teamId}/members`);
+    const getTeamsRef = collection(firestore, `teams/${teamId}/members`);
     getDocs(getTeamsRef).then(
         // const getTeamsRef = db.collection(`teams/${ teamId }/members`);
         // const getTeams = getTeamsRef.get().then(
@@ -1101,13 +1101,13 @@ export async function addTeamMember(teamId: string, user: Object, status: string
 }
 
 export function updateTeamMember(teamId: string, teamMember: TeamMemberType): Promise<any> {
-    return db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
+    return firestore.collection(`teams/${ teamId }/members`).doc(teamMember.uid).set(deconstruct({ ...teamMember }));
 }
 
 export function removeTeamMember(teamId: string, teamMember: UserType): Promise<any> {
     console.log("Removed Team Member " + teamMember.uid + " from team " + teamId);
-    const deleteFromTeam = db.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
-    const deleteFromProfile = db.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
+    const deleteFromTeam = firestore.collection(`teams/${ teamId }/members`).doc(teamMember.uid).delete();
+    const deleteFromProfile = firestore.collection(`profiles/${ teamMember.uid || "" }/teams`).doc(teamId).delete();
     return Promise.all([deleteFromTeam, deleteFromProfile]);
     return new Promise(function(r) {
         setTimeout(() => { r('blah'); }, 2000);

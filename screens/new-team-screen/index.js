@@ -50,9 +50,9 @@ const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null
     query: "",
     townId: "",
     locations: [],
-    date: null,
+    date:  getCurrentGreenUpDay(),
     end: null,
-    start: null,
+    startdate: null,
     initialMapLocation
 });
 const setTime = (date: Date, time: string): Date => {
@@ -157,7 +157,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
     };
 
     const handleStartDatePicked = (event: Event, date: Date) => {
-        let start = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        let start =  date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             start = fixAndroidTime(start);
         }
@@ -167,7 +167,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
     };
 
     const handleEndDatePicked = (event: Event, date: Date) => {
-        let end = date.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+        let end = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
         if (Platform.OS === "android") {
             end = fixAndroidTime(end);
         }
@@ -180,15 +180,19 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
 
     const dateIsSelected = state.team.date === null;
     const endIsSelected = state.team.end === null;
-    const startIsSelected = state.team.start === null;
+    const startIsSelected = state.team.startdate === null;
     const applyDateOffset = (date: Date, days: number): Date => {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     };
     const eventDate = getCurrentGreenUpDay();
-    const defaultStartTime = setTime( eventDate, (state.team.start || "09:00"));
-    const defaultEndTime = setTime( eventDate, (state.team.start || "17:00"));
+    const defaultStartTime = setTime( eventDate, (state.team.startdate || "09:00"));
+    console.log("state.team.startdate:",state.team.startdate);
+    console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
+    const defaultEndTime = setTime( eventDate, (state.team.end || "17:00"));
+    console.log("state.team.end:",state.team.end);
+    console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
     const minDate = applyDateOffset(eventDate, -6);
     const maxDate = applyDateOffset(minDate, 364);
     const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
@@ -309,9 +313,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                         minimumDate={ minDate }
                                         maximumDate={ maxDate }
                                         display={ state.datePickerVisible }
-                                        // onConfirm={ handleDatePicked }
                                         onChange={ handleDatePicked }
-                                        // onCancel={ setState({ datePickerVisible: false }) }
                                         titleIOS={ "Which day is your team cleaning?" }
                                         titleStyle={ styles.datePickerTitleStyle }
                                     />
@@ -330,9 +332,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                         mode="time"
                                         value={ defaultStartTime }
                                         display={ state.startDateTimePickerVisible }
-                                        // onConfirm={ handleStartDatePicked }
                                         onChange={ handleStartDatePicked }
-                                        // onCancel={ setState({ startDateTimePickerVisible: false }) }
                                         onError={ setState({ startDateTimePickerVisible: false }) }
                                         is24Hour={ false }
                                         titleIOS={ "Pick a starting time." }
