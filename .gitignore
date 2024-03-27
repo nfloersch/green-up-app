@@ -736,3 +736,5 @@ fastlane/Preview.html
 fastlane/screenshots
 
 .pnp.js
+
+app.json
