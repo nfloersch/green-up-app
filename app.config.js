@@ -1,14 +1,9 @@
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
 module.exports = ({ config }) => {
-    let firebaseTarget = {}
-    // ENVIRONMENT is set from eas.json to set the build environment context
-    if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'local') {
-        firebaseTarget = require('./firebase-config.dev.js')
-    } else if (process.env.ENVIRONMENT === 'qa') {
-        firebaseTarget = require('./firebase-config.qa.js')
-    } else if (process.env.ENVIRONMENT === 'prod') {
-        firebaseTarget = require('./firebase-config.prod.js')
-    }
+    // ENVIRONMENT is set from eas.json to set the build environment contexts
+    const targetEnvirnoment = process.env.ENVIRONMENT ?? 'local'
+    const firebaseTarget = require(`./firebase-config.${targetEnvirnoment}.js`)
+    require('dotenv').config();
 
     return {
         ...config,

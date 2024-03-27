@@ -21,10 +21,9 @@ environment.js
 
 # Firebase
 firebase-config*.js
-firebase-config*.json
 
+# Include the sample file
 !firebase-config.example.js
-!firebase-config.example.json
 
 # Env
 .env*

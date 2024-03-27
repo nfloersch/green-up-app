@@ -11,11 +11,7 @@
     "test-ci": "jest",
     "lint": "eslint ./",
     "postinstall": "patch-package",
-    "doctor": "npx expo-doctor",
-    "eas:config": "dotenv -- eas config",
-    "build:dev": "dotenv -- eas build --profile dev",
-    "build:dev:android": "dotenv -- eas build --profile dev --platform android",
-    "build:dev:ios": "dotenv -- eas build --profile dev --platform ios"
+    "doctor": "npx expo-doctor"
   },
   "jest": {
     "preset": "jest-expo",
