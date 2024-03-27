@@ -1,13 +1,33 @@
-.env
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
 assets/fonts/*
 environment.js
-node_modules/**/*
-*.expo
-.expo/**/*
-firebase-config.js
-firebase-config.qa.js
-firebase-config.dev.js
-firebase-config.prod.js
+
+# Firebase
+firebase-config*.js
+
+# Include the sample file
+!firebase-config.example.js
+
+# Env
+.env*
+!.env.example
 
 ### Linux ###
 *~
@@ -716,10 +736,3 @@ fastlane/Preview.html
 fastlane/screenshots
 
 .pnp.js
-
-app.json
-
-firebase-config.prod.js
-firebase-config.qa.js
-firebase-config.dev.js
-firebase-config.js

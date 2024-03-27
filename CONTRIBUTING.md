@@ -17,9 +17,9 @@
 
 ### A Full Local Environment
 
-1) **Get a Config File**: You won't be able to run the code without a firebase-config.js file. The fastest approach is to use our shared dev environment (..which we share, so please treat it kindly). There is one pinned to the [#green-up Slack channel][3] for our dev environment. If you have trouble finding it, just ask anyone in the channel. Save your firebase-config.js in the root of the project.
+1) **Get a Config File**: You won't be able to run the code without a firebase-config.local.js file. The fastest approach is to use our shared dev environment (..which we share, so please treat it kindly). There is one pinned to the [#green-up Slack channel][3] for our dev environment. If you have trouble finding it, just ask anyone in the channel. Save your firebase-config.local.js in the root of the project.
 
-1) **(Optional) Use Your Own Firebase Account**: Setup a Firebase app and use those app settings to configure firebase-config.js,
+1) **(Optional) Use Your Own Firebase Account**: Setup a Firebase app and use those app settings to configure firebase-config.local.js,
    Get your own Firebase database here (https://firebase.google.com/) or, if you want to contribute to this project, find us on [Slack][4] and we'll gladly share ours. Not on our Slack board?  [Get an invitation.][5]
 
 2) **Ensure you have `nvm` installed**: Do this by running `nvm ls`. If you see a list of `node` versions printed to your console, then you're all set. Otherwise, follow the [setup instructions](https://github.com/nvm-sh/nvm#installing-and-updating).

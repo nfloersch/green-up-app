@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "Green Up",
+    "description": "The Official App for Vermont's Green Up Day",
+    "slug": "Green-Up-Vermont",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "owner": "c4btv",
+    "githubUrl": "https://github.com/codeforbtv/green-up-app",
+    "orientation": "portrait",
+    "icon": "./assets/images/green-up-icon-1024-NO-ALPHA.png",
+    "splash": {
+      "image": "./assets/images/loading-poster.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "url": "<env>",
+      "enabled": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "<env>"
+      }
+      
+    },
+    "version": "2024.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "ios": {
+      "buildNumber": "2024.0.1",
+      "supportsTablet": false,
+      "bundleIdentifier": "org.greenupvermont.app",
+      "config": {
+        "googleMapsApiKey": "<env>"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location to mark where you leave your trash bags"
+      }
+    },
+    "android": {
+      "package": "org.greenupvermont.app",
+      "versionCode": 202401,
+      "permissions": [
+        "READ_CONTACTS",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "<env>"
+        }
+      }
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#EEEEEE"
+    }
+  }
+}

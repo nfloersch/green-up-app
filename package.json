@@ -10,7 +10,8 @@
     "test": "jest --watchAll --coverage",
     "test-ci": "jest",
     "lint": "eslint ./",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "doctor": "npx expo-doctor"
   },
   "jest": {
     "preset": "jest-expo",
@@ -53,7 +54,9 @@
     "@types/react-navigation": "^3.0.8",
     "@types/redux-logger": "^3.0.13",
     "deprecated-react-native-prop-types": "^5.0.0",
+    "dotenv-cli": "^7.4.1",
     "expo": "^49.0.0",
+    "expo-application": "~5.3.0",
     "expo-asset": "~8.10.1",
     "expo-camera": "~13.4.4",
     "expo-constants": "~14.4.2",
@@ -96,7 +99,7 @@
     "react-native-status-bar-height": "^2.4.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webview": "^7.5.0",
+    "react-native-webview": "13.2.2",
     "react-redux": "^6.0.1",
     "react-test-renderer": "18.2.0",
     "redux": "^4.0.5",

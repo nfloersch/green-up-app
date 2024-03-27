@@ -1,11 +1,11 @@
 // @flow
 
 import moment from "moment";
-import { getReleaseEnvironment } from "./releaseEnvironment.js";
+// import { getReleaseEnvironment } from "./releaseEnvironment.js";
 
 const addDays = (date: Date, days: number): number => new Date(date).setDate(new Date(date).getDate() + days);
 type TodayType = Date | string;
-const envString = getReleaseEnvironment();
+// const envString = getReleaseEnvironment();
 
 // Calculates the Green Up day for the provided year (in format YYYY)
 export const getGreenUpDayByYear = (year: number): Date => {
@@ -73,17 +73,17 @@ export const getCurrentGreenUpDay = (today?: Date): Date => {
 export const daysUntilCurrentGreenUpDay = (today?: TodayType): number => {
     const myToday = today === null ? moment() : moment(today);
     const greenUpDay = moment(getNextGreenUpDay());
-    if (envString !== 'Prod') return 0;
+    // if (envString !== 'Prod') return 0;
     return greenUpDay.diff(myToday, "days");
 };
 
 // Determine if we're in the Event period, Thur, Fri, Green Up Day (Sat), Sun, Mon, or Tue
 export const dateIsInCurrentEventWindow = (today?: TodayType): boolean => {
     return true;
-    const myToday = new Date(today || (new Date()).toUTCString());
-    const daysUntilGreenUpDay = daysUntilCurrentGreenUpDay(myToday);
-    if (envString !== 'Prod') return true;    
-    return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
+    // const myToday = new Date(today || (new Date()).toUTCString());
+    // const daysUntilGreenUpDay = daysUntilCurrentGreenUpDay(myToday);
+    // if (envString !== 'Prod') return true;    
+    // return daysUntilGreenUpDay <= 2 && daysUntilGreenUpDay >= -3;
 };
 
 export const greenUpWindowStart = () => moment(getCurrentGreenUpDay()).subtract(1, "days").toDate();
@@ -91,12 +91,12 @@ export const greenUpWindowEnd = () => moment(getCurrentGreenUpDay()).add(4, "day
 
 export const isInGreenUpWindow = (date: ?Date) => {
     return true;
-    const myDate = date || new Date();
-    const guws = greenUpWindowStart();
-    const guwe = greenUpWindowEnd();
-    const afterStart = myDate >= guws;
-    const beforeEnd = myDate <= guwe;
-    if (envString !== 'Prod') return true;
-    return afterStart && beforeEnd;
+    // const myDate = date || new Date();
+    // const guws = greenUpWindowStart();
+    // const guwe = greenUpWindowEnd();
+    // const afterStart = myDate >= guws;
+    // const beforeEnd = myDate <= guwe;
+    // if (envString !== 'Prod') return true;
+    // return afterStart && beforeEnd;
 };
 
