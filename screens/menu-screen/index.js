@@ -1,22 +1,29 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, Alert, Linking, ScrollView, PixelRatio } from "react-native";
+import { StyleSheet, Alert, Linking, ScrollView, PixelRatio, View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { logout } from "../../action-creators/session-action-creators";
 import { defaultStyles } from "../../styles/default-styles";
 import * as constants from "../../styles/constants";
-import { Text, Button, View } from "@shoutem/ui";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { publishDate } from "../../package.json";
 import Constants from "expo-constants";
 import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
 import * as Application from "expo-application";
 
-const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const myStyles = {
+    menuButton: {
+        padding: 15,
+        backgroundColor: '#fff',
+        textAlign: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: "row",
+    },
+};
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 var fontSize = 25;
 
 type PropsType = {
@@ -42,8 +49,8 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
         <ScrollView style={ styles.scroll }>
             <View style={ { margin: 20 } }>
 
-                <Button
-                    styleName="primary"
+                <Pressable
+                    style={styles.menuButton}
                     onPress={ () => {
                         navigation.navigate("Profile");
                     } }
@@ -55,12 +62,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
-                </Button>
+                </Pressable>
             </View>
 
                 <View style={ { margin: 20 } }>
-                    <Button
-                        styleName="primary"
+                    <Pressable
+                        style={styles.menuButton}
                         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/G00jvf')}}
                     >
                         <MaterialCommunityIcons
@@ -70,12 +77,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
-                    </Button>
+                    </Pressable>
                 </View>
                 
                 <View style={ { margin: 20 } }>
-                    <Button
-                        styleName="primary"
+                    <Pressable
+                        style={styles.menuButton}
                         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/2g6ckf')}}
                     >
                         <MaterialCommunityIcons
@@ -85,12 +92,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Get Green Up Gear!" }</Text>
-                    </Button>
+                    </Pressable>
                 </View>
 
                 <View style={ { margin: 20 } }>
-                    <Button
-                        styleName="primary"
+                    <Pressable
+                        style={styles.menuButton}
                         onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
                     >
                         <MaterialCommunityIcons
@@ -100,11 +107,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
-                    </Button>
+                    </Pressable>
                 </View>
                 <View style={ { margin: 20 } }>
-                    <Button
-                        styleName="primary"
+                    <Pressable
+                        style={styles.menuButton}
                         onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/blob/master/docs/contributorsGreatAndSmall.md')}} 
                     >
                         <MaterialCommunityIcons
@@ -114,13 +121,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This?" }</Text>
-                    </Button>
+                    </Pressable>
                 </View>
 
             <View style={ { margin: 20 } }>
-                <Button
-                    styleName="primary"
-
+                <Pressable
+                    style={styles.menuButton}
                     onPress={ () => {
                         navigation.navigate("Legal");
                     } }
@@ -132,12 +138,12 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "Legal Stuff" }</Text>
-                </Button>
+                </Pressable>
             </View>
             <View style={ { margin: 20 } }>
 
-                <Button
-                    styleName="primary"
+                <Pressable
+                    style={styles.menuButton}
                     onPress={ logoutHandler }
                 >
                     <MaterialCommunityIcons
@@ -147,7 +153,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
-                </Button>
+                </Pressable>
             </View>
             <View style={ { margin: 20 } }>
                 <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ Application.nativeApplicationVersion }` }</Text>
