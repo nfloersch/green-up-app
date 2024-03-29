@@ -1,4 +1,5 @@
 import * as constants from "./constants";
+import colors from "@/constants/colors";
 
 export const buttons = {
     button: {
@@ -13,6 +14,16 @@ export const buttons = {
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.6,
         shadowRadius: 2
+    },
+    secondaryButton: {
+        paddingTop: 15,
+        paddingBottom: 15,
+        color: colors.backgroundLight,
+        backgroundColor: colors.backgroundLight,
+        width: '100%',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     buttonText: {
         fontFamily: "Rubik-Regular"
