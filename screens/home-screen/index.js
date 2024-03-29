@@ -3,7 +3,11 @@ import React from "react";
 import {
     View,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ImageBackground,
+    Text,
+    Image,
+    FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
@@ -16,23 +20,29 @@ import { daysUntilCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
 import * as R from "ramda";
 import { selectTeam } from "../../action-creators/team-action-creators";
 import * as constants from "../../styles/constants";
-import {
-    Text,
-    Card,
-    Divider,
-    GridRow,
-    Image,
-    ImageBackground,
-    ListView,
-    Subtitle,
-    Tile
-} from "@shoutem/ui";
 
-const styles = StyleSheet.create(defaultStyles);
+const styles = StyleSheet.create({
+    ...defaultStyles,
+    column: {
+        width: '50%', height: 150,
+        margin: 0,
+        padding: 0,
+        marginBottom: 2.5,
+        marginTop: 0,
+    },
+    leftColumn: {
+        paddingLeft: 5,
+        paddingRight: 2.5
+    },
+    rightColumn: {
+        paddingLeft: 2.5,
+        paddingRight: 5
+    }
+});
 
 const homeTitle = R.cond(
     [
-        [(days: number): boolean => days > 1, (days: number): string => `${ days } days until Green Up Day`],
+        [(days: number): boolean => days > 1, (days: number): string => `${days} days until Green Up Day`],
         [(days: number): boolean => days === 1, (): string => "Tomorrow is Green Up Day!"],
         [(days: number): boolean => days === 0, (): string => "Green Up Today!"],
         [(days: number): boolean => days < 0, (): string => "Keep on Greening"]
@@ -155,143 +165,135 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
     const teamButtons = teamButtonsConfig(myTeams);
     const buttonConfigs = { ...menuConfig, ...teamButtons };
     const data = myButtons(buttonConfigs);
-    let isFirstArticle = (data.length % 2 !== 0); // Show a featured button if we have an odd number of buttons.
-    const groupedData = GridRow.groupByRows(data, 2, () => {
-        if (isFirstArticle) {
-            isFirstArticle = false;
-            return 2;
-        }
-        return 1;
-    });
+    const oddMenuItem = data.length % 2 !== 0;
+    const featuredMenuItem = oddMenuItem ? data.splice(0, 1) : null
+    const menuItems = data
 
-    const renderRow = (rowData, index) => {
-        // rowData contains grouped data for one row,
-        // so we need to remap it into cells and pass to GridRow
-        if (rowData.length === 1) {
-            return (
+    const renderFeatured = (rowData) => {
+        return (
+            <View style={{ width: '100%', height: 120, marginBottom: 5 }}>
                 <TouchableOpacity
-                    key={ index }
-                    onPress={ rowData[0].onPress }
+                    key={rowData.item.id}
+                    onPress={rowData.item.onPress}
                     style={{
                         borderLeftWidth: 5,
                         borderRightWidth: 5,
-                        borderColor: constants.colorBackgroundDark
+                        borderColor: constants.colorBackgroundDark,
+
                     }}
-                    >
+                >
                     <ImageBackground
-                        style={{height: 120, borderWidth: 0, borderColor: "red"}}
+                        style={{ height: 120, borderWidth: 0, overflow: "hidden" }}
                         imageStyle={{
-                            resizeMode: "cover",
                             height: 200, // the image height
                             top: 0
                         }}
-                        source={ rowData[0].backgroundImageLarge }
+                        resizeMode="cover"
+                        source={rowData.item.backgroundImageLarge}
                     >
-                        <Tile style={
-                                {
-                                    borderWidth: 0,
-                                    borderColor: "yellow",
-                                    paddingTop: 0,
-                                    paddingBottom: 0,
-                                    paddingLeft: 10,
-                                    paddingRight: 10
-                                }
+                        <View style={
+                            {
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
                             }
+                        }
                         >
                             <Text style={
-                                    {
-                                        color: "white",
-                                        fontSize: 30,
-                                        fontFamily: "Rubik-Bold",
-                                        borderWidth: 0,
-                                        borderColor: "blue",
-                                        paddingTop: 0,
-                                        paddingBottom: 0,
-                                        marginTop: 0,
-                                        marginBottom: 0
-                                    }
+                                {
+                                    color: "white",
+                                    fontSize: 30,
+                                    fontFamily: "Rubik-Bold",
+                                    borderWidth: 0,
+                                    borderColor: "blue",
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                    marginTop: 0,
+                                    marginBottom: 0,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                 }
+                            }
+                                textAlign="center"
                             >
-                                Team { rowData[0].label.toUpperCase() }
+                                Team {rowData.item.label.toUpperCase()}
                             </Text>
                             <Text style={
-                                    {
-                                        color: "white",
-                                        fontSize: 20,
-                                        fontFamily: "Rubik-Regular",
-                                        fontWeight: "bold",
-                                        borderWidth: 0,
-                                        borderColor: "green",
-                                        paddingTop: 0,
-                                        paddingBottom: 0,
-                                        marginTop: 0,
-                                        marginBottom: 0
-                                    }
+                                {
+                                    color: "white",
+                                    fontSize: 20,
+                                    fontFamily: "Rubik-Regular",
+                                    fontWeight: "bold",
+                                    borderWidth: 0,
+                                    borderColor: "green",
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                    marginTop: 0,
+                                    marginBottom: 0
                                 }
+                            }
                             >
-                                { rowData[0].description }
+                                {rowData.item.description}
                             </Text>
 
-                        </Tile>
+                        </View>
                     </ImageBackground>
 
                 </TouchableOpacity>
-            );
-        }
+            </View>
+        );
+    }
 
-        const cellViews = rowData.map((item, id) => (
-            <TouchableOpacity
-                key={ id }
-                onPress={ item.onPress }
-                styleName="flexible"
-            >
-                <Card styleName="flexible"
-                    style={ { borderColor: "#CCC", borderBottomWidth: 1 } }
+    const renderOne = (rowData) => {
+        const leftColumn = rowData.index % 2 === 0
+        return (
+            <View style={[styles.column, leftColumn ? styles.leftColumn : styles.rightColumn]}>
+                <TouchableOpacity
+                    key={rowData.item.id}
+                    onPress={rowData.item.onPress}
+                    style={{ overflow: "hidden", width: '100%', height: '100%' }}
                 >
-                    <Image
-                        styleName="medium-wide"
-                        source={ item.backgroundImage }
-                    />
-                    <View style={ {
-                        padding: 5,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "100%"
-                    } } styleName="content">
-                        <Subtitle
-                            style={ {
-                                fontFamily: "Rubik-Regular",
-                                textAlign: "center",
-                                fontSize: 17
-                            } }
-                            numberOfLines={ 1 }>
-                            { item.label.toUpperCase() }
-                        </Subtitle>
-                        <View styleName="horizontal">
-                            <Text style={ { fontFamily: "Rubik-Regular", textAlign: "center" } }
-                                styleName="collapsible">{ item.description }</Text>
+                    <View
+                        style={{
+                            backgroundColor: "#fff"
+                        }}
+                    >
+                        <Image
+                            resizeMode="contain"
+                            style={{ height: 100, width: "100%" }}
+                            source={rowData.item.backgroundImage}
+
+                        />
+                        <View style={{
+                            padding: 5,
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}>
+                            <Text
+                                style={{
+                                    fontFamily: "Rubik-Regular",
+                                    textAlign: "center",
+                                    fontSize: 17
+                                }}
+                                numberOfLines={1}>
+                                {rowData.item.label.toUpperCase()}
+                            </Text>
+                            <View>
+                                <Text style={{ fontFamily: "Rubik-Regular", textAlign: "center" }}>{rowData.item.description}</Text>
+                            </View>
                         </View>
                     </View>
-                </Card>
-            </TouchableOpacity>
-        ));
-
-        return (
-            <GridRow style={ { backgroundColor: constants.colorBackgroundDark } } columns={ 2 }>
-                { cellViews }
-            </GridRow>
-        );
-    };
-
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     return (
-        <SafeAreaView style={ [styles.container, { backgroundColor: constants.colorBackgroundDark }] }>
-            <ListView
-                data={ groupedData }
-                renderRow={ renderRow }
-                contentContainerStyle={ { backgroundColor: "red" } }
-                renderFooter={ () => (<View style={ { width: "100%", height: 10, backgroundColor: constants.colorBackgroundDark } }/>) }
-            />
+        <SafeAreaView style={[styles.container, { backgroundColor: constants.colorBackgroundDark }]}>
+            <FlatList data={menuItems} renderItem={renderOne} horizontal={false} numColumns={2}
+                ListHeaderComponent={renderFeatured({ item: featuredMenuItem[0] })}
+            ></FlatList>
         </SafeAreaView>
     );
 };
