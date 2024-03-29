@@ -4,7 +4,7 @@ import { defaultStyles } from "../../styles/default-styles";
 import Address from "../../models/address";
 import { StyleSheet, ScrollView, View} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Subtitle, Text, Title, Divider } from "@shoutem/ui";
+import { Subtitle, Text, Title } from "@shoutem/ui";
 import moment from "moment";
 import MiniMap from "../mini-map";
 import ButtonBar from "../button-bar/";

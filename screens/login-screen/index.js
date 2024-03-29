@@ -9,7 +9,7 @@ import {
     StyleSheet
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Button, Text, Divider } from "@shoutem/ui";
+import { View, Button, Text } from "@shoutem/ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 import * as actionCreators from "../../action-creators/session-action-creators";
@@ -18,6 +18,7 @@ import LoginForm from "../../components/login-form";
 import { defaultStyles } from "../../styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as constants from "../../styles/constants";
+import Divider from "@/components/divider";
 
 const myStyles = {
     logo: {
@@ -107,7 +108,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                 </HideWithKeyboard>
                 <View style={ { width: "100%" } }>
                     <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                    <Divider styleName="line"/>
+                    <Divider/>
                     <View style={ { marginTop: 40 } } styleName="horizontal">
                         <Button
                             onPress={ () => {
