@@ -1,7 +1,40 @@
 import * as constants from "./constants";
 import colors from "@/constants/colors";
 
-export const buttons = {
+const buttonBase = {
+    margin: 0,
+    paddingTop: 12.5,
+    paddingBottom: 12.5,
+    borderWidth: 0,
+    width: '100%',
+}
+
+const buttonFlex = {
+    flex: 1,
+    flexDirection: "row",
+}
+
+const buttonCentered = {
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+}
+
+export default {
+    primaryButton: {
+        ...buttonCentered,
+        ...buttonBase,
+        ...buttonFlex,
+        color: colors.black,
+        backgroundColor: colors.backgroundLight,
+    },
+    secondaryButton: {
+        ...buttonCentered,
+        ...buttonBase,
+        ...buttonFlex,
+        color: colors.backgroundLight,
+        backgroundColor: colors.black,
+    },
     button: {
         borderStyle: "solid",
         borderWidth: 1,
@@ -15,16 +48,7 @@ export const buttons = {
         shadowOpacity: 0.6,
         shadowRadius: 2
     },
-    secondaryButton: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        color: colors.backgroundLight,
-        backgroundColor: colors.backgroundLight,
-        width: '100%',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+
     buttonText: {
         fontFamily: "Rubik-Regular"
     },

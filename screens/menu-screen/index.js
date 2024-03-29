@@ -1,6 +1,6 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, Alert, Linking, ScrollView, PixelRatio, View, Text, Pressable } from "react-native";
+import { StyleSheet, Alert, Linking, ScrollView, PixelRatio, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -12,17 +12,9 @@ import { publishDate } from "../../package.json";
 import Constants from "expo-constants";
 import { getReleaseEnvironment } from "../../libs/releaseEnvironment.js";
 import * as Application from "expo-application";
+import { PrimaryButton } from "@/components/button";
 
-const myStyles = {
-    menuButton: {
-        padding: 15,
-        backgroundColor: '#fff',
-        textAlign: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        flexDirection: "row",
-    },
-};
+const myStyles = {};
 const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 var fontSize = 25;
 
@@ -49,8 +41,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
         <ScrollView style={ styles.scroll }>
             <View style={ { margin: 20 } }>
 
-                <Pressable
-                    style={styles.menuButton}
+                <PrimaryButton
                     onPress={ () => {
                         navigation.navigate("Profile");
                     } }
@@ -62,12 +53,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "My Profile" }</Text>
-                </Pressable>
+                </PrimaryButton>
             </View>
 
                 <View style={ { margin: 20 } }>
-                    <Pressable
-                        style={styles.menuButton}
+                    <PrimaryButton
                         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/G00jvf')}}
                     >
                         <MaterialCommunityIcons
@@ -77,12 +67,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
-                    </Pressable>
+                    </PrimaryButton>
                 </View>
                 
                 <View style={ { margin: 20 } }>
-                    <Pressable
-                        style={styles.menuButton}
+                    <PrimaryButton
                         onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/2g6ckf')}}
                     >
                         <MaterialCommunityIcons
@@ -92,12 +81,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Get Green Up Gear!" }</Text>
-                    </Pressable>
+                    </PrimaryButton>
                 </View>
 
                 <View style={ { margin: 20 } }>
-                    <Pressable
-                        style={styles.menuButton}
+                    <PrimaryButton
                         onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
                     >
                         <MaterialCommunityIcons
@@ -107,11 +95,10 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Feedback" }</Text>
-                    </Pressable>
+                    </PrimaryButton>
                 </View>
                 <View style={ { margin: 20 } }>
-                    <Pressable
-                        style={styles.menuButton}
+                    <PrimaryButton
                         onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/blob/master/docs/contributorsGreatAndSmall.md')}} 
                     >
                         <MaterialCommunityIcons
@@ -121,12 +108,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                             color={ "#555" }
                         />
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Who Made This?" }</Text>
-                    </Pressable>
+                    </PrimaryButton>
                 </View>
 
             <View style={ { margin: 20 } }>
-                <Pressable
-                    style={styles.menuButton}
+                <PrimaryButton
                     onPress={ () => {
                         navigation.navigate("Legal");
                     } }
@@ -138,12 +124,11 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "Legal Stuff" }</Text>
-                </Pressable>
+                </PrimaryButton>
             </View>
             <View style={ { margin: 20 } }>
 
-                <Pressable
-                    style={styles.menuButton}
+                <PrimaryButton
                     onPress={ logoutHandler }
                 >
                     <MaterialCommunityIcons
@@ -153,7 +138,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         color={ "#555" }
                     />
                     <Text style={ { ...styles.buttonText, fontSize } }>{ "Log Out" }</Text>
-                </Pressable>
+                </PrimaryButton>
             </View>
             <View style={ { margin: 20 } }>
                 <Text style={ { fontSize: 16, color: "#7fa54a", textAlign: "center" } }>{ `v${ Application.nativeApplicationVersion }` }</Text>
