@@ -30,6 +30,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { findTownIdByCoordinates } from "@/libs/geo-helpers";
 import Divider from "@/components/divider";
 import colors from "@/constants/colors";
+import { PrimaryButton } from "@/components/button";
 const myStyles = {
     selected: {
         opacity: 1
@@ -324,12 +325,11 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                     pinsConfig={ pinsConfig }
                                     onMapClick={ handleMapClick }
                                 />
-                                <Pressable
-                                    style={ styles.secondaryButton }
+                                <PrimaryButton
                                     onPress={ removeLastMarker }
                                 >
                                     <Text>{ "REMOVE MARKER" }</Text>
-                                </Pressable>
+                                </PrimaryButton>
                             </View>
                             <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>

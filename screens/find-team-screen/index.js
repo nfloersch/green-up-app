@@ -4,22 +4,23 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "../../action-creators/team-action-creators";
-import { defaultStyles } from "../../styles/default-styles";
-import * as teamMemberStatuses from "../../constants/team-member-statuses";
+import * as actionCreators from "@/action-creators/team-action-creators";
+import { defaultStyles } from "@/styles/default-styles";
+import * as teamMemberStatuses from "@/constants/team-member-statuses";
 import * as R from "ramda";
-import DisplayText from "../../components/display-text";
-import * as constants from "../../styles/constants";
-import SearchBar from "../../components/search-bar";
-import WatchGeoLocation from "../../components/watch-geo-location";
-import { searchArray } from "../../libs/search";
+import DisplayText from "@/components/display-text";
+import * as constants from "@/styles/constants";
+import SearchBar from "@/components/search-bar";
+import WatchGeoLocation from "@/components/watch-geo-location";
+import { searchArray } from "@/libs/search";
 import { SimpleLineIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { ListView } from "@shoutem/ui";
+import colors from "@/constants/colors";
 
 const myStyles = {
 
@@ -185,10 +186,7 @@ const FindTeamScreen = ({ actions, teamMembers, teams, navigation, currentUser, 
                         flex: 1,
                         backgroundColor: constants.colorBackgroundLight
                     } }>
-                        <ListView
-                            data={ searchResults }
-                            renderRow={ item => (<TeamItem item={ item }/>) }
-                        />
+                        <FlatList style={{backgroundColor: colors.backgroundLight}} data={searchResults} renderItem={TeamItem} />
                     </View>
                 )
                 : (
