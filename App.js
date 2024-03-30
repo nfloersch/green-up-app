@@ -1,7 +1,7 @@
 // @flow
 import React, { useState } from "react";
 import { Asset } from "expo-asset";
-import * as Font from "expo-font";
+import { loadAsync } from "expo-font";
 import AppLoading from "./components/app-loading";
 import AppState from "./components/app-state";
 import Session from "./components/session";
@@ -41,7 +41,7 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
                 require("./assets/images/circle-orange.png"),
                 require("./assets/images/green-up-logo.png")
             ]),
-            Font.loadAsync({
+            loadAsync({
                 // This is the font that we are using for our tab bar
                 ...Ionicons.font,
                 "Rubik-Regular": require("./assets/fonts/Rubik/Rubik-Regular.ttf"),

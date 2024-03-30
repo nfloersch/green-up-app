@@ -12,3 +12,12 @@ export const PrimaryButton = (props: PropsType): React$Element<Pressable> => {
     }
     return (<Pressable { ...passThroughProps } style={ [buttonStyle] }>{children}</Pressable>);
 };
+
+export const SecondaryButton = (props: PropsType): React$Element<Pressable> => {
+    const { style, children, ...passThroughProps } = props;
+    const buttonStyle = {
+        ...buttonStyles.secondaryButton,
+        ...style
+    }
+    return (<Pressable { ...passThroughProps } style={ [buttonStyle] }>{children}</Pressable>);
+};

@@ -1,4 +1,4 @@
 // @flow
-import { PrimaryButton } from "./button";
+import { PrimaryButton, SecondaryButton } from "./button";
 
-export { PrimaryButton }
+export { PrimaryButton, SecondaryButton }
