@@ -3,7 +3,9 @@ import React from "react";
 import {
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    View,
+    Text, 
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
@@ -14,9 +16,10 @@ import Message from "../../models/message";
 import { defaultStyles } from "../../styles/default-styles";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
-import { Button, ListView, View, Text, Title, Subtitle } from "@shoutem/ui";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import ButtonBar from "../../components/button-bar";
+import { FlatList } from "react-native";
+import colors from "@/constants/colors";
 
 
 const myStyles = {
@@ -79,7 +82,8 @@ const MessageSummary = ({ item, toDetail }: ItemPropsType): React$Element<any> =
                 flex: 1,
                 flexDirection: "row",
                 borderBottomWidth: 1,
-                borderColor: "#AAA"
+                borderColor: "#AAA",
+                backgroundColor: colors.backgroundLight
             } }>
                 <Image
                     style={ { width: 80, height: 80 } }
@@ -184,19 +188,19 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
                 (_messages, hasTeams) => (hasTeams && _messages.length === 0),
                 () => (
                     <View style={ { backgroundColor: "white", padding: 30, margin: 30 } }>
-                        <Title style={ {
+                        <Text style={ {
                             textAlign: "center",
                             color: "#000",
                             marginBottom: 20
                         } }>
                             { "Sorry, no messages yet." }
-                        </Title>
-                        <Title style={ {
+                        </Text>
+                        <Text style={ {
                             textAlign: "center",
                             color: "#000"
                         } }>
                             { "Click the \"New Message\" button to send one to your team." }
-                        </Title>
+                        </Text>
                     </View>
 
                 )
@@ -206,12 +210,12 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
                 () => (
                     <View style={ { padding: 10, marginTop: 30 } }>
                         <View style={ { backgroundColor: "white", padding: 10, marginTop: 30 } }>
-                            <Title style={ { marginBottom: 20, textAlign: "center" } }>
+                            <Text style={ { marginBottom: 20, textAlign: "center" } }>
                                 { "Your messages will appear here." }
-                            </Title>
-                            <Subtitle style={ { textAlign: "center" } }>
+                            </Text>
+                            <Text style={ { textAlign: "center" } }>
                                 { "To send messages, join or create a team." }
-                            </Subtitle>
+                            </Text>
                         </View>
                         <View styleName="horizontal" style={ { marginTop: 30 } }>
                             <Button
@@ -236,10 +240,9 @@ const MessageSummariesScreen = ({ actions, currentUser, messages, navigation, us
             [
                 R.T,
                 (_messages) => (
-                    <ListView
+                    <FlatList 
                         data={ _messages }
-                        renderRow={ message => (
-                            <MessageSummary item={ message } toDetail={ toMessageDetail(message) }/>) }
+                        renderItem={({item}) => (<MessageSummary item={ item } toDetail={ toMessageDetail(item) }/>)}
                     />
                 )
             ]

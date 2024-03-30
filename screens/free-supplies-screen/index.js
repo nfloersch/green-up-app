@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     Modal,
-    Linking
+    Linking,
+    View,
+    Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
@@ -15,9 +17,9 @@ import { searchArray } from "../../libs/search";
 import SupplyDistributionSite from "../../models/supply-distribution-site";
 import * as constants from "../../styles/constants";
 import SearchBar from "../../components/search-bar";
-import { ListView, View, Text, Subtitle } from "@shoutem/ui";
 import SupplyDistributionSiteDetails from "../../components/supply-distribution-site-details";
-
+import { FlatList } from "react-native";
+import colors from "@/constants/colors";
 const myStyles = {
     details: {
         fontWeight: "bold"
@@ -110,26 +112,24 @@ const FreeSupplies = ({ pickupSpots, userLocation, towns }: PropsType): React$El
             >
                 { hasResults
                     ? (
-                        <ListView
-                            data={ searchResults }
-                            renderRow={ item => (
-                                <PickupLocation
-                                    item={ item }
-                                    onClick={ () => {
-                                        setSelectedSite(item);
-                                        setIsModalVisible(true);
-                                    } }/>
-                            ) }
-                        />
+                        <FlatList style={{backgroundColor: colors.backgroundLight}} data={searchResults} renderItem={( {item}) => (
+                            <PickupLocation
+                                item={ item }
+                                onClick={ () => {
+                                    setSelectedSite(item);
+                                    setIsModalVisible(true);
+                                } }></PickupLocation>
+                        )}>
+                            </FlatList>
                     )
                     : (
                         <View>
-                            <Subtitle style={ styles.noTeamsFoundText }>
+                            <Text style={ styles.noTeamsFoundText }>
                                 { "Sorry, we couldn't find any matching supply sites." }
-                            </Subtitle>
-                            <Subtitle style={ { marginTop: 10 } }>
+                            </Text>
+                            <Text style={ { marginTop: 10 } }>
                                 { "Try a different search" }
-                            </Subtitle>
+                            </Text>
                         </View>
                     )
                 }

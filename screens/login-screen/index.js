@@ -6,10 +6,11 @@ import { connect } from "react-redux";
 import {
     Alert,
     Image,
-    StyleSheet
+    StyleSheet,
+    View,
+    Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Button, Text, Divider } from "@shoutem/ui";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 import * as actionCreators from "../../action-creators/session-action-creators";
@@ -18,6 +19,8 @@ import LoginForm from "../../components/login-form";
 import { defaultStyles } from "../../styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as constants from "../../styles/constants";
+import Divider from "@/components/divider";
+import { SecondaryButton } from "@/components/button";
 
 const myStyles = {
     logo: {
@@ -107,14 +110,13 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                 </HideWithKeyboard>
                 <View style={ { width: "100%" } }>
                     <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                    <Divider styleName="line"/>
-                    <View style={ { marginTop: 40 } } styleName="horizontal">
-                        <Button
+                    <Divider/>
+                    <View style={ { marginTop: 40, flexDirection: 'row' } } styleName="horizontal">
+                        <SecondaryButton
                             onPress={ () => {
                                 navigation.navigate("ForgotPassword");
                             } }
-                            style={ { paddingLeft: 20, paddingRight: 20 } }
-                            styleName="confirmation secondary"
+                            style={ { marginRight: 10 } }
                         >
                             <MaterialCommunityIcons
                                 name={ "account-convert" }
@@ -122,14 +124,13 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                                 style={ { marginRight: 10 } }
                                 color="#FFF"
                             />
-                            <Text>RESET PASSWORD</Text>
-                        </Button>
-                        <Button
+                            <Text style={{color: 'white'}}>RESET PASSWORD</Text>
+                        </SecondaryButton>
+                        <SecondaryButton
                             onPress={ () => {
                                 navigation.navigate("CreateNewAccount");
                             } }
-                            style={ { paddingLeft: 20, paddingRight: 20 } }
-                            styleName="confirmation secondary"
+                            style={ { marginLeft: 10 } }
                         >
                             <MaterialCommunityIcons
                                 name={ "account-plus" }
@@ -137,8 +138,8 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                                 style={ { marginRight: 10 } }
                                 color="#FFF"
                             />
-                            <Text style={ styles.buttonText }>CREATE ACCOUNT</Text>
-                        </Button>
+                            <Text style={{ color: 'white'}}>CREATE ACCOUNT</Text>
+                        </SecondaryButton>
                     </View>
                 </View>
                 <View style={ { flex: 1 } }/>

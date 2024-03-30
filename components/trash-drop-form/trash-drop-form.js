@@ -10,7 +10,7 @@ import {
     Picker
 } from "react-native";
 import EnableLocationServices from "../../components/enable-location-services";
-import { Text, Button, Title, Divider, View } from "@shoutem/ui";
+import { Text, Button, Title, View } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
 import TownInformation from "../town-information";
@@ -22,6 +22,7 @@ import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
 import { isInGreenUpWindow } from "../../libs/green-up-day-calucators"; // TODO: Add out of window warning
 import { findTownIdByCoordinates } from "../../libs/geo-helpers";
+import Divider from "@/components/divider";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number }, error: any };
 
@@ -402,7 +403,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
                                         <TownInformation townInfo={ currentTown } hideOnError={ true }/>
 
-                                        <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                                        <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
 
                                         { getDropButtons() }
 

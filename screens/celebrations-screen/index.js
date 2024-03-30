@@ -17,9 +17,10 @@ import * as R from "ramda";
 import WatchGeoLocation from "../../components/watch-geo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { searchArray } from "../../libs/search";
-import { ListView, GridRow, ImageBackground, Tile, Subtitle, Title, Divider, Card, Image, Caption } from "@shoutem/ui";
+import { ListView, GridRow, ImageBackground, Tile, Subtitle, Title, Card, Image, Caption } from "@shoutem/ui";
 import * as constants from "../../styles/constants";
 import Celebration from "../../models/celebration";
+import Divider from "@/components/divider";
 
 const styles = StyleSheet.create(defaultStyles);
 const iconStyle = {
@@ -66,7 +67,7 @@ const CelebrationsScreen = ({ celebrationEvents, userLocation }: PropsType): Rea
                             <Subtitle styleName="sm-gutter-horizontal">{ rowData[0].name }</Subtitle>
                         </Tile>
                     </ImageBackground>
-                    <Divider styleName="line"/>
+                    <Divider/>
                 </TouchableOpacity>
             );
         }

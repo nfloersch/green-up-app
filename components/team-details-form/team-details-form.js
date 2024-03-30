@@ -8,32 +8,51 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    View, 
+    Text,
+    Pressable,
+    TextInput
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Button, TextInput, Text, Divider } from "@shoutem/ui";
-import { fixAndroidTime } from "../../libs/fix-android-time";
-import MiniMap from "../../components/mini-map";
+import { fixAndroidTime } from "@/libs/fix-android-time";
+import MiniMap from "@/components/mini-map";
 //import DateTimePicker from "react-native-modal-datetime-picker";
 // import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import moment from "moment";
-import { defaultStyles } from "../../styles/default-styles";
-import Team from "../../models/team";
-import User from "../../models/user";
-import ButtonBar from "../../components/button-bar";
-import { getCurrentGreenUpDay } from "../../libs/green-up-day-calucators";
+import { defaultStyles } from "@/styles/default-styles";
+import Team from "@/models/team";
+import User from "@/models/user";
+import ButtonBar from "@/components/button-bar";
+import { getCurrentGreenUpDay } from "@/libs/green-up-day-calucators";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { findTownIdByCoordinates } from "../../libs/geo-helpers";
-
+import { findTownIdByCoordinates } from "@/libs/geo-helpers";
+import Divider from "@/components/divider";
+import colors from "@/constants/colors";
+import { PrimaryButton } from "@/components/button";
 const myStyles = {
     selected: {
         opacity: 1
+    },
+    switchButton: {
+        paddingTop: 15,
+        paddingBottom: 15,
+        width: '50%',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    switchButtonActive: {
+        backgroundColor: colors.backgroundLight
+    },
+    switchButtonInactive: {
+        backgroundColor: colors.backgroundDark
     }
+
 };
 
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
 const freshState = (owner: UserType, team: ?TeamType, initialMapLocation: ?CoordinatesType = null): Object => ({
     team: Team.create(team || { owner }),
@@ -241,6 +260,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Team Name" }</Text>
                                 <TextInput
+                                    style={styles.textInput}
                                     keyBoardType={ "default" }
                                     onChangeText={ setTeamValue("name") }
                                     placeholder={ "Team Name" }
@@ -253,10 +273,10 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                 <Text style={ styles.label }>
                                     { state.team.isPublic ? "Anyone can join your team" : "You control who joins your team" }
                                 </Text>
-                                <View styleName="horizontal flexible">
-                                    <Button
-                                        onPress={ () => setTeamValue("isPublic")(true) }
-                                        styleName={ `full-width${ !state.team.isPublic ? " secondary muted" : "" }` }>
+                                <View style={{flex: 1, flexDirection: 'row'}} >
+                                    <Pressable
+                                        style={ [styles.switchButton, state.team.isPublic ? styles.switchButtonActive : styles.switchButtonInactive] }
+                                        onPress={ () => setTeamValue("isPublic")(true) }>
                                         <MaterialCommunityIcons
                                             name="earth"
                                             size={ 25 }
@@ -267,10 +287,10 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             style={state.team.isPublic ? {color:"black"} : {color: "white"}}>
                                             PUBLIC
                                         </Text>
-                                    </Button>
-                                    <Button
-                                        onPress={ () => setTeamValue("isPublic")(false) }
-                                        styleName={ `full-width${ state.team.isPublic ? " secondary muted" : "" }` }>
+                                    </Pressable>
+                                    <Pressable
+                                        style={ [styles.switchButton, state.team.isPublic ? styles.switchButtonInactive : styles.switchButtonActive] }
+                                        onPress={ () => setTeamValue("isPublic")(false) }>
                                         <MaterialCommunityIcons
                                             name="earth-off"
                                             size={ 25 }
@@ -281,18 +301,19 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                             style={state.team.isPublic ? {color:"white"} : {color: "black"}}>
                                             PRIVATE
                                         </Text>
-                                    </Button>
+                                    </Pressable>
                                 </View>
                             </View>
-                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Clean Up Site" }</Text>
                                 <TextInput
+                                    style={styles.textInput}
                                     keyBoardType={ "default" }
                                     onChangeText={ setTeamValue("location") }
                                     placeholder={ "The park, school, or road name" }
+                                    placeholderTextColor={colors.placeholderText}
                                     value={ state.team.location }
-                                    style={ { backgroundColor: "white", padding: 20 } }
                                     underlineColorAndroid={ "transparent" }
                                 />
                             </View>
@@ -304,14 +325,13 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                     pinsConfig={ pinsConfig }
                                     onMapClick={ handleMapClick }
                                 />
-                                <Button
-                                    styleName={ "secondary" }
+                                <PrimaryButton
                                     onPress={ removeLastMarker }
                                 >
                                     <Text>{ "REMOVE MARKER" }</Text>
-                                </Button>
+                                </PrimaryButton>
                             </View>
-                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.alertInfo }>
                                     { dateRangeMessage }
@@ -380,17 +400,18 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                 </View>
                             </View>
 
-                            <Divider styleName={ "line" } style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Team Information" }</Text>
                                 <TextInput
+                                    style={ styles.textArea }
                                     keyBoardType={ "default" }
                                     multiline={ true }
-                                    numberOfLines={ 10 }
+                                    numberOfLines={10}
                                     textAlignVertical="top"
                                     onChangeText={ setTeamValue("description") }
                                     placeholder={ "Add important information here" }
-                                    style={ styles.textArea }
+                                    placeholderTextColor={colors.placeholderText}
                                     value={ state.team.description }
                                     underlineColorAndroid={ "transparent" }
                                 />

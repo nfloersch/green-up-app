@@ -1,13 +1,21 @@
 // @flow
 import React from "react";
 import {
-    StyleSheet
+    StyleSheet,
+    View,
+    Text
 } from "react-native";
-import * as constants from "../../styles/constants";
-import { Button, View, Subtitle } from "@shoutem/ui";
+import * as constants from "@/styles/constants";
+import { PrimaryButton } from "@/components/button";
 
 const styles = StyleSheet.create({
-
+    buttons: {
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        width: '100%',
+        height: '100%',
+    },
     buttonBarHeader: {
         width: "100%",
         height: 55,
@@ -29,16 +37,15 @@ type PropsType = {
 
 export const ButtonBar = ({ buttonConfigs }: PropsType): React$Element<any> => (
     <View style={ styles.buttonBarHeader }>
-        <View styleName="horizontal flexible">
+        <View style={ styles.buttons }>
             {
                 buttonConfigs.map((config: ButtonConfigType, index: number): React$Element<any> => (
-                    <Button
+                    <PrimaryButton
                         key={ index }
-                        styleName="full-width"
                         onPress={ config.onClick }
                     >
-                        <Subtitle>{ config.text.toUpperCase() }</Subtitle>
-                    </Button>
+                        <Text>{ config.text.toUpperCase() }</Text>
+                    </PrimaryButton>
                 ))
             }
         </View>
