@@ -4,6 +4,9 @@ import React, { useState, useEffect, Fragment } from "react";
 import {
     ScrollView,
     StyleSheet,
+    View,
+    Text,
+    TextInput
 } from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +20,6 @@ import * as messageTypes from "../../constants/message-types";
 import { removeNulls } from "../../libs/remove-nulls";
 import Team from "../../models/team";
 import * as constants from "../../styles/constants";
-import { View, Text, TextInput } from "@shoutem/ui";
 import ButtonBar from "../../components/button-bar";
 
 const styles = StyleSheet.create(defaultStyles);
@@ -100,7 +102,7 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                                 <Text style={ styles.label }>{ "To:" }</Text>
                                 <Picker
                                     selectedValue={ currentTeamId }
-                                    itemStyle={ { backgroundColor: "#FFFFFF99", color: "black" } }
+                                    itemStyle={ { backgroundColor: "#FFFF99", color: "black" } }
                                     onValueChange={ (teamId: string) => {
                                         setCurrentTeamId(teamId);
                                     } }>
@@ -113,7 +115,6 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                 </View>
                 <View style={ styles.formControl }>
                     <Text style={ styles.label }>{ "Your Message" }</Text>
-
                     <TextInput
                         keyBoardType={ "default" }
                         multiline={ true }
