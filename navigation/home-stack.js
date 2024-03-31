@@ -6,7 +6,7 @@ import FindTeamScreen from "../screens/find-team-screen";
 import NewTeamScreen from "../screens/new-team-screen";
 import TrashDisposalScreen from "../screens/trash-disposal-screen";
 import FreeSuppliesScreen from "../screens/free-supplies-screen";
-import CelebrationsScreen from "../screens/celebrations-screen";
+// import CelebrationsScreen from "../screens/celebrations-screen";
 import GreenUpFactsScreen from "../screens/green-up-facts-screen";
 import TeamDetailsScreen from "../screens/team-details-screen";
 import TeamEditorScreen from "../screens/team-editor-screen";
@@ -37,11 +37,11 @@ export default function HomeStack() {
                 component={FreeSuppliesScreen}
                 options={FreeSuppliesScreen.navigationOptions}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="Celebrations"
                 component={CelebrationsScreen}
                 options={CelebrationsScreen.navigationOptions}
-            />
+            /> */}
             <Stack.Screen
                 name="GreenUpFacts"
                 component={GreenUpFactsScreen}
