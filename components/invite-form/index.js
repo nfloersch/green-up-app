@@ -3,20 +3,22 @@ import React, { useState } from "react";
 import {
     Alert,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { isValidEmail, isInTeam } from "../../libs/validators";
-import * as actionCreators from "../../action-creators/team-action-creators";
-import TeamMember from "../../models/team-member";
-import { defaultStyles } from "../../styles/default-styles";
-import User from "../../models/user";
-import { removeNulls } from "../../libs/remove-nulls";
+import { isValidEmail, isInTeam } from "@/libs/validators";
+import * as actionCreators from "@/action-creators/team-action-creators";
+import TeamMember from "@/models/team-member";
+import { defaultStyles } from "@/styles/default-styles";
+import User from "@/models/user";
+import { removeNulls } from "@/libs/remove-nulls";
 import { ButtonBar } from "../button-bar/button-bar";
-import { View, Text, TextInput } from "@shoutem/ui";
-import * as constants from "../../styles/constants";
+import * as constants from "@/styles/constants";
+import { TextInput } from "../inputs";
+import { Text } from "../text";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);

@@ -20,7 +20,6 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
-import DisposalSiteSelector from "../../components/disposal-site-selector";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 const styles = StyleSheet.create(defaultStyles);

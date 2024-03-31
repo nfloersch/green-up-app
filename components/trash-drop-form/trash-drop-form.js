@@ -11,8 +11,8 @@ import {
     Text,
 } from "react-native";
 import {Picker} from '@react-native-picker/picker';
-import EnableLocationServices from "../../components/enable-location-services";
-import { defaultStyles } from "../../styles/default-styles";
+import EnableLocationServices from "@/components/enable-location-services";
+import { defaultStyles } from "@/styles/default-styles";
 import { SafeAreaView } from "react-native";
 import TownInformation from "../town-information";
 import SiteSelector from "../site-selector";
@@ -20,8 +20,8 @@ import * as R from "ramda";
 import Site from "../site";
 import ButtonBar from "../button-bar";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import TagToggle from "../../components/tag-toggle";
-import { isInGreenUpWindow } from "../../libs/green-up-day-calucators"; // TODO: Add out of window warning
+import TagToggle from "@/components/tag-toggle";
+import { isInGreenUpWindow } from "@/libs/green-up-day-calucators"; // TODO: Add out of window warning
 import { findTownIdByCoordinates } from "@/libs/geo-helpers";
 import Divider from "@/components/divider";
 import { SecondaryButton } from "../button";
@@ -275,20 +275,8 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                             ...drop,
                                                                             teamId: pvalue
                                                                         }) }
-                                                                        style={ {
-                                                                            modal: {
-                                                                                backgroundColor: "#F00",
-                                                                                color: "red"
-                                                                            },
-                                                                            selectedOption: {
-                                                                                marginTop: 0,
-                                                                                height: 90,
-                                                                                "shoutem.ui.Text": {
-                                                                                    color: "#333",
-                                                                                    fontSize: 20
-                                                                                }
-                                                                            }
-                                                                        } }>
+                                                                        mode="modal"
+                                                                        >
                                                                         {
                                                                             teamOptions.map(
                                                                                 (entry: Object, index: number): React$Element<any> => (

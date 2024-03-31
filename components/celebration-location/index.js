@@ -1,4 +1,4 @@
-// @flow
-import { CelebrationLocation } from "./celebration-location";
+// // @flow
+// import { CelebrationLocation } from "./celebration-location";
 
-export default CelebrationLocation;
+// export default CelebrationLocation;
