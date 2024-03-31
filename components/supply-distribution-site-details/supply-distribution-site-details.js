@@ -5,7 +5,6 @@ Text
 
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Caption as SHCaption } from "@shoutem/ui";
 import { defaultStyles } from "@/styles/default-styles";
 import moment from "moment";
 import Address from "@/models/address";

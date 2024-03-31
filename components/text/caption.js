@@ -11,10 +11,15 @@ export const Caption = (props: PropsType): React$Element<Text> => {
         lineHeight: 25,
         fontStyle: "normal",
         fontWeight: "normal",
+        textTransform: "uppercase",
         letterSpacing: 0.5,
         backgroundColor: colors.transparent,
         fontFamily: "Rubik-Regular",
         textAlign: "left",
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 0,
+        marginTop: 0,
         color: colors.inputText,
     };
     return (<RNText { ...passThroughProps } style={ [defaultTitle, style ] }>{ children }</RNText>);

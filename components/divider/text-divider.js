@@ -10,10 +10,9 @@ export const TextDivider = (props: PropsType): React$Element<View> => {
     const dividerStyle = {
         border: 0,
         margin: 0,
-        paddingLeft: 2,
-        paddingRight: 2,
+        padding: 10,
         marginTop: 20,
-        marginBottom: 5,
+        marginBottom: 0,
     }
     return (<View { ...passThroughProps } style={ [dividerStyle, style] }></View>);
 };

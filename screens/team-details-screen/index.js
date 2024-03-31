@@ -12,10 +12,12 @@ import MemberIcon from "@/components/member-icon";
 import TownItem from "@/components/town-item";
 import MiniMap from "@/components/mini-map";
 import * as constants from "@/styles/constants";
-import { Divider, Caption } from "@shoutem/ui";
 import ButtonBar from "@/components/button-bar";
 import * as R from "ramda";
 import { Title } from "@/components/text";
+import { Caption } from "@/components/text";
+import { TextDivider } from "@/components/divider";
+
 
 const myStyles = {
     memberStatusBanner: {
@@ -308,12 +310,11 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
             <ScrollView style={ [styles.scroll, { padding: 20 }] }>
                 <Title>{selectedTeam.name}</Title>
                 { getMemberStatus() }
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>{ "INFORMATION" }</Caption>
-                </Divider>
+                </TextDivider>
                 <View style={ { width: "100%", backgroundColor: "white", padding: 20 } }>
                     <Text style={ styles.dataBlock }>
                         <Text style={ styles.text }>{ "Owner: " }</Text>
@@ -344,12 +345,11 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
                     }
                 </View>
 
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>   { "CLEANING LOCATION" }</Caption>
-                </Divider>
+                </TextDivider>
 
                 {
                     (selectedTeam.locations || []).length > 0
