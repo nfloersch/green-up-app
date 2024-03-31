@@ -10,7 +10,6 @@ const buttonBase = {
 }
 
 const buttonFlex = {
-    flex: 1,
     flexDirection: "row",
 }
 
@@ -20,13 +19,13 @@ const buttonCentered = {
     alignItems: "center",
 }
 
-export default {
+export const buttons = {
     primaryButton: {
         ...buttonCentered,
         ...buttonBase,
         ...buttonFlex,
-        color: colors.black,
-        backgroundColor: colors.backgroundLight,
+        color: colors.buttonText,
+        backgroundColor: colors.white,
     },
     secondaryButton: {
         ...buttonCentered,

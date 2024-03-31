@@ -1,14 +1,13 @@
-// @flow
 import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { isValidEmail } from "../../libs/validators";
-import { defaultStyles } from "../../styles/default-styles";
-import { Button, Text, Subtitle, TextInput } from "@shoutem/ui";
+import { Alert, StyleSheet, View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { isValidEmail } from "@/libs/validators";
+import { defaultStyles } from "@/styles/default-styles";
+import { PrimaryButton } from "@/components/button";
+import { TextInput } from "@/components/inputs";
 
 const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles });
 
 type PropsType = {
     buttonText?: string,
@@ -30,44 +29,37 @@ export const LoginForm = ({ buttonText, onButtonPress }: PropsType): React$Eleme
     };
 
     return (
-        <View style={ { marginBottom: 10 } }>
-            <View style={ styles.formControl }>
-                <Text style={ styles.label }>{ "Email" }</Text>
+        <View style={{ marginBottom: 10 }}>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>{"Email"}</Text>
                 <TextInput
                     autoCapitalize="none"
                     keyBoardType="email-address"
-                    autoCorrect={ false }
+                    autoCorrect={false}
                     placeholder="janedoe@example.com"
-                    value={ email }
-                    onChangeText={ setEmail }
+                    value={email}
+                    onChangeText={setEmail}
                 />
             </View>
-            <View style={ styles.formControl }>
-                <Text style={ styles.label }>{ "Password" }</Text>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>{"Password"}</Text>
                 <TextInput
                     autoCapitalize="none"
-                    keyBoardType={ "default" }
-                    autoCorrect={ false }
-                    placeholder={ "*****" }
-                    secureTextEntry={ true }
-                    value={ password }
-                    onChangeText={ setPassword }
+                    keyBoardType={"default"}
+                    autoCorrect={false}
+                    placeholder={"*****"}
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
-            <View style={ styles.formControl }>
-                <Button
-                    onPress={ handleButtonPress }
-                    styleName={ "primary" }
-                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
-                >
-                    <MaterialCommunityIcons name={ "login" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
-                    <Subtitle
-                        styleName={ "bold" }
-                        style={ { textAlign: "center", color: "#555" } }
-                    >
-                        { buttonText ? buttonText.toUpperCase() : "LOG IN" }
-                    </Subtitle>
-                </Button>
+            <View style={styles.formControl}>
+                <PrimaryButton onPress={handleButtonPress}>
+                    <MaterialCommunityIcons name={"login"} style={{ marginRight: 10 }} size={25} color="#555" />
+                    <Text style={{ textAlign: "center", color: "#555" }} >
+                        {buttonText ? buttonText.toUpperCase() : "LOG IN"}
+                    </Text>
+                </PrimaryButton>
             </View>
         </View>
     );

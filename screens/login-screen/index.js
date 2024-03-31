@@ -13,12 +13,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
-import * as actionCreators from "../../action-creators/session-action-creators";
-import logo from "../../assets/images/2021_sticker_glowed.png";
-import LoginForm from "../../components/login-form";
-import { defaultStyles } from "../../styles/default-styles";
+import * as actionCreators from "@/action-creators/session-action-creators";
+import logo from "@/assets/images/2021_sticker_glowed.png";
+import LoginForm from "@/components/login-form";
+import { defaultStyles } from "@/styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as constants from "../../styles/constants";
+import * as constants from "@/styles/constants";
 import Divider from "@/components/divider";
 import { SecondaryButton } from "@/components/button";
 
@@ -77,8 +77,7 @@ const myStyles = {
     }
 };
 
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 
 type PropsType = {
     actions: Object,

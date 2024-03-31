@@ -3,6 +3,8 @@ const tintColor = "#2f95dc";
 export default Object.freeze({
     white: "#fff",
     black: "#000",
+    inputText: "#666",
+    buttonText: "#555",
     backgroundLight: "#EEE",
     backgroundDark: "#2c2c2c",
     placeholderText: "#bbb",
