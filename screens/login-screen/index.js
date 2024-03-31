@@ -101,21 +101,21 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                     { cancelable: false }
                 ) : null
             }
-            <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, justifyContent: "flex-end" } }>
+            <View style={ { paddingLeft: 20, paddingRight: 20 } }>
                 <HideWithKeyboard>
                     <View style={ styles.logo }>
                         <Image source={ logo } style={ { height: 120, width: 120 } }/>
                     </View>
                 </HideWithKeyboard>
-                <View style={ { width: "100%" } }>
+                <View>
                     <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
                     <Divider/>
-                    <View style={ { marginTop: 40, flexDirection: 'row' } } styleName="horizontal">
+                    <View style={ { marginTop: 40, flexDirection: 'row', justifyContent: 'space-between' } }>
                         <SecondaryButton
                             onPress={ () => {
                                 navigation.navigate("ForgotPassword");
                             } }
-                            style={ { marginRight: 10 } }
+                            style={ { width: '48%' } }
                         >
                             <MaterialCommunityIcons
                                 name={ "account-convert" }
@@ -129,7 +129,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                             onPress={ () => {
                                 navigation.navigate("CreateNewAccount");
                             } }
-                            style={ { marginLeft: 10 } }
+                            style={ { width: '48%' } }
                         >
                             <MaterialCommunityIcons
                                 name={ "account-plus" }

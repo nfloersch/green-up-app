@@ -1,14 +1,19 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { Alert, StyleSheet } from "react-native";
-import { isValidEmail } from "../../libs/validators";
-import { defaultStyles } from "../../styles/default-styles";
-import { Button, Text, Subtitle, TextInput, View } from "@shoutem/ui";
+import {
+    Alert,
+    StyleSheet,
+    View,
+    Text,
+} from "react-native";
+import { isValidEmail } from "@/libs/validators";
+import { defaultStyles } from "@/styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TextInput } from "../inputs";
+import { PrimaryButton } from "../button";
 
 const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 
 type PropsType = {
     buttonText: string,
@@ -41,52 +46,51 @@ export const CreateAccountForm = ({ buttonText, createUserError, createAccount }
 
     return (
         <View>
-            <View style={ styles.formControl }>
-                <Text style={ styles.label }>{ "Email" }</Text>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>{"Email"}</Text>
                 <TextInput
                     autoCapitalize="none"
-                    autoCorrect={ false }
+                    autoCorrect={false}
                     placeholder="janedoe@example.com"
-                    value={ email }
-                    onChangeText={ setEmail }
-                    underlineColorAndroid={ "transparent" }
+                    value={email}
+                    onChangeText={setEmail}
+                    underlineColorAndroid={"transparent"}
                 />
             </View>
-            <View style={ styles.formControl }>
-                <Text style={ styles.label }>Password</Text>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>Password</Text>
                 <TextInput
                     autoCapitalize="none"
-                    autoCorrect={ false }
-                    placeholder={ "*****" }
-                    secureTextEntry={ true }
-                    value={ password }
-                    onChangeText={ setPassword }
-                    underlineColorAndroid={ "transparent" }
+                    autoCorrect={false}
+                    placeholder={"*****"}
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
+                    underlineColorAndroid={"transparent"}
                 />
             </View>
-            <View style={ styles.formControl }>
-                <Text style={ styles.label }>Name</Text>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>Name</Text>
                 <TextInput
-                    autoCorrect={ false }
-                    placeholder={ "Jane Doe" }
-                    value={ displayName }
-                    onChangeText={ setDisplayName }
-                    underlineColorAndroid={ "transparent" }
+                    autoCorrect={false}
+                    placeholder={"Jane Doe"}
+                    value={displayName}
+                    onChangeText={setDisplayName}
+                    underlineColorAndroid={"transparent"}
                 />
             </View>
-            <View style={ styles.formControl }>
-                <Button onPress={ onButtonPress }
-                    styleName={ "primary" }
-                    style={ { marginTop: 20, padding: 10, paddingLeft: 20, paddingRight: 20 } }
+            <View style={styles.formControl}>
+                <PrimaryButton onPress={onButtonPress}
+                    styleName={"primary"}
+                    style={{ marginTop: 20, padding: 10, paddingLeft: 20, paddingRight: 20 }}
                 >
-                    <MaterialCommunityIcons name={ "account-plus" } style={ { marginRight: 10 } } size={ 25 } color="#555"/>
-                    <Subtitle
-                        styleName={ "bold" }
-                        style={ { textAlign: "center", color: "#555" } }
+                    <MaterialCommunityIcons name={"account-plus"} style={{ marginRight: 10 }} size={25} color="#555" />
+                    <Text
+                        style={{ textAlign: "center", color: "#555" }}
                     >
-                        { buttonText ? buttonText.toUpperCase() : "CREATE ACCOUNT" }
-                    </Subtitle>
-                </Button>
+                        {buttonText ? buttonText.toUpperCase() : "CREATE ACCOUNT"}
+                    </Text>
+                </PrimaryButton>
             </View>
         </View>
     );
