@@ -1,8 +1,8 @@
 // @flow
 import React from "react";
-import { Text } from "@shoutem/ui";
 import { View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text } from "../text";
 
 type PropsType = { tag: string, text: string, onToggle: string => void, drop: Object, style?: Object };
 

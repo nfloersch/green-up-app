@@ -20,7 +20,7 @@
 // import { ListView, GridRow, ImageBackground, Tile, Subtitle, Title, Card, Image, Caption } from "@shoutem/ui";
 // import * as constants from "../../styles/constants";
 // import Celebration from "../../models/celebration";
-// import Divider from "@/components/divider";
+// import { LineDivider } from "@/components/divider";
 
 // const styles = StyleSheet.create(defaultStyles);
 // const iconStyle = {
@@ -67,7 +67,7 @@
 //                             <Subtitle styleName="sm-gutter-horizontal">{ rowData[0].name }</Subtitle>
 //                         </Tile>
 //                     </ImageBackground>
-//                     <Divider/>
+//                     <LineDivider/>
 //                 </TouchableOpacity>
 //             );
 //         }

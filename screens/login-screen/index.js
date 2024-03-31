@@ -19,7 +19,7 @@ import LoginForm from "@/components/login-form";
 import { defaultStyles } from "@/styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as constants from "@/styles/constants";
-import Divider from "@/components/divider";
+import { LineDivider } from "@/components/divider";
 import { SecondaryButton } from "@/components/button";
 
 const myStyles = {
@@ -109,7 +109,7 @@ const Login = ({ actions, loginError, navigation }: PropsType): React$Element<an
                 </HideWithKeyboard>
                 <View>
                     <LoginForm onButtonPress={ actions.loginWithEmailPassword }/>
-                    <Divider/>
+                    <LineDivider/>
                     <View style={ { marginTop: 40, flexDirection: 'row', justifyContent: 'space-between' } }>
                         <SecondaryButton
                             onPress={ () => {

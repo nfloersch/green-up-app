@@ -32,7 +32,7 @@ import * as constants from "../../styles/constants";
 import * as R from "ramda";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { findTownIdByCoordinates } from "../../libs/geo-helpers";
-import Divider from "@/components/divider";
+import { LineDivider } from "@/components/divider";
 
 const myStyles = {
     selected: {
@@ -266,7 +266,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                     </Button>
                                 </View>
                             </View>
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Clean Up Site" }</Text>
                                 <TextInput
@@ -293,7 +293,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                     <Text>{ "REMOVE MARKER" }</Text>
                                 </Button>
                             </View>
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.alertInfo }>
                                     { dateRangeMessage }
@@ -364,7 +364,7 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
                                     />
                                 </View>
                             </View>
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Team Information" }</Text>
                                 <TextInput

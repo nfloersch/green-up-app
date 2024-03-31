@@ -23,7 +23,7 @@ import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "@/components/tag-toggle";
 import { isInGreenUpWindow } from "@/libs/green-up-day-calucators"; // TODO: Add out of window warning
 import { findTownIdByCoordinates } from "@/libs/geo-helpers";
-import Divider from "@/components/divider";
+import {LineDivider} from "@/components/divider";
 import { SecondaryButton } from "../button";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number }, error: any };
@@ -394,7 +394,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
                                         <TownInformation townInfo={ currentTown } hideOnError={ true }/>
 
-                                        <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                                        <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
 
                                         { getDropButtons() }
 

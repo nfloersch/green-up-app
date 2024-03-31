@@ -5,15 +5,15 @@ Text
 
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Caption } from "@shoutem/ui";
+import { Caption as SHCaption } from "@shoutem/ui";
 import { defaultStyles } from "@/styles/default-styles";
 import moment from "moment";
 import Address from "@/models/address";
 import MiniMap from "../mini-map";
 import ButtonBar from "../button-bar/";
 import Coordinates from "@/models/coordinates";
-import Divider from "../divider";
-import { Title, Subtitle } from "../text";
+import { TextDivider } from "../divider";
+import { Title, Subtitle, Caption } from "../text";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -30,24 +30,22 @@ export const SupplyDistributionSiteDetails = ({ site, closeModal, towns }: Props
         <ScrollView style={ styles.scroll }>
             <View style={ { paddingTop: 10 } }>
                 <Title>{ site.name }</Title>
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>{ "INFORMATION" }</Caption>
-                </Divider>
+                </TextDivider>
                 <View style={ { padding: 10, backgroundColor: "white" } }>
                     <Subtitle style={{color: 'black'}}>{ (towns[site.townId] || {}).name }</Subtitle>
                     <Text>{ site.notes }</Text>
                     <Text>{ site.start ? moment(site.start).format("MM DD YYYY HH:MM:A") : null }</Text>
                     <Text>{ site.end ? moment(site.end).format("MM DD YYYY HH:MM:A") : null }</Text>
                 </View>
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>{ "Location" }</Caption>
-                </Divider>
+                </TextDivider>
                 <View style={ { padding: 10, backgroundColor: "white" } }>
                     <Subtitle style={{ textAlign: 'left', color: '#222'}}>{ Address.toString(site.address) }</Subtitle>
                     {
