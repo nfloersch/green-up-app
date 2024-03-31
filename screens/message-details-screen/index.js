@@ -1,32 +1,33 @@
 // @flow
 import React, { Fragment } from "react";
-import { StyleSheet, Image, ScrollView } from "react-native";
+import { StyleSheet, Image, ScrollView,
+Text,
+View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
-import { defaultStyles } from "../../styles/default-styles";
-import * as constants from "../../styles/constants";
-import { View, Text, Title } from "@shoutem/ui";
+import { defaultStyles } from "@/styles/default-styles";
+import * as constants from "@/styles/constants";
 
 const myStyles = { messageHeader: { margin: 5 } };
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 
 type PropsType = {
     messages: Object,
-    navigation: Object,
+    route: Object,
     teams: Object
 };
 
-const MessageDetailsScreen = ({ messages, navigation, teams }: PropsType): React$Element<View> => {
+const MessageDetailsScreen = ({ messages, route, teams }: PropsType): React$Element<View> => {
 
-    const message = messages[navigation.state.params.messageId];
+    const message = messages[route.params.messageId];
     const teamId = message.teamId;
     const team = teams[teamId] || {};
     return (
         <SafeAreaView style={ styles.container }>
             {
                 !message
-                    ? (<Title>{ "Oops, sorry.  We could not find that message" }</Title>)
+                    ? (<Text>{ "Oops, sorry.  We could not find that message" }</Text>)
                     : (
                         <Fragment>
                             <View style={ {
