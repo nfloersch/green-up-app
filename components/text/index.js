@@ -1,5 +1,6 @@
 // @flow
 import { Title } from "./title";
 import { Subtitle } from "./subtitle";
+import { Text } from "./text";
 
-export { Title, Subtitle }
+export { Text, Title, Subtitle }
