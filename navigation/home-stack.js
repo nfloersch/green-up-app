@@ -10,7 +10,7 @@ import FreeSuppliesScreen from "../screens/free-supplies-screen";
 import GreenUpFactsScreen from "../screens/green-up-facts-screen";
 import TeamDetailsScreen from "../screens/team-details-screen";
 import TeamEditorScreen from "../screens/team-editor-screen";
-import CelebrationDetailsScreen from "../components/celebration-details";
+// import CelebrationDetailsScreen from "../components/celebration-details";
 import RecordTrashScreen from "../screens/record-trash-screen";
 
 const Stack = createStackNavigator();
@@ -47,11 +47,11 @@ export default function HomeStack() {
                 component={GreenUpFactsScreen}
                 options={GreenUpFactsScreen.navigationOptions}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="CelebrationDetails"
                 component={CelebrationDetailsScreen}
                 options={CelebrationDetailsScreen.navigationOptions}
-            />
+            /> */}
             <Stack.Screen
                 name="RecordTrash"
                 component={RecordTrashScreen}
