@@ -292,7 +292,7 @@ const HomeScreen = ({ actions, currentUser, navigation, myTeams, teams }: PropsT
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: constants.colorBackgroundDark }]}>
             <FlatList data={menuItems} renderItem={renderOne} horizontal={false} numColumns={2}
-                ListHeaderComponent={renderFeatured({ item: featuredMenuItem[0] })}
+                ListHeaderComponent={featuredMenuItem ? renderFeatured({ item: featuredMenuItem[0] }) : null}
             ></FlatList>
         </SafeAreaView>
     );
