@@ -1,7 +1,6 @@
 // @flow
 import React, { Fragment } from "react";
-
-import { Text } from "@shoutem/ui";
+import { Text } from "react-native";
 
 import Address from "../../models/address";
 

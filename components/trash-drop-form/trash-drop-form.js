@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import EnableLocationServices from "../../components/enable-location-services";
-import { Button } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
 import TownInformation from "../town-information";

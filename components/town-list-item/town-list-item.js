@@ -1,8 +1,7 @@
 // @flow
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { Text } from "@shoutem/ui";
 
 type PropsType = { town: { townName: string }, onClick: any => void };
 
