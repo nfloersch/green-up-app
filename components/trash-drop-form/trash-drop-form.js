@@ -7,10 +7,12 @@ import {
     TextInput,
     ScrollView,
     Modal,
-    Picker
+    View,
+    Text,
 } from "react-native";
+import {Picker} from '@react-native-picker/picker';
 import EnableLocationServices from "../../components/enable-location-services";
-import { Text, Button, Title, View } from "@shoutem/ui";
+import { Button } from "@shoutem/ui";
 import { defaultStyles } from "../../styles/default-styles";
 import { SafeAreaView } from "react-native";
 import TownInformation from "../town-information";
@@ -21,8 +23,9 @@ import ButtonBar from "../button-bar";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import TagToggle from "../../components/tag-toggle";
 import { isInGreenUpWindow } from "../../libs/green-up-day-calucators"; // TODO: Add out of window warning
-import { findTownIdByCoordinates } from "../../libs/geo-helpers";
+import { findTownIdByCoordinates } from "@/libs/geo-helpers";
 import Divider from "@/components/divider";
+import { SecondaryButton } from "../button";
 
 type LocationType = { id: string, name: string, coordinates: { longitude: number, latitude: number }, error: any };
 
@@ -152,18 +155,19 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
         [
             R.always(currentTown.allowsRoadside),
             () => (
-                <Button styleName="confirmation secondary">
-                    <FontAwesome size={ 30 } style={ { color: "#DDD", marginBottom: 10 } } name={ "map-marker" }/>
-                    <Text>Drop Bag Here</Text>
-                </Button>
+                <>
+                <SecondaryButton>
+                     <FontAwesome size={ 30 } style={ { color: "#DDD", marginRight: 10 } } name={ "map-marker" }/>
+                    <Text style={{color: 'white'}}>Drop Bag Here</Text>
+                </SecondaryButton>
+                </>
             )
         ],
         [
             R.T,
             () => (
                 <View style={ { width: "100%", height: 60 } }>
-                    <Button
-                        styleName={ "full-width  secondary" }
+                    <SecondaryButton
                         onPress={ () => {
                             setModal("site-selector");
                         } }>
@@ -173,8 +177,8 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                             style={ { marginRight: 10 } }
                             color={ "#555" }
                         />
-                        <Text>{ "Find a trash collection site" }</Text>
-                    </Button>
+                        <Text style={{color: 'white'}}>{ "Find a trash collection site" }</Text>
+                    </SecondaryButton>
                 </View>)
         ]
     ]);
@@ -265,7 +269,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                     { "This drop is for team:" }
                                                                 </Text>
                                                                 <View
-                                                                    style={ { backgroundColor: "white", padding: 20 } }>
+                                                                    style={ { backgroundColor: "white", padding: 2.5 } }>
                                                                     <Picker
                                                                         selectedValue={ drop.teamId }
                                                                         onValueChange={ pvalue => setDrop({

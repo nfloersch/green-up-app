@@ -41,10 +41,10 @@ const routes = [
     { key: "bagTagger", title: "Bag Tagger" }
 ];
 
-const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites, trashDrops }: PropsType): React$Element<any> => {
+const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, route, townInfo, userLocation, trashCollectionSites, trashDrops }: PropsType): React$Element<any> => {
     const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
-    const existingDrop = navigation.getParam("existingDrop", null);
+    const existingDrop = route.params?.existingDrop || null;
 
 
 

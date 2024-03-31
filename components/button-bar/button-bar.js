@@ -43,6 +43,7 @@ export const ButtonBar = ({ buttonConfigs }: PropsType): React$Element<any> => (
                     <PrimaryButton
                         key={ index }
                         onPress={ config.onClick }
+                        style={{width: `${100 / buttonConfigs.length}%`}}
                     >
                         <Text>{ config.text.toUpperCase() }</Text>
                     </PrimaryButton>
