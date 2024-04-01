@@ -1,7 +1,7 @@
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
 module.exports = ({ config }) => {
     // ENVIRONMENT is set from eas.json to set the build environment contexts
-    const targetEnvirnoment = process.env.ENVIRONMENT ?? 'local'
+    const targetEnvirnoment = process.env.GREENUP_ENVIRONMENT ?? 'local'
     const firebaseTarget = require(`./firebase-config.${targetEnvirnoment}.js`)
     require('dotenv').config();
 

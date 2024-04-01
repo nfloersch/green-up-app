@@ -1,7 +1,4 @@
 {
-  "cli": {
-    "version": ">= 7.6.0"
-  },
   "build": {
     "base": {
       "env": {}
@@ -12,7 +9,7 @@
       "channel": "dev",
       "developmentClient": false, // May be worthwhile in the future, but for now Expo Go is fine
       "env": {
-        "ENVIRONMENT": "dev"
+        "GREENUP_ENVIRONMENT": "dev"
       }
     },
     "qa": {
@@ -20,7 +17,7 @@
       "distribution": "internal",
       "channel": "qa",
       "env": {
-        "ENVIRONMENT": "qa"
+        "GREENUP_ENVIRONMENT": "qa"
       },
       "android": {
         "buildType": "apk"
@@ -31,7 +28,7 @@
       "distribution": "store",
       "channel": "production",
       "env": {
-        "ENVIRONMENT": "production"
+        "GREENUP_ENVIRONMENT": "prod"
       }
     }
   },
