@@ -9,7 +9,7 @@ module.exports = ({ config }) => {
         ...config,
         updates: {
             ...config.updates,
-            url: process.env.EXPO_UPDATE_URL
+            url: process.env.EAS_UPDATE_URL
         },
         extra: {
             ...config.extra,
