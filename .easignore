@@ -25,6 +25,7 @@
 !/screens
 !/store
 !/styles
+!App.js
 !.babelrc
 !.eslintrc
 !.firebaserc
