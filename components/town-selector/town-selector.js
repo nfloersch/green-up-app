@@ -1,7 +1,6 @@
 // @flow
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Text } from "@shoutem/ui";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 import { defaultStyles } from "../../styles/default-styles";
 

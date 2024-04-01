@@ -4,17 +4,20 @@ import { Image, StyleSheet, Text, ScrollView, View, TouchableHighlight, Alert } 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as actionCreators from "../../action-creators/team-action-creators";
-import { defaultStyles } from "../../styles/default-styles";
-import * as teamMemberStatuses from "../../constants/team-member-statuses";
-import User from "../../models/user";
-import MemberIcon from "../../components/member-icon";
-import TownItem from "../../components/town-item";
-import MiniMap from "../../components/mini-map";
-import * as constants from "../../styles/constants";
-import { Divider, Caption, Title } from "@shoutem/ui";
-import ButtonBar from "../../components/button-bar";
+import * as actionCreators from "@/action-creators/team-action-creators";
+import { defaultStyles } from "@/styles/default-styles";
+import * as teamMemberStatuses from "@/constants/team-member-statuses";
+import User from "@/models/user";
+import MemberIcon from "@/components/member-icon";
+import TownItem from "@/components/town-item";
+import MiniMap from "@/components/mini-map";
+import * as constants from "@/styles/constants";
+import ButtonBar from "@/components/button-bar";
 import * as R from "ramda";
+import { Title } from "@/components/text";
+import { Caption } from "@/components/text";
+import { TextDivider } from "@/components/divider";
+
 
 const myStyles = {
     memberStatusBanner: {
@@ -305,16 +308,13 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
         <SafeAreaView style={ styles.container }>
             <ButtonBar buttonConfigs={ headerButtons() }/>
             <ScrollView style={ [styles.scroll, { padding: 20 }] }>
-                <Title style={ { textAlign: "center", color: "white" } }>
-                    { selectedTeam.name }
-                </Title>
+                <Title>{selectedTeam.name}</Title>
                 { getMemberStatus() }
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>{ "INFORMATION" }</Caption>
-                </Divider>
+                </TextDivider>
                 <View style={ { width: "100%", backgroundColor: "white", padding: 20 } }>
                     <Text style={ styles.dataBlock }>
                         <Text style={ styles.text }>{ "Owner: " }</Text>
@@ -345,12 +345,11 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
                     }
                 </View>
 
-                <Divider
-                    styleName="section-header"
-                    style={ { backgroundColor: "#FFFFFFAA", marginTop: 20 } }
+                <TextDivider
+                    style={ { backgroundColor: "#FFFFFFAA" } }
                 >
                     <Caption>   { "CLEANING LOCATION" }</Caption>
-                </Divider>
+                </TextDivider>
 
                 {
                     (selectedTeam.locations || []).length > 0

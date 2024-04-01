@@ -6,7 +6,8 @@ import {
     Modal,
     Text,
     TouchableOpacity,
-    View
+    View,
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
@@ -21,7 +22,6 @@ import * as actionCreators from "../../action-creators/team-action-creators";
 import * as constants from "../../styles/constants";
 import ButtonBar from "../button-bar/";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { ListView } from "@shoutem/ui";
 import { getGravatar } from "../../models/user";
 
 const myStyles = {
@@ -68,7 +68,8 @@ const MemberItem = ({ item }: MemberPropsType): React$Element<any> => (
             flex: 1,
             flexDirection: "row",
             borderBottomWidth: 1,
-            borderColor: "#AAA"
+            borderColor: "#AAA",
+            backgroundColor: "#FFF",
         } }>
             <View style={ {
                 flex: 1,
@@ -176,10 +177,7 @@ const TeamMembersEditor = ({ actions, team, members, requests, invitations }: Pr
                 flex: 1,
                 backgroundColor: constants.colorBackgroundLight
             } }>
-                <ListView
-                    data={ memberRowData }
-                    renderRow={ item => (<MemberItem item={ item }/>) }
-                />
+                <FlatList data={memberRowData} renderItem={ ({item}) => (<MemberItem item={item} />)}  />
             </View>
             <Modal
                 animationType={ "slide" }

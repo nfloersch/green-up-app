@@ -1,7 +1,6 @@
 // @flow
 import React, { useEffect, useState } from "react";
-import { Modal, View } from "react-native";
-import { ListView } from "@shoutem/ui";
+import { FlatList, Modal, View } from "react-native";
 import TrashInfo from "../trash-info";
 import { TownDisposalDetails } from "../town-disposal-details/town-disposal-details";
 import type Location from "../../models/location";
@@ -9,6 +8,7 @@ import { searchArray } from "../../libs/search";
 import SearchBar from "../search-bar";
 import TownListItem from "../town-list-item";
 import TrashCollectionSite from "../../models/trash-collection-site";
+import colors from "@/constants/colors";
 
 const searchableFields = ["name", "townName", "address", "townId"];
 
@@ -42,17 +42,17 @@ export const DisposalSiteSelector = ({ userLocation, townInfo }: PropsType): Rea
                 search={ setSearchTerm }
                 userLocation={ userLocation }
             />
-
-            <ListView
-                data={ searchTerm ? searchResults : townInfo }
-                renderRow={ town => (
-                    <TownListItem
-                        town={ town }
-                        onClick={ () => {
-                            setSelectedTown(town);
-                            setIsModalVisible(true);
-                        } }/>
-                ) }
+            <FlatList 
+                style={{backgroundColor: colors.backgroundLight}}
+                    data={ searchTerm ? searchResults : townInfo }
+                    renderItem={ ({item}) => (
+                        <TownListItem
+                            town={ item }
+                            onClick={ () => {
+                                setSelectedTown(item);
+                                setIsModalVisible(true);
+                            } }/>
+                    ) }
             />
             <Modal
                 animationType={ "slide" }

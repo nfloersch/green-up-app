@@ -29,7 +29,7 @@ Make sure you have the configuration files necessary to deploy the app.
 You will also need the appropriate environment variables and credentials set in order to interact with any of the tooling.
 Make sure you have an `.env` file in place with two values:
 EAS_PROJECT_ID="<replace me>"
-EXPO_UPDATE_URL="<replace me>"
+EAS_UPDATE_URL="<replace me>"
 
 # Validating Configuration
 Before submitting builds to EAS it can be useful to see what the app configuration might look like.

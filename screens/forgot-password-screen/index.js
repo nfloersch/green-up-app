@@ -4,24 +4,25 @@ import React, { useState, Fragment } from "react";
 import {
     Alert,
     StyleSheet,
+    View,
+    Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { isValidEmail } from "../../libs/validators";
-import * as actionCreators from "../../action-creators/session-action-creators";
-import { defaultStyles } from "../../styles/default-styles";
-import { Button, Text, Title, Subtitle, TextInput, View } from "@shoutem/ui";
+import { isValidEmail } from "@/libs/validators";
+import * as actionCreators from "@/action-creators/session-action-creators";
+import { defaultStyles } from "@/styles/default-styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as constants from "../../styles/constants";
-
+import * as constants from "@/styles/constants";
+import { TextInput } from "@/components/inputs";
+import { PrimaryButton, SecondaryButton } from "@/components/button";
 
 const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({ ...defaultStyles, ...myStyles });
 
 type PropsType = {
-    actions: { resetPassword: string=>void },
+    actions: { resetPassword: string=> void },
     navigation: { goBack: any => void }
 };
 
@@ -42,75 +43,66 @@ const Index = ({ actions, navigation }: PropsType): React$Element<any> => {
     };
 
     return (
-        <SafeAreaView style={ styles.container }>
-            <View style={ { paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 } }>
-                { passwordResetSent
+        <SafeAreaView style={styles.container}>
+            <View style={{ paddingLeft: 20, paddingRight: 20, flex: 1, paddingTop: 50 }}>
+                {passwordResetSent
                     ? (
                         <Fragment>
-                            <View style={ { ...styles.formControl, marginBottom: 40 } }>
-                                <Title style={ {
+                            <View style={{ ...styles.formControl, marginBottom: 40 }}>
+                                <Text style={{
                                     textAlign: "left",
                                     color: "#FFF"
-                                } }>
-                                    { "A link to reset your password has been sent to your email." }
-                                </Title>
+                                }}>
+                                    {"A link to reset your password has been sent to your email."}
+                                </Text>
                             </View>
-                            <View style={ styles.formControl }>
-                                <Button
-                                    styleName={ "secondary" }
-                                    style={ { padding: 10, paddingLeft: 20, paddingRight: 20 } }
-                                    onPress={ () => {
+                            <View style={styles.formControl}>
+                                <SecondaryButton
+                                    onPress={() => {
                                         navigation.goBack();
-                                    } }
+                                    }}
                                 >
-                                    <Subtitle styleName={ "bold" }
-                                        style={ {
+                                    <Text
+                                        style={{
                                             textAlign: "center",
                                             color: "#FFF"
-                                        } }>{ "RETURN TO LOGIN" }</Subtitle>
-                                </Button>
+                                        }}>{"RETURN TO LOGIN"}</Text>
+                                </SecondaryButton>
                             </View>
                         </Fragment>
                     )
                     : (
                         <Fragment>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "Email Address" }</Text>
+                            <View style={styles.formControl}>
+                                <Text style={styles.label}>{"Email Address"}</Text>
                                 <TextInput
-                                    autoCorrect={ false }
-                                    value={ email }
+                                    autoCorrect={false}
+                                    value={email}
                                     keyBoardType="email-address"
                                     placeholder="you@domain.com"
-                                    onChangeText={ setEmail }
-                                    underlineColorAndroid={ "transparent" }
+                                    onChangeText={setEmail}
+                                    underlineColorAndroid={"transparent"}
                                 />
                             </View>
-                            <View style={ styles.formControl }>
-                                <Button onPress={ onButtonPress }
-                                    styleName={ "primary" }
-                                    style={ {
-                                        padding: 10,
-                                        paddingLeft: 20,
-                                        paddingRight: 20
-                                    } }
-                                >
+                            <View style={styles.formControl}>
+                                <PrimaryButton onPress={onButtonPress}>
                                     <MaterialCommunityIcons
-                                        name={ "account-convert" }
-                                        style={ { marginRight: 10 } }
-                                        size={ 25 }
+                                        name={"account-convert"}
+                                        style={{ marginRight: 10 }}
+                                        size={25}
                                         color="#555"
                                     />
-                                    <Subtitle
-                                        styleName={ "bold" }
-                                        style={ {
+                                    <Text
+                                        styleName={"bold"}
+                                        style={{
                                             textAlign: "center",
                                             color: "#555",
                                             fontFamily: "Rubik-Regular"
-                                        } }
+                                        }}
                                     >
-                                        { "RESET PASSWORD" }
-                                    </Subtitle>
-                                </Button>
+                                        {"RESET PASSWORD"}
+                                    </Text>
+                                </PrimaryButton>
                             </View>
                         </Fragment>
                     )

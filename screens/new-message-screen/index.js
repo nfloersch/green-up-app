@@ -6,21 +6,21 @@ import {
     StyleSheet,
     View,
     Text,
-    TextInput
 } from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import User from "../../models/user";
-import * as actionCreators from "../../action-creators/message-action-creators";
-import Message from "../../models/message";
-import { defaultStyles } from "../../styles/default-styles";
-import * as messageTypes from "../../constants/message-types";
-import { removeNulls } from "../../libs/remove-nulls";
-import Team from "../../models/team";
-import * as constants from "../../styles/constants";
-import ButtonBar from "../../components/button-bar";
+import User from "@/models/user";
+import * as actionCreators from "@/action-creators/message-action-creators";
+import Message from "@/models/message";
+import { defaultStyles } from "@/styles/default-styles";
+import * as messageTypes from "@/constants/message-types";
+import { removeNulls } from "@/libs/remove-nulls";
+import Team from "@/models/team";
+import * as constants from "@/styles/constants";
+import ButtonBar from "@/components/button-bar";
+import { TextInput } from "@/components/inputs";
 
 const styles = StyleSheet.create(defaultStyles);
 
@@ -100,6 +100,7 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                         ? (
                             <Fragment>
                                 <Text style={ styles.label }>{ "To:" }</Text>
+                                <View style={ { backgroundColor: "white", padding: 2.5 } }>
                                 <Picker
                                     selectedValue={ currentTeamId }
                                     itemStyle={ { backgroundColor: "#FFFF99", color: "black" } }
@@ -108,6 +109,7 @@ const NewMessageScreen = ({ actions, currentUser, navigation, selectedTeamId }: 
                                     } }>
                                     { items }
                                 </Picker>
+                                </View>
                             </Fragment>
                         )
                         : (<Text style={ styles.largeText }>{ `To: ${ (teamHash[currentTeamId] || {}).name }` }</Text>)

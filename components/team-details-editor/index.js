@@ -20,8 +20,7 @@ import * as colors from "../../styles/constants";
 import * as constants from "../../styles/constants";
 import * as R from "ramda";
 import TeamDetailsForm from "../team-details-form";
-import Divider from "@/components/divider";
-import {  Button, TextInput } from "@shoutem/ui";
+import { LineDivider } from "@/components/divider";
 
 const myStyles = {
     danger: {
@@ -90,7 +89,7 @@ const TeamDetailsEditor = ({ actions, currentUser, navigation, otherCleanAreas, 
             onSave={ saveTeam }
             otherCleanAreas={ otherCleanAreas }
             team={ selectedTeam }>
-            <Divider/>
+            <LineDivider/>
             <View style={ { marginTop: 20, marginBottom: 40 } }>
                 <TouchableHighlight
                     style={ styles.danger }

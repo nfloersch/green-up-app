@@ -4,21 +4,20 @@ import React from "react";
 import {
     StyleSheet,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
+    View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import CreateAccountForm from "../../components/create-account-form";
+import CreateAccountForm from "@/components/create-account-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as actionCreators from "../../action-creators/session-action-creators";
-import { defaultStyles } from "../../styles/default-styles";
-import { View } from "@shoutem/ui";
-import * as constants from "../../styles/constants";
+import * as actionCreators from "@/action-creators/session-action-creators";
+import { defaultStyles } from "@/styles/default-styles";
+import * as constants from "@/styles/constants";
 
 const myStyles = {};
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
+const styles = StyleSheet.create({...defaultStyles, ...myStyles});
 
 type PropsType = {
     actions: { createUser: any => void },
@@ -36,7 +35,6 @@ const Index = ({ actions, createUserError }: PropsType): React$Element<any> => (
                         createUserError={ createUserError }
                         createAccount={ actions.createUser }
                     />
-                    <View style={ { flex: 1 } }/>
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

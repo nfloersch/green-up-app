@@ -1,4 +1,5 @@
 // @flow
-import { Divider } from "./divider";
+import { LineDivider } from "./line-divider";
+import { TextDivider } from "./text-divider";
 
-export default Divider;
+export { LineDivider, TextDivider };

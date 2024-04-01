@@ -2,9 +2,8 @@
 import React, { Fragment } from "react";
 import { defaultStyles } from "../../styles/default-styles";
 import Address from "../../models/address";
-import { StyleSheet, ScrollView, View} from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Subtitle, Text, Title } from "@shoutem/ui";
 import moment from "moment";
 import MiniMap from "../mini-map";
 import ButtonBar from "../button-bar/";
@@ -12,6 +11,7 @@ import Coordinates from "../../models/coordinates";
 import TrashCollectionSite from "../../models/trash-collection-site";
 import { FontAwesome } from "@expo/vector-icons";
 import * as constants from "../../styles/constants";
+import { Text, Subtitle, Title } from "@/components/text";
 
 const myStyles = {
     location: {
@@ -51,7 +51,6 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
 
             <View style={{backgroundColor: "white", height: 30, borderTopRightRadius: 20, borderTopLeftRadius: 20, marginTop: 20}}>
             <Title
-                styleName="sm-gutter-horizontal"
                 style={ { color: constants.colorBackgroundDark, textAlign: "center", fontFamily: "Rubik-Bold", marginTop: 5, fontSize: 24} }>
                 { town.townName }
             </Title>
@@ -91,7 +90,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                         </View>
                     )
                 }
-                <View style={ { flex: 1, flexDirection: "row" } }>
+                <View style={ { flex: 1, flexDirection: "row", marginTop: 10, marginBottom: 10, } }>
                     <View style={ { position: "relative", height: 60, width: 60 } }>
                         {
                             !(town.allowsRoadside) &&
@@ -101,7 +100,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                     </View>
                     <View style={ { flexGrow: 1, flexShrink: 1, marginLeft: 5 } }>
                         <View style={ { flex: 1} }>
-                            <Text style={ { fontSize: 19 } }>
+                            <Text style={ {  fontSize: 19 } }>
                                 {
                                     town.allowsRoadside ? "You may drop your bags along the roadside." : "Roadside drop-off is not allowed. Please take your trash to the nearest collection site."
                                 }
@@ -121,7 +120,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                             </View>
                             { (town.collectionSites || []).map(site => (
                                 <View key={ site.id } style={ { padding: 10, backgroundColor: "white", marginTop: 5 } }>
-                                    <Subtitle>{ site.name }</Subtitle>
+                                    <Subtitle style={{ textAlign: 'left', color: '#222'}}>{ site.name }</Subtitle>
                                     {
                                         Boolean(site.start || site.end) && (
                                             <View style={ { marginTop: 5 } }>
@@ -137,7 +136,7 @@ export const TownDisposalDetails = ({ town, closeModal }: PropsType): React$Elem
                                             </View>
                                         )
                                     }
-                                    <Subtitle style={ { marginTop: 5 } }>{ Address.toString(site.address) }</Subtitle>
+                                    <Subtitle style={ { textAlign: 'left', color: '#222', marginTop: 5 } }>{ Address.toString(site.address) }</Subtitle>
                                     {
                                         Boolean((site.coordinates || {}).longitude && (site.coordinates || {}).latitude)
                                             ? (

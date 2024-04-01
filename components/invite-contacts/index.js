@@ -4,7 +4,8 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { bindActionCreators } from "redux";
@@ -16,8 +17,8 @@ import { isValidEmail, isInTeam } from "../../libs/validators";
 import * as R from "ramda";
 import * as constants from "../../styles/constants";
 import { ButtonBar } from "../button-bar/button-bar";
-import { ListView } from "@shoutem/ui";
 import { FontAwesome } from "@expo/vector-icons";
+import colors from "@/constants/colors";
 
 const myStyles = {};
 const combinedStyles = Object.assign({}, defaultStyles, myStyles);
@@ -93,6 +94,7 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
                 flexDirection: "row",
                 borderBottomWidth: 1,
                 borderColor: "#AAA",
+                backgroundColor: colors.white,
                 padding: 20
             } }>
                 <View style={ { width: 40, alignItems: "center", justifyContent: "center" } }>
@@ -114,10 +116,10 @@ const InviteContacts = ({ actions, closeModal, contacts, currentUser, selectedTe
                 flex: 1,
                 backgroundColor: constants.colorBackgroundLight
             } }>
-                <ListView
-                    contentContainerStyle={ { backgroundColor: constants.colorBackgroundLight } }
-                    data={ filterSortContacts(contacts) }
-                    renderRow={ renderRow }
+                <FlatList 
+                  style={ { backgroundColor: constants.white } }
+                  data={ filterSortContacts(contacts) }
+                  renderItem={({item}) => renderRow(item) }
                 />
             </View>
         </SafeAreaView>

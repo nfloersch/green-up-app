@@ -28,7 +28,7 @@ import ButtonBar from "@/components/button-bar";
 import { getCurrentGreenUpDay } from "@/libs/green-up-day-calucators";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { findTownIdByCoordinates } from "@/libs/geo-helpers";
-import Divider from "@/components/divider";
+import { LineDivider } from "@/components/divider";
 import colors from "@/constants/colors";
 import { PrimaryButton } from "@/components/button";
 const myStyles = {
@@ -304,7 +304,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                     </Pressable>
                                 </View>
                             </View>
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Clean Up Site" }</Text>
                                 <TextInput
@@ -331,7 +331,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                     <Text>{ "REMOVE MARKER" }</Text>
                                 </PrimaryButton>
                             </View>
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.alertInfo }>
                                     { dateRangeMessage }
@@ -400,7 +400,7 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                                 </View>
                             </View>
 
-                            <Divider style={ { marginTop: 20, marginBottom: 20 } }/>
+                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
                             <View style={ styles.formControl }>
                                 <Text style={ styles.label }>{ "Team Information" }</Text>
                                 <TextInput

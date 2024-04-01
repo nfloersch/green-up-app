@@ -1,9 +1,8 @@
 // @flow
-import React from "react";
-import { StyleSheet, View, TextInput, TouchableHighlight, Platform } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, TextInput, TouchableHighlight, Platform, Modal, Dimensions, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { defaultStyles } from "../../styles/default-styles";
-import { Button, Lightbox } from "@shoutem/ui";
 
 const localStyles = {
     searchBar: {
@@ -23,6 +22,19 @@ const localStyles = {
         padding: 2,
         color: "white",
         textAlign: "center"
+    },
+    modalWrapper: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999999999999,
+    },
+    modalView: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        borderRadius: 0,
+        alignItems: "center",
     }
 };
 const styles = StyleSheet.create(Object.assign({}, defaultStyles, localStyles));
@@ -34,13 +46,22 @@ type PropsType = {
     userLocation: Object
 };
 
-export const SearchBar = ({ help, userLocation, searchTerm = "", search }: PropsType): React$Element<View> => (
-    <View style={ styles.searchBar }>
-        <View style={ { flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "center" } }>
-            { Boolean(help) && (
-                <Lightbox
-                    renderHeader={ close => (
-                        <Button style={ {
+export const SearchBar = ({ help, userLocation, searchTerm = "", search }: PropsType): React$Element<View> => {
+    const [helpOpen, setHelpOpen] = useState(false);
+    return (
+        <View style={styles.searchBar}>
+            <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "center" }}>
+                <Ionicons
+                    name={Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline"}
+                    size={36}
+                    style={styles.iconStyle}
+                    onPress={() => setHelpOpen(true)} />
+                <View>
+                  
+                <View style={styles.modalWrapper}>
+                    <Modal visible={helpOpen} transparent={true} animationType="fade" style={{ backgroundColor: 'black' }} onRequestClose={() => setHelpOpen(false)} >
+                        <View style={styles.modalView}>{help}</View>
+                        <Pressable style={{
                             position: "absolute",
                             top: 40,
                             right: 10,
@@ -60,52 +81,48 @@ export const SearchBar = ({ help, userLocation, searchTerm = "", search }: Props
                             shadowOpacity: 0.25,
                             shadowRadius: 3.84,
                             elevation: 5
-                        } } onPress={ close }>
+                        }} onPress={() => setHelpOpen(false)}>
                             <Ionicons
-                                name={ Platform.OS === "ios" ? "ios-close" : "md-close" }
-                                size={ 30 }
+                                name={Platform.OS === "ios" ? "ios-close" : "md-close"}
+                                size={30}
                                 color="#888"
                             />
-                        </Button>) }
-                    backgroundColor={ "rgba(52, 52, 52, 0.8)" }
-                    pinchToZoom={ false }
-                    renderContent={ () => (help) }>
-                    <Ionicons
-                        name={ Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline" }
-                        size={ 36 }
-                        style={ styles.iconStyle }/>
-                </Lightbox>) }
-            <View style={ { flex: 1, flexDirection: "column", justifyContent: "center", paddingTop: 2 } }>
-                <TextInput
-                    keyBoardType={ "default" }
-                    onChangeText={ search }
-                    placeholder={ "Search" }
-                    style={ styles.searchTerm }
-                    value={ searchTerm }
-                    underlineColorAndroid={ "transparent" }
-                />
-            </View>
-            <TouchableHighlight
-                onPress={ () => {
-                    search("");
-                } }
-                style={ { height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 } }>
-                <Ionicons
-                    name={ Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline" }
-                    size={ 36 }
-                    style={ styles.iconStyle }/>
-            </TouchableHighlight>
-            <TouchableHighlight
-                onPress={ () => {
-                    search(userLocation.townId || "");
-                } }
-                style={ { height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 } }>
-                <Ionicons
-                    name={ Platform.OS === "ios" ? "md-locate" : "md-locate" }
-                    size={ 36 }
-                    style={ styles.iconStyle }/>
-            </TouchableHighlight>
-        </View>
-    </View>
-);
+                        </Pressable>
 
+                    </Modal>
+                </View>
+                </View>
+                <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", paddingTop: 2 }}>
+                    <TextInput
+                        keyBoardType={"default"}
+                        onChangeText={search}
+                        placeholder={"Search"}
+                        style={styles.searchTerm}
+                        value={searchTerm}
+                        underlineColorAndroid={"transparent"}
+                    />
+                </View>
+                <TouchableHighlight
+                    onPress={() => {
+                        search("");
+                    }}
+                    style={{ height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 }}>
+                    <Ionicons
+                        name={Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline"}
+                        size={36}
+                        style={styles.iconStyle} />
+                </TouchableHighlight>
+                <TouchableHighlight
+                    onPress={() => {
+                        search(userLocation.townId || "");
+                    }}
+                    style={{ height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 }}>
+                    <Ionicons
+                        name={Platform.OS === "ios" ? "md-locate" : "md-locate"}
+                        size={36}
+                        style={styles.iconStyle} />
+                </TouchableHighlight>
+            </View>
+        </View>
+    );
+}

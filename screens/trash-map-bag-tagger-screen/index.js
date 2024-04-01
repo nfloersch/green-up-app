@@ -20,7 +20,6 @@ import User from "../../models/user";
 import { removeNulls } from "../../libs/remove-nulls";
 import * as constants from "../../styles/constants";
 import Coordinates from "../../models/coordinates";
-import DisposalSiteSelector from "../../components/disposal-site-selector";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 const styles = StyleSheet.create(defaultStyles);
@@ -41,10 +40,10 @@ const routes = [
     { key: "bagTagger", title: "Bag Tagger" }
 ];
 
-const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, townInfo, userLocation, trashCollectionSites, trashDrops }: PropsType): React$Element<any> => {
+const BagTaggerScreen = ({ actions, teamOptions, currentUser, navigation, route, townInfo, userLocation, trashCollectionSites, trashDrops }: PropsType): React$Element<any> => {
     const [activeTab, setActiveTab] = useState(0);
     const navState = { index: activeTab, routes };
-    const existingDrop = navigation.getParam("existingDrop", null);
+    const existingDrop = route.params?.existingDrop || null;
 
 
 

@@ -5,7 +5,7 @@ import colors from '@/constants/colors';
 
 type PropsType = { style: Object };
 
-export const Divider = (props: PropsType): React$Element<View> => {
+export const LineDivider = (props: PropsType): React$Element<View> => {
     const { style, ...passThroughProps } = props;
     const dividerStyle = {
         ...style,
