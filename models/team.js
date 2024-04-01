@@ -25,6 +25,10 @@ export default class Team {
     owner: TeamMemberType;
     startdate: ?string;
     townId: ?string;
+    cleanDate: ?DateTime
+    cleanStartTime: ?DateTime
+    cleanEndTime: ?DateTime
+
 
     constructor(args: Object = {}) {
         this.active = typeof args.active === "boolean"
@@ -70,6 +74,15 @@ export default class Team {
             : null;
         this.townId = typeof args.townId === "string"
             ? args.townId
+            : null;
+        this.cleanDate = typeof args.cleanDate === "string"
+            ? new Date(args.cleanDate)
+            : null;
+        this.cleanStartTime = typeof args.cleanStartTime === "string"
+            ? new Date(args.cleanStartTime)
+            : null;
+        this.cleanEndTime = typeof args.cleanEndTime === "string"
+            ? new Date(args.cleanEndTime)
             : null;
     }
 

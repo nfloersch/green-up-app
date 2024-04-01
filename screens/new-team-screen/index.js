@@ -1,21 +1,20 @@
 // @flow
-import React, { useReducer } from "react";
+import { useReducer, useMemo } from "react";
 import {
     Alert,
     Keyboard,
     Platform,
     ScrollView,
+    View,
     StyleSheet,
     TouchableOpacity,
     KeyboardAvoidingView, TouchableWithoutFeedback
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Button, TextInput, Text } from "@shoutem/ui";
 import { fixAndroidTime } from "../../libs/fix-android-time";
 import MiniMap from "../../components/mini-map";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-//import DateTimePicker from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker"
 import * as actionCreators from "../../action-creators/team-action-creators";
 import moment from "moment";
@@ -33,16 +32,37 @@ import * as R from "ramda";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { findTownIdByCoordinates } from "../../libs/geo-helpers";
 import { LineDivider } from "@/components/divider";
+import { localeDate, localeTime } from '@/libs/datetime';
+import { PrimaryButton, SecondaryButton } from "@/components/button";
+import colors from "@/constants/colors";
+import { Text } from "@/components/text";
+import { TextInput } from "@/components/inputs";
 
 const myStyles = {
     selected: {
+        opacity: 0.65
+    },
+    publicButton: {
+        width: '50%',
+        backgroundColor: colors.white
+    },
+    publicText: {
+        fontSize: 12,
+        color: '#555'
+    },
+    privateButton: {
+        width: '50%',
+        backgroundColor: colors.backgroundDark
+    },
+    privateText: {
+        fontSize: 12,
+        color: 'white',
         opacity: 0.5
     }
 };
 
-const combinedStyles = Object.assign({}, defaultStyles, myStyles);
-const styles = StyleSheet.create(combinedStyles);
-const dateRangeMessage = `${ moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY") } is the next Green Up Day, but teams may choose to work up to one week before or after.`;
+const styles = StyleSheet.create({ ...defaultStyles, ...myStyles });
+const dateRangeMessage = `${moment(getCurrentGreenUpDay()).utc().format("dddd, MMM Do YYYY")} is the next Green Up Day, but teams may choose to work up to one week before or after.`;
 const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null): Object => ({
     team: Team.create({ owner }),
     startDateTimePickerVisible: false,
@@ -51,7 +71,7 @@ const freshState = (owner: UserType, initialMapLocation: ?CoordinatesType = null
     query: "",
     townId: "",
     locations: [],
-    date:  getCurrentGreenUpDay(),
+    date: getCurrentGreenUpDay(),
     end: null,
     startdate: null,
     initialMapLocation
@@ -61,7 +81,7 @@ const setTime = (date: Date, time: string): Date => {
     const day = date.getDate();
     // $FlowFixMe
     const year = date.getYear() + 1900;
-    return new Date(`${ year }-${ month }-${ day }T${ time }:00`);
+    return new Date(`${year}-${month}-${day}T${time}:00`);
     //return new Date(year, month, day, );
 };
 
@@ -87,9 +107,39 @@ type PropsType = {
     navigation: Object
 };
 
-const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsType): React$Element<any> => {
 
+const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }) => {
     const [state, dispatch] = useReducer(reducer, freshState(currentUser));
+
+    const startDateDisplay = useMemo(() => {
+        if (!state?.team?.cleanDate) {
+            return null;
+        }
+        const date = new Date(state.team.cleanDate);
+        return localeDate(date);
+        // previous property team.startdate
+        // new property team.cleanDate
+    }, [state.team.cleanDate]);
+
+    const startTimeDisplay = useMemo(() => {
+        if (!state?.team?.cleanStartTime) {
+            return null;
+        }
+        const date = new Date(state.team.cleanStartTime);
+        return localeTime(date);
+        // previous property team.date
+        // new property team.cleanStartTime
+    }, [state.team.cleanStartTime]);
+
+    const endTimeDisplay = useMemo(() => {
+        if (!state?.team?.cleanEndTime) {
+            return null;
+        }
+        const date = new Date(state.team.cleanEndTime);
+        return localeTime(date);
+        // previous property team.end
+        // new property team.cleanEndTime
+    }, [state.team.cleanEndTime]);
 
     const handleMapClick = (coordinates: Object) => {
         Keyboard.dismiss();
@@ -136,259 +186,290 @@ const NewTeam = ({ actions, currentUser, otherCleanAreas, navigation }: PropsTyp
         }
     };
 
-    const setTeamValue = (key: string): (any=>void) => (value: any) => {
+    const setTeamValue = (key: string): (any=> void) => (value: any) => {
         dispatch({
             type: "SET_TEAM_STATE",
             data: { [key]: value }
         });
     };
 
-    const setState = (data: Object): (()=>void) => () => {
-        dispatch({
-            type: "SET_STATE",
-            data
-        });
-    };
-
-    const handleDatePicked = (event: Event, pickedDate: Date) => {
-        const arr = pickedDate.toString().split(" ");
-        const date = `${ arr[0] } ${ arr[1] } ${ arr[2] } ${ arr[3] }`;
-        setTeamValue("date")(date);
-        setState({ datePickerVisible: false })();
-    };
-
-    const handleStartDatePicked = (event: Event, date: Date) => {
-        let start =  date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
-        if (Platform.OS === "android") {
-            start = fixAndroidTime(start);
-        }
-        console.log("new start: " + start);
-        setTeamValue("startdate")(start);
-        setState({ startDateTimePickerVisible: false })();
-    };
-
-    const handleEndDatePicked = (event: Event, date: Date) => {
-        let end = date.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit" });
-        if (Platform.OS === "android") {
-            end = fixAndroidTime(end);
-        }
-        console.log("new end: " + end);
-        setTeamValue("end")(end);
-        setState({ endDateTimePickerVisible: false })();
-    };
-
-    // DateTimePicker
-
-    const dateIsSelected = state.team.date === null;
-    const endIsSelected = state.team.end === null;
-    const startIsSelected = state.team.startdate === null;
-    const applyDateOffset = (date: Date, days: number): Date => {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    };
-    const eventDate = getCurrentGreenUpDay();
-    const defaultStartTime = setTime( eventDate, (state.team.startdate || "09:00"));
-    console.log("state.team.startdate:",state.team.startdate);
-    console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
-    const defaultEndTime = setTime( eventDate, (state.team.end || "17:00"));
-    console.log("state.team.end:",state.team.end);
-    console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
-    const minDate = applyDateOffset(eventDate, -6);
-    const maxDate = applyDateOffset(minDate, 364);
-    const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
-
-    const pinsConfig = state.team.locations
-        .map(l => ({
-            coordinates: l.coordinates,
-            title: state.team.name,
-            description: "Click here to remove pin",
-            onCalloutPress: removeMarker,
-            color: "green"
-        }))
-        .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
-
-    return (
-
-        <SafeAreaView style={ styles.container }>
-            <ButtonBar buttonConfigs={ headerButtons }/>
-
-                <KeyboardAvoidingView
-                    keyboardVerticalOffset={ 100 }
-                    style={ { flex: 1 } }
-                    behavior={ Platform.OS === "ios" ? "padding" : null }
-                >
-                    <View style={ { flex: 1, justifyContent: "flex-end" } }>
-
-                        <ScrollView
-                            automaticallyAdjustContentInsets={ false }
-                            scrollEventThrottle={ 200 }
-                            style={ { paddingLeft: 20, paddingRight: 20 } }
-                        >
-
-
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "Team Name" }</Text>
-                                <TextInput
-                                    keyBoardType={ "default" }
-                                    onChangeText={ setTeamValue("name") }
-                                    placeholder={ "Team Name" }
-                                    value={ state.team.name }
-                                    underlineColorAndroid={ "transparent" }
-                                />
-                            </View>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>
-                                    { state.team.isPublic ? "Anyone can join your team" : "You control who joins your team" }
-                                </Text>
-                                <View styleName="horizontal flexible">
-                                    <Button
-                                        onPress={ () => setTeamValue("isPublic")(true) }
-                                        styleName={ `full-width${ !state.team.isPublic ? " secondary muted" : "" }` }>
-                                        <MaterialCommunityIcons
-                                            name="earth"
-                                            size={ 25 }
-                                            style={ { marginRight: 10 } }
-                                            color={ !state.team.isPublic ? "#555" : "black" }
-                                        />
-                                        <Text>PUBLIC</Text>
-                                    </Button>
-                                    <Button
-                                        onPress={ () => setTeamValue("isPublic")(false) }
-                                        styleName={ `full-width${ state.team.isPublic ? " secondary muted" : "" }` }>
-                                        <MaterialCommunityIcons
-                                            name="earth-off"
-                                            size={ 25 }
-                                            style={ { marginRight: 10 } }
-                                            color={ state.team.isPublic ? "#555" : "black" }
-                                        />
-                                        <Text>PRIVATE</Text>
-                                    </Button>
-                                </View>
-                            </View>
-                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "Clean Up Site" }</Text>
-                                <TextInput
-                                    keyBoardType={ "default" }
-                                    onChangeText={ setTeamValue("location") }
-                                    placeholder={ "The park, school, or road name" }
-                                    value={ state.team.location }
-                                    style={ { backgroundColor: "white", padding: 20 } }
-                                    underlineColorAndroid={ "transparent" }
-                                />
-                            </View>
-                            <View style={ styles.formControl }>
-                                <Text style={ { ...styles.label, maxHeight: 63 } }>
-                                    { "Mark your spot(s)" }
-                                </Text>
-                                <MiniMap
-                                    pinsConfig={ pinsConfig }
-                                    onMapClick={ handleMapClick }
-                                />
-                                <Button
-                                    styleName={ "secondary" }
-                                    onPress={ removeLastMarker }
-                                >
-                                    <Text>{ "REMOVE MARKER" }</Text>
-                                </Button>
-                            </View>
-                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.alertInfo }>
-                                    { dateRangeMessage }
-                                </Text>
-                            </View>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
-                                <View>
-                                    <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
-                                        <Text
-                                            style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>
-                                            { state.team.date || "Which day will your team be cleaning?" }
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <DateTimePicker
-                                        mode="date"
-                                        value={ eventDate }
-                                        minimumDate={ minDate }
-                                        maximumDate={ maxDate }
-                                        display={ state.datePickerVisible }
-                                        onChange={ handleDatePicked }
-                                        titleIOS={ "Which day is your team cleaning?" }
-                                        titleStyle={ styles.datePickerTitleStyle }
-                                    />
-                                </View>
-                            </View>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "What time will your team start?" }</Text>
-                                <View>
-                                    <TouchableOpacity onPress={ setState({ startDateTimePickerVisible: true }) }>
-                                        <Text
-                                            style={ { ...styles.textInput, ...(startIsSelected ? styles.selected : {}) } }>
-                                            { state.team.startdate || "Pick a Starting Time" }
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <DateTimePicker
-                                        mode="time"
-                                        value={ defaultStartTime }
-                                        display={ state.startDateTimePickerVisible }
-                                        onChange={ handleStartDatePicked }
-                                        onError={ setState({ startDateTimePickerVisible: false }) }
-                                        is24Hour={ false }
-                                        titleIOS={ "Pick a starting time." }
-                                        titleStyle={ styles.datePickerTitleStyle }
-                                    />
-                                </View>
-                            </View>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "What time will your team end?" }</Text>
-                                <View>
-                                    <TouchableOpacity onPress={ setState({ endDateTimePickerVisible: true }) }>
-                                        <Text
-                                            style={ { ...styles.textInput, ...(endIsSelected ? styles.selected : {}) } }>
-                                            { state.team.end || "Pick an Ending Time" }
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <DateTimePicker
-                                        mode="time"
-                                        value={ defaultEndTime }
-                                        display={ state.endDateTimePickerVisible }
-                                        // onConfirm={ handleEndDatePicked }
-                                        onChange={ handleEndDatePicked }
-                                        // onCancel={ setState({ endDateTimePickerVisible: false }) }
-                                        onError={ setState({ endDateTimePickerVisible: false }) }
-                                        is24Hour={ false }
-                                        titleIOS={ "Pick an ending time." }
-                                        titleStyle={ styles.datePickerTitleStyle }
-                                    />
-                                </View>
-                            </View>
-                            <LineDivider style={ { marginTop: 20, marginBottom: 20 } }/>
-                            <View style={ styles.formControl }>
-                                <Text style={ styles.label }>{ "Team Information" }</Text>
-                                <TextInput
-                                    keyBoardType={ "default" }
-                                    multiline={ true }
-                                    numberOfLines={ 10 }
-                                    textAlignVertical="top"
-                                    onChangeText={ setTeamValue("description") }
-                                    placeholder={ "Add important information here" }
-                                    style={ styles.textArea }
-                                    value={ state.team.description }
-                                    underlineColorAndroid={ "transparent" }
-                                />
-                            </View>
-
-
-                        </ScrollView>
-                        <View style={ { flex: 1 } }/>
-                    </View>
-                </KeyboardAvoidingView>
-
-        </SafeAreaView>
-    );
+const setState = (data: Object): (() => void) => () => {
+    dispatch({
+        type: "SET_STATE",
+        data
+    });
 };
+
+const onCleanDateChanged = (event: Event, pickedDate: Date) => {
+    console.log("onCleanDateChanged:", event, pickedDate)
+    if (event.type === "dismissed") {
+        setState({ datePickerVisible: false })();
+        return
+    }
+
+    const arr = pickedDate.toString().split(" ");
+    const date = `${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]}`;
+
+    setTeamValue("date")(date);
+    setTeamValue("cleanDate")(pickedDate);
+    setState({ datePickerVisible: false })();
+};
+
+const onCleanStartTimeChanged = (event: Event, pickedTime: Date) => {
+    console.log("onCleanStartTimeChanged:", event, pickedTime)
+    if (event.type === "dismissed") {
+        setState({ startDateTimePickerVisible: false })();
+        return
+    }
+    let start = pickedTime.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+    if (Platform.OS === "android") {
+        start = fixAndroidTime(start);
+    }
+
+    setTeamValue("startdate")(start);
+    setTeamValue("cleanStartTime")(pickedTime);
+    setState({ startDateTimePickerVisible: false })();
+};
+
+const onCleanEndTimeChanged = (event: Event, pickedTime: Date) => {
+    console.log("onCleanEndTimeChanged:", event, pickedTime)
+    if (event.type === "dismissed") {
+        setState({ endDateTimePickerVisible: false })();
+        return
+    }
+
+    let end = pickedTime.toLocaleTimeString("en-US", { hour12: true, hour: "2-digit", minute: "2-digit" });
+    if (Platform.OS === "android") {
+        end = fixAndroidTime(end);
+    }
+
+    setTeamValue("end")(end);
+    setTeamValue("cleanEndTime")(pickedTime);
+    setState({ endDateTimePickerVisible: false })();
+};
+
+// DateTimePicker
+
+const dateIsSelected = state.team.date === null;
+const endIsSelected = state.team.end === null;
+const startIsSelected = state.team.startdate === null;
+const applyDateOffset = (date: Date, days: number): Date => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+};
+const eventDate = getCurrentGreenUpDay();
+
+const defaultStartTime = setTime(eventDate, (state.team.start || "09:00"));
+const defaultEndTime = setTime(eventDate, (state.team.start || "17:00"));
+
+// const defaultStartTime = setTime( eventDate, (state.team.startdate || "09:00"));
+// console.log("state.team.startdate:",state.team.startdate);
+// console.log("defaultStartTime:",defaultStartTime.toLocaleString('en-GB'));
+// const defaultEndTime = setTime( eventDate, (state.team.end || "17:00"));
+// console.log("state.team.end:",state.team.end);
+// console.log("defaultEndTime:",defaultEndTime.toLocaleString('en-GB'));
+const minDate = applyDateOffset(eventDate, -6);
+const maxDate = applyDateOffset(minDate, 364);
+const headerButtons = [{ text: "Save", onClick: createTeam }, { text: "Clear", onClick: cancel }];
+
+const pinsConfig = state.team.locations
+    .map(l => ({
+        coordinates: l.coordinates,
+        title: state.team.name,
+        description: "Click here to remove pin",
+        onCalloutPress: removeMarker,
+        color: "green"
+    }))
+    .concat(otherCleanAreas.map(o => ({ ...o, color: "yellow" })));
+
+return (
+    <SafeAreaView style={styles.container}>
+        <ButtonBar buttonConfigs={headerButtons} />
+
+        <KeyboardAvoidingView
+            keyboardVerticalOffset={100}
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : null}
+        >
+            <View style={{ flex: 1, justifyContent: "flex-end" }}>
+
+                <ScrollView
+                    automaticallyAdjustContentInsets={false}
+                    scrollEventThrottle={200}
+                    style={{ paddingLeft: 20, paddingRight: 20 }}
+                >
+
+
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"Team Name"}</Text>
+                        <TextInput
+                            keyBoardType={"default"}
+                            onChangeText={setTeamValue("name")}
+                            placeholder={"Team Name"}
+                            value={state.team.name}
+                            underlineColorAndroid={"transparent"}
+                        />
+
+                    </View>
+
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>
+                            {state.team.isPublic ? "Anyone can join your team" : "You control who joins your team"}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <PrimaryButton
+                                style={{ ...(state.team.isPublic ? styles.publicButton : styles.privateButton) }}
+                                onPress={() => setTeamValue("isPublic")(true)}>
+                                <MaterialCommunityIcons
+                                    name="earth"
+                                    size={25}
+                                    style={{ marginRight: 10 }}
+                                    color={!state.team.isPublic ? "#555" : "black"}
+                                />
+                                <Text style={{ ...(state.team.isPublic ? styles.publicText : styles.privateText) }}>PUBLIC</Text>
+                            </PrimaryButton>
+                            <PrimaryButton
+                                style={{ ...(state.team.isPublic ? styles.privateButton : styles.publicButton) }}
+                                onPress={() => setTeamValue("isPublic")(false)}>
+                                <MaterialCommunityIcons
+                                    name="earth-off"
+                                    size={25}
+                                    style={{ marginRight: 10 }}
+                                    color={state.team.isPublic ? "#555" : "black"}
+                                />
+                                <Text style={{ ...(state.team.isPublic ? styles.privateText : styles.publicText) }}>PRIVATE</Text>
+                            </PrimaryButton>
+                        </View>
+                    </View>
+                    <LineDivider style={{ marginTop: 20, marginBottom: 20 }} />
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"Clean Up Site"}</Text>
+                        <TextInput
+                            keyBoardType={"default"}
+                            onChangeText={setTeamValue("location")}
+                            placeholder={"The park, school, or road name"}
+                            value={state.team.location}
+                            style={{ backgroundColor: "white", padding: 20 }}
+                            underlineColorAndroid={"transparent"}
+                        />
+                    </View>
+                    <View style={styles.formControl}>
+                        <Text style={{ ...styles.label, maxHeight: 63 }}>
+                            {"Mark your spot(s)"}
+                        </Text>
+                        <MiniMap
+                            pinsConfig={pinsConfig}
+                            onMapClick={handleMapClick}
+                        />
+                        <SecondaryButton
+                            onPress={removeLastMarker}
+                        >
+                            <Text style={{ color: 'white' }}>{"REMOVE MARKER"}</Text>
+                        </SecondaryButton>
+                    </View>
+                    <LineDivider style={{ marginTop: 20, marginBottom: 20 }} />
+                    <View style={styles.formControl}>
+                        <Text style={styles.alertInfo}>
+                            {dateRangeMessage}
+                        </Text>
+                    </View>
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"Which day will your team be cleaning?"}</Text>
+                        <View>
+                            <TouchableOpacity onPress={setState({ datePickerVisible: true })}>
+                                <Text
+                                    style={{ ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) }}>
+                                    {startDateDisplay || "Which day will your team be cleaning?"}
+                                </Text>
+                            </TouchableOpacity>
+                            {state.datePickerVisible && (
+                                <DateTimePicker
+                                    mode="date"
+                                    value={eventDate}
+                                    minimumDate={minDate}
+                                    maximumDate={maxDate}
+                                    onChange={(evt, date) => onCleanDateChanged(evt, date)}
+                                    onError={setState({ datePickerVisible: false })}
+                                    titleIOS={"Which day is your team cleaning?"}
+                                    titleStyle={styles.datePickerTitleStyle}
+                                />
+                            )}
+
+                        </View>
+                    </View>
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"What time will your team start?"}</Text>
+                        <View>
+                            <TouchableOpacity onPress={setState({ startDateTimePickerVisible: true })}>
+                                <Text
+                                    style={{ ...styles.textInput, ...(startIsSelected ? styles.selected : {}) }}>
+                                    {startTimeDisplay || "Pick a Starting Time"}
+                                </Text>
+                            </TouchableOpacity>
+
+                            {state.startDateTimePickerVisible && (
+                                <DateTimePicker
+                                    mode="time"
+                                    value={defaultStartTime}
+                                    onChange={(evt, date) => onCleanStartTimeChanged(evt, date)}
+                                    onError={setState({ startDateTimePickerVisible: false })}
+                                    is24Hour={false}
+                                    titleIOS={"Pick a starting time."}
+                                    titleStyle={styles.datePickerTitleStyle}
+                                />
+                            )}
+
+                        </View>
+                    </View>
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"What time will your team end?"}</Text>
+                        <View>
+                            <TouchableOpacity onPress={setState({ endDateTimePickerVisible: true })}>
+                                <Text
+                                    style={{ ...styles.textInput, ...(endIsSelected ? styles.selected : {}) }}>
+                                    {endTimeDisplay || "Pick an Ending Time"}
+                                </Text>
+                            </TouchableOpacity>
+                            {state.endDateTimePickerVisible && (
+                                <DateTimePicker
+                                    mode="time"
+                                    value={defaultEndTime}
+                                    onChange={(evt, date) => onCleanEndTimeChanged(evt, date)}
+                                    onError={setState({ endDateTimePickerVisible: false })}
+                                    is24Hour={false}
+                                    titleIOS={"Pick an ending time."}
+                                    titleStyle={styles.datePickerTitleStyle}
+                                />
+                            )}
+
+                        </View>
+                    </View>
+                    <LineDivider style={{ marginTop: 20, marginBottom: 20 }} />
+                    <View style={styles.formControl}>
+                        <Text style={styles.label}>{"Team Information"}</Text>
+                        <TextInput
+                            keyBoardType={"default"}
+                            multiline={true}
+                            numberOfLines={10}
+                            textAlignVertical="top"
+                            onChangeText={setTeamValue("description")}
+                            placeholder={"Add important information here"}
+                            style={styles.textArea}
+                            value={state.team.description}
+                            underlineColorAndroid={"transparent"}
+                        />
+                    </View>
+
+
+                </ScrollView>
+                <View style={{ flex: 1 }} />
+            </View>
+        </KeyboardAvoidingView>
+
+    </SafeAreaView>
+);
+}
 
 NewTeam.navigationOptions = {
     title: "Start a Team",
@@ -435,7 +516,7 @@ const mapStateToProps = (state: Object): Object => {
             (location: any, teamName: any): Object => ({
                 key: "",
                 coordinates: location.coordinates,
-                title: `${ teamName || "Another Team" }`,
+                title: `${teamName || "Another Team"}`,
                 description: "has claimed this area"
             })]
     ]);

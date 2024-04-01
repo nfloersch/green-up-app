@@ -32,7 +32,7 @@ export const buttons = {
         ...buttonBase,
         ...buttonFlex,
         color: colors.backgroundLight,
-        backgroundColor: colors.black,
+        backgroundColor: colors.backgroundDark,
     },
     button: {
         borderStyle: "solid",

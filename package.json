@@ -53,6 +53,7 @@
     "@types/react": "~18.2.14",
     "@types/react-navigation": "^3.0.8",
     "@types/redux-logger": "^3.0.13",
+    "date-fns": "^3.6.0",
     "deprecated-react-native-prop-types": "^5.0.0",
     "dotenv-cli": "^7.4.1",
     "expo": "^49.0.0",
