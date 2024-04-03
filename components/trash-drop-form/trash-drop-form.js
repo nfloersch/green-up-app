@@ -204,7 +204,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
     };
     let btnConfig = [saveBtn];
     if (existingDrop) btnConfig.push(deleteBtn);
-    
+
     const clickOnMap = (loc) => {
         //drop.coordinates = loc;
         //drop.location = loc;
@@ -301,7 +301,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                 </Text>
                                                                 <View
                                                                     style={ { backgroundColor: "white", padding: 20 } }>
-                                                                    <Title> { teamOptions[0].name } </Title>
+                                                                    <Text> { teamOptions[0].name } </Text>
                                                                 </View>
                                                             </Fragment>
                                                         )
@@ -454,15 +454,15 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
                                                                     latitudeDelta: 0.0922,
                                                                     longitudeDelta: 0.0421
                                                                 } }
-                                                                pinsConfig={ 
+                                                                pinsConfig={
                                                                     [
-                                                                        {   
-                                                                            ...drop, 
+                                                                        {
+                                                                            ...drop,
                                                                             coordinates: drop.location.coordinates,
                                                                             title: "Drop Here",
                                                                             description: `${drop.bagCount} bag${(drop.bagCount > 1?"s":"")}`
                                                                         }
-                                                                    ] 
+                                                                    ]
                                                                 }
                                                                 onMapClick={ clickOnMap }
                                                                 refKey={ refKey }
@@ -482,7 +482,7 @@ export const TrashDropForm = ({ teamOptions, onSave, currentUser, townData, tras
 
                                         <View style={ { height: 100 } }/>
                                     </ScrollView>
-                                    <ButtonBar buttonConfigs={ 
+                                    <ButtonBar buttonConfigs={
                                         btnConfig
                                     }>
                                         <Text>Tag My Bag</Text>

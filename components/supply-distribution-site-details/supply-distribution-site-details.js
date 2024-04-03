@@ -63,6 +63,7 @@ export const SupplyDistributionSiteDetails = ({ site, closeModal, towns }: Props
                 </View>
             </View>
         </ScrollView>
+        <ButtonBar buttonConfigs={ [{ text: "CLOSE", onClick: closeModal }] }/>
     </SafeAreaView>
 );
 
