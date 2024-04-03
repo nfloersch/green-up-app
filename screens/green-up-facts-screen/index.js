@@ -41,7 +41,7 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                             }] }
                             onPress={ ()=>{ Linking.openURL('https://greenupvermont.org/')}}
                         >{ "\n" + eventDescription + "\n\n" }
-                        The latest news and information about the day are always available on the Green Up Vermont website. 
+                        The latest news and information about the day are always available on the Green Up Vermont website.
                         <Text style={ [styles.textDark, {
                             textAlign: "center",
                             fontWeight: "900",
@@ -49,6 +49,44 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                             }]}>
                             {"\nTap here to open it up if you are online!"}
                         </Text>
+                    </Text>
+                </View>
+
+                <View style={ styles.infoBlockContainer }>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 16
+                    }] }>
+                        The 2024 Winning Narrative
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 14,
+                        fontFamily: "Rubik-Bold"
+                    }] }>
+                        By Juliette B., 8th Grade, Worcester
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 16,
+                        fontFamily: "Rubik-Bold"
+                    }] }>
+                        The Importance of Greening Up Our State
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        I didn't really think about the environment until it actually impacted me.{"\n"}
+                        I was driving to the city with my dad when I noticed the amount of trash on the side of the road{"\n"}
+                        The city smelt, the ground was dirty, and it was because no one was taking care of the environment.{"\n"}
+                        In Vermont, there's very few instances where I feel that way.{"\n"}
+                        There's no smell besides the fresh air smell.{"\n"}
+                        The ground isn't littered with trash, it's littered with plants.{"\n"}
+                        If we don't take care of our environment, our children will have to do it.{"\n"}
+                        By then, it'll be way worse.{"\n"}
+                        Global warming, littering, and pollution are serious problems.{"\n"}
+                        Even just picking up your trash and sorting it into recycling is helping.{"\n"}
+                        It's the little actions that matter, they're small, but mighty.{"\n"}
+                        As my mom used to say, "If everyone chips in, it'll make the work easier and faster."{"\n"}
+                        Our global issues might not go away overnight, but if we start now, it'll go away faster.{"\n"}
                     </Text>
                 </View>
 
@@ -206,10 +244,10 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                         50 years of greening up and we're still going strong! The reason Vermonters celebrate Green Up Day is so we can help our community. I feel this event is really important because it makes the environment a better place. Without all that trash around it is much safer, much cleaner, and most of all prettier.
                     </Text>
                     <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
-                        We are called the Green Mountain State for a reason. We have some of the most amazing scenery in the country. The greenery we are famous for gets hidden when our roadways are littered with trash. It's sad. That's why it's important for everyone to pitch in every year on the first Saturday in May so we can live up to our name. 
+                        We are called the Green Mountain State for a reason. We have some of the most amazing scenery in the country. The greenery we are famous for gets hidden when our roadways are littered with trash. It's sad. That's why it's important for everyone to pitch in every year on the first Saturday in May so we can live up to our name.
                     </Text>
                     <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
-                        Another reason to take part in Green Up Day is that it shows how people can do things locally to contribute to saving the planet. Cleaning up trash keeps toxins out of our waterways and improves the health of our Earth. 
+                        Another reason to take part in Green Up Day is that it shows how people can do things locally to contribute to saving the planet. Cleaning up trash keeps toxins out of our waterways and improves the health of our Earth.
                     </Text>
                     <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
                         On the next Green Up Day gather your friends and volunteer to clean your local community. You can have fun while helping keep our state beautiful. Plus, if someone sees you doing it they may be inspired to join in!
