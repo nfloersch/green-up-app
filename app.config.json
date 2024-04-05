@@ -19,7 +19,8 @@
     },
     "updates": {
       "url": "<env>",
-      "enabled": true
+      "enabled": true,
+      "checkAutomatically": "ON_ERROR_RECOVERY"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,7 +29,7 @@
       "eas": {
         "projectId": "<env>"
       }
-      
+
     },
     "version": "2024.0.0",
     "runtimeVersion": {
@@ -48,6 +49,9 @@
     "android": {
       "package": "org.greenupvermont.app",
       "versionCode": 202401,
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF"
+      },
       "permissions": [
         "READ_CONTACTS",
         "ACCESS_FINE_LOCATION",
