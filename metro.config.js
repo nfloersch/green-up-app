@@ -1,15 +1,27 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('@expo/metro-config');
-const { mergeConfig } = require('metro-config');
 
 /** @type {import('expo/metro-config').MetroConfig} */
-const defaultConfig = getDefaultConfig(__dirname);
-defaultConfig.resolver.sourceExts.push('cjs');
+const config = getDefaultConfig(__dirname);
+config.resolver.sourceExts.push('cjs');
 
-const config = {
-    resolver: {
-        resolverMainFields: ['main', 'react-native'],
+config.transformer.minifierPath = 'metro-minify-terser';
+config.transformer.minifierConfig = {
+    mangle: {
+        toplevel: false,
+        keep_classnames: true,
+        keep_fnames: true,
     },
-};
+    output: {
+        ascii_only: false,
+        comments: false,
+        quote_style: 3,
+        wrap_iife: false
+    },
+    sourceMap: { includeSources: false },
+    toplevel: false,
+    compress: { reduce_funcs: false }
+}
 
-module.exports = mergeConfig(defaultConfig);
+
+module.exports = config;
