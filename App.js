@@ -8,6 +8,8 @@ import Session from "./components/session";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { LogBox } from "react-native";
+import initSentry from "./clients/sentry";
+
 // This and the following two lines account for missing base64 support in some versions of Node
 import { decode, encode } from "base-64";
 import MainTabNavigator from "./navigation/main-tab-navigator";
@@ -76,6 +78,8 @@ const App = ({ skipLoadingScreen }: PropsType): React$Element<any> => {
     const load = (
         <AppLoading onError={handleLoadingError} onFinish={handleFinishLoading} startAsync={loadResourcesAsync} />
     );
+
+    initSentry();
 
     const mainApp = (
         <AppState>

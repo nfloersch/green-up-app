@@ -26,7 +26,7 @@ const middlewares = [networkMiddleware, thunk];
 
 if (__DEV__) {
     const logState = false
-    const actionPayload = true
+    const actionPayload = false
     const actionPayloadPretty = false
     const ignorePersist = (getState, action) => {
         return !['persist/PERSIST', 'persist/REHYDRATE'].includes(action.type)
