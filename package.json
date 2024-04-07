@@ -68,6 +68,7 @@
     "expo-camera": "~13.4.4",
     "expo-constants": "~14.4.2",
     "expo-contacts": "~12.2.0",
+    "expo-dev-client": "~2.4.13",
     "expo-device": "~5.4.0",
     "expo-file-system": "~15.4.5",
     "expo-font": "~11.4.0",

@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { LogBox } from "react-native";
 import initSentry from "./clients/sentry";
+import 'expo-dev-client';
 
 // This and the following two lines account for missing base64 support in some versions of Node
 import { decode, encode } from "base-64";
