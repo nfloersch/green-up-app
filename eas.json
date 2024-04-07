@@ -3,6 +3,15 @@
     "base": {
       "env": {}
     },
+    "devLocal": {
+      "extends": "base",
+      "distribution": "internal",
+      "channel": "dev",
+      "developmentClient": true,
+      "env": {
+        "GREENUP_ENVIRONMENT": "dev"
+      }
+    },
     "dev": {
       "extends": "base",
       "distribution": "internal",

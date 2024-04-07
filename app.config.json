@@ -25,11 +25,27 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+        "sentry-expo"
+    ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "code-for-btv-2",
+            "project": "green-up-mobile"
+          }
+        }
+      ]
+    },
     "extra": {
       "eas": {
         "projectId": "<env>"
+      },
+      "sentry": {
+        "dsn": "<env>"
       }
-
     },
     "version": "2024.0.0",
     "runtimeVersion": {

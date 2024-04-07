@@ -19,6 +19,9 @@ module.exports = ({ config }) => {
             eas: {
                 ...config.extra.eas,
                 projectId: process.env.EAS_PROJECT_ID
+            },
+            sentry: {
+                dsn: process.env.SENTRY_DSN
             }
         },
         ios: {
