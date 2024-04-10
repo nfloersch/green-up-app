@@ -33,8 +33,8 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
             { text: "No", style: "cancel" },
             { text: "Yes", style: "destructive", onPress: actions.logout }
         ]);
-    };    
-    
+    };
+
     const envString = getReleaseEnvironment(Constants.expoConfig.extra.firebase.projectId);
 
     return (<SafeAreaView style={ styles.container }>
@@ -58,7 +58,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
 
                 <View style={ { margin: 20 } }>
                     <PrimaryButton
-                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/G00jvf')}}
+                        onPress={ ()=>{ Linking.openURL('https://givebutter.com/MT3kA9')}}
                     >
                         <MaterialCommunityIcons
                             name="charity"
@@ -69,10 +69,10 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                         <Text style={ { ...styles.buttonText, fontSize } }>{ "Donate" }</Text>
                     </PrimaryButton>
                 </View>
-                
+
                 <View style={ { margin: 20 } }>
                     <PrimaryButton
-                        onPress={ ()=>{ Linking.openURL('https://www.mightycause.com/story/2g6ckf')}}
+                        onPress={ ()=>{ Linking.openURL('https://givebutter.com/GreenUpGear')}}
                     >
                         <MaterialCommunityIcons
                             name="tshirt-crew"
@@ -86,7 +86,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
 
                 <View style={ { margin: 20 } }>
                     <PrimaryButton
-                        onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}} 
+                        onPress={ ()=>{ Linking.openURL('https://forms.gle/sxmGrZYsXzv9p7FU9')}}
                     >
                         <MaterialCommunityIcons
                             name="comment-alert"
@@ -99,7 +99,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
                 </View>
                 <View style={ { margin: 20 } }>
                     <PrimaryButton
-                        onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/blob/master/docs/contributorsGreatAndSmall.md')}} 
+                        onPress={ ()=>{ Linking.openURL('https://github.com/codeforbtv/green-up-app/blob/master/docs/contributorsGreatAndSmall.md')}}
                     >
                         <MaterialCommunityIcons
                             name="account-group"
