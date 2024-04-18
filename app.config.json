@@ -47,12 +47,12 @@
         "dsn": "<env>"
       }
     },
-    "version": "2024.0.0",
+    "version": "2024.0.3",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "ios": {
-      "buildNumber": "2024.0.1",
+      "buildNumber": "2024.0.3",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
@@ -64,7 +64,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 202401,
+      "versionCode": 202403,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       },
