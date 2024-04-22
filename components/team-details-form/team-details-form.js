@@ -335,26 +335,38 @@ export const TeamDetailsForm = ({ currentUser, children, otherCleanAreas, team, 
                             </Text>
                         </View>
                         <View style={ styles.formControl }>
-                            <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
+                            <Text style={ styles.label }>{ "When will your team be cleaning?" }</Text>
                             <View>
-                                <TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>
-                                    <Text
-                                        style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>
-                                        { state.team.date || "Which day will your team be cleaning?" }
-                                    </Text>
-                                </TouchableOpacity>
-                                { state.datePickerVisible &&
-                                    <DateTimePicker
-                                    mode="date"
-                                    value={ eventDate }
-                                    minimumDate={ minDate }
-                                    maximumDate={ maxDate }
-                                    onChange={ handleDatePicked }
-                                    onCancel={ setState({ datePickerVisible: false }) }
-                                    titleIOS={ "Which day is your team cleaning?" }
-                                    titleStyle={ styles.datePickerTitleStyle }
-                                />
-                                }
+                                <Text style={ styles.label }>{ "Which day will your team be cleaning?" }</Text>
+                                <View>
+                                    <TextInput
+                                        style={styles.textInput}
+                                        keyBoardType={ "default" }
+                                        onChangeText={ setTeamValue("date") }
+                                        placeholder={ "Date for your pickup event" }
+                                        placeholderTextColor={colors.placeholderText}
+                                        value={ state.team.date }
+                                        underlineColorAndroid={ "transparent" }
+                                    />
+                                </View>
+                                {/*<TouchableOpacity onPress={ setState({ datePickerVisible: true }) }>*/}
+                                {/*    <Text*/}
+                                {/*        style={ { ...styles.textInput, ...(dateIsSelected ? styles.selected : {}) } }>*/}
+                                {/*        { state.team.date || "Which day will your team be cleaning?" }*/}
+                                {/*    </Text>*/}
+                                {/*</TouchableOpacity>*/}
+                                {/*{ state.datePickerVisible &&*/}
+                                {/*    <DateTimePicker*/}
+                                {/*    mode="date"*/}
+                                {/*    value={ eventDate }*/}
+                                {/*    minimumDate={ minDate }*/}
+                                {/*    maximumDate={ maxDate }*/}
+                                {/*    onChange={ handleDatePicked }*/}
+                                {/*    onCancel={ setState({ datePickerVisible: false }) }*/}
+                                {/*    titleIOS={ "Which day is your team cleaning?" }*/}
+                                {/*    titleStyle={ styles.datePickerTitleStyle }*/}
+                                {/*/>*/}
+                                {/*}*/}
                             </View>
                         </View>
                         <View style={ styles.formControl }>

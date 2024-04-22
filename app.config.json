@@ -20,7 +20,7 @@
     "updates": {
       "url": "<env>",
       "enabled": true,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
+      "checkAutomatically": "ON_LOAD"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -47,12 +47,12 @@
         "dsn": "<env>"
       }
     },
-    "version": "2024.0.3",
+    "version": "2024.0.4",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "ios": {
-      "buildNumber": "2024.0.3",
+      "buildNumber": "2024.0.4",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
@@ -64,7 +64,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 202403,
+      "versionCode": 202404,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       },
