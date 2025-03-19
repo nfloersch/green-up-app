@@ -16,14 +16,15 @@ const BottomTabs = createBottomTabNavigator();
 
 export default function MainTabNavigator() {
     return (
-        <BottomTabs.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+        <BottomTabs.Navigator initialRouteName="_Home" screenOptions={{ headerShown: false }}>
             <BottomTabs.Screen
                 name="_Home"
                 component={HomeStack}
                 options={{
                     tabBarLabel: "Home",
                     tabBarIcon: ({ focused }) => (
-                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-home" : "md-home"} />
+                        // <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-home" : "md-home"} />
+                        <TabBarIcon focused={focused} name={"home"} />
                     )
                 }}
             />
@@ -35,7 +36,7 @@ export default function MainTabNavigator() {
                     tabBarIcon: ({ focused }) => (
                         <TabBarIcon
                             focused={focused}
-                            name={Platform.OS === "ios" ? "ios-chatbubbles" : "md-chatbubbles"}
+                            name={"chatbubbles"}
                         />
                     )
                 }}
@@ -46,7 +47,7 @@ export default function MainTabNavigator() {
                 options={{
                     tabBarLabel: "Leaderboard",
                     tabBarIcon: ({ focused }) => (
-                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-list" : "md-list"} />
+                        <TabBarIcon focused={focused} name={"list"} />
                     )
                 }}
             />
@@ -56,7 +57,7 @@ export default function MainTabNavigator() {
                 options={{
                     tabBarLabel: "Trash",
                     tabBarIcon: ({ focused }) => (
-                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-pin" : "md-pin"} />
+                        <TabBarIcon focused={focused} name={"pin"} />
                     )
                 }}
             />
@@ -66,7 +67,7 @@ export default function MainTabNavigator() {
                 options={{
                     tabBarLabel: "Menu",
                     tabBarIcon: ({ focused }) => (
-                        <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-menu" : "md-menu"} />
+                        <TabBarIcon focused={focused} name={"menu"} />
                     )
                 }}
             />

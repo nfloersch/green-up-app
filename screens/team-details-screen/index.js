@@ -137,9 +137,9 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
                 { "Team Members" }
             </Text>
             {
-                Object
-                    .values(teamMembers)
-                    .map((member: Object, i: number): React$Element<any> => (
+                R.values(teamMembers)
+                .map(
+                    (member: Object, i: number): React$Element<any> => (
                         <TouchableHighlight
                             key={ i }
                             style={ {
@@ -169,7 +169,44 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
                                 />
                             </View>
                         </TouchableHighlight>
-                    ))
+                    )
+                )
+                // Object.keys(teamMembers).forEach(
+                //     (id) => (
+                //         const member = teamMembers[id];
+                //         return React$Element<any></any> => (
+                //             <TouchableHighlight
+                //                 key={ i }
+                //                 style={ {
+                //                     borderStyle: "solid",
+                //                     borderWidth: 1,
+                //                     backgroundColor: "white",
+                //                     width: "100%",
+                //                     height: 52,
+                //                     marginTop: 5
+                //                 } }
+                //                 onPress={ () => {
+                //                     toMemberDetails(selectedTeam.id, member.uid);
+                //                 } }>
+                //                 <View style={ { flex: 1, flexDirection: "row" } }>
+                //                     <View style={ { flex: 1, flexDirection: "row" } }>
+                //                         <Image
+                //                             style={ { width: 50, height: 50, marginRight: 10 } }
+                //                             source={ { uri: member.photoURL } }
+                //                         />
+                //                         <Text style={ styles.teamMember }>
+                //                             { member.displayName || member.email }
+                //                         </Text>
+                //                     </View>
+                //                     <MemberIcon
+                //                         memberStatus={ member.memberStatus }
+                //                         style={ { marginTop: 10, marginRight: 5 } }
+                //                     />
+                //                 </View>
+                //             </TouchableHighlight>
+                //         )
+                //     )
+                // )
             }
         </View>
     );
@@ -360,7 +397,16 @@ const TeamDetailsScreen = ({ actions, currentUser, invitations, navigation, sele
                                 longitudeDelta: 0.0421
                                 } 
                             }
-                            pinsConfig={ R.map(R.merge({title: selectedTeam.name, description: "team cleaning area", color: "orange"}),selectedTeam.locations) }
+                            pinsConfig={ 
+                                R.map(
+                                    (loc) => {
+                                        return R.mergeAll(
+                                            loc,
+                                            {title: selectedTeam.name, description: "team cleaning area", color: "orange"}
+                                        );
+                                    },
+                                    selectedTeam.locations) 
+                                }
                             />)
                         : (<Text style={ {
                             fontSize: 14,

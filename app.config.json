@@ -26,19 +26,11 @@
       "**/*"
     ],
     "plugins": [
-        "sentry-expo"
+      "expo-asset",
+      "expo-font",
+      "sentry-expo",
+      ["./plugins/withModifyGradle.js"]
     ],
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "code-for-btv-2",
-            "project": "green-up-mobile"
-          }
-        }
-      ]
-    },
     "extra": {
       "eas": {
         "projectId": "<env>"
@@ -47,12 +39,12 @@
         "dsn": "<env>"
       }
     },
-    "version": "2024.0.4",
+    "version": "2024.0.3",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "ios": {
-      "buildNumber": "2024.0.4",
+      "buildNumber": "2024.0.3",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
@@ -64,7 +56,7 @@
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 202404,
+      "versionCode": 202403,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       },

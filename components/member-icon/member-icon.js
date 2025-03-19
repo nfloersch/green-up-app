@@ -7,13 +7,13 @@ import * as R from "ramda";
 import * as constants from "../../styles/constants";
 
 const icons = {
-    [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === "ios" ? "ios-person-add" : "md-person-add",
-    [memberStatuses.ACCEPTED]: Platform.OS === "ios" ? "ios-person" : "md-person",
-    [memberStatuses.INVITED]: Platform.OS === "ios" ? "ios-mail" : "md-mail",
-    [memberStatuses.OWNER]: Platform.OS === "ios" ? "ios-star" : "md-star",
-    [memberStatuses.NOT_INVITED]: Platform.OS === "ios" ? "ios-close" : "md-close",
-    IS_REQUESTING_TO_JOIN: Platform.OS === "ios" ? "ios-clock" : "md-clock",
-    DEFAULT: Platform.OS === "ios" ? "ios-help" : "md-help"
+    [memberStatuses.REQUEST_TO_JOIN]: Platform.OS === "person-add",
+    [memberStatuses.ACCEPTED]: Platform.OS === "person",
+    [memberStatuses.INVITED]: Platform.OS === "mail",
+    [memberStatuses.OWNER]: Platform.OS === "star",
+    [memberStatuses.NOT_INVITED]: Platform.OS === "close",
+    IS_REQUESTING_TO_JOIN: Platform.OS === "clock",
+    DEFAULT: Platform.OS === "help"
 };
 
 const getIconName = R.cond([

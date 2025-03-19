@@ -264,7 +264,7 @@ const TrashMap = (
                                     }
                                     onPress={ () => navigation.navigate("TrashTrackerModal") }>
                                     <Ionicons
-                                        name={ Platform.OS === "ios" ? "ios-options" : "md-options" }
+                                        name={"options" }
                                         size={ 30 }
                                         color="#888"
                                     />

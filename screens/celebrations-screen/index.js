@@ -133,7 +133,7 @@
 //                         } }
 //                         style={ { height: 40, width: 40, padding: 1, marginLeft: 2 } }>
 //                         <Ionicons
-//                             name={ Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline" }
+//                             name={ "close-circle-outline" }
 //                             size={ 36 }
 //                             style={ iconStyle }/>
 //                     </TouchableHighlight>

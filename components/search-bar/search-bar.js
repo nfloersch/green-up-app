@@ -52,7 +52,7 @@ export const SearchBar = ({ help, userLocation, searchTerm = "", search }: Props
         <View style={styles.searchBar}>
             <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "center" }}>
                 <Ionicons
-                    name={Platform.OS === "ios" ? "ios-help-circle-outline" : "md-help-circle-outline"}
+                    name={"help-circle-outline"}
                     size={36}
                     style={styles.iconStyle}
                     onPress={() => setHelpOpen(true)} />
@@ -83,7 +83,7 @@ export const SearchBar = ({ help, userLocation, searchTerm = "", search }: Props
                             elevation: 5
                         }} onPress={() => setHelpOpen(false)}>
                             <Ionicons
-                                name={Platform.OS === "ios" ? "ios-close" : "md-close"}
+                                name={"close"}
                                 size={30}
                                 color="#888"
                             />
@@ -108,7 +108,7 @@ export const SearchBar = ({ help, userLocation, searchTerm = "", search }: Props
                     }}
                     style={{ height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 }}>
                     <Ionicons
-                        name={Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline"}
+                        name={"close-circle-outline"}
                         size={36}
                         style={styles.iconStyle} />
                 </TouchableHighlight>
@@ -118,7 +118,7 @@ export const SearchBar = ({ help, userLocation, searchTerm = "", search }: Props
                     }}
                     style={{ height: 36, width: 40, paddingLeft: 2, paddingRight: 2, paddingBottom: 2, marginLeft: 2 }}>
                     <Ionicons
-                        name={Platform.OS === "ios" ? "md-locate" : "md-locate"}
+                        name={"locate"}
                         size={36}
                         style={styles.iconStyle} />
                 </TouchableHighlight>
