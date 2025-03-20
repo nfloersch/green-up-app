@@ -1,5 +1,6 @@
 // https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
-//import {withGradleProperties} from "./plugins/withModifyGradle"
+// import "./plugins/withModifyGradle.js";
+// import withModifyGradle from "./withModifyGradle.js";
 module.exports = ({ config }) => {
     // ENVIRONMENT is set from eas.json to set the build environment contexts
     const targetEnvirnoment = process.env.GREENUP_ENVIRONMENT ?? 'local';

@@ -29,7 +29,7 @@
       "expo-asset",
       "expo-font",
       "sentry-expo",
-      ["./plugins/withModifyGradle.js"]
+      "expo-build-properties"
     ],
     "extra": {
       "eas": {
@@ -39,12 +39,12 @@
         "dsn": "<env>"
       }
     },
-    "version": "2024.0.3",
+    "version": "2025.0.1",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "ios": {
-      "buildNumber": "2024.0.3",
+      "buildNumber": "2025.0.1",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {

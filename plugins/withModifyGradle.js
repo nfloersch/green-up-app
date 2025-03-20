@@ -17,7 +17,8 @@ module.exports = (config) => {
 
   return withGradleProperties(config, (config) => {
     newGradleProperties.map((gradleProperty) => config.modResults.push(gradleProperty));
-
+    config.name = "withModifyGradle";
+    config.slug = "withModifyGradle";
     return config;
   });
 };
