@@ -39,24 +39,25 @@
         "dsn": "<env>"
       }
     },
-    "version": "2025.0.1",
+    "version": "2025.0.2",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "ios": {
-      "buildNumber": "2025.0.1",
+      "buildNumber": "2025.0.2",
       "supportsTablet": false,
       "bundleIdentifier": "org.greenupvermont.app",
       "config": {
-        "googleMapsApiKey": "<env>"
+        "googleMapsApiKey": "AIzaSyCOrCzO_pJ3_OVw3ScpwP2Fl6-h4wJ8IOA"
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We use your location to mark where you leave your trash bags"
+        "NSLocationWhenInUseUsageDescription": "We use your location to mark where you leave your trash bags",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "package": "org.greenupvermont.app",
-      "versionCode": 202403,
+      "versionCode": 202502,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       },

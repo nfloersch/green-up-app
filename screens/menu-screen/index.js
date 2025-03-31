@@ -58,7 +58,7 @@ const MenuScreen = ({ actions, navigation }: PropsType): React$Element<View> => 
 
                 <View style={ { margin: 20 } }>
                     <PrimaryButton
-                        onPress={ ()=>{ Linking.openURL('https://givebutter.com/MT3kA9')}}
+                        onPress={ ()=>{ Linking.openURL('https://givebutter.com/55for55')}}
                     >
                         <MaterialCommunityIcons
                             name="charity"

@@ -57,6 +57,50 @@ const GreenUpFacts = ({ eventDescription, contactUs, eventName, eventDate, faqs 
                         textAlign: "justify",
                         fontSize: 16
                     }] }>
+                        The 2025 Winning Narrative #1
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 14,
+                        fontFamily: "Rubik-Bold"
+                    }] }>
+                        By Kaila C., 7th Grade, Shelburne Community School
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        On Green Up Day, the streets are clear.{"\n"}
+                        Vermonters come year after year.{"\n"}
+                        With bags in hand and hearts so bright.{"\n"}
+                        They clean the land, and make it right.
+                    </Text>
+                </View>
+
+                <View style={ styles.infoBlockContainer }>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 16
+                    }] }>
+                        The 2025 Winning Narrative #2
+                    </Text>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 14,
+                        fontFamily: "Rubik-Bold"
+                    }] }>
+                        By Ophelia L., 8th Grade, Shelburne Community School
+                    </Text>
+                    <Text style={{textAlign: "left", fontSize: 16, marginBottom: 5}}>
+                        Green Up Day is a community event dedicated to {"\n"}
+                        cleaning up the environment by removing litter from public spaces, {"\n"}
+                        promoting environmental awareness {"\n"}
+                        and fostering a sense of civic responsibilities.
+                    </Text>
+                </View>
+
+                <View style={ styles.infoBlockContainer }>
+                    <Text style={ [styles.textDark, {
+                        textAlign: "justify",
+                        fontSize: 16
+                    }] }>
                         The 2024 Winning Narrative
                     </Text>
                     <Text style={ [styles.textDark, {
